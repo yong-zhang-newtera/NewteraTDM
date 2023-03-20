@@ -1,0 +1,721 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{67A695F2-23F7-4815-8F92-D23E7C8CCD7B}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WorkflowStudio</RootNamespace>
+    <AssemblyName>WorkflowStudio</AssemblyName>
+    <ApplicationIcon>App.ico</ApplicationIcon>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>NewteraKeys.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.4.369, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\Ebaas\packages\ICSharpCode.SharpZipLib.dll.0.85.4.369\lib\net20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Workflow.Activities" />
+    <Reference Include="System.Workflow.ComponentModel" />
+    <Reference Include="System.Workflow.Runtime" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AboutDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutWorkflowStudioDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutWorkflowStudioDialog.Designer.cs">
+      <DependentUpon>AboutWorkflowStudioDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccessControlDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AccessControlDialog.Designer.cs">
+      <DependentUpon>AccessControlDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccessControlOptionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ActionCodeEditDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ActionCodeEditDialog.Designer.cs">
+      <DependentUpon>ActionCodeEditDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddWorkflowDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddWorkflowDialog.Designer.cs">
+      <DependentUpon>AddWorkflowDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AdminLoginDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AdminLoginDialog.Designer.cs">
+      <DependentUpon>AdminLoginDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ApiNamePropertyEditor.cs" />
+    <Compile Include="ArrayAttributeNameConverter.cs" />
+    <Compile Include="CreateGroupTaskActivityNamePropertyEditor.cs" />
+    <Compile Include="CreateSearchExprDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DefineCustomActionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DefineCustomActionDialog.Designer.cs">
+      <DependentUpon>DefineCustomActionDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DefineInputParameterDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DefineInputParameterDialog.Designer.cs">
+      <DependentUpon>DefineInputParameterDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditDataInstanceDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditDataInstanceDialog.Designer.cs">
+      <DependentUpon>EditDataInstanceDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ActivityValidateService.cs" />
+    <Compile Include="EnterNameDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EnterNameDialog.Designer.cs">
+      <DependentUpon>EnterNameDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GrantedRolesPropertyEditor.cs" />
+    <Compile Include="ParameterBindingEditor.cs" />
+    <Compile Include="ProtectProjectDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ParameterBindingConverter.cs" />
+    <Compile Include="SelectClassAttributeDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectClassAttributeDialog.Designer.cs">
+      <DependentUpon>SelectClassAttributeDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelectParameterBindingDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectParameterBindingDialog.Designer.cs">
+      <DependentUpon>SelectParameterBindingDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelectSubjectDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectSubjectDialog.Designer.cs">
+      <DependentUpon>SelectSubjectDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelectUsersDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ClassNamePropertyEditor.cs" />
+    <Compile Include="ClientLicenseInfoDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConnectionStringBuilder.cs" />
+    <Compile Include="MonitorSettingsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MonitorSettingsDialog.Designer.cs">
+      <DependentUpon>MonitorSettingsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ServerErrorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ServerErrorDialog.Designer.cs">
+      <DependentUpon>ServerErrorDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ServerTraceLogDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ServerTraceLogDialog.Designer.cs">
+      <DependentUpon>ServerTraceLogDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SetTaskSubstituteDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SetTaskSubstituteDialog.Designer.cs">
+      <DependentUpon>SetTaskSubstituteDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TerminateWorkflowsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TerminateWorkflowsDialog.Designer.cs">
+      <DependentUpon>TerminateWorkflowsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TrackingQueryDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TrackingQueryDialog.Designer.cs">
+      <DependentUpon>TrackingQueryDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TrackingQueryService.cs" />
+    <Compile Include="DatabaseStorageProvider.cs" />
+    <Compile Include="ClassNameConverter.cs" />
+    <Compile Include="EventNamePropertyEditor.cs" />
+    <Compile Include="MainProgram.cs" />
+    <Compile Include="MonitorWorkflowDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MonitorWorkflowDialog.Designer.cs">
+      <DependentUpon>MonitorWorkflowDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OpenDatabaseDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OpenDatabaseDialog.Designer.cs">
+      <DependentUpon>OpenDatabaseDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AboutDialog.resx">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AboutDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AboutDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AboutWorkflowStudioDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AboutWorkflowStudioDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AboutWorkflowStudioDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AboutWorkflowStudioDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AccessControlDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AccessControlDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AccessControlDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AccessControlDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AccessControlOptionDialog.resx">
+      <DependentUpon>AccessControlOptionDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AccessControlOptionDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AccessControlOptionDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActionCodeEditDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ActionCodeEditDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActionCodeEditDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ActionCodeEditDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddWorkflowDialog.en-US.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AddWorkflowDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddWorkflowDialog.resx">
+      <DependentUpon>AddWorkflowDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddWorkflowDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AddWorkflowDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AdminLoginDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AdminLoginDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AdminLoginDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AdminLoginDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientLicenseInfoDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ClientLicenseInfoDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CreateSearchExprDialog.resx">
+      <DependentUpon>CreateSearchExprDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CreateSearchExprDialog.zh-CN.resx">
+      <DependentUpon>CreateSearchExprDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DefineCustomActionDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DefineCustomActionDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DefineCustomActionDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DefineCustomActionDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DefineInputParameterDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DefineInputParameterDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DefineInputParameterDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DefineInputParameterDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DefineParameterBindingsDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DefineParameterBindingsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DeleteProjectDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DeleteProjectDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditDataInstanceDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EditDataInstanceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditDataInstanceDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EditDataInstanceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EnterNameDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EnterNameDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EnterNameDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EnterNameDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonitorSettingsDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MonitorSettingsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonitorWorkflowDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MonitorWorkflowDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OpenDatabaseDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>OpenDatabaseDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProtectProjectDialog.resx">
+      <DependentUpon>ProtectProjectDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProtectProjectDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ProtectProjectDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SaveProjectAsDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SaveProjectAsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectClassAttributeDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SelectClassAttributeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectClassAttributeDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SelectClassAttributeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectParameterBindingDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SelectParameterBindingDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectParameterBindingDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SelectParameterBindingDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectRolesDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SelectRolesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectSubjectDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SelectSubjectDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectSubjectDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SelectSubjectDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectUsersDialog.resx">
+      <DependentUpon>SelectUsersDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientLicenseInfoDialog.resx">
+      <DependentUpon>ClientLicenseInfoDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonitorSettingsDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MonitorSettingsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonitorWorkflowDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MonitorWorkflowDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OpenDatabaseDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>OpenDatabaseDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RegisterClientDialog.resx">
+      <DependentUpon>RegisterClientDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RegisterClientDialog.zh-CN.resx">
+      <DependentUpon>RegisterClientDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SaveProjectAsDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SaveProjectAsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectUsersDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SelectUsersDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerErrorDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ServerErrorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerErrorDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ServerErrorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerLicenseInfoDialog.resx">
+      <DependentUpon>ServerLicenseInfoDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerLicenseInfoDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ServerLicenseInfoDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerTraceLogDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ServerTraceLogDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerTraceLogDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ServerTraceLogDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SetTaskSubstituteDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SetTaskSubstituteDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SetTaskSubstituteDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SetTaskSubstituteDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SetupServerURLDialog.resx">
+      <DependentUpon>SetupServerURLDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SetupServerURLDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SetupServerURLDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TerminateWorkflowsDialog.resx">
+      <DependentUpon>TerminateWorkflowsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TerminateWorkflowsDialog.zh-CN.resx">
+      <DependentUpon>TerminateWorkflowsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TrackingQueryDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TrackingQueryDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TrackingQueryDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TrackingQueryDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserLoginDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>UserLoginDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ValidationErrorsDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ValidationErrorsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ValidationErrorsDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ValidationErrorsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WorkflowStudioApp.resx">
+      <DependentUpon>WorkflowStudioApp.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DeleteProjectDialog.resx">
+      <DependentUpon>DeleteProjectDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserLoginDialog.resx">
+      <DependentUpon>UserLoginDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectRolesDialog.resx">
+      <DependentUpon>SelectRolesDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WorkflowStudioApp.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>WorkflowStudioApp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DefineParameterBindingsDialog.resx">
+      <DependentUpon>DefineParameterBindingsDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WorkInProgressDialog.resx">
+      <DependentUpon>WorkInProgressDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WorkInProgressDialog.zh-CN.resx">
+      <DependentUpon>WorkInProgressDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectBackupProjectDialog.resx">
+      <DependentUpon>SelectBackupProjectDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectBackupProjectDialog.zh-CN.resx">
+      <DependentUpon>SelectBackupProjectDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectPropertiesDialog.resx">
+      <DependentUpon>SelectPropertiesDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectPropertiesDialog.zh-CN.resx">
+      <DependentUpon>SelectPropertiesDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="RegisterClientDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SaveProjectAsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SaveProjectAsDialog.Designer.cs">
+      <DependentUpon>SaveProjectAsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ServerLicenseInfoDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SetupServerURLDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Util\Backup.cs" />
+    <Compile Include="Util\Restore.cs" />
+    <Compile Include="ValidationErrorsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ValidationErrorsDialog.Designer.cs">
+      <DependentUpon>ValidationErrorsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WindowClientServerProxy.cs" />
+    <Compile Include="WindowClientUserManager.cs" />
+    <Compile Include="WorkflowStudioApp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WorkflowStudioApp.Designer.cs">
+      <DependentUpon>WorkflowStudioApp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DeleteProjectDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DeleteProjectDialog.Designer.cs">
+      <DependentUpon>DeleteProjectDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WorkflowWebServiceWriter.cs" />
+    <Compile Include="UserLoginDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserLoginDialog.Designer.cs">
+      <DependentUpon>UserLoginDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SchemaIdPropertyEditor.cs" />
+    <Compile Include="UsersPropertyEditor.cs" />
+    <Compile Include="RolesPropertyEditor.cs" />
+    <Compile Include="SelectRolesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AttributeNamePropertyEditor.cs" />
+    <Compile Include="AttributeNameConverter.cs" />
+    <Compile Include="WorkInProgressDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="XaclRulelListViewItem.cs" />
+    <Compile Include="InsertStatementPropertyEditor.cs" />
+    <Compile Include="WorkflowNamePropertyEditor.cs" />
+    <Compile Include="TaskNamePropertyEditor.cs" />
+    <Compile Include="DataQueryService.cs" />
+    <Compile Include="InputParametersPropertyEditor.cs" />
+    <Compile Include="ParameterBindingsPropertyEditor.cs" />
+    <Compile Include="DefineParameterBindingsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DefineParameterBindingsDialog.Designer.cs">
+      <DependentUpon>DefineParameterBindingsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ItemsBindingConverter.cs" />
+    <Compile Include="ItemsBindingEditor.cs" />
+    <Compile Include="SearchStatementPropertyEditor.cs" />
+    <Compile Include="CustomActionsPropertyEditor.cs" />
+    <Compile Include="ActionCodeEditor.cs" />
+    <Compile Include="QueryStatementUtil.cs" />
+    <Compile Include="ProjectNamePropertyEditor.cs" />
+    <Compile Include="SubstituteUsersPropertyEditor.cs" />
+    <Compile Include="SelectBackupProjectDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectBackupProjectDialog.Designer.cs">
+      <DependentUpon>SelectBackupProjectDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPropertiesPropertyEditor.cs" />
+    <Compile Include="SelectPropertiesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InvokedWorkflowActivityNamePropertyEditor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App.ico" />
+    <Content Include="Resources\collapseButton.Image.PNG" />
+    <Content Include="Resources\copyToolStripButton.Image.png" />
+    <Content Include="Resources\cutToolStripButton.Image.png" />
+    <Content Include="Resources\expandButton.Image.PNG" />
+    <Content Include="Resources\newToolStripButton.Image.png" />
+    <Content Include="Resources\openToolStripButton.Image.png" />
+    <Content Include="Resources\pasteToolStripButton.Image.png" />
+    <Content Include="Resources\printToolStripButton.Image.png" />
+    <Content Include="Resources\saveToolStripButton.Image.png" />
+    <Content Include="Resources\zoomInToolButton.Image.png" />
+    <Content Include="Resources\zoomOut.Image.png" />
+    <None Include="NewteraKeys.snk" />
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{CF010325-1364-4754-9192-CF7873C35F90}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WinClientCommon\WinClientCommon.csproj">
+      <Project>{ECBB7160-2D73-40C6-8F9A-BB4E818B1C17}</Project>
+      <Name>WinClientCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WindowsControl\WindowsControl.csproj">
+      <Project>{DEFECA59-D0CA-4294-9B2F-A04D6C2A5F26}</Project>
+      <Name>WindowsControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WorkflowActivities\WorkflowActivities.csproj">
+      <Project>{1D98C425-85B4-4281-89A6-5434FB492A86}</Project>
+      <Name>WorkflowActivities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WorkflowModel\WFModel.csproj">
+      <Project>{EF0030AC-1F81-448B-B9F2-3CF5EFFBEA52}</Project>
+      <Name>WFModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WorkflowMonitor\WorkflowMonitor.csproj">
+      <Project>{6F0A640F-91D6-485F-A961-E2994D58756F}</Project>
+      <Name>WorkflowMonitor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WorkflowServices\WorkflowServices.csproj">
+      <Project>{763837D0-56FA-40B7-84A5-5CB2D9448F51}</Project>
+      <Name>WorkflowServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WorkflowStudioControl\WorkflowStudioControl.csproj">
+      <Project>{AD7B5AF3-79A3-4BF0-9AD1-2EC9D5D6BACE}</Project>
+      <Name>WorkflowStudioControl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

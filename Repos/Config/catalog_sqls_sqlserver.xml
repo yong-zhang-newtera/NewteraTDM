@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqls>
+	<sql key="GetMMSchemas" value="SELECT ID,NAME,VERSION,MAP_METHOD, MODIFIED_TIME FROM MM_SCHEMA ORDER BY NAME, VERSION"/>
+	<sql key="AuthenticateSuperUser" value="SELECT NAME, PASSWORD FROM CM_SUPER_USER"/>
+	<sql key="GetSuperUser" value="SELECT NAME FROM CM_SUPER_USER"/>
+	<sql key="GetSuperUserName" value="SELECT NAME FROM CM_SUPER_USER"/>
+	<sql key="ChangeSuperUserPassword" value="UPDATE CM_SUPER_USER SET PASSWORD=@newPassword WHERE NAME=@name"/>
+  <sql key="GetClobById" value="SELECT {COLUMN_NAME} FROM {TABLE_NAME} WHERE ID = @id"/>
+	<sql key="GetClobByName" value="SELECT {COLUMN_NAME} FROM {TABLE_NAME} WHERE NAME = @name AND VERSION = @version"/>
+  <sql key="UpdateClobByName" value="UPDATE {TABLE_NAME} SET {COLUMN_NAME} = @text WHERE NAME = @name AND VERSION = @version"/>
+	<sql key="UpdateClobById" value="UPDATE {TABLE_NAME} SET {COLUMN_NAME} = @text WHERE ID= @id"/>
+	<sql key="UpdateClobByObjId" value="UPDATE {TABLE_NAME} SET {COLUMN_NAME} = @text WHERE OID = @oid"/>
+	<sql key="GetClearClobByName" value="UPDATE {TABLE_NAME} SET {COLUMN_NAME} = null WHERE NAME = @name AND VERSION = @version"/>
+	<sql key="GetClearClobByObjId" value="UPDATE {TABLE_NAME} SET {COLUMN_NAME} = null WHERE OID = @oid"/>
+	<sql key="ClearAttachmentBlob" value="UPDATE CM_ATTACHMENT SET ATTACHMENT = EMPTY_BLOB() WHERE ID = @id"/>
+	<sql key="ClearClsAttachmentBlob" value="UPDATE CM_CLS_ATTACHMENT SET ATTACHMENT = EMPTY_BLOB() WHERE ID = @id"/>
+	<sql key="GetAttachmentBlob" value="SELECT ATTACHMENT FROM CM_ATTACHMENT WHERE OID = @oid AND NAME = @name"/>
+	<sql key="GetClsAttachmentBlob" value="SELECT ATTACHMENT FROM CM_CLS_ATTACHMENT WHERE CID = @cid AND NAME = @name"/>
+	<sql key="GetAttachmentBlobById" value="SELECT ATTACHMENT FROM CM_ATTACHMENT WHERE ID = @id"/>	
+	<sql key="GetClsAttachmentBlobById" value="SELECT ATTACHMENT FROM CM_CLS_ATTACHMENT WHERE ID = @id"/>
+	<sql key="GetAttachmentBlobForUpdate" value="SELECT @pointer = TEXTPTR(ATTACHMENT) FROM CM_ATTACHMENT WHERE ID = @id"/>
+	<sql key="GetClsAttachmentBlobForUpdate" value="SELECT @pointer = TEXTPTR(ATTACHMENT) FROM CM_CLS_ATTACHMENT WHERE ID = @id"/>
+	<sql key="WriteAttachmetBlob" value="UPDATETEXT CM_ATTACHMENT.ATTACHMENT @pointer @offset 0 @bytes"/>
+	<sql key="WriteClsAttachmetBlob" value="UPDATETEXT CM_CLS_ATTACHMENT.ATTACHMENT @pointer @offset 0 @bytes"/>
+	<sql key="GetTableName" value="SELECT NAME, TABLE_NAME FROM MM_CLASS WHERE SCHEMA_ID = @id"/>
+	<sql key="GetColumnName" value="SELECT C.NAME, A.NAME, A.COLUMN_NAME FROM MM_CLASS C,MM_ATTRIBUTE A WHERE A.CLASS_ID = C.ID AND C.SCHEMA_ID = @id"/>
+	<sql key="AddSchemaDML" value="insert into mm_schema(id, name, version, map_method, modified_time, xml_schema, queries, xacl, taxonomy, rules, mappings) values(@id, @name, @version, @map_method, @modified_time, null, null, null, null, null, null)"/>	
+	<sql key="AddClassDML" value="insert into mm_class(id, name, display_name, table_name, schema_id, pk_name) values(@id, @name, @display_name, @table_name, @schema_id, @pk_name)"/>
+	<sql key="AddAttributeDML" value="insert into mm_attribute(id, name, display_name, category, column_name, class_id) values(@id, @name, @display_name, @category, @column_name, @class_id)"/>
+	<sql key="AddSimpleAttributeDML" value="insert into mm_simple_attribute(attribute_id, type) values(@id, @type)"/>
+	<sql key="AddRelationshipAttributeDML" value="insert into mm_relation_attribute(attribute_id, type, ownership, ref_class_id, is_fk, is_jointable) values(@id, @type, @ownership, @ref_class_id, @is_fk, @is_jointable)"/>
+	<sql key="AddParentChildRelationDML" value="insert into mm_parent_child(parent_id,child_id) values(@parent_id, @child_id)"/>
+	<sql key="DelSchemaDML" value="delete from mm_schema where id=@id"/>
+	<sql key="DelClassDML" value="delete from mm_class where id=@id"/>
+	<sql key="DelAttributeDML" value="delete from mm_attribute where id=@id"/>
+	<sql key="DelSimpleAttributeDML" value="delete from mm_simple_attribute where attribute_id=@id"/>
+	<sql key="DelRelationshipAttributeDML" value="delete from mm_relation_attribute where attribute_id=@id"/>
+	<sql key="DelParentChildRelationDML" value="delete from mm_parent_child where child_id=@child_id and parent_id=@parent_id"/>
+	<sql key="AddAttachmentInfo" value="insert into cm_attachment(id, oid, name, classname, type, asize, is_public, schema_id, attachment) values(@id, @oid, @name, @classname, @type, @asize, @is_public, @schema_id, 0x0)"/>
+	<sql key="AddClsAttachmentInfo" value="insert into cm_cls_attachment(id, cid, name, classname, type, asize, is_public, schema_id, attachment) values(@id, @cid, @name, @classname, @type, @asize, @is_public, @schema_id, 0x0)"/>
+	<sql key="UpdateAttachmentInfo" value="update cm_attachment set oid=@oid, name=@name, classname=@classname, type=@type, asize=@asize, is_public=@is_public, schema_id=@schema_id where id=@id"/>
+	<sql key="UpdateClsAttachmentInfo" value="update cm_cls_attachment set cid=@cid, name=@name, classname=@classname, type=@type, asize=@asize, is_public=@is_public, schema_id=@schema_id where id=@id"/>
+	<sql key="IsAttachmentInfoExist" value="select count(id) from cm_attachment where id=@id"/>	
+	<sql key="IsClsAttachmentInfoExist" value="select count(id) from cm_cls_attachment where id=@id"/>	
+	<sql key="DelAttachmentInfo" value="delete from cm_attachment where oid=@oid and name=@name"/>
+  <sql key="DelInstanceAttachmentInfos" value="delete from cm_attachment where oid=@oid"/>
+  <sql key="DelAttachmentInfos" value="delete from cm_attachment where schema_id=@schema_id"/>
+	<sql key="DelClsAttachmentInfo" value="delete from cm_cls_attachment where cid=@cid and name=@name"/>
+  <sql key="DelClsAttachmentInfos" value="delete from cm_cls_attachment where schema_id=@schema_id"/>
+	<sql key="GetAttachmentInfo" value="select id, oid, name, classname, type, createtime, asize, is_public from cm_attachment where oid=@oid and name=@name"/>	
+	<sql key="GetClsAttachmentInfo" value="select id, cid, name, classname, type, createtime, asize, is_public from cm_cls_attachment where cid=@cid and name=@name"/>	
+	<sql key="GetAttachmentInfoById" value="select oid, name, classname, type, createtime, asize, is_public from cm_attachment where id=@id"/>
+	<sql key="GetClsAttachmentInfoById" value="select cid, name, classname, type, createtime, asize, is_public from cm_cls_attachment where id=@id"/>
+	<sql key="GetAttachmentInfos" value="select id, oid, name, classname, type, createtime, asize, is_public from cm_attachment where oid=@oid Order By createtime ASC"/>
+	<sql key="GetAttachmentInfosCount" value="select count(id) from cm_attachment where oid=@oid"/>
+	<sql key="GetClsAttachmentInfos" value="select id, cid, name, classname, type, createtime, asize, is_public from cm_cls_attachment where cid=@cid"/>
+	<sql key="GetClsAttachmentInfosCount" value="select count(id) from cm_cls_attachment where cid=@cid"/>
+	<sql key="GetAttachmentInfosBySchema" value="select id, oid, name, classname, type, createtime, asize, is_public from cm_attachment where schema_id=@schema_id"/>
+	<sql key="GetAttachmentInfosBySchemaCount" value="select count(id) from cm_attachment where schema_id=@schema_id"/>
+	<sql key="GetClsAttachmentInfosBySchema" value="select id, cid, name, classname, type, createtime, asize, is_public from cm_cls_attachment where schema_id=@schema_id"/>
+	<sql key="GetClsAttachmentInfosBySchemaCount" value="select count(id) from cm_cls_attachment where schema_id=@schema_id"/>
+	<sql key="GetPatchNames" value="SELECT PATCH_NAME FROM CM_PATCH"/>
+	<sql key="AddScriptFileName" value="INSERT INTO CM_PATCH VALUES(@script_name)"/>
+	<sql key="GetDBARole" value="SELECT DBA_ROLE FROM MM_SCHEMA WHERE name = @name AND version = @version"/>
+	<sql key="SetDBARole" value="UPDATE MM_SCHEMA SET DBA_ROLE = @dba_role WHERE name = @name AND version = @version"/>
+	<sql key="GetRegisteredClients" value="SELECT ID FROM CM_REGISTERED_CLIENTS WHERE name = @name"/>
+  <sql key="GetRegisteredClientMachine" value="SELECT MACHINE FROM CM_REGISTERED_CLIENTS WHERE name = @name AND id = @id"/>
+  <sql key="AddRegisteredClient" value="insert into CM_REGISTERED_CLIENTS(name, id, machine) values(@name, @id, @machine)"/>
+	<sql key="RemoveRegisteredClient" value="delete from CM_REGISTERED_CLIENTS where name=@name and id=@id"/>
+	<sql key="AddChartInfo" value="insert into cm_chart_info(id, schemaname, version, username, name, type, description) values(@id, @schemaname, @version, @username, @name, @type, @description)"/>
+  <sql key="AddChartTemplate" value="insert into cm_chart_temp_info(id, schemaname, version, classname, name, type, description) values(@id, @schemaname, @version, @classname, @name, @type, @description)"/>
+	<sql key="UpdateChartInfo" value="update cm_chart_info set schemaname=@schemaname, version=@version, name=@name, type=@type, description=@description where id=@id"/>
+  <sql key="UpdateTemplateInfo" value="update cm_chart_temp_info set schemaname=@schemaname, version=@version, name=@name, type=@type, description=@description where id=@id"/>
+  <sql key="DelChartInfo" value="delete from cm_chart_info where id=@id"/>
+  <sql key="DelChartTemplate" value="delete from cm_chart_temp_info where id=@id"/>
+  <sql key="DelChartInfos" value="delete from cm_chart_info where schemaname=@schemaname and version=@version"/>
+  <sql key="DelChartTemplates" value="delete from cm_chart_temp_info where schemaname=@schemaname and version=@version"/>
+	<sql key="GetChartInfos" value="select id, schemaname, version, username, name, type, description, createtime from cm_chart_info where username=@username and schemaname=@schemaname and version=@version"/>
+  <sql key="GetChartTemplates" value="select id, schemaname, version, classname, name, type, description, createtime from cm_chart_temp_info where classname=@classname and schemaname=@schemaname and version=@version"/>
+	<sql key="GetChartInfoById" value="select schemaname, version, username, name, type, description, createtime from cm_chart_info where id=@id"/>
+  <sql key="GetChartTemplateById" value="select schemaname, version, classname, name, type, description, createtime from cm_chart_temp_info where id=@id"/>
+  <sql key="GetChartInfo" value="select id, schemaname, version, username, name, type, description, createtime from cm_chart_info where schemaname=@schemaname and version=@version and username=@username and name=@name"/>
+  <sql key="GetChartTemplateByName" value="select id, schemaname, version, classname, name, type, description, createtime from cm_chart_temp_info where schemaname=@schemaname and version=@version and classname=@classname and name=@name"/>
+  <sql key="UpdateChartInfoClobById" value="UPDATE cm_chart_info SET xml = @text WHERE id= @id"/>
+  <sql key="UpdateChartTemplateClobById" value="UPDATE cm_chart_temp_info SET xml = @text WHERE id= @id"/>
+	<sql key="GetFullTextEnableStatus" value="select DATABASEPROPERTY(DB_NAME(), 'IsFullTextEnabled')"/>
+	<sql key="GetLicenseKey" value="select lic_key from mm_sys_info"/>
+	<sql key="SetLicenseKey" value="update mm_sys_info set lic_key = @lic_key"/>
+	<sql key="GetProjectInfos" value="select id, name, version, description, modified_time from wf_project"/>
+	<sql key="AddProjectDML" value="insert into wf_project(id, name, version, modified_time, xml, xacl, updatelog) values(@id, @name, @version, @modified_time, null, null, null)"/>
+	<sql key="AddWorkflowDML" value="insert into wf_workflow(id, name, type, class_name, xoml, rules, layout, code, project_id) values(@id, @name, @type, @class_name, null, null, null, null, @project_id)"/>
+	<sql key="DelProjectDML" value="delete from wf_project where id=@id"/>
+	<sql key="DelWorkflowDML" value="delete from wf_workflow where id=@id"/>
+	<sql key="GetBlobById" value="SELECT {COLUMN_NAME} FROM {TABLE_NAME} WHERE {ID_NAME} = @id"/>
+	<sql key="GetBlobByIdForUpdate" value="SELECT @pointer = TEXTPTR({COLUMN_NAME}) FROM {TABLE_NAME} WHERE {ID_NAME} = @id"/>
+	<sql key="WriteBlobById" value="UPDATETEXT {TABLE_NAME}.{COLUMN_NAME} @pointer @offset 0 @bytes"/>
+	<sql key="GetInstanceState" value="select instanceid, unlocked, modified from WF_INSTANCE_STATE where instanceid=@instanceid"/>
+	<sql key="AddInstanceState" value="insert into wf_instance_state(instanceid, state, unlocked, modified) values(@instanceid, 0x0, @unlocked, @modified)"/>
+	<sql key="GetCompletedScope" value="select completedscopeid from WF_COMPLETED_SCOPE where completedscopeid=@completedscopeid"/>
+	<sql key="AddCompletedScope" value="insert into WF_COMPLETED_SCOPE(completedscopeid, state, modified) values(@completedscopeid, 0x0, @modified)"/>
+	<sql key="GetBindingInfoByObjId" value="select wfinstanceid, Workflowtypeid, datainstanceid, dataclassname, schemaId from WF_INSTANCE_MAP where datainstanceid=@datainstanceid"/>
+	<sql key="SetWFInstanceBinding" value="insert into WF_INSTANCE_MAP(datainstanceid, dataclassname, schemaid, wfinstanceid, Workflowtypeid) values(@datainstanceid, @dataclassname, @schemaid, @wfinstanceid, @Workflowtypeid)"/>
+	<sql key="UpdateWFInstanceBinding" value="update WF_INSTANCE_MAP set datainstanceid=@datainstanceid, dataclassname=@dataclassname, schemaid=@schemaid where wfinstanceid=@wfinstanceid"/>	
+	<sql key="GetWFInstanceBinding" value="select t1.wfinstanceid, t1.Workflowtypeid, t1.datainstanceid, t1.dataclassname, t1.schemaId, t2.name, t3.name, t3.version from WF_INSTANCE_MAP t1, wf_workflow t2, wf_project t3 where t1.wfinstanceid=@wfinstanceid and t1.workflowtypeid=t2.id and t2.project_id=t3.id"/>
+  <sql key="GetWFDataInstanceIds" value="select datainstanceid from WF_INSTANCE_MAP where schemaId=@schemaId"/>
+  <sql key="UpdateDataInstanceId" value="update WF_INSTANCE_MAP set datainstanceid=@newinstanceid where datainstanceid=@oldinstanceid"/>
+  <sql key="DeleteWFInstanceId" value="delete from WF_INSTANCE_MAP where wfinstanceid=@wfinstanceid"/>
+	<sql key="DeleteWFInstanceState" value="delete from WF_INSTANCE_STATE where instanceid=@instanceid"/>
+	<sql key="GetEventSubscriptions" value="select SubscriptionId, WFInstanceID, QueueName, SchemaId, ClassName, EventName, CreateBinding from WF_EVENT_SUBSCRIPTION"/>
+  <sql key="GetEventSubscriptionsByWFInstanceId" value="select SubscriptionId, WFInstanceID, QueueName, SchemaId, ClassName, EventName, CreateBinding from WF_EVENT_SUBSCRIPTION where WFInstanceID=@WFInstanceID"/>
+  <sql key="AddEventSubscription" value="insert into WF_EVENT_SUBSCRIPTION(SubscriptionId, WFInstanceID, QueueName, SchemaId, ClassName, EventName, CreateBinding) values(@SubscriptionId, @WFInstanceID, @QueueName, @SchemaId, @ClassName, @EventName, @CreateBinding)"/>
+  <sql key="DelEventSubscription" value="delete from WF_EVENT_SUBSCRIPTION where SubscriptionId=@SubscriptionId"/>
+  <sql key="DeleteSubscriptionsByWFInstanceId" value="delete from WF_EVENT_SUBSCRIPTION where WFInstanceID=@WFInstanceID"/>
+	<sql key="GetProjectRole" value="SELECT DBA_ROLE FROM WF_PROJECT WHERE name = @name and version = @version"/>
+	<sql key="SetProjectRole" value="UPDATE WF_PROJECT SET DBA_ROLE = @dba_role WHERE name = @name and version = @version"/>
+	<sql key="AddWorkflowTrackingRecord" value="insert into WF_WORKFLOW_INSTANCE(WorkflowInstanceId, WorkflowTypeId, InitializedDateTime, CurrentStatus) values(@WorkflowInstanceId, @WorkflowTypeId, @InitializedDateTime, @CurrentStatus)"/>
+	<sql key="UpdateWorkflowTrackingRecord" value="UPDATE WF_WORKFLOW_INSTANCE SET EndDateTime=@EndDateTime, CurrentStatus=@CurrentStatus WHERE WorkflowInstanceId=@WorkflowInstanceId"/>
+	<sql key="AddActivityTrackingRecord" value="insert into WF_ACTIVITY_INSTANCE(ActivityInstanceId, QualifiedName, InitializedDateTime, CurrentStatus, WorkflowInstanceId, TypeName) values(@ActivityInstanceId, @QualifiedName, @InitializedDateTime, @CurrentStatus, @WorkflowInstanceId, @TypeName)"/>
+	<sql key="UpdateActivityTrackingRecord" value="UPDATE WF_ACTIVITY_INSTANCE SET EndDateTime=@EndDateTime, CurrentStatus=@CurrentStatus WHERE ActivityInstanceId=@ActivityInstanceId"/>
+	<sql key="GetActivityInstanceId" value="select ActivityInstanceId from WF_ACTIVITY_INSTANCE where QualifiedName=@QualifiedName and WorkflowInstanceId=@WorkflowInstanceId"/>
+	<sql key="GetWorkflowInstancesByTypeId" value="select WorkflowInstanceId, WorkflowTypeId, InitializedDateTime, EndDateTime, CurrentStatus from WF_WORKFLOW_INSTANCE where WorkflowTypeId=@WorkflowTypeId Order By InitializedDateTime DESC"/>
+  <sql key="GetWorkflowInstanceCountByTypeId" value="select count(WorkflowInstanceId) from WF_WORKFLOW_INSTANCE where WorkflowTypeId=@WorkflowTypeId"/>
+  <sql key="GetWorkflowInstancesByCondition" value="select WorkflowInstanceId, WorkflowTypeId, InitializedDateTime, EndDateTime, CurrentStatus from WF_WORKFLOW_INSTANCE where WorkflowTypeId=@WorkflowTypeId and CurrentStatus in @CurrentStatus and InitializedDateTime&gt;=@FromDateTime and InitializedDateTime&lt;=@UntilDateTime Order By InitializedDateTime DESC"/>
+  <sql key="GetWorkflowInstanceCountByCondition" value="select count(WorkflowInstanceId) from WF_WORKFLOW_INSTANCE where WorkflowTypeId=@WorkflowTypeId and CurrentStatus in @CurrentStatus and InitializedDateTime&gt;=@FromDateTime and InitializedDateTime&lt;=@UntilDateTime"/>
+  <sql key="GetWorkflowInstancesByWFInstanceId" value="select WorkflowInstanceId, WorkflowTypeId, InitializedDateTime, EndDateTime, CurrentStatus from WF_WORKFLOW_INSTANCE where WorkflowInstanceId=@WorkflowInstanceId"/>
+	<sql key="GetActivityInstancesByWFInstanceId" value="select ActivityInstanceId, QualifiedName, InitializedDateTime, EndDateTime, CurrentStatus, TypeName from WF_ACTIVITY_INSTANCE where WorkflowInstanceId=@WorkflowInstanceId"/>
+	<sql key="DelWorkflowInstanceByWFInstanceId" value="delete from WF_WORKFLOW_INSTANCE where WorkflowInstanceId=@WorkflowInstanceId"/>
+	<sql key="DelActivityInstancesByWFInstanceId" value="delete from WF_ACTIVITY_INSTANCE where WorkflowInstanceId=@WorkflowInstanceId"/>
+	<sql key="GetWorkflowEventSubscriptions" value="select SubscriptionId, ParentWFInstanceID, ChildWFInstanceID, QueueName from WF_WFEVENT_SUBSCRIPTION"/>
+  <sql key="GetWorkflowEventSubscriptionsByWFInstanceId" value="select SubscriptionId, ParentWFInstanceID, ChildWFInstanceID, QueueName from WF_WFEVENT_SUBSCRIPTION where ParentWFInstanceID=@ParentWFInstanceID"/>
+	<sql key="AddWorkflowEventSubscription" value="insert into WF_WFEVENT_SUBSCRIPTION(SubscriptionId, ParentWFInstanceID, ChildWFInstanceID, QueueName) values(@SubscriptionId, @ParentWFInstanceID, @ChildWFInstanceID, @QueueName)"/>
+	<sql key="UpdateWorkflowEventSubscription" value="update WF_WFEVENT_SUBSCRIPTION set QueueName=@QueueName where SubscriptionId=@SubscriptionId"/>
+	<sql key="DeleteWorkflowEventSubscriptionsByWFInstanceId" value="delete from WF_WFEVENT_SUBSCRIPTION where ParentWFInstanceID=@ParentWFInstanceID"/>
+  <sql key="GetWorkflowInstances" value="select t1.wfinstanceid, t1.Workflowtypeid, t1.datainstanceid, t1.dataclassname, t1.schemaId, t2.name, t3.name, t3.version from WF_INSTANCE_MAP t1, wf_workflow t2, wf_project t3 where t1.workflowtypeid=t2.id and t2.project_id=t3.id"/>
+  <sql key="SetMetaModelModifiedTime" value="update mm_schema set modified_time=@modified_time where name=@name and version=@version"/>
+  <sql key="SetWFProjectModifiedTime" value="update wf_project set modified_time=@modified_time where name=@name and version=@version"/>
+  <sql key="GetMetaModelModifiedTime" value="select modified_time from mm_schema where name=@name and version=@version"/>
+  <sql key="GetWFProjectModifiedTime" value="select modified_time from wf_project where name=@name and version=@version"/>
+  <sql key="AddPivotLayout" value="insert into CM_PIVOT_LAYOUTS(id, schemaname, version, classname, name, viewname, description) values(@id, @schemaname, @version, @classname, @name, @viewname, @description)"/>
+  <sql key="UpdatePivotLayout" value="update CM_PIVOT_LAYOUTS set schemaname=@schemaname, version=@version, name=@name, viewname=@viewname, description=@description where id=@id"/>
+  <sql key="DelPivotLayout" value="delete from CM_PIVOT_LAYOUTS where id=@id"/>
+  <sql key="DelPivotLayouts" value="delete from CM_PIVOT_LAYOUTS where schemaname=@schemaname and version=@version"/>
+  <sql key="GetPivotLayouts" value="select id, schemaname, version, classname, name, viewname, description, createtime from CM_PIVOT_LAYOUTS where classname=@classname and schemaname=@schemaname and version=@version"/>
+  <sql key="GetAllPivotLayouts" value="select id, schemaname, version, classname, name, viewname, description, createtime from CM_PIVOT_LAYOUTS where schemaname=@schemaname and version=@version"/>
+  <sql key="GetPivotLayoutById" value="select schemaname, version, classname, name, viewname, description, createtime from CM_PIVOT_LAYOUTS where id=@id"/>
+  <sql key="GetPivotLayoutByName" value="select id, schemaname, version, classname, name, viewname, description, createtime from CM_PIVOT_LAYOUTS where schemaname=@schemaname and version=@version and classname=@classname and name=@name"/>
+  <sql key="UpdatePivotLayoutClobById" value="UPDATE CM_PIVOT_LAYOUTS SET xml = @text WHERE id= @id"/>
+  <sql key="GetWorkflowModelId" value="select T1.ID from WF_WORKFLOW T1, WF_PROJECT T2 where T1.PROJECT_ID=T2.ID and T2.NAME=@ProjectName and T2.VERSION=@ProjectVersion and T1.NAME=@WorkflowName"/>
+  <sql key="GetReassignedTaskInfos" value="select TaskId, WorkflowInstanceId, OriginalOwner, CurrentOwner from WF_REASSIGNED_TASK where TaskId=@TaskId"/>
+  <sql key="AddReassignedTaskInfo" value="insert into WF_REASSIGNED_TASK(TaskId, WorkflowInstanceId, OriginalOwner, CurrentOwner) values(@TaskId, @WFInstanceID, @OriginalOwner, @CurrentOwner)"/>
+  <sql key="DeleteReassignedTaskInfoByTaskId" value="delete from WF_REASSIGNED_TASK where TaskId=@TaskId"/>
+  <sql key="DeleteReassignedTaskInfosByWFInstanceId" value="delete from WF_REASSIGNED_TASK where WorkflowInstanceId=@WFInstanceID"/>
+  <sql key="ReplaceReassignedTaskCurrentOwner" value="update WF_REASSIGNED_TASK set CurrentOwner=@NewOwner where CurrentOwner=@OldOwner"/>
+  <sql key="GetEventLastCheckedTime" value="select checkedtime from cm_event_info where upper(schemaname)=upper(@schemaname) and version=@version and eventname=@eventname"/>
+  <sql key="AddEventLastCheckedTime" value="insert into cm_event_info(schemaname, version, classname, eventname, checkedtime) values(@schemaname, @version, @classname, @eventname, @checkedtime)"/>
+  <sql key="UpdateEventLastCheckedTime" value="update cm_event_info set checkedtime=@checkedtime where schemaname=@schemaname and version=@version and classname=@classname and eventname=@eventname"/>
+  <sql key="DelEvents" value="delete from cm_event_info where upper(schemaname)=upper(@schemaname) and version=@version"/>
+  <sql key="GetDBEventContexts" value="select ContextId, SchemaId, ClassName, InstanceId, OperationType, Attributes from WF_DB_EVENT_CONTEXT"/>
+  <sql key="AddDBEventContext" value="insert into WF_DB_EVENT_CONTEXT(ContextId, SchemaId, ClassName, InstanceId, OperationType, Attributes) values(@ContextId, @SchemaId, @ClassName, @InstanceId, @OperationType, @Attributes)"/>
+  <sql key="DeleteDBEventContext" value="delete from WF_DB_EVENT_CONTEXT where ContextId=@ContextId"/>
+  <sql key="GetLastIndexTime" value="SELECT INDEX_TIME FROM MM_SIMPLE_ATTRIBUTE WHERE ATTRIBUTE_ID = @attribute_id"/>
+  <sql key="SetLastIndexTime" value="UPDATE MM_SIMPLE_ATTRIBUTE SET INDEX_TIME = @index_time WHERE ATTRIBUTE_ID = @attribute_id"/>
+</sqls>

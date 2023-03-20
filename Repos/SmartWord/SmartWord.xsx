@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--此文件由 XML 架构设计器自动生成。它包含设计器图面组件的布局信息。-->
+<XSDDesignerLayout Style="LeftRight" layoutVersion="2" viewPortLeft="0" viewPortTop="0" zoom="100">
+    <property_XmlComplexType left="317" top="254" width="5292" height="2831" selected="0" zOrder="1" index="0" expanded="1" />
+    <class_XmlComplexType left="634" top="3725" width="5292" height="2831" selected="0" zOrder="2" index="1" expanded="1">
+        <Property_XmlElement left="6560" top="3725" width="5292" height="2831" selected="0" zOrder="4" index="0" expanded="0" />
+    </class_XmlComplexType>
+    <database_XmlComplexType left="634" top="7196" width="5292" height="2831" selected="0" zOrder="7" index="2" expanded="1">
+        <Class_XmlElement left="6560" top="7196" width="5292" height="2831" selected="0" zOrder="9" index="0" expanded="0" />
+    </database_XmlComplexType>
+    <Database_XmlElement left="634" top="10667" width="5292" height="2831" selected="0" zOrder="12" index="3" expanded="0" />
+</XSDDesignerLayout>

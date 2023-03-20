@@ -1,0 +1,1662 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{93CF0258-2A86-488E-8864-4339F2874CF4}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>newtera%2832X32%29.ico</ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Studio</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Newtera.Studio</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <WebReference_EnableProperties>true</WebReference_EnableProperties>
+    <WebReference_EnableSQLTypes>false</WebReference_EnableSQLTypes>
+    <WebReference_EnableLegacyEventingModel>true</WebReference_EnableLegacyEventingModel>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRules>
+    </CodeAnalysisRules>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.5.452, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.JScript">
+      <Name>Microsoft.JScript</Name>
+    </Reference>
+    <Reference Include="Microsoft.Web.Services, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="Newtera.DataGridActiveX, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Newtera.DataGridActiveX.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Design">
+      <Name>System.Design</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Services">
+      <Name>System.Web.Services</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AboutDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\SetupServerIPandPortDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CodeEditor.cs" />
+    <Compile Include="CodeEditDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CodeEditDialog.Designer.cs">
+      <DependentUpon>CodeEditDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddRoleDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddUserDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\DBSetupAppSchemas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\DBSetupComplete.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\DBSetupDatabaseType.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\DBSetupDataSourceName.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\DBSetupDBAAccount.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\DBSetupError.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\DBSetupSchema.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\DBSetupServerConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\DBSetupTNSName.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\DBSetupWelcom.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\DBSetupWizard.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Admin\ImageStoreSetup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\SetupServerURLDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssignUserRolesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangeLicenseDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangePasswordDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangeUserPwdDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CleanupSchemaVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientLicenseInfoDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConnectionStringBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CreateUserOrRoleDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataView\AddAttachmentDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataView\AttachmentListViewItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataView\ChooseInstanceDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataView\CreateDataViewDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataView\DataValidateErrorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataView\DataViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataView\FileTypeInfoManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataView\IExprPopup.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataView\ImageWebServiceProxy.cs" />
+    <Compile Include="DataView\ImageAttributeImageGetter.cs" />
+    <Compile Include="DataView\ImageGetterFactory.cs" />
+    <Compile Include="DataView\InstanceDetailDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataView\InstanceDetailDialog.Designer.cs">
+      <DependentUpon>InstanceDetailDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataView\NewInstanceDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataView\RelationshipValueEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataView\ResultViewTypeEnum.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataView\RunXQueryDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataView\ViewLoggingMessageDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataView\ViewLoggingMessageDialog.Designer.cs">
+      <DependentUpon>ViewLoggingMessageDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataView\XmlSchemaViewsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataView\XmlSchemaViewsDialog.Designer.cs">
+      <DependentUpon>XmlSchemaViewsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DesignStudio.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DisconnectDatabasesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditRoleInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditRoleInfo.Designer.cs">
+      <DependentUpon>EditRoleInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditUserInfoDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditUserInfoDialog.Designer.cs">
+      <DependentUpon>EditUserInfoDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ImportExport\AddConverterDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImportExport\AttributePropertyDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImportExport\ChooseImportClassDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImportExport\ConnectLineAction.cs" />
+    <Compile Include="ImportExport\CreateClassDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImportExport\DataRowPropertyDescriptor.cs" />
+    <Compile Include="ImportExport\DataRowView.cs" />
+    <Compile Include="ImportExport\DstGridItemDot.cs" />
+    <Compile Include="ImportExport\IdentifyDstRowScriptDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImportExport\IGridItemProxy.cs" />
+    <Compile Include="ImportExport\IMapAction.cs" />
+    <Compile Include="ImportExport\IMapComponent.cs" />
+    <Compile Include="ImportExport\ImportErrorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImportExport\ImportExportResourceManager.cs" />
+    <Compile Include="ImportExport\ImportWizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImportExport\InputDot.cs" />
+    <Compile Include="ImportExport\InputLine.cs" />
+    <Compile Include="ImportExport\InsertRectAction.cs" />
+    <Compile Include="ImportExport\MapActionBase.cs" />
+    <Compile Include="ImportExport\MapActionTypeEnum.cs" />
+    <Compile Include="ImportExport\MapComponentBase.cs" />
+    <Compile Include="ImportExport\MapComponentCollection.cs" />
+    <Compile Include="ImportExport\MapComponentTypeEnum.cs" />
+    <Compile Include="ImportExport\MapComposite.cs" />
+    <Compile Include="ImportExport\MapLine.cs" />
+    <Compile Include="ImportExport\MapManyToMany.cs" />
+    <Compile Include="ImportExport\MapManyToOne.cs" />
+    <Compile Include="ImportExport\MapOneToMany.cs" />
+    <Compile Include="ImportExport\MapPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ImportExport\MappingScriptDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImportExport\MapRect.cs" />
+    <Compile Include="ImportExport\MoveRectAction.cs" />
+    <Compile Include="ImportExport\OutputDot.cs" />
+    <Compile Include="ImportExport\OutputLine.cs" />
+    <Compile Include="ImportExport\SelectImportPackageDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImportExport\SelectSrcRowScriptDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImportExport\ShowSourceTableDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImportExport\SrcGridItemDot.cs" />
+    <Compile Include="ImportExport\TransformAdvancedDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImportExport\TransformDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoginDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MetaDataListViewBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaDataListViewBuilder.zh-CN.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MetaDataListViewBuilder.zh-CN.resx</DependentUpon>
+    </Compile>
+    <Compile Include="MetaDatalListViewItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpenSchemaDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PackUnpack\AttachmentLoader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PackUnpack\InstanceLoader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PackUnpack\Pack.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PackUnpack\Unpack.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ProtectDatabaseDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegisterClientDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\AccessControlOptionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\AddNewItemDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\ApiListViewItem.cs" />
+    <Compile Include="SchemaEditor\ArrangeElementDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\ArrayColumnCollectionEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\AttributeNamePropertyEditor.cs" />
+    <Compile Include="SchemaEditor\ClassifyingAttributePropertyEditor.cs" />
+    <Compile Include="SchemaEditor\BackwardRelationshipPropertyConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\ChooseCategoryDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\ChooseCategoryDialog.Designer.cs">
+      <DependentUpon>ChooseCategoryDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SchemaEditor\ChooseConstraintDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\ChooseImageDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\ChooseImageDialog.Designer.cs">
+      <DependentUpon>ChooseImageDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SchemaEditor\ChoosePrimaryKeysDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\AttriAttributesUpdatedPropertyConverter.cs" />
+    <Compile Include="SchemaEditor\ClassNamePropertyEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\ConstraintPropertyConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\ConstraintPropertyEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\CreateSearchExprDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\AttributeNameConverter.cs" />
+    <Compile Include="SchemaEditor\CreateXMLSchemaViewDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\DataViewNameConverter.cs" />
+    <Compile Include="SchemaEditor\EventNamePropertyEditor.cs" />
+    <Compile Include="SchemaEditor\RelatedClassNamePropertyConverter.cs" />
+    <Compile Include="SchemaEditor\DataViewNamePropertyEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\DefineAutoHierarchyDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\DefineAutoHierarchyDialog.Designer.cs">
+      <DependentUpon>DefineAutoHierarchyDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SchemaEditor\DefineBackwardRelationshipDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\DefineCustomPagesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\DefineCustomPagesDialog.Designer.cs">
+      <DependentUpon>DefineCustomPagesDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SchemaEditor\DefineEnumValuesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\DefineValidatingRuleDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\DefineValidatingRuleDialog.Designer.cs">
+      <DependentUpon>DefineValidatingRuleDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SchemaEditor\EnumValueCollectionEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\ImageNamePropertyEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\LinkedClassPropertyConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\PreviewHierarchyDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\PreviewHierarchyDialog.Designer.cs">
+      <DependentUpon>PreviewHierarchyDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SchemaEditor\RenameXMLSchemaElementDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\RenameXMLSchemaElementDialog.Designer.cs">
+      <DependentUpon>RenameXMLSchemaElementDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SchemaEditor\RolesPropertyEditor.cs" />
+    <Compile Include="SchemaEditor\SelectClassAttributeDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\SelectClassAttributeDialog.Designer.cs">
+      <DependentUpon>SelectClassAttributeDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SchemaEditor\SelectMappingPackageDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\SelectMappingPackageDialog.Designer.cs">
+      <DependentUpon>SelectMappingPackageDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SchemaEditor\SelectRolesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\SelectUsersDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\SubscriberListViewItem.cs" />
+    <Compile Include="SchemaEditor\UsersPropertyEditor.cs" />
+    <Compile Include="SchemaEditor\WriteVirtualAttributeCodeDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\PrimaryKeysPropertyEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\SaveToDatabaseDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\SchemaEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\SearchFilterPropertyConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\SearchFilterPropertyEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\SpecifyArraySizeDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\SpecifyRelationshipDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\SpecifySelectorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\StringCollectionEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\UpdateLogDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\ValidateErrorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\ValidateRulelListViewItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\XaclRulelListViewItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\EventConditionPropertyConverter.cs" />
+    <Compile Include="SchemaEditor\EventConditionPropertyEditor.cs" />
+    <Compile Include="SchemaEditor\EventListViewItem.cs" />
+    <Compile Include="SchemaEditor\AttributesUpdatedPropertyEditor.cs" />
+    <Compile Include="SchemaEditor\ChooseAttributesUpdatedDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\CodePropertyEditor.cs" />
+    <Compile Include="SchemaEditor\ClassCategoryPropertyEditor.cs" />
+    <Compile Include="SchemaEditor\SortAttributePropertyEditor.cs" />
+    <Compile Include="SchemaEditor\UniqueKeysPropertyEditor.cs" />
+    <Compile Include="SchemaEditor\ChooseUniqueKeysDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\RuleConditionConverter.cs" />
+    <Compile Include="SchemaEditor\RuleConditionEditor.cs" />
+    <Compile Include="SchemaEditor\RuleActionEditor.cs" />
+    <Compile Include="SchemaEditor\RuleActionConverter.cs" />
+    <Compile Include="SchemaEditor\OperatorPropertyEditor.cs" />
+    <Compile Include="SchemaEditor\ClassifyingAttributeConverter.cs" />
+    <Compile Include="SchemaEditor\HierarchyGenerationUtil.cs" />
+    <Compile Include="SchemaEditor\SortAttributeNameConverter.cs" />
+    <Compile Include="SchemaEditor\LoggingRulelListViewItem.cs" />
+    <Compile Include="SchemaEditor\LoggingOptionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SchemaEditor\CustomPageCollectionEditor.cs" />
+    <Compile Include="SchemaEditor\RelatedClassNamePropertyEditor.cs" />
+    <Compile Include="SchemaEditor\CascadedAttributePropertyConverter.cs" />
+    <Compile Include="SchemaEditor\CascadedAttributePropertyEditor.cs" />
+    <Compile Include="SelectRoleDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectSchemaDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ServerLicenseDetailDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ServerLicenseDetailDialog.Designer.cs">
+      <DependentUpon>ServerLicenseDetailDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ServerLicenseInfoDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SplashScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserControls\ChooseLeafClassDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserControls\ChooseLeafClassDialog.Designer.cs">
+      <DependentUpon>ChooseLeafClassDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ChooseReferencedClassDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserControls\ChooseResultAttributeDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserControls\DataViewResultBuilder.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\DataViewSortControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\DataViewSortControl.Designer.cs">
+      <DependentUpon>DataViewSortControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\PropertyGridEx\PropertyGridEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UserControls\SearchPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UserControls\Wizards\LineFrame.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UserControls\Wizards\LineFrameDesigner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UserControls\Wizards\WizardFinalPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\Wizards\WizardForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\Wizards\WizardFormDesigner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UserControls\Wizards\WizardPageBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\Wizards\WizardPageDesigner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UserControls\Wizards\WizardWelcomePage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\Wizards\WizardWelcomePageDesigner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UserControls\ChooseSortAttributeDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewRoleUsersDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewUserRolesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WindowClientServerProxy.cs" />
+    <Compile Include="WindowClientUserManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="WorkInProgressDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="XmlDataSourceService.cs" />
+    <EmbeddedResource Include="AboutDialog.resx">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AboutDialog.zh-CN.resx">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddRoleDialog.zh-CHS.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AddRoleDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\SetupServerIPandPortDialog.resx">
+      <DependentUpon>SetupServerIPandPortDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\SetupServerIPandPortDialog.zh-CN.resx">
+      <DependentUpon>SetupServerIPandPortDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CodeEditDialog.resx">
+      <DependentUpon>CodeEditDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CodeEditDialog.zh-CN.resx">
+      <DependentUpon>CodeEditDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddRoleDialog.resx">
+      <DependentUpon>AddRoleDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddRoleDialog.zh-CN.resx">
+      <DependentUpon>AddRoleDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddUserDialog.resx">
+      <DependentUpon>AddUserDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddUserDialog.zh-CN.resx">
+      <DependentUpon>AddUserDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\DBSetupAppSchemas.resx">
+      <DependentUpon>DBSetupAppSchemas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\DBSetupAppSchemas.zh-CN.resx">
+      <DependentUpon>DBSetupAppSchemas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\DBSetupComplete.resx">
+      <DependentUpon>DBSetupComplete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\DBSetupComplete.zh-CN.resx">
+      <DependentUpon>DBSetupComplete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\DBSetupDatabaseType.resx">
+      <DependentUpon>DBSetupDatabaseType.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\DBSetupDatabaseType.zh-CN.resx">
+      <DependentUpon>DBSetupDatabaseType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\DBSetupDataSourceName.resx">
+      <DependentUpon>DBSetupDataSourceName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\DBSetupDataSourceName.zh-CN.resx">
+      <DependentUpon>DBSetupDataSourceName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\DBSetupDBAAccount.resx">
+      <DependentUpon>DBSetupDBAAccount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\DBSetupDBAAccount.zh-CN.resx">
+      <DependentUpon>DBSetupDBAAccount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\DBSetupError.resx">
+      <DependentUpon>DBSetupError.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\DBSetupError.zh-CN.resx">
+      <DependentUpon>DBSetupError.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\DBSetupSchema.resx">
+      <DependentUpon>DBSetupSchema.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\DBSetupSchema.zh-CN.resx">
+      <DependentUpon>DBSetupSchema.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\DBSetupServerConfig.resx">
+      <DependentUpon>DBSetupServerConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\DBSetupServerConfig.zh-CN.resx">
+      <DependentUpon>DBSetupServerConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\DBSetupTNSName.resx">
+      <DependentUpon>DBSetupTNSName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\DBSetupTNSName.zh-CN.resx">
+      <DependentUpon>DBSetupTNSName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\DBSetupWelcom.resx">
+      <DependentUpon>DBSetupWelcom.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\DBSetupWelcom.zh-CN.resx">
+      <DependentUpon>DBSetupWelcom.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\ImageStoreSetup.resx">
+      <DependentUpon>ImageStoreSetup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\ImageStoreSetup.zh-CN.resx">
+      <DependentUpon>ImageStoreSetup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\SetupServerURLDialog.resx">
+      <DependentUpon>SetupServerURLDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\SetupServerURLDialog.zh-CN.resx">
+      <DependentUpon>SetupServerURLDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AssignUserRolesDialog.resx">
+      <DependentUpon>AssignUserRolesDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AssignUserRolesDialog.zh-CN.resx">
+      <DependentUpon>AssignUserRolesDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangeLicenseDialog.resx">
+      <DependentUpon>ChangeLicenseDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangeLicenseDialog.zh-CN.resx">
+      <DependentUpon>ChangeLicenseDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangePasswordDialog.resx">
+      <DependentUpon>ChangePasswordDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangePasswordDialog.zh-CN.resx">
+      <DependentUpon>ChangePasswordDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangeUserPwdDialog.resx">
+      <DependentUpon>ChangeUserPwdDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangeUserPwdDialog.zh-CN.resx">
+      <DependentUpon>ChangeUserPwdDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientLicenseInfoDialog.resx">
+      <DependentUpon>ClientLicenseInfoDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientLicenseInfoDialog.zh-CN.resx">
+      <DependentUpon>ClientLicenseInfoDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CreateUserOrRoleDialog.resx">
+      <DependentUpon>CreateUserOrRoleDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CreateUserOrRoleDialog.zh-CN.resx">
+      <DependentUpon>CreateUserOrRoleDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataView\AddAttachmentDialog.resx">
+      <DependentUpon>AddAttachmentDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataView\AddAttachmentDialog.zh-CN.resx">
+      <DependentUpon>AddAttachmentDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataView\ChooseInstanceDialog.resx">
+      <DependentUpon>ChooseInstanceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataView\ChooseInstanceDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ChooseInstanceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataView\CreateDataViewDialog.resx">
+      <DependentUpon>CreateDataViewDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataView\CreateDataViewDialog.zh-CN.resx">
+      <DependentUpon>CreateDataViewDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataView\DataValidateErrorDialog.resx">
+      <DependentUpon>DataValidateErrorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataView\DataValidateErrorDialog.zh-CN.resx">
+      <DependentUpon>DataValidateErrorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataView\DataViewer.resx">
+      <DependentUpon>DataViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataView\DataViewer.zh-CN.resx">
+      <DependentUpon>DataViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataView\InstanceDetailDialog.resx">
+      <DependentUpon>InstanceDetailDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataView\InstanceDetailDialog.zh-CN.resx">
+      <DependentUpon>InstanceDetailDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataView\NewInstanceDialog.resx">
+      <DependentUpon>NewInstanceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataView\NewInstanceDialog.zh-CN.resx">
+      <DependentUpon>NewInstanceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataView\RunXQueryDialog.resx">
+      <DependentUpon>RunXQueryDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataView\RunXQueryDialog.zh-CN.resx">
+      <DependentUpon>RunXQueryDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataView\ViewLoggingMessageDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ViewLoggingMessageDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataView\ViewLoggingMessageDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ViewLoggingMessageDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataView\XmlSchemaViewsDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>XmlSchemaViewsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataView\XmlSchemaViewsDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>XmlSchemaViewsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DesignStudio.resx">
+      <DependentUpon>DesignStudio.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DesignStudio.zh-CN.resx">
+      <DependentUpon>DesignStudio.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DisconnectDatabasesDialog.resx">
+      <DependentUpon>DisconnectDatabasesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DisconnectDatabasesDialog.zh-CN.resx">
+      <DependentUpon>DisconnectDatabasesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditRoleInfo.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EditRoleInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditRoleInfo.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EditRoleInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditUserInfoDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EditUserInfoDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditUserInfoDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EditUserInfoDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\AddConverterDialog.resx">
+      <DependentUpon>AddConverterDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\AddConverterDialog.zh-CN.resx">
+      <DependentUpon>AddConverterDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\AttributePropertyDialog.resx">
+      <DependentUpon>AttributePropertyDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\AttributePropertyDialog.zh-CN.resx">
+      <DependentUpon>AttributePropertyDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\ChooseImportClassDialog.resx">
+      <DependentUpon>ChooseImportClassDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\ChooseImportClassDialog.zh-CN.resx">
+      <DependentUpon>ChooseImportClassDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\CreateClassDialog.resx">
+      <DependentUpon>CreateClassDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\CreateClassDialog.zh-CN.resx">
+      <DependentUpon>CreateClassDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\IdentifyDstRowScriptDialog.resx">
+      <DependentUpon>IdentifyDstRowScriptDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\IdentifyDstRowScriptDialog.zh-CN.resx">
+      <DependentUpon>IdentifyDstRowScriptDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\ImportErrorDialog.resx">
+      <DependentUpon>ImportErrorDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\ImportErrorDialog.zh-CN.resx">
+      <DependentUpon>ImportErrorDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\ImportExportResourceManager.resx">
+      <DependentUpon>ImportExportResourceManager.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\ImportExportResourceManager.zh-CN.resx">
+      <DependentUpon>ImportExportResourceManager.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\ImportWizard.resx">
+      <DependentUpon>ImportWizard.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\ImportWizard.zh-CN.resx">
+      <DependentUpon>ImportWizard.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\MapPanel.resx">
+      <DependentUpon>MapPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\MappingScriptDialog.resx">
+      <DependentUpon>MappingScriptDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\MappingScriptDialog.zh-CN.resx">
+      <DependentUpon>MappingScriptDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.AccessControlOptionDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.AccessControlOptionDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.AddAttachmentDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.AddAttachmentDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.AddNewItemDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.AddNewItemDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.AddRoleDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.AddRoleDialog.zh-CHS.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.AddRoleDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.AddUserDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.AddUserDialog.zh-CHS.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.AddUserDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.AssignUserRolesDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.AssignUserRolesDialog.zh-CHS.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.AssignUserRolesDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ChangePasswordDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ChangePasswordDialog.zh-CHS.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ChangePasswordDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ChooseClassDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ChooseClassDialog.zh-CHS.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ChooseClassDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ChooseConstraintDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ChooseConstraintDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ChooseInstanceDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ChooseInstanceDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ChoosePrimaryKeysDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ChoosePrimaryKeysDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.CreateDataViewDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.CreateDataViewDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.CreateSearchExprDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.CreateSearchExprDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.CreateUserOrRoleDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.CreateUserOrRoleDialog.zh-CHS.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.CreateUserOrRoleDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.CreateValidateRuleDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.CreateValidateRuleDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DataValidateErrorDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DataValidateErrorDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DataViewer.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DataViewer.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DBSetupAppSchemas.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DBSetupAppSchemas.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DBSetupComplete.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DBSetupComplete.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DBSetupDatabaseType.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DBSetupDatabaseType.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DBSetupDataSourceName.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DBSetupDataSourceName.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DBSetupDBAAccount.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DBSetupDBAAccount.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DBSetupError.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DBSetupError.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DBSetupSchema.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DBSetupSchema.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DBSetupServerConfig.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DBSetupServerConfig.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DBSetupTNSName.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DBSetupTNSName.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DBSetupWelcom.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DBSetupWelcom.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DefineBackwardRelationshipDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DefineBackwardRelationshipDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DesignStudio.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DesignStudio.zh-CHS.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DesignStudio.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.DisconnectDatabasesDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.EditArrayValueDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.EditArrayValueDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ImageStoreSetup.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ImageStoreSetup.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ImportExport.ImportErrorDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ImportExport.ImportErrorDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ImportExport.ImportExportResourceManager.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ImportExport.ImportExportResourceManager.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ImportExport.ImportWizard.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ImportExport.ImportWizard.zh-CHS.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ImportExport.ImportWizard.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ImportExport.MapPanel.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ImportExport.MappingScriptDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ImportExport.MappingScriptDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ImportExport.TransformDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ImportExport.TransformDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.LoginDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.LoginDialog.zh-CHS.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.LoginDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.MessageResourceManager.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.MessageResourceManager.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.MetaDataListViewBuilder.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.MetaDataListViewBuilder.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.MetaDataTreeBuilder.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.MetaDataTreeBuilder.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.NewInstanceDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.NewInstanceDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.OpenSchemaDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.OpenSchemaDialog.zh-CHS.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.OpenSchemaDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.RunXQueryDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.RunXQueryDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.SaveToDatabaseDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.SaveToDatabaseDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.SchemaEditor.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.SchemaEditor.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.SearchDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.SearchDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.SetupServerURLDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.SetupServerURLDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.SpecifyRelationshipDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.SpecifyRelationshipDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UpdateLogDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UpdateLogDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.AddExprPopup.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.AddExprPopup.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.ChooseBooleanValuePopup.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.ChooseEnumValuePopup.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.ChooseOperatorPopup.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.ChooseOperatorPopup.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.ChooseReferencedClassDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.ChooseReferencedClassDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.ChooseResultAttributeDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.ChooseResultAttributeDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.ChooseSearchAttributePopup.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.ChooseSearchAttributePopup.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.DataViewResultBuilder.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.DataViewResultBuilder.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.DropDownListControl.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.EnterValuePopup.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.MultipleChoiceEditorControl.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.MultipleLineTextControl.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.SearchExprBuilder.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.SearchPanel.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.Wizards.LineFrame.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.Wizards.WizardFinalPage.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.Wizards.WizardFinalPage.zh-CHS.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.Wizards.WizardFinalPage.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.Wizards.WizardForm.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.Wizards.WizardForm.zh-CHS.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.Wizards.WizardForm.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.Wizards.WizardPageBase.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.Wizards.WizardWelcomePage.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.Wizards.WizardWelcomePage.zh-CHS.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.UserControls.Wizards.WizardWelcomePage.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ValidateErrorDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.ValidateErrorDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.WorkInProgressDialog.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.WorkInProgressDialog.zh-CHS.resources" />
+    <EmbeddedResource Include="ImportExport\obj\Debug\Newtera.Studio.WorkInProgressDialog.zh-CN.resources" />
+    <EmbeddedResource Include="ImportExport\SelectImportPackageDialog.resx">
+      <DependentUpon>SelectImportPackageDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\SelectImportPackageDialog.zh-CN.resx">
+      <DependentUpon>SelectImportPackageDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\SelectSrcRowScriptDialog.resx">
+      <DependentUpon>SelectSrcRowScriptDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\SelectSrcRowScriptDialog.zh-CN.resx">
+      <DependentUpon>SelectSrcRowScriptDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\ShowSourceTableDialog.resx">
+      <DependentUpon>ShowSourceTableDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\ShowSourceTableDialog.zh-CN.resx">
+      <DependentUpon>ShowSourceTableDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\TransformAdvancedDialog.resx">
+      <DependentUpon>TransformAdvancedDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\TransformAdvancedDialog.zh-CN.resx">
+      <DependentUpon>TransformAdvancedDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\TransformDialog.resx">
+      <DependentUpon>TransformDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportExport\TransformDialog.zh-CN.resx">
+      <DependentUpon>TransformDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoginDialog.resx">
+      <DependentUpon>LoginDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoginDialog.zh-CN.resx">
+      <DependentUpon>LoginDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaDataListViewBuilder.resx">
+      <DependentUpon>MetaDataListViewBuilder.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaDataListViewBuilder.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MetaDataListViewBuilder.zh-CN.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OpenSchemaDialog.resx">
+      <DependentUpon>OpenSchemaDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OpenSchemaDialog.zh-CN.resx">
+      <DependentUpon>OpenSchemaDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProtectDatabaseDialog.resx">
+      <DependentUpon>ProtectDatabaseDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProtectDatabaseDialog.zh-CN.resx">
+      <DependentUpon>ProtectDatabaseDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RegisterClientDialog.resx">
+      <DependentUpon>RegisterClientDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RegisterClientDialog.zh-CN.resx">
+      <DependentUpon>RegisterClientDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\AccessControlOptionDialog.resx">
+      <DependentUpon>AccessControlOptionDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\AccessControlOptionDialog.zh-CN.resx">
+      <DependentUpon>AccessControlOptionDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\AddNewItemDialog.resx">
+      <DependentUpon>AddNewItemDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\AddNewItemDialog.zh-CN.resx">
+      <DependentUpon>AddNewItemDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\ArrangeElementDialog.resx">
+      <DependentUpon>ArrangeElementDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\ArrangeElementDialog.zh-CN.resx">
+      <DependentUpon>ArrangeElementDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\ChooseAttributesUpdatedDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ChooseAttributesUpdatedDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\ChooseCategoryDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ChooseCategoryDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\ChooseCategoryDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ChooseCategoryDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\ChooseConstraintDialog.resx">
+      <DependentUpon>ChooseConstraintDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\ChooseConstraintDialog.zh-CN.resx">
+      <DependentUpon>ChooseConstraintDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\ChooseImageDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ChooseImageDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\ChooseImageDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ChooseImageDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\ChoosePrimaryKeysDialog.resx">
+      <DependentUpon>ChoosePrimaryKeysDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\ChoosePrimaryKeysDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ChoosePrimaryKeysDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\CreateSearchExprDialog.resx">
+      <DependentUpon>CreateSearchExprDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\CreateSearchExprDialog.zh-CN.resx">
+      <DependentUpon>CreateSearchExprDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\CreateXMLSchemaViewDialog.resx">
+      <DependentUpon>CreateXMLSchemaViewDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\CreateXMLSchemaViewDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CreateXMLSchemaViewDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\DefineAutoHierarchyDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DefineAutoHierarchyDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\DefineAutoHierarchyDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DefineAutoHierarchyDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\DefineBackwardRelationshipDialog.resx">
+      <DependentUpon>DefineBackwardRelationshipDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\DefineBackwardRelationshipDialog.zh-CN.resx">
+      <DependentUpon>DefineBackwardRelationshipDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\DefineCustomPagesDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DefineCustomPagesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\DefineCustomPagesDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DefineCustomPagesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\DefineEnumValuesDialog.resx">
+      <DependentUpon>DefineEnumValuesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\DefineEnumValuesDialog.zh-CHS.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DefineEnumValuesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\DefineEnumValuesDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DefineEnumValuesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\DefineValidatingRuleDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DefineValidatingRuleDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\DefineValidatingRuleDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DefineValidatingRuleDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\PreviewHierarchyDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PreviewHierarchyDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\PreviewHierarchyDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PreviewHierarchyDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\RenameXMLSchemaElementDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>RenameXMLSchemaElementDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\RenameXMLSchemaElementDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>RenameXMLSchemaElementDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\SelectClassAttributeDialog.resx">
+      <DependentUpon>SelectClassAttributeDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\SelectClassAttributeDialog.zh-CN.resx">
+      <DependentUpon>SelectClassAttributeDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\SelectMappingPackageDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SelectMappingPackageDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\SelectMappingPackageDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SelectMappingPackageDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\SelectRolesDialog.resx">
+      <DependentUpon>SelectRolesDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\SelectRolesDialog.zh-CN.resx">
+      <DependentUpon>SelectRolesDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\SelectUsersDialog.resx">
+      <DependentUpon>SelectUsersDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\SelectUsersDialog.zh-CN.resx">
+      <DependentUpon>SelectUsersDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\WriteVirtualAttributeCodeDialog.resx">
+      <DependentUpon>WriteVirtualAttributeCodeDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\SaveToDatabaseDialog.resx">
+      <DependentUpon>SaveToDatabaseDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\SaveToDatabaseDialog.zh-CN.resx">
+      <DependentUpon>SaveToDatabaseDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\SchemaEditor.resx">
+      <DependentUpon>SchemaEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\SchemaEditor.zh-CN.resx">
+      <DependentUpon>SchemaEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\SpecifyArraySizeDialog.resx">
+      <DependentUpon>SpecifyArraySizeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\SpecifyArraySizeDialog.zh-CN.resx">
+      <DependentUpon>SpecifyArraySizeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\SpecifyRelationshipDialog.resx">
+      <DependentUpon>SpecifyRelationshipDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\SpecifyRelationshipDialog.zh-CN.resx">
+      <DependentUpon>SpecifyRelationshipDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\SpecifySelectorDialog.resx">
+      <DependentUpon>SpecifySelectorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\SpecifySelectorDialog.zh-CN.resx">
+      <DependentUpon>SpecifySelectorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\UpdateLogDialog.resx">
+      <DependentUpon>UpdateLogDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\UpdateLogDialog.zh-CN.resx">
+      <DependentUpon>UpdateLogDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\ValidateErrorDialog.resx">
+      <DependentUpon>ValidateErrorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\ValidateErrorDialog.zh-CN.resx">
+      <DependentUpon>ValidateErrorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\ChooseAttributesUpdatedDialog.resx">
+      <DependentUpon>ChooseAttributesUpdatedDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\WriteVirtualAttributeCodeDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>WriteVirtualAttributeCodeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\ChooseUniqueKeysDialog.resx">
+      <DependentUpon>ChooseUniqueKeysDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\ChooseUniqueKeysDialog.zh-CN.resx">
+      <DependentUpon>ChooseUniqueKeysDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\LoggingOptionDialog.resx">
+      <DependentUpon>LoggingOptionDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaEditor\LoggingOptionDialog.zh-CN.resx">
+      <DependentUpon>LoggingOptionDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectRoleDialog.resx">
+      <DependentUpon>SelectRoleDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectRoleDialog.zh-CN.resx">
+      <DependentUpon>SelectRoleDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectSchemaDialog.resx">
+      <DependentUpon>SelectSchemaDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectSchemaDialog.zh-CN.resx">
+      <DependentUpon>SelectSchemaDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerLicenseDetailDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ServerLicenseDetailDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerLicenseDetailDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ServerLicenseDetailDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerLicenseInfoDialog.resx">
+      <DependentUpon>ServerLicenseInfoDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerLicenseInfoDialog.zh-CN.resx">
+      <DependentUpon>ServerLicenseInfoDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SplashScreen.resx">
+      <DependentUpon>SplashScreen.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\ChooseLeafClassDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ChooseLeafClassDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\ChooseLeafClassDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ChooseLeafClassDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\ChooseReferencedClassDialog.resx">
+      <DependentUpon>ChooseReferencedClassDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\ChooseReferencedClassDialog.zh-CN.resx">
+      <DependentUpon>ChooseReferencedClassDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\ChooseResultAttributeDialog.resx">
+      <DependentUpon>ChooseResultAttributeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\ChooseResultAttributeDialog.zh-CN.resx">
+      <DependentUpon>ChooseResultAttributeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\DataViewResultBuilder.resx">
+      <DependentUpon>DataViewResultBuilder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\DataViewResultBuilder.zh-CN.resx">
+      <DependentUpon>DataViewResultBuilder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\DataViewSortControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DataViewSortControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\DataViewSortControl.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DataViewSortControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\SearchPanel.resx">
+      <DependentUpon>SearchPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Wizards\LineFrame.resx">
+      <DependentUpon>LineFrame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Wizards\WizardFinalPage.resx">
+      <DependentUpon>WizardFinalPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Wizards\WizardFinalPage.zh-CN.resx">
+      <DependentUpon>WizardFinalPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Wizards\WizardForm.resx">
+      <DependentUpon>WizardForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Wizards\WizardForm.zh-CN.resx">
+      <DependentUpon>WizardForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Wizards\WizardPageBase.resx">
+      <DependentUpon>WizardPageBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Wizards\WizardWelcomePage.resx">
+      <DependentUpon>WizardWelcomePage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Wizards\WizardWelcomePage.zh-CN.resx">
+      <DependentUpon>WizardWelcomePage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\ChooseSortAttributeDialog.resx">
+      <DependentUpon>ChooseSortAttributeDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\ChooseSortAttributeDialog.zh-CN.resx">
+      <DependentUpon>ChooseSortAttributeDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewRoleUsersDialog.resx">
+      <DependentUpon>ViewRoleUsersDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewRoleUsersDialog.zh-CN.resx">
+      <DependentUpon>ViewRoleUsersDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewUserRolesDialog.resx">
+      <DependentUpon>ViewUserRolesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewUserRolesDialog.zh-CN.resx">
+      <DependentUpon>ViewUserRolesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WorkInProgressDialog.resx">
+      <DependentUpon>WorkInProgressDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WorkInProgressDialog.zh-CN.resx">
+      <DependentUpon>WorkInProgressDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="App.ico" />
+    <None Include="Resources\blank.jpg" />
+    <Content Include="ImportExport\obj\Debug\Studio.exe" />
+    <Content Include="ImportExport\obj\Debug\Studio.pdb" />
+    <Content Include="ImportExport\obj\Debug\TempPE\Web References.AdminWebService.Reference.cs.dll" />
+    <Content Include="ImportExport\obj\Debug\TempPE\Web References.AttachmentWebService.Reference.cs.dll" />
+    <Content Include="ImportExport\obj\Debug\TempPE\Web References.CMDataWebService.Reference.cs.dll" />
+    <Content Include="ImportExport\obj\Debug\TempPE\Web References.MetaDataWebService.Reference.cs.dll" />
+    <Content Include="ImportExport\obj\Debug\TempPE\Web References.UserInfoWebService.Reference.cs.dll" />
+    <Content Include="ImportExport\obj\Debug\zh-CHS\Studio.resources.dll" />
+    <Content Include="ImportExport\obj\Debug\zh-CN\Studio.resources.dll" />
+    <Content Include="newtera%2832X32%29.ico" />
+    <Content Include="Resources\function.jpg" />
+    <Content Include="Resources\newtera%2832X32%29.ico" />
+    <Content Include="Resources\virtualproperty.GIF" />
+    <Content Include="UserControls\Wizards\LineFrame.bmp" />
+    <Content Include="UserControls\Wizards\WizardForm.bmp" />
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{CF010325-1364-4754-9192-CF7873C35F90}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Conveters\Conveters.csproj">
+      <Project>{34AD2810-F243-4076-AF6C-97FB0C26980B}</Project>
+      <Name>Conveters</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CustomActions\CustomActions.csproj">
+      <Project>{1a6c48e6-cbb3-4642-b280-11a0e406f5a7}</Project>
+      <Name>CustomActions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Export\Export.csproj">
+      <Project>{4945E10E-1AD4-4389-B503-327B929ACBEF}</Project>
+      <Name>Export</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ParserProject\ParserGen.csproj">
+      <Project>{C01FCCBE-2299-4A5C-AB3E-2EF3B68122B4}</Project>
+      <Name>ParserGen</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WinClientCommon\WinClientCommon.csproj">
+      <Project>{ECBB7160-2D73-40C6-8F9A-BB4E818B1C17}</Project>
+      <Name>WinClientCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WindowsControl\WindowsControl.csproj">
+      <Project>{DEFECA59-D0CA-4294-9B2F-A04D6C2A5F26}</Project>
+      <Name>WindowsControl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ImportExport\obj\Debug\temp\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

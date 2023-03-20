@@ -1,0 +1,316 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DEFECA59-D0CA-4294-9B2F-A04D6C2A5F26}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Newtera.WindowsControl</RootNamespace>
+    <AssemblyName>Newtera.WindowsControl</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v9.1, Version=9.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DevExpress 2009.1\DevExpress.Dll\DevExpress.Data.v9.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v9.1, Version=9.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DevExpress 2009.1\DevExpress.Dll\DevExpress.Utils.v9.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v9.1, Version=9.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DevExpress 2009.1\DevExpress.Dll\DevExpress.XtraEditors.v9.1.dll</HintPath>
+    </Reference>
+    <Reference Include="Gigasoft.ProEssentials, Version=1.0.1923.14327, Culture=neutral, PublicKeyToken=38150f10c0d12be5" />
+    <Reference Include="Newtera.DataGridActiveX, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DataGridActiveX\bin\Debug\Newtera.DataGridActiveX.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddExprPopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ArrayValueEditor.cs" />
+    <Compile Include="AttributeElementListViewItem.cs" />
+    <Compile Include="ChooseBooleanValuePopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChooseDateTimePopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChooseEnumValuePopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChooseOperatorPopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChooseSearchAttributePopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataClassComboBoxItem.cs" />
+    <Compile Include="DataGridComboBoxColumn.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataGridImageColumn.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataViewSlide.cs" />
+    <Compile Include="DataViewSlideCollection.cs" />
+    <Compile Include="EditArrayValueDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditImageValueDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditImageValueDialog.Designer.cs">
+      <DependentUpon>EditImageValueDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EnterTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="EnterValuePopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IExprPopup.cs" />
+    <Compile Include="IImageGetterFactory.cs" />
+    <Compile Include="ImageAttributeEditor.cs" />
+    <Compile Include="LinkedClasslListViewItem.cs" />
+    <Compile Include="ListViewEx.cs" />
+    <Compile Include="MenuItemStates.cs" />
+    <Compile Include="MessageResourceManager.cs" />
+    <Compile Include="MultipleChoiceEditor.cs" />
+    <Compile Include="MultipleChoiceEditorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MultipleLineTextControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MultipleLineTextEditor.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="RefClasslListViewItem.cs" />
+    <Compile Include="ResultAttributeListViewItem.cs" />
+    <Compile Include="ResultDataControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ResultDataControl.Designer.cs">
+      <DependentUpon>ResultDataControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SearchExprBuilder.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TableStyleFactory.cs" />
+    <Compile Include="SelectedIndexCollection.cs" />
+    <Compile Include="IDataGridImageGetter.cs" />
+    <Compile Include="AttachmentColumnImageGetter.cs" />
+    <Compile Include="EnumColumnImageGetter.cs" />
+    <Compile Include="ConditionalFunctionComboBoxItem.cs" />
+    <Compile Include="FunctionListViewItem.cs" />
+    <Compile Include="IImageWebService.cs" />
+    <Compile Include="ImageWebServiceManager.cs" />
+    <Compile Include="UploadImageDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UploadImageDialog.Designer.cs">
+      <DependentUpon>UploadImageDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="XMLSchemaElementListViewItem.cs" />
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AddExprPopup.resx">
+      <DependentUpon>AddExprPopup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddExprPopup.zh-CN.resx">
+      <DependentUpon>AddExprPopup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChooseBooleanValuePopup.resx">
+      <DependentUpon>ChooseBooleanValuePopup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChooseDateTimePopup.resx">
+      <DependentUpon>ChooseDateTimePopup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChooseEnumValuePopup.resx">
+      <DependentUpon>ChooseEnumValuePopup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChooseOperatorPopup.resx">
+      <DependentUpon>ChooseOperatorPopup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChooseOperatorPopup.zh-CN.resx">
+      <DependentUpon>ChooseOperatorPopup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChooseSearchAttributePopup.resx">
+      <DependentUpon>ChooseSearchAttributePopup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChooseSearchAttributePopup.zh-CN.resx">
+      <DependentUpon>ChooseSearchAttributePopup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditArrayValueDialog.resx">
+      <DependentUpon>EditArrayValueDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditArrayValueDialog.zh-CN.resx">
+      <DependentUpon>EditArrayValueDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditImageValueDialog.resx">
+      <DependentUpon>EditImageValueDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditImageValueDialog.zh-CN.resx">
+      <DependentUpon>EditImageValueDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EnterTextBox.resx">
+      <DependentUpon>EnterTextBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EnterValuePopup.resx">
+      <DependentUpon>EnterValuePopup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageResourceManager.resx">
+      <DependentUpon>MessageResourceManager.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageResourceManager.zh-CN.resx">
+      <DependentUpon>MessageResourceManager.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MultipleChoiceEditorControl.resx">
+      <DependentUpon>MultipleChoiceEditorControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MultipleLineTextControl.resx">
+      <DependentUpon>MultipleLineTextControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ResultDataControl.resx">
+      <DependentUpon>ResultDataControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ResultDataControl.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ResultDataControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchExprBuilder.resx">
+      <DependentUpon>SearchExprBuilder.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchExprBuilder.zh-CN.resx">
+      <DependentUpon>SearchExprBuilder.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UploadImageDialog.resx">
+      <DependentUpon>UploadImageDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UploadImageDialog.zh-CN.resx">
+      <DependentUpon>UploadImageDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{CF010325-1364-4754-9192-CF7873C35F90}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\Gigasoft.ProEssentials.dll" />
+    <Content Include="bin\Debug\Newtera.WindowsControl.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

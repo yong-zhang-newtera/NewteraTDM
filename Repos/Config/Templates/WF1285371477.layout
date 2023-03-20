@@ -1,0 +1,76 @@
+<StateMachineWorkflowDesigner xmlns:ns0="clr-namespace:System.Drawing;Assembly=System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Name="故障处理" Location="30, 30" Size="554, 419" AutoSize="False" AutoSizeMargin="16, 24" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/workflow">
+	<StateMachineWorkflowDesigner.DesignerConnectors>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="等待验证状态" SourceConnectionIndex="1" TargetConnectionEdge="Top" SetStateName="setStateActivity1" SourceStateName="等待修复状态" SourceConnectionEdge="Right" TargetActivity="等待验证状态" SourceActivity="等待修复状态" EventHandlerName="修复事件驱动">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="165" Y="135" />
+				<ns0:Point X="323" Y="135" />
+				<ns0:Point X="323" Y="170" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="等待修复状态" SourceConnectionIndex="1" TargetConnectionEdge="Top" SetStateName="setStateActivity2" SourceStateName="等待验证状态" SourceConnectionEdge="Right" TargetActivity="等待修复状态" SourceActivity="等待验证状态" EventHandlerName="验证失败事件驱动">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="380" Y="235" />
+				<ns0:Point X="421" Y="235" />
+				<ns0:Point X="421" Y="62" />
+				<ns0:Point X="133" Y="62" />
+				<ns0:Point X="133" Y="70" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="修复结束状态" SourceConnectionIndex="2" TargetConnectionEdge="Top" SetStateName="setStateActivity3" SourceStateName="等待验证状态" SourceConnectionEdge="Right" TargetActivity="修复结束状态" SourceActivity="等待验证状态" EventHandlerName="验证成功事件驱动">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="380" Y="259" />
+				<ns0:Point X="474" Y="259" />
+				<ns0:Point X="474" Y="316" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+	</StateMachineWorkflowDesigner.DesignerConnectors>
+	<StateMachineWorkflowDesigner.Designers>
+		<StateDesigner Name="等待修复状态" Location="46, 70" Size="175, 102" AutoSize="False" AutoSizeMargin="16, 24">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Size="142, 142" Name="等待修复状态初始化" Location="54, 101">
+					<StateInitializationDesigner.Designers>
+						<ActivityDesigner Size="122, 40" Name="生成修复故障任务" Location="64, 173" />
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+				<StateFinalizationDesigner Size="142, 142" Name="等待修复状态终止化" Location="54, 149">
+					<StateFinalizationDesigner.Designers>
+						<ActivityDesigner Size="122, 40" Name="注销修复故障任务" Location="64, 221" />
+					</StateFinalizationDesigner.Designers>
+				</StateFinalizationDesigner>
+				<EventDrivenDesigner Size="128, 222" Name="修复事件驱动" Location="54, 125">
+					<EventDrivenDesigner.Designers>
+						<ActivityDesigner Size="108, 40" Name="等待修复事件" Location="64, 197" />
+						<SetStateDesigner Size="90, 50" Name="setStateActivity1" Location="73, 267" />
+					</EventDrivenDesigner.Designers>
+				</EventDrivenDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+		<StateDesigner Name="等待验证状态" Location="236, 170" Size="175, 126" AutoSize="False" AutoSizeMargin="16, 24">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Size="142, 142" Name="等待验证初始化" Location="244, 201">
+					<StateInitializationDesigner.Designers>
+						<ActivityDesigner Size="122, 40" Name="生成验证故障任务" Location="254, 273" />
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+				<StateFinalizationDesigner Size="142, 142" Name="等待验证终止化" Location="244, 273">
+					<StateFinalizationDesigner.Designers>
+						<ActivityDesigner Size="122, 40" Name="注销验证故障任务" Location="254, 345" />
+					</StateFinalizationDesigner.Designers>
+				</StateFinalizationDesigner>
+				<EventDrivenDesigner Size="142, 222" Name="验证失败事件驱动" Location="244, 225">
+					<EventDrivenDesigner.Designers>
+						<ActivityDesigner Size="122, 40" Name="等待验证失败事件" Location="254, 297" />
+						<SetStateDesigner Size="90, 50" Name="setStateActivity2" Location="270, 367" />
+					</EventDrivenDesigner.Designers>
+				</EventDrivenDesigner>
+				<EventDrivenDesigner Size="142, 222" Name="验证成功事件驱动" Location="244, 249">
+					<EventDrivenDesigner.Designers>
+						<ActivityDesigner Size="122, 40" Name="等待验证成功事件" Location="254, 321" />
+						<SetStateDesigner Size="90, 50" Name="setStateActivity3" Location="270, 391" />
+					</EventDrivenDesigner.Designers>
+				</EventDrivenDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+		<StateDesigner Name="修复结束状态" Location="394, 316" Size="160, 80" AutoSizeMargin="16, 24" />
+	</StateMachineWorkflowDesigner.Designers>
+</StateMachineWorkflowDesigner>

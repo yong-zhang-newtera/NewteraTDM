@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="EventName" xml:space="preserve">
+    <value>事件名称</value>
+  </data>
+  <data name="EventNameDescription" xml:space="preserve">
+    <value>所订阅的事件名称</value>
+  </data>
+  <data name="EventSourceCategory" xml:space="preserve">
+    <value>事件源</value>
+  </data>
+  <data name="Subject" xml:space="preserve">
+    <value>通知主题</value>
+  </data>
+  <data name="SubjectDescription" xml:space="preserve">
+    <value>通知的简短主题</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>内容</value>
+  </data>
+  <data name="DescriptionDescription" xml:space="preserve">
+    <value>通知的内容</value>
+  </data>
+  <data name="SendEmail" xml:space="preserve">
+    <value>是否发邮件</value>
+  </data>
+  <data name="SendEmailDescription" xml:space="preserve">
+    <value>是则向接收者发送邮件，否则不发邮件？</value>
+  </data>
+  <data name="SendMessage" xml:space="preserve">
+    <value>是否发信息</value>
+  </data>
+  <data name="SendMessageDescription" xml:space="preserve">
+    <value>是则向接收者发送信息，否则不发信息？</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>接收者</value>
+  </data>
+  <data name="UsersDescription" xml:space="preserve">
+    <value>指定接收通知的用户列表，多个用户时，它们之间是或的关系</value>
+  </data>
+  <data name="Roles" xml:space="preserve">
+    <value>接收者角色</value>
+  </data>
+  <data name="RolesDescription" xml:space="preserve">
+    <value>指定接收通知的角色。当指定多个角色时，它们之间是与的关系。</value>
+  </data>
+  <data name="UsersBindingAttribute" xml:space="preserve">
+    <value>值为接受者的属性</value>
+  </data>
+  <data name="UsersBindingAttributeDescription" xml:space="preserve">
+    <value>指定某个数据类的属性，它的值为接收通知的用户。</value>
+  </data>
+  <data name="NotificationCategory" xml:space="preserve">
+    <value>通知</value>
+  </data>
+  <data name="InlineHandler" xml:space="preserve">
+    <value>内嵌处理器</value>
+  </data>
+  <data name="InlineHandlerDescription" xml:space="preserve">
+    <value>用C#编写的内嵌事件处理逻辑。</value>
+  </data>
+  <data name="ExternalHanlder" xml:space="preserve">
+    <value>外部处理器</value>
+  </data>
+  <data name="ExternalHanlderDescription" xml:space="preserve">
+    <value>定义事件外部处理器的名称，格式为 "HanlerClassName,DllName"</value>
+  </data>
+  <data name="HandlerCategory" xml:space="preserve">
+    <value>事件处理器</value>
+  </data>
+  <data name="SystemCategory" xml:space="preserve">
+    <value>系统</value>
+  </data>
+  <data name="SenderBindingAttribute" xml:space="preserve">
+    <value>值为通知者的属性</value>
+  </data>
+  <data name="SenderBindingAttributeDescription" xml:space="preserve">
+    <value>指定某个数据类的属性，它的值为发出通知的用户。</value>
+  </data>
+  <data name="Url" xml:space="preserve">
+    <value>Url</value>
+  </data>
+  <data name="UrlDescription" xml:space="preserve">
+    <value>指定一个页面的URL以显示通知的详情</value>
+  </data>
+  <data name="Params" xml:space="preserve">
+    <value>Url参数</value>
+  </data>
+  <data name="ParamsDescription" xml:space="preserve">
+    <value>指定一个页面的URL的参数以显示通知的详情</value>
+  </data>
+</root>

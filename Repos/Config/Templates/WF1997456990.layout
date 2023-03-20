@@ -1,0 +1,76 @@
+<StateMachineWorkflowDesigner xmlns:ns0="clr-namespace:System.Drawing;Assembly=System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Name="试验任务审批流程" Location="30, 30" Size="526, 419" AutoSize="False" AutoSizeMargin="16, 24" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/workflow">
+	<StateMachineWorkflowDesigner.DesignerConnectors>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="正在审批状态" SourceConnectionIndex="1" TargetConnectionEdge="Top" SetStateName="setStateActivity1" SourceStateName="等待审批状态" SourceConnectionEdge="Right" TargetActivity="正在审批状态" SourceActivity="等待审批状态" EventHandlerName="等待正在审批事件">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="194" Y="134" />
+				<ns0:Point X="273" Y="134" />
+				<ns0:Point X="273" Y="192" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="等待审批状态" SourceConnectionIndex="1" TargetConnectionEdge="Top" SetStateName="setStateActivity2" SourceStateName="正在审批状态" SourceConnectionEdge="Right" TargetActivity="等待审批状态" SourceActivity="正在审批状态" EventHandlerName="等待审批未通过事件">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="349" Y="257" />
+				<ns0:Point X="361" Y="257" />
+				<ns0:Point X="361" Y="61" />
+				<ns0:Point X="137" Y="61" />
+				<ns0:Point X="137" Y="69" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="审批结束状态" SourceConnectionIndex="2" TargetConnectionEdge="Top" SetStateName="setStateActivity3" SourceStateName="正在审批状态" SourceConnectionEdge="Right" TargetActivity="审批结束状态" SourceActivity="正在审批状态" EventHandlerName="等待审批通过事件">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="337" Y="281" />
+				<ns0:Point X="446" Y="281" />
+				<ns0:Point X="446" Y="332" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+	</StateMachineWorkflowDesigner.DesignerConnectors>
+	<StateMachineWorkflowDesigner.Designers>
+		<StateDesigner Name="等待审批状态" Location="50, 69" Size="175, 102" AutoSizeMargin="16, 24">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Size="142, 142" Name="等待审批初始化" Location="58, 100">
+					<StateInitializationDesigner.Designers>
+						<ActivityDesigner Size="122, 40" Name="生成进入审批任务" Location="68, 172" />
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+				<StateFinalizationDesigner Size="142, 142" Name="等待审批终止化" Location="58, 148">
+					<StateFinalizationDesigner.Designers>
+						<ActivityDesigner Size="122, 40" Name="注销进入审批任务" Location="68, 220" />
+					</StateFinalizationDesigner.Designers>
+				</StateFinalizationDesigner>
+				<EventDrivenDesigner Size="142, 222" Name="等待正在审批事件" Location="58, 124">
+					<EventDrivenDesigner.Designers>
+						<ActivityDesigner Size="122, 40" Name="处理正在审批事件" Location="68, 196" />
+						<SetStateDesigner Size="90, 50" Name="setStateActivity1" Location="84, 266" />
+					</EventDrivenDesigner.Designers>
+				</EventDrivenDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+		<StateDesigner Name="正在审批状态" Location="193, 192" Size="160, 126" AutoSizeMargin="16, 24">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Size="142, 142" Name="正在审批初始化" Location="201, 223">
+					<StateInitializationDesigner.Designers>
+						<ActivityDesigner Size="122, 40" Name="生成审批结论任务" Location="211, 295" />
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+				<StateFinalizationDesigner Size="142, 142" Name="正在审批终止化" Location="201, 295">
+					<StateFinalizationDesigner.Designers>
+						<ActivityDesigner Size="122, 40" Name="注销审批结论任务" Location="211, 367" />
+					</StateFinalizationDesigner.Designers>
+				</StateFinalizationDesigner>
+				<EventDrivenDesigner Size="142, 222" Name="等待审批未通过事件" Location="201, 247">
+					<EventDrivenDesigner.Designers>
+						<ActivityDesigner Size="122, 40" Name="处理审批未通过事件" Location="211, 319" />
+						<SetStateDesigner Size="90, 50" Name="setStateActivity2" Location="227, 389" />
+					</EventDrivenDesigner.Designers>
+				</EventDrivenDesigner>
+				<EventDrivenDesigner Size="142, 222" Name="等待审批通过事件" Location="201, 271">
+					<EventDrivenDesigner.Designers>
+						<ActivityDesigner Size="122, 40" Name="处理审批通过事件" Location="211, 343" />
+						<SetStateDesigner Size="90, 50" Name="setStateActivity3" Location="227, 413" />
+					</EventDrivenDesigner.Designers>
+				</EventDrivenDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+		<StateDesigner Name="审批结束状态" Location="366, 332" Size="160, 80" AutoSizeMargin="16, 24" />
+	</StateMachineWorkflowDesigner.Designers>
+</StateMachineWorkflowDesigner>

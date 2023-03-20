@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="PrimaryKeys" xml:space="preserve">
+    <value>主键</value>
+  </data>
+  <data name="LargeImage" xml:space="preserve">
+    <value>大图标</value>
+  </data>
+  <data name="MedianImage" xml:space="preserve">
+    <value>中图标</value>
+  </data>
+  <data name="SmallImage" xml:space="preserve">
+    <value>小图标</value>
+  </data>
+  <data name="DetailedText" xml:space="preserve">
+    <value>详细文字</value>
+  </data>
+  <data name="PrimaryKeysDescription" xml:space="preserve">
+    <value>数据类的主键</value>
+  </data>
+  <data name="LargeImageDescription" xml:space="preserve">
+    <value>表示该数据类的大图标,可用于用户界面显示</value>
+  </data>
+  <data name="MedianImageDescription" xml:space="preserve">
+    <value>表示该数据类的中图标,可用于用户界面显示</value>
+  </data>
+  <data name="SmallImageDescription" xml:space="preserve">
+    <value>表示该数据类的小图标,可用于用户界面显示</value>
+  </data>
+  <data name="DetailedTextDescription" xml:space="preserve">
+    <value>描述数据类的详细信息, 主要用于用户界面显示.</value>
+  </data>
+  <data name="SystemCategory" xml:space="preserve">
+    <value>系统</value>
+  </data>
+  <data name="AppearanceCategory" xml:space="preserve">
+    <value>显示</value>
+  </data>
+  <data name="MethodCategory" xml:space="preserve">
+    <value>方法</value>
+  </data>
+  <data name="IsBrowsable" xml:space="preserve">
+    <value>是否显示</value>
+  </data>
+  <data name="IsBrowsableDescription" xml:space="preserve">
+    <value>指定该数据类是否在用户界面的数据类树中出现? 一般用于多对多关系的数据类.</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>类别</value>
+  </data>
+  <data name="CategoryDescription" xml:space="preserve">
+    <value>数据类的类别.主要用于用户界面显示时对数据类分组.</value>
+  </data>
+  <data name="SortAttribute" xml:space="preserve">
+    <value>排序属性</value>
+  </data>
+  <data name="SortAttributeDescription" xml:space="preserve">
+    <value>指定用于默认或详细数据视图的排序属性</value>
+  </data>
+  <data name="SortCategory" xml:space="preserve">
+    <value>默认排序</value>
+  </data>
+  <data name="SortDirection" xml:space="preserve">
+    <value>排序方向</value>
+  </data>
+  <data name="SortDirectionDescription" xml:space="preserve">
+    <value>指定排序的方向</value>
+  </data>
+  <data name="UniqueKeys" xml:space="preserve">
+    <value>唯一性约束</value>
+  </data>
+  <data name="UniqueKeysDescription" xml:space="preserve">
+    <value>定义对该数据类唯一性约束的属性组合</value>
+  </data>
+  <data name="IsJunction" xml:space="preserve">
+    <value>是否联接类</value>
+  </data>
+  <data name="IsJunctionDescription" xml:space="preserve">
+    <value>指定该数据类是否用于多对多关系属性的联接类．</value>
+  </data>
+  <data name="JunctionCategory" xml:space="preserve">
+    <value>联接</value>
+  </data>
+  <data name="ClassPageUrl" xml:space="preserve">
+    <value>数据类显示页面</value>
+  </data>
+  <data name="ClassPageUrlDescription" xml:space="preserve">
+    <value>指定用于显示该数据类结果集的Web页面的URL。例如“./ResultList.aspx”。如果没指定，将使用默认的页面。</value>
+  </data>
+  <data name="InstancePageUrl" xml:space="preserve">
+    <value>数据实例显示页面</value>
+  </data>
+  <data name="InstancePageUrlDescription" xml:space="preserve">
+    <value>指定用于显示该数据类数据实例的Web页面的URL。例如“./Detail.aspx”。如果没指定，将使用默认的页面。</value>
+  </data>
+  <data name="ShowRelatedClasses" xml:space="preserve">
+    <value>是否显示关联数据</value>
+  </data>
+  <data name="ShowRelatedClassesDescription" xml:space="preserve">
+    <value>指定是否在Web界面展开数据实例时显示与该数据实例关联的数据？</value>
+  </data>
+  <data name="CustomPages" xml:space="preserve">
+    <value>定制页面</value>
+  </data>
+  <data name="CustomPagesDescription" xml:space="preserve">
+    <value>指定定制的Web页面，用于显示所选择数据实例的相关信息.</value>
+  </data>
+  <data name="InitializationCode" xml:space="preserve">
+    <value>初始化程序</value>
+  </data>
+  <data name="InitializationCodeDescription" xml:space="preserve">
+    <value>定义数据类数据实例初始化的C#程序,可用于对属性设置初始值</value>
+  </data>
+  <data name="BeforeUpdateCode" xml:space="preserve">
+    <value>修改前程序</value>
+  </data>
+  <data name="BeforeUpdateCodeDescription" xml:space="preserve">
+    <value>定义在修改数据实例前运行的C#程序,可用于对要修改的数据实例值进行调整。</value>
+  </data>
+  <data name="BeforeInsertCode" xml:space="preserve">
+    <value>添加前程序</value>
+  </data>
+  <data name="BeforeInsertCodeDescription" xml:space="preserve">
+    <value>定义在添加数据实例前运行的C#程序,可用于对要添加的数据实例值进行调整。</value>
+  </data>
+  <data name="MatchCategory" xml:space="preserve">
+    <value>匹配</value>
+  </data>
+  <data name="MatchCondition" xml:space="preserve">
+    <value>匹配条件</value>
+  </data>
+	<data name="MatchConditionDescription" xml:space="preserve">
+    <value>用于在批量导入或数据同步时识别已存在的数据实例</value>
+  </data>
+  <data name="TableName" xml:space="preserve">
+    <value>表名称</value>
+  </data>
+  <data name="TableNameDescription" xml:space="preserve">
+    <value>对应的数据库表名称</value>
+  </data>
+  <data name="NestedDataViewName" xml:space="preserve">
+    <value>嵌套表数据试图</value>
+  </data>
+	<data name="NestedDataViewNameDescription" xml:space="preserve">
+    <value>指定用于嵌套在Web表单中表格的数据试图</value>
+  </data>
+	<data name="CallbackFunctionCode" xml:space="preserve">
+    <value>回调函数程序</value>
+  </data>
+	<data name="CallbackFunctionCodeDescription" xml:space="preserve">
+    <value>定义Web界面的回调函数的程序，用于对数据实例的值进行设置。</value>
+  </data>
+</root>

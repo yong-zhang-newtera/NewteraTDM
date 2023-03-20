@@ -1,0 +1,16 @@
+﻿<ul class="notification-body">
+	<li ng-repeat="msg in getMsgItems()">
+		<span ng-class="{unread : msg.status == 'unread'}">
+			<a href="javascript:void(0);" ng-click="readMsg(msg)" class="msg">
+				<img ng-src="{{getPosterImage(msg.posterId)}}" alt="" class="air air-top-left margin-top-5" width="40" height="40"/>
+				<span class="from">{{msg.poster}}</span>
+				<time>{{msg.postTime}}</time>
+				<span class="subject">{{msg.subject}}</span>
+				<span class="msg-body">{{msg.content}}</span>
+			</a>
+            <a href="javascript:void(0);" ng-click="deleteMsg(msg)" class="air air-top-left margin-top-1">
+                <img src="styles/img/clear.png" alt="Delete" />
+            </a>
+		</span>
+	</li>
+</ul>

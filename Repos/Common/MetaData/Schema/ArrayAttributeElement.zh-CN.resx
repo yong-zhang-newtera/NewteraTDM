@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root>
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="ResMimeType">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="Version">
+		<value>1.0.0.0</value>
+	</resheader>
+	<resheader name="Reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="Writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="IsRequired">
+		<value>是否必要</value>
+	</data>
+	<data name="IsRequiredDescription">
+		<value>指定该数组属性的值是否为必要的?</value>
+	</data>
+	<data name="Dimension">
+		<value>数组维数</value>
+	</data>
+	<data name="DimensionDescription">
+		<value>数组的维数, 应为1或2</value>
+	</data>
+	<data name="ElementDataType">
+		<value>数组元素类型</value>
+	</data>
+	<data name="ElementDataTypeDescription">
+		<value>数组元素的数据类型.</value>
+	</data>
+	<data name="ColumnCount">
+		<value>数组列数</value>
+	</data>
+	<data name="ColumnCountDescription">
+		<value>数组的列数. 对于一维数据,其列数为1.</value>
+	</data>
+	<data name="ColumnTitles">
+		<value>数组列名</value>
+	</data>
+	<data name="ColumnTitlesDescription">
+		<value>数组的列名.如不指定,将采用缺省名.</value>
+	</data>
+	<data name="Section">
+		<value>属性段落</value>
+	</data>
+	<data name="SectionDescription">
+		<value>属性的段落.主要用于用户界面显示是对属性的组织.</value>
+	</data>
+	<data name="Category">
+		<value>属性类别</value>
+	</data>
+	<data name="CategoryDescription">
+		<value>属性的类别.主要用于用户界面显示时对属性的分组.</value>
+	</data>
+	<data name="SystemCategory">
+		<value>系统</value>
+	</data>
+	<data name="AppearanceCategory">
+		<value>显示</value>
+	</data>
+	<data name="ArraySize">
+		<value>数组大小</value>
+	</data>
+	<data name="ArraySizeDescription">
+		<value>如果数组的长度小于4000个字符, 包括数组元素分隔符, 从效率的角度考虑, 建议使用NormalSize. 如果长度大于4000字符, 则要使用Oversize. </value>
+	</data>
+	<data name="IsSingleRow">
+		<value>是否单行数组</value>
+	</data>
+	<data name="IsSingleRowDescription">
+		<value>指定该数组是否为单行数组.单行数组不能增加行.</value>
+	</data>
+	<data name="IsGoodForFullTextSearch" xml:space="preserve">
+		<value>是否适用于全文检索</value>
+	</data>
+	<data name="IsGoodForFullTextSearchDescription" xml:space="preserve">
+		<value>指定该属性的值是否适用于全文检索?</value>
+	</data>
+	<data name="KeywordFormat" xml:space="preserve">
+		<value>关键字格式</value>
+	</data>
+	<data name="KeywordFormatDescription" xml:space="preserve">
+		<value>定义用于全文检索的关键字格式，例如： 数组列名=值 作为关键字检索</value>
+	</data>
+	<data name="IndexCategory" xml:space="preserve">
+		<value>检索</value>
+	</data>
+</root>

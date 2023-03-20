@@ -1,0 +1,43 @@
+<StateMachineWorkflowActivity InitialStateName="等待审批状态" x:Name="试验任务审批流程" DynamicUpdateCondition="{x:Null}" CompletedStateName="审批结束状态" xmlns:ns0="clr-namespace:Newtera.Activities;Assembly=Newtera.Activities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/workflow">
+	<StateActivity x:Name="等待审批状态">
+		<StateInitializationActivity x:Name="等待审批初始化">
+			<ns0:CreateTaskActivity Subject="请审批试验任务" UsersBindingAttributeCaption="{x:Null}" TaskDescription="请审批试验任务" MetaData="{x:Null}" Instruction="将“审批状态”修改为“正在审批”" x:Name="生成进入审批任务" Users="{x:Null}" ClassCaption="{x:Null}" RolesBindingAttributeCaption="{x:Null}">
+				<ns0:CreateTaskActivity.Roles>
+					<ns1:StringCollection xmlns:ns1="clr-namespace:System.Collections.Specialized;Assembly=System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+						<ns2:String xmlns:ns2="clr-namespace:System;Assembly=mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">高级用户</ns2:String>
+					</ns1:StringCollection>
+				</ns0:CreateTaskActivity.Roles>
+			</ns0:CreateTaskActivity>
+		</StateInitializationActivity>
+		<StateFinalizationActivity x:Name="等待审批终止化">
+			<ns0:CloseTaskActivity x:Name="注销进入审批任务" ActivityName="生成进入审批任务" />
+		</StateFinalizationActivity>
+		<EventDrivenActivity x:Name="等待正在审批事件">
+			<ns0:HandleNewteraEventActivity x:Name="处理正在审批事件" ClassCaption="试验任务" SchemaId="故障记录数据库 1.0" EventName="正在审批事件" MetaData="{x:Null}" ClassName="TestTask" />
+			<SetStateActivity x:Name="setStateActivity1" TargetStateName="正在审批状态" />
+		</EventDrivenActivity>
+	</StateActivity>
+	<StateActivity x:Name="正在审批状态">
+		<StateInitializationActivity x:Name="正在审批初始化">
+			<ns0:CreateTaskActivity Subject="请提供审批结论" UsersBindingAttributeCaption="{x:Null}" TaskDescription="请提供审批结论" MetaData="{x:Null}" Instruction="审批通过, 将&quot;审批状态&quot;改为&quot;审批通过&quot;, 否则改为&quot;审批未通过&quot;" x:Name="生成审批结论任务" Users="{x:Null}" ClassCaption="{x:Null}" RolesBindingAttributeCaption="{x:Null}">
+				<ns0:CreateTaskActivity.Roles>
+					<ns1:StringCollection xmlns:ns1="clr-namespace:System.Collections.Specialized;Assembly=System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+						<ns2:String xmlns:ns2="clr-namespace:System;Assembly=mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">高级用户</ns2:String>
+					</ns1:StringCollection>
+				</ns0:CreateTaskActivity.Roles>
+			</ns0:CreateTaskActivity>
+		</StateInitializationActivity>
+		<StateFinalizationActivity x:Name="正在审批终止化">
+			<ns0:CloseTaskActivity x:Name="注销审批结论任务" ActivityName="生成审批结论任务" />
+		</StateFinalizationActivity>
+		<EventDrivenActivity x:Name="等待审批未通过事件">
+			<ns0:HandleNewteraEventActivity x:Name="处理审批未通过事件" ClassCaption="试验任务" SchemaId="故障记录数据库 1.0" EventName="审批未通过" MetaData="{x:Null}" ClassName="TestTask" />
+			<SetStateActivity x:Name="setStateActivity2" TargetStateName="等待审批状态" />
+		</EventDrivenActivity>
+		<EventDrivenActivity x:Name="等待审批通过事件">
+			<ns0:HandleNewteraEventActivity x:Name="处理审批通过事件" ClassCaption="试验任务" SchemaId="故障记录数据库 1.0" EventName="审批通过事件" MetaData="{x:Null}" ClassName="TestTask" />
+			<SetStateActivity x:Name="setStateActivity3" TargetStateName="审批结束状态" />
+		</EventDrivenActivity>
+	</StateActivity>
+	<StateActivity x:Name="审批结束状态" />
+</StateMachineWorkflowActivity>

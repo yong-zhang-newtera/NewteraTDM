@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ClassTreeTitle" xml:space="preserve">
+    <value>按产品类型查找</value>
+  </data>
+  <data name="PropertyEditor.IsRequired" xml:space="preserve">
+    <value>该项值不能为空</value>
+  </data>
+  <data name="PropertyEditor.IsUnique" xml:space="preserve">
+    <value>该值已被使用，请输入一个唯一的值</value>
+  </data>
+  <data name="PropertyEditor.OutOfRange" xml:space="preserve">
+    <value>该值超出范围</value>
+  </data>
+  <data name="PropertyEditor.WrongPattern" xml:space="preserve">
+    <value>该值格式有错</value>
+  </data>
+  <data name="PropertyEditor.InvalidCast" xml:space="preserve">
+    <value>数据类型错误，正确的类型为</value>
+  </data>
+  <data name="PropertyEditor.MaxLength" xml:space="preserve">
+    <value>该值长度太长，最多字数应为</value>
+  </data>
+  <data name="PropertyEditor.NullArrayValue" xml:space="preserve">
+    <value>数组中不能有空值</value>
+  </data>
+  <data name="PropertyEditor.AddRowText" xml:space="preserve">
+    <value>添加空行</value>
+  </data>
+  <data name="PropertyEditor.Single" xml:space="preserve">
+    <value>Float类型.</value>
+  </data>
+  <data name="PropertyEditor.Double" xml:space="preserve">
+    <value>Double类型.</value>
+  </data>
+  <data name="PropertyEditor.Int32" xml:space="preserve">
+    <value>整数类型.</value>
+  </data>
+  <data name="PropertyEditor.DateTime" xml:space="preserve">
+    <value>DateTime类型, 例如2002-05-25 T13:30:21.</value>
+  </data>
+  <data name="PropertyEditor.Date" xml:space="preserve">
+    <value>Date类型, 例如2002-05-20.</value>
+  </data>
+  <data name="PropertyEditor.Int64" xml:space="preserve">
+    <value>大整数类型.</value>
+  </data>
+  <data name="PropertyEditor.InvalidUniqueKeys" xml:space="preserve">
+    <value>属性'{0}'的组合值不具有唯一性。</value>
+  </data>
+  <data name="PropertyEditor.UniqueKeyValueRequired" xml:space="preserve">
+    <value>该属性为组合唯一约束的成员，因而值不能为空</value>
+  </data>
+  <data name="PropertyEditor.NotUniqueReference" xml:space="preserve">
+    <value>所引用的数据实例已经被引用，不允许再次被引用</value>
+  </data>
+  <data name="PropertyEditor.Content" xml:space="preserve">
+    <value>输入的值必须是</value>
+  </data>
+  <data name="DataViewHelp.AddInstance" xml:space="preserve">
+    <value>添加{0}记录</value>
+  </data>
+  <data name="DataViewHelp.DisplayValue" xml:space="preserve">
+    <value>没有定义可用于显示的字段</value>
+  </data>
+  <data name="DataViewHelp.FindResult" xml:space="preserve">
+    <value>没找到匹配的结果！</value>
+  </data>
+  <data name="DataViewHelp.Msg1Resources1" xml:space="preserve">
+    <value>该节点可能没有指定关联的数据类。</value>
+  </data>
+  <data name="DataViewHelp.Msg2Resources1" xml:space="preserve">
+    <value>数据类的默认视图没有可以显示的属性，可能是因为没有指定用途为“Both”和“Result”，或是因为对属性没有读取权限。</value>
+  </data>
+  <data name="DataViewHelp.Msg3Resources1" xml:space="preserve">
+    <value>数据类的主键由多个属性组成.目前暂不支持组合主键。</value>
+  </data>
+  <data name="DataViewHelp.Msg4Resources1" xml:space="preserve">
+    <value>数据类中没有定义或继承任何主键。</value>
+  </data>
+  <data name="UserLanguages" xml:space="preserve">
+    <value>zh-cn</value>
+  </data>
+  <data name="PropertyEditor.Integer" xml:space="preserve">
+    <value>整数类型.</value>
+  </data>
+  <data name="PropertyEditor.MinLength" xml:space="preserve">
+    <value>该值长度太短，最少字数应为</value>
+  </data>
+  <data name="InvalidSearchValue" xml:space="preserve">
+    <value>'{0}'不符合{1}类型</value>
+  </data>
+  <data name="PropertyEditor.ClearImageText" xml:space="preserve">
+    <value>清除图像</value>
+  </data>
+  <data name="PropertyEditor.UploadImageText" xml:space="preserve">
+    <value>上传图像...</value>
+  </data>
+  <data name="PropertyEditor.RemoveRowText" xml:space="preserve">
+    <value>删除行</value>
+  </data>
+  <data name="PropertyEditor.NotValidValue" xml:space="preserve">
+    <value>该值在列表中不存在</value>
+  </data>
+  <data name="PropertyEditor.RemoveRowMessage" xml:space="preserve">
+    <value>您确定要删除选定的行吗？</value>
+  </data>
+  <data name="PropertyEditor.InputComment" xml:space="preserve">
+    <value>在此输入意见</value>
+  </data>
+  <data name="PropertyEditor.Command" xml:space="preserve">
+    <value>命令</value>
+  </data>
+  <data name="DefinitionRelationData.Msg1Resources1" xml:space="preserve">
+    <value>请指定下列的关联属性值，或采用默认值</value>
+  </data>
+  <data name="DataViewHelp.ImportInstances" xml:space="preserve">
+    <value>批量导入{0}记录</value>
+  </data>
+</root>

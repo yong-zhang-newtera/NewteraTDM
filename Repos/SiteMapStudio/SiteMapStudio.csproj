@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C5277F0B-F1F2-4CBA-8943-5309A00B7405}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Newtera.SiteMapStudio</RootNamespace>
+    <AssemblyName>SiteMapStudio</AssemblyName>
+    <ApplicationIcon>SiteMap.ico</ApplicationIcon>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Ebaas\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AboutDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AccessControlOptionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddNewItemDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddNewItemDialog.Designer.cs">
+      <DependentUpon>AddNewItemDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AdminLoginDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AdminLoginDialog.Designer.cs">
+      <DependentUpon>AdminLoginDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ClassNameConverter.cs" />
+    <Compile Include="ClassNamePropertyEditor.cs" />
+    <Compile Include="ConnectionStringBuilder.cs" />
+    <Compile Include="CurrentSiteMapNameConverter.cs" />
+    <Compile Include="CurrentSiteMapNamePropertyEditor.cs" />
+    <Compile Include="DefineStateParametersDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DefineStateParametersDialog.Designer.cs">
+      <DependentUpon>DefineStateParametersDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StateParameterCollectionEditor.cs" />
+    <Compile Include="FulltextSettingsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FulltextSettingsDialog.Designer.cs">
+      <DependentUpon>FulltextSettingsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelectUserOrRoleDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenuItemStates.cs" />
+    <Compile Include="SiteMapModelManager.cs" />
+    <Compile Include="SideMenuPathPropertyEditor.cs" />
+    <Compile Include="MessageResourceManager.cs" />
+    <Compile Include="DatabasePropertyEditor.cs" />
+    <Compile Include="TreeNodeType.cs" />
+    <Compile Include="SideMapTreeNode.cs" />
+    <Compile Include="SiteMapStudioApp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SiteMapStudioApp.Designer.cs">
+      <DependentUpon>SiteMapStudioApp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AboutDialog.resx">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AboutDialog.zh-CN.resx">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AccessControlOptionDialog.resx">
+      <DependentUpon>AccessControlOptionDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AccessControlOptionDialog.zh-CN.resx">
+      <DependentUpon>AccessControlOptionDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddNewItemDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AddNewItemDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddNewItemDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AddNewItemDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AdminLoginDialog.resx">
+      <DependentUpon>AdminLoginDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AdminLoginDialog.zh-CN.resx">
+      <DependentUpon>AdminLoginDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DefineStateParametersDialog.resx">
+      <DependentUpon>DefineStateParametersDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DefineStateParametersDialog.zh-CN.resx">
+      <DependentUpon>DefineStateParametersDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FulltextSettingsDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FulltextSettingsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FulltextSettingsDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FulltextSettingsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectUserOrRoleDialog.resx">
+      <DependentUpon>SelectUserOrRoleDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageResourceManager.resx">
+      <DependentUpon>MessageResourceManager.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageResourceManager.zh-CN.resx">
+      <DependentUpon>MessageResourceManager.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectUserOrRoleDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SelectUserOrRoleDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SiteMapStudioApp.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SiteMapStudioApp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SiteMapStudioApp.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SiteMapStudioApp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ValidateErrorDialog.resx">
+      <DependentUpon>ValidateErrorDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ValidateErrorDialog.zh-CN.resx">
+      <DependentUpon>ValidateErrorDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="ValidateErrorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WindowClientServerProxy.cs" />
+    <Compile Include="WindowClientUserManager.cs" />
+    <Compile Include="HierarchyNamePropertyEditor.cs" />
+    <Compile Include="XaclRulelListViewItem.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{CF010325-1364-4754-9192-CF7873C35F90}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WinClientCommon\WinClientCommon.csproj">
+      <Project>{ECBB7160-2D73-40C6-8F9A-BB4E818B1C17}</Project>
+      <Name>WinClientCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WindowsControl\WindowsControl.csproj">
+      <Project>{DEFECA59-D0CA-4294-9B2F-A04D6C2A5F26}</Project>
+      <Name>WindowsControl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SiteMap.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

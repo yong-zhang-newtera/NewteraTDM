@@ -1,0 +1,24 @@
+# sample and label dimensions
+SDim = $dimension$
+LDim = $labelDimension$
+
+features = Input (SDim)
+labels   = Input (LDim)
+
+# parameters to learn
+b = Parameter (LDim, 1)
+w = Parameter (LDim, SDim)
+
+# operations
+z = w * features + b
+
+ce = CrossEntropyWithSoftmax (labels, z)
+errs = ClassificationError (labels, z)
+
+# root nodes
+featureNodes    = (features)
+labelNodes      = (labels)
+criterionNodes  = (ce)
+evaluationNodes = (errs)
+outputNodes     = (z)
+

@@ -1,0 +1,234 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:psd="http://www.newtera.com" targetNamespace="http://www.newtera.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element psd:version="1.0" psd:modifiedTime="2016-05-21T11:18:08" psd:id="5" psd:order="0" name="UserInfo">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" maxOccurs="1" name="UserList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="User" type="User" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="RoleList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="Role" type="Role" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="UserRoleList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="UserRole" type="UserRole" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:all>
+    </xs:complexType>
+    <xs:key name="UserPK">
+      <xs:selector xpath="UserList/User" />
+      <xs:field xpath="ID" />
+    </xs:key>
+    <xs:key name="RolePK">
+      <xs:selector xpath="RoleList/Role" />
+      <xs:field xpath="Name" />
+    </xs:key>
+    <xs:keyref name="parentRoleRoleRoleFK" refer="RolePK">
+      <xs:selector xpath="RoleList/Role" />
+      <xs:field xpath="parentRole/Name" />
+    </xs:keyref>
+    <xs:keyref name="userUserRoleUserFK" refer="UserPK">
+      <xs:selector xpath="UserRoleList/UserRole" />
+      <xs:field xpath="user/ID" />
+    </xs:keyref>
+    <xs:keyref name="roleUserRoleRoleFK" refer="RolePK">
+      <xs:selector xpath="UserRoleList/UserRole" />
+      <xs:field xpath="role/Name" />
+    </xs:keyref>
+  </xs:element>
+  <xs:simpleType psd:displayMode="Text" psd:displayName="Location" psd:order="0" name="Location">
+    <xs:restriction xmlns:q1="http://www.w3.org/2003/XMLSchema" base="q1:string">
+      <xs:enumeration id="DG" value="1" />
+      <xs:enumeration id="ND" value="2" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:listHandler="Newtera.Common.MetaData.UsersListHandler,Newtera.Common" psd:parameter="部门经理" psd:displayName="Manager" psd:order="1" name="Manager">
+    <xs:restriction xmlns:q2="http://www.w3.org/2003/XMLSchema" base="q2:string">
+      <xs:enumeration value="DynamicValues" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType psd:tableName="T_USER_7_5" psd:id="7" psd:displayName="User" psd:order="0" name="User">
+    <xs:sequence>
+      <xs:element psd:key="true" psd:manualUpdate="false" psd:colName="C_ID_58" psd:id="58" psd:displayName="ID" psd:description="User's login ID" psd:order="0" minOccurs="0" name="ID" xmlns:q3="http://www.w3.org/2003/XMLSchema" type="q3:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:manualUpdate="false" psd:colName="C_FIRSTNAME_59" psd:id="59" psd:displayName="First Name" psd:description="User's first name" psd:order="1" minOccurs="0" name="FirstName" xmlns:q4="http://www.w3.org/2003/XMLSchema" type="q4:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="30" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:manualUpdate="false" psd:colName="C_LASTNAME_60" psd:id="60" psd:displayName="Last Name" psd:description="User's last name" psd:order="2" minOccurs="0" name="LastName" xmlns:q5="http://www.w3.org/2003/XMLSchema" type="q5:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="50" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:encrypted="true" psd:colName="C_PASSWORD_61" psd:id="61" psd:displayName="Password" psd:description="User's login password" psd:order="3" minOccurs="0" name="Password" xmlns:q6="http://www.w3.org/2003/XMLSchema" type="q6:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_EMAIL_62" psd:id="62" psd:displayName="Email" psd:description="User's email address" psd:order="5" minOccurs="0" name="Email" xmlns:q7="http://www.w3.org/2003/XMLSchema" type="q7:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="150" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_PHONENUMBER_63" psd:id="63" psd:displayName="Phone Number" psd:order="6" minOccurs="0" name="PhoneNumber" xmlns:q8="http://www.w3.org/2003/XMLSchema" type="q8:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_TELEPHONE_64" psd:id="64" psd:displayName="Telephone" psd:order="7" minOccurs="0" name="Telephone" xmlns:q9="http://www.w3.org/2003/XMLSchema" type="q9:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_DEPARTMENT_65" psd:id="65" psd:displayName="Department" psd:order="8" minOccurs="0" name="Department" xmlns:q10="http://www.w3.org/2003/XMLSchema" type="q10:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_LOCATION_66" psd:id="66" psd:displayName="Location" psd:order="9" minOccurs="0" name="Location" xmlns:q11="http://www.w3.org/2003/XMLSchema" type="q11:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_USERMANAGER_67" psd:id="67" psd:displayName="Manager" psd:order="10" minOccurs="0" name="UserManager" xmlns:q12="http://www.w3.org/2003/XMLSchema" type="q12:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_KEY_68" psd:id="68" psd:displayName="Key" psd:order="11" minOccurs="0" name="Key" xmlns:q13="http://www.w3.org/2003/XMLSchema" type="q13:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_SECURITYSTAMP_69" psd:id="69" psd:displayName="SecurityStamp" psd:order="12" minOccurs="0" name="SecurityStamp" xmlns:q14="http://www.w3.org/2003/XMLSchema" type="q14:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_PICTURE_608" psd:id="608" psd:displayName="Picture" psd:order="13" minOccurs="0" name="Picture" xmlns:q15="http://www.w3.org/2003/XMLSchema" type="q15:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q16="http://www.w3.org/2003/XMLSchema" type="q16:ID" />
+    <xs:attribute psd:refClass="UserRole" psd:refAttr="user" psd:ownership="looseReferenced" psd:joinManager="false" psd:ownedRelationship="false" psd:refType="oneToMany" psd:colName="FC_USERR_76" psd:id="76" psd:displayName="Roles" psd:description="" psd:order="4" name="roles" xmlns:q17="http://www.w3.org/2003/XMLSchema" type="q17:IDREFS" />
+  </xs:complexType>
+  <xs:complexType psd:tableName="T_ROLE_8_5" psd:id="8" psd:displayName="Role" psd:order="0" name="Role">
+    <xs:sequence>
+      <xs:element psd:key="true" psd:colName="C_NAME_70" psd:id="70" psd:displayName="Name" psd:description="Role's name" psd:order="0" minOccurs="0" name="Name" xmlns:q18="http://www.w3.org/2003/XMLSchema" type="q18:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="30" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_RTYPE_71" psd:id="71" psd:displayName="Type" psd:order="4" minOccurs="0" name="RType" xmlns:q19="http://www.w3.org/2003/XMLSchema" type="q19:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_TEXT_72" psd:id="72" psd:displayName="Text" psd:order="5" minOccurs="0" name="Text" xmlns:q20="http://www.w3.org/2003/XMLSchema" type="q20:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="150" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_ADDRESS_73" psd:id="73" psd:displayName="Address" psd:order="6" minOccurs="0" name="Address" xmlns:q21="http://www.w3.org/2003/XMLSchema" type="q21:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_MEMO_74" psd:id="74" psd:displayName="Memo" psd:order="7" minOccurs="0" name="Memo" xmlns:q22="http://www.w3.org/2003/XMLSchema" type="q22:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q23="http://www.w3.org/2003/XMLSchema" type="q23:ID" />
+    <xs:attribute psd:refClass="Role" psd:refAttr="parentRole" psd:ownership="looseReferenced" psd:joinManager="false" psd:ownedRelationship="false" psd:refType="oneToMany" psd:colName="FC_ROLE_77" psd:id="77" psd:displayName="SubRoles" psd:description="The sub roles" psd:order="1" name="subRoles" xmlns:q24="http://www.w3.org/2003/XMLSchema" type="q24:IDREFS" />
+    <xs:attribute psd:refClass="Role" psd:refAttr="subRoles" psd:usage="Result" psd:ownership="looseReferenced" psd:joinManager="false" psd:ownedRelationship="false" psd:refType="manyToOne" psd:colName="FC_ROLE_78" psd:id="78" psd:displayName="Parent Role" psd:description="The parent role" psd:order="2" name="parentRole" xmlns:q25="http://www.w3.org/2003/XMLSchema" type="q25:IDREF" />
+    <xs:attribute psd:refClass="UserRole" psd:refAttr="role" psd:ownership="looseReferenced" psd:joinManager="false" psd:ownedRelationship="false" psd:refType="oneToMany" psd:colName="FC_USERR_79" psd:id="79" psd:displayName="Users" psd:description="" psd:order="3" name="users" xmlns:q26="http://www.w3.org/2003/XMLSchema" type="q26:IDREFS" />
+  </xs:complexType>
+  <xs:complexType psd:tableName="T_USERROLE_9_5" psd:junction="true" psd:id="9" psd:displayName="UserRole" psd:order="0" name="UserRole">
+    <xs:sequence>
+      <xs:element psd:colName="C_DESCRIPTION_75" psd:id="75" psd:displayName="Description" psd:order="0" minOccurs="0" name="Description" xmlns:q27="http://www.w3.org/2003/XMLSchema" type="q27:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q28="http://www.w3.org/2003/XMLSchema" type="q28:ID" />
+    <xs:attribute psd:refClass="User" psd:refAttr="roles" psd:ownership="looseReferenced" psd:joinManager="false" psd:ownedRelationship="false" psd:refType="manyToOne" psd:colName="FC_USER_80" psd:id="80" psd:displayName="User" psd:description="" psd:order="1" name="user" xmlns:q29="http://www.w3.org/2003/XMLSchema" type="q29:IDREF" />
+    <xs:attribute psd:refClass="Role" psd:refAttr="users" psd:ownership="looseReferenced" psd:joinManager="false" psd:ownedRelationship="false" psd:refType="manyToOne" psd:colName="FC_ROLE_81" psd:id="81" psd:displayName="Role" psd:description="" psd:order="2" name="role" xmlns:q30="http://www.w3.org/2003/XMLSchema" type="q30:IDREF" />
+  </xs:complexType>
+</xs:schema>

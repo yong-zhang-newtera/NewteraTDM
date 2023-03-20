@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C01FCCBE-2299-4A5C-AB3E-2EF3B68122B4}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>ParserGen</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Newtera.ParserGen</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\antlr275\antlr275.csproj">
+      <Name>antlr275</Name>
+      <Project>{ABC28625-050B-4CD4-B7C0-5679894DF57A}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Converter\ConverterFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Converter\DataSourceConverterBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Converter\IDataSourceConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ParseTree\CreateDataColumnVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ParseTree\CreateDataRowVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ParseTree\DataGridSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ParseTree\DisplaySettingVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ParseTree\IParseTreeNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ParseTree\IParseTreeNodeVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ParseTree\ITextParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ParseTree\ParseTreeException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ParseTree\ParseTreeLiteralNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ParseTree\ParseTreeNodeBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ParseTree\ParseTreeNodeCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ParseTree\ParseTreeProcesor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ParseTree\ParseTreeRuleNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ParseTree\ParseTreeTokenNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ParseTree\ParseTreeTransformer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ParseTree\PredefinedTokens.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProjectModel\ConverterInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProjectModel\ElementFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProjectModel\ElementTypeEnum.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProjectModel\GrammarElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProjectModel\IProjectModelElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProjectModel\IProjectModelElementVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProjectModel\ParserElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProjectModel\ParserElementCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProjectModel\ProjectElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProjectModel\ProjectModelElementBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProjectModel\ProjectModelElementCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProjectModel\ProjectModelException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProjectModel\SampleElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProjectModel\SampleElementCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProjectModel\ValueChangedEventArgs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\MismatchedTokenLengthException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\SymbolAndPosition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\WildcardLexer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\ParserGen.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

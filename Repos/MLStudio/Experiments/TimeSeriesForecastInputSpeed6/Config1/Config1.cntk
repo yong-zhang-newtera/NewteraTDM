@@ -1,0 +1,107 @@
+# CNTK Machine Learning Configuration
+# commands to run
+command=Train:Test:Output
+modelPath = "model.dnn"
+deviceId = "auto"
+precision = float
+traceLevel = 0
+# Train command
+Train = {
+    action="train"
+
+    # configuration of data reading
+    reader = {
+        readerType = "CNTKTextFormatReader"
+        file = "C:\Newtera\ECM\src\MLStudio\Experiments\TimeSeriesForecastInputSpeed6\data\Train_Data.txt"
+        randomize = "true"
+        input = [
+            features = [
+                dim = $dimension$
+                format = "dense"
+            ]
+            labels = [
+                dim = $labelDimension$
+                format = "dense"
+            ]
+        ]
+    }
+
+    # network description
+    BrainScriptNetworkBuilder = {
+        model = Sequential (
+              RecurrentLSTMLayer {50, usePeepholes = true} : 
+              DenseLayer {$labelDimension$, bias=false} 
+        )
+        
+        z = model (features)
+        features=Input($dimension$)
+        labels=Input($labelDimension$)
+        
+        # loss and metric
+        ce = SquareError(labels, z)
+        
+        # node assignment
+        featureNodes    = (features)
+        labelNodes      = (labels)
+        criterionNodes  = (ce)
+        evaluationNodes = (ce)
+        outputNodes     = (z)
+
+    }
+
+    # configuration parameters of the SGD procedure
+    SGD = {
+        epochSize = 10000                 # =0 means size of the training set
+        minibatchSize = 128
+        learningRatesPerSample = 0.02*3:0.01  # gradient contribution from each sample
+        maxEpochs = 20
+        momentumAsTimeConstant = 1200
+    }
+
+}
+
+# Test command
+Test = {
+    action="test"
+
+    # configuration of data reading
+    reader = {
+        readerType = "CNTKTextFormatReader"
+        file = "C:\Newtera\ECM\src\MLStudio\Experiments\TimeSeriesForecastInputSpeed6\data\Test_Data.txt"
+        randomize = "false"
+        input = [
+            features = [
+                dim = $dimension$
+                format = "dense"
+            ]
+            labels = [
+                dim = $labelDimension$
+                format = "dense"
+            ]
+        ]
+    }
+
+}
+
+# Output command
+Output = {
+    action="write"
+
+    # configuration of data reading
+    reader = {
+        readerType = "CNTKTextFormatReader"
+        file = "C:\Newtera\ECM\src\MLStudio\Experiments\TimeSeriesForecastInputSpeed6\data\Eval_Data.txt"
+        randomize = "true"
+        input = [
+            features = [
+                dim = $dimension$
+                format = "dense"
+            ]
+        ]
+    }
+
+    outputPath = "output.txt"
+}
+
+dimension = 8
+labelDimension = 6

@@ -1,0 +1,1425 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.newtera.com/webservices/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://www.newtera.com/webservices/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.newtera.com/webservices/">
+      <s:element name="GetDataGridViewForClass">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="className" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDataGridViewForClassResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDataGridViewForClassResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDataGridViewForTaxon">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="taxonomyName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="taxonName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDataGridViewForTaxonResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDataGridViewForTaxonResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDataGridViewForRelatedClass">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="className" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="relatedClassAlias" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="relatedClassName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="objId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDataGridViewForRelatedClassResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDataGridViewForRelatedClassResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDataGridViewForArray">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="className" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="arrayName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDataGridViewForArrayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDataGridViewForArrayResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetXQueryForDataGridView">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetXQueryForDataGridViewResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetXQueryForDataGridViewResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BeginQuery">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="query" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="pageSize" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BeginQueryResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BeginQueryResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetNextResult">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="queryId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetNextResultResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetNextResultResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EndQuery">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="queryId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EndQueryResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetArrayData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="className" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="arrayName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="instanceId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetArrayDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetArrayDataResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IsDBA">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IsDBAResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="IsDBAResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveWorkingChartInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="chartType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="blockNum" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveWorkingChartInfoResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="SaveNamedChartInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="desc" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="chartType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="blockNum" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveNamedChartInfoResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="SaveNamedChartTemplate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="className" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="desc" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="chartType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveNamedChartTemplateResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="IsChartNameUnique">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IsChartNameUniqueResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="IsChartNameUniqueResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IsTemplateNameUnique">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="className" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IsTemplateNameUniqueResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="IsTemplateNameUniqueResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetChartInfos">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetChartInfosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetChartInfosResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetChartTemplates">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="className" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetChartTemplatesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetChartTemplatesResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetChartDefXmlById">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="chartId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="blockNum" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetChartDefXmlByIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetChartDefXmlByIdResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTemplateDefXmlById">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="templateId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTemplateDefXmlByIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTemplateDefXmlByIdResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteChartTemplateById">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="templateId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteChartTemplateByIdResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetExportTypesInXml">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetExportTypesInXmlResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetExportTypesInXmlResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetChartFormatsInXml">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetChartFormatsInXmlResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetChartFormatsInXmlResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAlgorithmTypesInXml">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetAlgorithmTypesInXmlResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAlgorithmTypesInXmlResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ExportDataToFile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dataGridViewXml" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fileName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="exportTypeName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="selectedLines" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ExportDataToFileResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="ExportArrayDataToFile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="className" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="arrayName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="instanceId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fileName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="exportTypeName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="selectedLines" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ExportArrayDataToFileResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="RunAlgorithmOnClassData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dataGridViewXml" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="algorithmName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="selectedLines" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RunAlgorithmOnClassDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RunAlgorithmOnClassDataResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RunAlgorithmOnArrayData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="className" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="arrayName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="instanceId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="algorithmName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="selectedCols" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="selectedRows" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RunAlgorithmOnArrayDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RunAlgorithmOnArrayDataResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetClassDataForPivotGrid">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dataGridViewXml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetClassDataForPivotGridResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetClassDataForPivotGridResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetArrayDataForPivotGrid">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="className" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="arrayName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="instanceId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetArrayDataForPivotGridResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetArrayDataForPivotGridResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetImageNames">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetImageNamesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetImageNamesResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetImageBytes">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="imageName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetImageBytesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetImageBytesResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="className" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateDataResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetDataGridViewForClassSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDataGridViewForClass" />
+  </wsdl:message>
+  <wsdl:message name="GetDataGridViewForClassSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDataGridViewForClassResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDataGridViewForTaxonSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDataGridViewForTaxon" />
+  </wsdl:message>
+  <wsdl:message name="GetDataGridViewForTaxonSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDataGridViewForTaxonResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDataGridViewForRelatedClassSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDataGridViewForRelatedClass" />
+  </wsdl:message>
+  <wsdl:message name="GetDataGridViewForRelatedClassSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDataGridViewForRelatedClassResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDataGridViewForArraySoapIn">
+    <wsdl:part name="parameters" element="tns:GetDataGridViewForArray" />
+  </wsdl:message>
+  <wsdl:message name="GetDataGridViewForArraySoapOut">
+    <wsdl:part name="parameters" element="tns:GetDataGridViewForArrayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetXQueryForDataGridViewSoapIn">
+    <wsdl:part name="parameters" element="tns:GetXQueryForDataGridView" />
+  </wsdl:message>
+  <wsdl:message name="GetXQueryForDataGridViewSoapOut">
+    <wsdl:part name="parameters" element="tns:GetXQueryForDataGridViewResponse" />
+  </wsdl:message>
+  <wsdl:message name="BeginQuerySoapIn">
+    <wsdl:part name="parameters" element="tns:BeginQuery" />
+  </wsdl:message>
+  <wsdl:message name="BeginQuerySoapOut">
+    <wsdl:part name="parameters" element="tns:BeginQueryResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetNextResultSoapIn">
+    <wsdl:part name="parameters" element="tns:GetNextResult" />
+  </wsdl:message>
+  <wsdl:message name="GetNextResultSoapOut">
+    <wsdl:part name="parameters" element="tns:GetNextResultResponse" />
+  </wsdl:message>
+  <wsdl:message name="EndQuerySoapIn">
+    <wsdl:part name="parameters" element="tns:EndQuery" />
+  </wsdl:message>
+  <wsdl:message name="EndQuerySoapOut">
+    <wsdl:part name="parameters" element="tns:EndQueryResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetArrayDataSoapIn">
+    <wsdl:part name="parameters" element="tns:GetArrayData" />
+  </wsdl:message>
+  <wsdl:message name="GetArrayDataSoapOut">
+    <wsdl:part name="parameters" element="tns:GetArrayDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="IsDBASoapIn">
+    <wsdl:part name="parameters" element="tns:IsDBA" />
+  </wsdl:message>
+  <wsdl:message name="IsDBASoapOut">
+    <wsdl:part name="parameters" element="tns:IsDBAResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveWorkingChartInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:SaveWorkingChartInfo" />
+  </wsdl:message>
+  <wsdl:message name="SaveWorkingChartInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:SaveWorkingChartInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveNamedChartInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:SaveNamedChartInfo" />
+  </wsdl:message>
+  <wsdl:message name="SaveNamedChartInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:SaveNamedChartInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveNamedChartTemplateSoapIn">
+    <wsdl:part name="parameters" element="tns:SaveNamedChartTemplate" />
+  </wsdl:message>
+  <wsdl:message name="SaveNamedChartTemplateSoapOut">
+    <wsdl:part name="parameters" element="tns:SaveNamedChartTemplateResponse" />
+  </wsdl:message>
+  <wsdl:message name="IsChartNameUniqueSoapIn">
+    <wsdl:part name="parameters" element="tns:IsChartNameUnique" />
+  </wsdl:message>
+  <wsdl:message name="IsChartNameUniqueSoapOut">
+    <wsdl:part name="parameters" element="tns:IsChartNameUniqueResponse" />
+  </wsdl:message>
+  <wsdl:message name="IsTemplateNameUniqueSoapIn">
+    <wsdl:part name="parameters" element="tns:IsTemplateNameUnique" />
+  </wsdl:message>
+  <wsdl:message name="IsTemplateNameUniqueSoapOut">
+    <wsdl:part name="parameters" element="tns:IsTemplateNameUniqueResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetChartInfosSoapIn">
+    <wsdl:part name="parameters" element="tns:GetChartInfos" />
+  </wsdl:message>
+  <wsdl:message name="GetChartInfosSoapOut">
+    <wsdl:part name="parameters" element="tns:GetChartInfosResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetChartTemplatesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetChartTemplates" />
+  </wsdl:message>
+  <wsdl:message name="GetChartTemplatesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetChartTemplatesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetChartDefXmlByIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetChartDefXmlById" />
+  </wsdl:message>
+  <wsdl:message name="GetChartDefXmlByIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetChartDefXmlByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTemplateDefXmlByIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTemplateDefXmlById" />
+  </wsdl:message>
+  <wsdl:message name="GetTemplateDefXmlByIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTemplateDefXmlByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteChartTemplateByIdSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteChartTemplateById" />
+  </wsdl:message>
+  <wsdl:message name="DeleteChartTemplateByIdSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteChartTemplateByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetExportTypesInXmlSoapIn">
+    <wsdl:part name="parameters" element="tns:GetExportTypesInXml" />
+  </wsdl:message>
+  <wsdl:message name="GetExportTypesInXmlSoapOut">
+    <wsdl:part name="parameters" element="tns:GetExportTypesInXmlResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetChartFormatsInXmlSoapIn">
+    <wsdl:part name="parameters" element="tns:GetChartFormatsInXml" />
+  </wsdl:message>
+  <wsdl:message name="GetChartFormatsInXmlSoapOut">
+    <wsdl:part name="parameters" element="tns:GetChartFormatsInXmlResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAlgorithmTypesInXmlSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAlgorithmTypesInXml" />
+  </wsdl:message>
+  <wsdl:message name="GetAlgorithmTypesInXmlSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAlgorithmTypesInXmlResponse" />
+  </wsdl:message>
+  <wsdl:message name="ExportDataToFileSoapIn">
+    <wsdl:part name="parameters" element="tns:ExportDataToFile" />
+  </wsdl:message>
+  <wsdl:message name="ExportDataToFileSoapOut">
+    <wsdl:part name="parameters" element="tns:ExportDataToFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="ExportArrayDataToFileSoapIn">
+    <wsdl:part name="parameters" element="tns:ExportArrayDataToFile" />
+  </wsdl:message>
+  <wsdl:message name="ExportArrayDataToFileSoapOut">
+    <wsdl:part name="parameters" element="tns:ExportArrayDataToFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="RunAlgorithmOnClassDataSoapIn">
+    <wsdl:part name="parameters" element="tns:RunAlgorithmOnClassData" />
+  </wsdl:message>
+  <wsdl:message name="RunAlgorithmOnClassDataSoapOut">
+    <wsdl:part name="parameters" element="tns:RunAlgorithmOnClassDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="RunAlgorithmOnArrayDataSoapIn">
+    <wsdl:part name="parameters" element="tns:RunAlgorithmOnArrayData" />
+  </wsdl:message>
+  <wsdl:message name="RunAlgorithmOnArrayDataSoapOut">
+    <wsdl:part name="parameters" element="tns:RunAlgorithmOnArrayDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetClassDataForPivotGridSoapIn">
+    <wsdl:part name="parameters" element="tns:GetClassDataForPivotGrid" />
+  </wsdl:message>
+  <wsdl:message name="GetClassDataForPivotGridSoapOut">
+    <wsdl:part name="parameters" element="tns:GetClassDataForPivotGridResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetArrayDataForPivotGridSoapIn">
+    <wsdl:part name="parameters" element="tns:GetArrayDataForPivotGrid" />
+  </wsdl:message>
+  <wsdl:message name="GetArrayDataForPivotGridSoapOut">
+    <wsdl:part name="parameters" element="tns:GetArrayDataForPivotGridResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetImageNamesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetImageNames" />
+  </wsdl:message>
+  <wsdl:message name="GetImageNamesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetImageNamesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetImageBytesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetImageBytes" />
+  </wsdl:message>
+  <wsdl:message name="GetImageBytesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetImageBytesResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateDataSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateData" />
+  </wsdl:message>
+  <wsdl:message name="UpdateDataSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateDataResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ActiveXControlServiceSoap">
+    <wsdl:operation name="GetDataGridViewForClass">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets a DataGridViewModel object for a class in xml string.</wsdl:documentation>
+      <wsdl:input message="tns:GetDataGridViewForClassSoapIn" />
+      <wsdl:output message="tns:GetDataGridViewForClassSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDataGridViewForTaxon">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets a DataGridViewModel object for a taxon node in xml string.</wsdl:documentation>
+      <wsdl:input message="tns:GetDataGridViewForTaxonSoapIn" />
+      <wsdl:output message="tns:GetDataGridViewForTaxonSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDataGridViewForRelatedClass">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets a DataGridViewModel object for getting instances from a related class in xml string.</wsdl:documentation>
+      <wsdl:input message="tns:GetDataGridViewForRelatedClassSoapIn" />
+      <wsdl:output message="tns:GetDataGridViewForRelatedClassSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDataGridViewForArray">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets a DataGridViewModel object for an array in xml string.</wsdl:documentation>
+      <wsdl:input message="tns:GetDataGridViewForArraySoapIn" />
+      <wsdl:output message="tns:GetDataGridViewForArraySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetXQueryForDataGridView">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets an XQuery build based on the search criteria defined in a DataGridViewModel represented by an xml</wsdl:documentation>
+      <wsdl:input message="tns:GetXQueryForDataGridViewSoapIn" />
+      <wsdl:output message="tns:GetXQueryForDataGridViewSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="BeginQuery">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Prepare to execute a lenghty query.</wsdl:documentation>
+      <wsdl:input message="tns:BeginQuerySoapIn" />
+      <wsdl:output message="tns:BeginQuerySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetNextResult">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get a page of result in XmlDocument.</wsdl:documentation>
+      <wsdl:input message="tns:GetNextResultSoapIn" />
+      <wsdl:output message="tns:GetNextResultSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="EndQuery">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Finish a lengthy query by closing the reader.</wsdl:documentation>
+      <wsdl:input message="tns:EndQuerySoapIn" />
+      <wsdl:output message="tns:EndQuerySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetArrayData">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get data of an array.</wsdl:documentation>
+      <wsdl:input message="tns:GetArrayDataSoapIn" />
+      <wsdl:output message="tns:GetArrayDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="IsDBA">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets information indicating if the user is a DBA to the database</wsdl:documentation>
+      <wsdl:input message="tns:IsDBASoapIn" />
+      <wsdl:output message="tns:IsDBASoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveWorkingChartInfo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Save the chart data as the working chart.</wsdl:documentation>
+      <wsdl:input message="tns:SaveWorkingChartInfoSoapIn" />
+      <wsdl:output message="tns:SaveWorkingChartInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveNamedChartInfo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Save the chart to database with the given name.</wsdl:documentation>
+      <wsdl:input message="tns:SaveNamedChartInfoSoapIn" />
+      <wsdl:output message="tns:SaveNamedChartInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveNamedChartTemplate">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Save the chart template to database with the given name.</wsdl:documentation>
+      <wsdl:input message="tns:SaveNamedChartTemplateSoapIn" />
+      <wsdl:output message="tns:SaveNamedChartTemplateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="IsChartNameUnique">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Check if a chart with the given name has already existed in the database.</wsdl:documentation>
+      <wsdl:input message="tns:IsChartNameUniqueSoapIn" />
+      <wsdl:output message="tns:IsChartNameUniqueSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="IsTemplateNameUnique">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Check if a template with the given name has already existed for a class.</wsdl:documentation>
+      <wsdl:input message="tns:IsTemplateNameUniqueSoapIn" />
+      <wsdl:output message="tns:IsTemplateNameUniqueSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetChartInfos">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets xml that is text represention of a collection of ChartInfo objects of given connectionStr</wsdl:documentation>
+      <wsdl:input message="tns:GetChartInfosSoapIn" />
+      <wsdl:output message="tns:GetChartInfosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetChartTemplates">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets xml that is text represention of a collection of ChartInfo objects for templates</wsdl:documentation>
+      <wsdl:input message="tns:GetChartTemplatesSoapIn" />
+      <wsdl:output message="tns:GetChartTemplatesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetChartDefXmlById">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets xml that is text represention of a ChartDef object given a chart id.</wsdl:documentation>
+      <wsdl:input message="tns:GetChartDefXmlByIdSoapIn" />
+      <wsdl:output message="tns:GetChartDefXmlByIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTemplateDefXmlById">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets xml that is text represention of a ChartDef object for a template.</wsdl:documentation>
+      <wsdl:input message="tns:GetTemplateDefXmlByIdSoapIn" />
+      <wsdl:output message="tns:GetTemplateDefXmlByIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteChartTemplateById">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Delete a chart template of a given id.</wsdl:documentation>
+      <wsdl:input message="tns:DeleteChartTemplateByIdSoapIn" />
+      <wsdl:output message="tns:DeleteChartTemplateByIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetExportTypesInXml">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets xml representing a collection of ExportType objects.</wsdl:documentation>
+      <wsdl:input message="tns:GetExportTypesInXmlSoapIn" />
+      <wsdl:output message="tns:GetExportTypesInXmlSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetChartFormatsInXml">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets xml representing a collection of ExportType objects.</wsdl:documentation>
+      <wsdl:input message="tns:GetChartFormatsInXmlSoapIn" />
+      <wsdl:output message="tns:GetChartFormatsInXmlSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAlgorithmTypesInXml">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets xml representing a collection of AlgorithmType objects.</wsdl:documentation>
+      <wsdl:input message="tns:GetAlgorithmTypesInXmlSoapIn" />
+      <wsdl:output message="tns:GetAlgorithmTypesInXmlSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportDataToFile">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Export the data represented by a DataGridView object to a specified file to be downloaded by a client.</wsdl:documentation>
+      <wsdl:input message="tns:ExportDataToFileSoapIn" />
+      <wsdl:output message="tns:ExportDataToFileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportArrayDataToFile">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Export the data represented by a DataGridView object to a specified file to be downloaded by a client.</wsdl:documentation>
+      <wsdl:input message="tns:ExportArrayDataToFileSoapIn" />
+      <wsdl:output message="tns:ExportArrayDataToFileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RunAlgorithmOnClassData">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Run an algorithm on the data represented by a DataGridView object and return a result.</wsdl:documentation>
+      <wsdl:input message="tns:RunAlgorithmOnClassDataSoapIn" />
+      <wsdl:output message="tns:RunAlgorithmOnClassDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RunAlgorithmOnArrayData">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Run an algorithm on the specified array data.</wsdl:documentation>
+      <wsdl:input message="tns:RunAlgorithmOnArrayDataSoapIn" />
+      <wsdl:output message="tns:RunAlgorithmOnArrayDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetClassDataForPivotGrid">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Prepare the data represented by a DataGridView object for showing in a pivot grid.</wsdl:documentation>
+      <wsdl:input message="tns:GetClassDataForPivotGridSoapIn" />
+      <wsdl:output message="tns:GetClassDataForPivotGridSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetArrayDataForPivotGrid">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Prepare the array data for showing in a pivot grid.</wsdl:documentation>
+      <wsdl:input message="tns:GetArrayDataForPivotGridSoapIn" />
+      <wsdl:output message="tns:GetArrayDataForPivotGridSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetImageNames">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets names of all user provided images.</wsdl:documentation>
+      <wsdl:input message="tns:GetImageNamesSoapIn" />
+      <wsdl:output message="tns:GetImageNamesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetImageBytes">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets a serailzed image data representing an user provided image</wsdl:documentation>
+      <wsdl:input message="tns:GetImageBytesSoapIn" />
+      <wsdl:output message="tns:GetImageBytesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateData">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Update data instances whose attribute values have been changed indicated in the xml data</wsdl:documentation>
+      <wsdl:input message="tns:UpdateDataSoapIn" />
+      <wsdl:output message="tns:UpdateDataSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ActiveXControlServiceSoap" type="tns:ActiveXControlServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetDataGridViewForClass">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetDataGridViewForClass" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataGridViewForTaxon">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetDataGridViewForTaxon" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataGridViewForRelatedClass">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetDataGridViewForRelatedClass" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataGridViewForArray">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetDataGridViewForArray" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetXQueryForDataGridView">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetXQueryForDataGridView" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BeginQuery">
+      <soap:operation soapAction="http://www.newtera.com/webservices/BeginQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetNextResult">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetNextResult" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EndQuery">
+      <soap:operation soapAction="http://www.newtera.com/webservices/EndQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetArrayData">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetArrayData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsDBA">
+      <soap:operation soapAction="http://www.newtera.com/webservices/IsDBA" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveWorkingChartInfo">
+      <soap:operation soapAction="http://www.newtera.com/webservices/SaveWorkingChartInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveNamedChartInfo">
+      <soap:operation soapAction="http://www.newtera.com/webservices/SaveNamedChartInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveNamedChartTemplate">
+      <soap:operation soapAction="http://www.newtera.com/webservices/SaveNamedChartTemplate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsChartNameUnique">
+      <soap:operation soapAction="http://www.newtera.com/webservices/IsChartNameUnique" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsTemplateNameUnique">
+      <soap:operation soapAction="http://www.newtera.com/webservices/IsTemplateNameUnique" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetChartInfos">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetChartInfos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetChartTemplates">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetChartTemplates" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetChartDefXmlById">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetChartDefXmlById" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTemplateDefXmlById">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetTemplateDefXmlById" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteChartTemplateById">
+      <soap:operation soapAction="http://www.newtera.com/webservices/DeleteChartTemplateById" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExportTypesInXml">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetExportTypesInXml" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetChartFormatsInXml">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetChartFormatsInXml" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAlgorithmTypesInXml">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetAlgorithmTypesInXml" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportDataToFile">
+      <soap:operation soapAction="http://www.newtera.com/webservices/ExportDataToFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportArrayDataToFile">
+      <soap:operation soapAction="http://www.newtera.com/webservices/ExportArrayDataToFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RunAlgorithmOnClassData">
+      <soap:operation soapAction="http://www.newtera.com/webservices/RunAlgorithmOnClassData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RunAlgorithmOnArrayData">
+      <soap:operation soapAction="http://www.newtera.com/webservices/RunAlgorithmOnArrayData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetClassDataForPivotGrid">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetClassDataForPivotGrid" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetArrayDataForPivotGrid">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetArrayDataForPivotGrid" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetImageNames">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetImageNames" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetImageBytes">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetImageBytes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateData">
+      <soap:operation soapAction="http://www.newtera.com/webservices/UpdateData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ActiveXControlServiceSoap12" type="tns:ActiveXControlServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetDataGridViewForClass">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetDataGridViewForClass" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataGridViewForTaxon">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetDataGridViewForTaxon" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataGridViewForRelatedClass">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetDataGridViewForRelatedClass" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataGridViewForArray">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetDataGridViewForArray" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetXQueryForDataGridView">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetXQueryForDataGridView" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BeginQuery">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/BeginQuery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetNextResult">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetNextResult" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EndQuery">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/EndQuery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetArrayData">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetArrayData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsDBA">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/IsDBA" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveWorkingChartInfo">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/SaveWorkingChartInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveNamedChartInfo">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/SaveNamedChartInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveNamedChartTemplate">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/SaveNamedChartTemplate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsChartNameUnique">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/IsChartNameUnique" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsTemplateNameUnique">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/IsTemplateNameUnique" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetChartInfos">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetChartInfos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetChartTemplates">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetChartTemplates" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetChartDefXmlById">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetChartDefXmlById" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTemplateDefXmlById">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetTemplateDefXmlById" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteChartTemplateById">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/DeleteChartTemplateById" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExportTypesInXml">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetExportTypesInXml" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetChartFormatsInXml">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetChartFormatsInXml" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAlgorithmTypesInXml">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetAlgorithmTypesInXml" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportDataToFile">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/ExportDataToFile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportArrayDataToFile">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/ExportArrayDataToFile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RunAlgorithmOnClassData">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/RunAlgorithmOnClassData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RunAlgorithmOnArrayData">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/RunAlgorithmOnArrayData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetClassDataForPivotGrid">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetClassDataForPivotGrid" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetArrayDataForPivotGrid">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetArrayDataForPivotGrid" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetImageNames">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetImageNames" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetImageBytes">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetImageBytes" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateData">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/UpdateData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ActiveXControlService">
+    <wsdl:port name="ActiveXControlServiceSoap" binding="tns:ActiveXControlServiceSoap">
+      <soap:address location="http://localhost/Newtera/WebService/ActiveXControlWebService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ActiveXControlServiceSoap12" binding="tns:ActiveXControlServiceSoap12">
+      <soap12:address location="http://localhost/Newtera/WebService/ActiveXControlWebService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Simple.UnknownDataType" xml:space="preserve">
+    <value>Unknown data type</value>
+  </data>
+  <data name="Simple.WrongFullTextIndexType" xml:space="preserve">
+    <value>Full-text Search only works on attribute of Text type</value>
+  </data>
+  <data name="Simple.WrongHistoryEditType" xml:space="preserve">
+    <value>HistoryEdit only works on attribute of Text type</value>
+  </data>
+  <data name="Simple.UnknownConstraint" xml:space="preserve">
+    <value>The referring constraint doesn't exist</value>
+  </data>
+  <data name="Simple.IncorrectEnumDataType" xml:space="preserve">
+    <value>The data type of an enum constraint with multiple selections must be integer</value>
+  </data>
+  <data name="Simple.InvalidAutoIncType" xml:space="preserve">
+    <value>Default data type of an auto-incremental attribute must be of Integer type</value>
+  </data>
+  <data name="Enum.MissingValues" xml:space="preserve">
+    <value>The enum constraint doesn't have values specified</value>
+  </data>
+  <data name="Range.InvalidMinMax" xml:space="preserve">
+    <value>The minimum value is greater than maximum value</value>
+  </data>
+  <data name="Pattern.MissingValue" xml:space="preserve">
+    <value>The pattern value is missing</value>
+  </data>
+  <data name="Relationship.MissingLinkedClass" xml:space="preserve">
+    <value>The linked class does not exist anymore.</value>
+  </data>
+  <data name="Relationship.MissingPrimaryKeys" xml:space="preserve">
+    <value>The linked class does not have primary keys</value>
+  </data>
+  <data name="Simple.StringLengthTooBig" xml:space="preserve">
+    <value>The maximum length of a String type is </value>
+  </data>
+  <data name="List.MissingValue" xml:space="preserve">
+    <value>The handler value is missing</value>
+  </data>
+  <data name="Array.UnknownElementDataType" xml:space="preserve">
+    <value>Unknow array element data type</value>
+  </data>
+  <data name="Array.IncorrectDimension" xml:space="preserve">
+    <value>The array attribute only allows an array with 1 or 2 dimensions</value>
+  </data>
+  <data name="Simple.IllegalRequiredAttribute" xml:space="preserve">
+    <value>Required attribute is not allowed since the owner class has already had instances. You have to provide a default value or delete the existing instances.</value>
+  </data>
+  <data name="Simple.IllegalUniqueAttribute" xml:space="preserve">
+    <value>The unique attribute is not allowed since the owner class has already had instances. You have to delete all the instances first.</value>
+  </data>
+  <data name="Simple.IllegalAutoIncrementAttribute" xml:space="preserve">
+    <value>Unable to change auto-increment value since the column has been created in the database.</value>
+  </data>
+  <data name="Class.CaptionTooLong" xml:space="preserve">
+    <value>The length of a display name must be less than 100 characters</value>
+  </data>
+  <data name="Simple.CaptionTooLong" xml:space="preserve">
+    <value>The length of a display name has to be less than 100 characters</value>
+  </data>
+  <data name="Relationship.CaptionTooLong" xml:space="preserve">
+    <value>The length of a display name has to be less than 100 characters</value>
+  </data>
+  <data name="Array.CaptionTooLong" xml:space="preserve">
+    <value>The length of a display name must be less than 100 characters</value>
+  </data>
+  <data name="Simple.MissingPKForFullText" xml:space="preserve">
+    <value>To define a full-text search attribute, a Primary Key must exist in the class.</value>
+  </data>
+  <data name="Simple.MoreThanOneFullTextAttributes" xml:space="preserve">
+    <value>Only one full-text search attribute is allowed in a class.</value>
+  </data>
+  <data name="Class.IllegalPrimaryKey" xml:space="preserve">
+    <value>Change of the primary key(s) is not allowed since the owner class has already had instances. You have to provide a default value or delete the existing instances first.</value>
+  </data>
+  <data name="Class.TooManyAutoIncAttributes" xml:space="preserve">
+    <value>Only one auto-increment attribute is allowed for a class, including the inherited one.</value>
+  </data>
+  <data name="Array.DuplicatedColumnTitle" xml:space="preserve">
+    <value>Duplicate titles of array columns are not allowed.</value>
+  </data>
+  <data name="Virtual.UnknownDataType" xml:space="preserve">
+    <value>Unknown data type</value>
+  </data>
+  <data name="Virtual.UnspecifiedCode" xml:space="preserve">
+    <value>Code for virtual attribute has not been specified</value>
+  </data>
+  <data name="Simple.InvalidEnumDataType" xml:space="preserve">
+    <value>The data type has to be Integer type when the enum values are multiply selectable.</value>
+  </data>
+  <data name="Simple.InvalidSingleEnumDataType" xml:space="preserve">
+    <value>The data type has to be String type when the enum values are single selectable.</value>
+  </data>
+  <data name="Constraint.InvalidSelectionModeChange" xml:space="preserve">
+    <value>Changing of the selection mode is disallowed, because the constraint has been referenced by an attribute  {1} in a non-empty class {0}. Please delete the data instances in the referencing class first. </value>
+  </data>
+  <data name="Constraint.InvalidTypeChange" xml:space="preserve">
+    <value>Changing of the data type is disallowed, because the constraint has been referenced by an attribute  {1} in a non-empty class {0}. Please delete the data instances in the referencing class first. </value>
+  </data>
+  <data name="Simple.InvalidConstraintChange" xml:space="preserve">
+    <value>Unable to set a constraint to the attribute since the class has already had data instances. Please delete the existing data instances first.</value>
+  </data>
+  <data name="Simple.InvalidFullTextChange" xml:space="preserve">
+    <value>Unable to change the attribute to become full-text searchable since the class already has had data instances. Please delete existing data instances first or you can create a new attribute for full-text search purpose.</value>
+  </data>
+  <data name="Simple.InvalidHistoryEditChange" xml:space="preserve">
+    <value>Unable to change the attribute to become history since the class already has had data instances. Please delete existing data instances first or you can create a new attribute for history purpose.</value>
+  </data>
+  <data name="Simple.InvalidRichTextChange" xml:space="preserve">
+    <value>Unable to change the attribute to become rich text since the class already has had data instances. Please delete existing data instances first or you can create a new attribute for rich text purpose.</value>
+  </data>
+  <data name="Simple.InvalidTypeChange" xml:space="preserve">
+    <value>Change of data type is disallowed because the class already has had data instances. Please delete the data instances first.</value>
+  </data>
+  <data name="Simple.InvalidUseOfTextType" xml:space="preserve">
+    <value>Only full-text searchable or history edit attribute can use Text data type.</value>
+  </data>
+  <data name="Constraint.InvalidDataType" xml:space="preserve">
+    <value>Invalid data type for constraint</value>
+  </data>
+  <data name="Simple.InvalidIndexType" xml:space="preserve">
+    <value>Simple Attribute with Text data type cannot be indexed.</value>
+  </data>
+  <data name="Simple.NormalIndexExisted" xml:space="preserve">
+    <value>The attribute has been indexed already, therefore, cannot create a full-text index.</value>
+  </data>
+  <data name="Simple.InvalidUsageForUniqueKey" xml:space="preserve">
+    <value>The attribute is part of a class unique constraint, therefore, its Usage has to be Excluded.</value>
+  </data>
+  <data name="Simple.InvalidDefaultChange" xml:space="preserve">
+    <value>Change of a default value is disallowed because the class already has had data instances. Please delete the data instances first.</value>
+  </data>
+  <data name="Simple.InvalidAutoIncForFullText" xml:space="preserve">
+    <value>The full-text searchable attribute doesn't allow being auto-incremental</value>
+  </data>
+  <data name="Simple.InvalidAutoIncForHistoryEdit" xml:space="preserve">
+    <value>The history edit attribute doesn't allow being auto-incremental</value>
+  </data>
+  <data name="Simple.InvalidDefaultForFullText" xml:space="preserve">
+    <value>The full-text searchable attribute doesn't allow to have a default value</value>
+  </data>
+  <data name="Simple.InvalidDefaultForHistoryEdit" xml:space="preserve">
+    <value>The history edit attribute doesn't allow to have a default value</value>
+  </data>
+  <data name="Simple.InvalidUniqueForFullText" xml:space="preserve">
+    <value>The full-text searchable attribute doesn't allow being unique</value>
+  </data>
+  <data name="Simple.InvalidUniqueForHistoryEdit" xml:space="preserve">
+    <value>The History Edit attribute doesn't allow being unique</value>
+  </data>
+  <data name="Simple.InvalidPKDataTypeChange" xml:space="preserve">
+    <value>Do not allow to change the data type of a primary key once the schema has been saved to the database.</value>
+  </data>
+  <data name="Class.IllegalUniqueKey" xml:space="preserve">
+    <value>Change of the unique keys is not allowed since the owner class has already had instances. You have to delete the existing instances.</value>
+  </data>
+  <data name="Simple.RequiredAttributeInvalidForFullText" xml:space="preserve">
+    <value>Required Attribute cannot be used as a full-text search attribute</value>
+  </data>
+  <data name="Simple.RequiredAttributeInvalidForHistoryEdit" xml:space="preserve">
+    <value>Required Attribute cannot be used as a History Edit attribute</value>
+  </data>
+  <data name="Simple.InvalidCustomAutoIncType" xml:space="preserve">
+    <value>The auto-incremental attribute with a custom value generator must have a data type of String</value>
+  </data>
+  <data name="Simple.InvalidValueGenerator" xml:space="preserve">
+    <value>The generator definition is invalid or the generator doesn't exist</value>
+  </data>
+  <data name="Simple.UnableToChangeTextBack" xml:space="preserve">
+    <value>Unable to change the type of an attribute from Text once it has been created. Please delete it instead.</value>
+  </data>
+  <data name="Class.JunctionNoPK" xml:space="preserve">
+    <value>A junction cannot have primary keys</value>
+  </data>
+  <data name="Class.JunctionNoUC" xml:space="preserve">
+    <value>A junction class cannot have unique keys</value>
+  </data>
+  <data name="Class.NoRootJunction" xml:space="preserve">
+    <value>A junction class must be a root class and must not have subclasses.</value>
+  </data>
+  <data name="Class.TwoManyToOneRelationship" xml:space="preserve">
+    <value>A junction must and only have two many-to-one relationship attributes</value>
+  </data>
+  <data name="Simple.UnableToChangeBackFullText" xml:space="preserve">
+    <value>The attribute has been configured in the database for the full-text search that cannot be undone. Please delete it instead.</value>
+  </data>
+  <data name="Simple.UnableToChangeBackHistoryEdit" xml:space="preserve">
+    <value>The attribute has been configured in the database for history that cannot be undone. Please delete it instead.</value>
+  </data>
+  <data name="Simple.UnableToChangeBackRichText" xml:space="preserve">
+    <value>The attribute has been configured in the database for rich text that cannot be undone. Please delete it instead.</value>
+  </data>
+  <data name="Simple.InvalidStringMinLength" xml:space="preserve">
+    <value>The value of min length cannot be less than zero or greater than that of the max length</value>
+  </data>
+  <data name="Simple.StringLengthTooShort" xml:space="preserve">
+    <value>The value of the maximum length cannot be less than  </value>
+  </data>
+  <data name="Simple.InvalidMaxLengthChange" xml:space="preserve">
+    <value>Change of max length is disallowed because the class already has had data instances. Please delete the data instances first.</value>
+  </data>
+  <data name="Simple.InvalidMinLengthChange" xml:space="preserve">
+    <value>Change of min length is disallowed because the class already has had data instances. Please delete the data instances first.</value>
+  </data>
+  <data name="Simple.InvalidGoodForFullTextSearchChange" xml:space="preserve">
+    <value>Unable to set the value to true since the attribute is a full-text searchable attribute</value>
+  </data>
+  <data name="Simple.IsGoodForFullTextInvalidForFullText" xml:space="preserve">
+    <value>Unable to set the value to true since the 'Is Good For Full-text search' has been set to true</value>
+  </data>
+  <data name="Constraint.InvalidMinMaxValueChange" xml:space="preserve">
+    <value>Changing of the min or max value may cause data integrity problem, because the constraint has been referenced by an attribute  {1} in a non-empty class {0}. Please delete the data instances in the referencing class first. </value>
+  </data>
+  <data name="Class.NoResultAttributes" xml:space="preserve">
+    <value>None of the attributes in the class and its parent classes have the "Usage" setting to Included</value>
+  </data>
+  <data name="Simple.InlineEditInvalidAutoAttribute" xml:space="preserve">
+    <value>The attribute with auto-incremental values is not allowed for inline editing</value>
+  </data>
+  <data name="Simple.InlineEditInvalidUniqueAttribute" xml:space="preserve">
+    <value>The attribute with unique values is not allowed for inline editing</value>
+  </data>
+  <data name="Simple.InlineEditInvalidMultiEnumAttribute" xml:space="preserve">
+    <value>Attribute that has an enum constraint with multiple choices cannot be used for inline-editing</value>
+  </data>
+  <data name="Relationship.InvalidForIndex" xml:space="preserve">
+    <value>The relationship doesn't have a foreign key, therefore, cannot be index.</value>
+  </data>
+  <data name="Simple.InvalidDefaultDateTimeValue" xml:space="preserve">
+    <value>Invalid Date or DateTime format</value>
+  </data>
+  <data name="Simple.HistoryEditInvalidForSearch" xml:space="preserve">
+    <value>The usage of a History Edit attribute has to be Excluded</value>
+  </data>
+  <data name="Simple.RichTextInvalidForSearch" xml:space="preserve">
+    <value>The usage of a rich text attribute has to be Excluded</value>
+  </data>
+  <data name="Simple.InputMaskNotAllowedEncrypted" xml:space="preserve">
+    <value>Attribute with input mask is not allowed to be encrypted</value>
+  </data>
+  <data name="Simple.CascadedAttributeNotFound" xml:space="preserve">
+    <value>Unable to find the indicated cascaded attribute</value>
+  </data>
+  <data name="Simple.InvalidCascadedAttributeConstraint" xml:space="preserve">
+    <value>The cascaded attribute must have a conditional-based list constraint</value>
+  </data>
+  <data name="Simple.InvalidUseOfCascadeAttribute" xml:space="preserve">
+    <value>The cascaded attribute has a parent attribute defined, therefore, cannot be used as a cascaded attribute</value>
+  </data>
+</root>

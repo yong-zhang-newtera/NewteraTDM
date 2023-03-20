@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<mainmenu>
+  <item Text="导出" Name="Exports">
+  </item>
+  <item Text="绘图" Name="Charts">
+   	<item Text="曲线图" Name="Charts_Line" NavigateUrl="javascript:OpenChartWindow('LineChartWizard.aspx')" />
+        <item Text="离线绘图" Name="Charts_Offline" NavigateUrl="javascript:OpenChartWindow('OffLineChartWizard.aspx')" />
+  </item>
+</mainmenu>

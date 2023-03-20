@@ -1,0 +1,469 @@
+// XQuery grammar file as an input to ANTLR parser generator
+
+header 
+{
+}
+
+options {
+    language  = "CSharp";
+    namespace = "Precom.Data.Engine.Interpreter.Parser";          // encapsulate code in this namespace
+}
+
+{
+   // global code stuff that will be included in the source file just before the 'XQueryParser' class below
+	using System.Collections;
+	using Precom.Data.Engine.Interpreter;
+	using Precom.Data.Engine.Vdom;
+}
+
+class XQueryParser extends Parser;
+options {
+	k = 2;  // Two token ahead
+	buildAST=true;
+	ASTLabelType="IExpr";
+}
+
+tokens {
+	Name<AST=Precom.Data.Engine.Interpreter.DummyNode>;
+}
+
+{
+   // additional methods and members for the generated 'MyParser' class
+	Interpreter _interpreter;
+
+	public XQueryParser(Interpreter interpreter, XQueryLexer lexer) : base(lexer, 1) {
+		_interpreter = interpreter;
+	}
+}
+
+start! :
+    a:queryModule { #start = #a; }
+;
+
+/** [2] **/
+queryModule! :
+	(importAs)* b:expression  { #queryModule = #b; }
+;
+
+importAs! :
+	"import"! Name "as"! Name
+;
+
+exprSequence!
+{ ExprCollection exprs = new ExprCollection();}
+:
+	a:expression {exprs.Add(#a);} ((COMMA b:expression {exprs.Add(#b);})*)
+	{
+		#exprSequence = exprs;
+	}
+;
+
+expression! : 
+//TODO make this work can improve speed of parser because pathExpression is a common one
+//	  (pathExpression)=>pathExpression 
+	a:basicExpression { #expression = #a;}
+;
+		
+pathExpression!
+:
+		a:variable b:path { #pathExpression = new Path(_interpreter, (ExprCollection) #b, #a); }
+      | c:functionCall d:path { #pathExpression = new Path(_interpreter, (ExprCollection) #d, #c); }     
+      | e:path { #pathExpression = new Path(_interpreter, (ExprCollection) #e, null); }
+;
+
+path!
+{
+	ExprCollection steps = new ExprCollection();
+}
+: (a:step { steps.Add(#a); })+
+	{
+		#path = steps;
+	}
+;
+
+step!
+{
+	IExpr qualifier = null;
+	string axis = "/";
+	string stepName = null;
+}
+:
+	(	 t1:SLASH { axis = t1.getText(); }
+	     | t2:SLASH_SLASH { axis = t2.getText(); }
+	     | t3:SLASH_AT { axis = t3.getText(); }
+	     | t4:DEREFERENCE { axis = t4.getText(); }
+	  t5:Name {stepName=t5.getText();} (a:predicate {qualifier = #a;})?
+	| t6:Name {stepName=t6.getText();}  // appears as begining of a path in a predicate
+	| t7:AT t8:Name {axis=t7.getText(); stepName=t8.getText();} // appears as begining of a path in a predicate
+	)
+	{
+		#step = new Step(_interpreter, stepName, axis, qualifier);
+	}
+;
+
+basicExpression! :     
+		a:flwrExpr { #basicExpression = #a; }
+      | b:ifExpr { #basicExpression = #b; }	     
+      | c:logicalOrExpression {#basicExpression = #c;}    
+;
+
+predicate!:
+	L_BRACKET! a:expression R_BRACKET!
+	{
+		#predicate = #a;
+	}
+;
+
+variable!: DOLLAR! t:Name { #variable = new Ident(_interpreter, t.getText(), true); }
+;
+	
+flwrExpr!
+{
+	FLClause fls = new FLClause(_interpreter);
+	IExpr where = null;
+	IExpr sortby = null;
+}
+:
+	(a:flClause {fls.AddExpr(#a);})+ (b:whereClause {where =#b;})? "return" c:primitiveExpression (d:sortByClause { sortby = #d;})?
+	{
+		#flwrExpr = new Flwr(_interpreter, fls, where, #c, sortby);
+	}
+;
+
+flClause! :
+	  a:forClause { #flClause = #a; }
+	| b:letClause { #flClause = #b; }
+;
+
+forClause!
+:
+   "for" a:variable "in" b:expression
+   {
+		#forClause = new For(_interpreter, #a, #b);
+   }
+;
+
+letClause!
+:
+	"let" a:variable SET_EQUAL_TO b:expression
+	{
+		#letClause = new Let(_interpreter, #a, #b);	
+	}
+;
+
+whereClause!
+:
+	"where" a:expression { #whereClause = #a; }
+;
+
+sortByClause!
+:
+"sortby" L_PAREN a:sortSpecList R_PAREN { #sortByClause = new Sortby(_interpreter, (ExprCollection) #a); }
+;
+
+// logical or (or)  (level 11)
+logicalOrExpression
+	: logicalAndExpression ("or"^<AST=Or> logicalAndExpression)*
+	{
+	}	
+;
+
+
+// logical and (and)  (level 10)
+logicalAndExpression
+	:	rangeExpression ("and"^<AST=And> rangeExpression)*
+;
+	
+rangeExpression!
+:
+	equalityExpression ("to" equalityExpression )?
+	{
+
+	}	
+;	
+	
+// equality/inequality (==/!=) (level 6)
+equalityExpression
+	:	relationalExpression ((NOT_EQUALS^<AST=Equals> | EQUALS^<AST=NotEquals>) relationalExpression)*	
+	;
+
+// boolean relational expressions (<, >, <=, >=, in, not in) (level 5)
+relationalExpression
+	:	additiveExpression
+		(	(		LESS_THAN^<AST=LessThan>
+				|	GREATER_THAN^<AST=GreaterThan>
+				|	LESS_THAN_EQUALS^<AST=LEquals>
+				|	GREATER_THAN_EQUALS^<AST=GEquals>
+				|	"in"^<AST=In>
+				|	"not in"^<AST=NotIn>
+			)
+			additiveExpression
+		)*		
+;
+	
+// addition/subtraction (level 3)
+additiveExpression
+	:	multiplicativeExpression ((PLUS^<AST=Plus> | MINUS^<AST=Substract>) multiplicativeExpression)*
+	;
+
+// multiplication/division/modulo (level 2)
+multiplicativeExpression
+	:	unaryExpression ((STAR^<AST=Times> | "div"^<AST=Divide> | MOD^<AST=Mod>) unaryExpression)*		
+	;
+
+unaryExpression!
+	:   MINUS^ a:unaryExpression { #unaryExpression = new UMinus(_interpreter, #a); }
+	|	b:primitiveExpression { #unaryExpression = #b; }
+	;
+
+// the basic element of an expression
+primitiveExpression!
+	:	(pathExpression)=>a:pathExpression { #primitiveExpression = #a; }
+	|	b:literal { #primitiveExpression = #b; }
+	|	"null" { #primitiveExpression = new Null(_interpreter); }
+	|	c:elementConstructor { #primitiveExpression = #c; }
+//	|	d:INLINE
+	|	e:functionCall { #primitiveExpression = #e; }
+	|	f:variable { #primitiveExpression = #f; }
+	|	L_PAREN g:exprSequence R_PAREN { #primitiveExpression = #g; }	
+	;
+
+functionCall!
+{
+	ExprCollection arguments = null;
+}
+:
+	t:Name L_PAREN! (a:exprSequence { arguments = (ExprCollection) #a; })? R_PAREN!
+	{
+		#functionCall = new FunctionCall(_interpreter, t.getText(), arguments);
+	}
+;
+
+literal!
+:	
+		!t1:NUMERIC_LITERAL { #literal = new Literal(_interpreter, new IntegerType(), new XInteger(t1.getText()));}
+	|	!t2:STRING_LITERAL { #literal = new Literal(_interpreter, new StringType(), new XString(t1.getText()));}
+	;	
+
+sortSpecList!
+{
+	ExprCollection sortSpecs = new ExprCollection();
+}
+:
+	a:sortSpec { sortSpecs.Add(#a); } (COMMA b:sortSpec { sortSpecs.Add(#b);})* 
+	{
+		#sortSpecList = sortSpecs;
+	}
+;
+
+sortSpec!
+{
+	bool isAscending = true;
+}
+:
+	a:pathExpression ("ascending" | "descending" {isAscending=false;})?
+	{
+		#sortSpec = new SortbySpec(_interpreter, #a, isAscending);
+	}
+;
+
+/** [17] **/
+ifExpr!
+:
+	"if" L_PAREN a:expression R_PAREN "then" b:expression "else" c:expression
+	{
+		#ifExpr = new If(_interpreter, #a, #b, #c);
+	}
+;
+
+/** [52] **/
+elementConstructor!
+:
+	LESS_THAN t:Name GREATER_THAN a:elementContents LESS_THAN_SLASH^ Name GREATER_THAN
+	{
+		#elementConstructor = new ElementNode(_interpreter, t.getText(), null, #a);
+	}			
+;
+
+elementContents!
+{
+	ExprCollection exprs = new ExprCollection();
+}
+:
+	(	a: literal { exprs.Add(#a); }
+	 | (b: elementConstructor { exprs.Add(#b); } | c: enclosedExpr { exprs.Add(#c); })+
+	)
+	{
+		#elementContents = exprs;
+	}
+;
+
+/** [59] **/
+enclosedExpr! :
+	L_BRACE! a:exprSequence R_BRACE! 
+	{
+		#enclosedExpr = #a;
+	}
+;
+
+//****** Lexer ********************
+
+{
+   // global code stuff that will be included in the source file just before the 'MyLexer' class below
+}
+
+class XQueryLexer extends Lexer;
+options {
+	caseSensitiveLiterals=false;
+	charVocabulary='\u0003'..'\uFFFF';   
+	k = 3;
+}
+{
+   // additional methods and members for the generated 'MyParser' class
+}
+
+protected NL
+    : (	options {
+	generateAmbigWarnings=false;
+	greedy = true;
+    }
+		: '\n'
+		|	"\r\n"
+		|	'\r'
+		)
+		{ newline(); }
+	;
+	
+protected CDATA_DATA
+    : 
+        ( options {greedy=true;} : NL
+        | .
+        )*
+    ;
+
+// Character Set
+STRING_LITERAL
+	:	'"'! (ESC|~('"'|'\\'))* '"'!
+	;
+	
+NUMERIC_LITERAL:
+		((("." ('0'..'9')+) | (('0'..'9')+("." ('0'..'9')*)?))('e' | 'E' ('+' | '-')?('0'..'9')+)?)
+;
+
+protected LETTER
+	: 'a'..'z' 
+	| 'A'..'Z'
+;
+
+protected DIGIT
+	:	'0'..'9'
+;
+
+Name
+	options {testLiterals=true;}
+	:	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*
+	;
+
+
+INLINE:
+		("[[" ('\u0000'..'\uffff')* "]]")
+;
+
+protected
+ESC
+	:	'\\'
+		(	'n'
+		|	'r'
+		|	't'
+		|	'b'
+		|	'f'
+		|	'"'
+		|	'\''
+		|	'\\'
+		|	('u')+ HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
+		|	'0'..'3'
+			(
+				options {
+					warnWhenFollowAmbig = false;
+				}
+			:	'0'..'7'
+				(
+					options {
+						warnWhenFollowAmbig = false;
+					}
+				:	'0'..'7'
+				)?
+			)?
+		|	'4'..'7'
+			(
+				options {
+					warnWhenFollowAmbig = false;
+				}
+			:	'0'..'7'
+			)?
+		)
+	;
+	
+// hexadecimal digit (again, note it's protected!)
+protected
+HEX_DIGIT
+	:	('0'..'9'|'A'..'F'|'a'..'f')
+	;
+		
+// ENTITIES
+PREDEFINED_ENTITY_REF:
+		"&" ("lt" | "gt" | "amp" | "quot" | "apos") ";";
+
+// Whitespace -- ignored
+WS	:	(	' '
+		|	'\t'
+		|	'\f'
+		// handle newlines
+		|	(	options {generateAmbigWarnings=false;}
+			:	"\r\n"  // Evil DOS
+			|	'\r'    // Macintosh
+			|	'\n'    // Unix (the right way)
+			)
+			{ newline(); }
+		)+
+		{ _ttype = Token.SKIP; }
+	;
+
+// interpunction
+SEMICOLON:			";";
+EQUALS:				"=";
+L_PAREN:			"(";
+R_PAREN:			")";
+COMMA:				",";
+L_BRACKET:			"[";
+R_BRACKET:			"]";
+COLON:				":";
+D_COLON:			"::";
+L_BRACE:			"{";
+R_BRACE:			"}";
+DEREFERENCE:		"=>";
+AT:					"@";
+SLASH_AT:			"/@";
+STAR:				"*";
+SLASH:				"/";
+SLASH_SLASH:		"//";
+MOD:				'%';
+STAR_COLON:			"*:";
+NOT_EQUALS:			"!=";
+D_EQUALS:			"==";
+NOT_D_EQUALS:		"!==";
+LESS_THAN:			"<";
+GREATER_THAN:		">";
+LESS_THAN_EQUALS:	"<=";
+GREATER_THAN_EQUALS:	">=";
+PLUS:				"+";
+MINUS:				"-";
+BAR:				"|";
+SET_EQUAL_TO:		":=";
+QUOTE:				"\"";
+ESCAPED_QUOTE:		"\\\"";
+S_QUOTE:			"'";
+ESCAPED_S_QUOTE:	"\\'";
+SLASH_GREATER_THAN:	"/>";
+LESS_THAN_SLASH:	"</";
+DOLLAR:				"$";

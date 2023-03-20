@@ -1,0 +1,352 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1D98C425-85B4-4281-89A6-5434FB492A86}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Newtera.Activities</RootNamespace>
+    <AssemblyName>Newtera.Activities</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Workflow.Activities" />
+    <Reference Include="System.Workflow.ComponentModel" />
+    <Reference Include="System.Workflow.Runtime" />
+    <Reference Include="System.WorkflowServices" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActivityUtil.cs" />
+    <Compile Include="CloseGroupTaskActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CreateGroupTaskActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ForEachActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ForEachDesigner.cs" />
+    <Compile Include="GetWizardPageDataActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GetWizardPageDataActivity.Designer.cs">
+      <DependentUpon>GetWizardPageDataActivity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HandleGroupTaskEventActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="HandleNewteraEventActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ActivityValidateServiceProvider.cs" />
+    <Compile Include="NewteraStateMachineWorkflowActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="SendEmailActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CreateTaskActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CloseTaskActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CreateDataInstanceActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="InvokeNewteraWorkflowActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="IActivityValidateService.cs" />
+    <Compile Include="NewteraSequentialWorkflowActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="InvokeCustomFunctionActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="BindDataInstanceActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="IEnumerableActivity.cs" />
+    <Compile Include="NewteraWizardWorkflowActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SetWizardPageDataActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WorkflowSession.cs" />
+    <Compile Include="WizardStateActivityToolboxItem.cs">
+    </Compile>
+    <Compile Include="WizardStateActivityToolboxItem.Designer.cs">
+      <DependentUpon>WizardStateActivityToolboxItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NewteraStateActivityToolboxItem.cs" />
+    <Compile Include="NewteraStateActivityToolboxItem.Designer.cs">
+      <DependentUpon>NewteraStateActivityToolboxItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InvokeAsyncNewteraWorkflowActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="IInvokeWorkflowActivity.cs" />
+    <Compile Include="HandleWorkflowEventActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{CF010325-1364-4754-9192-CF7873C35F90}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WorkflowModel\WFModel.csproj">
+      <Project>{EF0030AC-1F81-448B-B9F2-3CF5EFFBEA52}</Project>
+      <Name>WFModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WorkflowServices\WorkflowServices.csproj">
+      <Project>{763837D0-56FA-40B7-84A5-5CB2D9448F51}</Project>
+      <Name>WorkflowServices</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CloseTaskActivity.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CloseTaskActivity.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CloseTaskActivity.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CloseTaskActivity.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CloseTaskActivity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CreateDataInstanceActivity.zh-CN.resx">
+      <DependentUpon>CreateDataInstanceActivity.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CreateTaskActivity.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CreateTaskActivity.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CreateTaskActivity.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CreateTaskActivity.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CreateTaskActivity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HandleNewteraEventActivity.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>HandleNewteraEventActivity.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>HandleNewteraEventActivity.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HandleNewteraEventActivity.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>HandleNewteraEventActivity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewteraSequentialWorkflowActivity.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>NewteraSequentialWorkflowActivity.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewteraSequentialWorkflowActivity.zh-CN.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewteraStateMachineWorkflowActivity.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>NewteraStateMachineWorkflowActivity.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewteraStateMachineWorkflowActivity.zh-CN.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EmailMessage.png" />
+    <EmbeddedResource Include="CreateDataInstanceActivity.resx">
+      <DependentUpon>CreateDataInstanceActivity.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CreateDataInstanceActivity.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InvokeNewteraWorkflowActivity.resx">
+      <DependentUpon>InvokeNewteraWorkflowActivity.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>InvokeNewteraWorkflowActivity.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InvokeNewteraWorkflowActivity.zh-CN.resx">
+      <DependentUpon>InvokeNewteraWorkflowActivity.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\Newtera.Activities.dll" />
+    <EmbeddedResource Include="CloseGroupTaskActivity.resx">
+      <DependentUpon>CloseGroupTaskActivity.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CloseGroupTaskActivity.zh-CN.resx">
+      <DependentUpon>CloseGroupTaskActivity.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CreateGroupTaskActivity.resx">
+      <DependentUpon>CreateGroupTaskActivity.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CreateGroupTaskActivity.zh-CN.resx">
+      <DependentUpon>CreateGroupTaskActivity.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ForEachActivity.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ForEachActivity.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ForEachActivity.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ForEachActivity.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ForEachActivity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HandleGroupTaskEventActivity.resx">
+      <DependentUpon>HandleGroupTaskEventActivity.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HandleGroupTaskEventActivity.zh-CN.resx">
+      <DependentUpon>HandleGroupTaskEventActivity.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ForEach.png" />
+    <EmbeddedResource Include="InvokeCustomFunctionActivity.resx">
+      <DependentUpon>InvokeCustomFunctionActivity.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>InvokeCustomFunctionActivity.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InvokeCustomFunctionActivity.zh-CN.resx">
+      <DependentUpon>InvokeCustomFunctionActivity.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BindDataInstanceActivity.resx">
+      <DependentUpon>BindDataInstanceActivity.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>BindDataInstanceActivity.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BindDataInstanceActivity.zh-CN.resx">
+      <DependentUpon>BindDataInstanceActivity.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewteraWizardWorkflowActivity.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>NewteraWizardWorkflowActivity.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewteraWizardWorkflowActivity.zh-CN.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InvokeAsyncNewteraWorkflowActivity.resx">
+      <DependentUpon>InvokeAsyncNewteraWorkflowActivity.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>InvokeAsyncNewteraWorkflowActivity.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InvokeAsyncNewteraWorkflowActivity.zh-CN.resx">
+      <DependentUpon>InvokeAsyncNewteraWorkflowActivity.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HandleWorkflowEventActivity.resx">
+      <DependentUpon>HandleWorkflowEventActivity.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>HandleWorkflowEventActivity.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HandleWorkflowEventActivity.zh-CN.resx">
+      <DependentUpon>HandleWorkflowEventActivity.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<NewteraRegistry>
+  <HOME_DIR value="C:\Newtera\ECM" />
+  <TOOL_DIR value="C:\Newtera\ECM\Src\Studio" />
+  <StaticFilesRoot value="C:\Newtera\ECM\Src\SmartApp" />
+  <CLSID>
+    <ProductData value="AADE5F05DC0F5A98">
+      <InprocServer32 value="BD0D2C7DFA39F8A1CB9567A94CC29C4CAFA0CABF7F001DB2" />
+      <TypeLib value="864D8792A838092B" />
+      <Control value="3122A992F2C188785B475FDF2756B9A0380ECEDEE9E6A8BE" />
+      <ObjClassType value="A5FF0772272519FC" />
+    </ProductData>
+  </CLSID>
+</NewteraRegistry>

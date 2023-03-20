@@ -1,0 +1,1413 @@
+/*
+ * WARNING: I was given this file to start with as a .jj file for
+ * XQuery. It was broken in several ways, and I had never used javacc
+ * before. There are many things that could have been done a lot
+ * better either by the original writer or by me if I knew as much
+ * when I started this as I do now.
+ *
+ * russell young
+ */
+
+
+options {
+
+	//	DEBUG_PARSER = true;
+	JAVA_UNICODE_ESCAPE = true;
+	STATIC = false;
+}
+
+PARSER_BEGIN(XQuery)
+
+package com.precomtech.catalog.engine.interpreter.parser;
+
+import com.precomtech.catalog.engine.interpreter.*;
+
+import com.precomtech.catalog.engine.vdom.VDOMException;
+import com.precomtech.catalog.engine.vdom.VDocument;
+import com.precomtech.catalog.engine.vdom.DocumentFactory;
+
+import java.util.Vector;
+import java.util.LinkedList;
+import java.util.List;
+
+/*
+ * This is used here rather than the api Stack class to give me better
+ * control over it for debugging. It can be replaced with
+ * java.util.Stack if preferred. 
+ */
+class Stack {
+	Vector stack;
+	Stack() {
+		stack = new Vector();
+	}
+	void push(Object thing) {
+
+		stack.addElement(thing);
+	}
+	Expr popExpr() {
+
+		Expr value = (Expr) stack.lastElement();
+
+		stack.removeElementAt(stack.size() - 1);
+		return value;
+	}
+	Object pop() {
+
+		Object value = stack.lastElement();
+
+		stack.removeElementAt(stack.size() - 1);
+		return value;
+	}
+	int size() {
+		return stack.size();
+	}
+	Object peek() {
+
+		return stack.lastElement();
+	}
+
+    void dump() {
+        int i;
+		System.out.println("Parse stack (" + stack.size() + "): ");
+        for (i = 0; i < stack.size(); i++) {
+            System.out.println("" + i + ": " +stack.elementAt(i).toString());
+        }
+	}
+}
+
+public class XQuery {
+
+	Stack argStack = new Stack();
+	Interpreter interpreter;
+	boolean hasContext;
+	int[] loc = new int[4];
+
+	public XQuery(Interpreter interpreter) {
+		this(new java.io.StringReader("hi there"));
+		this.interpreter = interpreter;
+		hasContext = false;
+	}
+
+	public Expr parse(String query) throws Exception {
+		java.io.Reader reader = new java.io.StringReader(query);
+		ReInit(reader);
+		argStack = new Stack();
+		Start();
+		
+		// rwy 2002/9 This is for the case where there is no output (just comment)
+		if (argStack.size() == 0) {
+			return new XString(interpreter, "");
+		}
+		// this is for debugging, it should never show up
+		// stack size should be 1 when all is over, unless an exception
+		// was thrown, in which case it would not be here
+		if (argStack.size() != 1) {
+			argStack.dump();
+			throw new Exception("Parser fatal error: Bad stack size: " + argStack.size());
+		}
+		// make sure there are no remaining characters
+		getNextToken();
+		if (!"".equals(token.image)) {
+			setLoc(token);
+			throw new InterpretException("Extra characters after query", new XInteger(interpreter, loc, 0), 37);
+		} 
+		return  argStack.popExpr();
+	}
+
+	/**
+	 * Builds a fake token in order to pass error location
+	 * 
+	 * @param loc Location
+	 * @return Token
+	 */
+	Token fakeToken(Location loc) {
+		Token fake = new Token();
+		fake.beginLine = loc.getRow();
+		fake.beginColumn = loc.getColumn();
+		return fake;
+	}
+
+	/**
+	 * Builds a fake token in order to pass error location
+	 * 
+	 * @param column int
+	 * @param row int
+	 * @return Token
+	 */
+	Token fakeToken(int row, int column) {
+		Token fake = new Token();
+		fake.beginLine = row;
+		fake.beginColumn = column;
+		return fake;
+	}
+
+	void setLoc(Token token) {
+		loc[0] = token.beginLine;
+		loc[1] = token.beginColumn;
+		loc[2] = token.endLine;
+		loc[3] = token.endColumn;
+	}
+
+	void setLoc(Location expr) {
+		loc[0] = expr.getRow();
+		loc[1] = expr.getColumn();
+		loc[2] = loc[3] = 0;
+	}
+}		
+
+PARSER_END(XQuery)
+
+// rwy 2002/9 These need to come first so the tokens are parsed right
+	TOKEN:
+{
+	//			| <CDATA: "ssss>" (~["<", ">"])+ "<"
+	<CDATA: "<![CDATA[" ((["\u0000"-"\\", "^"-"\uffff"])+ "]")+ "]" ">"
+				>
+				}
+SKIP:
+{
+	<COMMENT: "<!--" ((["\u0000"-",", "."-"\uffff"])+ "-")+ "->"
+>
+		}
+
+
+// interpunction
+TOKEN :
+{
+	<SEMICOLON:		";">
+						| <EQUALS:			"=">
+						| <L_PAREN:			"(">
+						| <R_PAREN:			")">
+						| <COMMA:			",">
+						| <UNDERSCORE:		"_">
+						| <SLASH:			"/">
+						| <SLASHSLASH:		"//">
+						| <L_BRACKET:		"[">
+						| <R_BRACKET:		"]">
+						| <DOT:				".">
+						| <DOTDOT:			"..">
+						| <COLON:			":">
+						| <D_COLON:			"::">
+						| <PROCESSING_INSTRUCTION:	"processing-instruction">
+						| <L_BRACE:			"{">
+						| <R_BRACE:			"}">
+						| <DEREFERENCE:		"=>">
+						| <AT:				"@">
+						| <STAR:			"*">
+						| <STAR_COLON:		"*:">
+						| <NOT_EQUALS:		"!=">
+						| <D_EQUALS:		"==">
+						| <NOT_D_EQUALS:	"!==">
+						| <LESS_THAN:		"<">
+						| <GREATER_THAN:	">">
+						| <LESS_THAN_EQUALS:	"<=">
+						| <GREATER_THAN_EQUALS:	">=">
+						| <PLUS:			"+">
+						| <MINUS:			"-">
+						| <BAR:				"|">
+						| <SET_EQUAL_TO:	":=">
+						| <CDATA_START:		"<![CDATA[">
+						| <CDATA_END:		"]]>">
+						| <QUOTE:			"\"">
+						| <ESCAPED_QUOTE:	"\\\"">
+						| <S_QUOTE:			"'">
+						| <ESCAPED_S_QUOTE:	"\\'">
+						| <SLASH_GREATER_THAN:	"/>">
+						| <LESS_THAN_SLASH:		"</">
+						| <DOLLAR:			"$">
+						}
+
+// KEYWORD
+TOKEN [IGNORE_CASE] :
+{
+	<NAMESPACE:		"namespace">
+						| <IMPORT:			"import">
+						| <DEFLT:			"default">
+						| <SCHEMA:			"schema">
+						| <DEFINE:			"define">
+						| <FUNCTION:		"function">
+						| <RETURNS:			"returns">
+						//						| <TEXT:			"text">
+						| <NODE:			"node">
+						| <SORTBY:			"sortby">
+						| <OR:				"or">
+						| <AND:				"and">
+						| <BEFORE:			"before">
+						| <AFTER:			"after">
+						| <INSTANCEOF:		"instanceof">
+						| <ONLY:			"only">
+						| <TO:				"to">
+						| <DIV:				"div">
+						| <MOD:				"mod">
+						| <UNION:			"union">
+						| <INTERSECT:		"intersect">
+						| <EXCEPT:			"except">
+						| <FOR:				"for">
+						| <LET:				"let">
+						| <IF:				"if">
+						| <THEN:			"then">
+						| <ELSE:			"else">
+						| <IN:				"in">
+						| <NOT_IN:			"not in">						
+						| <WHERE:			"where">
+						| <SOME:			"some">
+						| <EVERY:			"every">
+						| <TYPESWITCH:		"typeswitch">
+						| <AS:				"as">
+						| <RETURN:			"return">
+						| <CASE:			"case">
+						| <CAST:			"cast">
+						| <TREAT:			"treat">
+						| <ASCENDING:		"ascending">
+						| <DESCENDING:		"descending">
+						| <SATISFIES:		"satisfies">
+						| <TRUE:			"true">
+						| <FALSE:			"false">
+						| <NULL:			"null">
+						}
+
+// Character Set
+TOKEN:
+{
+	<STRING_LITERAL:
+	(["\""] ((~["\""])* (<ESCAPED_QUOTE>)?)* ["\""]) 
+		| (["'"] ((~["'"])* (<ESCAPED_S_QUOTE>)?)* ["'"]) 
+		>
+		| <NUMERIC_LITERAL:
+		((("." (["0"-"9"])+) | ((["0"-"9"])+("." (["0"-"9"])*)?))(["e","E"] (["+","-"])?(["0"-"9"])+)?)
+		>
+		| <LETTER:
+		["A"-"Z","a"-"z"]
+		>
+		| <DIGIT:
+		["0"-"9"]
+		>
+		| <NC_NAME_CHAR:
+		<LETTER> | <DIGIT> | "." | "-" | "_"
+		>
+		| <NC_NAME:
+		((<LETTER> | <UNDERSCORE>) (<NC_NAME_CHAR>)*)
+		>
+		| <VARNAME:
+		"$" <NC_NAME>
+		>
+		| <CHAR_REF:
+    	("&#" ((["0"-"9"])+ | ("x" (["0"-"9","a"-"f","A"-"F"])+)) ";")
+		>
+		| <INLINE:
+		("[[" (["\u0000"-"\uffff"])* "]]")
+		> 
+		
+		| <CHAR:
+		// removed "/" (0x2f) from type CHAR
+		// removed "@" (0x3f) from type CHAR
+		["\u0000"-"\u0008","\u000b","\u000c",
+		 "\u000e"-"\u001f", /* space */ 
+		 "\u0021"-"\u002e", /* "/" */ 
+		 "\u0030"-"\u003f", /* "@" */ 
+		 "\u0040"-"\uffff"]
+		>
+		| <AXIS: "/" ((<NC_NAME> <D_COLON>) | (("/")? "@"))?
+		>
+		}
+
+// ENTITIES
+TOKEN :
+{
+	<PREDEFINED_ENTITY_REF:
+		"&" ("lt" | "gt" | "amp" | "quot" | "apos") ";"
+			>
+			}
+
+SKIP :
+{
+	" " | "\t" | "\r" | "\n"
+		}
+
+/**  **/
+void parse() throws InterpretException :
+{}
+{
+	QueryModuleList()
+		}
+
+//XQStart Start() throws Exception : {}
+void Start() throws Exception : 
+{}
+{
+    QueryModuleList()
+		/*
+		  {return jjtThis;}
+		*/
+		}
+
+/** [1] **/
+void QueryModuleList() throws InterpretException :
+{}
+{
+	QueryModule() (<SEMICOLON> QueryModuleList())? 
+		}
+
+/** [2] **/
+void QueryModule() throws InterpretException :
+{}
+{
+	(ContextDecl())* (FunctionDefn() | importAs())* (ExprSequence())? 
+		}
+
+/** [3] **/
+void ContextDecl() : {}
+{
+	<NAMESPACE> <NC_NAME> <EQUALS> <STRING_LITERAL>
+		 | (<DEFLT> <NAMESPACE> <EQUALS> <STRING_LITERAL>)
+		 | (<SCHEMA>  <STRING_LITERAL> <STRING_LITERAL>)
+		 }
+
+void importAs() throws InterpretException :
+{
+	Token x = null;
+}
+{
+	<IMPORT> x = QName() <AS> QName() {
+		String aliasName = (String) argStack.pop();
+		String className = (String) argStack.pop();
+		try {
+			interpreter.getFunctionMap(FunctionMap.USER).add(aliasName, className);
+		} catch (InterpretException ie) {
+			setLoc(x);
+			Expr fake = new XInteger(interpreter, loc, 0);
+			ie.copyLoc(fake);
+			throw ie;
+		}
+	}
+}
+
+/** [4] **/
+void FunctionDefn() throws InterpretException :
+{
+	Token ret = null;
+	Token tName = null;
+	String name = null;
+}
+{
+	<DEFINE> <FUNCTION> tName = QName() ParamList()
+		 (ret = <RETURNS> Datatype())? EnclosedExpr() {
+			 Expr definition = argStack.popExpr();
+			 String retType = "";
+			 if (ret != null) {
+				 retType = (String) argStack.pop();
+			 }
+			 LinkedList params = (LinkedList) argStack.pop();
+			 name = (String) argStack.pop();
+			 setLoc(tName);
+			 new XFunction(interpreter, name, params, definition, retType);
+		 }
+}
+
+/** [5] **/
+void ParamList() throws InterpretException:
+{
+	argStack.push(new LinkedList());
+}
+{
+	<L_PAREN> (<R_PAREN> | (Param() (<COMMA> Param())* <R_PAREN>))
+		 }
+
+/** [6] **/
+void Param() throws InterpretException :
+{
+	String type = "any";
+	Token tType = null;
+}
+{
+	//	(tType = Datatype())? <DOLLAR> QName() {
+	(tType = Datatype())? VariableName() {
+		String name = (String) argStack.pop();
+		if (tType != null) {
+			// rwy - currently tosses the value. Argument checking will go in here
+			argStack.pop();
+		}
+		LinkedList list = (LinkedList) argStack.peek();
+		setLoc(token);
+		list.addLast(new Symbol(name, loc, null, type));
+	}
+}
+
+/** [7.0] **/
+void ExprInContext() throws InterpretException :
+{
+	boolean oldContext = hasContext;
+	hasContext = true;
+	Token braces = null;
+}
+{
+	Expr() {
+		hasContext = oldContext;
+	}
+}
+	
+void Expr() throws InterpretException :
+{
+	Token braces = null;
+	List sortBy = null;
+}
+{
+	//	(((braces = <L_BRACE> Expr1() <R_BRACE>) | Expr1()) 
+	//	 (LOOKAHEAD(2) <SORTBY> <L_PAREN> sortBy = SortSpecList() <R_PAREN>)?) {
+	((braces = <L_BRACE> Expr1() <R_BRACE>) | Expr1()) {
+		
+		Expr expr = argStack.popExpr();
+		if (braces != null) {
+			setLoc(expr);
+			expr = new Eval(interpreter, loc, expr);
+		}
+		argStack.push(expr);
+	}
+}
+	
+/** [7.1] **/
+void Expr1() throws InterpretException :
+{
+	Token x = null;
+	int depth = argStack.size();
+}
+{
+	Expr2() (LOOKAHEAD(2) x = <OR> Expr1())* {
+		Expr left, right;
+		if (x != null) {
+			right = argStack.popExpr();
+			left = argStack.popExpr();
+			setLoc(x);
+			Expr result = new Or(interpreter, loc, left, right);
+			if (left.isLeaf() && right.isLeaf()) {
+				result = result.eval();
+			}
+			argStack.push(result);
+		}
+	}
+}
+
+/** [7.2] **/
+void Expr2() throws InterpretException :
+{Token x = null;}
+{
+	Expr3() (LOOKAHEAD(2) x = <AND> Expr2())* {
+		Expr left, right;
+		if (x != null) {
+			right = argStack.popExpr();
+			left = argStack.popExpr();
+			setLoc(x);
+			Expr result = new And(interpreter, loc, left, right);
+			if (left.isLeaf() && right.isLeaf()) {
+				result = result.eval();
+			}
+			argStack.push(result);
+		}
+	}
+}
+
+/** [7.3] **/
+void Expr3() throws InterpretException :
+{}
+{
+	Expr4() (LOOKAHEAD(2) (<BEFORE>|<AFTER>) Expr3())?
+		}
+
+/** [7.4] **/
+void Expr4() throws InterpretException :
+{}
+{
+	Expr5() | FLWRExpr() | IfExpr()
+		//	Expr5() | FLWRExpr() | IfExpr() | SomeExpr() | EveryExpr() | TypeSwitchExpr()
+		}
+
+/** [7.5] **/
+void Expr5() throws InterpretException :
+{Token x = null;}
+{
+	Expr6() ((x = <IN> | x = <NOT_IN> | x = <EQUALS> | x = <NOT_EQUALS> | x = <D_EQUALS> | x = <NOT_D_EQUALS>) Expr6())* {
+		if (x != null) {
+		    Expr right = argStack.popExpr();
+	    	Expr left = argStack.popExpr();
+			Expr result;
+
+			setLoc(x);
+		    if ( x.kind == EQUALS ) {
+				result = new Equals(interpreter, loc, left, right);
+			} else if (x.kind == NOT_EQUALS) {
+				result = new NotEquals(interpreter, loc, left, right);
+			} else if (x.kind == IN) {
+				result = new In(interpreter, loc, left, right);
+			} else if (x.kind == NOT_IN) {
+				result = new NotIn(interpreter, loc, left, right);				
+			} else {
+				// rwy implement == and !== here
+				ParseException pe = new ParseException("OPERATOR NOT DONE YET");
+				pe.currentToken = x;
+				throw pe;
+			}
+			if (left.isLeaf() && right.isLeaf()) {
+				result = result.eval();
+			}
+			argStack.push(result);
+		}
+	}
+}
+
+/** [7.6] **/
+void Expr6() throws InterpretException :
+{}
+{
+	LOOKAHEAD(3) Expr7() | Expr8()
+		}
+
+/** [7.7] **/
+void Expr7() throws InterpretException :
+{Token x = null;}
+{
+	Expr9() ((x = <LESS_THAN> | x = <LESS_THAN_EQUALS> | x = <GREATER_THAN> | x = <GREATER_THAN_EQUALS>) Expr9())* {
+		if (x != null) {
+			Expr right = argStack.popExpr();
+			Expr left = argStack.popExpr();
+			Expr result;
+
+			setLoc(x);
+			if ( x.kind == LESS_THAN ) {
+				result = new LessThan(interpreter, loc, left, right);
+			} else if ( x.kind == LESS_THAN_EQUALS ) {
+				result = new LEqual(interpreter, loc, left, right);
+			} else if ( x.kind == GREATER_THAN ) {
+				result = new GreaterThan(interpreter, loc, left, right);
+			} else {
+				result = new GEqual(interpreter, loc, left, right);
+			}
+			if (left.isLeaf() && right.isLeaf()) {
+				result = result.eval();
+			}
+			argStack.push(result);
+		}
+	}
+}
+
+/** [7.8] **/
+void Expr8() throws InterpretException :
+{}
+{
+	Expr9() <INSTANCEOF> (<ONLY>)? Datatype()
+		}
+
+/** [7.9] **/
+void Expr9() throws InterpretException :
+{Token x = null;}
+{
+	Expr10() (x = <TO> Expr9() {
+		Expr to = argStack.popExpr();
+		Expr from = argStack.popExpr();
+		setLoc(x);
+		argStack.push(new To(interpreter, loc, from, to));
+	}
+				   )?
+		}
+
+
+/** [7.10] **/
+void Expr10() throws InterpretException :
+{Token x;
+}
+{
+	Expr11() ((x = <PLUS> | x = <MINUS>) Expr11()
+	{
+	    Expr right = argStack.popExpr();
+	    Expr left =  argStack.popExpr();
+		Expr result;
+		setLoc(x);
+		if (x.kind == PLUS) {
+			result = new Plus(interpreter, loc, left, right);
+		} else {
+			result = new Minus(interpreter, loc, left, right);
+		}
+		if (left.isLeaf() && right.isLeaf()) {
+			result = result.eval();
+		}
+		argStack.push(result);
+	}
+				   )*
+		}
+
+/** [7.11] **/
+void Expr11() throws InterpretException :
+{Token x;}
+{
+	Expr12() ((x = <STAR> | x = <DIV> | x = <MOD> | x = <SLASH>) Expr12()
+	{
+	    Expr right = argStack.popExpr();
+	    Expr left = argStack.popExpr();
+		Expr result;
+		setLoc(x);
+		if (x.kind == MOD) {
+			result = new Mod(interpreter, loc, left, right);
+		} else if (x.kind == STAR) {
+			result = new Times(interpreter, loc, left, right);
+		} else if (x.kind == DIV) {
+			result = new Divide(interpreter, loc, left, right);
+		} else {
+			// This error is silently missed (terminates the parse without 
+			// an error) unless is is caught intentionally
+			ParseException pe = new ParseException("'/' is a path separator, division is DIV");
+			pe.currentToken = x;
+			x.next = null;
+			throw pe;
+		}
+		if (left.isLeaf() && right.isLeaf()) {
+			result = result.eval();
+		}
+		argStack.push(result);
+	}
+			  )*
+		}
+
+/** [7.12] **/
+void Expr12() throws InterpretException :
+{
+	Token x;
+}
+{
+	x = <MINUS> Expr12() {
+		Expr contents = argStack.popExpr();
+		setLoc(x);
+		Expr result = new Negate(interpreter, loc, contents);
+		if (contents.isLeaf()) {
+			result = result.eval();
+		}
+		argStack.push(result);
+	} 
+	| <PLUS> Expr12() {}
+	| Expr13()
+		  }
+
+/** [7.13] **/
+void Expr13() throws InterpretException :
+{}
+{
+	Expr14() ((<UNION> | <BAR>) Expr14())*
+		}
+
+/** [7.14] **/
+void Expr14() throws InterpretException :
+{}
+{
+	Expr15() ((<INTERSECT> | <EXCEPT>) Expr15())*
+		}
+
+/** [7.15] **/
+void Expr15() throws InterpretException :
+{}
+{
+	LOOKAHEAD(2) FunctionCall()
+		| LOOKAHEAD(2) PathExpr()
+		}
+
+/** [9] **/
+List SortSpecList() throws InterpretException :
+{
+	SortBy prev = null;
+	Token descending = null;
+	List list = null;
+	boolean oldContext = hasContext;
+	hasContext = true;
+	String v = null;
+}
+{
+	(v = Variable())? path() (<ASCENDING> | descending = <DESCENDING>)? (<COMMA> list = SortSpecList())? {
+		Path specPath = (Path)argStack.popExpr();
+		if (v != null) {
+			specPath.setRoot(argStack.popExpr());
+		}
+		if (list == null) {
+			list = new LinkedList();
+		}
+		setLoc(specPath);
+		list.add(0, new SortBy(specPath, loc, descending == null));
+		hasContext = oldContext;
+		return list;
+	}
+}
+
+/** [13] **/
+void FLWRExpr() throws InterpretException :
+{
+	int depth = argStack.size();
+	Expr where = null;
+	List sortBy = null;
+}
+{
+	(ForClause() | LetClause())+ (where = WhereClause())? <RETURN> Expr()
+		(LOOKAHEAD(2) <SORTBY> <L_PAREN> sortBy = SortSpecList() <R_PAREN>)? {
+		// the first one of these is the RETURN clause
+		Expr childClause = argStack.popExpr();
+		FLWR flwr = null;
+		boolean first = true;
+		
+		if (where != null) {
+			argStack.pop();
+		}
+
+		while (argStack.size() > depth) {
+			flwr = (FLWR) argStack.popExpr();
+			flwr.setFlwr(childClause, first);
+			if (first) {
+				first = false;
+			} else {
+				((FLWR) childClause).setParent(flwr);
+			}
+			flwr.setWhere(where);
+			childClause = flwr;
+		}
+		flwr.setSortBy(sortBy);
+
+			
+		argStack.push(flwr);
+	}
+}
+
+/** [14] **/
+void ForClause() throws InterpretException :
+{int depth = argStack.size();
+Token x;
+}
+{
+	x = <FOR> Variable() <IN> Expr() (<COMMA> Variable() <IN> Expr())* {
+		int i = 0;
+		int size = (argStack.size() - depth)/2;
+		Expr hold[] = new Expr[size];
+		Variable variable;
+		Expr initial;
+		ForSymbol symbol = null;
+		
+		while (argStack.size() > depth) {
+			initial = argStack.popExpr();
+			variable = (Variable) argStack.popExpr();
+			setLoc(variable);
+			symbol = new ForSymbol(variable.getName(), loc, initial);
+			setLoc(x);
+			hold[i++] = new For(interpreter, loc, symbol);
+		}
+		for (i = size; i > 0; ) {
+			argStack.push(hold[--i]);
+		}
+	}
+}
+
+/** [15] **/
+void LetClause() throws InterpretException :
+{int depth = argStack.size();
+Token x;
+}
+{
+	x = <LET> Variable() <SET_EQUAL_TO> Expr() (<COMMA> Variable() 
+	<SET_EQUAL_TO> Expr())* {
+		int i = 0;
+		int size = (argStack.size() - depth)/2;
+		Expr hold[] = new Expr[size];
+		Variable variable;
+		Expr initial;
+		Symbol symbol = null;
+	
+		while (argStack.size() > depth) {
+			initial = argStack.popExpr();
+			variable = (Variable) argStack.popExpr();
+			setLoc(variable);
+			symbol = new Symbol(variable.getName(), loc, initial);
+			setLoc(x);
+			hold[i++] = new Let(interpreter, loc, symbol);
+		}
+		for (i = size; i > 0; ) {
+			argStack.push(hold[--i]);
+		}
+	}
+}
+
+/** [16] **/
+Expr WhereClause() throws InterpretException :
+{
+	Token x;
+}
+{
+	x = <WHERE> Expr() {
+	return (Expr) argStack.peek();
+	/*
+	 * I don't think WHERE as a separate type is needed anymore
+		setLoc(x);
+		Expr where = new Where(interpreter, loc, argStack.popExpr());
+		argStack.push(where);
+		return where;
+	*/
+	}
+}
+
+/** [17] **/
+void IfExpr() throws InterpretException :
+{
+	Token x;
+}
+{
+	x = <IF> <L_PAREN> Expr() <R_PAREN> <THEN> Expr() <ELSE> Expr() 
+		{
+			Expr elseClause = argStack.popExpr();
+			Expr thenClause =  argStack.popExpr();
+			Expr condition = argStack.popExpr();
+			Expr newExpr;
+
+			if (condition instanceof Leaf) {
+				newExpr = ((Leaf) condition).logic() ? thenClause : elseClause;
+			} else {
+				setLoc(x);
+				newExpr = new If(interpreter, loc, condition, thenClause, elseClause);
+			}
+			argStack.push(newExpr);
+		}
+	
+}
+
+/** [18] **/
+void SomeExpr() throws InterpretException :
+{}
+{
+	<SOME> Variable() <IN> Expr() <SATISFIES> Expr()
+		 }
+
+/** [19] **/
+void EveryExpr() throws InterpretException :
+{}
+{
+	<EVERY> Variable() <IN> Expr() <SATISFIES> Expr()
+		 }
+
+/** [20] **/
+void TypeSwitchExpr() throws InterpretException :
+{}
+{
+	<TYPESWITCH> <L_PAREN> Expr() <R_PAREN> (<AS> Variable())? (CaseClause())+ <DEFLT> <RETURN> Expr()
+		 }
+
+/** [21] **/
+void CaseClause() throws InterpretException :
+{}
+{
+	<CASE> Datatype() <RETURN> Expr()
+		 }
+
+/** [31] **/
+
+
+void absPath() throws InterpretException :
+{
+	Token axis = null;
+}
+{
+	(axis = sortedPath()) {
+		if (axis == null) {
+			ParseException pe = new ParseException("Absolute path required");
+			pe.currentToken = fakeToken(argStack.popExpr());
+			throw pe;
+		}
+	}
+}
+Token path() throws InterpretException :
+{
+int depth = argStack.size();
+Token t = token;
+}
+{
+	(LOOKAHEAD(2) t = step())+ {
+		Step previous;
+		Step current = (Step) argStack.pop();
+		while (argStack.size() > depth) {
+			previous = (Step) argStack.pop();
+			previous.setSubpath(current);
+			current = previous;
+		}
+		if (!hasContext && !current.getAbsolute() 
+			&& (argStack.size() > 0) && (argStack.peek() instanceof Expr)) {
+			Expr top = (Expr)argStack.peek();
+			if ((top.type() != Expr.VARIABLE) && (top.type() != Expr.FUNCTION)) {
+				ParseException pe = new ParseException("Relative path without context");
+				pe.currentToken = fakeToken(current);
+				throw pe;
+			}
+		}
+		setLoc(current);
+		argStack.push(new Path(interpreter, loc, current));
+		return t;
+	}
+}
+
+Token sortedPath() throws InterpretException :
+{
+	Token t;
+	List sortBy = null;
+}
+{
+	t = path() (LOOKAHEAD (2) <SORTBY> <L_PAREN>  sortBy = SortSpecList() <R_PAREN>)? {
+		Path path = (Path) argStack.peek();
+		path.setSortBy(sortBy);
+		return t;
+	}
+}
+
+Token step() throws InterpretException :
+{
+	Token axis = null;
+	Token name = null;
+	Token br = null;
+}
+
+{
+	/* This is nasty. '*' needs to be treated separately, or else multiplication
+	 * gets picked up as a path with default axis. So, require the axis for *
+	 */
+	(LOOKAHEAD(2) ((axis = <AXIS>) | (axis = <DEREFERENCE>) | (axis = <AT>)
+	 | (axis = <SLASH>) | (axis = <SLASHSLASH>))?
+	 (name = <NC_NAME> | name = <DOT> | name = <DOTDOT> | name = <LETTER> | name = <UNDERSCORE> )
+	 | (((axis = <AXIS>) | (axis = <DEREFERENCE>) | (axis = <AT>)
+		 | (axis = <SLASH>) | (axis = <SLASHSLASH>)) name = <STAR>))
+		((br = <L_BRACKET>) ExprInContext() <R_BRACKET>)? {
+		Expr qualifier = null;
+		boolean absolute = false;
+		int axisCode;
+		Token start = (axis == null) ? name : axis;
+
+		if (br != null) {
+			qualifier = argStack.popExpr();
+		}
+		setLoc(start);
+		
+		if (axis == null) {
+			axisCode = Axis.CHILD;
+		} else if (axis.image.equals("@")) {
+			axisCode = Axis.ATTRIBUTE;
+		} else {
+			absolute = true;
+			axisCode = Axis.getCode(axis.image);
+		}
+		argStack.push(new Step(name.image, loc, axisCode, qualifier, absolute));
+		return axis;
+	}
+}
+			
+void PathExpr() throws InterpretException :
+{}
+{   
+	sortedPath()
+		| 
+		PrimaryExpr()
+		}
+
+
+
+/** [38] **/
+void PrimaryExpr() throws InterpretException :
+{}
+{
+	//	<DOT> | <DOTDOT> | LOOKAHEAD(3) NodeTest() | Variable() | LOOKAHEAD(2) Literal() | FunctionCall() | ParenthesizedExpr() | CastExpr() | ElementConstructor()
+	LOOKAHEAD(3) VariableCat() | LOOKAHEAD(2) Literal() | ParenthesizedExpr() | ElementConstructor() | Logic()
+		}
+
+/** [39] **/
+void Literal() throws InterpretException :
+{Token x = null;
+Expr expr = null;
+}
+{
+	(x = <NUMERIC_LITERAL> | x = <STRING_LITERAL> | x = <INLINE> | x = <NULL>) {
+		setLoc(x);
+		if (x.kind == NUMERIC_LITERAL) {
+			try {
+				if (token.image.indexOf(".") >= 0) {
+					expr = new XDouble(interpreter, loc, Double.parseDouble(token.image));
+				} else {
+					expr = new XInteger(interpreter, loc, Integer.parseInt(token.image));
+				}
+			} catch (NumberFormatException ee) {
+				throw new InterpretException("Number format exception", new XInteger(interpreter, loc, 0), 36);
+			}
+		} else if (x.kind == STRING_LITERAL) {
+			expr = new XString(interpreter, loc, token.image, 1);
+		} else if (x.kind == NULL) {
+			expr = new XNull(interpreter, loc);
+		} else {	// INLINE
+			// This should probably be in the interpreter package,
+			// but it doesn't really seem worth adding a new class
+			try {
+				// just for it.
+				String image = token.image;
+				String stripped = image.substring(2, image.length() - 2);
+				VDocument doc = DocumentFactory.getInstance().createFromInLinedXML(stripped);
+				expr = doc.getRootElement();
+			} catch (VDOMException ve) {
+				InterpretException ie = new InterpretException(ve, "Cannot parse embedded XML: " + ve.getLocalizedMessage());
+				if (ve.getRow() >= 0) {
+					ie.copyLoc(ve);
+				} else {
+					setLoc(token);
+					ie.copyLoc(new XInteger(interpreter, loc, 0));
+				}
+				throw ie;
+			}
+		}
+		argStack.push(expr);
+	}
+}
+void Logic() throws InterpretException :
+{
+	Token x = null;
+}
+{
+	(x = <TRUE> | x = <FALSE>) {
+		argStack.push((x.kind == TRUE) ? XBoolean.True : XBoolean.False);
+	}
+}
+
+
+/** [47] **/
+void ParenthesizedExpr() throws InterpretException :
+{
+	int depth = argStack.size();
+	Token x;
+}
+{
+	x = <L_PAREN> (ExprSequence())? <R_PAREN> 
+		{
+			// This should make sure its argument is a Sequence. If there
+			// are more than 1 elements it already is, if there are none
+			// push an empty stack, if just one make it a Sequence with a
+			// single element
+			if (depth == argStack.size()) {
+				argStack.push(Sequence.empty);
+			} else if (argStack.size() == depth + 1) {
+				Expr arg = argStack.popExpr();
+				setLoc(x);
+				if (arg.type() != Expr.SEQUENCESET) {
+					LinkedList list = new LinkedList();
+					list.addFirst(arg);
+					arg = new SequenceSet(interpreter, loc, list);
+				} else {
+					Expr expr = new XBoolean(interpreter, loc, true);
+					arg.copyLoc(expr);
+				}
+				argStack.push(arg);
+			}
+		}
+}
+
+/** [48] **/
+void ExprSequence() throws InterpretException :
+{int depth = argStack.size();}
+{
+	Expr() ((<COMMA> Expr())*) {
+		Expr expr = null;
+		if (argStack.size() - depth > 1) {
+			LinkedList exprs = new LinkedList();
+			while (argStack.size() > depth) {
+				expr = argStack.popExpr();
+				exprs.addFirst(expr);
+			}
+			setLoc(expr);
+			argStack.push(new SequenceSet(interpreter, loc, exprs));
+		}
+	}
+}
+
+Vector ExprList() throws InterpretException :
+{int depth = argStack.size();}
+{
+	Expr() ((<COMMA> Expr())*) {
+		int size = argStack.size() - depth;
+		Vector exprs = new Vector(size);
+		while (size-- > 0) {
+			exprs.add(0, argStack.popExpr());
+		}
+		return exprs;
+	}
+}
+
+
+/** [49] **/
+void FunctionCall() throws InterpretException :
+{	Token name;
+int depth = argStack.size();
+Path path = null;
+Vector list = null;
+Token isFunc = null;
+Token at = null;
+boolean holdContext = hasContext;
+hasContext = true;
+}
+{
+ 
+	name = <NC_NAME>
+		<L_PAREN> (list = ExprList())? <R_PAREN> 
+		(LOOKAHEAD(2) absPath())?
+	{
+		if (argStack.size() != depth) {
+			path = (Path) argStack.popExpr();
+		}
+		setLoc(name);
+		FunctionCall me = new FunctionCall(interpreter, loc, name.image, list);
+		if (path != null) {
+			path.setRoot(me);
+			argStack.push(path);
+		} else {
+			argStack.push(me);
+		}
+		hasContext = holdContext;
+	}
+}
+
+/** [50] **/
+void CastExpr() throws InterpretException :
+{}
+{
+	((<CAST> <AS>) | (<TREAT> <AS>)) Datatype() <L_PAREN> Expr() <R_PAREN>
+		}
+
+/** [51] **/
+Token Datatype() throws InterpretException :
+{}
+{
+	QName() {
+		// The checking is done later
+		return token;
+	}
+}
+
+/** [52] **/
+
+
+boolean ElementConstructor() throws InterpretException :
+{
+	Expr contents = null;
+	LinkedList atts = new LinkedList();
+	String endname = null;
+	Token endToken = null;
+	String name = null;
+	Token tName = null;
+	boolean eval = false;
+}
+{
+	(<LESS_THAN> tName = NameSpec() AttributeList(atts) 
+	(<SLASH_GREATER_THAN> | 
+	(<GREATER_THAN> contents = ElementContents())
+	<LESS_THAN_SLASH> (endToken = QName())? <GREATER_THAN>)) {
+		Expr nameSpec = null;
+		
+		if (endToken != null) {
+			endname = (String) argStack.pop();
+			if (!endname.equalsIgnoreCase(tName.image)) {
+				ParseException pe = new ParseException("nonmatching terminator for element " + tName.image + " : " + endname);
+				pe.currentToken = endToken;
+				endToken.next = null;
+				throw pe;
+			}
+		}
+
+		if (tName == null) {
+			nameSpec = argStack.popExpr();
+			setLoc(nameSpec);
+		} else {
+			setLoc(tName);
+			nameSpec = new XString(interpreter, loc, (String) argStack.pop());
+		}
+		
+		argStack.push(new Element(interpreter, loc, nameSpec, contents, atts));
+		return true;
+	}			
+}
+
+/** [53] **/
+Token NameSpec() throws InterpretException :
+{Token qname = null;}
+{
+	((qname = QName()) | (<L_BRACE> Expr() <R_BRACE>)) {
+		if (qname == null) {
+			Expr expr = argStack.popExpr();
+			setLoc(expr);
+			argStack.push(new Eval(interpreter, loc, expr));
+			return null;
+		}
+		return qname;
+	}
+}
+
+/** [54] **/
+LinkedList AttributeList(LinkedList atts) throws InterpretException :
+{
+	int depth = argStack.size();
+	Token string = null;
+	Token gotit = null;
+	Token name = null;
+}
+{
+	((LOOKAHEAD(3) EnclosedExpr() | name = NameSpec()) 
+	 (gotit = <EQUALS> ((string = <STRING_LITERAL>) | EnclosedExpr()))? 
+	 AttributeList(atts))? {
+		if ((name != null) || (depth != argStack.size())) {
+			Expr expr = null;
+			Expr nameSpec = null;
+			if (gotit != null) {
+				if (string == null) {
+					expr = argStack.popExpr();
+				} else {
+					// This should be a CData type, not XString
+					setLoc(string);
+					expr = new XString(interpreter, loc, string.image, 1);
+				}
+			}
+			setLoc(name);
+			nameSpec = (name == null) ? argStack.popExpr() : new XString(interpreter, loc, name.image);
+			atts.addFirst(new Attribute(interpreter, loc, nameSpec, expr));
+		}
+		return atts;
+	}
+}
+
+/** [56] **/
+Expr ElementContents() throws InterpretException :
+{
+	int depth = argStack.size();
+	Token t = null;
+	Expr expr = null;
+	boolean elem = false;
+}
+{
+/* this is changed to allow multiple enclosed expressions rwy 2002/9
+	((ElementConstructor())+ | (expr = EnclosedExpr()) | (expr = CDataSection()) | t = <CHAR_REF> | t = <PREDEFINED_ENTITY_REF>) {
+*/
+	((expr = CDataSection()) 
+	 | (t = <CHAR_REF>) 
+	 | (t = <PREDEFINED_ENTITY_REF> )
+	 | (ElementConstructor() | EnclosedExpr())+) {
+		if (expr != null) {
+			// CDATA or EnclosedExpression
+			return argStack.popExpr();
+		}
+		if (argStack.size() != depth) {
+			LinkedList elements = new LinkedList();
+			while (argStack.size() > depth) {
+				elements.addFirst(argStack.popExpr());
+			}
+			Expr first = (Expr) elements.get(0);
+			setLoc(first);
+			return new SequenceSet(interpreter, loc, elements);
+		}
+		throw new ParseException("CHAR_REF and PREDEFINED_ENTITY_REF not implemented");
+	}
+}
+
+/*
+ * It appears that this really should use <CDATA_START> and
+ * <CDATA_END>, according to the XQuery specs, rather than the 
+ * quotes it is using here
+ */
+Expr CDataSection() throws InterpretException :
+{
+	Token literal = null;
+}
+{
+	((literal = <STRING_LITERAL>) | <CDATA>) {
+		setLoc(token);
+		String image = token.image;
+		if (literal == null) {
+			image = image.substring(9, image.length() - 3);
+		}
+		Expr expr = new XString(interpreter, loc, image, 1);
+		argStack.push(expr);
+		return expr;
+	}
+}
+
+
+/** [59] **/
+Expr EnclosedExpr() throws InterpretException :
+{}
+{
+	<L_BRACE> ExprSequence() <R_BRACE> {
+		Expr expr = argStack.popExpr();
+		setLoc(expr);
+		expr = new Eval(interpreter, loc, expr);
+		argStack.push(expr);
+		return expr;
+	}
+}
+
+/** [62] **/
+void Wildcard() :
+{}
+{
+	<STAR> | (<NC_NAME> <COLON>) | (<STAR_COLON> <NC_NAME>)
+		 }
+
+/** [63] **/
+/*
+void Variable() :
+{
+	Token x = null;
+}
+{
+	x = <DOLLAR> QName() {
+		setLoc(x);
+		argStack.push(new Variable(interpreter, loc, (String) argStack.pop()));
+	}
+}
+*/
+String Variable() :
+{}
+{
+	 <VARNAME> {
+		setLoc(token);
+		String v = token.image.substring(1);
+		argStack.push(new Variable(interpreter, loc, v));
+		return v;
+	}
+}
+
+void VariableName() :
+{}
+{
+	<VARNAME> {
+		argStack.push(token.image.substring(1));
+	}
+}
+
+
+/** [63] **/
+void VariableCat() throws InterpretException :
+{int depth = argStack.size();
+}
+{
+	(Variable() (LOOKAHEAD(2) absPath())?) {
+		if (argStack.size() - 1 > depth) {
+			Path e = (Path) argStack.popExpr();
+			Variable v = (Variable) argStack.popExpr();
+			e.setRoot(v);
+			argStack.push(e);
+		}
+	}
+}
+
+/** [68] **/
+// This returns the token AND pushes the String onto the stack. Make
+// sure it is popped properly even when it is not needed
+Token QName() :
+{Token pre = null;}
+{
+	(LOOKAHEAD(2) pre = <NC_NAME> ":")? (<LETTER> | <NC_NAME>) {
+		if (pre != null) {
+			argStack.push(pre.image + ":" + token.image);
+			return pre;
+		}
+		argStack.push(token.image);
+		return token;
+	}
+}
+

@@ -1,0 +1,1 @@
+alter table CM_ATTACHMENT add(SCHEMA_ID NUMBER(38,0));

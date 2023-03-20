@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AC224C54-F99F-4964-B5C5-613BC98697B6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DevExpress.Web.ASPxPivotGrid.Export</RootNamespace>
+    <AssemblyName>DevExpress.Web.ASPxPivotGrid.v9.1.Export</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>NewteraKeys.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\DevExpress.Dll\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v9.1">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DevExpress.Dll\DevExpress.Data.v9.1.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v9.1">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DevExpress.Dll\DevExpress.Utils.v9.1.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxEditors.v9.1">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DevExpress.Dll\DevExpress.Web.ASPxEditors.v9.1.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DevExpress.Web.v9.1">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DevExpress.Dll\DevExpress.Web.v9.1.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v9.1">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DevExpress.Dll\DevExpress.XtraEditors.v9.1.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v9.1">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DevExpress.Dll\DevExpress.XtraPrinting.v9.1.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Design">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Web">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Events.cs" />
+    <Compile Include="Exporter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NewteraKeys.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DevExpress.Web.ASPxPivotGrid\DevExpress.Web.ASPxPivotGrid.csproj">
+      <Project>{EBF55814-10A4-43DA-8CF2-C5BD2151681F}</Project>
+      <Name>DevExpress.Web.ASPxPivotGrid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DevExpress.XtraPivotGrid\DevExpress.XtraPivotGrid.Core\DevExpress.XtraPivotGrid.Core.csproj">
+      <Project>{DA50534F-0CF7-436E-813B-BD030FAD9AE9}</Project>
+      <Name>DevExpress.XtraPivotGrid.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DevExpress.XtraPivotGrid\DevExpress.XtraPivotGrid\DevExpress.XtraPivotGrid.csproj">
+      <Project>{FDE712DF-3370-4A94-A689-200D3086E422}</Project>
+      <Name>DevExpress.XtraPivotGrid</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+  </PropertyGroup>
+</Project>

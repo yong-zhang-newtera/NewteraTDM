@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<mainmenu>
+  <item Text="视图" Name="Views">
+    <item Text="控件显示" Name="ActiveControl" NavigateUrl="javascript:OpenActiviControlWindow()"/>
+    <item Text="列显示设置" Name="CustomizeColumns"/>
+  </item>
+  <item Text="导出" Name="Exports">
+  </item>
+ <item Text="绘图" Name="Charts" >
+    <item Text="曲线图" Name="Charts_Line" NavigateUrl="javascript:LaunchChart('LineChartWizard.aspx')" />
+  </item>
+  <item Text="分类汇总" Name="PivotViews" />
+</mainmenu>

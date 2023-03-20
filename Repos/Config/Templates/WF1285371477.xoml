@@ -1,0 +1,37 @@
+<StateMachineWorkflowActivity InitialStateName="等待修复状态" x:Name="故障处理" DynamicUpdateCondition="{x:Null}" CompletedStateName="修复结束状态" xmlns:ns0="clr-namespace:Newtera.Activities;Assembly=Newtera.Activities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/workflow">
+	<StateActivity x:Name="等待修复状态">
+		<StateInitializationActivity x:Name="等待修复状态初始化">
+			<ns0:CreateTaskActivity SchemaId="故障记录数据库 1.0" Subject="请修复故障" UsersBindingAttributeCaption="修复人员" ClassName="BugRecord" TaskDescription="详情请看故障记录" MetaData="{x:Null}" Instruction="修复故障后将＂故障状态＂改为＂已修复＂" x:Name="生成修复故障任务" Users="{x:Null}" ClassCaption="故障纪录" RolesBindingAttributeCaption="{x:Null}" Roles="{x:Null}" UsersBindingAttribute="Fixby" />
+		</StateInitializationActivity>
+		<StateFinalizationActivity x:Name="等待修复状态终止化">
+			<ns0:CloseTaskActivity x:Name="注销修复故障任务" ActivityName="生成修复故障任务" />
+		</StateFinalizationActivity>
+		<EventDrivenActivity x:Name="修复事件驱动">
+			<ns0:HandleNewteraEventActivity x:Name="等待修复事件" ClassCaption="故障纪录" SchemaId="故障记录数据库 1.0" EventName="故障修复事件" MetaData="{x:Null}" ClassName="BugRecord" />
+			<SetStateActivity x:Name="setStateActivity1" TargetStateName="等待验证状态" />
+		</EventDrivenActivity>
+	</StateActivity>
+	<StateActivity x:Name="等待验证状态">
+		<StateInitializationActivity x:Name="等待验证初始化">
+			<ns0:CreateTaskActivity SchemaId="故障记录数据库 1.0" Subject="请验证修复的故障" UsersBindingAttributeCaption="{x:Null}" ClassName="BugRecord" TaskDescription="详情请看故障记录" MetaData="{x:Null}" Instruction="验证通过，　将＂故障状态＂改为＂验证通过＂，　否则改为＂等待修复＂" x:Name="生成验证故障任务" Users="{x:Null}" ClassCaption="故障纪录" RolesBindingAttributeCaption="{x:Null}">
+				<ns0:CreateTaskActivity.Roles>
+					<ns1:StringCollection xmlns:ns1="clr-namespace:System.Collections.Specialized;Assembly=System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+						<ns2:String xmlns:ns2="clr-namespace:System;Assembly=mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">QA</ns2:String>
+					</ns1:StringCollection>
+				</ns0:CreateTaskActivity.Roles>
+			</ns0:CreateTaskActivity>
+		</StateInitializationActivity>
+		<StateFinalizationActivity x:Name="等待验证终止化">
+			<ns0:CloseTaskActivity x:Name="注销验证故障任务" ActivityName="生成验证故障任务" />
+		</StateFinalizationActivity>
+		<EventDrivenActivity x:Name="验证失败事件驱动">
+			<ns0:HandleNewteraEventActivity x:Name="等待验证失败事件" ClassCaption="故障纪录" SchemaId="故障记录数据库 1.0" EventName="故障验证失败事件" MetaData="{x:Null}" ClassName="BugRecord" />
+			<SetStateActivity x:Name="setStateActivity2" TargetStateName="等待修复状态" />
+		</EventDrivenActivity>
+		<EventDrivenActivity x:Name="验证成功事件驱动">
+			<ns0:HandleNewteraEventActivity x:Name="等待验证成功事件" ClassCaption="故障纪录" SchemaId="故障记录数据库 1.0" EventName="故障验证通过事件" MetaData="{x:Null}" ClassName="BugRecord" />
+			<SetStateActivity x:Name="setStateActivity3" TargetStateName="修复结束状态" />
+		</EventDrivenActivity>
+	</StateActivity>
+	<StateActivity x:Name="修复结束状态" />
+</StateMachineWorkflowActivity>

@@ -1,0 +1,121 @@
+# CNTK Machine Learning Configuration
+# commands to run
+command=Train:Test:Output
+modelPath = "model.dnn"
+deviceId = "auto"
+precision = float
+traceLevel = 0
+# Train command
+Train = {
+    action="train"
+
+    # configuration of data reading
+    reader = {
+        readerType = "CNTKTextFormatReader"
+        file = "C:\Newtera\ECM\src\MLStudio\Examples\Data\Train-28x28_cntk_text.txt"
+        randomize = "true"
+        input = [
+            features = [
+                dim = $dimension$
+                format = "dense"
+            ]
+            labels = [
+                dim = $labelDimension$
+                format = "dense"
+            ]
+        ]
+    }
+
+    # network description
+    BrainScriptNetworkBuilder = {
+        imageShape = 28:28:1 # image dimensions, 1 channel only
+        labelDim = $labelDimension$
+        featScale = 1/256
+        Scale{f} = x => Constant(f) .* x
+        
+        model = Sequential (
+         Scale {featScale} :
+         ConvolutionalLayer {16, (5:5), pad = true} : ReLU : 
+         MaxPoolingLayer    {(2:2), stride=(2:2)} :
+         DenseLayer {64} : ReLU : 
+         LinearLayer {labelDim}
+        )
+        
+        # inputs
+        features = Input {imageShape}
+        labels = Input (labelDim)
+        
+        # apply model to features
+        ol = model (features)
+        
+        # loss and error computation
+        ce   = CrossEntropyWithSoftmax (labels, ol)
+        errs = ClassificationError (labels, ol)
+        
+        # declare special nodes
+        featureNodes    = (features)
+        labelNodes      = (labels)
+        criterionNodes  = (ce)
+        evaluationNodes = (errs)
+        outputNodes     = (ol)
+        
+
+    }
+
+    # configuration parameters of the SGD procedure
+    SGD = {
+        epochSize = 60000                 # =0 means size of the training set
+        minibatchSize = 64
+        learningRatesPerSample = 0.001*5:0.0005  # gradient contribution from each sample
+        maxEpochs = 15
+        momentumAsTimeConstant = 0
+        numMBsToShowResult = 500
+    }
+
+}
+
+# Test command
+Test = {
+    action="test"
+
+    # configuration of data reading
+    reader = {
+        readerType = "CNTKTextFormatReader"
+        file = "C:\Newtera\ECM\src\MLStudio\Examples\Data\Test-28x28_cntk_text.txt"
+        randomize = "true"
+        input = [
+            features = [
+                dim = $dimension$
+                format = "dense"
+            ]
+            labels = [
+                dim = $labelDimension$
+                format = "dense"
+            ]
+        ]
+    }
+
+}
+
+# Output command
+Output = {
+    action="write"
+
+    # configuration of data reading
+    reader = {
+        readerType = "CNTKTextFormatReader"
+        file = "C:\Newtera\ECM\src\MLStudio\Examples\Examples\Data\Test-28x28_cntk_text.txt"
+        randomize = "true"
+        input = [
+            features = [
+                dim = $dimension$
+                format = "dense"
+            ]
+        ]
+    }
+
+    outputPath = "output.txt"
+}
+
+dimension = 784
+labelDimension = 10

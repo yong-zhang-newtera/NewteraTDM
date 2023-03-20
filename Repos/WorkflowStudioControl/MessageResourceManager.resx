@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="WorkflowStudio.CustomActionExist" xml:space="preserve">
+    <value>A custom action with name {0} already exist.</value>
+  </data>
+  <data name="WorkflowStudio.DisabledFeature" xml:space="preserve">
+    <value>This feature is disabled for the trial license.</value>
+  </data>
+  <data name="WorkflowStudio.EnterName" xml:space="preserve">
+    <value>Please enter a name.</value>
+  </data>
+  <data name="WorkflowStudio.MissingRole" xml:space="preserve">
+    <value>Please select a role that has permission to modify the project.</value>
+  </data>
+  <data name="WorkflowStudio.NullCustomActionName" xml:space="preserve">
+    <value>Please enter a custom action name</value>
+  </data>
+  <data name="WorkflowStudio.NullParameterName" xml:space="preserve">
+    <value>Please enter a parameter name</value>
+  </data>
+  <data name="WorkflowStudio.ParameterExist" xml:space="preserve">
+    <value>The parameter {0} already exists</value>
+  </data>
+  <data name="WorkflowStudio.UserExist" xml:space="preserve">
+    <value>The user has been selected already.</value>
+  </data>
+  <data name="WorkflowStudioApp.About" xml:space="preserve">
+    <value>AboutWorkflowStudio.rtf</value>
+  </data>
+  <data name="WorkflowStudioApp.ActionCodeOK" xml:space="preserve">
+    <value>The action code compiled successfully</value>
+  </data>
+  <data name="WorkflowStudioApp.ActionCodeTooLong" xml:space="preserve">
+    <value>The length of the code is too long, it should be less than 2000 characters.</value>
+  </data>
+  <data name="WorkflowStudioApp.BackupComplete" xml:space="preserve">
+    <value>Back is completed</value>
+  </data>
+  <data name="WorkflowStudioApp.BackupProject" xml:space="preserve">
+    <value>Backing up a project...</value>
+  </data>
+  <data name="WorkflowStudioApp.BindLeafClass" xml:space="preserve">
+    <value>Only a leaf class can be bound to a workflow</value>
+  </data>
+  <data name="WorkflowStudioApp.CorrectURL" xml:space="preserve">
+    <value>The URL for accessing a remote server has been setup successfully. Please restart the tool.</value>
+  </data>
+  <data name="WorkflowStudioApp.DataTypeMismatch" xml:space="preserve">
+    <value>The data type of the selected item doesn't match the required data type. The required data type is {0}</value>
+  </data>
+  <data name="WorkflowStudioApp.DBARequired" xml:space="preserve">
+    <value>Sorry, you are not a project administrator. This operation can only be performed by a schema administrator</value>
+  </data>
+  <data name="WorkflowStudioApp.HasRunningInstances" xml:space="preserve">
+    <value>Some workflows in the project have running instances. Do you want to save the project as a newer version? If the answer is "Yes", it will be saved as a project of higher version. If the answer is "No", it will override the project of the existing version.</value>
+  </data>
+  <data name="WorkflowStudioApp.InvalidAdminID" xml:space="preserve">
+    <value>Invalid administrator name.</value>
+  </data>
+  <data name="WorkflowStudioApp.InvalidAdminPassword" xml:space="preserve">
+    <value>Invalid administrator password.</value>
+  </data>
+  <data name="WorkflowStudioApp.InvalidUserLogin" xml:space="preserve">
+    <value>Login failed. Please make sure that login name and password are correct.</value>
+  </data>
+  <data name="WorkflowStudioApp.LockObtained" xml:space="preserve">
+    <value>You've obtained a lock that allows you to modify the workflow project.</value>
+  </data>
+  <data name="WorkflowStudioApp.LockReleased" xml:space="preserve">
+    <value>The lock is released successfully. </value>
+  </data>
+  <data name="WorkflowStudioApp.NoBindingClass" xml:space="preserve">
+    <value>There is no binding class</value>
+  </data>
+  <data name="WorkflowStudioApp.NoProjectPermission" xml:space="preserve">
+    <value>Sorry, you don't have the permission to access the project.</value>
+  </data>
+  <data name="WorkflowStudioApp.NotLatestVersion" xml:space="preserve">
+    <value>The project you selected isn't the latest version. Therefore, the changes cannot be saved back to the database.</value>
+  </data>
+  <data name="WorkflowStudioApp.OnlineHelp" xml:space="preserve">
+    <value>NewteraWorkflowHelp.chm</value>
+  </data>
+  <data name="WorkflowStudioApp.ProjectChanged" xml:space="preserve">
+    <value>Do you want to exit the application?</value>
+  </data>
+  <data name="WorkflowStudioApp.ProjectDeleted" xml:space="preserve">
+    <value>The project has been deleted.</value>
+  </data>
+  <data name="WorkflowStudioApp.ProjectExist" xml:space="preserve">
+    <value>A project of the same name exists, please choose a different name.</value>
+  </data>
+  <data name="WorkflowStudioApp.ProjectSaved" xml:space="preserve">
+    <value>Saving project to the database is completed.</value>
+  </data>
+  <data name="WorkflowStudioApp.Ready" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="WorkflowStudioApp.RuleExists" xml:space="preserve">
+    <value>A rule for the same subject already exists.</value>
+  </data>
+  <data name="WorkflowStudioApp.SaveProject" xml:space="preserve">
+    <value>Are you sure that you want to save the workflow project to the database?</value>
+  </data>
+  <data name="WorkflowStudioApp.SavingProjectToDB" xml:space="preserve">
+    <value>Saving the project to the database...</value>
+  </data>
+  <data name="WorkflowStudioApp.SetClassNameFirst" xml:space="preserve">
+    <value>The binding class hasn't been specified or is incorrect. Please set "Class Name" property of the workflow first.</value>
+  </data>
+  <data name="WorkflowStudioApp.SetSchemaIdFirst" xml:space="preserve">
+    <value>The binding database schema hasn't been specified or is incorrect. Please set "Schema Id" property of the workflow first.</value>
+  </data>
+  <data name="WorkflowStudioApp.WorkflowStarted" xml:space="preserve">
+    <value>A workflow instance has been started with id:</value>
+  </data>
+  <data name="WorkflowStudioApp.WorkflowValidated" xml:space="preserve">
+    <value>The workflows have been validated without errors.</value>
+  </data>
+  <data name="WorkflowStudioControl.DefaultName" xml:space="preserve">
+    <value>Project1</value>
+  </data>
+  <data name="WorkflowStudioControl.DuplicateLabel" xml:space="preserve">
+    <value>The name has been used by another workflow.</value>
+  </data>
+  <data name="WorkflowStudioControl.EmptyLabel" xml:space="preserve">
+    <value>The node name cannot be empty</value>
+  </data>
+  <data name="WorkflowStudioControl.ExecutableSequential" xml:space="preserve">
+    <value>Sequential Workflow (Executable)</value>
+  </data>
+  <data name="WorkflowStudioControl.ExecutableStateMachine" xml:space="preserve">
+    <value>State Machine Workflow (Executable)</value>
+  </data>
+  <data name="WorkflowStudioControl.ExecutableWizard" xml:space="preserve">
+    <value>Wizard Workflow (Executable)</value>
+  </data>
+  <data name="WorkflowStudioControl.InvalidClassName" xml:space="preserve">
+    <value>In start event, '{0}' class doesn't exist in the database schema '{1}'.</value>
+  </data>
+  <data name="WorkflowStudioControl.InvalidEventName" xml:space="preserve">
+    <value>In start event, '{0}' event doesn't exist in class '{1}' of the database schema '{2}'.</value>
+  </data>
+  <data name="WorkflowStudioControl.InvalidLabelChar" xml:space="preserve">
+    <value>Invalid node name. The invalid characters are: '@','.', ',', '!'</value>
+  </data>
+  <data name="WorkflowStudioControl.InvalidSchemaId" xml:space="preserve">
+    <value>In start event, '{0}'  is an unknown database schema or denied to access.</value>
+  </data>
+  <data name="WorkflowStudioControl.NonExecutableSequential" xml:space="preserve">
+    <value>Sequential Workflow (Non-Executable)</value>
+  </data>
+  <data name="WorkflowStudioControl.NonExecutableStateMachine" xml:space="preserve">
+    <value>State Machine Workflow (Non-Executable)</value>
+  </data>
+  <data name="WorkflowStudioControl.NonExecutableWizard" xml:space="preserve">
+    <value>Wizard Workflow (Non-Executable)</value>
+  </data>
+  <data name="WorkflowStudioApp.ProjectModel" xml:space="preserve">
+    <value>Backing up workflow project model...</value>
+  </data>
+  <data name="WorkflowStudioApp.PackFiles" xml:space="preserve">
+    <value>Packing up the files...</value>
+  </data>
+  <data name="WorkflowStudioApp.RestoreData" xml:space="preserve">
+    <value>Restoring workflow project...</value>
+  </data>
+  <data name="WorkflowStudioApp.RestoreComplete" xml:space="preserve">
+    <value>Restoring workflow project completed.</value>
+  </data>
+  <data name="WorkflowStudioApp.OverrideProject" xml:space="preserve">
+    <value>A project with the same name exists, do you want to override it?</value>
+  </data>
+  <data name="WorkflowStudioApp.UnpackData" xml:space="preserve">
+    <value>Unpacking the backup file...</value>
+  </data>
+  <data name="WorkflowStudioApp.CreateProject" xml:space="preserve">
+    <value>Restoring the project model...</value>
+  </data>
+  <data name="WorkflowStudioApp.RestoreTrackingInfos" xml:space="preserve">
+    <value>Restoring {0} workflow instance tracking info...</value>
+  </data>
+  <data name="WorkflowStudioApp.RestoreStateInfos" xml:space="preserve">
+    <value>Restoring {0} workflow instance state info...</value>
+  </data>
+  <data name="WorkflowStudioApp.RestoreTaskInfos" xml:space="preserve">
+    <value>Restoring {0} workflow instance task info...</value>
+  </data>
+  <data name="WorkflowStudioApp.RestoreWFEventSubscriptions" xml:space="preserve">
+    <value>Restoring {0} workflow instance's subscriptions to workflow event...</value>
+  </data>
+  <data name="WorkflowStudioApp.RestoreDBEventSubscriptions" xml:space="preserve">
+    <value>Restoring {0} workflow instance's subscriptions to the database event...</value>
+  </data>
+  <data name="WorkflowStudioApp.RestoreBindingInfos" xml:space="preserve">
+    <value>Restoring {0} workflow instance's bindings to database instances...</value>
+  </data>
+  <data name="WorkflowStudio.PropertyExist" xml:space="preserve">
+    <value>The property has been selected</value>
+  </data>
+  <data name="WorkflowStudioApp.LogicalORRoles" xml:space="preserve">
+    <value>Selected Roles (Logical OR)</value>
+  </data>
+  <data name="WorkflowStudioApp.FoundWorkflows" xml:space="preserve">
+    <value>Are you sure that you want to terminate found "{0}" workflows?</value>
+  </data>
+</root>

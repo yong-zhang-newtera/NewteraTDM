@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Simple.UnknownDataType" xml:space="preserve">
+    <value>未知数据类型</value>
+  </data>
+  <data name="Simple.WrongFullTextIndexType" xml:space="preserve">
+    <value>全文检索的功能只适用于Text类型的属性</value>
+  </data>
+  <data name="Simple.WrongHistoryEditType" xml:space="preserve">
+    <value>历史编辑属性必须是Text类型</value>
+  </data>
+  <data name="Simple.UnknownConstraint" xml:space="preserve">
+    <value>所引用的约束条件不存在</value>
+  </data>
+  <data name="Simple.IncorrectEnumDataType" xml:space="preserve">
+    <value>被可多选的枚举约束条件约束的属性，其数据类型必须是Integer</value>
+  </data>
+  <data name="Simple.InvalidAutoIncType" xml:space="preserve">
+    <value>自增属性的默认数据类型必须是Integer</value>
+  </data>
+  <data name="Enum.MissingValues" xml:space="preserve">
+    <value>枚举值未定义</value>
+  </data>
+  <data name="Range.InvalidMinMax" xml:space="preserve">
+    <value>最小值大于最大值</value>
+  </data>
+  <data name="Pattern.MissingValue" xml:space="preserve">
+    <value>表达式未定义</value>
+  </data>
+  <data name="Relationship.MissingLinkedClass" xml:space="preserve">
+    <value>关联类已不存在。</value>
+  </data>
+  <data name="Relationship.MissingPrimaryKeys" xml:space="preserve">
+    <value>被关联的数据类没有定义主键。</value>
+  </data>
+  <data name="Simple.StringLengthTooBig" xml:space="preserve">
+    <value>字符型属性的最大长度为：</value>
+  </data>
+  <data name="List.MissingValue" xml:space="preserve">
+    <value>条目的句柄(Handler)未定义</value>
+  </data>
+  <data name="Array.UnknownElementDataType" xml:space="preserve">
+    <value>未知数据元素数据类型</value>
+  </data>
+  <data name="Array.IncorrectDimension" xml:space="preserve">
+    <value>数组必须是一维或二维数组</value>
+  </data>
+  <data name="Simple.IllegalRequiredAttribute" xml:space="preserve">
+    <value>不允许修改为必要属性, 因为该数据类已存在数据记录. 您必须提供缺省值或先删除数据记录.</value>
+  </data>
+  <data name="Simple.IllegalUniqueAttribute" xml:space="preserve">
+    <value>不允许修改为唯一属性, 因为该数据类已存在数据记录. 您必须先删除数据记录.</value>
+  </data>
+  <data name="Simple.IllegalAutoIncrementAttribute" xml:space="preserve">
+    <value>不允许修改是否自增的值, 因为该属性的字段已经在数据库中创建</value>
+  </data>
+  <data name="Class.CaptionTooLong" xml:space="preserve">
+    <value>显示名太长,要小于100个字符</value>
+  </data>
+  <data name="Simple.CaptionTooLong" xml:space="preserve">
+    <value>显示名太长,要小于100个字符</value>
+  </data>
+  <data name="Relationship.CaptionTooLong" xml:space="preserve">
+    <value>显示名太长,要小于100个字符</value>
+  </data>
+  <data name="Array.CaptionTooLong" xml:space="preserve">
+    <value>显示名太长,要小于100个字符</value>
+  </data>
+  <data name="Simple.MissingPKForFullText" xml:space="preserve">
+    <value>定义全文检索属性的数据类必须具有主键.</value>
+  </data>
+  <data name="Simple.MoreThanOneFullTextAttributes" xml:space="preserve">
+    <value>在一个数据类中只允许定义一个全文检索属性.</value>
+  </data>
+  <data name="Class.IllegalPrimaryKey" xml:space="preserve">
+    <value>不允许修改主键, 因为该数据类已存在数据记录.  您必须先删除数据记录.</value>
+  </data>
+  <data name="Class.TooManyAutoIncAttributes" xml:space="preserve">
+    <value>一个数据类最多允许有一个自增型的属性, 包括本地的或继承的.</value>
+  </data>
+  <data name="Array.DuplicatedColumnTitle" xml:space="preserve">
+    <value>发现重名的数组列名.</value>
+  </data>
+  <data name="Virtual.UnknownDataType" xml:space="preserve">
+    <value>未知数据类型</value>
+  </data>
+  <data name="Virtual.UnspecifiedCode" xml:space="preserve">
+    <value>尚未指定虚拟属性的程序</value>
+  </data>
+  <data name="Simple.InvalidEnumDataType" xml:space="preserve">
+    <value>当枚举约束设为多选时，数据类型必须为Integer。</value>
+  </data>
+	<data name="Simple.InvalidSingleEnumDataType" xml:space="preserve">
+    <value>当枚举约束设为单选时，数据类型必须为String。</value>
+  </data>
+  <data name="Constraint.InvalidSelectionModeChange" xml:space="preserve">
+    <value>不允许修改约束的‘是否多选'设置。因为该约束被非空数据类'{0}'的属性‘{1}‘引用。请先删除引用数据类的数据实例。</value>
+  </data>
+  <data name="Constraint.InvalidTypeChange" xml:space="preserve">
+    <value>不允许修改约束的数据类型。因为该约束被非空数据类'{0}'的属性‘{1}‘引用。请先删除引用数据类的数据实例。</value>
+  </data>
+  <data name="Simple.InvalidConstraintChange" xml:space="preserve">
+    <value>不允许改变属性的约束，因为该数据类已经存在数据实例。请先删除该数据类的数据实例。</value>
+  </data>
+  <data name="Simple.InvalidFullTextChange" xml:space="preserve">
+    <value>不允许将该属性修改为“全文检索”属性，因为该数据类已经存在数据实例了。您可以先删除存在的数据实例或创建一个新的全文检索属性。</value>
+  </data>
+  <data name="Simple.InvalidHistoryEditChange" xml:space="preserve">
+    <value>不允许将该属性修改为“历史编辑”属性，因为该数据类已经存在数据实例了。您可以先删除存在的数据实例或创建一个新的历史编辑属性。</value>
+  </data>
+  <data name="Simple.InvalidRichTextChange" xml:space="preserve">
+    <value>不允许将该属性修改为“富文本”属性，因为该数据类已经存在数据实例了。您可以先删除存在的数据实例或创建一个新的富文本属性。</value>
+  </data>
+  <data name="Simple.InvalidTypeChange" xml:space="preserve">
+    <value>不允许改变数据类型。因为该数据类中已经存在数据实例。请先删除数据实例。</value>
+  </data>
+  <data name="Simple.InvalidUseOfTextType" xml:space="preserve">
+    <value>只有用于全文检索或历史编辑的属性才能使用Text数据类型。</value>
+  </data>
+  <data name="Constraint.InvalidDataType" xml:space="preserve">
+    <value>该数据类型不能用于约束条件。</value>
+  </data>
+  <data name="Simple.InvalidIndexType" xml:space="preserve">
+    <value>Text数据类型的普通属性不允许建立索引。</value>
+  </data>
+  <data name="Simple.NormalIndexExisted" xml:space="preserve">
+    <value>该属性已经存在普通索引，因而不能用于全文检索属性。</value>
+  </data>
+  <data name="Simple.InvalidUsageForUniqueKey" xml:space="preserve">
+    <value>该属性是数据类组合唯一约束的成员，因而它的用途必须定义为Included</value>
+  </data>
+  <data name="Simple.InvalidDefaultChange" xml:space="preserve">
+    <value>不允许改变缺省值。因为该数据类中已经存在数据实例。请先删除数据实例。</value>
+  </data>
+  <data name="Simple.InvalidAutoIncForFullText" xml:space="preserve">
+    <value>用于全文检索的属性不允许设置为自增</value>
+  </data>
+  <data name="Simple.InvalidAutoIncForHistoryEdit" xml:space="preserve">
+    <value>用于历史编辑的属性不允许设置为自增</value>
+  </data>
+  <data name="Simple.InvalidDefaultForFullText" xml:space="preserve">
+    <value>用于全文检索的属性不允许设置缺省值</value>
+  </data>
+  <data name="Simple.InvalidDefaultForHistoryEdit" xml:space="preserve">
+    <value>用于历史编辑的属性不允许设置缺省值</value>
+  </data>
+  <data name="Simple.InvalidUniqueForFullText" xml:space="preserve">
+    <value>用于全文检索的属性不允许设置为唯一</value>
+  </data>
+  <data name="Simple.InvalidUniqueForHistoryEdit" xml:space="preserve">
+    <value>用于历史编辑的属性不允许设置为唯一</value>
+  </data>
+  <data name="Simple.InvalidPKDataTypeChange" xml:space="preserve">
+    <value>数据库模型已保存到数据库中，因而不允许修改主键的数据类型。</value>
+  </data>
+  <data name="Class.IllegalUniqueKey" xml:space="preserve">
+    <value>不允许修改联合唯一约束, 因为该数据类已存在数据记录.  您必须先删除数据记录.</value>
+  </data>
+  <data name="Simple.RequiredAttributeInvalidForFullText" xml:space="preserve">
+    <value>必要属性不能作为全文检索的属性</value>
+  </data>
+  <data name="Simple.RequiredAttributeInvalidForHistoryEdit" xml:space="preserve">
+    <value>历史编辑属性不能为必要属性</value>
+  </data>
+  <data name="Simple.InvalidCustomAutoIncType" xml:space="preserve">
+    <value>定义了自增值生成器的自增属性必须是String数据类型</value>
+  </data>
+  <data name="Simple.InvalidValueGenerator" xml:space="preserve">
+    <value>生成器的定义不正确或生成器不存在</value>
+  </data>
+  <data name="Simple.UnableToChangeTextBack" xml:space="preserve">
+    <value>不允许修改已经保存的Text类型的属性的类型。您可选择删除该属性。</value>
+  </data>
+  <data name="Class.JunctionNoPK" xml:space="preserve">
+    <value>联接数据类不允许有主键。</value>
+  </data>
+  <data name="Class.JunctionNoUC" xml:space="preserve">
+    <value>联接数据类不允许有唯一性组合属性。</value>
+  </data>
+  <data name="Class.NoRootJunction" xml:space="preserve">
+    <value>联接数据类必须是根类并且不能有子类。</value>
+  </data>
+  <data name="Class.TwoManyToOneRelationship" xml:space="preserve">
+    <value>联接数据类必须只有两个多对一的关系属性。</value>
+  </data>
+  <data name="Simple.UnableToChangeBackFullText" xml:space="preserve">
+    <value>该属性已经在数据库中设置为全文检索属性，不能取消。您可将其删除。</value>
+  </data>
+  <data name="Simple.UnableToChangeBackHistoryEdit" xml:space="preserve">
+    <value>该属性已经在数据库中设置为历史编辑属性，不能取消。您可将其删除。</value>
+  </data>
+  <data name="Simple.UnableToChangeBackRichText" xml:space="preserve">
+    <value>该属性已经在数据库中设置为富文本属性，不能取消。您可将其删除。</value>
+  </data>
+  <data name="Simple.InvalidStringMinLength" xml:space="preserve">
+    <value>最小长度值不能为负数或不能大于最大长度的值</value>
+  </data>
+  <data name="Simple.StringLengthTooShort" xml:space="preserve">
+    <value>字符型属性的最大长度值不能小于</value>
+  </data>
+  <data name="Simple.InvalidMaxLengthChange" xml:space="preserve">
+    <value>不允许改变最大长度值。因为该数据类中已经存在数据实例。请先删除数据实例。</value>
+  </data>
+  <data name="Simple.InvalidMinLengthChange" xml:space="preserve">
+    <value>不允许改变最小长度值。因为该数据类中已经存在数据实例。请先删除数据实例。</value>
+  </data>
+  <data name="Simple.InvalidGoodForFullTextSearchChange" xml:space="preserve">
+    <value>当属性的“是否全文检索”设置为true时，不能将“是否适用于全文检索”设置为true。</value>
+  </data>
+  <data name="Simple.IsGoodForFullTextInvalidForFullText" xml:space="preserve">
+    <value>当属性的“是否适合于全文检索”设置为true时，不能将“是否全文检索”设置为true。</value>
+  </data>
+  <data name="Constraint.InvalidMinMaxValueChange" xml:space="preserve">
+    <value>修改约束的最大值或最小值可能会造成已存在的数据不一致的问题。因为该约束被非空数据类'{0}'的属性‘{1}‘引用。</value>
+  </data>
+  <data name="Class.NoResultAttributes" xml:space="preserve">
+    <value>该数据类以及其父类中不存在任何属性的“用途”设置为“Inlcuded”，这样会造成默认数据视图出错</value>
+  </data>
+  <data name="Simple.InlineEditInvalidAutoAttribute" xml:space="preserve">
+    <value>自增属性不能用于多行修改</value>
+  </data>
+  <data name="Simple.InlineEditInvalidUniqueAttribute" xml:space="preserve">
+    <value>具有唯一性的属性不能用于多行修改</value>
+  </data>
+  <data name="Simple.InlineEditInvalidMultiEnumAttribute" xml:space="preserve">
+    <value>具有多选枚举约束的属性不能用于多行修改</value>
+  </data>
+  <data name="Relationship.InvalidForIndex" xml:space="preserve">
+    <value>从关系属性(没有对应的外键)不能定义索引</value>
+  </data>
+  <data name="Simple.InvalidDefaultDateTimeValue" xml:space="preserve">
+    <value>默认值为非法日期格式</value>
+  </data>
+  <data name="Simple.HistoryEditInvalidForSearch" xml:space="preserve">
+    <value>历史编辑属性的用途必须设置为Exluded</value>
+  </data>
+  <data name="Simple.RichTextInvalidForSearch" xml:space="preserve">
+    <value>富文本属性的用途必须设置为Exluded</value>
+  </data>
+  <data name="Simple.InputMaskNotAllowedEncrypted" xml:space="preserve">
+    <value>定义了输入掩码的属性不能加密存储</value>
+  </data>
+  <data name="Simple.CascadedAttributeNotFound" xml:space="preserve">
+    <value>指定的级联属性不存在</value>
+  </data>
+	<data name="Simple.InvalidCascadedAttributeConstraint" xml:space="preserve">
+    <value>级联属性必须具有条目类型为Conditional的条目约束，所指定的属性不具有这个要求</value>
+  </data>
+	<data name="Simple.InvalidUseOfCascadeAttribute" xml:space="preserve">
+    <value>指定的级联属性已经定义了上级属性，因而不能作为本属性的下级级联属性了：</value>
+  </data>
+</root>

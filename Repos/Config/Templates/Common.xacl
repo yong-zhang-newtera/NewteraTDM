@@ -1,0 +1,22 @@
+<Policy>
+  <setting propagation="Downward" conflict="Gtp" read="Deny" write="Deny" create="Deny" delete="Deny" upload="Deny" download="Deny" />
+  <xacls>
+    <xacl>
+      <object href="/metadata" />
+      <rules>
+        <rule>
+          <subject roles="Everyone" />
+          <actions>
+            <action type="Read" permission="Grant" />
+            <action type="Write" permission="Grant" />
+            <action type="Create" permission="Grant" />
+            <action type="Delete" permission="Grant" />
+            <action type="Upload" permission="Grant" />
+            <action type="Download" permission="Grant" />
+          </actions>
+          <condition />
+        </rule>
+      </rules>
+    </xacl>
+  </xacls>
+</Policy>

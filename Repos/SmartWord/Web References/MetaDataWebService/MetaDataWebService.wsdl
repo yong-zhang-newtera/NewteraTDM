@@ -1,0 +1,1654 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.newtera.com/webservices/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://www.newtera.com/webservices/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.newtera.com/webservices/">
+      <s:element name="GetSchemaInfos">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetSchemaInfosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSchemaInfosResult" type="tns:ArrayOfSchemaInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfSchemaInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SchemaInfo" nillable="true" type="tns:SchemaInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SchemaInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Version" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ModifiedTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetMetaData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMetaDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMetaDataResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetSchemaModel">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSchemaModelResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSchemaModelResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetMetaData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xmlStrings" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetMetaDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SetMetaDataResult" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetSchemaModel">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xmlSchema" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetSchemaModelResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SetSchemaModelResult" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FixSchemaModel">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FixSchemaModelResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetDataViews">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDataViewsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDataViewsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetDataViews">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xmlString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetDataViewsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SetDataViewsResult" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetXaclPolicy">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xmlString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetXaclPolicyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SetXaclPolicyResult" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetTaxonomies">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xmlString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetTaxonomiesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SetTaxonomiesResult" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetRules">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xmlString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetRulesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SetRulesResult" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteMetaData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteMetaDataResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetMetaDataUpdateLog">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMetaDataUpdateLogResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMetaDataUpdateLogResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTransformerId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTransformerIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTransformerIdResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IsValueGeneratorExist">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="valueGeneratorDef" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IsValueGeneratorExistResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="IsValueGeneratorExistResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchXmlDataSource">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xquery" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchXmlDataSourceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SearchXmlDataSourceResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidateMethodCode">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="code" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="schemaId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="instanceClassName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidateMethodCodeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ValidateMethodCodeResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDBARole">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDBARoleResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDBARoleResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetDBARole">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="role" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetDBARoleResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="LockMetaData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LockMetaDataResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="UnlockMetaData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="forceUnlock" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UnlockMetaDataResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetSiteMapModels">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetSiteMapModelsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSiteMapModelsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetSiteMapModels">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xmlString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetSiteMapModelsResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetSiteMap">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="modelName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSiteMapResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSiteMapResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSiteMapFromFile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fileName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSiteMapFromFileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSiteMapFromFileResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetSiteMap">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="modelName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xmlString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetSiteMapResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetSideMenu">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="modelName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSideMenuResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSideMenuResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSideMenuFromFile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fileName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSideMenuFromFileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSideMenuFromFileResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetSideMenu">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="modelName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xmlString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetSideMenuResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetCustomCommandSet">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="modelName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCustomCommandSetResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCustomCommandSetResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCustomCommandSetFromFile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fileName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCustomCommandSetFromFileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCustomCommandSetFromFileResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetCustomCommandSet">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="modelName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xmlString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetCustomCommandSetResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetSiteMapAccessPolicy">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="modelName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSiteMapAccessPolicyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSiteMapAccessPolicyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSiteMapAccessPolicyFromFile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fileName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSiteMapAccessPolicyFromFileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSiteMapAccessPolicyFromFileResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetSiteMapAccessPolicy">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="modelName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xmlString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetSiteMapAccessPolicyResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetFormTemplatesFileNames">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="schemaId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="className" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFormTemplatesFileNamesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetFormTemplatesFileNamesResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetReportTemplatesFileNames">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="schemaId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="className" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetReportTemplatesFileNamesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetReportTemplatesFileNamesResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetWorklowNames">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="projectName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="projectVersion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="schemaId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="className" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetWorklowNamesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetWorklowNamesResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetSchemaInfosSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSchemaInfos" />
+  </wsdl:message>
+  <wsdl:message name="GetSchemaInfosSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSchemaInfosResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMetaDataSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMetaData" />
+  </wsdl:message>
+  <wsdl:message name="GetMetaDataSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMetaDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSchemaModelSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSchemaModel" />
+  </wsdl:message>
+  <wsdl:message name="GetSchemaModelSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSchemaModelResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetMetaDataSoapIn">
+    <wsdl:part name="parameters" element="tns:SetMetaData" />
+  </wsdl:message>
+  <wsdl:message name="SetMetaDataSoapOut">
+    <wsdl:part name="parameters" element="tns:SetMetaDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetSchemaModelSoapIn">
+    <wsdl:part name="parameters" element="tns:SetSchemaModel" />
+  </wsdl:message>
+  <wsdl:message name="SetSchemaModelSoapOut">
+    <wsdl:part name="parameters" element="tns:SetSchemaModelResponse" />
+  </wsdl:message>
+  <wsdl:message name="FixSchemaModelSoapIn">
+    <wsdl:part name="parameters" element="tns:FixSchemaModel" />
+  </wsdl:message>
+  <wsdl:message name="FixSchemaModelSoapOut">
+    <wsdl:part name="parameters" element="tns:FixSchemaModelResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDataViewsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDataViews" />
+  </wsdl:message>
+  <wsdl:message name="GetDataViewsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDataViewsResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetDataViewsSoapIn">
+    <wsdl:part name="parameters" element="tns:SetDataViews" />
+  </wsdl:message>
+  <wsdl:message name="SetDataViewsSoapOut">
+    <wsdl:part name="parameters" element="tns:SetDataViewsResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetXaclPolicySoapIn">
+    <wsdl:part name="parameters" element="tns:SetXaclPolicy" />
+  </wsdl:message>
+  <wsdl:message name="SetXaclPolicySoapOut">
+    <wsdl:part name="parameters" element="tns:SetXaclPolicyResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetTaxonomiesSoapIn">
+    <wsdl:part name="parameters" element="tns:SetTaxonomies" />
+  </wsdl:message>
+  <wsdl:message name="SetTaxonomiesSoapOut">
+    <wsdl:part name="parameters" element="tns:SetTaxonomiesResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetRulesSoapIn">
+    <wsdl:part name="parameters" element="tns:SetRules" />
+  </wsdl:message>
+  <wsdl:message name="SetRulesSoapOut">
+    <wsdl:part name="parameters" element="tns:SetRulesResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteMetaDataSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteMetaData" />
+  </wsdl:message>
+  <wsdl:message name="DeleteMetaDataSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteMetaDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMetaDataUpdateLogSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMetaDataUpdateLog" />
+  </wsdl:message>
+  <wsdl:message name="GetMetaDataUpdateLogSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMetaDataUpdateLogResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTransformerIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTransformerId" />
+  </wsdl:message>
+  <wsdl:message name="GetTransformerIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTransformerIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IsValueGeneratorExistSoapIn">
+    <wsdl:part name="parameters" element="tns:IsValueGeneratorExist" />
+  </wsdl:message>
+  <wsdl:message name="IsValueGeneratorExistSoapOut">
+    <wsdl:part name="parameters" element="tns:IsValueGeneratorExistResponse" />
+  </wsdl:message>
+  <wsdl:message name="SearchXmlDataSourceSoapIn">
+    <wsdl:part name="parameters" element="tns:SearchXmlDataSource" />
+  </wsdl:message>
+  <wsdl:message name="SearchXmlDataSourceSoapOut">
+    <wsdl:part name="parameters" element="tns:SearchXmlDataSourceResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidateMethodCodeSoapIn">
+    <wsdl:part name="parameters" element="tns:ValidateMethodCode" />
+  </wsdl:message>
+  <wsdl:message name="ValidateMethodCodeSoapOut">
+    <wsdl:part name="parameters" element="tns:ValidateMethodCodeResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDBARoleSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDBARole" />
+  </wsdl:message>
+  <wsdl:message name="GetDBARoleSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDBARoleResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetDBARoleSoapIn">
+    <wsdl:part name="parameters" element="tns:SetDBARole" />
+  </wsdl:message>
+  <wsdl:message name="SetDBARoleSoapOut">
+    <wsdl:part name="parameters" element="tns:SetDBARoleResponse" />
+  </wsdl:message>
+  <wsdl:message name="LockMetaDataSoapIn">
+    <wsdl:part name="parameters" element="tns:LockMetaData" />
+  </wsdl:message>
+  <wsdl:message name="LockMetaDataSoapOut">
+    <wsdl:part name="parameters" element="tns:LockMetaDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="UnlockMetaDataSoapIn">
+    <wsdl:part name="parameters" element="tns:UnlockMetaData" />
+  </wsdl:message>
+  <wsdl:message name="UnlockMetaDataSoapOut">
+    <wsdl:part name="parameters" element="tns:UnlockMetaDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSiteMapModelsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSiteMapModels" />
+  </wsdl:message>
+  <wsdl:message name="GetSiteMapModelsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSiteMapModelsResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetSiteMapModelsSoapIn">
+    <wsdl:part name="parameters" element="tns:SetSiteMapModels" />
+  </wsdl:message>
+  <wsdl:message name="SetSiteMapModelsSoapOut">
+    <wsdl:part name="parameters" element="tns:SetSiteMapModelsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSiteMapSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSiteMap" />
+  </wsdl:message>
+  <wsdl:message name="GetSiteMapSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSiteMapResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSiteMapFromFileSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSiteMapFromFile" />
+  </wsdl:message>
+  <wsdl:message name="GetSiteMapFromFileSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSiteMapFromFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetSiteMapSoapIn">
+    <wsdl:part name="parameters" element="tns:SetSiteMap" />
+  </wsdl:message>
+  <wsdl:message name="SetSiteMapSoapOut">
+    <wsdl:part name="parameters" element="tns:SetSiteMapResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSideMenuSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSideMenu" />
+  </wsdl:message>
+  <wsdl:message name="GetSideMenuSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSideMenuResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSideMenuFromFileSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSideMenuFromFile" />
+  </wsdl:message>
+  <wsdl:message name="GetSideMenuFromFileSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSideMenuFromFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetSideMenuSoapIn">
+    <wsdl:part name="parameters" element="tns:SetSideMenu" />
+  </wsdl:message>
+  <wsdl:message name="SetSideMenuSoapOut">
+    <wsdl:part name="parameters" element="tns:SetSideMenuResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomCommandSetSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCustomCommandSet" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomCommandSetSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCustomCommandSetResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomCommandSetFromFileSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCustomCommandSetFromFile" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomCommandSetFromFileSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCustomCommandSetFromFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetCustomCommandSetSoapIn">
+    <wsdl:part name="parameters" element="tns:SetCustomCommandSet" />
+  </wsdl:message>
+  <wsdl:message name="SetCustomCommandSetSoapOut">
+    <wsdl:part name="parameters" element="tns:SetCustomCommandSetResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSiteMapAccessPolicySoapIn">
+    <wsdl:part name="parameters" element="tns:GetSiteMapAccessPolicy" />
+  </wsdl:message>
+  <wsdl:message name="GetSiteMapAccessPolicySoapOut">
+    <wsdl:part name="parameters" element="tns:GetSiteMapAccessPolicyResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSiteMapAccessPolicyFromFileSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSiteMapAccessPolicyFromFile" />
+  </wsdl:message>
+  <wsdl:message name="GetSiteMapAccessPolicyFromFileSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSiteMapAccessPolicyFromFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetSiteMapAccessPolicySoapIn">
+    <wsdl:part name="parameters" element="tns:SetSiteMapAccessPolicy" />
+  </wsdl:message>
+  <wsdl:message name="SetSiteMapAccessPolicySoapOut">
+    <wsdl:part name="parameters" element="tns:SetSiteMapAccessPolicyResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetFormTemplatesFileNamesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetFormTemplatesFileNames" />
+  </wsdl:message>
+  <wsdl:message name="GetFormTemplatesFileNamesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetFormTemplatesFileNamesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetReportTemplatesFileNamesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetReportTemplatesFileNames" />
+  </wsdl:message>
+  <wsdl:message name="GetReportTemplatesFileNamesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetReportTemplatesFileNamesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetWorklowNamesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetWorklowNames" />
+  </wsdl:message>
+  <wsdl:message name="GetWorklowNamesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetWorklowNamesResponse" />
+  </wsdl:message>
+  <wsdl:portType name="MetaDataServiceSoap">
+    <wsdl:operation name="GetSchemaInfos">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets an array of SchemaInfo object.</wsdl:documentation>
+      <wsdl:input message="tns:GetSchemaInfosSoapIn" />
+      <wsdl:output message="tns:GetSchemaInfosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMetaData">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets a meta data in xml string array</wsdl:documentation>
+      <wsdl:input message="tns:GetMetaDataSoapIn" />
+      <wsdl:output message="tns:GetMetaDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSchemaModel">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets a specified schema model as xml schema.</wsdl:documentation>
+      <wsdl:input message="tns:GetSchemaModelSoapIn" />
+      <wsdl:output message="tns:GetSchemaModelSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetMetaData">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Write meta data in xml strings to database.</wsdl:documentation>
+      <wsdl:input message="tns:SetMetaDataSoapIn" />
+      <wsdl:output message="tns:SetMetaDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetSchemaModel">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Write a schema model to database.</wsdl:documentation>
+      <wsdl:input message="tns:SetSchemaModelSoapIn" />
+      <wsdl:output message="tns:SetSchemaModelSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FixSchemaModel">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Fix discrepancies between a schema model and its corresponding database.</wsdl:documentation>
+      <wsdl:input message="tns:FixSchemaModelSoapIn" />
+      <wsdl:output message="tns:FixSchemaModelSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDataViews">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets data view of a schema as xml string.</wsdl:documentation>
+      <wsdl:input message="tns:GetDataViewsSoapIn" />
+      <wsdl:output message="tns:GetDataViewsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetDataViews">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Write an xml string representing data views of a schema to database.</wsdl:documentation>
+      <wsdl:input message="tns:SetDataViewsSoapIn" />
+      <wsdl:output message="tns:SetDataViewsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetXaclPolicy">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Write an xml string representing xacl policy of a schema to database.</wsdl:documentation>
+      <wsdl:input message="tns:SetXaclPolicySoapIn" />
+      <wsdl:output message="tns:SetXaclPolicySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetTaxonomies">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Write an xml string representing taxonomies of a schema to database.</wsdl:documentation>
+      <wsdl:input message="tns:SetTaxonomiesSoapIn" />
+      <wsdl:output message="tns:SetTaxonomiesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetRules">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Write an xml string representing rules of a schema to database.</wsdl:documentation>
+      <wsdl:input message="tns:SetRulesSoapIn" />
+      <wsdl:output message="tns:SetRulesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteMetaData">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Delete a meta data in database.</wsdl:documentation>
+      <wsdl:input message="tns:DeleteMetaDataSoapIn" />
+      <wsdl:output message="tns:DeleteMetaDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMetaDataUpdateLog">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get the latest log of updating a meta data in database.</wsdl:documentation>
+      <wsdl:input message="tns:GetMetaDataUpdateLogSoapIn" />
+      <wsdl:output message="tns:GetMetaDataUpdateLogSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTransformerId">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get an unique id for transformer.</wsdl:documentation>
+      <wsdl:input message="tns:GetTransformerIdSoapIn" />
+      <wsdl:output message="tns:GetTransformerIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="IsValueGeneratorExist">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get information indicating whether a given value generator exists on server side or not</wsdl:documentation>
+      <wsdl:input message="tns:IsValueGeneratorExistSoapIn" />
+      <wsdl:output message="tns:IsValueGeneratorExistSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchXmlDataSource">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get a result in form of XMLDocument by executing a XQuery on server side XMLDataSourceService</wsdl:documentation>
+      <wsdl:input message="tns:SearchXmlDataSourceSoapIn" />
+      <wsdl:output message="tns:SearchXmlDataSourceSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateMethodCode">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Validate a class method code.</wsdl:documentation>
+      <wsdl:input message="tns:ValidateMethodCodeSoapIn" />
+      <wsdl:output message="tns:ValidateMethodCodeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDBARole">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets name of the role that has permission to modify the meta data. null if it is non-protected mode.</wsdl:documentation>
+      <wsdl:input message="tns:GetDBARoleSoapIn" />
+      <wsdl:output message="tns:GetDBARoleSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetDBARole">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Sets name of the role that has permission to modify the meta data. null to set to non-protected mode.</wsdl:documentation>
+      <wsdl:input message="tns:SetDBARoleSoapIn" />
+      <wsdl:output message="tns:SetDBARoleSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LockMetaData">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Lock the meta data specified in the connection string for update</wsdl:documentation>
+      <wsdl:input message="tns:LockMetaDataSoapIn" />
+      <wsdl:output message="tns:LockMetaDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UnlockMetaData">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Unlock the meta data specified in the connection string.</wsdl:documentation>
+      <wsdl:input message="tns:UnlockMetaDataSoapIn" />
+      <wsdl:output message="tns:UnlockMetaDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSiteMapModels">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets all sitemap models in a xml string.</wsdl:documentation>
+      <wsdl:input message="tns:GetSiteMapModelsSoapIn" />
+      <wsdl:output message="tns:GetSiteMapModelsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetSiteMapModels">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Write specs of sitemap models in xml string</wsdl:documentation>
+      <wsdl:input message="tns:SetSiteMapModelsSoapIn" />
+      <wsdl:output message="tns:SetSiteMapModelsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSiteMap">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets the sitemap in a xml string.</wsdl:documentation>
+      <wsdl:input message="tns:GetSiteMapSoapIn" />
+      <wsdl:output message="tns:GetSiteMapSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSiteMapFromFile">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets the sitemap in a xml string from a file.</wsdl:documentation>
+      <wsdl:input message="tns:GetSiteMapFromFileSoapIn" />
+      <wsdl:output message="tns:GetSiteMapFromFileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetSiteMap">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Write sitemap in xml string.</wsdl:documentation>
+      <wsdl:input message="tns:SetSiteMapSoapIn" />
+      <wsdl:output message="tns:SetSiteMapSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSideMenu">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets the sidemenu in a xml string.</wsdl:documentation>
+      <wsdl:input message="tns:GetSideMenuSoapIn" />
+      <wsdl:output message="tns:GetSideMenuSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSideMenuFromFile">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets the side menu in a xml string from a file.</wsdl:documentation>
+      <wsdl:input message="tns:GetSideMenuFromFileSoapIn" />
+      <wsdl:output message="tns:GetSideMenuFromFileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetSideMenu">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Write sidemenu in xml string.</wsdl:documentation>
+      <wsdl:input message="tns:SetSideMenuSoapIn" />
+      <wsdl:output message="tns:SetSideMenuSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomCommandSet">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets the custom command set in a xml string.</wsdl:documentation>
+      <wsdl:input message="tns:GetCustomCommandSetSoapIn" />
+      <wsdl:output message="tns:GetCustomCommandSetSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomCommandSetFromFile">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets the custom command set in a xml string from a file.</wsdl:documentation>
+      <wsdl:input message="tns:GetCustomCommandSetFromFileSoapIn" />
+      <wsdl:output message="tns:GetCustomCommandSetFromFileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetCustomCommandSet">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Write custom commands in xml string.</wsdl:documentation>
+      <wsdl:input message="tns:SetCustomCommandSetSoapIn" />
+      <wsdl:output message="tns:SetCustomCommandSetSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSiteMapAccessPolicy">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets the sitemap access policy in a xml string.</wsdl:documentation>
+      <wsdl:input message="tns:GetSiteMapAccessPolicySoapIn" />
+      <wsdl:output message="tns:GetSiteMapAccessPolicySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSiteMapAccessPolicyFromFile">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets the sitemap access policy in a xml string from a file.</wsdl:documentation>
+      <wsdl:input message="tns:GetSiteMapAccessPolicyFromFileSoapIn" />
+      <wsdl:output message="tns:GetSiteMapAccessPolicyFromFileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetSiteMapAccessPolicy">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Write sitemap access policy in xml string.</wsdl:documentation>
+      <wsdl:input message="tns:SetSiteMapAccessPolicySoapIn" />
+      <wsdl:output message="tns:SetSiteMapAccessPolicySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFormTemplatesFileNames">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets the names of form templates.</wsdl:documentation>
+      <wsdl:input message="tns:GetFormTemplatesFileNamesSoapIn" />
+      <wsdl:output message="tns:GetFormTemplatesFileNamesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetReportTemplatesFileNames">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets the names of report templates.</wsdl:documentation>
+      <wsdl:input message="tns:GetReportTemplatesFileNamesSoapIn" />
+      <wsdl:output message="tns:GetReportTemplatesFileNamesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWorklowNames">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets the names of worfklows.</wsdl:documentation>
+      <wsdl:input message="tns:GetWorklowNamesSoapIn" />
+      <wsdl:output message="tns:GetWorklowNamesSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MetaDataServiceSoap" type="tns:MetaDataServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetSchemaInfos">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetSchemaInfos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMetaData">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetMetaData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSchemaModel">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetSchemaModel" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetMetaData">
+      <soap:operation soapAction="http://www.newtera.com/webservices/SetMetaData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetSchemaModel">
+      <soap:operation soapAction="http://www.newtera.com/webservices/SetSchemaModel" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FixSchemaModel">
+      <soap:operation soapAction="http://www.newtera.com/webservices/FixSchemaModel" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataViews">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetDataViews" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetDataViews">
+      <soap:operation soapAction="http://www.newtera.com/webservices/SetDataViews" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetXaclPolicy">
+      <soap:operation soapAction="http://www.newtera.com/webservices/SetXaclPolicy" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetTaxonomies">
+      <soap:operation soapAction="http://www.newtera.com/webservices/SetTaxonomies" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetRules">
+      <soap:operation soapAction="http://www.newtera.com/webservices/SetRules" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteMetaData">
+      <soap:operation soapAction="http://www.newtera.com/webservices/DeleteMetaData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMetaDataUpdateLog">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetMetaDataUpdateLog" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTransformerId">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetTransformerId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsValueGeneratorExist">
+      <soap:operation soapAction="http://www.newtera.com/webservices/IsValueGeneratorExist" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchXmlDataSource">
+      <soap:operation soapAction="http://www.newtera.com/webservices/SearchXmlDataSource" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateMethodCode">
+      <soap:operation soapAction="http://www.newtera.com/webservices/ValidateMethodCode" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDBARole">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetDBARole" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetDBARole">
+      <soap:operation soapAction="http://www.newtera.com/webservices/SetDBARole" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LockMetaData">
+      <soap:operation soapAction="http://www.newtera.com/webservices/LockMetaData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnlockMetaData">
+      <soap:operation soapAction="http://www.newtera.com/webservices/UnlockMetaData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSiteMapModels">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetSiteMapModels" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetSiteMapModels">
+      <soap:operation soapAction="http://www.newtera.com/webservices/SetSiteMapModels" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSiteMap">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetSiteMap" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSiteMapFromFile">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetSiteMapFromFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetSiteMap">
+      <soap:operation soapAction="http://www.newtera.com/webservices/SetSiteMap" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSideMenu">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetSideMenu" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSideMenuFromFile">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetSideMenuFromFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetSideMenu">
+      <soap:operation soapAction="http://www.newtera.com/webservices/SetSideMenu" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomCommandSet">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetCustomCommandSet" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomCommandSetFromFile">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetCustomCommandSetFromFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetCustomCommandSet">
+      <soap:operation soapAction="http://www.newtera.com/webservices/SetCustomCommandSet" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSiteMapAccessPolicy">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetSiteMapAccessPolicy" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSiteMapAccessPolicyFromFile">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetSiteMapAccessPolicyFromFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetSiteMapAccessPolicy">
+      <soap:operation soapAction="http://www.newtera.com/webservices/SetSiteMapAccessPolicy" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFormTemplatesFileNames">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetFormTemplatesFileNames" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetReportTemplatesFileNames">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetReportTemplatesFileNames" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorklowNames">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetWorklowNames" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="MetaDataServiceSoap12" type="tns:MetaDataServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetSchemaInfos">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetSchemaInfos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMetaData">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetMetaData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSchemaModel">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetSchemaModel" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetMetaData">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/SetMetaData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetSchemaModel">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/SetSchemaModel" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FixSchemaModel">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/FixSchemaModel" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataViews">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetDataViews" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetDataViews">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/SetDataViews" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetXaclPolicy">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/SetXaclPolicy" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetTaxonomies">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/SetTaxonomies" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetRules">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/SetRules" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteMetaData">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/DeleteMetaData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMetaDataUpdateLog">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetMetaDataUpdateLog" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTransformerId">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetTransformerId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsValueGeneratorExist">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/IsValueGeneratorExist" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchXmlDataSource">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/SearchXmlDataSource" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateMethodCode">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/ValidateMethodCode" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDBARole">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetDBARole" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetDBARole">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/SetDBARole" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LockMetaData">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/LockMetaData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnlockMetaData">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/UnlockMetaData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSiteMapModels">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetSiteMapModels" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetSiteMapModels">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/SetSiteMapModels" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSiteMap">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetSiteMap" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSiteMapFromFile">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetSiteMapFromFile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetSiteMap">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/SetSiteMap" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSideMenu">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetSideMenu" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSideMenuFromFile">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetSideMenuFromFile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetSideMenu">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/SetSideMenu" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomCommandSet">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetCustomCommandSet" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomCommandSetFromFile">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetCustomCommandSetFromFile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetCustomCommandSet">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/SetCustomCommandSet" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSiteMapAccessPolicy">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetSiteMapAccessPolicy" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSiteMapAccessPolicyFromFile">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetSiteMapAccessPolicyFromFile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetSiteMapAccessPolicy">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/SetSiteMapAccessPolicy" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFormTemplatesFileNames">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetFormTemplatesFileNames" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetReportTemplatesFileNames">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetReportTemplatesFileNames" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorklowNames">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetWorklowNames" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MetaDataService">
+    <wsdl:port name="MetaDataServiceSoap" binding="tns:MetaDataServiceSoap">
+      <soap:address location="http://localhost/Newtera/WebService/MetaDataWebService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="MetaDataServiceSoap12" binding="tns:MetaDataServiceSoap12">
+      <soap12:address location="http://localhost/Newtera/WebService/MetaDataWebService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

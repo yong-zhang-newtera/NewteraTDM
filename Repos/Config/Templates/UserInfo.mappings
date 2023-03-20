@@ -1,0 +1,88 @@
+<MappingManager order="0">
+  <MappingPackageCollection>
+    <MappingPackage Name="Role" order="0" Converter="Newtera.Conveters.DelimitedTextFileConverter, Newtera.Conveters" SourceType="Text" paging="true" BlockSize="1000" modifyExisting="true">
+      <TextFormat order="0" rowDelim="&#xD;&#xA;" colDelim="	" firstRowCols="true" startDataRow="2" />
+      <ClassMappingCollection>
+        <ClassMapping order="0" Source="Role V20141001.txt" Destination="Role">
+          <AttributeMappingCollection>
+            <AttributeMapping order="0" Source="Text" Destination="Text">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Memo" Destination="Memo">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Name" Destination="Name">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Type" Destination="RType">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Address" Destination="Address">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+          </AttributeMappingCollection>
+          <DefaultValueCollection />
+          <SelectRowScript order="0" Language="CSharp" />
+          <IdentifyRowScript order="0" Language="CSharp" />
+        </ClassMapping>
+      </ClassMappingCollection>
+    </MappingPackage>
+    <MappingPackage Name="UserRole数据导入" order="0" Converter="Newtera.Conveters.DelimitedTextFileConverter, Newtera.Conveters" SourceType="Text" paging="true" BlockSize="1000">
+      <TextFormat order="0" rowDelim="&#xD;&#xA;" colDelim="	" firstRowCols="true" startDataRow="2" />
+      <ClassMappingCollection>
+        <ClassMapping order="0" Source="UserRole V20141020 - 新增.txt" Destination="UserRole">
+          <AttributeMappingCollection>
+            <PrimaryKeyMapping order="0" Source="User" Destination="user_ID">
+              <TransformScript order="0" Language="CSharp" />
+            </PrimaryKeyMapping>
+            <PrimaryKeyMapping order="0" Source="Role" Destination="role_Name">
+              <TransformScript order="0" Language="CSharp" />
+            </PrimaryKeyMapping>
+          </AttributeMappingCollection>
+          <DefaultValueCollection />
+          <SelectRowScript order="0" Language="CSharp" />
+          <IdentifyRowScript order="0" Language="CSharp" />
+        </ClassMapping>
+      </ClassMappingCollection>
+    </MappingPackage>
+    <MappingPackage Name="User导入" order="0" Converter="Newtera.Conveters.DelimitedTextFileConverter, Newtera.Conveters" SourceType="Text" paging="true" BlockSize="1000">
+      <TextFormat order="0" rowDelim="&#xD;&#xA;" colDelim="	" firstRowCols="true" startDataRow="2" />
+      <ClassMappingCollection>
+        <ClassMapping order="0" Source="User V20141104-新增.txt" Destination="User">
+          <AttributeMappingCollection>
+            <AttributeMapping order="0" Source="ID" Destination="ID">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Password" Destination="Password">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="First Name" Destination="FirstName">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Phone Number" Destination="PhoneNumber">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Email" Destination="Email">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Location" Destination="Location">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Manager" Destination="UserManager">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Last Name" Destination="LastName">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Telephone" Destination="Telephone">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+          </AttributeMappingCollection>
+          <DefaultValueCollection />
+          <SelectRowScript order="0" Language="CSharp" />
+          <IdentifyRowScript order="0" Language="CSharp" />
+        </ClassMapping>
+      </ClassMappingCollection>
+    </MappingPackage>
+  </MappingPackageCollection>
+</MappingManager>

@@ -1,0 +1,133 @@
+﻿<Window x:Class="Newtera.MLStudio.Views.DeployModelDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Newtera.MLStudio.Views"
+        mc:Ignorable="d"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterScreen"
+        ContentRendered="Window_ContentRendered"
+        Title="Deploy Model Wizard" Height="362">
+    <Grid Margin="15" Initialized="Grid_Initialized">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="350" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Name="Page1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" x:Name="lblStepOne" Content="Select a model to deploy" />
+            <ListBox Grid.Row="1" x:Name="listBoxModels" SelectionChanged="listBoxModels_SelectionChanged" />
+            <Label Grid.Row="2" x:Name="lblModel" Content="Selected DNN Model" Margin="0,5,0,0" />
+            <TextBox Grid.Row="3" Name="txtModel" IsReadOnly="True"></TextBox>
+        </Grid>
+        <Grid Name="Page2" Visibility="Hidden">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" x:Name="lblStepTwo" Content="Select a data class to apply the model"  Margin="0,0,0,0"/>
+            <TreeView Grid.Row="1" Name="classTree" Height="200" SelectedItemChanged="classTree_SelectedItemChanged" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"></TreeView>
+            <Label Grid.Row="2" x:Name="lblClass" Content="Selected class name:" Margin="0,5,0,0" />
+            <TextBox Grid.Row="3" Name="txtClass" IsReadOnly="True"></TextBox>
+        </Grid>
+        <Grid Name="Page3" Visibility="Hidden">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" x:Name="lblStepThree" Content="Select a data metric for the model"  Margin="0,0,0,0"/>
+            <ListBox Grid.Row="1" x:Name="listBoxSchemas" SelectionChanged="listBoxSchemas_SelectionChanged" />
+            <Label Grid.Row="2" x:Name="lblSchema" Content="Selected data schema:" Margin="0,5,0,0" />
+            <TextBox Grid.Row="3" Name="txtSchema" IsReadOnly="True"></TextBox>
+        </Grid>
+        <Grid Name="Page4" Visibility="Hidden">
+            <GroupBox Name="typeGroup" Header="Specify the model application" HorizontalAlignment="Left" Margin="0,10,0,0"
+                      VerticalAlignment="Top" Height="236" Width="330">
+                <StackPanel>
+                    <RadioButton Grid.Row="1" Name="rTimeSeriesForecast" Content="Time Series Forecast" IsChecked="True" Margin="0,10,0,0"></RadioButton>
+                    <RadioButton Grid.Row="2" Name="rClassification" Content="Classification" IsChecked="False" Margin="0,10,0,0"></RadioButton>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+        <Grid Name="Page5" Visibility="Hidden">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" x:Name="lblStepFive" Content="Specify the model parameters and publish to server"  Margin="0,0,0,0"/>
+            <Label Grid.Row="1" x:Name="lblColumnName" Content="Time Series Name:" Margin="0,5,0,0" />
+            <ComboBox Grid.Row="2" x:Name="comboBoxSeriesName" SelectionChanged="comboBoxSeriesName_SelectionChanged" />
+            <Label Grid.Row="3" x:Name="lblFrequency" Content="Time Series Frequency:" Margin="0,10,0,0" />
+            <ComboBox Grid.Row="4" x:Name="comboBoxFrequency" SelectionChanged="comboBoxFrequency_SelectionChanged" />
+            <Label Grid.Row="5" x:Name="lblMaxForecastHorizon" Content="Max Forecast Horizon:" Margin="0,10,0,0" />
+            <TextBox Grid.Row="6" x:Name="txtMaxForecastHorizon" IsReadOnly="True" />
+            <GroupBox Grid.Row="7" Name="contentGroup" Header="Conetnt" HorizontalAlignment="Left" Margin="0,10,0,0"
+                      VerticalAlignment="Top" Width="350">
+                <WrapPanel>
+                    <CheckBox Name="checkModel" Content="Model" IsChecked="True" Margin="5,5,5,5"></CheckBox>
+                    <CheckBox Name="checkPreprocess" Content="Preprocess" IsChecked="True" Margin="5,5,5,5"></CheckBox>
+                    <CheckBox Name="checkPostprocess" Content="Postprocess" IsChecked="True" Margin="5,5,5,5"></CheckBox>
+                </WrapPanel>
+            </GroupBox>
+            <CheckBox Grid.Row="8" Name="checkHasPublished" IsEnabled="False" IsChecked="False" Content="Has published" Margin="5,10,5,5"></CheckBox>
+            <WrapPanel Grid.Row="9" HorizontalAlignment="Center" Margin="0,10,0,0" >
+                <Button Name="btnPublishTimeSeries" IsEnabled="False" Click="btnPublishTimeSeries_Click" HorizontalAlignment="Center" MinWidth="60" Margin="10,10,10,10" >Publish</Button>
+                <Button Name="btnUnpublishTimeSeries" IsEnabled="False" Click="btnUnpublishTimeSeries_Click"  HorizontalAlignment="Center" MinWidth="60" Margin="10,10,10,10" >Unpublish</Button>
+            </WrapPanel>
+        </Grid>
+        <Grid Name="Page6" Visibility="Hidden">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" x:Name="lblStepSix" Content="Publish to server"  Margin="0,0,0,0"/>
+            <CheckBox Grid.Row="1" Name="checkClassificationHasPublished" IsEnabled="False" IsChecked="False" Content="Has published" Margin="5,10,5,5"></CheckBox>
+            <WrapPanel Grid.Row="2" HorizontalAlignment="Center" Margin="0,10,0,0" >
+                <Button Name="btnPublishClassification" IsEnabled="False" Click="btnPublishClassification_Click" HorizontalAlignment="Center" MinWidth="60" Margin="10,10,10,10" >Publish</Button>
+                <Button Name="btnUnpublishClassification" IsEnabled="False" Click="btnUnpublishClassification_Click"  HorizontalAlignment="Center" MinWidth="60" Margin="10,10,10,10" >Unpublish</Button>
+            </WrapPanel>
+        </Grid>
+        <WrapPanel Grid.Row="4" HorizontalAlignment="Right" Margin="0,20,0,0">
+            <Button Name="prevBtn" Click="btnPrev_Click" MinWidth="60" Margin="0,0,10,0" Visibility="Hidden">Prev</Button>
+            <Button IsDefault="True" IsEnabled="False" Name="nextBtn" Click="btnNext_Click" MinWidth="60" Margin="0,0,10,0">Next</Button>
+            <Button IsCancel="True" Name="cancel" MinWidth="60" Margin="0,0,10,0">_Cancel</Button>
+        </WrapPanel>
+    </Grid>
+</Window>

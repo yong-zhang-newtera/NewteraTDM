@@ -1,0 +1,791 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <metadata name="toolBarImageList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="toolBarImageList.ImageStream" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
+        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
+        ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAABu
+        EgAAAk1TRnQBSQFMAgEBCwEAAQ4BAAEEAQABEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        AwABQAMAATADAAEBAQABCAYAAQwYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
+        AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
+        AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
+        AWYDAAGZAwABzAIAATMDAAIzAgABMwFmAgABMwGZAgABMwHMAgABMwH/AgABZgMAAWYBMwIAAmYCAAFm
+        AZkCAAFmAcwCAAFmAf8CAAGZAwABmQEzAgABmQFmAgACmQIAAZkBzAIAAZkB/wIAAcwDAAHMATMCAAHM
+        AWYCAAHMAZkCAALMAgABzAH/AgAB/wFmAgAB/wGZAgAB/wHMAQABMwH/AgAB/wEAATMBAAEzAQABZgEA
+        ATMBAAGZAQABMwEAAcwBAAEzAQAB/wEAAf8BMwIAAzMBAAIzAWYBAAIzAZkBAAIzAcwBAAIzAf8BAAEz
+        AWYCAAEzAWYBMwEAATMCZgEAATMBZgGZAQABMwFmAcwBAAEzAWYB/wEAATMBmQIAATMBmQEzAQABMwGZ
+        AWYBAAEzApkBAAEzAZkBzAEAATMBmQH/AQABMwHMAgABMwHMATMBAAEzAcwBZgEAATMBzAGZAQABMwLM
+        AQABMwHMAf8BAAEzAf8BMwEAATMB/wFmAQABMwH/AZkBAAEzAf8BzAEAATMC/wEAAWYDAAFmAQABMwEA
+        AWYBAAFmAQABZgEAAZkBAAFmAQABzAEAAWYBAAH/AQABZgEzAgABZgIzAQABZgEzAWYBAAFmATMBmQEA
+        AWYBMwHMAQABZgEzAf8BAAJmAgACZgEzAQADZgEAAmYBmQEAAmYBzAEAAWYBmQIAAWYBmQEzAQABZgGZ
+        AWYBAAFmApkBAAFmAZkBzAEAAWYBmQH/AQABZgHMAgABZgHMATMBAAFmAcwBmQEAAWYCzAEAAWYBzAH/
+        AQABZgH/AgABZgH/ATMBAAFmAf8BmQEAAWYB/wHMAQABzAEAAf8BAAH/AQABzAEAApkCAAGZATMBmQEA
+        AZkBAAGZAQABmQEAAcwBAAGZAwABmQIzAQABmQEAAWYBAAGZATMBzAEAAZkBAAH/AQABmQFmAgABmQFm
+        ATMBAAGZATMBZgEAAZkBZgGZAQABmQFmAcwBAAGZATMB/wEAApkBMwEAApkBZgEAA5kBAAKZAcwBAAKZ
+        Af8BAAGZAcwCAAGZAcwBMwEAAWYBzAFmAQABmQHMAZkBAAGZAswBAAGZAcwB/wEAAZkB/wIAAZkB/wEz
+        AQABmQHMAWYBAAGZAf8BmQEAAZkB/wHMAQABmQL/AQABzAMAAZkBAAEzAQABzAEAAWYBAAHMAQABmQEA
+        AcwBAAHMAQABmQEzAgABzAIzAQABzAEzAWYBAAHMATMBmQEAAcwBMwHMAQABzAEzAf8BAAHMAWYCAAHM
+        AWYBMwEAAZkCZgEAAcwBZgGZAQABzAFmAcwBAAGZAWYB/wEAAcwBmQIAAcwBmQEzAQABzAGZAWYBAAHM
+        ApkBAAHMAZkBzAEAAcwBmQH/AQACzAIAAswBMwEAAswBZgEAAswBmQEAA8wBAALMAf8BAAHMAf8CAAHM
+        Af8BMwEAAZkB/wFmAQABzAH/AZkBAAHMAf8BzAEAAcwC/wEAAcwBAAEzAQAB/wEAAWYBAAH/AQABmQEA
+        AcwBMwIAAf8CMwEAAf8BMwFmAQAB/wEzAZkBAAH/ATMBzAEAAf8BMwH/AQAB/wFmAgAB/wFmATMBAAHM
+        AmYBAAH/AWYBmQEAAf8BZgHMAQABzAFmAf8BAAH/AZkCAAH/AZkBMwEAAf8BmQFmAQAB/wKZAQAB/wGZ
+        AcwBAAH/AZkB/wEAAf8BzAIAAf8BzAEzAQAB/wHMAWYBAAH/AcwBmQEAAf8CzAEAAf8BzAH/AQAC/wEz
+        AQABzAH/AWYBAAL/AZkBAAL/AcwBAAJmAf8BAAFmAf8BZgEAAWYC/wEAAf8CZgEAAf8BZgH/AQAC/wFm
+        AQABIQEAAaUBAANfAQADdwEAA4YBAAOWAQADywEAA7IBAAPXAQAD3QEAA+MBAAPqAQAD8QEAA/gBAAHw
+        AfsB/wEAAaQCoAEAA4ADAAH/AgAB/wMAAv8BAAH/AwAB/wEAAf8BAAL/AgAD/wEAEP8B9AX/AfQI/wH2
+        EP0QAAESDhUBEgL2ARUBEgEVAREBEgIUARMB6gMTAUMB/wPUAawBSwtKEAABbQ7/AW0B9gEVARwB6wEA
+        AQ8EAAHvARwBAAFtARQB9gHUARkB2wGsC/8BShAAAW0B/wwHAf8BbQH2A0oBDgUAAbwBGgEAAXMBFAH2
+        AdQBGQHbAawC/wYrASUC/wFKEAAB6wH/AfQBBwL0AQcC9AEHAvQBBwH0Af8B6wH2ARIBSgFRAQ4FAAEH
+        AQgBAAFKARMB/wHUARkB2wGsAv8BLAYrAv8BShAAAesB/wFmAQcC/wEHAv8BBwL/AQcB9AH/AesB/wFD
+        AVABSgkAAVEBFAH/AdQBGQHbAawBmQEbARoBUwEsARoC/wEaARsBHAFLEAAB6wH/AbwBZgO8AWYGvAH/
+        AesB9gEVAVEBAwFRAW4BSgFtAewBSgFtAVEBAwEpAUoB/wHUARkB2wGsA/8BGgFTASwBGgT/AUsQAAHr
+        Av8BvAFmAf8BZgH/AWYBvAL/AbwC/wHrAf8BFAIDAgABDgUAAlABSgH0AdQBGQHbAawD/wEaAlMBGgT/
+        AUsQAAHsAv8BvAH/AWYBvAL/AWYC/wG8Av8B7AH/ARQBUAEAAZkBBwK8Ae8B8QEHAZkBDgFKARMB/wHU
+        ARkB2wGsAZkBGwEaAlMBGgL/ARoBGwGZAUsQAAHsAf8BvAfwAWYC8AG8Af8B7AH/ARMBSgEAAbwBBwG8
+        Ae8BvAH3AbwBBwEAAUoBEwH/AdQBGQHbAawC/wN6BFMC/wFuEAAB7AL/AfAC/wHwAv8B8AH/AWYB8AL/
+        AewB/wEUAUoBDgEaAe8DBwG8Ae8BCAEAAUoBEwH/AdQBGQHbAawC/wGaA3oDUwL/AW4QAAHsAv8B8AL/
+        AfAC/wHwAv8CZgH/AewB/wEUAUoBAAG8Ae8CvAEHArwBBwEOAesBFAH/A9QBrAv/AXMQAAHsAf8B8Arx
+        AfAB/wHsAf8BEwHsAQABBwK8Ae8BvAHvArwCAAEUAf8BdAMaDKwQAAHtDv8B7QH/ARUBbQEOAQcGvAHv
+        AQAB8AESAf8BdAMaAdQK2wHUEAAQ7QH2AhIBQwHqAhUBFAEVARQBbQETARIBQwEVAf8BHAMaAdQKGQHU
+        EAAQ/wH2AfQB9gH/AfQF/wH0AfMD/wH2BBwM1CAAAf8B8gP/AfME/wHzA/8B8gL/AfQM/wH0Af8QAAHs
+        DrwBAAHzAv8C9AH/AfQC/wH0Af8C9AL/AfMB9AL/AfQI/wH0Av8B9AgABgcCAAHsAf8BoAH/AaAB/wGg
+        Af8BoAH/AaAB/wGgAf8BvAEAA/8B9AL/AfQC/wH0Av8B9BP/BwAG/AMAAewBoAH/AaAB/wGgAf8BLgH/
+        AaAB/wGgAf8BoAG8AQAD/wHsAesB7AT/AewB6wHsBP8B9AH/AesB9Ab/AfQB6wH/AfQB/wkAAvwBBwQA
+        AewB/wGgAf8BoAH/Ai4BoAH/AaAB/wGgAf8BvAEAAf8B8wH/AuwC/wL0Av8C7AH/AfME/wH0AewB/wHr
+        Av8B6wH/AewB9AP/AwAGBwL8AQcEAAHsAaAB/wGgAf8FLgH/AaAB/wGgAbwBAAH0Av8B7AH0AewE/wHs
+        AfQB7AL/AfQF/wFtAesC/wHrAW0F/wMABewBAAL8AQcEAAHsAf8BoAH/AaAB/wIuAaACLgH/AaAB/wG8
+        AQAB/wH0BP8B7AL/AewE/wH0Bf8C6wFtAv8BbQLrBP8FAALsAQcBAAL8AQcEAAHsAaAB/wGgAf8BoAH/
+        AS4B/wGgAUgBoAH/AaABvAEAAv8B9Ar/AfQS/wUAAuwBBwEAAvwBBwMAAQcB7AH/AaAB/wFIAf8BoAH/
+        AaAB/wFIAf8BoAH/AbwBAAL/AfQK/wH0Ev8FAAH8AewBBwEAAvwBBwIAAfwBBwHsAv8BoAFIAaAB/wGg
+        Af8BoAFIAaAB/wGgAbwBAAH/AfQE/wHsAv8B7AT/AfQF/wLrAW0C/wFtAusE/wUAAfwB7AEHAQAC/AEH
+        AgAB/AEHAewD/wIuAaAB/wGgAf8BSAH/AaAB/wG8AQAB9AL/AewB9AHsBP8B7AH0AewC/wH0Bf8BbQHr
+        Av8B6wFtBf8FAAL8AgcC/AIHAvwBBwHsBP8ELgEoAf8BoAO8AQAB/wHzAf8C7AL/AvQC/wLsAf8B8wT/
+        AfQB7AH/AesC/wHrAf8B7AH0A/8CAAEHAgAK/AEAAewF/wGgAi4B/wGgBQAD/wHsAesB7AT/AewB6wHs
+        BP8B9AH/AesB9Ab/AfQB6wH/AfQB/wEAAewBBwIAAuwBBwEAAewBBwUAAewG/wGgAf8BoAH/AewC9AIA
+        A/8B9AL/AfQC/wH0Av8B9BP/AQAC7AIHAuwBBwLsAQcFAAHsB/8BoAH/AaAB7AH0AwAB8wL/AvQB/wH0
+        Av8B9AH/AvQC/wHzAfQC/wH0CP8B9AL/AfQBAAnsBgAM7AQAAf8B8gP/AfME/wHzA/8B8gL/AfQM/wH0
+        Af8ZAAGiAc4BFAUADaEqAAGiAc4B/gH8BgALEAEEAaEEAAr/GAAC/wGiAc4B/gH8A/8DAAEQAf8B8wm8
+        AW0BBAGhAwAB/wIAAf8FAAH/BQAB7Ar/CAAB/wGiAc4B4gH8BP8DAAEQAf8B9wEPAQoBDwEVARQBFQEO
+        AiIB7AFDAaEDAAr/BQAB7AP/AgcF/wYAA6IB/AH/AfwF/wMAARAB/wEJAacBrQGGAfMB/wHxASICOAEp
+        AQoBoQMAAf8BAAL/AQAB/wEAAf8BAAH/BQAB7AP/AQECBwT/BQAByAL/AbMB5gHOAf8E7AH/AwABEAH/
+        AQkBpwGtAYYB8wH/AfEBIgI4ASkBhQQACv8FAAHsAv8DAQIHA/8EAAGiAv8B4gLhAcgB7QX/AwABEAH/
+        AQkBpwGtAYYB8wH/AfEBIgI4ASkBhRMAAewB/wIBAf8CAQEHA/8EAAHIAv8B4QKzAeYB7QTsAf8DAAEQ
+        Af8BCQGnAa0BhgHzAf8B8QEiAjgBKQGFBAAKrQUAAewF/wEBAewBBwL/BAAB/ALiAeEC/wHmAe0F/wMA
+        ARAB/wEJAacBrQGGAfMB/wHxASICOAEpAYUTAAHsBv8BAQIHAf8FAAG1AuEBswG1ARQB/wTsAf8DAAEQ
+        Af8BCQGnAa0BhgHzAf8B8QEiAjgBKQGFBwAB7wsAAewH/wEBAQcB/wYAAbUC7AEUB/8DAAEQAf8BCQGn
+        Aa0BhgHzAf8B8QEiAjgBKQGFBwAB7wsAAewI/wEBAf8IAAb/BgABEAH/AQkBpwGtAYYB8wH/AfEBIgI4
+        ASkBhQcAAe8LAAHsCv8IAAb/AQAB/wQAARAB/wH3AQQBoQEKAfIB/wHxAQACIgEOAYUFAAHvDQAB7AL/
+        BgAC/wgABv8GAAGFAeoBkgFfAQABCgHxAf8B8QEKBKEGAAHvDQAC7AEAAf8DBwEAAuwUAAGhAYUBDgFf
+        AQABCgMOAQoLAAHvDwAE7EYAAUIBTQE+BwABPgMAASgDAAFAAwABMAMAAQEBAAEBBQABgAEBFgAD/4cA
+        Av8GAAH/AQMGAAH+AQcGAAH/AY8GAAHgAQ8GAAHgAY8GAAH4AY8GAAH4AY4GAAH4AYwGAAH4AYwGAAH4
+        BwAB2AEBBgABmAGfAQABAQQAAYABHwEAAQMEAAGAAT8BAAEHBAAD/wGPAYABAwHAAQMC/wHwAQEBgAEB
+        AcABAwHgAQcB8AEBAYABAAHAAQMBwAEDAfABAQGAAQABwAEDAcABAwHgAQEBgAEAAcABAwHAAQMBwAEB
+        AYABAQHAAQMBwAEDAYABAQGAAQEBwAEDAcABAwGAAQEBgAEBAcABAwHAAQMBgAEBAYABAQHAAQMBwAED
+        AcABAQGAAQEB/AF/AcABAwHgAQEBgAEBAfwBfwHAAQMB8AEBAYABAQH8AX8BwAEDAfABAwGAAQEB8AEf
+        AcABAwHwAQcBhAEBAfgBPwHgAQcB8AEPAYQBHwH8AX8B/AE/BP8B/gP/Cw==
+</value>
+  </data>
+  <metadata name="contextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>153, 17</value>
+  </metadata>
+  <data name="searchMenuItem.Text" xml:space="preserve">
+    <value>查找...</value>
+  </data>
+  <data name="chartWizardMenuItem.Text" xml:space="preserve">
+    <value>绘图向导...</value>
+  </data>
+  <data name="quickChartMenuItem.Text" xml:space="preserve">
+    <value>绘图模板...</value>
+  </data>
+  <data name="exportDataMenuItem.Text" xml:space="preserve">
+    <value>导出数据...</value>
+  </data>
+  <data name="computeMenuItem.Text" xml:space="preserve">
+    <value>计算结果...</value>
+  </data>
+  <data name="saveMenuItem.Text" xml:space="preserve">
+    <value>保存修改</value>
+  </data>
+  <data name="configColumnMenuItem.Text" xml:space="preserve">
+    <value>设置属性...</value>
+  </data>
+  <data name="refreshMenuItem.Text" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="maximizeMenuItem.Text" xml:space="preserve">
+    <value>全屏显示</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="maximizeButton.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="maximizeButton.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomRight</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="maximizeButton.ImageIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="maximizeButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="maximizeButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>198, 0</value>
+  </data>
+  <data name="maximizeButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>22, 22</value>
+  </data>
+  <data name="maximizeButton.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>268, 17</value>
+  </metadata>
+  <data name="maximizeButton.ToolTip" xml:space="preserve">
+    <value>全屏显示</value>
+  </data>
+  <data name="&gt;&gt;maximizeButton.Name" xml:space="preserve">
+    <value>maximizeButton</value>
+  </data>
+  <data name="&gt;&gt;maximizeButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;maximizeButton.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;maximizeButton.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="saveButton.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="saveButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="saveButton.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomRight</value>
+  </data>
+  <data name="saveButton.ImageIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="saveButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>176, 0</value>
+  </data>
+  <data name="saveButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>22, 22</value>
+  </data>
+  <data name="saveButton.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="saveButton.ToolTip" xml:space="preserve">
+    <value>保存修改到数据库</value>
+  </data>
+  <data name="&gt;&gt;saveButton.Name" xml:space="preserve">
+    <value>saveButton</value>
+  </data>
+  <data name="&gt;&gt;saveButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;saveButton.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;saveButton.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="quickChartButton.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="quickChartButton.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomRight</value>
+  </data>
+  <data name="quickChartButton.ImageIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="quickChartButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="quickChartButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>154, 0</value>
+  </data>
+  <data name="quickChartButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>22, 22</value>
+  </data>
+  <data name="quickChartButton.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="quickChartButton.ToolTip" xml:space="preserve">
+    <value>绘图模板</value>
+  </data>
+  <data name="&gt;&gt;quickChartButton.Name" xml:space="preserve">
+    <value>quickChartButton</value>
+  </data>
+  <data name="&gt;&gt;quickChartButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;quickChartButton.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;quickChartButton.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="pivotButton.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="pivotButton.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomRight</value>
+  </data>
+  <data name="pivotButton.ImageIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="pivotButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="pivotButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>132, 0</value>
+  </data>
+  <data name="pivotButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>22, 22</value>
+  </data>
+  <data name="pivotButton.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="pivotButton.ToolTip" xml:space="preserve">
+    <value>分类汇总</value>
+  </data>
+  <data name="&gt;&gt;pivotButton.Name" xml:space="preserve">
+    <value>pivotButton</value>
+  </data>
+  <data name="&gt;&gt;pivotButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pivotButton.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;pivotButton.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="computeButton.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="computeButton.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomRight</value>
+  </data>
+  <data name="computeButton.ImageIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="computeButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="computeButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>110, 0</value>
+  </data>
+  <data name="computeButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>22, 22</value>
+  </data>
+  <data name="computeButton.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="computeButton.ToolTip" xml:space="preserve">
+    <value>计算结果</value>
+  </data>
+  <data name="&gt;&gt;computeButton.Name" xml:space="preserve">
+    <value>computeButton</value>
+  </data>
+  <data name="&gt;&gt;computeButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;computeButton.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;computeButton.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="refreshButton.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="refreshButton.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomRight</value>
+  </data>
+  <data name="refreshButton.ImageIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="refreshButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="refreshButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>88, 0</value>
+  </data>
+  <data name="refreshButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>22, 22</value>
+  </data>
+  <data name="refreshButton.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="refreshButton.ToolTip" xml:space="preserve">
+    <value>刷新数据</value>
+  </data>
+  <data name="&gt;&gt;refreshButton.Name" xml:space="preserve">
+    <value>refreshButton</value>
+  </data>
+  <data name="&gt;&gt;refreshButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;refreshButton.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;refreshButton.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="configButton.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="configButton.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomRight</value>
+  </data>
+  <data name="configButton.ImageIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="configButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="configButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>66, 0</value>
+  </data>
+  <data name="configButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>22, 22</value>
+  </data>
+  <data name="configButton.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="configButton.ToolTip" xml:space="preserve">
+    <value>设置属性</value>
+  </data>
+  <data name="&gt;&gt;configButton.Name" xml:space="preserve">
+    <value>configButton</value>
+  </data>
+  <data name="&gt;&gt;configButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;configButton.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;configButton.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="exportButton.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="exportButton.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomRight</value>
+  </data>
+  <data name="exportButton.ImageIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="exportButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="exportButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>44, 0</value>
+  </data>
+  <data name="exportButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>22, 22</value>
+  </data>
+  <data name="exportButton.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="exportButton.ToolTip" xml:space="preserve">
+    <value>导出数据</value>
+  </data>
+  <data name="&gt;&gt;exportButton.Name" xml:space="preserve">
+    <value>exportButton</value>
+  </data>
+  <data name="&gt;&gt;exportButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;exportButton.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;exportButton.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="chartButton.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="chartButton.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomRight</value>
+  </data>
+  <data name="chartButton.ImageIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="chartButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="chartButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>22, 0</value>
+  </data>
+  <data name="chartButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>22, 22</value>
+  </data>
+  <data name="chartButton.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="chartButton.ToolTip" xml:space="preserve">
+    <value>绘图向导</value>
+  </data>
+  <data name="&gt;&gt;chartButton.Name" xml:space="preserve">
+    <value>chartButton</value>
+  </data>
+  <data name="&gt;&gt;chartButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chartButton.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;chartButton.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="searchButton.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="searchButton.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomRight</value>
+  </data>
+  <data name="searchButton.ImageIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="searchButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="searchButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="searchButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>22, 22</value>
+  </data>
+  <data name="searchButton.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="searchButton.ToolTip" xml:space="preserve">
+    <value>查找数据</value>
+  </data>
+  <data name="&gt;&gt;searchButton.Name" xml:space="preserve">
+    <value>searchButton</value>
+  </data>
+  <data name="&gt;&gt;searchButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;searchButton.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;searchButton.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="panel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="panel1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt</value>
+  </data>
+  <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>304, 26</value>
+  </data>
+  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;panel1.Name" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
+    <value>mainPanel</value>
+  </data>
+  <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="dataGrid.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="dataGrid.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="dataGrid.Size" type="System.Drawing.Size, System.Drawing">
+    <value>304, 270</value>
+  </data>
+  <data name="dataGrid.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;dataGrid.Name" xml:space="preserve">
+    <value>dataGrid</value>
+  </data>
+  <data name="&gt;&gt;dataGrid.Type" xml:space="preserve">
+    <value>Newtera.DataGridActiveX.SelectionDataGrid, Newtera.DataGridActiveX, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;dataGrid.Parent" xml:space="preserve">
+    <value>panel2</value>
+  </data>
+  <data name="&gt;&gt;dataGrid.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="panel2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 26</value>
+  </data>
+  <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>304, 270</value>
+  </data>
+  <data name="panel2.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;panel2.Name" xml:space="preserve">
+    <value>panel2</value>
+  </data>
+  <data name="&gt;&gt;panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel2.Parent" xml:space="preserve">
+    <value>mainPanel</value>
+  </data>
+  <data name="&gt;&gt;panel2.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="mainPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="mainPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="mainPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>304, 296</value>
+  </data>
+  <data name="mainPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;mainPanel.Name" xml:space="preserve">
+    <value>mainPanel</value>
+  </data>
+  <data name="&gt;&gt;mainPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mainPanel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;mainPanel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 9pt</value>
+  </data>
+  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
+    <value>304, 296</value>
+  </data>
+  <data name="&gt;&gt;toolBarImageList.Name" xml:space="preserve">
+    <value>toolBarImageList</value>
+  </data>
+  <data name="&gt;&gt;toolBarImageList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;contextMenu.Name" xml:space="preserve">
+    <value>contextMenu</value>
+  </data>
+  <data name="&gt;&gt;contextMenu.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenu, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;searchMenuItem.Name" xml:space="preserve">
+    <value>searchMenuItem</value>
+  </data>
+  <data name="&gt;&gt;searchMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chartWizardMenuItem.Name" xml:space="preserve">
+    <value>chartWizardMenuItem</value>
+  </data>
+  <data name="&gt;&gt;chartWizardMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;quickChartMenuItem.Name" xml:space="preserve">
+    <value>quickChartMenuItem</value>
+  </data>
+  <data name="&gt;&gt;quickChartMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;exportDataMenuItem.Name" xml:space="preserve">
+    <value>exportDataMenuItem</value>
+  </data>
+  <data name="&gt;&gt;exportDataMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;computeMenuItem.Name" xml:space="preserve">
+    <value>computeMenuItem</value>
+  </data>
+  <data name="&gt;&gt;computeMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;saveMenuItem.Name" xml:space="preserve">
+    <value>saveMenuItem</value>
+  </data>
+  <data name="&gt;&gt;saveMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;configColumnMenuItem.Name" xml:space="preserve">
+    <value>configColumnMenuItem</value>
+  </data>
+  <data name="&gt;&gt;configColumnMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;refreshMenuItem.Name" xml:space="preserve">
+    <value>refreshMenuItem</value>
+  </data>
+  <data name="&gt;&gt;refreshMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;maximizeMenuItem.Name" xml:space="preserve">
+    <value>maximizeMenuItem</value>
+  </data>
+  <data name="&gt;&gt;maximizeMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolTip.Name" xml:space="preserve">
+    <value>toolTip</value>
+  </data>
+  <data name="&gt;&gt;toolTip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>DataGridControl</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+</root>

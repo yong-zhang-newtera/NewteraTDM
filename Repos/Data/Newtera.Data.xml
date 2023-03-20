@@ -1,0 +1,1852 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Newtera.Data</name>
+    </assembly>
+    <members>
+        <member name="T:Newtera.Data.CMCommand">
+            <summary> 
+            Represents a query or command that is used when connected to a data source.
+            </summary>
+            <version>  	1.0.0 26 Aug 2003 </version>
+            <author>  		Yong Zhang </author>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.#ctor">
+            <summary>
+            Initiate an instance of CMCommand class
+            </summary>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.#ctor(System.String)">
+            <summary>
+            Initiate an instance of CMCommand class
+            </summary>
+            <param name="cmdText">A command text can be
+            either an XQuery or a path to a stored query.
+            </param>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.#ctor(System.String,Newtera.Data.CMConnection)">
+            <summary> 
+            Initiate an instance of CMCommand class
+            </summary>
+            <param name="cmdText">A command text can be
+            either an XQuery or a path to a stored query.</param>
+            <param name="connection">The connection to a catalog</param>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.Cancel">
+            <summary> 
+            Attempts to cancels the execution of a CMCommand.
+            Not supported for now.
+            </summary>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.CreateParameter">
+            <summary>
+            Creates a new instance of an CMDataParameter object.
+            </summary>
+            <returns> CMParameter object
+            
+            </returns>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.System#Data#IDbCommand#CreateParameter">
+            <summary>
+            Creates a new instance of an IDbDataParameter object.
+            </summary>
+            <returns> IDbDataParameter object </returns>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.ExecuteNonQuery">
+            <summary>
+            Executes an query statement against the Connection object,
+            and returns the number of rows affected. For UPDATE, INSERT, and DELETE queries,
+            the return value is the number of rows affected by the command. For all other
+            types of xqueries, the return value is -1.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">An exception occurred when the connection does not exist or
+            The connection is not open.
+            </exception>
+            <returns> The number of rows affected.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.System#Data#IDbCommand#ExecuteReader">
+            <summary>
+            Executes the CommandText against the Connection and builds a IDataReader.
+            </summary>
+            <exception cref="T:System.Exception">The connection does not exist or
+            The connection is not open.
+            </exception>
+            <returns> A IDataReader object.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.System#Data#IDbCommand#ExecuteReader(System.Data.CommandBehavior)">
+            <summary>
+            Executes the CommandText against the Connection and builds an CMDataReader
+            using one of the CommandBehavior values.
+            </summary>
+            <param name="behavior">One of the CommandBehavior values.</param>
+            <exception cref="T:System.NotSupportedException"> This method is currently not supported</exception>
+            <returns> CMDataReader object.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.ExecuteReader">
+            <summary>
+            Executes the CommandText against the Connection and builds a CMDataReader.
+            </summary>
+            <exception cref="T:System.Exception">The connection does not exist or
+            The connection is not open.
+            </exception>
+            <returns> A CMDataReader object.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.ExecuteReader(System.Data.CommandBehavior)">
+            <summary>
+            Executes the CommandText against the Connection and builds an CMDataReader
+            using one of the CommandBehavior values.
+            </summary>
+            <param name="behavior">One of the CommandBehavior values.</param>
+            <exception cref="T:System.NotSupportedException"> This method is currently not supported</exception>
+            <returns> CMDataReader object.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.ExecuteScalar">
+            <summary>
+            Executes the query, and returns the first column of the first row in the
+            resultset returned by the query. Extra columns or rows are ignored.
+            Use the ExecuteScalar method to retrieve a single value (for example, an
+            aggregate value) from a catalog.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">
+            The connection does not exist or
+            The connection is not open.
+            </exception>
+            <returns> The first column of the first row in the result.
+            </returns>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.ExecuteXMLReader">
+            <summary>
+            Sends the CommandText to the Connection and builds an XmlReader object.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">The connection does not exist or
+            The connection is not open.
+            </exception>
+            <returns> An XmlReader object.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.ExecuteXMLDoc">
+            <summary>
+            Sends the CommandText to the Connection and builds an XmlDocument object.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">The connection does not exist or
+            The connection is not open.
+            </exception>
+            <returns> An XmlDocument object.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.ExecuteCount">
+            <summary>
+            Sends the CommandText to the Connection and return the count of query
+            specified in CommandText.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">The connection does not exist or
+            The connection is not open.
+            </exception>
+            <returns> An Integer representing acount.</returns>
+            <remarks>This is a CMCommand extension method, not available in IDbCommand
+            interface. Note that, this method may return an invalid count result if
+            the query involves multiple joins.</remarks>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.GetInstanceCount(System.String)">
+            <summary>
+            Get the number of instances in a class.
+            </summary>
+            <param name="className">The class name.</param>
+            <exception cref="T:System.InvalidOperationException">The connection does not exist or
+            The connection is not open.
+            </exception>
+            <returns> An Integer representing number of instances in a class.</returns>
+            <remarks>This is a CMCommand extension method, not available in IDbCommand
+            interface.</remarks>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.AddAttachmentInfo(Newtera.Common.Attachment.AttachmentInfo)">
+            <summary>
+            Add an attachment info for an attachment that is attached to a specified instance
+            </summary>
+            <param name="attachInfo">The attachment information that specifies the attachment.</param>
+            <returns>An unique id for the attachment.</returns>
+            <remarks>
+            This is a CMCommand extension method, not available in IDbCommand interface.
+            </remarks>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.SetAttachment(System.String,System.IO.Stream)">
+            <summary>
+            Set an attachment of a given id
+            </summary>
+            <param name="attachmentId">The attachment id</param>
+            <param name="stream">The stream from which to read data</param>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.AddAttachmentInfo(Newtera.Common.Attachment.AttachmentInfo,System.IO.Stream)">
+            <summary>
+            Add an attachment info for an attachment that is attached to a specified instance
+            </summary>
+            <param name="attachInfo">The attachment information that specifies the attachment.</param>
+            <param name="stream">The stream from which to get attachment data.</param>
+            <returns>An unique id for the attachment.</returns>
+            <remarks>
+            This is a CMCommand extension method, not available in IDbCommand interface.
+            </remarks>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.DeleteAttachment(Newtera.Common.Attachment.AttachmentInfo)">
+            <summary>
+            Delete an attachment from a specified instance
+            </summary>
+            <param name="attachInfo">The AttachmentInfo that specifies an attachment to be deleted.</param>
+            <remarks>
+            This is a CMCommand extension method, not available in IDbCommand interface.
+            </remarks>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.GetAttachment(Newtera.Common.Attachment.AttachmentInfo)">
+            <summary>
+            Get an attachment of a specified instance as a stream.
+            </summary>
+            <param name="attachInfo">The AttachmentInfo that specifies an attachment to obtain.</param>
+            <remarks>
+            This is a CMCommand extension method, not available in IDbCommand interface.
+            </remarks>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.GetAttachmentInfo(System.String,System.String)">
+            <summary>
+            Gets information of a specified attachment.
+            </summary>
+            <param name="instanceId">The id of specified instance.</param>
+            <param name="name">The name of an attachment.</param>
+            <returns>An AttachmentInfo object</returns>
+            <remarks>
+            This is a CMCommand extension method, not available in IDbCommand interface.
+            </remarks>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.GetAttachmentInfo(System.String)">
+            <summary>
+            Gets information of a specified attachment.
+            </summary>
+            <param name="attachmentId">The id of the attachment.</param>
+            <returns>An AttachmentInfo object</returns>
+            <remarks>
+            This is a CMCommand extension method, not available in IDbCommand interface.
+            </remarks>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.GetAttachmentInfos(System.String)">
+            <summary>
+            Gets information of all attachments of a specified instance.
+            </summary>
+            <param name="instanceId">The id of specified instance.</param>
+            <returns>A collection of AttachmentInfo objects</returns>
+            <remarks>
+            This is a CMCommand extension method, not available in IDbCommand interface.
+            </remarks>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.Prepare">
+            <summary> 
+            Not supported by the CMCommand
+            </summary>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.ExecuteScripts(System.String)">
+            <summary>
+            Execute a batch script represented in xml
+            </summary>
+            <param name="xmlString">The script in xml string which can be read by a ScriptManager instance</param>
+            <returns>A xml string containing the execution status, the xml string returned
+            can be read by ScriptManager in Newtera.Common.MetaData.Mappings.Scripts package.</returns>
+            <remarks>This is a CMCommand specific method</remarks>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.DeleteAllInstances(System.String)">
+            <summary>
+            Delete all instances in a class
+            </summary>
+            <param name="className">The class name</param>
+            <returns>A number of instances deleted.</returns>
+            <remarks>This is a CMCommand specific method</remarks>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.BuildFullTextIndex(System.String)">
+            <summary>
+            Build full-text index for a given class
+            </summary>
+            <param name="className">The class name</param>
+            <remarks>This is a CMCommand specific method</remarks>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.System#IDisposable#Dispose">
+            <summary>
+            Implement IDisposable interface
+            </summary>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.GetExecutableQuery">
+            <summary>
+            Get an executable XQuery text based on the command type.
+            </summary>
+            <returns> An executable XQuery string.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.PrintXml(System.Xml.XmlDocument)">
+            <summary>
+            For debugging
+            </summary>
+            <param name="doc"></param>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.ExecuteInstanceScript(System.String,Newtera.Common.MetaData.Mappings.Scripts.InstanceScript)">
+            <summary>
+            Execute the insert query if the instance has not been created before,
+            otherwise, execute the update query on the instance.
+            </summary>
+            <param name="className">The name of instance class.</param>
+            <param name="instanceScript">The InstanceScript instance contains the queries.</param>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.GetObjId(System.Xml.XmlDocument,System.String)">
+            <summary>
+            Get the value of obj_id from a XmlDocument that is result of running
+            a search query for an instance.
+            </summary>
+            <param name="doc">The XmlDocument</param>
+            <param name="className">The name of instance class.</param>
+            <returns>The value of obj_id</returns>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.UpdateInstanceContent(Newtera.Common.MetaData.DataView.InstanceView,Newtera.Common.MetaData.DataView.InstanceAttributePropertyDescriptor)">
+            <summary>
+            Update value of the full-text attribute for the specified instance
+            </summary>
+            <param name="instanceView">A instance view</param>
+            <param name="fullTextPropertyDecriptor">The full-text serach property descriptor</param>
+        </member>
+        <member name="M:Newtera.Data.CMCommand.CreateFullTextIndex(Newtera.Common.MetaData.Schema.SimpleAttributeElement)">
+            <summary>
+            Create database full-text index using native database connection
+            </summary>
+        </member>
+        <member name="P:Newtera.Data.CMCommand.CommandText">
+            <summary>
+            Gets or sets the query to run against the catalog.
+            </summary>
+            <value> the command text</value>
+            <remarks>
+            When the CommandType property is set to StoredProcedure, set the CommandText property
+            to the path of the stored query. The command will call this stored query when you
+            call one of the Execute methods.
+            </remarks>
+        </member>
+        <member name="P:Newtera.Data.CMCommand.CommandTimeout">
+            <summary>
+            Gets or sets the wait time before terminating the attempt to execute a command and generating an error.
+            </summary>
+            <value> The time (in seconds) to wait for the command to execute. The default value is 60 seconds.</value>
+        </member>
+        <member name="P:Newtera.Data.CMCommand.CommandType">
+            <summary>
+            Gets or sets a value indicating how the CommandText property is to be interpreted.
+            </summary>
+            <value> One of the CommandType values. The default is Text.</value>
+            <remarks>
+            When you set the CommandType property to StoredProcedure, you should set the
+            CommandText property to the path of the stored query. The command
+            executes this stored query when you call one of the Execute methods.
+            </remarks>
+        </member>
+        <member name="P:Newtera.Data.CMCommand.Connection">
+            <summary>
+            Gets or sets the CMConnection used by this instance of the CMCommand.
+            </summary>
+            <value> The connection to a data source.
+             The default value is a null reference.
+            </value>
+        </member>
+        <member name="P:Newtera.Data.CMCommand.System#Data#IDbCommand#Connection">
+            <summary>
+            Gets or sets the IDbConnection used by this instance of the CMCommand.
+            </summary>
+            <value> The connection to a data source.
+             The default value is a null reference.
+            </value>
+        </member>
+        <member name="P:Newtera.Data.CMCommand.Parameters">
+            <summary>
+            Gets the CMParameterCollection of the command.
+            </summary>
+            <value> The parameters of the command</value>
+        </member>
+        <member name="P:Newtera.Data.CMCommand.System#Data#IDbCommand#Parameters">
+            <summary>
+            Gets the IDataParameterCollection of the command.
+            </summary>
+            <value> The parameters of the command</value>
+        </member>
+        <member name="P:Newtera.Data.CMCommand.Transaction">
+            <summary>
+            Gets or sets the CMTransaction within which the CMCommand executes.
+            </summary>
+            <value>The CMTransaction. The default value is a null reference </value>
+        </member>
+        <member name="P:Newtera.Data.CMCommand.System#Data#IDbCommand#Transaction">
+            <summary>
+            Gets or sets the IDbTransaction within which the IDbCommand executes.
+            </summary>
+            <value>The IDbTransaction. The default value is a null reference </value>
+        </member>
+        <member name="P:Newtera.Data.CMCommand.StoredQuery">
+            <summary>
+            Gets the stored query text.
+            </summary>
+            <value> An XQuery string, null if the query does not exist.
+            </value>
+            <exception cref="T:System.InvalidOperationException"> thrown when CommandType is not StoredProcedure, or
+            connection does not exists.
+            </exception>
+        </member>
+        <member name="P:Newtera.Data.CMCommand.UpdatedRowSource">
+            <summary>
+            Gets or sets how command results are applied to the DataRow when used by the Update method of a DbDataAdapter.
+            </summary>
+            <value>
+            One of the UpdateRowSource values, the default is None.
+            </value>
+        </member>
+        <member name="T:Newtera.Data.CMCommandBuilder">
+            <summary>
+            For cases where the SelectCommand is dynamically specified at runtime, you may not be
+            able to specify the appropriate InsertCommand, UpdateCommand, or DeleteCommand at
+            design time. If your DataTable maps to or is generated from a single class, you can
+            take advantage of the CommandBuilder object to automatically generate the DeleteCommand,
+            InsertCommand, and UpdateCommand of the DataAdapter.
+            
+            As a minimum requirement, you must set the SelectCommand property in order for automatic
+            command generation to work. The class schema retrieved by the SelectCommand determines the
+            syntax of the automatically generated INSERT, UPDATE, and DELETE statements.
+            
+            The CommandBuilder must execute the SelectCommand in order to return the class schema
+            necessary to construct the insert, update, and delete commands. As a result, an extra
+            trip to the data source is necessary which can hinder performance. To achieve optimal
+            performance, specify your commands explicitly rather than using the CommandBuilder.
+            
+            The SelectCommand must also return at least one primary key or unique column. If none
+            are present, an InvalidOperation exception is generated, and the commands are not
+            generated.
+            
+            When associated with a DataAdapter, the CommandBuilder automatically generates the
+            InsertCommand, UpdateCommand, and DeleteCommand properties of the DataAdapter if they
+            are null references. If a Command already exists for a property, the existing Command
+            is used.
+            
+            Database views that are created by joining two or more tables together are not
+            considered a single database table. In this instance you will not be able to use the
+            CommandBuilder to automatically generate commands and will need to specify your
+            commands explicitly. 
+            
+            </summary>
+            <version>  	1.0.0 26 April 2003 </version>
+            <author>  		Yong Zhang </author>
+        </member>
+        <member name="M:Newtera.Data.CMCommandBuilder.#ctor(Newtera.Data.CMDataAdapter)">
+            <summary> The constructor that CMDataAdapter as a parameter
+            </summary>
+        </member>
+        <member name="M:Newtera.Data.CMCommandBuilder.BuildDeleteCommand(Newtera.Server.Engine.Sqlbuilder.ClassEntity,Newtera.Data.CMConnection)">
+            <summary>
+            Build a CMCommand for delete instances from a class.
+            </summary>
+            <param name="classEntity">the class entity describing the class for which to generate
+            delete command.
+            </param>
+            <param name="connection">the CM server connection.</param>
+            <returns> the created delete command object </returns>
+        </member>
+        <member name="M:Newtera.Data.CMCommandBuilder.BuildInsertCommand(Newtera.Server.Engine.Sqlbuilder.ClassEntity,Newtera.Data.CMConnection)">
+            <summary>
+            Build a CMCommand for insert instance to a class.
+            </summary>
+            <param name="classEntity">the class entity describing the class for which to generate
+            insert command.</param>
+            <param name="connection">the CM server connection.</param>
+            <returns>The created insert command object.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMCommandBuilder.BuildUpdateCommand(Newtera.Server.Engine.Sqlbuilder.ClassEntity,Newtera.Data.CMConnection)">
+            <summary>
+            Build a CMCommand for update operation
+            </summary>
+            <param name="classEntity">the class entity describing the class for which to generate
+            update command.</param>
+            <param name="connection">the CM server connection </param>
+            <returns> the created update command object.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMCommandBuilder.GetClassEntity(Newtera.Data.CMCommand)">
+            <summary>
+            Get the class entity for the class implied by the select statement. If the select
+            statement involves joining of more than one classes, an exception is thrown.
+            </summary>
+            <param name="cmd">the select command</param>
+            <returns> the class entity implied by the select cmd.</returns>
+        </member>
+        <member name="T:Newtera.Data.QueryBuilder">
+            <summary>
+            Build xqueries automatically for delete, insert, update using a class entity
+            </summary>
+        </member>
+        <member name="M:Newtera.Data.QueryBuilder.#ctor">
+            <summary>
+            Initiate an new instance of QueryBuilder class
+            </summary>
+        </member>
+        <member name="M:Newtera.Data.QueryBuilder.BuildDeleteStatement(Newtera.Server.Engine.Sqlbuilder.ClassEntity)">
+            <summary>
+            Build a delete query.
+            </summary>
+            <param name="classEntity">The class entity describing the class</param>
+            <returns>the built xquery</returns>
+        </member>
+        <member name="M:Newtera.Data.QueryBuilder.BuildInsertStatement(Newtera.Server.Engine.Sqlbuilder.ClassEntity)">
+            <summary>
+            Build an insert xquery.
+            </summary>
+            <param name="classEntity">The class entity describing the class</param>
+            <returns>The built xquery</returns>
+        </member>
+        <member name="M:Newtera.Data.QueryBuilder.BuildSelectStatement(Newtera.Server.Engine.Sqlbuilder.ClassEntity)">
+            <summary>
+            Build an select xquery.
+            </summary>
+            <param name="classEntity">The class entity describing the class</param>
+            <returns>The built xquery</returns>
+        </member>
+        <member name="M:Newtera.Data.QueryBuilder.BuildUpdateStatement(Newtera.Server.Engine.Sqlbuilder.ClassEntity)">
+            <summary>
+            Build an update xqury.
+            </summary>
+            <param name="classEntity">The class entity describing the class</param>
+            <returns>The built xquery.</returns>
+        </member>
+        <member name="T:Newtera.Data.CMConnection">
+            <summary>
+            Represents a connection to the Newtera Catalog data source.
+            </summary>
+            <version>  	1.0.0 26 Aug 2003 </version>
+            <author>  		Yong Zhang </author>
+        </member>
+        <member name="M:Newtera.Data.CMConnection.#ctor">
+            <summary> 
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:Newtera.Data.CMConnection.#ctor(System.String)">
+            <summary>
+            The constructor that takes a connection string
+            </summary>
+            <param name="connectionString">the connection string </param>
+            <remarks>
+            The following lists the valid names for keyword values within the ConnectionString
+            for Newtera Catalog Data source.
+            
+            Name:		SCHEMA_NAME
+            Description: The name of a schema to be connected to. CM server manages multiple schemas
+            The name of a schema is unique within a CM server
+            Example:		PurchaseOrder
+            
+            Name:		SCHEMA_VERSION
+            Description: The version of a schema to be connected to. Each schema can have multiple
+            versions.
+            Example:		1.0
+            
+            Name:		USER_ID
+            Description: The CM Server login user id 
+            Example:		john
+            
+            Name:		PASSWORD
+            Description: The CM Server login user password 
+            Example:
+             
+            An example of a connection string looks like this:
+            
+            "SCHEMA_NAME=PurchaseOrder;SCHEMA_VERSION=1.0;USER_ID=john;PASSWORD=smith"
+            </remarks>
+            <exception cref="T:Newtera.Data.CMException">An CMEception is thrown for invalid license.</exception>
+        </member>
+        <member name="M:Newtera.Data.CMConnection.Finalize">
+            <summary> close the connection in case that the application forgets to do so.
+            This method will be called by GC
+            </summary>
+        </member>
+        <member name="M:Newtera.Data.CMConnection.GetRemainingEvaluationDays">
+            <summary>
+            Gets the remaining days of the evaluation.
+            </summary>
+            <returns>The number of remaining days, -1 if it is a permenant license.</returns>
+            <exception cref="T:Newtera.Server.Licensing.NewteraLicenseException">Thrown when there is no valid license.</exception>
+        </member>
+        <member name="M:Newtera.Data.CMConnection.InstallLicense(System.String)">
+            <summary>
+            Install the license key
+            </summary>
+            <param name="licenseKey">The license key</param>
+        </member>
+        <member name="M:Newtera.Data.CMConnection.BeginTransaction">
+            <summary>
+            Begins a database transaction.
+            </summary>
+            <returns> An object representing the new transaction.</returns>
+            <remarks>Once the transaction has completed, you must explicitly commit or roll back the transaction
+            by using the Commit or Rollback methods.</remarks>
+        </member>
+        <member name="M:Newtera.Data.CMConnection.BeginTransaction(System.Data.IsolationLevel)">
+            <summary>
+            Begins a database transaction.
+            </summary>
+            <returns> An object representing the new transaction.</returns>
+            <remarks>Once the transaction has completed, you must explicitly commit or roll back the transaction by using the Commit or Rollback methods.</remarks>
+        </member>
+        <member name="M:Newtera.Data.CMConnection.ChangeDatabase(System.String)">
+            <summary>
+            Changes the current database for an open Connection object.
+            </summary>
+            <param name="databaseName">database string</param>
+            <remarks>Not supported</remarks>
+        </member>
+        <member name="M:Newtera.Data.CMConnection.CreateCommand">
+            <summary>
+            Creates and returns a CMCommand object associated with the connection.
+            </summary>
+            <returns> CMCommand object </returns>
+        </member>
+        <member name="M:Newtera.Data.CMConnection.System#Data#IDbConnection#CreateCommand">
+            <summary>
+            Creates and returns a IDbCommand object associated with the connection.
+            </summary>
+            <returns> CMCommand object </returns>
+        </member>
+        <member name="M:Newtera.Data.CMConnection.Close">
+            <summary>
+            Closes the connection to the database.
+            </summary>
+            <remarks> An application can call Close more than one time without
+            generating an exception.</remarks>
+        </member>
+        <member name="M:Newtera.Data.CMConnection.Open">
+            <summary>
+            Opens a data source connection with the settings specified by the
+            ConnectionString property of the provider-specific Connection object.
+            </summary>
+            <exception cref="T:Newtera.Data.CMException">
+            CMException thrown when something go wrong with openning connection
+            </exception>
+        </member>
+        <member name="M:Newtera.Data.CMConnection.UpdateMetaData(Newtera.Common.MetaData.MetaDataType,System.String)">
+            <summary>
+            Update a meta data of given type using a xml string.
+            It could be a schema, xacl policy, or other meta data
+            </summary>
+            <param name="type">The meta data model type</param>
+            <param name="xmlString">The xml string representing an updated metadata</param>
+        </member>
+        <member name="M:Newtera.Data.CMConnection.DeleteMetaData">
+            <summary>
+            Delete the meta data stored in the database permanently.
+            </summary>
+            <remarks>
+            Care must be taken when calling this method which will cause loss of
+            the physical tables and data in the database permanently.
+            </remarks>
+        </member>
+        <member name="M:Newtera.Data.CMConnection.FixSchemaModel">
+            <summary>
+            Fix the discrepancies bewtween a schema model and its corresponding databases
+            that may occure due to various reasons.
+            </summary>
+        </member>
+        <member name="M:Newtera.Data.CMConnection.GetDBARole">
+            <summary>
+            Gets the name of role that has permission to modify the meta data
+            </summary>
+            <returns>The name of role, null for non-protected mode.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMConnection.SetDBARole(System.String)">
+            <summary>
+            Sets the name of role that has permission to modify the meta data
+            </summary>
+            <param name="role">The name of role, null to set non-protected mode.</param>
+        </member>
+        <member name="M:Newtera.Data.CMConnection.GetLicenseParameterValue(System.String)">
+            <summary>
+            Gets the value of a parameter from the license
+            </summary>
+            <param name="parameterName">The parameter name</param>
+            <returns>The parameter value, null if the parameter does not exits.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMConnection.System#IDisposable#Dispose">
+            <summary>
+            Implementing IDisposal interface
+            </summary>
+        </member>
+        <member name="M:Newtera.Data.CMConnection.GetProperties(System.String)">
+            <summary>
+            Get key/value pairs from the connectionString and save them in a hashtable
+            </summary>
+            <param name="connectionString">The connectionString</param>
+            <returns>The hashtable</returns>
+            <exception cref="T:Newtera.Data.InvalidConnectionStringException">
+            Thrown if missing some critical key/value pairs in the connection string.
+            </exception>
+        </member>
+        <member name="M:Newtera.Data.CMConnection.SetConditionRunner">
+            <summary>
+            Sets a condition runner used by PermissionChecker.
+            </summary>
+        </member>
+        <member name="M:Newtera.Data.CMConnection.CheckLicense">
+            <summary>
+            Check the license to see if the license is valid
+            </summary>
+            <returns>A message with regard to the license.</returns>
+            <exception cref="T:Newtera.Server.Licensing.NewteraLicenseException">Thrown when the license is invalid or expired.</exception>
+        </member>
+        <member name="M:Newtera.Data.CMConnection.CheckLicense(System.Int32@)">
+            <summary>
+            Check the license to see if the license is valid
+            </summary>
+            <param name="remainingDays">The remaining days of an evaluation.</param>
+            <returns>A message with regard to the license.</returns>
+            <exception cref="T:Newtera.Server.Licensing.NewteraLicenseException">Thrown when the license is invalid or expired.</exception>
+        </member>
+        <member name="P:Newtera.Data.CMConnection.ConnectionString">
+            <summary>
+            Gets or sets the string used to open a catalog data source.
+            </summary>
+            <value> the string used to open a data source</value>
+        </member>
+        <member name="P:Newtera.Data.CMConnection.ConnectionTimeout">
+            <summary>
+            Gets the time to wait while trying to establish a connection before terminating
+            the attempt and generating an error.
+            </summary>
+            <value> the time (in seconds) to wait for a connection to open.
+            The default value is 0 seconds, indicates an indefinite time-out period.
+            </value>
+        </member>
+        <member name="P:Newtera.Data.CMConnection.Database">
+            <summary>
+            Gets the name of the current schema and version to be used after a connection
+            is opened.
+            </summary>
+            <value> the name and version of the schema </value>
+        </member>
+        <member name="P:Newtera.Data.CMConnection.SchemaInfo">
+            <summary>
+            Get the schema info for the connection
+            </summary>
+            <value>The schema info, default is null.</value>
+        </member>
+        <member name="P:Newtera.Data.CMConnection.State">
+            <summary>
+            Gets the current state of the connection
+            The allowed state changes are: 
+            From Closed to Open, using the open method of the Connection object. 
+            From Open to Closed, using either the close method of the Connection object. 
+            </summary>
+            <value> current ConnectionState object.</value>
+        </member>
+        <member name="P:Newtera.Data.CMConnection.LicenseMsg">
+            <summary>
+            Gets the message about the server license
+            </summary>
+        </member>
+        <member name="P:Newtera.Data.CMConnection.AllSchemas">
+            <summary>
+            Get list of SchemaInfo instances that contain schema name and version for the
+            available schemas.
+            </summary>
+            <value>
+            An array of SchemaInfo objects
+            </value>
+        </member>
+        <member name="P:Newtera.Data.CMConnection.AccessibleSchemas">
+            <summary>
+            Get list of SchemaInfo instances that the current user has the permission to access.
+            </summary>
+            <value>
+            A collection of SchemaInfo instances, can be empty if the user does not have permission
+            to access any databases.
+            </value>
+        </member>
+        <member name="P:Newtera.Data.CMConnection.MetaDataModel">
+            <summary>
+            Gets or sets the MetaDataModel instance of the connection
+            </summary>
+            <value>
+            A MetaDataModel instance
+            </value>
+        </member>
+        <member name="P:Newtera.Data.CMConnection.IsMetaDataModelExist">
+            <summary>
+            Gets the information indicating whether the meta data model referred by the
+            connection has existed
+            </summary>
+            <value>
+            true if it exists, false otherwise.
+            </value>
+        </member>
+        <member name="P:Newtera.Data.CMConnection.MetaDataUpdateLog">
+            <summary>
+            Gets the log of the latest updates to the meta data
+            </summary>
+        </member>
+        <member name="P:Newtera.Data.CMConnection.DataProvider">
+            <summary>
+            Get the data provider associated with the connection.
+            </summary>
+            <value>The data provider.</value>
+        </member>
+        <member name="T:Newtera.Data.CMDataAdapter">
+            <summary> Aids implementation of the IDbDataAdapter interface. Inheritors of DbDataAdapter
+            implement a set of functions to provide strong typing, but inherit most of the
+            functionality needed to fully implement a DataAdapter.
+            
+            </summary>
+            <version>  	1.0.0 30 April 2003
+            </version>
+            <author>  		Yong Zhang
+            
+            </author>
+        </member>
+        <member name="M:Newtera.Data.CMDataAdapter.#ctor">
+            <summary>
+            The default constructor
+            </summary>
+        </member>
+        <member name="M:Newtera.Data.CMDataAdapter.CreateRowUpdatedEvent(System.Data.DataRow,System.Data.IDbCommand,System.Data.StatementType,System.Data.Common.DataTableMapping)">
+            <summary>
+            Create a row updated event
+            </summary>
+            <param name="dataRow"></param>
+            <param name="command"></param>
+            <param name="statementType"></param>
+            <param name="tableMapping"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Newtera.Data.CMDataAdapter.CreateRowUpdatingEvent(System.Data.DataRow,System.Data.IDbCommand,System.Data.StatementType,System.Data.Common.DataTableMapping)">
+            <summary>
+            Create a row updating event
+            </summary>
+            <param name="dataRow"></param>
+            <param name="command"></param>
+            <param name="statementType"></param>
+            <param name="tableMapping"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Newtera.Data.CMDataAdapter.OnRowUpdating(System.Data.Common.RowUpdatingEventArgs)">
+            <summary>
+            called opon OnRowUpdating event
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:Newtera.Data.CMDataAdapter.OnRowUpdated(System.Data.Common.RowUpdatedEventArgs)">
+            <summary>
+            called upon OnRowUpdated event
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="P:Newtera.Data.CMDataAdapter.FillParameters">
+            <summary> Gets the parameters set by the user when executing an SQL SELECT statement.
+            
+            </summary>
+            <returns> An array of IDataParameter objects that contains the parameters set by the user. 
+            
+            </returns>
+        </member>
+        <member name="P:Newtera.Data.CMDataAdapter.DeleteCommand">
+            <summary>
+            Gets a Command for deleting records from the data set.
+            </summary>
+            <value> A CMCommand used during Update to delete records in the data source
+            for deleted rows in the data set.
+            </value>
+        </member>
+        <member name="P:Newtera.Data.CMDataAdapter.System#Data#IDbDataAdapter#DeleteCommand">
+            <summary>
+            Gets an command for deleting records from the data set.
+            </summary>
+            <value> A IDbCommand used during Update to delete records in the data source
+            for deleted rows in the data set.
+            </value>
+        </member>
+        <member name="P:Newtera.Data.CMDataAdapter.InsertCommand">
+            <summary>
+            Gets a command used to insert records into the data set.
+            </summary>
+            <value> A CMCommand used during Update to insert records in the
+            data source for new rows in the data set.
+            </value>
+        </member>
+        <member name="P:Newtera.Data.CMDataAdapter.System#Data#IDbDataAdapter#InsertCommand">
+            <summary>
+            Gets a command used to insert records into the data set.
+            </summary>
+            <value> A IDbCommand used during Update to insert records in the
+            data source for new rows in the data set.
+            </value>
+        </member>
+        <member name="P:Newtera.Data.CMDataAdapter.SelectCommand">
+            <summary>
+            Gets a command used to select records in the data source.
+            </summary>
+            <value> An CMCommand that is used to select records from data source
+            for placement in the data set.
+            </value>
+        </member>
+        <member name="P:Newtera.Data.CMDataAdapter.System#Data#IDbDataAdapter#SelectCommand">
+            <summary>
+            Gets a command used to select records in the data source.
+            </summary>
+            <value> An IDbCommand that is used to select records from data source
+            for placement in the data set.
+            </value>
+        </member>
+        <member name="P:Newtera.Data.CMDataAdapter.UpdateCommand">
+            <summary>
+            Gets a command used to update records in the data source.
+            </summary>
+            <value> An CMCommand used during Update to update records in the data
+            source for modified rows in the data set.
+            </value>
+        </member>
+        <member name="P:Newtera.Data.CMDataAdapter.System#Data#IDbDataAdapter#UpdateCommand">
+            <summary>
+            Gets a command used to update records in the data source.
+            </summary>
+            <value> An IDbCommand used during Update to update records in the data
+            source for modified rows in the data set.
+            </value>
+        </member>
+        <member name="E:Newtera.Data.CMDataAdapter.RowUpdating">
+            <summary>
+            RowUpdating handler
+            </summary>
+        </member>
+        <member name="E:Newtera.Data.CMDataAdapter.RowUpdated">
+            <summary>
+            RowUpdated handler
+            </summary>
+        </member>
+        <member name="T:Newtera.Data.CMRowUpdatingEventHandler">
+            <summary>
+            Definition of delegate for row updating event handler
+            </summary>
+        </member>
+        <member name="T:Newtera.Data.CMRowUpdatedEventHandler">
+            <summary>
+            Definition of delegate for row update event handler
+            </summary>
+        </member>
+        <member name="T:Newtera.Data.CMRowUpdatingEventArgs">
+            <summary>
+            Rowupdating Event args
+            </summary>
+        </member>
+        <member name="M:Newtera.Data.CMRowUpdatingEventArgs.#ctor(System.Data.DataRow,System.Data.IDbCommand,System.Data.StatementType,System.Data.Common.DataTableMapping)">
+            <summary>
+            Instantiate a CMRowUpdatingEventArgs instance
+            </summary>
+            <param name="row">The row being updated</param>
+            <param name="command">The update command</param>
+            <param name="statementType">One of StatementType enum values</param>
+            <param name="tableMapping">One of the DataTableMapping enum values</param>
+        </member>
+        <member name="P:Newtera.Data.CMRowUpdatingEventArgs.Command">
+            <summary>
+            Get the CMCommand instance
+            </summary>
+            <remarks>Hide the inherited implementation of the command property.</remarks>
+        </member>
+        <member name="T:Newtera.Data.CMRowUpdatedEventArgs">
+            <summary>
+            Rowupdated Event args
+            </summary>
+        </member>
+        <member name="M:Newtera.Data.CMRowUpdatedEventArgs.#ctor(System.Data.DataRow,System.Data.IDbCommand,System.Data.StatementType,System.Data.Common.DataTableMapping)">
+            <summary>
+            Instantiate a CMRowUpdatedEventArgs instance
+            </summary>
+            <param name="row">The row being updated</param>
+            <param name="command">The update command</param>
+            <param name="statementType">One of StatementType enum values</param>
+            <param name="tableMapping">One of the DataTableMapping enum values</param>
+        </member>
+        <member name="P:Newtera.Data.CMRowUpdatedEventArgs.Command">
+            <summary>
+            Get the CMCommand instance
+            </summary>
+            <remarks>Hide the inherited implementation of the command property.</remarks>
+        </member>
+        <member name="T:Newtera.Data.CMDataReader">
+            <summary>
+            Provides a means of reading one or more forward-only streams of result sets obtained
+            by executing a command at catalog.
+            </summary>
+            <version>  	1.0.0 26 April 2003 </version>
+            <author>  Yong Zhang </author>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.GetBoolean(System.Int32)">
+            <summary>
+            Gets the value of the specified column as a Boolean.
+            </summary>
+            <param name="i">zero-based column ordinal.</param>
+            <exception cref="T:System.IndexOutOfRangeException">The index passed was outside the range of 0 through FieldCount.
+            
+            </exception>
+            <returns> The boolean value of the column. </returns>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.GetByte(System.Int32)">
+            <summary>
+            Gets the 8-bit unsigned integer value of the specified column.
+            </summary>
+            <param name="i">zero-based column ordinal.</param>
+            <exception cref="T:System.IndexOutOfRangeException">The index passed was outside the range of 0 through FieldCount.
+            </exception>
+            <returns> The 8-bit unsigned integer value of the specified column. </returns>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.GetBytes(System.Int32,System.Int64,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Reads a stream of bytes from the specified column offset into the buffer as an array, starting
+            at the given buffer offset.
+            </summary>
+            <param name="i">zero-based column ordinal.</param>
+            <param name="fieldOffset">The index within the field from which to begin the read operation. 
+            </param>
+            <param name="buffer">The buffer into which to read the stream of bytes.
+            </param>
+            <param name="bufferOffset">The index for buffer to begin the read operation.
+            </param>
+            <param name="length">The number of bytes to read.</param>
+            <exception cref="T:System.IndexOutOfRangeException"> IndexOutOfRangeException The index passed was outside the range of 0 through FieldCount.
+            </exception>
+            <returns> The actual number of bytes read.</returns>
+            <remarks>getBytes returns the number of available bytes in the field. In most cases
+            this is the exact length of the field. However, the number returned may be
+            less than the true length of the field if getBytes has already been used to
+            obtain bytes from the field.
+            </remarks>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.GetChar(System.Int32)">
+            <summary>
+            Gets the character value of the specified column.
+            </summary>
+            <param name="i">zero-based column ordinal.</param>
+            <exception cref="T:System.IndexOutOfRangeException">The index passed was outside the range of 0 through FieldCount.
+            </exception>
+            <returns> The character value of the specified column. </returns>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.GetChars(System.Int32,System.Int64,System.Char[],System.Int32,System.Int32)">
+            <summary>
+            Reads a stream of characters from the specified column offset into the buffer as an array,
+            starting at the given buffer offset.
+            </summary>
+            <param name="i">zero-based column ordinal.
+            </param>
+            <param name="fieldOffset">The index within the field from which to begin the read operation. 
+            </param>
+            <param name="buffer">The buffer into which to read the stream of characters.
+            </param>
+            <param name="bufferOffset">The index for buffer to begin the read operation.
+            </param>
+            <param name="length">The number of characters to read.
+            </param>
+            <exception cref="T:System.IndexOutOfRangeException"> IndexOutOfRangeException The index passed was outside the range of 0 through FieldCount.
+            </exception>
+            <returns> The actual number of characters read. </returns>
+            <remarks>getCharss returns the number of available characters in the field. In most cases
+            this is the exact length of the field. However, the number returned may be
+            less than the true length of the field if getChars has already been used to
+            obtain characters from the field.
+            </remarks>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.GetData(System.Int32)">
+            <summary>
+            Gets an IDataReader to be used when the field points to more remote structured data.
+            </summary>
+            <param name="i">zero-based column ordinal.</param>
+            <exception cref="T:System.IndexOutOfRangeException"> IndexOutOfRangeException The index passed was outside the range of 0 through FieldCount.
+            </exception>
+            <returns> An IDataReader to be used when the field points to more remote structured data.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.GetDataTypeName(System.Int32)">
+            <summary>
+            Gets the data type information for the specified field.
+            </summary>
+            <param name="i">zero-based column ordinal.</param>
+            <exception cref="T:System.IndexOutOfRangeException"> IndexOutOfRangeException The index passed was outside the range of 0 through FieldCount. 
+            </exception>
+            <returns> An IDataReader to be used when the field points to more remote structured data.</returns>
+            <remarks>The data type information can differ from the type information returned by
+            GetFieldType, especially where the underlying data types do not map one for one
+            to the runtime types supported by the language. (e.g. DataTypeName may be
+            "integer", while Type.Name may be "Int32".)
+            </remarks>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.GetFieldType(System.Int32)">
+            <summary>
+            Gets the Type information corresponding to the type of Object that would be returned from GetValue.
+            </summary>
+            <param name="i">The index of the field to find. </param>
+            <returns>The Type information corresponding to the type of Object that would be returned from GetValue.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.GetDateTime(System.Int32)">
+            <summary>
+            Gets the date and time data value of the spcified field.
+            </summary>
+            <param name="i">zero-based column ordinal.</param>
+            <exception cref="T:System.IndexOutOfRangeException">The index passed was outside the range of 0 through FieldCount.
+            </exception>
+            <returns> The date and time data value of the spcified field.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.GetDecimal(System.Int32)">
+            <summary>
+            Gets the fixed-position numeric value of the specified field.
+            </summary>
+            <param name="i">zero-based column ordinal.</param>
+            <exception cref="T:System.IndexOutOfRangeException"> The index passed was outside the range of 0 through FieldCount.
+            </exception>
+            <returns> The fixed-position numeric value of the specified field.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.GetDouble(System.Int32)">
+            <summary>
+            Gets the double-precision floating point number of the specified field.
+            </summary>
+            <param name="i">zero-based column ordinal.</param>
+            <exception cref="T:System.IndexOutOfRangeException">The index passed was outside the range of 0 through FieldCount.
+            </exception>
+            <returns> The double-precision floating point number of the specified field.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.GetFloat(System.Int32)">
+            <summary>
+            Gets the single-precision floating point number of the specified field.
+            </summary>
+            <param name="i">zero-based column ordinal.</param>
+            <exception cref="T:System.IndexOutOfRangeException">The index passed was outside the range of 0 through FieldCount.
+            </exception>
+            <returns> The single-precision floating point number of the specified field.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.GetGuid(System.Int32)">
+            <summary>
+            Returns the guid value of the specified field.
+            </summary>
+            <param name="i">The index of the field to find.</param>
+            <returns>The guid value of the specified field.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.GetInt16(System.Int32)">
+            <summary>
+            Gets the 16-bit signed integer value of the specified field.
+            </summary>
+            <param name="i">zero-based column ordinal.</param>
+            <exception cref="T:System.IndexOutOfRangeException">The index passed was outside the range of 0 through FieldCount.
+            </exception>
+            <returns> The 16-bit signed integer value of the specified field.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.GetInt32(System.Int32)">
+            <summary>
+            Gets the 32-bit signed integer value of the specified field.
+            </summary>
+            <param name="i">zero-based column ordinal.</param>
+            <exception cref="T:System.IndexOutOfRangeException">The index passed was outside the range of 0 through FieldCount.</exception>
+            <returns> The 32-bit signed integer value of the specified field.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.GetInt64(System.Int32)">
+            <summary>
+            Gets the 64-bit signed integer value of the specified field.
+            </summary>
+            <param name="i">zero-based column ordinal.</param>
+            <exception cref="T:System.IndexOutOfRangeException">The index passed was outside the range of 0 through FieldCount.
+            </exception>
+            <returns> The 64-bit signed integer value of the specified field.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.GetName(System.Int32)">
+            <summary>
+            Gets the name for the field to find.
+            </summary>
+            <param name="i">zero-based column ordinal.</param>
+            <exception cref="T:System.IndexOutOfRangeException"> The index passed was outside the range of 0 through FieldCount.
+            </exception>
+            <returns> The name of the field or the empty string (""), if there is no value to return.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.GetOrdinal(System.String)">
+            <summary>
+            Return the index of the named field.
+            </summary>
+            <param name="name">The name of the field to find.</param>
+            <returns> The index of the named field, -1 if not found</returns>
+            <remarks>
+            GetOrdinal performs a case-sensitive lookup first. If it fails,
+            a second case-insensitive search is made.
+            </remarks>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.GetSchemaTable">
+            <summary>
+            Returns a DataTable that describes the column metadata of the IDataReader.
+            </summary>
+            <returns>A DataTable that describes the column metadata.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.GetString(System.Int32)">
+            <summary>
+            Gets the string value of the specified field.
+            </summary>
+            <param name="i">zero-based column ordinal.</param>
+            <exception cref="T:System.IndexOutOfRangeException">The index passed was outside the range of 0 through FieldCount.
+            </exception>
+            <returns> The string value of the specified field. </returns>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.GetValue(System.Int32)">
+            <summary>
+            Return the value of the specified field.
+            </summary>
+            <param name="i">zero-based column ordinal.</param>
+            <exception cref="T:System.IndexOutOfRangeException">The index passed was outside the range of 0 through FieldCount. 
+            </exception>
+            <returns> The string value of the specified field.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.GetValues(System.Object[])">
+            <summary>
+            Gets all the attribute fields in the collection for the current record.
+            </summary>
+            <param name="values">An array of Object to copy the attribute fields into.</param>
+            <returns> The number of instances of Object in the array.</returns>
+            <remarks>For most applications, the GetValues method provides an efficient means for
+            retrieving all columns, rather than retrieving each column individually.
+            You can pass an Object array that contains fewer than the number of columns
+            contained in the resulting row. Only the amount of data the Object array
+            holds is copied to the array. You can also pass an Object array whose length
+            is more than the number of columns contained in the resulting row.
+            </remarks>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.IsDBNull(System.Int32)">
+            <summary>
+            Return whether the specified field is set to null.
+            </summary>
+            <param name="i">zero-based column ordinal.</param>
+            <exception cref="T:System.IndexOutOfRangeException">  The index passed was outside the range of 0 through FieldCount.
+            </exception>
+            <returns> true if the specified field is set to null, otherwise false.</returns>
+            <remarks>Call this method to check for null column values before calling the typed get methods
+            (for example, GetByte, GetChar, and so on) to avoid raising an error.
+            </remarks>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.Close">
+            <summary>
+            Closes the IDataReader 0bject.
+            </summary>
+            <returns> The number of rows changed, inserted, or deleted; 0 if no rows were affected or the statement failed; and -1 for SELECT statements. 
+            
+            </returns>
+            <remarks>You must explicitly call the Close method when you are through using the IDataReader to use the associated IDbConnection for any other purpose.
+            </remarks>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.NextResult">
+            <summary>
+            Advances the data reader to the next result, when reading the results of batch SQL statements.
+            </summary>
+            <returns> true if there are more rows; otherwise, false. </returns>
+            <remarks>
+            Used to process multiple results, which can be obtained by executing batch SQL statements.
+            By default, the data reader is positioned on the first result.
+            </remarks>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.Read">
+            <summary> Advances the IDataReader to the next record.
+            </summary>
+            <returns> true if there are more rows; otherwise, false. </returns>
+            <remarks>
+            The default position of the IDataReader is prior to the first record. Therefore you must call
+            Read to begin accessing any data.While the data reader is in use, 
+            the associated connection is busy serving the IDataReader. This is the case until Close is called.
+            </remarks>
+        </member>
+        <member name="M:Newtera.Data.CMDataReader.System#IDisposable#Dispose">
+            <summary>
+            Implementing IDisposable interface
+            </summary>
+        </member>
+        <member name="P:Newtera.Data.CMDataReader.FieldCount">
+            <summary>
+            Gets the number of columns in the current row.
+            </summary>
+            <returns> When not positioned in a valid recordset, 0; otherwise the number of columns in the current record.
+            The default is -1.
+            </returns>
+            <remarks>executing a query that does not return rows (for example, using the ExecuteNonQuery method), FieldCount returns -1.</remarks>
+        </member>
+        <member name="P:Newtera.Data.CMDataReader.Depth">
+            <summary>
+            Gets a value indicating the depth of nesting for the current row.
+            </summary>
+            <returns> The level of nesting.</returns>
+            <remarks>The outermost table has a depth of zero.</remarks>
+        </member>
+        <member name="P:Newtera.Data.CMDataReader.IsClosed">
+            <summary>
+             Gets a value indicating whether the data reader is closed.
+            </summary>
+            <returns> true if the data reader is closed; otherwise, false. </returns>
+            <remarks>IsClosed and RecordsAffected are the only properties that you can call after the IDataReader is closed.
+            </remarks>
+        </member>
+        <member name="P:Newtera.Data.CMDataReader.RecordsAffected">
+            <summary>
+            Gets the number of rows changed, inserted, or deleted by execution of the
+            SQL statement.
+            </summary>
+            <returns> The number of rows changed, inserted, or deleted; 0 if no rows were affected or the statement failed; and -1 for SELECT statements. 
+            </returns>
+            <remarks>
+            The RecordsAffected property is not set until all rows are read and you close the IDataReader.
+            IsClosed and RecordsAffected are the only properties that you can call after the IDataReader is closed.
+            </remarks>
+        </member>
+        <member name="P:Newtera.Data.CMDataReader.Item(System.String)">
+            <summary> Gets the column with the specified name.
+            
+            </summary>
+            <param name="name">The name of the column to find.
+            
+            </param>
+            <exception cref="T:System.IndexOutOfRangeException"> IndexOutOfRangeException No column with the specified name was found.
+            
+            </exception>
+            <returns> The column with the specified name as an Object. 
+            
+            </returns>
+        </member>
+        <member name="P:Newtera.Data.CMDataReader.Item(System.Int32)">
+            <summary> Gets the column located at the specified index.
+            
+            </summary>
+            <param name="i">index of the column to get.
+            
+            </param>
+            <exception cref="T:System.IndexOutOfRangeException"> IndexOutOfRangeException No column with the specified index was found.
+            
+            </exception>
+            <returns> The column with the specified index as an Object. 
+            
+            </returns>
+        </member>
+        <member name="T:Newtera.Data.CMException">
+            <summary>
+            A common exception type for all exceptions thrown from CM data provider implementation.
+            It is highly recommended that a new exception class is defined 
+            and subclassed from this exception class for each specific error that 
+            might occur in program of this module.
+            
+            An exception instance include an error description and the causing exception.
+            </summary>
+            <version> 	1.1.0	08 May 2003</version>
+            <author> 	Yong Zhang </author>
+        </member>
+        <member name="M:Newtera.Data.CMException.#ctor(System.String)">
+            <summary>
+            Default constructor.
+            </summary>
+            <param name="desc">a description of the exception.</param>
+        </member>
+        <member name="M:Newtera.Data.CMException.#ctor(System.String,System.Exception)">
+            <summary>
+            Use this constructor for situation of translating an Exception.
+            </summary>
+            <param name="desc">a description of the exception</param>
+            <param name="ex">the exception that got translated and chained.</param>
+        </member>
+        <member name="T:Newtera.Data.InvalidSchemaException">
+            <summary>
+            The exception thrown when there is a problem in a schema
+            </summary>
+            <version> 	1.1.0	08 Aug 2003 </version>
+            <author> 	Yong Zhang </author>
+        </member>
+        <member name="M:Newtera.Data.InvalidSchemaException.#ctor(System.String,System.Exception)">
+            <summary>
+            Use this constructor for situation of translating an Exception
+            </summary>
+            <param name="ex">the exception that got translated and chained
+            </param>
+            <param name="desc">a description of the exception
+            
+            </param>
+        </member>
+        <member name="T:Newtera.Data.InvalidConnectionStringException">
+            <summary>
+            The exception Thrown if missing some critical key/value pairs in the connection string.
+            </summary>
+            <version> 	1.1.0	08 Aug 2003 </version>
+            <author> 	Yong Zhang </author>
+        </member>
+        <member name="M:Newtera.Data.InvalidConnectionStringException.#ctor(System.String)">
+            <summary>
+            initiating a new instance of InvalidConnectionStringException
+            </summary>
+            <param name="desc">a description of the exception</param>
+        </member>
+        <member name="T:Newtera.Data.CMParameter">
+            <summary>
+            Represents a parameter to a Command object, and optionally, its mapping to DataSet
+            columns.
+            </summary>
+            <version>  	1.0.0 26 Aug 2003</version>
+            <author>  		Yong Zhang </author>
+        </member>
+        <member name="M:Newtera.Data.CMParameter.#ctor">
+            <summary> 
+            Initiate a new instance of CMParameter class
+            </summary>
+        </member>
+        <member name="M:Newtera.Data.CMParameter.#ctor(System.String,System.Data.DbType)">
+            <summary> 
+            Initiate a new instance of CMParameter class
+            </summary>
+            <param name="parameterName">The name of the parameter to map.</param>
+            <param name="type">One of the DbType values.</param>
+        </member>
+        <member name="M:Newtera.Data.CMParameter.#ctor(System.String,System.Object)">
+            <summary>
+            Initiate a new instance of CMParameter class
+            </summary>
+            <param name="parameterName">The name of the parameter to map.</param>
+            <param name="val">An Object that is the value of the CMParameter.</param>
+        </member>
+        <member name="M:Newtera.Data.CMParameter.#ctor(System.String,System.Data.DbType,System.String)">
+            <summary>
+            Initiate a new instance of CMParameter class
+            </summary>
+            <param name="parameterName">The name of the parameter to map.</param>
+            <param name="dbType">One of the DbType values.</param>
+            <param name="sourceColumn">The name of the source column.</param>
+        </member>
+        <member name="M:Newtera.Data.CMParameter.InferType(System.Object)">
+            <summary>
+            Convert value type from .Net type to DBType
+            </summary>
+            <returns>One of DbType, the default is Object</returns>
+        </member>
+        <member name="P:Newtera.Data.CMParameter.DbType">
+            <summary> 
+            Gets or sets the DbType of the parameter.
+            </summary>
+            <value> One of the DbType values. The default is String.</value>
+        </member>
+        <member name="P:Newtera.Data.CMParameter.Direction">
+            <summary>
+            Gets a value indicating whether the parameter is input-only, output-only, bidirectional,
+            or a stored procedure return value parameter.
+            </summary>
+            <value> One of the ParameterDirection values. The default is Input.</value>
+        </member>
+        <member name="P:Newtera.Data.CMParameter.IsNullable">
+            <summary>
+            Gets a value indicating whether the parameter accepts null values.
+            </summary>
+            <value>true if null values are accepted; otherwise, false. The default is false.</value>
+        </member>
+        <member name="P:Newtera.Data.CMParameter.ParameterName">
+            <summary>
+            Gets or sets the name of the CMDataParameter.
+            </summary>
+            <value> name of the CMDataParameter. Default is empty string</value>
+            <remarks>
+            You must set ParameterName before executing a command that relies on parameters.
+            </remarks>
+        </member>
+        <member name="P:Newtera.Data.CMParameter.SourceColumn">
+            <summary>
+            Gets the name of the source column that is mapped to the DataSet and used for
+            loading or returning the Value.
+            </summary>
+            <value> The name of the source column that is mapped to the DataSet. The default is an empty string.
+            </value>
+        </member>
+        <member name="P:Newtera.Data.CMParameter.SourceVersion">
+            <summary>
+            Gets or sets the DataRowVersion to use when loading Value.
+            </summary>
+            <value>One of the DataRowVersion values. The default is Current.</value>
+            <remarks>
+            This property is used by the UpdateCommand during the Update to determine whether
+            the original or current value is used for a parameter value. This allows primary keys
+            to be updated. This property is ignored by the InsertCommand and DeleteCommand.
+            This property is set to the version of the DataRow used by the Item property,
+            or the GetChildRows method of the DataRow object.
+            </remarks>
+        </member>
+        <member name="P:Newtera.Data.CMParameter.Value">
+            <summary>
+            Gets or sets the value of the parameter.
+            </summary>
+            <value> An Object that is the value of the parameter. The default value is null.
+            </value>
+        </member>
+        <member name="T:Newtera.Data.CMParameterCollection">
+            <summary>
+            Collects all parameters relevant to a Command object and their mappings to DataSet
+            columns.
+            
+            Because CMDataParameterCollection is primarily a List,
+            the CMParameterCollection can use an existing class for most of the implementation.
+            </summary>
+            <version>  	1.0.0 26 Aug 2003</version>
+            <author>  		Yong Zhang </author>
+        </member>
+        <member name="M:Newtera.Data.CMParameterCollection.#ctor">
+            <summary>
+             Initializes a new instance of the CMParameterCollection class.
+            </summary>
+        </member>
+        <member name="M:Newtera.Data.CMParameterCollection.Add(Newtera.Data.CMParameter)">
+            <summary>
+            Adds a CMParameter to the CMParameterCollection.
+            </summary>
+            <param name="value">the object to be added</param>
+            <returns>The position into which the new element was inserted</returns>
+        </member>
+        <member name="M:Newtera.Data.CMParameterCollection.IndexOf(Newtera.Data.CMParameter)">
+            <summary>
+            determines the index of a specific item in the collection
+            </summary>
+            <param name="value">The Object to locate in the collection</param>
+            <returns>The index of value if found in the list; otherwise, -1</returns>
+        </member>
+        <member name="M:Newtera.Data.CMParameterCollection.IndexOf(System.String)">
+            <summary>
+            determines the index of a specific item of a given name in the collection
+            </summary>
+            <param name="parameterName">The name of the parameter to locate.</param>
+            <returns> The zero-based location of the CMDataParameter within the collection.
+            otherwise, -1 if not found</returns>
+        </member>
+        <member name="M:Newtera.Data.CMParameterCollection.Insert(System.Int32,Newtera.Data.CMParameter)">
+            <summary>
+            inserts an item to the collection at the specified position
+            </summary>
+            <param name="index">The zero-based index at which value should be inserted</param>
+            <param name="value">The Object to insert into collection</param>
+        </member>
+        <member name="M:Newtera.Data.CMParameterCollection.Remove(Newtera.Data.CMParameter)">
+            <summary>
+            removes the first occurrence of a specific object from the collection
+            </summary>
+            <param name="value">The Object to remove from the collection.</param>
+        </member>
+        <member name="M:Newtera.Data.CMParameterCollection.RemoveAt(System.String)">
+            <summary>
+            Removes the specified CMParameter from the collection using the parameter name.
+            </summary>
+            <param name="parameterName">The name of the SqlParameter object to retrieve. </param>
+        </member>
+        <member name="M:Newtera.Data.CMParameterCollection.Contains(Newtera.Data.CMParameter)">
+            <summary>
+            determines whether the collection contains a specific value
+            </summary>
+            <param name="value">The Object to locate in the collection.</param>
+            <returns>true if the Object is found in the List; otherwise, false.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMParameterCollection.Contains(System.String)">
+            <summary>
+            determines whether the collection contains a specific parameter of give name.
+            </summary>
+            <param name="parameterName">The name of the parameter to retrieve.</param>
+            <returns> true if the collection contains the parameter; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:Newtera.Data.CMParameterCollection.OnInsert(System.Int32,System.Object)">
+            <summary>
+            Performs additional custom processes before inserting a new element into the Collection
+            </summary>
+            <param name="index">The zero-based index at which to insert value.</param>
+            <param name="value">The new value of the element at index.</param>
+        </member>
+        <member name="M:Newtera.Data.CMParameterCollection.OnRemove(System.Int32,System.Object)">
+            <summary>
+            Performs additional custom processes when removing an element from the Collection.
+            </summary>
+            <param name="index">The zero-based index at which to remove value.</param>
+            <param name="value">The new value of the element at index.</param>
+        </member>
+        <member name="M:Newtera.Data.CMParameterCollection.OnSet(System.Int32,System.Object,System.Object)">
+            <summary>
+            Performs additional custom processes before setting a value in the Collection.
+            </summary>
+            <param name="index">The zero-based index at which oldValue can be found.</param>
+            <param name="oldValue">The value to replace with newValue.</param>
+            <param name="newValue">The new value of the element at index.</param>
+        </member>
+        <member name="M:Newtera.Data.CMParameterCollection.OnValidate(System.Object)">
+            <summary>
+            Performs additional custom processes when validating a value.
+            </summary>
+            <param name="value">The object to validate.</param>
+        </member>
+        <member name="P:Newtera.Data.CMParameterCollection.Item(System.Int32)">
+            <summary>
+            Implemention of Indexer member
+            </summary>
+        </member>
+        <member name="P:Newtera.Data.CMParameterCollection.Item(System.String)">
+            <summary>
+            Implemention of Indexer member
+            </summary>
+        </member>
+        <member name="P:Newtera.Data.CMParameterCollection.System#Data#IDataParameterCollection#Item(System.String)">
+            <summary>
+            Implemention of Indexer member
+            </summary>
+        </member>
+        <member name="T:Newtera.Data.CMTransaction">
+            <summary>
+            Represents a transaction to be performed at a catalog.
+            </summary>
+            <version>  	1.0.0 26 Aug 2003 </version>
+            <author>  		Yong Zhang </author>
+        </member>
+        <member name="M:Newtera.Data.CMTransaction.#ctor(Newtera.Data.CMConnection)">
+            <summary>
+            The package scope constructor that takes a connection.
+            </summary>
+        </member>
+        <member name="M:Newtera.Data.CMTransaction.Commit">
+            <summary>
+            Commits the CM transaction.
+            </summary>
+            <remarks>Not supported</remarks>
+        </member>
+        <member name="M:Newtera.Data.CMTransaction.Rollback">
+            <summary>
+            Rolls back a transaction from a pending state.
+            </summary>
+            <remarks>Not supported</remarks>
+        </member>
+        <member name="M:Newtera.Data.CMTransaction.System#IDisposable#Dispose">
+            <summary>
+            Implementing IDisposal interface
+            </summary>
+        </member>
+        <member name="P:Newtera.Data.CMTransaction.Connection">
+            <summary>
+            Specifies the Connection object to associate with the transaction.
+            </summary>
+            <value> The CMConnection object to associate with the transaction.
+            </value>
+        </member>
+        <member name="P:Newtera.Data.CMTransaction.System#Data#IDbTransaction#Connection">
+            <summary>
+            Specifies the Connection object to associate with the transaction.
+            </summary>
+            <value> The IDbConnection object to associate with the transaction.
+            </value>
+        </member>
+        <member name="P:Newtera.Data.CMTransaction.IsolationLevel">
+            <summary>
+            Specifies the IsolationLevel for this transaction.
+            </summary>
+            <value>The IsolationLevel for this transaction. The default is ReadCommitted.</value>
+        </member>
+        <member name="T:Newtera.Data.CMUserManager">
+            <summary> 
+            CM Server side IUserManager implementation that queries database directly
+            for user info.
+            </summary>
+            <version> 1.0.0 01 Dec 2003 </version>
+            <author> Yong Zhang </author>
+        </member>
+        <member name="M:Newtera.Data.CMUserManager.#ctor">
+            <summary>
+            Initiate an instance of CMUserManager class
+            </summary>
+        </member>
+        <member name="M:Newtera.Data.CMUserManager.Authenticate(System.String,System.String)">
+            <summary>
+            Authenticate an user with given name and password
+            </summary>
+            <param name="userName">The user name</param>
+            <param name="password">The user password</param>
+            <returns>true if user is authenticated, false otherwise</returns>
+        </member>
+        <member name="M:Newtera.Data.CMUserManager.GetRoles(System.String)">
+            <summary>
+            Gets roles that an user of the given name is in, including sub-roles.
+            </summary>
+            <param name="userName">The user's name</param>
+            <returns>A collection of roles</returns>
+        </member>
+        <member name="M:Newtera.Data.CMUserManager.GetAllRoles">
+            <summary>
+            Gets all roles defined for the schema
+            </summary>
+            <returns>An array of all roles</returns>
+        </member>
+        <member name="M:Newtera.Data.CMUserManager.GetAllUsers">
+            <summary>
+            Gets all users defined for the schema
+            </summary>
+            <returns>An array of all users</returns>
+        </member>
+        <member name="M:Newtera.Data.CMUserManager.AddUser(System.String,System.String)">
+            <summary>
+            Add an user
+            </summary>
+            <param name="userName">The user's unique id</param>
+            <param name="password">The user's password</param>
+        </member>
+        <member name="M:Newtera.Data.CMUserManager.ChangeUserPassword(System.String,System.String,System.String)">
+            <summary>
+            Change an user's password.
+            </summary>
+            <param name="userName">The user name</param>
+            <param name="oldPassword">The old password</param>
+            <param name="newPassword">The new password</param>
+        </member>
+        <member name="M:Newtera.Data.CMUserManager.DeleteUser(System.String)">
+            <summary>
+            Delete an user
+            </summary>
+            <param name="userName">The user's unique id</param>
+        </member>
+        <member name="M:Newtera.Data.CMUserManager.AddRole(System.String)">
+            <summary>
+            Add a new role
+            </summary>
+            <param name="roleName">The unique role name</param>
+        </member>
+        <member name="M:Newtera.Data.CMUserManager.DeleteRole(System.String)">
+            <summary>
+            Delete a role
+            </summary>
+            <param name="roleName">The unique role name</param>
+        </member>
+        <member name="M:Newtera.Data.CMUserManager.AddUserRoleMapping(System.String,System.String)">
+            <summary>
+            Add a mapping for user and role
+            </summary>
+            <param name="userName">The user name</param>
+            <param name="roleName">The role name</param>
+        </member>
+        <member name="M:Newtera.Data.CMUserManager.DeleteUserRoleMapping(System.String,System.String)">
+            <summary>
+            Delete a mapping of user and role.
+            </summary>
+            <param name="userName">The user name</param>
+            <param name="roleName">The role name</param>
+        </member>
+        <member name="M:Newtera.Data.CMUserManager.AuthenticateSuperUser(System.String,System.String)">
+            <summary>
+            Authenticate an user as the super user.
+            </summary>
+            <param name="userName">User name</param>
+            <param name="password">User password</param>
+            <returns>true if the user has been authenticated as super user, false otherwise.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMUserManager.ChangeSuperUserPassword(System.String,System.String,System.String)">
+            <summary>
+            Change the super user's password.
+            </summary>
+            <param name="userName">User name</param>
+            <param name="oldPassword">Old password</param>
+            <param name="newPassword">New password</param>
+        </member>
+        <member name="M:Newtera.Data.CMUserManager.GetSuperUserName">
+            <summary>
+            Gets the super user's name
+            </summary>
+            <returns>A string representing super user.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMUserManager.IsSuperUser(System.String)">
+            <summary>
+            Gets the information indicating whether an user of given name is the
+            super user.
+            </summary>
+            <param name="userName">User name</param>
+            <returns>true if it is the super user, false otherwise.</returns>
+        </member>
+        <member name="M:Newtera.Data.CMUserManager.GetSuperUserRole">
+            <summary>
+            Get the role information for the super user
+            </summary>
+            <returns>A role string array</returns>
+        </member>
+        <member name="M:Newtera.Data.CMUserManager.GetParamName(System.String,Newtera.Server.DB.IDataProvider)">
+            <summary>
+            Get the appropriate parameter name for the specific database type
+            </summary>
+            <param name="name">The bare parameter name.</param>
+            <param name="dataProvider">The data provider.</param>
+            <returns>The parameter name</returns>
+        </member>
+        <member name="M:Newtera.Data.CMUserManager.ParseConnectionString(System.String)">
+            <summary>
+            Parse the connection string to get the SchemaInfo object
+            </summary>
+            <param name="connectionString">The connection string</param>
+            <returns>A SchemaInfo object</returns>
+        </member>
+        <member name="P:Newtera.Data.CMUserManager.IsUserInfoSchemaExist">
+            <summary>
+            Gets the information indicating whether the schema for UserInfo exists or not
+            </summary>
+            <value>true if it exists, false otherwise</value>
+        </member>
+        <member name="P:Newtera.Data.CMUserManager.UserInfoConnectionString">
+            <summary>
+            Gets the connection string for UserInfo schema
+            </summary>
+            <value>The connection string for UserInfo schema</value>
+        </member>
+        <member name="T:Newtera.Data.ServerConditionRunner">
+            <summary>
+            Runs a condition expressed in xquery using xquery interpreter
+            </summary>
+            <version>  	1.0.0 18 Dec. 2003</version>
+            <author>  Yong Zhang </author>
+        </member>
+        <member name="M:Newtera.Data.ServerConditionRunner.#ctor">
+            <summary> 
+            Initiate a new instance of ServerConditionRunner class
+            </summary>
+        </member>
+        <member name="M:Newtera.Data.ServerConditionRunner.IsConditionMet(System.String)">
+            <summary>
+            Gets an information indicating if a condition expressed in xquery is met or
+            or not.
+            </summary>
+            <param name="condition">The condition expressed in xquery</param>
+            <returns>true if the condition is met, false otherwise</returns>
+        </member>
+        <member name="T:Newtera.Data.VariableQuery">
+            <summary>
+            The class represents a query that may contain variables. It provides convinient
+            methods to deal with these variables, such as replacing variables with values.
+            </summary>
+            <version>     1.0.0    08 Aug 2003</version>
+            <author>     Yong Zhang </author>
+            <example>
+            </example>
+        </member>
+        <member name="M:Newtera.Data.VariableQuery.#ctor(System.String,Newtera.Data.CMParameterCollection)">
+            <summary> The Constructor.
+            
+            </summary>
+            <param name="query">the query that contains variables
+            </param>
+            <param name="parameters">the parameters to substitute variables
+            
+            </param>
+        </member>
+        <member name="M:Newtera.Data.VariableQuery.Substitute">
+            <summary>
+            Scan the query to find each of variables and replace the variable with the value
+            of corresponding parameter in the parameter collections.
+            </summary>
+            <returns>  a new query with its variables replaced by the parameter values.
+            
+            </returns>
+        </member>
+        <member name="M:Newtera.Data.VariableQuery.Replace(System.Text.RegularExpressions.Match)">
+            <summary>
+            The delegate to be called by the regular expression parser.
+            </summary>
+            <param name="match">The Match</param>
+            <returns>the replaced string</returns>
+        </member>
+        <member name="M:Newtera.Data.VariableQuery.GetStringValue(Newtera.Data.CMParameter)">
+            <summary>
+            Gets the string value in order to be concatenated in the new query
+            
+            If the value is a String type, a double quote added.
+            </summary>
+            <param name="parameter">the value object.</param>
+            <returns> the value's string representation.</returns>
+        </member>
+    </members>
+</doc>

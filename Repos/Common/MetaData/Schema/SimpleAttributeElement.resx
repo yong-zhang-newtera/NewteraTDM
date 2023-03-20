@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="IsRequired" xml:space="preserve">
+    <value>Is Required</value>
+  </data>
+  <data name="IsRequiredDescription" xml:space="preserve">
+    <value>Indicate whether the attribute value is required?</value>
+  </data>
+  <data name="Constraint" xml:space="preserve">
+    <value>Constraint</value>
+  </data>
+  <data name="ConstraintDescription" xml:space="preserve">
+    <value>The constraint to the attribute value. The currently supported constraints are Enum, Range, Pattern, and List.</value>
+  </data>
+  <data name="IsAutoIncrement" xml:space="preserve">
+    <value>Is AutoIncrement</value>
+  </data>
+  <data name="IsAutoIncrementDescription" xml:space="preserve">
+    <value>Indicate whether the attribute value is auto-incremented?</value>
+  </data>
+  <data name="IsUnique" xml:space="preserve">
+    <value>Is Unique</value>
+  </data>
+  <data name="IsUniqueDescription" xml:space="preserve">
+    <value>Indicate whether the attribute is unique?</value>
+  </data>
+  <data name="IsPrimaryKey" xml:space="preserve">
+    <value>Is Primary Key</value>
+  </data>
+  <data name="IsPrimaryKeyDescription" xml:space="preserve">
+    <value>Indicate whether the attribute is one of the primary keys?</value>
+  </data>
+  <data name="DataType" xml:space="preserve">
+    <value>Data Type</value>
+  </data>
+  <data name="DataTypeDescription" xml:space="preserve">
+    <value>The data type of the attribute values.</value>
+  </data>
+  <data name="MinLength" xml:space="preserve">
+    <value>Min Length</value>
+  </data>
+  <data name="MinLengthDescription" xml:space="preserve">
+    <value>When it is a string type, this is the minimum length of the attribute value.</value>
+  </data>
+  <data name="MaxLength" xml:space="preserve">
+    <value>Max Length</value>
+  </data>
+  <data name="MaxLengthDescription" xml:space="preserve">
+    <value>When it is a string type, this is the maximum length of the attribute value.</value>
+  </data>
+  <data name="DefaultValue" xml:space="preserve">
+    <value>Default Value</value>
+  </data>
+  <data name="DefaultValueDescription" xml:space="preserve">
+    <value>When specified, it is the default value of the attribute.</value>
+  </data>
+  <data name="IsFullTextSearchable" xml:space="preserve">
+    <value>Is FullText Searchable</value>
+  </data>
+  <data name="IsFullTextSearchableDescription" xml:space="preserve">
+    <value>Indicate whether the attribute value is indexed for full-text search?</value>
+  </data>
+  <data name="IsRichText" xml:space="preserve">
+    <value>Is Rich Text</value>
+  </data>
+  <data name="IsRichTextDescription" xml:space="preserve">
+    <value>Indicate whether the attribute's value is rich text?</value>
+  </data>
+  <data name="IsHistoryEdit" xml:space="preserve">
+    <value>Is History Edit</value>
+  </data>
+  <data name="IsHistoryEditDescription" xml:space="preserve">
+    <value>Indicate whether the attribute is used for history edit?</value>
+  </data>
+  <data name="IsMultipleLined" xml:space="preserve">
+    <value>Is Multiple-Lined</value>
+  </data>
+  <data name="IsMultipleLinedDescription" xml:space="preserve">
+    <value>Indicate whether the attribute value is displayed in a text area with multiple lines?</value>
+  </data>
+  <data name="Rows" xml:space="preserve">
+    <value>Rows</value>
+  </data>
+  <data name="RowsDescription" xml:space="preserve">
+    <value>How many rows to display when displayed in a text area with multiple lines?</value>
+  </data>
+  <data name="Section" xml:space="preserve">
+    <value>Section</value>
+  </data>
+  <data name="SectionDescription" xml:space="preserve">
+    <value>The section to which the attribute is classified, used for UI display purpose.</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="CategoryDescription" xml:space="preserve">
+    <value />
+  </data>
+  <data name="IsIndexed" xml:space="preserve">
+    <value>Is Indexed</value>
+  </data>
+  <data name="IsIndexedDescription" xml:space="preserve">
+    <value>Indicate whether the value of the attribute is indexed for better search performance?</value>
+  </data>
+  <data name="CaseStyle" xml:space="preserve">
+    <value>Case Style</value>
+  </data>
+  <data name="CaseStyleDescription" xml:space="preserve">
+    <value>specify one of the case styles for searching.</value>
+  </data>
+  <data name="SystemCategory" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="AppearanceCategory" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="IndexCategory" xml:space="preserve">
+    <value>Index</value>
+  </data>
+  <data name="IsGoodForFullTextSearch" xml:space="preserve">
+    <value>Is Good for Full-text Search</value>
+  </data>
+  <data name="IsGoodForFullTextSearchDescription" xml:space="preserve">
+    <value>Indicate whether the content of the attribute is good for full-text search</value>
+  </data>
+  <data name="IsGoodForSearchSuggester" xml:space="preserve">
+    <value>Is Good For Search Suggester</value>
+  </data>
+  <data name="IsGoodForSearchSuggesterDescription" xml:space="preserve">
+    <value>Indicate whether the content of the attribute is good for search suggester</value>
+  </data>
+  <data name="Usage" xml:space="preserve">
+    <value>Usage</value>
+  </data>
+  <data name="UsageDescription" xml:space="preserve">
+    <value>Indicate whether the attribute is part of the default data view.</value>
+  </data>
+  <data name="IsBrowsable" xml:space="preserve">
+    <value>Is Browsable</value>
+  </data>
+  <data name="IsBrowsableDescription" xml:space="preserve">
+    <value>Indicate whether the attribute will appear on the user interface?</value>
+  </data>
+  <data name="AutoValueGenerator" xml:space="preserve">
+    <value>Auto Value Generator</value>
+  </data>
+  <data name="AutoValueGeneratorDescription" xml:space="preserve">
+    <value>Specify the class definition of a generator that generates a unique value when the attribute is set to be auto-incremental. An example of a generator definition is: MyLib.TestIDGenerator, MyLib</value>
+  </data>
+  <data name="DefaultViewCategory" xml:space="preserve">
+    <value>Default View</value>
+  </data>
+  <data name="Operator" xml:space="preserve">
+    <value>Operator</value>
+  </data>
+  <data name="OperatorDescription" xml:space="preserve">
+    <value>When usage of the attribute is set to Included, indicating the operator used in the binary expression in the default data view</value>
+  </data>
+  <data name="InlineEditEnabled" xml:space="preserve">
+    <value>Inline Edit Enabled</value>
+  </data>
+  <data name="InlineEditEnabledDescription" xml:space="preserve">
+    <value>Indicate whether values of the attribute can be edited within a datagrid </value>
+  </data>
+  <data name="AllowManualUpdate" xml:space="preserve">
+    <value>Allow Manual Update</value>
+  </data>
+  <data name="AllowManualUpdateDescription" xml:space="preserve">
+    <value>Indicate whether values of the attribute can be updated manually via Web UI </value>
+  </data>
+  <data name="IsReadOnly" xml:space="preserve">
+    <value>Is Read-Only</value>
+  </data>
+  <data name="IsReadOnlyDescription" xml:space="preserve">
+    <value>Indicate if the attribute appears as read-only</value>
+  </data>
+  <data name="ShowAsProgressBar" xml:space="preserve">
+    <value>Show As Progress Bar</value>
+  </data>
+  <data name="ShowAsProgressBarDescription" xml:space="preserve">
+    <value>Indicate whether to display the value as progress bar</value>
+  </data>
+  <data name="ShowUpdateHistory" xml:space="preserve">
+    <value>Show Update History</value>
+  </data>
+  <data name="ShowUpdateHistoryDescription" xml:space="preserve">
+    <value>Indicate whether to display update history of the attribute</value>
+  </data>
+  <data name="CascadedAttributes" xml:space="preserve">
+    <value>Cascaded Attributes</value>
+  </data>
+  <data name="CascadedAttributesDescription" xml:space="preserve">
+    <value>Indicate which attribute's values are affected by the event of value change of the attribute.</value>
+  </data>
+  <data name="ParentAttribute" xml:space="preserve">
+    <value>Parent Attribute</value>
+  </data>
+  <data name="ParentAttributeDescription" xml:space="preserve">
+    <value>Indicate a parent attribute whose value affects values of a list constraint bound to this attribute.</value>
+  </data>
+  <data name="InputMask" xml:space="preserve">
+    <value>Input Mask</value>
+  </data>
+  <data name="InputMaskDescription" xml:space="preserve">
+    <value>Used as a mask for editing a value.</value>
+  </data>
+  <data name="DisplayFormatString" xml:space="preserve">
+    <value>Display Format String， using C# string.Format() function's format definitions</value>
+  </data>
+  <data name="DisplayFormatStringDescription" xml:space="preserve">
+    <value>Used as a formatting string for displaying the value.</value>
+  </data>
+  <data name="DataSourceName" xml:space="preserve">
+    <value>Data Source Name</value>
+  </data>
+  <data name="DataSourceNameDescription" xml:space="preserve">
+    <value>Data source that provides source for this attribute's values</value>
+  </data>
+  <data name="IsEncrypted" xml:space="preserve">
+    <value>Is Encrypted</value>
+  </data>
+  <data name="IsEncryptedDescription" xml:space="preserve">
+    <value>Indicate whether the attribute's value is stored as encrypted?</value>
+  </data>
+  <data name="LastIndexedTime" xml:space="preserve">
+    <value>Last Full-text Indexed Time</value>
+  </data>
+  <data name="LastIndexedTimeDescription" xml:space="preserve">
+    <value>Indicate when was the last time the full-text index was built</value>
+  </data>
+  <data name="ConstraintUsage" xml:space="preserve">
+    <value>Constraint Usage</value>
+  </data>
+  <data name="ConstraintUsageDescription" xml:space="preserve">
+    <value>Indicate the use of the constraint as restriction or suggestion</value>
+  </data>
+  <data name="KeywordFormat" xml:space="preserve">
+    <value>Keyword Format</value>
+  </data>
+  <data name="KeywordFormatDescription" xml:space="preserve">
+    <value>Specify a string representing a keyword format for full-text search</value>
+  </data>
+</root>

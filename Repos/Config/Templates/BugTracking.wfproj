@@ -1,0 +1,5 @@
+<WFProject ID="31" Name="工作流教程" order="0">
+  <Workflows>
+    <Workflow ID="74" Name="故障处理" order="0" Type="StateMachine" Cls="WF1285371477" schemaId="故障记录数据库 1.0" clsName="BugRecord" clsCaption="故障纪录" eventName="故障生成事件" />
+  </Workflows>
+</WFProject>

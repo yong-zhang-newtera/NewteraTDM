@@ -1,0 +1,21 @@
+<!-- (c) Troy Taft, 2007.  See ValleyHighlands Free License -->
+<html>
+	<head>
+	</head>
+	<body onload="TestDisplayOutput.innerHTML = DisplayAndRunAllTests();">
+		<h2>Test Results (JSNUnit 2.7 Client-side):</h2>
+		<div id="TestDisplayOutput"></div>
+		<p>Refresh browser to run test again.</p>
+	</body>
+</html>
+<script type="text/jscript" src="JSNUnit27.js" language="JavaScript"></script>
+<script type="text/jscript" src="..\..\..\DevExpress.Web\ASPxClasses\Scripts\Classes.js" language="JavaScript"></script>
+<script type="text/jscript" src="..\..\scripts\GridView.js" language="JavaScript"></script>
+<script type="text/jscript" src="..\..\scripts\TableColumnResizing.js" language="JavaScript"></script>
+<script type="text/jscript" src="GridViewTests.js" language="JavaScript"></script>
+<script type="text/jscript" src="TableColumnResizingTests.js" language="JavaScript"></script>
+<!--
+Make sure you add any of your own .js files up here.  You can just always use a file
+called "ClientCode.js" for your production code and "AllTests.js" for your tests, but
+you don't have too.
+-->

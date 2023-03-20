@@ -1,0 +1,1381 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8D18C53D-0505-4444-A607-A8E7F80A8DBA}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Newtera.Server</AssemblyName>
+    <AssemblyOriginatorKeyFile>NewteraKeys.snk</AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Newtera.Server</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <SignAssembly>true</SignAssembly>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp">
+      <HintPath>..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Microsoft.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\Ebaas\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Data.OracleClient">
+      <Name>System.Data.OracleClient</Name>
+    </Reference>
+    <Reference Include="System.Data.SqlServerCe, Version=3.5.1.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files\Microsoft SQL Server Compact Edition\v3.5\Desktop\System.Data.SqlServerCe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.DirectoryServices">
+      <Name>System.DirectoryServices</Name>
+    </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Web">
+      <Name>System.Web</Name>
+    </Reference>
+    <Reference Include="System.Workflow.Activities">
+      <HintPath>..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Workflow.Activities.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Workflow.ComponentModel">
+      <HintPath>..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Workflow.ComponentModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Workflow.Runtime">
+      <HintPath>..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Workflow.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\Antlr\antlr.runtime-2.7.2.csproj">
+      <Name>antlr.runtime-2.7.2</Name>
+      <Project>{CB7CC882-ED47-46C0-AAAE-7A437F22F1C6}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{cf010325-1364-4754-9192-cf7873c35f90}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Licensing\Licensing.csproj">
+      <Name>Licensing</Name>
+      <Project>{3E2EBEAC-7CE4-49C9-95A7-1CD61187824B}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\WorkflowModel\WFModel.csproj">
+      <Project>{EF0030AC-1F81-448B-B9F2-3CF5EFFBEA52}</Project>
+      <Name>WFModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WorkflowServices\WorkflowServices.csproj">
+      <Project>{763837D0-56FA-40B7-84A5-5CB2D9448F51}</Project>
+      <Name>WorkflowServices</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Attachment\AttachmentException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Attachment\AttachmentFileRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Attachment\AttachmentOracleRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Attachment\AttachmentRepositoryBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Attachment\AttachmentRepositoryFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Attachment\AttachmentSQLServerCERepository.cs" />
+    <Compile Include="Attachment\AttachmentSQLServerRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Attachment\IAttachmentRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\AttributeIdGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\CannedSQLManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\ClassIdGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\ClobDAOFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\DatabaseConfig.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\DataProviderFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\DBException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\IClobDAO.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\IDataProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\InvalidDataSourceException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\KeyGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\KeyGeneratorFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaDataAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\AddArrayAttributeAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\AddClassAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\AddClassInheritanceAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\AddClassPKConstraintAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\AddRelationshipAttributeAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\AddRelationshipAttributeFKAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\AddRelationshipAttributeFKConstraintAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\AddRelationshipAttributeJoinTableAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\AddSchemaAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\AddSimpleAttributeAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\AddSimpleAttributeAutoIncrementAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\AddSimpleAttributeFullTextSearchAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\AddSimpleAttributeRichTextAction.cs" />
+    <Compile Include="DB\MetaData\AddSimpleAttributeIndexAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\AddSimpleAttributeUniqueConstraintAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\BigInteger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\DBDiscrepancyDetector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\DBNameComposer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\DDLGeneratorManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\DeleteArrayAttributeAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\DeleteClassAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\DeleteClassInheritanceAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\DeleteClassPKConstraintAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\DeleteRelationshipAttributeAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\DeleteRelationshipAttributeFKAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\DeleteRelationshipAttributeFKConstraintAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\DeleteRelationshipAttributeJoinTableAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\DeleteSchemaAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\DeleteSimpleAttributeAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\DeleteSimpleAttributeAutoIncrementAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\DeleteSimpleAttributeFullTextSearchAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\DeleteSimpleAttributeRichTextAction.cs" />
+    <Compile Include="DB\MetaData\DeleteSimpleAttributeIndexAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\DeleteSimpleAttributeUniqueConstraintAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\DMLGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\FindAdditionVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\FindAlterationVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\FindDeletionVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\FindDiscrepancyVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\FindMissingIDVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\IDDLGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\IMetaDataAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\MergeMetaDataVisitor.cs" />
+    <Compile Include="DB\MetaData\MetaDataActionBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\MetaDataActionCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\MetaDataComparator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\MetaDataCompareResult.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\MetaDataUpdateException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\MetaDataUpdateExecutor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\MetaDataUpdateLog.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\ModifyArrayAttributeAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\ModifyFlagEnum.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\ModifyRelationshipAttributeAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\ModifySimpleAttributeAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\OracleDDLGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\SQLServerCEDDLGenerator.cs" />
+    <Compile Include="DB\MetaData\SQLServerDDLGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\MetaData\AddSimpleAttributeDefaultValueAction.cs" />
+    <Compile Include="DB\MetaData\DeleteSimpleAttributeDefaultValueAction.cs" />
+    <Compile Include="DB\MetaData\DeleteImageAttributeAction.cs" />
+    <Compile Include="DB\MetaData\AddImageAttributeAction.cs" />
+    <Compile Include="DB\MetaData\AddSimpleAttributeHistoryEditAction.cs" />
+    <Compile Include="DB\MetaData\DeleteSimpleAttributeHistoryEditAction.cs" />
+    <Compile Include="DB\MetaData\AddRelationshipAttributeIndexAction.cs" />
+    <Compile Include="DB\MetaData\DeleteRelationshipAttributeIndexAction.cs" />
+    <Compile Include="DB\ObjIdGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\OracleClobDAO.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\OracleProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\SchemaIdGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\SQLServerCEClobDAO.cs" />
+    <Compile Include="DB\SQLServerClobDAO.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\SQLServerCEProvider.cs" />
+    <Compile Include="DB\SQLServerProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\TextDeEncryptor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\TransformerIdGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DB\WorkflowModelAdapter.cs" />
+    <Compile Include="DB\WorkflowModel\AddWorkflowAction.cs" />
+    <Compile Include="DB\WorkflowModel\AddProjectAction.cs" />
+    <Compile Include="DB\WorkflowModel\DeleteWorkflowAction.cs" />
+    <Compile Include="DB\WorkflowModel\DeleteProjectAction.cs" />
+    <Compile Include="DB\WorkflowModel\DMLGenerator.cs" />
+    <Compile Include="DB\WorkflowModel\FindAdditionVisitor.cs" />
+    <Compile Include="DB\WorkflowModel\IWorkflowModelAction.cs" />
+    <Compile Include="DB\WorkflowModel\WorkflowModelActionBase.cs" />
+    <Compile Include="DB\WorkflowModel\ProjectModelUpdateException.cs" />
+    <Compile Include="DB\WorkflowModel\ProjectModelUpdateExecutor.cs" />
+    <Compile Include="DB\WorkflowModel\ProjectModelUpdateLog.cs" />
+    <Compile Include="DB\WorkflowModel\WorkflowModelActionCollection.cs" />
+    <Compile Include="DB\WorkflowModel\ProjectModelComparator.cs" />
+    <Compile Include="DB\WorkflowModel\ProjectModelCompareResult.cs" />
+    <Compile Include="DB\WorkflowModel\FindDeletionVisitor.cs" />
+    <Compile Include="DB\ProjectIdGenerator.cs" />
+    <Compile Include="DB\WorkflowIdGenerator.cs" />
+    <Compile Include="DB\ValueIdGenerator.cs" />
+    <Compile Include="Engine\Cache\SiteMapManager.cs" />
+    <Compile Include="Engine\Cache\UserDataCache.cs" />
+    <Compile Include="Engine\Cache\UserTaskCache.cs" />
+    <Compile Include="Engine\Interpreter\Builtin\AheadDaysFunction.cs" />
+    <Compile Include="Engine\Interpreter\Builtin\CurrentHourFunction.cs" />
+    <Compile Include="Engine\Interpreter\Builtin\AheadHoursFunction.cs" />
+    <Compile Include="Engine\Interpreter\Builtin\BehindDaysFunction.cs" />
+    <Compile Include="Engine\Interpreter\Builtin\BehindHoursFunction.cs" />
+    <Compile Include="Engine\Interpreter\Builtin\GetCurrentRolesAndUnitsFunction.cs" />
+    <Compile Include="Engine\Interpreter\Builtin\GetCurrentUnitsFunction.cs" />
+    <Compile Include="Engine\Sqlbuilder\InsertTemplateVisitor.cs" />
+    <Compile Include="Engine\Cache\LockMetaDataException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Cache\MetaDataCache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Cache\NoDeletePermissionException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Cache\QueryDataCache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Cache\UnknownSchemaException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Cache\WorkflowModelCache.cs" />
+    <Compile Include="DB\WorkflowDataCacheEntry.cs" />
+    <Compile Include="Engine\Cache\UpdateMetaDataException.cs" />
+    <Compile Include="Engine\Interpreter\And.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\AttributeNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Axis.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\BinaryExpr.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\BooleanType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\BuiltinMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\AvgFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\ConcatFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\ContainsFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\CountFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\CurrentInstanceFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\Db\AddInstanceFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\Db\AddInstancesFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\Db\AggregateFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\Db\AvgFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\Db\ContainsFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\Db\CountFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\Db\DeleteInstanceFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\Db\DeleteInstancesFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\Db\EditFunctonBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\Db\LikeFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\Db\MaxFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\Db\MinFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\Db\SumFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\Db\UpdateInstanceFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\Db\UpdateInstancesFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\Db\DistinctFunction.cs" />
+    <Compile Include="Engine\Interpreter\Builtin\DecimalFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\Document.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\DoubleFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\EndsWithFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\FloatFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\IntegerFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\LikeFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\LowerCaseFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\MacroDefination.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\MacroFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\MacroMapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\MacroUserInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\MaxFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\MinFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\NameFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\SetTextFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\StartsWithFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\StringLengthFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\SumFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\TextFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\UpperCaseFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Builtin\EmitErrorFunction.cs" />
+    <Compile Include="Engine\Interpreter\Builtin\NoopFunction.cs" />
+    <Compile Include="Engine\Interpreter\Builtin\GetWorkflowStateFunction.cs" />
+    <Compile Include="Engine\Interpreter\Builtin\GetCurrentUserFunction.cs" />
+    <Compile Include="Engine\Interpreter\Builtin\GetCurrentRolesFunction.cs" />
+    <Compile Include="Engine\Interpreter\Builtin\GetAttributeValueFunction.cs" />
+    <Compile Include="Engine\Interpreter\Builtin\DistinctFunction.cs" />
+    <Compile Include="Engine\Interpreter\CollectionType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\DataType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\DecimalType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Divide.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\DoubleType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\ElementNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Equals.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\ExprBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\ExprCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\FLClause.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\FloatType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Flwr.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\For.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\FunctionCall.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\FunctionDef.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\FunctionImpBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\GEquals.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\GreaterThan.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\IDBFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Ident.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\IExpr.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\IExprVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\If.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\IFunctionImp.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\In.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\InlineXml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\IntegerType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Interpreter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\InterpreterException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\ISelectable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\ITraceable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\ITraversable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\LEquals.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\LessThan.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Let.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Literal.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Mod.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\NodeType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Not.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\NotEquals.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\NotIn.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Null.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Or.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\ParenthesizedExpr.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Parser\XQueryLexer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Parser\XQueryParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Parser\XQueryParserTokenTypes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Path.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\PathEnumerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Plus.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\QueryExpr.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\QueryReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Sortby.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\SortbySpec.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Step.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\StringType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Substract.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\SymbolTable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\SymbolTableEntry.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Times.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\To.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\UMinus.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Unary.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\UTrue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Value.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\ValueCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Variable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\XBoolean.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\XCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\XDecimal.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\XDouble.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\XFloat.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\XInteger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\XNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\XString.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Interpreter\Like.cs" />
+    <Compile Include="Engine\Sqlbuilder\AggregateFuncEntity.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\AliasVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\ArrayAttributeEntity.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\AttachmentEntity.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\AttributeEntity.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\ClassEntity.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\ClsIdEntity.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\ConvertVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\DBEntity.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\DBEntityCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\DeleteVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\InstanceElementWrapper.cs" />
+    <Compile Include="Engine\Sqlbuilder\EntityVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\FromVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\InsertVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Instance.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\InstanceWrapper.cs" />
+    <Compile Include="Engine\Sqlbuilder\JoinVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\MissingAttributesException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\ObjectCaller.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\ObjIdEntity.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\PermissionEntity.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\PersonalizeVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\PrintVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\QueryInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\RelationshipEntity.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\ResultVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\SchemaEntity.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\ScoreEntity.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\SearchVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\VirtualAttributeValueGeneratorContext.cs" />
+    <Compile Include="Engine\Sqlbuilder\ServerExecutionContext.cs" />
+    <Compile Include="Engine\Sqlbuilder\SimpleAttributeEntity.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\SQLAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\SQLActionCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\SQLBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\SQLPrettyPrint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\ANDExpression.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\BETExpression.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\BitwiseAndFunc.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\Condition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\ContainsFunc.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\CountField.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\DB2SymbolLookup.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\DeleteClause.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\EnclosedExpression.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\FieldName.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\FromClause.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\GroupByClause.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\HavingClause.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\IJoinElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\InnerJoinCondition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\InsertClause.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\LikeFunc.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\NegateCondition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\NOTExpression.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\NullValue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\OracleSymbolLookup.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\OrderByClause.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\OrderByField.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\ORExpression.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\OuterJoinCondition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\Range.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\ResultFieldName.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\ScoreFunc.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\SearchFieldName.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\SearchValue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\SearchValueSet.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\SelectClause.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\SQLBuilderException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\SQLComposite.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\SQLElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\SQLElementCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\SQLServerCESymbolLookup.cs" />
+    <Compile Include="Engine\Sqlbuilder\Sql\SQLServerSymbolLookup.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\SQLStatement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\SubqueryCondition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\SymbolLookup.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\SymbolLookupFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\TableName.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\UpdateClause.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\ValuesClause.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\ViewTable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\WhereClause.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\ClassIdField.cs" />
+    <Compile Include="Engine\Sqlbuilder\Sql\Variable.cs" />
+    <Compile Include="Engine\Sqlbuilder\UpdateANUMVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\UpdateVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Sqlbuilder\VirtualAttributeEntity.cs" />
+    <Compile Include="Engine\Sqlbuilder\ImageAttributeEntity.cs" />
+    <Compile Include="Engine\Sqlbuilder\ReadOnlyEntity.cs" />
+    <Compile Include="Engine\Validator\SchemaValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Common\AncestorAxisEnumerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Common\AncestorOrSelfAxisEnumerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Common\DescendantAxisEnumerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Common\DescendantOrSelfAxisEnumerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Common\InvalidNodeTypeException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Common\SelfAxisEnumerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Common\SingleNodeEnumerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Common\StackedEnumerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Common\UnknownAttributeNameException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Common\UnknownClassNameException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Common\UnknownJDOMObjectException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Common\UnsupportedAxisException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Common\UnsupportedFeatureException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Dbimp\CountExecutor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Dbimp\DeleteExecutor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Dbimp\Executor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Dbimp\ExtendBranchVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Dbimp\FindEntityVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Dbimp\FindExtendingEntityVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Dbimp\InsertExecutor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Dbimp\MissingClassTypeException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Dbimp\MissingPrimaryKeyValueException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Dbimp\MultiReferencedObjException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Dbimp\NonexistReferencedObjException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Dbimp\NoPrimaryKeyException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Dbimp\PagingExecutor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Dbimp\PathIterator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Dbimp\PathIteratorEntityVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Dbimp\QualifierVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Dbimp\SearchExecutor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Dbimp\TreeManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Dbimp\UpdateExecutor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\Dbimp\SearchClassNameExecutor.cs" />
+    <Compile Include="Engine\Vdom\Dbimp\BindingInstanceException.cs" />
+    <Compile Include="Engine\Vdom\Dbimp\GetInsertSQLActionsExecutor.cs" />
+    <Compile Include="Engine\Vdom\Dbimp\EditSQLExecutor.cs" />
+    <Compile Include="Engine\Vdom\Dbimp\GetSearchStatementExecutor.cs" />
+    <Compile Include="Engine\Workflow\ActionCodeRunner.cs" />
+    <Compile Include="Engine\Workflow\DataInstanceGetterFactory.cs" />
+    <Compile Include="Engine\Workflow\DBEventService.cs" />
+    <Compile Include="Engine\Workflow\DBEventServiceSingleton.cs" />
+    <Compile Include="Engine\Workflow\DBInstanceGetter.cs" />
+    <Compile Include="Engine\Workflow\CompletedTaskSaver.cs" />
+    <Compile Include="Engine\Workflow\IDataInstanceGetter.cs" />
+    <Compile Include="Engine\Workflow\InstanceWrapper.cs" />
+    <Compile Include="Engine\Workflow\NewteraSubscriberService.cs" />
+    <Compile Include="Engine\Workflow\SequenceNumberGenerator.cs" />
+    <Compile Include="Engine\Workflow\SequenceNumberGeneratorFactory.cs" />
+    <Compile Include="Engine\Workflow\SmtpConfig.cs" />
+    <Compile Include="Engine\Workflow\EventContext.cs" />
+    <Compile Include="Engine\Workflow\EventRaiser.cs" />
+    <Compile Include="Engine\Vdom\DocumentDB.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\DocumentFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\DocumentText.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\PathNavigator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\VDocument.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Vdom\VDOMException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Workflow\NewteraTaskService.cs" />
+    <Compile Include="Engine\Workflow\NewteraPersistenceService.cs" />
+    <Compile Include="Engine\Workflow\NewteraTrackingService.cs" />
+    <Compile Include="Engine\Workflow\NewteraWorkflowRuntime.cs" />
+    <Compile Include="Engine\Workflow\NewteraTrackingQuery.cs" />
+    <Compile Include="Engine\Workflow\NewteraCustomTrackingChannel.cs" />
+    <Compile Include="Engine\Workflow\NewteraDataService.cs" />
+    <Compile Include="Engine\Workflow\NewteraWorkflowService.cs" />
+    <Compile Include="Engine\Workflow\DBEventQueueManager.cs" />
+    <Compile Include="Engine\Workflow\WizardWorkflowChannel.cs" />
+    <Compile Include="Engine\Workflow\WizardWorkflowService.cs" />
+    <Compile Include="Engine\Workflow\WorkflowServreException.cs" />
+    <Compile Include="Engine\Workflow\WorkflowEventServiceSingleton.cs" />
+    <Compile Include="Engine\Workflow\NewteraWorkflowInstance.cs" />
+    <Compile Include="Engine\Workflow\IActionCodeExecutor.cs" />
+    <Compile Include="Engine\Workflow\ActionCodeTester.cs" />
+    <Compile Include="Engine\XmlGenerator\IImportManager.cs" />
+    <Compile Include="Engine\XmlGenerator\XmlDocGenerator.cs" />
+    <Compile Include="FullText\IIndexingRunner.cs" />
+    <Compile Include="FullText\IndexEventManager.cs" />
+    <Compile Include="FullText\DBIndexCreator.cs" />
+    <Compile Include="FullText\IndexingWorker.cs" />
+    <Compile Include="FullText\IndexingContext.cs" />
+    <Compile Include="FullText\IndexBuilder.cs" />
+    <Compile Include="FullText\IndexingManager.cs" />
+    <Compile Include="FullText\Spider.cs" />
+    <Compile Include="LeaderElection\LeaderElectionManager.cs" />
+    <Compile Include="Licensing\EvaluationMonitorManager.cs" />
+    <Compile Include="Licensing\NewteraLicenseChecker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Licensing\NewteraLicenseException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Licensing\NewteraLicenseProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Licensing\NewteraLicenseInfo.cs" />
+    <Compile Include="Logging\LoggingMessage.cs" />
+    <Compile Include="Logging\LoggingManager.cs" />
+    <Compile Include="Logging\ProcessingQueue.cs" />
+    <Compile Include="Timer\TimerEventQueueManager.cs" />
+    <Compile Include="Timer\TimerEventRaiser.cs" />
+    <Compile Include="Timer\TimerManager.cs" />
+    <Compile Include="UsrMgr\ActiveDirectoryManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UsrMgr\CMUserManager.cs" />
+    <Compile Include="UsrMgr\DirectoryConfig.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UsrMgr\ServerSideServerProxy.cs" />
+    <Compile Include="UsrMgr\ServerSideUserManager.cs" />
+    <Compile Include="UsrMgr\SubCMUserManager.cs" />
+    <Compile Include="UsrMgr\UserManagerFactory.cs" />
+    <Compile Include="Util\KeyValueStoreFactory.cs" />
+    <Compile Include="Util\IRemoteCacheClient.cs" />
+    <Compile Include="Util\RemoteCacheStore.cs" />
+    <Compile Include="Util\IKeyValueStore.cs" />
+    <Compile Include="Util\HashtableStore.cs" />
+    <Compile Include="Util\XmlDataSourceService.cs" />
+    <EmbeddedResource Include="Engine\Cache\MetaDataCache.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Engine\Cache\MetaDataCache.zh-CN.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Engine\Cache\WorkflowModelCache.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Engine\Cache\WorkflowModelCache.zh-CN.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Engine\Vdom\Dbimp\DeleteExecutor.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DeleteExecutor.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DeleteExecutor.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Engine\Vdom\Dbimp\DeleteExecutor.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DeleteExecutor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Engine\Vdom\Dbimp\InsertExecutor.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>InsertExecutor.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>InsertExecutor.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Engine\Vdom\Dbimp\InsertExecutor.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>InsertExecutor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Engine\Vdom\Dbimp\UpdateExecutor.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>UpdateExecutor.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UpdateExecutor.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Engine\Vdom\Dbimp\UpdateExecutor.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>UpdateExecutor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Licensing\NewteraLicenseChecker.resx">
+      <DependentUpon>NewteraLicenseChecker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Licensing\NewteraLicenseChecker.zh-CN.resx">
+      <DependentUpon>NewteraLicenseChecker.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="Engine\Interpreter\Parser\CreateParser.bat" />
+    <None Include="Engine\Interpreter\Parser\XQuery.g" />
+    <None Include="Engine\Interpreter\Parser\XQuery.g.1.2" />
+    <None Include="Engine\Interpreter\Parser\XQuery.g.tree" />
+    <None Include="Engine\Interpreter\Parser\XQuery.jj" />
+    <None Include="NewteraKeys.snk" />
+    <Content Include="bin\Debug\Newtera.Server.dll" />
+    <Content Include="Engine\Interpreter\Parser\XQueryParserTokenTypes.txt" />
+    <Content Include="Engine\Interpreter\Parser\XQueryTokenTypes.txt" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

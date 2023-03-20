@@ -1,0 +1,532 @@
+<MappingManager order="0">
+  <MappingPackageCollection>
+    <MappingPackage Name="涡轮试验数据导入脚本" Description="用于导入由涡轮测速试验台产生的文本文件" order="0" Converter="Newtera.Conveters.FreeFormedTextFileConverter, Newtera.Conveters" SourceType="Text" paging="true" BlockSize="1000">
+      <TextFormat order="0" colDelim="	" />
+      <ClassMappingCollection>
+        <ClassMapping order="0" Source="33.25d3-42－4.txt" Destination="WolunData">
+          <AttributeMappingCollection>
+            <AttributeMapping order="0" Source="试前供油y" Destination="SQGY">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="节流比" Destination="JLB">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="封严压力y" Destination="FYYL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="试前滑油Q" Destination="SQHYY">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="压出物流量" Destination="YCWLL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="油站压力y" Destination="YZYL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <ArrayDataCellMapping order="0" Source="y5s1" Destination="Y5S_0_0">
+              <TransformScript order="0" Language="CSharp" />
+            </ArrayDataCellMapping>
+            <ArrayDataCellMapping order="0" Source="y5s3" Destination="Y5S_0_2">
+              <TransformScript order="0" Language="CSharp" />
+            </ArrayDataCellMapping>
+            <AttributeMapping order="0" Source="放气流量" Destination="FQLL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="折合转速" Destination="ZHZS">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="大气压" Destination="DQY">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="低增箱供油y" Destination="DZXGY">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <ArrayDataCellMapping order="0" Source="ybs2" Destination="YBS_0_1">
+              <TransformScript order="0" Language="CSharp" />
+            </ArrayDataCellMapping>
+            <ArrayDataCellMapping order="0" Source="ybs3" Destination="YBS_0_2">
+              <TransformScript order="0" Language="CSharp" />
+            </ArrayDataCellMapping>
+            <ArrayDataCellMapping order="0" Source="ybs1" Destination="YBS_0_0">
+              <TransformScript order="0" Language="CSharp" />
+            </ArrayDataCellMapping>
+            <ArrayDataCellMapping order="0" Source="y5s2" Destination="Y5S_0_1">
+              <TransformScript order="0" Language="CSharp" />
+            </ArrayDataCellMapping>
+            <ArrayDataCellMapping order="0" Source="ybs4" Destination="YBS_0_3">
+              <TransformScript order="0" Language="CSharp" />
+            </ArrayDataCellMapping>
+            <AttributeMapping order="0" Source="T2平均" Destination="T2AVG">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="压比" Destination="YB">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <ArrayDataCellMapping order="0" Source="T箱12" Destination="TXARRAY_0_1">
+              <TransformScript order="0" Language="CSharp" />
+            </ArrayDataCellMapping>
+            <AttributeMapping order="0" Source="位移" Destination="WY">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="耗功" Destination="HG">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="放气流量比" Destination="FQLLB">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="试后供油y" Destination="SHGY">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="放变K效率" Destination="FBKFBKXL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="轴向力" Destination="ZXL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="扭矩" Destination="LJ">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <ArrayDataCellMapping order="0" Source="T箱13" Destination="TXARRAY_0_2">
+              <TransformScript order="0" Language="CSharp" />
+            </ArrayDataCellMapping>
+            <ArrayDataCellMapping order="0" Source="T箱11" Destination="TXARRAY_0_0">
+              <TransformScript order="0" Language="CSharp" />
+            </ArrayDataCellMapping>
+            <AttributeMapping order="0" Source="高增器油箱T" Destination="GZYYX">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="低增器油箱T" Destination="DYYX">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="试后回油T" Destination="SHHY">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="等转速" Destination="Speed">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="气源压力y" Destination="QYYL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="压进物流量" Destination="YJWLL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="试前回油T" Destination="SQHY">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="y1s平均" Destination="Y1SAVG">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="高增箱供油y" Destination="GYZXY">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="W相T" Destination="WXT">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="试件转速" Destination="SJZS">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="T0平均" Destination="T0AVG">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="放效率" Destination="FXL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="变K效率" Destination="BKXL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="电机后轴T" Destination="DJHZ">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="低增箱回油T" Destination="DZXHY">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="压出折合" Destination="YCZH">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="K1.4效率" Destination="KXL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="ybs平均" Destination="YSBAVG">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="电机前轴T" Destination="DJQZ">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="压进折合" Destination="YJZH">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="试件油箱T" Destination="SJYX">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="试后滑油Q" Destination="SHHYQ">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="参考端温度" Destination="CKDWD">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="高增箱回油T" Destination="GZXHY">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="U相T" Destination="UXT">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="状态" Destination="ZhuTaiHao">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="实验日期" Destination="ShiYanShiJian">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="实验编号" Destination="ShiYanJianBianHao">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+          </AttributeMappingCollection>
+          <DefaultValueCollection>
+            <DefaultValue order="0" Destination="ShiYanShuoMing_ShuoMingID" Value="1" />
+          </DefaultValueCollection>
+        </ClassMapping>
+      </ClassMappingCollection>
+    </MappingPackage>
+    <MappingPackage Name="燃烧室测量数据导入脚本" Description="用于导入燃烧室模板格式的文本文件" order="0" Converter="Newtera.Conveters.TemplateTextFileConverter, Newtera.Conveters" SourceType="Text" paging="true" BlockSize="1000">
+      <TextFormat order="0" rowDelim="&#xD;&#xA;" colDelim="	" />
+      <ClassMappingCollection>
+        <ClassMapping order="0" Source="摸板测量数据.txt" Destination="ChamberData">
+          <AttributeMappingCollection>
+            <AttributeMapping order="0" Source="内部比重" Destination="NBBZ">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="试验件编号" Destination="ShiYanJianBianHao">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="内部温度" Destination="LBWD">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="单个流量最小值" Destination="LLZXZ">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="大气温度" Destination="DQWD">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="主要油压" Destination="ZYYY">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="内部总流量" Destination="NBZLL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="总管分布不均匀度" Destination="ZGFBBJY">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="喷嘴流量最大值" Destination="LLZDZ">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+          </AttributeMappingCollection>
+          <DefaultValueCollection>
+            <DefaultValue order="0" Destination="ShiYanRen" Value="16所" />
+            <DefaultValue order="0" Destination="ShiYanShiJian" Value="2005-7-11" />
+            <DefaultValue order="0" Destination="ZhuTaiHao" Value="2" />
+            <DefaultValue order="0" Destination="ShiYanShuoMing_ShuoMingID" Value="3" />
+          </DefaultValueCollection>
+        </ClassMapping>
+      </ClassMappingCollection>
+    </MappingPackage>
+    <MappingPackage Name="压力机试验数据导入脚本" Description="导入文本文件格式的压力机试验数据" order="0" Converter="Newtera.Conveters.TemplateTextFileConverter, Newtera.Conveters" SourceType="Text" paging="true" BlockSize="1000">
+      <TextFormat order="0" rowDelim="&#xD;&#xA;" colDelim="	" />
+      <ClassMappingCollection>
+        <ClassMapping order="0" Source="arraydata.txt" Destination="YSJCL">
+          <AttributeMappingCollection>
+            <AttributeMapping order="0" Source="试验条件" Destination="SYTJ">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="试验件编号" Destination="ShiYanJianBianHao">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="试验时间" Destination="ShiYanShiJian">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="试验测试数据" Destination="CSSJ">
+              <TransformScript order="0" Enabled="true" Class="Transformer_99" Language="CSharp">//------------------------------------------------------------------------------
+// &lt;autogenerated&gt;
+//     This code was generated by a tool.
+//     Runtime Version: 1.1.4322.2032
+//
+//     Changes to this file may cause incorrect behavior and will be lost if 
+//     the code is regenerated.
+// &lt;/autogenerated&gt;
+//------------------------------------------------------------------------------
+
+namespace Newtera.Transformers {
+    using System;
+    using System.Collections.Specialized;
+    using Newtera.Common.MetaData.Mappings.Transform;
+    
+    
+    public class Transformer_99 : OneToOneTransformer {
+        
+        public override string OneToOneTransform(string src) {
+            return src.Replace("，", ";");
+        }
+    }
+}
+</TransformScript>
+            </AttributeMapping>
+          </AttributeMappingCollection>
+          <DefaultValueCollection>
+            <DefaultValue order="0" Destination="ShiYanRen" Value="16所" />
+            <DefaultValue order="0" Destination="ZhuTaiHao" Value="23" />
+          </DefaultValueCollection>
+        </ClassMapping>
+      </ClassMappingCollection>
+    </MappingPackage>
+    <MappingPackage Name="整机试验数据导入脚本" Description="导入Excel表的整机试验数据" order="0" Converter="Newtera.Common.MetaData.Mappings.Converter.ExcelFileConverter, Newtera.Common" SourceType="Excel" paging="true" BlockSize="1000">
+      <TextFormat order="0" rowDelim="&#xD;&#xA;" colDelim="	" />
+      <ClassMappingCollection>
+        <ClassMapping order="0" Source="20040513" Destination="ZTCL">
+          <AttributeMappingCollection>
+            <AttributeMapping order="0" Source="DW1" Destination="DW1">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="载荷杆612" Destination="ZHG">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="R25*换算" Destination="R25HS">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="YP" Destination="YP">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="空压机压力" Destination="KQYL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="启动电压" Destination="QDDY">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="存盘序号" Destination="CPID">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="压比" Destination="YB">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <ArrayDataCellMapping order="0" Source="P1-2" Destination="PCS_0_1">
+              <TransformScript order="0" Language="CSharp" />
+            </ArrayDataCellMapping>
+            <ArrayDataCellMapping order="0" Source="P1-3" Destination="PCS_0_2">
+              <TransformScript order="0" Language="CSharp" />
+            </ArrayDataCellMapping>
+            <AttributeMapping order="0" Source="大气温度" Destination="DQWD">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="FG" Destination="FG">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <ArrayDataCellMapping order="0" Source="T1平均" Destination="T1CS_0_3">
+              <TransformScript order="0" Language="CSharp" />
+            </ArrayDataCellMapping>
+            <ArrayDataCellMapping order="0" Source="P1平均" Destination="PCS_0_4">
+              <TransformScript order="0" Language="CSharp" />
+            </ArrayDataCellMapping>
+            <AttributeMapping order="0" Source="P离心" Destination="PLX">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="润油压" Destination="LYY">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="启动电流" Destination="QDDL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="压进折流" Destination="YJZL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="电动机功率" Destination="DDJGL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <ArrayDataCellMapping order="0" Source="P1-1" Destination="PCS_0_0">
+              <TransformScript order="0" Language="CSharp" />
+            </ArrayDataCellMapping>
+            <AttributeMapping order="0" Source="发动机扭矩" Destination="FDJLJ">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="测功进水压" Destination="CGJSY">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="折合NG" Destination="ZHNG">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="效率" Destination="XL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <ArrayDataCellMapping order="0" Source="T1-2" Destination="T1CS_0_1">
+              <TransformScript order="0" Language="CSharp" />
+            </ArrayDataCellMapping>
+            <ArrayDataCellMapping order="0" Source="T1-3" Destination="T1CS_0_2">
+              <TransformScript order="0" Language="CSharp" />
+            </ArrayDataCellMapping>
+            <ArrayDataCellMapping order="0" Source="T1-1" Destination="T1CS_0_0">
+              <TransformScript order="0" Language="CSharp" />
+            </ArrayDataCellMapping>
+            <ArrayDataCellMapping order="0" Source="D5-2" Destination="D5CS_0_0">
+              <TransformScript order="0" Language="CSharp" />
+            </ArrayDataCellMapping>
+            <AttributeMapping order="0" Source="换算功率" Destination="HSGL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="T功进" Destination="TGJ">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="T25*温差" Destination="T25WC">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="发进流量" Destination="FJLL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="U25*平均" Destination="U25PJ">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="润油流量" Destination="LYLL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="润油质量" Destination="LYZL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="滑油温度612" Destination="HYWD">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="滑油压力612" Destination="HYYL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="扭角612" Destination="LJ">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="大气压力" Destination="DQYL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="转速612" Destination="ZS">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="油门杆612" Destination="YMG">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="拐角给定612" Destination="GJGD">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="拐角反馈612" Destination="LJFK">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="T三角" Destination="TSJ">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <ArrayDataCellMapping order="0" Source="D5*平均" Destination="D5XPJ_0_3">
+              <TransformScript order="0" Language="CSharp" />
+            </ArrayDataCellMapping>
+            <ArrayDataCellMapping order="0" Source="D53*-3" Destination="D5XPJ_0_2">
+              <TransformScript order="0" Language="CSharp" />
+            </ArrayDataCellMapping>
+            <ArrayDataCellMapping order="0" Source="D53*-2" Destination="D5XPJ_0_1">
+              <TransformScript order="0" Language="CSharp" />
+            </ArrayDataCellMapping>
+            <ArrayDataCellMapping order="0" Source="D53*-1" Destination="D5XPJ_0_0">
+              <TransformScript order="0" Language="CSharp" />
+            </ArrayDataCellMapping>
+            <ArrayDataCellMapping order="0" Source="D5平均" Destination="D5CS_0_1">
+              <TransformScript order="0" Language="CSharp" />
+            </ArrayDataCellMapping>
+            <AttributeMapping order="0" Source="耗油率" Destination="HYL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="扭矩角度" Destination="LJJD">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="试验编号" Destination="ShiYanJianBianHao">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+          </AttributeMappingCollection>
+          <DefaultValueCollection>
+            <DefaultValue order="0" Destination="ShiYanRen" Value="16所" />
+            <DefaultValue order="0" Destination="ShiYanShiJian" Value="2005-5-3" />
+            <DefaultValue order="0" Destination="ZhuTaiHao" Value="3" />
+            <DefaultValue order="0" Destination="ShiYanShuoMing_ShuoMingID" Value="5" />
+          </DefaultValueCollection>
+        </ClassMapping>
+        <ClassMapping order="0" Source="20040513$">
+          <AttributeMappingCollection />
+          <DefaultValueCollection />
+        </ClassMapping>
+      </ClassMappingCollection>
+    </MappingPackage>
+    <MappingPackage Name=" " order="0" Converter="Newtera.Conveters.TemplateTextFileConverter, Newtera.Conveters" SourceType="Text" paging="true" BlockSize="1000">
+      <TextFormat order="0" rowDelim="&#xD;&#xA;" colDelim="	" />
+      <ClassMappingCollection>
+        <ClassMapping order="0" Source="摸板测量数据.txt" Destination="ChamberData">
+          <AttributeMappingCollection>
+            <AttributeMapping order="0" Source="大气温度" Destination="DQWD">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="内部比重" Destination="NBBZ">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="试验件编号" Destination="ShiYanJianBianHao">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="内部温度" Destination="LBWD">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="单个流量最小值" Destination="LLZXZ">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="主要油压" Destination="ZYYY">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="内部总流量" Destination="NBZLL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="总管分布不均匀度" Destination="ZGFBBJY">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="喷嘴流量最大值" Destination="LLZDZ">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+          </AttributeMappingCollection>
+          <DefaultValueCollection>
+            <DefaultValue order="0" Destination="ShiYanShiJian" Value="2005-11-16" />
+            <DefaultValue order="0" Destination="ShiYanRen" Value="ss" />
+          </DefaultValueCollection>
+        </ClassMapping>
+      </ClassMappingCollection>
+    </MappingPackage>
+    <MappingPackage order="0" Converter="Newtera.Conveters.TemplateTextFileConverter, Newtera.Conveters" SourceType="Text" paging="true" BlockSize="1000">
+      <TextFormat order="0" rowDelim="&#xD;&#xA;" colDelim="	" />
+      <ClassMappingCollection>
+        <ClassMapping order="0" Source="摸板测量数据.txt" Destination="ChamberData">
+          <AttributeMappingCollection>
+            <AttributeMapping order="0" Source="内部比重" Destination="NBBZ">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="试验件编号" Destination="ShiYanJianBianHao">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="内部温度" Destination="LBWD">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="单个流量最小值" Destination="LLZXZ">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="大气温度" Destination="DQWD">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="主要油压" Destination="ZYYY">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="内部总流量" Destination="NBZLL">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="总管分布不均匀度" Destination="ZGFBBJY">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="喷嘴流量最大值" Destination="LLZDZ">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+          </AttributeMappingCollection>
+          <DefaultValueCollection />
+        </ClassMapping>
+      </ClassMappingCollection>
+    </MappingPackage>
+  </MappingPackageCollection>
+</MappingManager>

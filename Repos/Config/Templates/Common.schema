@@ -1,0 +1,800 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:psd="http://www.newtera.com" targetNamespace="http://www.newtera.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element psd:version="1.0" psd:modifiedTime="2016-09-29T11:34:34" psd:id="9" psd:displayName="COMMON" psd:order="0" name="COMMON">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" maxOccurs="1" name="GroupsList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="Groups" type="Groups" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="BlogList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="Blog" type="Blog" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="TopicList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="Topic" type="Topic" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="KanbanStatesList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="KanbanStates" type="KanbanStates" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="MembersList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="Members" type="Members" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="CommentList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="Comment" type="Comment" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="PostList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="Post" type="Post" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="GroupToMemberList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="GroupToMember" type="GroupToMember" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="KanbanList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="Kanban" type="Kanban" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="TopicGroupList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="TopicGroup" type="TopicGroup" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="BlogGroupList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="BlogGroup" type="BlogGroup" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="IssuesList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="Issues" type="Issues" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="bulletinBoardList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="bulletinBoard" type="bulletinBoard" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="MessagesList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="Messages" type="Messages" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:all>
+    </xs:complexType>
+    <xs:key name="GroupsPK">
+      <xs:selector xpath="GroupsList/Groups" />
+      <xs:field xpath="ID" />
+    </xs:key>
+    <xs:key name="BlogPK">
+      <xs:selector xpath="BlogList/Blog" />
+      <xs:field xpath="ID" />
+    </xs:key>
+    <xs:keyref name="toGroupBlogBlogGroupFK" refer="BlogGroupPK">
+      <xs:selector xpath="BlogList/Blog" />
+      <xs:field xpath="toGroup/ID" />
+    </xs:keyref>
+    <xs:key name="TopicPK">
+      <xs:selector xpath="TopicList/Topic" />
+      <xs:field xpath="ID" />
+    </xs:key>
+    <xs:keyref name="toGroupTopicTopicGroupFK" refer="TopicGroupPK">
+      <xs:selector xpath="TopicList/Topic" />
+      <xs:field xpath="toGroup/ID" />
+    </xs:keyref>
+    <xs:key name="KanbanStatesPK">
+      <xs:selector xpath="KanbanStatesList/KanbanStates" />
+      <xs:field xpath="StateID" />
+    </xs:key>
+    <xs:keyref name="toKanbanKanbanStatesKanbanFK" refer="KanbanPK">
+      <xs:selector xpath="KanbanStatesList/KanbanStates" />
+      <xs:field xpath="toKanban/KanbanID" />
+    </xs:keyref>
+    <xs:key name="MembersPK">
+      <xs:selector xpath="MembersList/Members" />
+      <xs:field xpath="ID" />
+    </xs:key>
+    <xs:key name="CommentPK">
+      <xs:selector xpath="CommentList/Comment" />
+      <xs:field xpath="ID" />
+    </xs:key>
+    <xs:keyref name="toBlogCommentBlogFK" refer="BlogPK">
+      <xs:selector xpath="CommentList/Comment" />
+      <xs:field xpath="toBlog/ID" />
+    </xs:keyref>
+    <xs:key name="PostPK">
+      <xs:selector xpath="PostList/Post" />
+      <xs:field xpath="ID" />
+    </xs:key>
+    <xs:keyref name="toTopicPostTopicFK" refer="TopicPK">
+      <xs:selector xpath="PostList/Post" />
+      <xs:field xpath="toTopic/ID" />
+    </xs:keyref>
+    <xs:keyref name="toGroupGroupToMemberGroupsFK" refer="GroupsPK">
+      <xs:selector xpath="GroupToMemberList/GroupToMember" />
+      <xs:field xpath="toGroup/ID" />
+    </xs:keyref>
+    <xs:keyref name="toMemberGroupToMemberMembersFK" refer="MembersPK">
+      <xs:selector xpath="GroupToMemberList/GroupToMember" />
+      <xs:field xpath="toMember/ID" />
+    </xs:keyref>
+    <xs:key name="KanbanPK">
+      <xs:selector xpath="KanbanList/Kanban" />
+      <xs:field xpath="KanbanID" />
+    </xs:key>
+    <xs:key name="TopicGroupPK">
+      <xs:selector xpath="TopicGroupList/TopicGroup" />
+      <xs:field xpath="ID" />
+    </xs:key>
+    <xs:key name="BlogGroupPK">
+      <xs:selector xpath="BlogGroupList/BlogGroup" />
+      <xs:field xpath="ID" />
+    </xs:key>
+    <xs:key name="IssuesPK">
+      <xs:selector xpath="IssuesList/Issues" />
+      <xs:field xpath="ID" />
+    </xs:key>
+    <xs:key name="bulletinBoardPK">
+      <xs:selector xpath="bulletinBoardList/bulletinBoard" />
+      <xs:field xpath="ID" />
+    </xs:key>
+  </xs:element>
+  <xs:simpleType psd:displayMode="Text" psd:displayName="主题组分类" psd:order="0" name="TopicCategory">
+    <xs:restriction xmlns:q1="http://www.w3.org/2003/XMLSchema" base="q1:string">
+      <xs:enumeration id="材料实验室" value="1" />
+      <xs:enumeration id="可靠性实验室" value="2" />
+      <xs:enumeration id="研发试验" value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:displayMode="Text" psd:displayName="事务类型" psd:order="1" name="IssueCategory">
+    <xs:restriction xmlns:q2="http://www.w3.org/2003/XMLSchema" base="q2:string">
+      <xs:enumeration id="Bug" value="1" />
+      <xs:enumeration id="Enhancement" value="2" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:displayMode="Text" psd:displayName="事务状态" psd:order="2" name="IssueStatus">
+    <xs:restriction xmlns:q3="http://www.w3.org/2003/XMLSchema" base="q3:string">
+      <xs:enumeration id="未开始" value="1" />
+      <xs:enumeration id="执行中" value="2" />
+      <xs:enumeration id="已解决" value="3" />
+      <xs:enumeration id="结束" value="4" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:displayMode="Text" psd:displayName="消息状态" psd:order="4" name="MessageStatus">
+    <xs:restriction xmlns:q4="http://www.w3.org/2003/XMLSchema" base="q4:string">
+      <xs:enumeration id="unread" value="1" />
+      <xs:enumeration id="read" value="2" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:listHandler="Newtera.Common.MetaData.UsersListHandler,Newtera.Common" psd:displayName="事务负责人" psd:order="3" name="IssureOwner">
+    <xs:restriction xmlns:q5="http://www.w3.org/2003/XMLSchema" base="q5:string">
+      <xs:enumeration value="DynamicValues" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType psd:category="消息" psd:tableName="T_GROUPS_160_9" psd:id="160" psd:displayName="消息组" psd:order="1" name="Groups">
+    <xs:sequence>
+      <xs:element psd:autoIncrement="true" psd:key="true" psd:usage="Both" psd:colName="C_ID_1197" psd:id="1197" psd:displayName="ID" psd:order="0" minOccurs="0" name="ID" xmlns:q6="http://www.w3.org/2003/XMLSchema" type="q6:integer" />
+      <xs:element psd:index="true" psd:usage="Both" psd:colName="C_NAME_1198" psd:id="1198" psd:displayName="组名称" psd:order="1" minOccurs="1" name="Name" xmlns:q7="http://www.w3.org/2003/XMLSchema" type="q7:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="200" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q8="http://www.w3.org/2003/XMLSchema" type="q8:ID" />
+    <xs:attribute psd:refClass="GroupToMember" psd:refAttr="toGroup" psd:ownership="looseReferenced" psd:joinManager="true" psd:ownedRelationship="false" psd:refType="oneToMany" psd:colName="FC_GROUP_1282" psd:id="1282" psd:displayName="到成员" psd:description="" psd:order="2" name="toMembers" xmlns:q9="http://www.w3.org/2003/XMLSchema" type="q9:IDREFS" />
+  </xs:complexType>
+  <xs:complexType psd:category="博客" psd:tableName="T_BLOG_161_9" psd:id="161" psd:displayName="博客" psd:order="1" name="Blog">
+    <xs:sequence>
+      <xs:element psd:autoIncrement="true" psd:key="true" psd:usage="Both" psd:colName="C_ID_1199" psd:id="1199" psd:displayName="博客ID" psd:order="0" minOccurs="0" name="ID" xmlns:q10="http://www.w3.org/2003/XMLSchema" type="q10:integer" />
+      <xs:element psd:usage="Both" psd:colName="C_NAME_1200" psd:id="1200" psd:displayName="名称" psd:order="2" minOccurs="1" name="Name" xmlns:q11="http://www.w3.org/2003/XMLSchema" type="q11:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="200" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_ABSTRACT_1201" psd:id="1201" psd:displayName="摘要" psd:order="3" minOccurs="0" name="Abstract" xmlns:q12="http://www.w3.org/2003/XMLSchema" type="q12:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="1000" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:fullText="true" psd:datastore="column" psd:usage="None" psd:colName="C_CONTENT_1202" psd:id="1202" psd:displayName="内容" psd:order="4" minOccurs="0" name="Content" xmlns:q13="http://www.w3.org/2003/XMLSchema" type="q13:text" />
+      <xs:element psd:usage="Both" psd:colName="C_IMAGE_1203" psd:id="1203" psd:displayName="图像" psd:order="5" minOccurs="0" name="Image" xmlns:q14="http://www.w3.org/2003/XMLSchema" type="q14:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_POSTER_1204" psd:id="1204" psd:displayName="发布人" psd:order="6" minOccurs="0" name="Poster" xmlns:q15="http://www.w3.org/2003/XMLSchema" type="q15:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_POSTTIME_1205" psd:id="1205" psd:displayName="发布时间" psd:order="7" minOccurs="0" name="PostTime" xmlns:q16="http://www.w3.org/2003/XMLSchema" type="q16:dateTime" />
+      <xs:element psd:usage="Both" psd:colName="C_COMMENTQTY_1206" psd:id="1206" psd:displayName="评论数量" psd:order="9" minOccurs="0" name="CommentQty" xmlns:q17="http://www.w3.org/2003/XMLSchema" type="q17:integer" />
+      <xs:element psd:classtype="F_274701660" psd:displayName="发布人姓名" psd:order="10" name="PosterName" xmlns:q18="http://www.w3.org/2003/XMLSchema" type="q18:string">
+        <xs:annotation>
+          <xs:appinfo>namespace Newtera.Formula {
+    using System;
+    using System.Xml;
+    using System.Collections;
+    using Newtera.Common.Wrapper;
+    using Newtera.Common.MetaData.Schema;
+    using Newtera.Common.MetaData.Schema.Generator;
+    
+    
+    public class F_274701660 : FormulaBase {
+        
+        public override string Eval(IInstanceWrapper instance, ExecutionContext context) {
+                 string userId = instance.GetString("发布人");
+            return context.GetUserDisplayText(userId);
+        }
+    }
+}
+</xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q19="http://www.w3.org/2003/XMLSchema" type="q19:ID" />
+    <xs:attribute psd:refClass="Comment" psd:refAttr="toBlog" psd:ownership="looseReferenced" psd:joinManager="true" psd:ownedRelationship="false" psd:refType="oneToMany" psd:colName="FC_COMME_1283" psd:id="1283" psd:displayName="到评论" psd:description="" psd:order="1" name="toComments" xmlns:q20="http://www.w3.org/2003/XMLSchema" type="q20:IDREFS" />
+    <xs:attribute psd:refClass="BlogGroup" psd:refAttr="toBlogs" psd:ownership="looseReferenced" psd:joinManager="false" psd:ownedRelationship="false" psd:refType="manyToOne" psd:colName="FC_BLOGG_1284" psd:id="1284" psd:displayName="到博客组" psd:description="" psd:order="8" name="toGroup" xmlns:q21="http://www.w3.org/2003/XMLSchema" type="q21:IDREF" />
+  </xs:complexType>
+  <xs:complexType psd:category="论坛" psd:tableName="T_TOPIC_162_9" psd:sortAttribute="obj_id" psd:sortDirection="Descending" psd:id="162" psd:displayName="主题" psd:order="1" name="Topic">
+    <xs:sequence>
+      <xs:element psd:autoIncrement="true" psd:key="true" psd:usage="Both" psd:colName="C_ID_1207" psd:id="1207" psd:displayName="主题ID" psd:order="0" minOccurs="0" name="ID" xmlns:q22="http://www.w3.org/2003/XMLSchema" type="q22:integer" />
+      <xs:element psd:usage="Both" psd:colName="C_NAME_1208" psd:id="1208" psd:displayName="主题名称" psd:order="1" minOccurs="1" name="Name" xmlns:q23="http://www.w3.org/2003/XMLSchema" type="q23:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="300" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_DESCRIPTION_1209" psd:id="1209" psd:displayName="主题描述" psd:order="2" minOccurs="0" name="Description" xmlns:q24="http://www.w3.org/2003/XMLSchema" type="q24:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="500" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_POSTQTY_1210" psd:id="1210" psd:displayName="帖子数量" psd:order="3" minOccurs="0" name="PostQty" xmlns:q25="http://www.w3.org/2003/XMLSchema" type="q25:integer" />
+      <xs:element psd:usage="Both" psd:colName="C_LATESTPOSTUSER_1211" psd:id="1211" psd:displayName="最新帖子用户" psd:order="4" minOccurs="0" name="LatestPostUser" xmlns:q26="http://www.w3.org/2003/XMLSchema" type="q26:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_LATESTPOSTTIME_1212" psd:id="1212" psd:displayName="最新帖子时间" psd:order="5" minOccurs="0" name="LatestPostTime" xmlns:q27="http://www.w3.org/2003/XMLSchema" type="q27:dateTime" />
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q28="http://www.w3.org/2003/XMLSchema" type="q28:ID" />
+    <xs:attribute psd:refClass="Post" psd:refAttr="toTopic" psd:ownership="looseReferenced" psd:joinManager="true" psd:ownedRelationship="false" psd:refType="oneToMany" psd:colName="FC_POST_1285" psd:id="1285" psd:displayName="到帖子" psd:description="" psd:order="0" name="toPosts" xmlns:q29="http://www.w3.org/2003/XMLSchema" type="q29:IDREFS" />
+    <xs:attribute psd:refClass="TopicGroup" psd:refAttr="toTopics" psd:ownership="looseReferenced" psd:joinManager="false" psd:ownedRelationship="false" psd:refType="manyToOne" psd:colName="FC_TOPIC_1286" psd:id="1286" psd:displayName="到主题组" psd:description="" psd:order="6" name="toGroup" xmlns:q30="http://www.w3.org/2003/XMLSchema" type="q30:IDREF" />
+  </xs:complexType>
+  <xs:complexType psd:category="看板" psd:tableName="T_KANBANSTATES_163_9" psd:sortAttribute="StateID" psd:id="163" psd:displayName="看板状态" psd:order="1" name="KanbanStates">
+    <xs:sequence>
+      <xs:element psd:autoIncrement="true" psd:key="true" psd:usage="Both" psd:colName="C_STATEID_1213" psd:id="1213" psd:displayName="状态序号" psd:order="0" minOccurs="0" name="StateID" xmlns:q31="http://www.w3.org/2003/XMLSchema" type="q31:integer" />
+      <xs:element psd:usage="Both" psd:colName="C_NAME_1214" psd:id="1214" psd:displayName="状态名称" psd:order="1" minOccurs="0" name="Name" xmlns:q32="http://www.w3.org/2003/XMLSchema" type="q32:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_ALLOWADD_1215" psd:id="1215" psd:displayName="是否允许添加" psd:order="2" minOccurs="0" name="AllowAdd" xmlns:q33="http://www.w3.org/2003/XMLSchema" type="q33:boolean" />
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q34="http://www.w3.org/2003/XMLSchema" type="q34:ID" />
+    <xs:attribute psd:refClass="Kanban" psd:refAttr="toStates" psd:ownership="looseReferenced" psd:joinManager="false" psd:ownedRelationship="false" psd:refType="manyToOne" psd:colName="FC_KANBA_1287" psd:id="1287" psd:displayName="所属看板" psd:description="" psd:order="0" name="toKanban" xmlns:q35="http://www.w3.org/2003/XMLSchema" type="q35:IDREF" />
+  </xs:complexType>
+  <xs:complexType psd:category="消息" psd:tableName="T_MEMBERS_164_9" psd:id="164" psd:displayName="组成员" psd:order="2" name="Members">
+    <xs:sequence>
+      <xs:element psd:autoIncrement="true" psd:key="true" psd:usage="Both" psd:colName="C_ID_1216" psd:id="1216" psd:displayName="ID" psd:order="0" minOccurs="0" name="ID" xmlns:q36="http://www.w3.org/2003/XMLSchema" type="q36:integer" />
+      <xs:element psd:index="true" psd:usage="Both" psd:colName="C_NAME_1217" psd:id="1217" psd:displayName="成员名" psd:order="1" minOccurs="1" name="Name" xmlns:q37="http://www.w3.org/2003/XMLSchema" type="q37:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q38="http://www.w3.org/2003/XMLSchema" type="q38:ID" />
+    <xs:attribute psd:refClass="GroupToMember" psd:refAttr="toMember" psd:ownership="looseReferenced" psd:joinManager="true" psd:ownedRelationship="false" psd:refType="oneToMany" psd:colName="FC_GROUP_1288" psd:id="1288" psd:displayName="到信息组" psd:description="" psd:order="2" name="toGroups" xmlns:q39="http://www.w3.org/2003/XMLSchema" type="q39:IDREFS" />
+  </xs:complexType>
+  <xs:complexType psd:category="博客" psd:tableName="T_COMMENT_165_9" psd:id="165" psd:displayName="评论" psd:order="2" name="Comment">
+    <xs:sequence>
+      <xs:element psd:autoIncrement="true" psd:key="true" psd:usage="Both" psd:colName="C_ID_1218" psd:id="1218" psd:displayName="评论ID" psd:order="0" minOccurs="0" name="ID" xmlns:q40="http://www.w3.org/2003/XMLSchema" type="q40:integer" />
+      <xs:element psd:usage="None" psd:colName="C_CONTENT_1219" psd:id="1219" psd:displayName="内容" psd:order="1" minOccurs="0" name="Content" xmlns:q41="http://www.w3.org/2003/XMLSchema" type="q41:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="1000" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_POSTER_1220" psd:id="1220" psd:displayName="评论人" psd:order="2" minOccurs="0" name="Poster" xmlns:q42="http://www.w3.org/2003/XMLSchema" type="q42:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_POSTTIME_1221" psd:id="1221" psd:displayName="评论时间" psd:order="3" minOccurs="0" name="PostTime" xmlns:q43="http://www.w3.org/2003/XMLSchema" type="q43:dateTime" />
+      <xs:element psd:classtype="F_816196271" psd:displayName="评论人姓名" psd:order="5" name="PosterName" xmlns:q44="http://www.w3.org/2003/XMLSchema" type="q44:string">
+        <xs:annotation>
+          <xs:appinfo>namespace Newtera.Formula {
+    using System;
+    using System.Xml;
+    using System.Collections;
+    using Newtera.Common.Wrapper;
+    using Newtera.Common.MetaData.Schema;
+    using Newtera.Common.MetaData.Schema.Generator;
+    
+    
+    public class F_816196271 : FormulaBase {
+        
+        public override string Eval(IInstanceWrapper instance, ExecutionContext context) {
+                 string userId = instance.GetString("评论人");
+            return context.GetUserDisplayText(userId);
+        }
+    }
+}
+</xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q45="http://www.w3.org/2003/XMLSchema" type="q45:ID" />
+    <xs:attribute psd:refClass="Blog" psd:refAttr="toComments" psd:ownership="looseReferenced" psd:joinManager="false" psd:ownedRelationship="false" psd:refType="manyToOne" psd:colName="FC_BLOG_1289" psd:id="1289" psd:displayName="到博客" psd:description="" psd:order="4" name="toBlog" xmlns:q46="http://www.w3.org/2003/XMLSchema" type="q46:IDREF" />
+  </xs:complexType>
+  <xs:complexType psd:category="论坛" psd:tableName="T_POST_166_9" psd:id="166" psd:displayName="帖子" psd:order="2" name="Post">
+    <xs:sequence>
+      <xs:element psd:autoIncrement="true" psd:key="true" psd:usage="Both" psd:colName="C_ID_1222" psd:id="1222" psd:displayName="帖子ID" psd:order="0" minOccurs="0" name="ID" xmlns:q47="http://www.w3.org/2003/XMLSchema" type="q47:integer" />
+      <xs:element psd:usage="Both" psd:colName="C_POSTER_1223" psd:id="1223" psd:displayName="发布者" psd:order="1" minOccurs="1" name="Poster" xmlns:q48="http://www.w3.org/2003/XMLSchema" type="q48:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_POSTTIME_1224" psd:id="1224" psd:displayName="发布时间" psd:order="2" minOccurs="0" name="PostTime" xmlns:q49="http://www.w3.org/2003/XMLSchema" type="q49:dateTime" />
+      <xs:element psd:fullText="true" psd:datastore="column" psd:usage="None" psd:colName="C_CONTENT_1225" psd:id="1225" psd:displayName="内容" psd:order="3" minOccurs="0" name="Content" xmlns:q50="http://www.w3.org/2003/XMLSchema" type="q50:text" />
+      <xs:element psd:usage="Both" psd:colName="C_ISPUBLIC_1226" psd:id="1226" psd:displayName="是否发布" psd:order="4" minOccurs="0" name="IsPublic" xmlns:q51="http://www.w3.org/2003/XMLSchema" type="q51:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:classtype="F_612007951" psd:displayName="发布者姓名" psd:order="6" name="PosterName" xmlns:q52="http://www.w3.org/2003/XMLSchema" type="q52:string">
+        <xs:annotation>
+          <xs:appinfo>namespace Newtera.Formula {
+    using System;
+    using System.Xml;
+    using System.Collections;
+    using Newtera.Common.Wrapper;
+    using Newtera.Common.MetaData.Schema;
+    using Newtera.Common.MetaData.Schema.Generator;
+    
+    
+    public class F_612007951 : FormulaBase {
+        
+        public override string Eval(IInstanceWrapper instance, ExecutionContext context) {
+                             string userId = instance.GetString("发布者");
+            return context.GetUserDisplayText(userId);
+        }
+    }
+}
+</xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q53="http://www.w3.org/2003/XMLSchema" type="q53:ID" />
+    <xs:attribute psd:refClass="Topic" psd:refAttr="toPosts" psd:ownership="looseReferenced" psd:joinManager="false" psd:ownedRelationship="false" psd:refType="manyToOne" psd:colName="FC_TOPIC_1290" psd:id="1290" psd:displayName="到主题" psd:description="" psd:order="5" name="toTopic" xmlns:q54="http://www.w3.org/2003/XMLSchema" type="q54:IDREF" />
+  </xs:complexType>
+  <xs:complexType psd:category="消息" psd:tableName="T_GROUPTOMEMBER_167_9" psd:junction="true" psd:id="167" psd:displayName="组到成员" psd:order="3" name="GroupToMember">
+    <xs:sequence />
+    <xs:attribute name="obj_id" xmlns:q55="http://www.w3.org/2003/XMLSchema" type="q55:ID" />
+    <xs:attribute psd:refClass="Groups" psd:refAttr="toMembers" psd:ownership="looseReferenced" psd:joinManager="false" psd:ownedRelationship="false" psd:refType="manyToOne" psd:colName="FC_GROUP_1291" psd:id="1291" psd:displayName="到组" psd:description="" psd:order="0" name="toGroup" xmlns:q56="http://www.w3.org/2003/XMLSchema" type="q56:IDREF" />
+    <xs:attribute psd:refClass="Members" psd:refAttr="toGroups" psd:ownership="looseReferenced" psd:joinManager="false" psd:ownedRelationship="false" psd:refType="manyToOne" psd:colName="FC_MEMBE_1292" psd:id="1292" psd:displayName="到成员" psd:description="" psd:order="1" name="toMember" xmlns:q57="http://www.w3.org/2003/XMLSchema" type="q57:IDREF" />
+  </xs:complexType>
+  <xs:complexType psd:category="看板" psd:tableName="T_KANBAN_168_9" psd:id="168" psd:displayName="看板" psd:order="6" name="Kanban">
+    <xs:sequence>
+      <xs:element psd:autoIncrement="true" psd:key="true" psd:usage="Both" psd:colName="C_KANBANID_1227" psd:id="1227" psd:displayName="看板序号" psd:order="0" minOccurs="0" name="KanbanID" xmlns:q58="http://www.w3.org/2003/XMLSchema" type="q58:integer" />
+      <xs:element psd:usage="Both" psd:colName="C_NAME_1228" psd:id="1228" psd:displayName="名称" psd:order="1" minOccurs="1" name="Name" xmlns:q59="http://www.w3.org/2003/XMLSchema" type="q59:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_DISPLAYTEXT_1229" psd:id="1229" psd:displayName="显示名" psd:order="2" minOccurs="0" name="DisplayText" xmlns:q60="http://www.w3.org/2003/XMLSchema" type="q60:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:multiLine="true" psd:usage="Both" psd:colName="C_DESCRIPTION_1230" psd:id="1230" psd:displayName="描述" psd:order="3" minOccurs="0" name="Description" xmlns:q61="http://www.w3.org/2003/XMLSchema" type="q61:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="300" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_GROUPCLASS_1231" psd:id="1231" psd:displayName="组数据类" psd:order="5" minOccurs="0" name="GroupClass" xmlns:q62="http://www.w3.org/2003/XMLSchema" type="q62:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_ITEMCLASS_1232" psd:id="1232" psd:displayName="项目数据类" psd:order="6" minOccurs="1" name="ItemClass" xmlns:q63="http://www.w3.org/2003/XMLSchema" type="q63:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_GROUPSTATEPROPERTY_1233" psd:id="1233" psd:displayName="组状态属性" psd:order="7" minOccurs="1" name="GroupStateProperty" xmlns:q64="http://www.w3.org/2003/XMLSchema" type="q64:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_GROUPPROGRESSPROPERTY_1234" psd:id="1234" psd:displayName="组进度属性" psd:order="8" minOccurs="0" name="GroupProgressProperty" xmlns:q65="http://www.w3.org/2003/XMLSchema" type="q65:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_GROUPIDPROPERTY_1235" psd:id="1235" psd:displayName="组序号属性" psd:order="9" minOccurs="1" name="GroupIDProperty" xmlns:q66="http://www.w3.org/2003/XMLSchema" type="q66:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_GROUPNAMEPROPERTY_1236" psd:id="1236" psd:displayName="组名称属性" psd:order="10" minOccurs="1" name="GroupNameProperty" xmlns:q67="http://www.w3.org/2003/XMLSchema" type="q67:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_ITEMIDPROPERTY_1237" psd:id="1237" psd:displayName="项目序号属性" psd:order="11" minOccurs="1" name="ItemIDProperty" xmlns:q68="http://www.w3.org/2003/XMLSchema" type="q68:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_ITEMNAMEPROPERTY_1238" psd:id="1238" psd:displayName="项目名称属性" psd:order="12" minOccurs="1" name="ItemNameProperty" xmlns:q69="http://www.w3.org/2003/XMLSchema" type="q69:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_ITEMSTATEPROPERTY_1239" psd:id="1239" psd:displayName="项目状态属性" psd:order="13" minOccurs="1" name="ItemStateProperty" xmlns:q70="http://www.w3.org/2003/XMLSchema" type="q70:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q71="http://www.w3.org/2003/XMLSchema" type="q71:ID" />
+    <xs:attribute psd:refClass="KanbanStates" psd:refAttr="toKanban" psd:ownership="looseReferenced" psd:joinManager="true" psd:ownedRelationship="false" psd:refType="oneToMany" psd:colName="FC_KANBA_1293" psd:id="1293" psd:displayName="看板状态" psd:description="" psd:order="4" name="toStates" xmlns:q72="http://www.w3.org/2003/XMLSchema" type="q72:IDREFS" />
+  </xs:complexType>
+  <xs:complexType psd:category="论坛" psd:tableName="T_TOPICGROUP_169_9" psd:id="169" psd:displayName="主题组" psd:order="7" name="TopicGroup">
+    <xs:sequence>
+      <xs:element psd:autoIncrement="true" psd:key="true" psd:usage="Both" psd:colName="C_ID_1240" psd:id="1240" psd:displayName="组ID" psd:order="0" minOccurs="0" name="ID" xmlns:q73="http://www.w3.org/2003/XMLSchema" type="q73:integer" />
+      <xs:element psd:usage="Both" psd:colName="C_NAME_1241" psd:id="1241" psd:displayName="组名称" psd:order="2" minOccurs="0" name="Name" xmlns:q74="http://www.w3.org/2003/XMLSchema" type="q74:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="200" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_ICON_1242" psd:id="1242" psd:displayName="组图标" psd:order="3" minOccurs="0" name="Icon" xmlns:q75="http://www.w3.org/2003/XMLSchema" type="q75:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_DESCRIPTION_1243" psd:id="1243" psd:displayName="组描述" psd:order="4" minOccurs="0" name="Description" xmlns:q76="http://www.w3.org/2003/XMLSchema" type="q76:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="500" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_CATEGORY_1244" psd:id="1244" psd:displayName="分类" psd:order="5" minOccurs="0" name="Category" type="TopicCategory" />
+      <xs:element psd:usage="Both" psd:colName="C_TOPICQTY_1245" psd:id="1245" psd:displayName="主题数量" psd:order="6" minOccurs="0" name="TopicQty" xmlns:q77="http://www.w3.org/2003/XMLSchema" type="q77:integer" />
+      <xs:element psd:usage="Both" psd:colName="C_POSTER_1246" psd:id="1246" psd:displayName="创建人" psd:order="7" minOccurs="0" name="Poster" xmlns:q78="http://www.w3.org/2003/XMLSchema" type="q78:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_POSTTIME_1247" psd:id="1247" psd:displayName="创建日期" psd:order="8" minOccurs="0" name="PostTime" xmlns:q79="http://www.w3.org/2003/XMLSchema" type="q79:date" />
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q80="http://www.w3.org/2003/XMLSchema" type="q80:ID" />
+    <xs:attribute psd:refClass="Topic" psd:refAttr="toGroup" psd:ownership="looseReferenced" psd:joinManager="true" psd:ownedRelationship="false" psd:refType="oneToMany" psd:colName="FC_TOPIC_1294" psd:id="1294" psd:displayName="到主题" psd:description="" psd:order="1" name="toTopics" xmlns:q81="http://www.w3.org/2003/XMLSchema" type="q81:IDREFS" />
+  </xs:complexType>
+  <xs:complexType psd:category="博客" psd:tableName="T_BLOGGROUP_170_9" psd:id="170" psd:displayName="博客组" psd:order="8" name="BlogGroup">
+    <xs:sequence>
+      <xs:element psd:autoIncrement="true" psd:key="true" psd:usage="Both" psd:colName="C_ID_1248" psd:id="1248" psd:displayName="组ID" psd:order="0" minOccurs="0" name="ID" xmlns:q82="http://www.w3.org/2003/XMLSchema" type="q82:integer" />
+      <xs:element psd:usage="Both" psd:colName="C_NAME_1249" psd:id="1249" psd:displayName="组名称" psd:order="1" minOccurs="1" name="Name" xmlns:q83="http://www.w3.org/2003/XMLSchema" type="q83:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_DESC_1250" psd:id="1250" psd:displayName="组描述" psd:order="2" minOccurs="0" name="Desc" xmlns:q84="http://www.w3.org/2003/XMLSchema" type="q84:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="300" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_ICON_1251" psd:id="1251" psd:displayName="组图标" psd:order="3" minOccurs="0" name="Icon" xmlns:q85="http://www.w3.org/2003/XMLSchema" type="q85:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_BLOGQTY_1252" psd:id="1252" psd:displayName="博客数量" psd:order="4" minOccurs="0" name="BlogQty" xmlns:q86="http://www.w3.org/2003/XMLSchema" type="q86:integer" />
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q87="http://www.w3.org/2003/XMLSchema" type="q87:ID" />
+    <xs:attribute psd:refClass="Blog" psd:refAttr="toGroup" psd:ownership="looseReferenced" psd:joinManager="true" psd:ownedRelationship="false" psd:refType="oneToMany" psd:colName="FC_BLOG_1295" psd:id="1295" psd:displayName="到博客" psd:description="" psd:order="0" name="toBlogs" xmlns:q88="http://www.w3.org/2003/XMLSchema" type="q88:IDREFS" />
+  </xs:complexType>
+  <xs:complexType psd:category="事务跟踪" psd:tableName="T_ISSUES_171_9" psd:sortAttribute="obj_id" psd:sortDirection="Descending" psd:initialize="this.Instance.SetValue(&quot;提交时间&quot;, CurrentDate); &#xA;this.Instance.SetValue(&quot;提交人&quot;, CurrentUser); &#xA;this.Instance.SetValue(&quot;状态&quot;, &quot;未开始&quot;);&#xA;this.Instance.SetValue(&quot;进度&quot;, &quot;0&quot;);&#xA;" psd:beforeUpdate=" if (this.Instance.GetString(&quot;状态&quot;) == &quot;未开始&quot;)&#xA; {&#xA;        this.Instance.SetValue(&quot;进度&quot;, 0);&#xA; }&#xA;else if (this.Instance.GetString(&quot;状态&quot;) == &quot;执行中&quot;)&#xA; {&#xA;        this.Instance.SetValue(&quot;进度&quot;, 30);&#xA; }&#xA;else if (this.Instance.GetString(&quot;状态&quot;) == &quot;已解决&quot;)&#xA; {&#xA;        this.Instance.SetValue(&quot;进度&quot;, 70);&#xA; }&#xA;else if (this.Instance.GetString(&quot;状态&quot;) == &quot;结束&quot;)&#xA; {&#xA;        this.Instance.SetValue(&quot;进度&quot;, 100);&#xA;this.Instance.SetValue(&quot;结束时间&quot;, CurrentDate); &#xA; }&#xA;&#xA;&#xA;&#xA;" psd:id="171" psd:displayName="事务" psd:order="9" name="Issues">
+    <xs:sequence>
+      <xs:element psd:autoIncrement="true" psd:key="true" psd:usage="Both" psd:colName="C_ID_1253" psd:id="1253" psd:displayName="事务ID" psd:order="0" minOccurs="0" name="ID" xmlns:q89="http://www.w3.org/2003/XMLSchema" type="q89:integer" />
+      <xs:element psd:usage="Both" psd:colName="C_NAME_1254" psd:id="1254" psd:displayName="名称" psd:order="1" minOccurs="1" name="Name" xmlns:q90="http://www.w3.org/2003/XMLSchema" type="q90:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="200" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:multiLine="true" psd:usage="Both" psd:colName="C_DESCRIPTION_1255" psd:id="1255" psd:displayName="描述" psd:order="2" minOccurs="0" name="Description" xmlns:q91="http://www.w3.org/2003/XMLSchema" type="q91:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="1000" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_SUBMITTER_1256" psd:id="1256" psd:displayName="提交人" psd:order="3" minOccurs="1" name="Submitter" xmlns:q92="http://www.w3.org/2003/XMLSchema" type="q92:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_SUBMITTIME_1257" psd:id="1257" psd:displayName="提交时间" psd:order="4" minOccurs="1" name="SubmitTime" xmlns:q93="http://www.w3.org/2003/XMLSchema" type="q93:dateTime" />
+      <xs:element psd:usage="Both" psd:colName="C_STATUS_1258" psd:id="1258" psd:displayName="状态" psd:order="5" minOccurs="1" name="Status" type="IssueStatus" />
+      <xs:element psd:usage="Both" psd:colName="C_PROGRESS_1259" psd:id="1259" psd:displayName="进度" psd:order="6" minOccurs="0" name="Progress" xmlns:q94="http://www.w3.org/2003/XMLSchema" type="q94:integer" />
+      <xs:element psd:usage="Both" psd:colName="C_CATEGORY_1260" psd:id="1260" psd:displayName="类型" psd:order="7" minOccurs="0" name="Category" type="IssueCategory" />
+      <xs:element psd:usage="Both" psd:colName="C_STARTTIME_1261" psd:id="1261" psd:displayName="开始时间" psd:order="8" minOccurs="0" name="StartTime" xmlns:q95="http://www.w3.org/2003/XMLSchema" type="q95:dateTime" />
+      <xs:element psd:usage="Both" psd:colName="C_ENDTIME_1262" psd:id="1262" psd:displayName="结束时间" psd:order="9" minOccurs="0" name="EndTime" xmlns:q96="http://www.w3.org/2003/XMLSchema" type="q96:dateTime" />
+      <xs:element psd:usage="Both" psd:colName="C_OWNER_1263" psd:id="1263" psd:displayName="负责人" psd:order="10" minOccurs="0" name="Owner" type="IssureOwner" />
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q97="http://www.w3.org/2003/XMLSchema" type="q97:ID" />
+  </xs:complexType>
+  <xs:complexType psd:category="公告栏" psd:tableName="T_BULLETINBOARD_172_9" psd:sortAttribute="CreateDate" psd:sortDirection="Descending" psd:id="172" psd:displayName="公告栏" psd:order="10" name="bulletinBoard">
+    <xs:sequence>
+      <xs:element psd:autoIncrement="true" psd:key="true" psd:usage="Both" psd:colName="C_ID_1264" psd:id="1264" psd:displayName="序号" psd:order="0" minOccurs="0" name="ID" xmlns:q98="http://www.w3.org/2003/XMLSchema" type="q98:integer" />
+      <xs:element psd:usage="Both" psd:colName="C_CAPTION_1265" psd:id="1265" psd:displayName="标题" psd:order="1" minOccurs="1" name="Caption" xmlns:q99="http://www.w3.org/2003/XMLSchema" type="q99:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_CREATEDATE_1266" psd:id="1266" psd:displayName="创建日期" psd:order="2" minOccurs="1" name="CreateDate" xmlns:q100="http://www.w3.org/2003/XMLSchema" type="q100:date" />
+      <xs:element psd:usage="Both" psd:colName="C_ISPUBLIC_1267" psd:id="1267" psd:displayName="是否发布" psd:order="3" minOccurs="0" name="IsPublic" xmlns:q101="http://www.w3.org/2003/XMLSchema" type="q101:boolean" />
+      <xs:element psd:fullText="true" psd:datastore="column" psd:usage="Both" psd:colName="C_CONTENT_1268" psd:id="1268" psd:displayName="内容" psd:order="4" minOccurs="0" name="Content" xmlns:q102="http://www.w3.org/2003/XMLSchema" type="q102:text" />
+      <xs:element psd:usage="Both" psd:colName="C_IMAGE_1269" psd:id="1269" psd:displayName="图片" psd:order="5" minOccurs="0" name="Image" xmlns:q103="http://www.w3.org/2003/XMLSchema" type="q103:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q104="http://www.w3.org/2003/XMLSchema" type="q104:ID" />
+  </xs:complexType>
+  <xs:complexType psd:category="消息" psd:tableName="T_MESSAGES_173_9" psd:sortAttribute="obj_id" psd:sortDirection="Descending" psd:id="173" psd:displayName="消息" psd:order="11" name="Messages">
+    <xs:sequence>
+      <xs:element psd:autoIncrement="true" psd:usage="Both" psd:colName="C_ID_1270" psd:id="1270" psd:displayName="ID" psd:order="0" minOccurs="0" name="ID" xmlns:q105="http://www.w3.org/2003/XMLSchema" type="q105:integer" />
+      <xs:element psd:usage="Both" psd:colName="C_SUBJECT_1271" psd:id="1271" psd:displayName="标题" psd:order="1" minOccurs="1" name="Subject" xmlns:q106="http://www.w3.org/2003/XMLSchema" type="q106:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_CONTENT_1272" psd:id="1272" psd:displayName="内容" psd:order="2" minOccurs="0" name="Content" xmlns:q107="http://www.w3.org/2003/XMLSchema" type="q107:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="1000" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_POSTTIME_1273" psd:id="1273" psd:displayName="发布时间" psd:order="3" minOccurs="1" name="PostTime" xmlns:q108="http://www.w3.org/2003/XMLSchema" type="q108:dateTime" />
+      <xs:element psd:usage="Both" psd:colName="C_POSTER_1274" psd:id="1274" psd:displayName="发布人" psd:order="4" minOccurs="1" name="Poster" xmlns:q109="http://www.w3.org/2003/XMLSchema" type="q109:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_RECEIVER_1275" psd:id="1275" psd:displayName="接收人" psd:order="5" minOccurs="1" name="Receiver" xmlns:q110="http://www.w3.org/2003/XMLSchema" type="q110:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_URL_1276" psd:id="1276" psd:displayName="URL" psd:order="6" minOccurs="0" name="url" xmlns:q111="http://www.w3.org/2003/XMLSchema" type="q111:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_STATUS_1277" psd:id="1277" psd:displayName="状态" psd:order="7" minOccurs="0" name="Status" type="MessageStatus" />
+      <xs:element psd:usage="Both" psd:colName="C_SCHEMA_1278" psd:id="1278" psd:displayName="所属数据库" psd:order="9" minOccurs="0" name="Schema" xmlns:q112="http://www.w3.org/2003/XMLSchema" type="q112:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_DBCLASS_1279" psd:id="1279" psd:displayName="所属数据类" psd:order="10" minOccurs="0" name="DBClass" xmlns:q113="http://www.w3.org/2003/XMLSchema" type="q113:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_OBJID_1280" psd:id="1280" psd:displayName="数据实例ID" psd:order="11" minOccurs="0" name="ObjId" xmlns:q114="http://www.w3.org/2003/XMLSchema" type="q114:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_PARAMS_1281" psd:id="1281" psd:displayName="URL参数" psd:order="12" minOccurs="0" name="Params" xmlns:q115="http://www.w3.org/2003/XMLSchema" type="q115:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:classtype="F_460327478" psd:displayName="发布人姓名" psd:order="8" name="PosterName" xmlns:q116="http://www.w3.org/2003/XMLSchema" type="q116:string">
+        <xs:annotation>
+          <xs:appinfo>namespace Newtera.Formula {
+    using System;
+    using System.Xml;
+    using System.Collections;
+    using Newtera.Common.Wrapper;
+    using Newtera.Common.MetaData.Schema;
+    using Newtera.Common.MetaData.Schema.Generator;
+    
+    
+    public class F_460327478 : FormulaBase {
+        
+        public override string Eval(IInstanceWrapper instance, ExecutionContext context) {
+            string userId = instance.GetString("发布人");
+            return context.GetUserDisplayText(userId);
+        }
+    }
+}
+</xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q117="http://www.w3.org/2003/XMLSchema" type="q117:ID" />
+  </xs:complexType>
+</xs:schema>

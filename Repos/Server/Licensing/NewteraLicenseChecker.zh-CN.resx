@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="UnmatchedID" xml:space="preserve">
+    <value>服务器端的许可证不符合该该服务器的编码. 请为该服务器申请专门的许可证.</value>
+  </data>
+  <data name="EvalExpired" xml:space="preserve">
+    <value>软件的许可证已到期. 请与厂商或代理商联系.</value>
+  </data>
+  <data name="PermanentLicense" xml:space="preserve">
+    <value>序列号为{2}的{0}许可证, 服务器编码为{1}.</value>
+  </data>
+  <data name="TempLicense" xml:space="preserve">
+    <value>序列号为{3}的{0}许可证. 使用期限为{1}天, 目前还剩下{2}天.</value>
+  </data>
+  <data name="ClientLimitExceeded" xml:space="preserve">
+    <value>不允许注册新的客户端, 客户端许可证已用完.</value>
+  </data>
+  <data name="RegisteredClient" xml:space="preserve">
+    <value>编号为{0}的客户端已经注册到服务器.</value>
+  </data>
+  <data name="UnregisteredClient" xml:space="preserve">
+    <value>编号为{0}的客户端尚未注册到服务器上.</value>
+  </data>
+  <data name="CheckInRegisteredClient" xml:space="preserve">
+    <value>编号为{0}的客户端尚未注册到服务器上, 请使用客户端的客户端许可证对话框进行注册.</value>
+  </data>
+  <data name="UnsupportedDatabase" xml:space="preserve">
+    <value>该许可证的级别不允许使用{0}数据库.</value>
+  </data>
+  <data name="Trial" xml:space="preserve">
+    <value>试用</value>
+  </data>
+  <data name="Department" xml:space="preserve">
+    <value>部门级</value>
+  </data>
+  <data name="Enterprise" xml:space="preserve">
+    <value>企业级</value>
+  </data>
+  <data name="DedicatedLicense" xml:space="preserve">
+    <value>序列号为{4}的{0}许可证, 服务器编码为{1}, 使用期限为{2}, 目前还剩下{3}天.</value>
+  </data>
+  <data name="ComputerTimeChanged" xml:space="preserve">
+    <value>发现服务器的日期被调整，请将服务器时间设置回原来的日期。</value>
+  </data>
+  <data name="AllowIntegration" xml:space="preserve">
+    <value>是否允许系统集成：</value>
+  </data>
+  <data name="DataAndWorkflow" xml:space="preserve">
+    <value>数据及工作流管理</value>
+  </data>
+  <data name="DataOnly" xml:space="preserve">
+    <value>数据管理</value>
+  </data>
+  <data name="DesignStudio" xml:space="preserve">
+    <value>DesignStudio客户端数量：</value>
+  </data>
+  <data name="MaxSessions" xml:space="preserve">
+    <value>允许连接数：</value>
+  </data>
+  <data name="RemainingDays" xml:space="preserve">
+    <value>（还剩下{0}天）</value>
+  </data>
+  <data name="RemainingDesignStudios" xml:space="preserve">
+    <value>（还剩下{0}个DesignStudio客户端可供使用）</value>
+  </data>
+  <data name="RemainingSessions" xml:space="preserve">
+    <value>（还剩下{0}个连接可供使用）</value>
+  </data>
+  <data name="RemainingSmartDocs" xml:space="preserve">
+    <value>（还剩下{0}个SmartWord或SmartExcel客户端可供使用）</value>
+  </data>
+  <data name="RemainingWorkflowStudios" xml:space="preserve">
+    <value>（还剩下{0}个WorkflowStudio客户端可供使用）</value>
+  </data>
+  <data name="SerialNo" xml:space="preserve">
+    <value>许可证序列号：</value>
+  </data>
+  <data name="ServerFunction" xml:space="preserve">
+    <value>服务器功能：</value>
+  </data>
+  <data name="ServerID" xml:space="preserve">
+    <value>服务器编码：</value>
+  </data>
+  <data name="ServerLevel" xml:space="preserve">
+    <value>服务器级别：</value>
+  </data>
+  <data name="SmartDocs" xml:space="preserve">
+    <value>SmartWord或SmartExcel客户端数量：</value>
+  </data>
+  <data name="Standalone" xml:space="preserve">
+    <value>单机版</value>
+  </data>
+  <data name="TimeLimit" xml:space="preserve">
+    <value>限制天数：</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>无</value>
+  </data>
+  <data name="WorkflowStudio" xml:space="preserve">
+    <value>WorkflowStudio客户端数量：</value>
+  </data>
+  <data name="TooManyRegisteredClients" xml:space="preserve">
+    <value>已注册的客户端数大于许可证允许的数量，请注销掉一些客户端</value>
+  </data>
+</root>

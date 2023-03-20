@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root>
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="ResMimeType">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="Version">
+		<value>1.0.0.0</value>
+	</resheader>
+	<resheader name="Reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="Writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="ElementType">
+		<value>元素类型</value>
+	</data>
+	<data name="ElementTypeDescription">
+		<value>XML元素的类型，可以为复杂类型或简单类型</value>
+	</data>
+	<data name="MinOccurs">
+		<value>最少出现次数</value>
+	</data>
+	<data name="MinOccursDescription">
+		<value>该元素的最少出现次数，0或1</value>
+	</data>
+	<data name="MaxOccurs">
+		<value>最多出现次数</value>
+	</data>
+	<data name="MaxOccursDescription">
+		<value>该元素的最多出现次数，1或unbounded</value>
+	</data>
+	<data name="ImportScriptNames">
+		<value>数据导入脚本</value>
+	</data>
+	<data name="ImportScriptNamesDescription">
+		<value>指定从外部数据源获取XML数据的数据导入脚本</value>
+	</data>
+	<data name="DataSourceOption">
+		<value>数据来源</value>
+	</data>
+	<data name="DataSourceOptionDescription">
+		<value>指定生成该XML元素的数据来源</value>
+	</data>
+	<data name="IsMergingInstances">
+		<value>是否合并数据实例</value>
+	</data>
+	<data name="IsMergingInstancesDescription">
+		<value>指定是否合并多个数据来源的数据实例，是为合并，否为追加</value>
+	</data>
+	<data name="InstanceIdentifyAttribute">
+		<value>数据实例标识属性</value>
+	</data>
+	<data name="InstanceIdentifyAttributeDescription">
+		<value>指定唯一标识数据实例的属性名称</value>
+	</data>
+	<data name="FilterCondition">
+		<value>数据过滤条件</value>
+	</data>
+	<data name="FilterConditionDescription">
+		<value>指定对来自数据源的数据实例的过滤条件（XQuery格式）</value>
+	</data>
+	<data name="ValidateCondition">
+		<value>数据验证条件</value>
+	</data>
+	<data name="ValidateConditionDescription">
+		<value>指定对对从文件导入的数据的合格性验证条件。但存在多种类型文件导入脚本时，可使用用该条件验证导入脚本与文件格式是否匹配</value>
+	</data>
+	<data name="IsSortEnabled">
+		<value>是否排序</value>
+	</data>
+	<data name="IsSortEnabledDescription">
+		<value>指定该元素是否用于排序</value>
+	</data>
+	<data name="SortOrder">
+		<value>排序顺序</value>
+	</data>
+	<data name="SortOrderDescription">
+		<value>当有多个排序元素时，指定该元素的排序顺序，顺序越小越先排序</value>
+	</data>
+	<data name="IsSortAscending">
+		<value>是否升序</value>
+	</data>
+	<data name="IsSortAscendingDescription">
+		<value>指定该元素值的排序方向，true为升序，否则为降序。</value>
+	</data>
+	<data name="SystemCategory">
+		<value>系统</value>
+	</data>
+	<data name="AppearanceCategory">
+		<value>显示</value>
+	</data>
+</root>

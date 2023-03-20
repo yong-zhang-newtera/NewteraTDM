@@ -1,0 +1,120 @@
+<SubscriberManager>
+  <SubscriberGroupCollection>
+    <SubscriberGroup Name="Blog" class="Blog">
+      <SubscriberCollection>
+        <Subscriber Name="博客创建订阅" class="Blog" eventName="创建博客事件">// increment the blog qty poperty in the group
+IInstanceWrapper groupInstance = Instance.GetValue("到博客组") as IInstanceWrapper;
+
+if (groupInstance != null)
+{
+       int qty = groupInstance.GetInt32("博客数量");
+   qty++;
+   groupInstance.SetValue("博客数量", qty);
+
+   groupInstance.Save();
+}</Subscriber>
+        <Subscriber Name="博客删除订阅" class="Blog" eventName="删除博客事件">// increment the blog qty poperty in the group
+IInstanceWrapper groupInstance = Instance.GetValue("到博客组") as IInstanceWrapper;
+
+if (groupInstance != null)
+{
+       int qty = groupInstance.GetInt32("博客数量");
+   qty--;
+   groupInstance.SetValue("博客数量", qty);
+
+   groupInstance.Save();
+}
+</Subscriber>
+      </SubscriberCollection>
+    </SubscriberGroup>
+    <SubscriberGroup Name="Comment" class="Comment">
+      <SubscriberCollection>
+        <Subscriber Name="评论创建订阅" class="Comment" eventName="评论创建事件">// increment the blog qty poperty in the group
+IInstanceWrapper blogInstance = Instance.GetValue("到博客") as IInstanceWrapper;
+
+if (blogInstance != null)
+{
+       int qty = blogInstance.GetInt32("评论数量");
+   qty++;
+   blogInstance.SetValue("评论数量", qty);
+
+   blogInstance.Save();
+}
+</Subscriber>
+        <Subscriber Name="评论删除事件" class="Comment" eventName="评论删除事件">// decrement the blog qty poperty in the group
+IInstanceWrapper blogInstance = Instance.GetValue("到博客") as IInstanceWrapper;
+
+if (blogInstance != null)
+{
+       int qty = blogInstance.GetInt32("评论数量");
+   qty--;
+   blogInstance.SetValue("评论数量", qty);
+
+   blogInstance.Save();
+}
+</Subscriber>
+      </SubscriberCollection>
+    </SubscriberGroup>
+    <SubscriberGroup Name="Topic" class="Topic">
+      <SubscriberCollection>
+        <Subscriber Name="创建主题订阅" class="Topic" eventName="创建主题事件">// increment the topicqty poperty in the group
+IInstanceWrapper groupInstance = Instance.GetValue("到主题组") as IInstanceWrapper;
+
+if (groupInstance != null)
+{
+       int qty = groupInstance.GetInt32("主题数量");
+   qty++;
+   groupInstance.SetValue("主题数量", qty);
+
+   groupInstance.Save();
+}
+</Subscriber>
+        <Subscriber Name="删除主题订阅" class="Topic" eventName="删除主题事件">// decrement the topicqty poperty in the group
+IInstanceWrapper groupInstance = Instance.GetValue("到主题组") as IInstanceWrapper;
+
+if (groupInstance != null)
+{
+       int qty = groupInstance.GetInt32("主题数量");
+   qty--;
+   groupInstance.SetValue("主题数量", qty);
+
+   groupInstance.Save();
+}
+</Subscriber>
+      </SubscriberCollection>
+    </SubscriberGroup>
+    <SubscriberGroup Name="Post" class="Post">
+      <SubscriberCollection>
+        <Subscriber Name="创建帖子订阅" class="Post" eventName="创建帖子事件">// increment the post qty poperty in the topic
+IInstanceWrapper topicInstance = Instance.GetValue("到主题") as IInstanceWrapper;
+
+if (topicInstance != null)
+{
+       int qty = topicInstance.GetInt32("帖子数量");
+   qty++;
+   topicInstance.SetValue("帖子数量", qty);
+   topicInstance.SetValue("最新帖子用户", Instance.GetString("发布者"));
+     topicInstance.SetValue("最新帖子时间", Instance.GetString("发布时间"));
+   topicInstance.Save();
+}
+</Subscriber>
+        <Subscriber Name="删除帖子订阅" class="Post" eventName="删除帖子事件">// decrement the post qty poperty in the topic
+IInstanceWrapper topicInstance = Instance.GetValue("到主题") as IInstanceWrapper;
+
+if (topicInstance != null)
+{
+       int qty = topicInstance.GetInt32("帖子数量");
+   qty--;
+   topicInstance.SetValue("帖子数量", qty);
+    topicInstance.Save();
+}
+</Subscriber>
+      </SubscriberCollection>
+    </SubscriberGroup>
+    <SubscriberGroup Name="Issues" class="Issues">
+      <SubscriberCollection>
+        <Subscriber Name="TaskCompletedHandler" class="Issues" eventName="TaskCompleted" subject="任务已经完成" desc="{Name}任务与{EndTime}完成" url="app.tasktrack.tasklist" params="{&quot;schema&quot;: msg.dbschema, &quot;class&quot;: msg.dbclass, &quot;pickoid&quot;:msg.oid}" senderAttribute="Submitter" sendMessage="true" />
+      </SubscriberCollection>
+    </SubscriberGroup>
+  </SubscriberGroupCollection>
+</SubscriberManager>

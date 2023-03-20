@@ -1,0 +1,85 @@
+// $ANTLR 2.7.2: "XQuery.g" -> "XQueryParser.cs"$
+
+
+namespace Newtera.Server.Engine.Interpreter.Parser
+{
+	public class XQueryTokenTypes
+	{
+		public const int EOF = 1;
+		public const int NULL_TREE_LOOKAHEAD = 3;
+		public const int LITERAL_import = 4;
+		public const int Name = 5;
+		public const int LITERAL_as = 6;
+		public const int COMMA = 7;
+		public const int SLASH = 8;
+		public const int SLASH_SLASH = 9;
+		public const int AT = 10;
+		public const int DEREFERENCE = 11;
+		public const int L_PAREN = 12;
+		public const int R_PAREN = 13;
+		public const int L_BRACKET = 14;
+		public const int R_BRACKET = 15;
+		// "$" = 16
+		public const int LITERAL_return = 17;
+		public const int LITERAL_sortby = 18;
+		public const int LITERAL_for = 19;
+		public const int LITERAL_in = 20;
+		public const int LITERAL_let = 21;
+		public const int SET_EQUAL_TO = 22;
+		public const int LITERAL_where = 23;
+		public const int Expression = 24;
+		public const int LITERAL_or = 25;
+		public const int LITERAL_and = 26;
+		public const int LITERAL_to = 27;
+		public const int NOT_EQUAL = 28;
+		public const int EQUAL = 29;
+		public const int LESS_THAN = 30;
+		public const int GREATER_THAN = 31;
+		public const int LESS_THAN_EQUALS = 32;
+		public const int GREATER_THAN_EQUALS = 33;
+		// "not in" = 34
+		public const int PLUS = 35;
+		public const int MINUS = 36;
+		public const int STAR = 37;
+		public const int DIV = 38;
+		public const int MOD = 39;
+		public const int LITERAL_true = 40;
+		public const int LITERAL_false = 41;
+		public const int LITERAL_null = 42;
+		public const int INLINE = 43;
+		public const int NUMERIC_LITERAL = 44;
+		public const int STRING_LITERAL = 45;
+		public const int LITERAL_ascending = 46;
+		public const int LITERAL_descending = 47;
+		public const int LITERAL_if = 48;
+		public const int LITERAL_then = 49;
+		public const int LITERAL_else = 50;
+		public const int LESS_THAN_SLASH = 51;
+		public const int L_BRACE = 52;
+		public const int R_BRACE = 53;
+		public const int NL = 54;
+		public const int CDATA_DATA = 55;
+		public const int COMMENT = 56;
+		public const int LETTER = 57;
+		public const int DIGIT = 58;
+		public const int ESC = 59;
+		public const int HEX_DIGIT = 60;
+		public const int PREDEFINED_ENTITY_REF = 61;
+		public const int SKIP = 62;
+		public const int SEMICOLON = 63;
+		public const int EQUALS = 64;
+		public const int COLON = 65;
+		public const int D_COLON = 66;
+		public const int STAR_COLON = 67;
+		public const int NOT_EQUALS = 68;
+		public const int D_EQUALS = 69;
+		public const int NOT_D_EQUALS = 70;
+		public const int BAR = 71;
+		public const int QUOTE = 72;
+		public const int ESCAPED_QUOTE = 73;
+		public const int S_QUOTE = 74;
+		public const int ESCAPED_S_QUOTE = 75;
+		public const int SLASH_GREATER_THAN = 76;
+        public const int LITERAL_like = 77;
+	}
+}

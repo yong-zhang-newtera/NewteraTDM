@@ -1,0 +1,16 @@
+<script language="JavaScript">
+<!--
+
+function MenuItemClick(e) {
+    
+    if (e.item.parent.name == "Charts")
+    {
+        e.processOnServer = false;
+    }
+    else
+    {
+	e.processOnServer = e.item.GetItemCount() == 0; // Prevent generating a postback for parent menu items
+    }
+}
+//-->
+</script>

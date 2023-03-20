@@ -1,0 +1,27 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SmartExcel.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="SmartExcel_MetaDataWebService_MetaDataService" Type="(Web Service URL)" Scope="User">
+      <Value Profile="(Default)">http://localhost/Newtera/WebService/MetaDataWebService.asmx</Value>
+    </Setting>
+    <Setting Name="SmartExcel_AdminWebService_AdminService" Type="(Web Service URL)" Scope="User">
+      <Value Profile="(Default)">http://localhost/Newtera/WebService/AdminWebService.asmx</Value>
+    </Setting>
+    <Setting Name="SmartExcel_CMDataWebService_CMDataService" Type="(Web Service URL)" Scope="User">
+      <Value Profile="(Default)">http://localhost/Newtera/WebService/CMDataWebService.asmx</Value>
+    </Setting>
+    <Setting Name="SmartExcel_UserInfoWebService_UserInfoService" Type="(Web Service URL)" Scope="User">
+      <Value Profile="(Default)">http://localhost/Newtera/WebService/UserInfoWebService.asmx</Value>
+    </Setting>
+    <Setting Name="SmartExcel_WorkflowModelWebService_WorkflowModelService" Type="(Web Service URL)" Scope="User">
+      <Value Profile="(Default)">http://localhost/Newtera/WebService/WorkflowModelWebService.asmx</Value>
+    </Setting>
+    <Setting Name="SmartExcel_OLAPWebService_OLAPService" Type="(Web Service URL)" Scope="User">
+      <Value Profile="(Default)">http://localhost/Newtera/WebService/OLAPWebService.asmx</Value>
+    </Setting>
+    <Setting Name="SmartExcel_AttachmentWebService_AttachmentService" Type="(Web Service URL)" Scope="User">
+      <Value Profile="(Default)">http://localhost/Newtera/WebService/AttachmentWebService.asmx</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

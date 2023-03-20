@@ -1,0 +1,83 @@
+﻿<Activity mc:Ignorable="sads sap" x:Class="CustomWorkflowDesigner.Process" sap:VirtualizedContainerService.HintSize="306,837" mva:VisualBasic.Settings="Assembly references and imported namespaces for internal implementation"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mv="clr-namespace:Microsoft.VisualBasic;assembly=System"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:nma="clr-namespace:Newtera.MLActivities.Activities;assembly=Newtera.MLActivities"
+ xmlns:nmc="clr-namespace:Newtera.MLActivities.Configuration;assembly=Newtera.MLActivities"
+ xmlns:nmc1="clr-namespace:Newtera.MLActivities.Command;assembly=Newtera.MLActivities"
+ xmlns:nmd="clr-namespace:Newtera.MLActivities.DataProcess;assembly=Newtera.MLActivities"
+ xmlns:nme="clr-namespace:Newtera.MLActivities.Experiment;assembly=Newtera.MLActivities"
+ xmlns:nml="clr-namespace:Newtera.MLActivities.Learning;assembly=Newtera.MLActivities"
+ xmlns:nmm="clr-namespace:Newtera.MLActivities.Main;assembly=Newtera.MLActivities"
+ xmlns:nmn="clr-namespace:Newtera.MLActivities.NNConfig;assembly=Newtera.MLActivities"
+ xmlns:nmn1="clr-namespace:Newtera.MLActivities.Network;assembly=Newtera.MLActivities"
+ xmlns:nmn2="clr-namespace:Newtera.MLActivities.NeuralNetworkConfig;assembly=Newtera.MLActivities"
+ xmlns:nmr="clr-namespace:Newtera.MLActivities.Reader;assembly=Newtera.MLActivities"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:s1="clr-namespace:System;assembly=System"
+ xmlns:s2="clr-namespace:System;assembly=System.Xml"
+ xmlns:s3="clr-namespace:System;assembly=System.Core"
+ xmlns:sad="clr-namespace:System.Activities.Debugger;assembly=System.Activities"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System"
+ xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=System.ServiceModel"
+ xmlns:scg2="clr-namespace:System.Collections.Generic;assembly=System.Core"
+ xmlns:scg3="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sd="clr-namespace:System.Data;assembly=System.Data"
+ xmlns:sl="clr-namespace:System.Linq;assembly=System.Core"
+ xmlns:st="clr-namespace:System.Text;assembly=mscorlib"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <nme:Experiment DisplayName="One Layer CNN Classification" ExperimentId="OneLayerCNNClassification" sap:VirtualizedContainerService.HintSize="266,797">
+    <nme:Experiment.Activities>
+      <nmn2:Configuration ParentComponent="{x:Null}" ConfigId="Config1" DeviceId="auto" FeatureDimension="784" sap:VirtualizedContainerService.HintSize="244,673" LabelDimension="10" ModelPath="model.dnn">
+        <nmn2:Configuration.Activities>
+          <nmn2:TrainCommand ParentComponent="{x:Null}" Enabled="True" sap:VirtualizedContainerService.HintSize="222,270">
+            <nmn2:TrainCommand.Activities>
+              <nmn2:TextFormatReader ParentComponent="{x:Null}" DataFile="{}{HOME_DIR}\Examples\Data\Train-28x28_cntk_text.txt" sap:VirtualizedContainerService.HintSize="200,22" Randomize="True" ReaderType="CNTKTextFormatReader" />
+              <nmn2:CustomNetworkBuilder ParentComponent="{x:Null}" sap:VirtualizedContainerService.HintSize="200,22" NetworkBuilderCode="imageShape = 28:28:1 # image dimensions, 1 channel only&#xA;labelDim = $labelDimension$&#xA;featScale = 1/256&#xA;Scale{f} = x =&gt; Constant(f) .* x&#xA;&#xA;model = Sequential (&#xA; Scale {featScale} :&#xA; ConvolutionalLayer {16, (5:5), pad = true} : ReLU : &#xA; MaxPoolingLayer    {(2:2), stride=(2:2)} :&#xA; DenseLayer {64} : ReLU : &#xA; LinearLayer {labelDim}&#xA;)&#xA;&#xA;# inputs&#xA;features = Input {imageShape}&#xA;labels = Input (labelDim)&#xA;&#xA;# apply model to features&#xA;ol = model (features)&#xA;&#xA;# loss and error computation&#xA;ce   = CrossEntropyWithSoftmax (labels, ol)&#xA;errs = ClassificationError (labels, ol)&#xA;&#xA;# declare special nodes&#xA;featureNodes    = (features)&#xA;labelNodes      = (labels)&#xA;criterionNodes  = (ce)&#xA;evaluationNodes = (errs)&#xA;outputNodes     = (ol)&#xA;" />
+              <nmn2:SGD ParentComponent="{x:Null}" EpochSize="60000" sap:VirtualizedContainerService.HintSize="200,22" LearningRatesPerSample="0.001*5:0.0005" MaxEpochs="15" MinibatchSize="64" MomentumAsTimeConstant="0" NumMBsToShowResult="500" />
+            </nmn2:TrainCommand.Activities>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg3:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg3:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+          </nmn2:TrainCommand>
+          <nmn2:TestCommand ParentComponent="{x:Null}" Enabled="True" sap:VirtualizedContainerService.HintSize="222,53">
+            <nmn2:TestCommand.Activities>
+              <nmn2:TextFormatReader ParentComponent="{x:Null}" DataFile="{}{HOME_DIR}\Examples\Data\Test-28x28_cntk_text.txt" sap:VirtualizedContainerService.HintSize="200,22" Randomize="True" ReaderType="CNTKTextFormatReader" />
+            </nmn2:TestCommand.Activities>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg3:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg3:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+          </nmn2:TestCommand>
+          <nmn2:OutputCommand ParentComponent="{x:Null}" Enabled="True" sap:VirtualizedContainerService.HintSize="222,146">
+            <nmn2:OutputCommand.Activities>
+              <nmn2:TextFormatReader ParentComponent="{x:Null}" DataFile="{}{HOME_DIR}\Examples\Examples\Data\Test-28x28_cntk_text.txt" sap:VirtualizedContainerService.HintSize="200,22" Randomize="True" ReaderType="CNTKTextFormatReader" />
+            </nmn2:OutputCommand.Activities>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg3:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg3:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+          </nmn2:OutputCommand>
+        </nmn2:Configuration.Activities>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg3:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg3:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </nmn2:Configuration>
+    </nme:Experiment.Activities>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg3:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+      </scg3:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+  </nme:Experiment>
+</Activity>

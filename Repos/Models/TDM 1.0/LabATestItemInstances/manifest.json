@@ -1,0 +1,20 @@
+[
+  {
+    "ModelDirName": "338722420",
+    "XMLSchemaName": "BatteryCycleLife",
+    "Frequency": "None",
+    "FieldName": "Capacity",
+    "MaxForecast": "12",
+    "Preprocess": "MLTimeSeriesProcess.dll",
+    "Postprocess": "MLTimeSeriesProcess.dll"
+  },
+  {
+    "ModelDirName": "824076993",
+    "XMLSchemaName": "BatteryCycleLife",
+    "Frequency": "None",
+    "FieldName": "Capacity",
+    "MaxForecast": "24",
+    "Preprocess": "MLTimeSeriesProcess.dll",
+    "Postprocess": "MLTimeSeriesProcess.dll"
+  }
+]

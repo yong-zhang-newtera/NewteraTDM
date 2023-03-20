@@ -1,0 +1,353 @@
+.dxpgControl
+{
+	color: Black;
+	font: 9pt Tahoma;
+	border: solid 1px #9f9f9f;
+	background-color: white;
+}
+.dxpgContainerCell
+{
+	vertical-align: top;
+}
+.dxpgMainTable
+{
+	color: Black;
+	font: 9pt Tahoma;
+	border: 0px;
+	border-collapse: separate;
+	width: 100%;
+}
+.dxpgMainTable caption 
+{
+	background: #ACACAC;
+	color: white;
+	border-bottom: Solid 1px #9F9F9F;
+    font-size: 15px;
+	font-weight: normal;
+	padding: 3px 3px 5px;
+	text-align: center;
+}
+.dxpgHeader
+{
+	border-width: 0px;
+	color: Black;
+	background-color: #dcdcdc;
+	cursor: pointer;
+	white-space: nowrap;	
+}
+.dxpgHeaderTable
+{
+	border-width: 1px;
+	width: 100%;
+}
+.dxpgHeaderGroupButton
+{
+	padding-left: 4px;
+	vertical-align: middle;
+}
+.dxpgHeaderText
+{
+	padding-left: 6px;
+	padding-right: 6px;
+	padding-top: 3px;
+	padding-bottom: 4px;
+}
+.dxpgHeaderSort
+{
+	padding-left: 0px;
+	padding-right: 4px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	vertical-align: middle;
+}
+.dxpgHeaderFilter
+{
+	padding-left: 0px;
+	padding-right: 2px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	vertical-align: middle;	
+}
+.dxpgHeaderHover
+{
+	background-color: #f1f1f1;
+}
+.dxpgArea, .dxpgArea table
+{
+	color: Black;
+	font: 9pt Tahoma;
+}
+.dxpgArea
+{
+	border: solid 1px #9f9f9f;
+	background-color: #ededed;
+	border-left-style: none;
+	border-top-style: none;
+	border-bottom-style: none;
+	border-right-style: none;
+}
+.dxpgColumnArea
+{
+	border-bottom-style: solid;
+}
+.dxpgRowArea
+{
+}
+.dxpgDataArea
+{
+}
+.dxpgFilterArea
+{
+	background-color: #dcdcdc;
+	color: #808080;
+	border-bottom-style: solid;
+}
+.dxpgEmptyArea
+{
+	cursor: default;
+	padding-top: 6px;
+	padding-left: 6px;
+	padding-bottom: 7px;
+	padding-right: 6px;
+}
+.dxpgColumnFieldValue
+{
+	background-color: #dcdcdc;
+	border: solid 1px #9f9f9f;
+	border-left-style: solid;
+	border-bottom-style: solid;
+	border-right-style: none;
+	border-top-style: none;
+	padding: 4px 6px;
+	font-weight: normal;
+	text-align: left;	
+}
+.dxpgColumnTotalFieldValue
+{
+	background-color: #c9c9c9;
+	border-left-style: solid;
+	border-bottom-style: solid;
+	border-right-style: none;
+	border-top-style: none;
+}
+.dxpgColumnGrandTotalFieldValue
+{
+	background-color: #bdbdbd;
+	border-left-style: solid;
+	border-bottom-style: solid;
+	border-right-style: none;
+	border-top-style: none;
+}
+.dxpgRowFieldValue
+{
+	background-color: #dcdcdc;
+	border: solid 1px #9f9f9f;
+	border-left-style: none;
+	border-bottom-style: none;
+	border-right-style: solid;
+	border-top-style: solid;
+	padding: 3px 6px 4px 6px;
+	font-weight: normal;
+	text-align: left;
+}
+.dxpgRowTotalFieldValue
+{
+	background-color: #c9c9c9;
+	border-left-style: none;
+	border-bottom-style: none;
+	border-right-style: solid;
+	border-top-style: solid;
+}
+.dxpgRowGrandTotalFieldValue
+{
+	background-color: #bdbdbd;
+	border-left-style: none;
+	border-bottom-style: none;
+	border-right-style: solid;
+	border-top-style: solid;
+	padding-top: 5px;
+	padding-bottom: 6px;	
+}
+.dxpgCollapsedButton
+{
+	vertical-align: -1px;
+	border: 0px;
+	margin-right: 5px;
+}
+.dxpgSortByColumnImage
+{
+	vertical-align: -1px;
+	border: 0px;
+	margin-left: 5px;
+}
+.dxpgCell
+{
+	text-align: right;
+	background-color: White;	
+	border-color: #cecece;
+	border-width: 1px;
+	border-top-style: solid;
+	border-left-style: solid;
+	border-bottom-style: none;
+	border-right-style: none;
+	padding: 4px;
+	padding-top:3px;
+	white-space: nowrap;
+}
+.dxpgKPICell
+{
+	text-align: center;
+	vertical-align: middle;
+}
+.dxpgTotalCell
+{
+	background-color: #f2f2f2;
+}
+.dxpgGrandTotalCell
+{
+	background-color: #e2e2e2;
+}
+.dxpgRowGrandTotalCell
+{
+	background-color: #e2e2e2;
+}
+.dxpgColumnGrandTotalCell
+{
+	background-color: #e2e2e2;
+}
+.dxpgFilterWindow
+{
+	color: Black;
+	font: 9pt Tahoma;
+	border: solid 1px #9f9f9f;
+}
+.dxpgFilterItemsArea
+{
+	color: Black;
+	background-color: White;
+}
+.dxpgFilterItem
+{
+	font: 9pt Tahoma;
+}
+.dxpgFilterButton
+{
+	font: 9pt Tahoma;
+	padding: 2px 6px;
+}
+.dxpgFilterButtonPanel
+{
+	font: 9pt Tahoma;
+	background-color: #ededed;
+	border: 1px solid #dcdcdc;
+	color: Black;
+}
+.dxpgLoadingDiv
+{
+	background-color: White;
+	opacity: 0.01;
+	filter: alpha(opacity=1);
+}
+.dxpgTopPager
+{
+	border-top: none;
+	border-right: none;
+	border-left: none;
+	border-bottom: solid 1px #9f9f9f;
+	background-color: #F2F2F2;
+	padding-bottom:2px;	
+}
+.dxpgBottomPager
+{
+	border-top: solid 1px #9f9f9f;
+	border-bottom: none;
+	border-right: none;
+	border-left: none;
+	background-color: #F2F2F2;
+	padding-bottom:2px;
+}
+.dxpgCustomizationFieldsHeader
+{
+	color: White;
+	font: 11px Tahoma;
+}
+.dxpgCustomizationFieldsContent
+{
+	padding: 0px !important;
+}
+.dxpgLoadingPanel
+{
+	font: 9pt Tahoma;
+	color: #303030;
+	background-color: White;
+	border: solid 1px #9f9f9f;
+	text-align: center;			
+	cursor: wait;
+}
+.dxpgLoadingPanel td.dx
+{
+	padding: 12px 12px 12px 12px;
+}
+.dxpgMenuItem 
+{
+	font: 9pt Tahoma;	
+}
+.dxpgDataHeadersImage
+{
+	margin-right: 5px;
+	vertical-align: -2px;
+}
+.dxpgPrefilterPanelContainer
+{
+	border-bottom-style: none;
+	border-left-style: none;
+	border-right-style: none;
+}
+.dxpgPrefilterPanel
+{
+	border: none;
+	background: #d4d4d4;
+}
+.dxpgPrefilterPanelLink
+{
+	color: #394ea2;
+	text-decoration: underline;
+}
+.dxpgPrefilterPanelCheckBoxCell
+{
+	padding: 0 3px;
+	padding-right: 7px;
+}
+.dxpgPrefilterPanelImageCell
+{
+	padding: 0 3px;
+	padding-right: 1px;
+	cursor: pointer;
+	cursor: hand;
+}
+.dxpgPrefilterPanelExpressionCell
+{
+	font-size: 9pt;
+	padding: 5px 5px 8px 0;	
+	white-space: nowrap;
+}
+.dxpgPrefilterPanelClearButtonCell
+{
+	font-size: 9pt;
+	padding: 5px 6px 8px;
+}
+.dxpgFilterBuilderMainArea
+{
+	background: white;
+	padding: 6px 2px;
+} 
+.dxpgFilterBuilderButtonArea
+{
+	background: #ededed;
+	border-top: solid 1px #cfcfcf;
+	padding: 6px;
+}
+.dxpgGroupSeparator 
+{
+	vertical-align: middle;
+}

@@ -1,0 +1,4 @@
+<LoggingPolicy>
+  <setting propagation="Downward" conflict="Offtp" read="Off" write="Off" create="Off" delete="Off" upload="Off" download="Off" import="Off" export="Off" />
+  <definitions />
+</LoggingPolicy>

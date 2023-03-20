@@ -1,0 +1,54 @@
+<EventManager>
+  <EventGroupCollection>
+    <EventGroup Name="Blog" class="Blog">
+      <EventCollection>
+        <EventDef Name="创建博客事件" class="Blog" optype="Insert">
+          <Empty />
+        </EventDef>
+        <EventDef Name="删除博客事件" class="Blog" optype="Delete">
+          <Empty />
+        </EventDef>
+      </EventCollection>
+    </EventGroup>
+    <EventGroup Name="Comment" class="Comment">
+      <EventCollection>
+        <EventDef Name="评论创建事件" class="Comment" optype="Insert">
+          <Empty />
+        </EventDef>
+        <EventDef Name="评论删除事件" class="Comment" optype="Delete">
+          <Empty />
+        </EventDef>
+      </EventCollection>
+    </EventGroup>
+    <EventGroup Name="Topic" class="Topic">
+      <EventCollection>
+        <EventDef Name="创建主题事件" class="Topic" optype="Insert">
+          <Empty />
+        </EventDef>
+        <EventDef Name="删除主题事件" class="Topic" optype="Delete">
+          <Empty />
+        </EventDef>
+      </EventCollection>
+    </EventGroup>
+    <EventGroup Name="Post" class="Post">
+      <EventCollection>
+        <EventDef Name="创建帖子事件" class="Post" optype="Insert">
+          <Empty />
+        </EventDef>
+        <EventDef Name="删除帖子事件" class="Post" optype="Delete">
+          <Empty />
+        </EventDef>
+      </EventCollection>
+    </EventGroup>
+    <EventGroup Name="Issues" class="Issues">
+      <EventCollection>
+        <EventDef Name="TaskCompleted" class="Issues" optype="Update" AttributesUpdated="Status">
+          <Equals Name="=" order="0">
+            <SimpleAttribute Name="Status" Caption="状态" order="0" OwnerAlias="issues" />
+            <Parameter Name="Status" order="0" OwnerAlias="issues" Value="结束" Type="String" />
+          </Equals>
+        </EventDef>
+      </EventCollection>
+    </EventGroup>
+  </EventGroupCollection>
+</EventManager>

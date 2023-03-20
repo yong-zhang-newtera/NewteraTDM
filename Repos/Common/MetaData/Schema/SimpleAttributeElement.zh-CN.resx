@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="IsRequired" xml:space="preserve">
+    <value>是否必要</value>
+  </data>
+  <data name="IsRequiredDescription" xml:space="preserve">
+    <value>指定该属性值是否为必要? 必要属性的值不能为空。</value>
+  </data>
+  <data name="Constraint" xml:space="preserve">
+    <value>属性约束</value>
+  </data>
+  <data name="ConstraintDescription" xml:space="preserve">
+    <value>属性值的约束条件,如枚举,范围,表达式,或条目.</value>
+  </data>
+  <data name="IsAutoIncrement" xml:space="preserve">
+    <value>是否自增</value>
+  </data>
+  <data name="IsAutoIncrementDescription" xml:space="preserve">
+    <value>指定该属性值是否为自增?</value>
+  </data>
+  <data name="IsUnique" xml:space="preserve">
+    <value>是否唯一</value>
+  </data>
+  <data name="IsUniqueDescription" xml:space="preserve">
+    <value>指定该属性值在数据类中是否唯一?</value>
+  </data>
+  <data name="IsPrimaryKey" xml:space="preserve">
+    <value>是否主键</value>
+  </data>
+  <data name="IsPrimaryKeyDescription" xml:space="preserve">
+    <value>显示该属性是否为数局类的主键? 主键是在数据类定义中指定.</value>
+  </data>
+  <data name="DataType" xml:space="preserve">
+    <value>数据类型</value>
+  </data>
+  <data name="DataTypeDescription" xml:space="preserve">
+    <value>指定属性值的数据类型</value>
+  </data>
+  <data name="MinLength" xml:space="preserve">
+    <value>最小长度</value>
+  </data>
+  <data name="MinLengthDescription" xml:space="preserve">
+    <value>但属性的数据类型为字符型, 该值为字符串的最小长度.</value>
+  </data>
+  <data name="MaxLength" xml:space="preserve">
+    <value>最大长度</value>
+  </data>
+  <data name="MaxLengthDescription" xml:space="preserve">
+    <value>但属性的数据类型为字符型, 该值为字符串的最大长度.</value>
+  </data>
+  <data name="DefaultValue" xml:space="preserve">
+    <value>缺省值</value>
+  </data>
+  <data name="DefaultValueDescription" xml:space="preserve">
+    <value>当属性值未指定时, 该值则为属性的缺省值.</value>
+  </data>
+  <data name="IsFullTextSearchable" xml:space="preserve">
+    <value>是否全文检索</value>
+  </data>
+  <data name="IsFullTextSearchableDescription" xml:space="preserve">
+    <value>指定是否为该属性值建立全文检索索引?</value>
+  </data>
+  <data name="IsRichText" xml:space="preserve">
+    <value>是否为富文本</value>
+  </data>
+  <data name="IsRichTextDescription" xml:space="preserve">
+    <value>指定属性值是否为富文本格式？</value>
+  </data>
+  <data name="IsHistoryEdit" xml:space="preserve">
+    <value>是否为历史编辑</value>
+  </data>
+  <data name="IsHistoryEditDescription" xml:space="preserve">
+    <value>指定是否保留该属性值的编辑历史,即只允许附加文字?</value>
+  </data>
+  <data name="IsMultipleLined" xml:space="preserve">
+    <value>是否多行显示</value>
+  </data>
+  <data name="IsMultipleLinedDescription" xml:space="preserve">
+    <value>指定是否以多行显示该属性值?</value>
+  </data>
+  <data name="Rows" xml:space="preserve">
+    <value>行数</value>
+  </data>
+  <data name="RowsDescription" xml:space="preserve">
+    <value>指定多行显示的行数?</value>
+  </data>
+  <data name="Section" xml:space="preserve">
+    <value>属性段落</value>
+  </data>
+  <data name="SectionDescription" xml:space="preserve">
+    <value>属性的段落.主要用于用户界面显示是对属性的组织.</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>属性类别</value>
+  </data>
+  <data name="CategoryDescription" xml:space="preserve">
+    <value>属性的类别.主要用于用户界面显示时对属性的分组.</value>
+  </data>
+  <data name="IsIndexed" xml:space="preserve">
+    <value>是否索引</value>
+  </data>
+  <data name="IsIndexedDescription" xml:space="preserve">
+    <value>是否为该属性建立索引? 建立索引能提高查询速度.</value>
+  </data>
+  <data name="CaseStyle" xml:space="preserve">
+    <value>大小写规定</value>
+  </data>
+  <data name="CaseStyleDescription" xml:space="preserve">
+    <value>对属性值的大小写规定, 适用于英文字母组成的属性值.</value>
+  </data>
+  <data name="SystemCategory" xml:space="preserve">
+    <value>系统</value>
+  </data>
+  <data name="AppearanceCategory" xml:space="preserve">
+    <value>显示</value>
+  </data>
+  <data name="IndexCategory" xml:space="preserve">
+    <value>检索</value>
+  </data>
+  <data name="IsGoodForFullTextSearch" xml:space="preserve">
+    <value>是否适用于全文检索</value>
+  </data>
+  <data name="IsGoodForFullTextSearchDescription" xml:space="preserve">
+    <value>指定该属性的值是否适用于全文检索?</value>
+  </data>
+  <data name="IsGoodForSearchSuggester" xml:space="preserve">
+    <value>是否适用于搜索建议</value>
+  </data>
+  <data name="IsGoodForSearchSuggesterDescription" xml:space="preserve">
+    <value>指定该属性的值是否适用于搜索建议?</value>
+  </data>
+  <data name="Usage" xml:space="preserve">
+    <value>用途</value>
+  </data>
+  <data name="UsageDescription" xml:space="preserve">
+    <value>指定该属性是否包含在默认数据视图中 。</value>
+  </data>
+  <data name="IsBrowsable" xml:space="preserve">
+    <value>是否显示</value>
+  </data>
+  <data name="IsBrowsableDescription" xml:space="preserve">
+    <value>指定该属性是否在用户界面上出现? 一般用于内部属性</value>
+  </data>
+  <data name="AutoValueGenerator" xml:space="preserve">
+    <value>自增值生成器</value>
+  </data>
+  <data name="AutoValueGeneratorDescription" xml:space="preserve">
+    <value>当属性的"是否自增"设置为true时,可定义生成自增值的函数定义,例如,MyLib.TestIDGenerator,MyLib.</value>
+  </data>
+  <data name="DefaultViewCategory" xml:space="preserve">
+    <value>默认视图</value>
+  </data>
+  <data name="Operator" xml:space="preserve">
+    <value>操作符</value>
+  </data>
+  <data name="OperatorDescription" xml:space="preserve">
+    <value>当该属性用于默认视图的查询属性时，指定查询的操作符。</value>
+  </data>
+  <data name="InlineEditEnabled" xml:space="preserve">
+    <value>是否多行修改</value>
+  </data>
+  <data name="InlineEditEnabledDescription" xml:space="preserve">
+    <value>指定该属性是否允许在表格中进行多行修改？</value>
+  </data>
+  <data name="AllowManualUpdate" xml:space="preserve">
+    <value>是否允许手工修改</value>
+  </data>
+  <data name="AllowManualUpdateDescription" xml:space="preserve">
+    <value>指定该属性是否允许在Web界面进行手工修改？ </value>
+  </data>
+  <data name="IsReadOnly" xml:space="preserve">
+    <value>是否只读</value>
+  </data>
+  <data name="IsReadOnlyDescription" xml:space="preserve">
+    <value>指定该属性是否只读？</value>
+  </data>
+  <data name="ShowAsProgressBar" xml:space="preserve">
+    <value>是否显示为进度条</value>
+  </data>
+  <data name="ShowAsProgressBarDescription" xml:space="preserve">
+    <value>指定是否将该属性的值在Web页面显示为进度条？</value>
+  </data>
+	<data name="ShowUpdateHistory" xml:space="preserve">
+    <value>是否显示修改记录</value>
+  </data>
+	<data name="ShowUpdateHistoryDescription" xml:space="preserve">
+    <value>指定是否显示该属性的修改记录？</value>
+  </data>
+  <data name="CascadedAttributes" xml:space="preserve">
+    <value>级联属性</value>
+  </data>
+  <data name="CascadedAttributesDescription" xml:space="preserve">
+    <value>指定一个到多个简单属性作为级联属性.当本属性的值发生变化时,将改变级联属性的值域。</value>
+  </data>
+  <data name="ParentAttribute" xml:space="preserve">
+    <value>上级属性</value>
+  </data>
+	<data name="ParentAttributeDescription" xml:space="preserve">
+    <value>指定一个属性作为本属性的上级属性。上级属性的值将对本属性的值域有影响。</value>
+  </data>
+  <data name="InputMask" xml:space="preserve">
+    <value>输入掩码</value>
+  </data>
+  <data name="InputMaskDescription" xml:space="preserve">
+    <value>定义属性的输入掩码</value>
+  </data>
+  <data name="DisplayFormatString" xml:space="preserve">
+    <value>显示格式</value>
+  </data>
+  <data name="DisplayFormatStringDescription" xml:space="preserve">
+    <value>定义属性的显示格式，使用C#的String.Format()函数所提供的格式定义</value>
+  </data>
+  <data name="DataSourceName" xml:space="preserve">
+    <value>属性值数据源</value>
+  </data>
+  <data name="DataSourceNameDescription" xml:space="preserve">
+    <value>指定该属性值的数据来源</value>
+  </data>
+  <data name="IsEncrypted" xml:space="preserve">
+    <value>是否加密</value>
+  </data>
+  <data name="IsEncryptedDescription" xml:space="preserve">
+    <value>指定该属性的值是否加密？</value>
+  </data>
+  <data name="LastIndexedTime" xml:space="preserve">
+    <value>全文索引创建时间</value>
+  </data>
+	<data name="LastIndexedTimeDescription" xml:space="preserve">
+    <value>全文索引最近的创建时间</value>
+  </data>
+  <data name="ConstraintUsage" xml:space="preserve">
+    <value>约束用途</value>
+  </data>
+	<data name="ConstraintUsageDescription" xml:space="preserve">
+    <value>指定约束值是用于限制属性值还是作为属性值的建议值</value>
+  </data>
+  <data name="KeywordFormat" xml:space="preserve">
+    <value>关键字格式</value>
+  </data>
+	<data name="KeywordFormatDescription" xml:space="preserve">
+    <value>定义用于全文检索的关键字格式，例如： 速度=值 作为关键字检索</value>
+  </data>
+</root>

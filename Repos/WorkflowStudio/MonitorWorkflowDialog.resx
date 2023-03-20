@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <metadata name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>0, 0</value>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="settingsToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAklJREFUOE+dke1L
+        U2EYxk//TyAIIlQSQWSGfrCIojASGYWBZJT6ocSiMvKF0JJa1My3UaKYmGOaKS5NU1yWttTV9IM6x3Ru
+        5+x9nl87Z42ms4JuuOA8POf+Pdd93XsEQPhLWX8sCuYZqzBh/iJsbLoFt0cSSi7lCWmpKbGuqlcOFFXq
+        HdxqWeNG4xqlz+wUP16mVjdER88ga04RtxTA4QoxMm3nSkUD2fmVqI8rzU3DqNINyWgHZBqMEeq67LR1
+        GohsQSQSoeLeQ1xikBmbD8OEizOFdzGNjMUAu1W19g3ODbd6FQ6HOXj0JFOzNmYW/RjGN2kyrpCnuYyg
+        751Uf1KsxxUMyzzSthIKhWKAqIO9qfu4X6/DsuSNOhCp717nSO55hObusSQDvqDM1fIq3B5RvVNAKemH
+        yMg6jab4JrWNb7ndukr2qYsIzztNSQ7EwBZFZXf4Zl3BLYZVLa1KTFqcvH5v56nRR2ndKOmZZxG0L98h
+        y7vGQGFZNcPTG4zMSoxbfPSbvbwY8HK9xcmBnAI6u3oQGlr71KQTM1gXIyw7gyr1wrVqaps/UdO+QkWz
+        g5IHo2TkaDicmx9bY32TgVA4BoiHmRiq8q0pKuf4uSIyTxSw/1geNU/aScsq+A3wh+RtDnYONL0Y4OO8
+        yIc5idG5AC29n5MBStOmNzrLLvVPgBRdW2IGOxlmW5AJayDqIIDpqz/Zgce39ccMFPBktDn+wNCsnzaj
+        ZfsILikGiMs0ZaN/7Dsdgwvo+xPUN4/+l7aFqBz+R8oafwIwNQ0tpzV2AAAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="settingsToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="settingsToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="settingsToolStripButton.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="monitorOnToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAONJREFUOE9jYEAD
+        AgV8/1efWPUfXZxoPsgAigwBaS68bke+ITADyDYEZEDeVdv/WRet/qeeNSfdJSAD0s5Z/E88afo/+qjh
+        /5D9+qQZAjIg5pjx/9AD+v/9d2v/d9+q/t9hvTLxhoAMCNyj+99zm+Z/pw2q/61XKvw3WSzzX2euJNgQ
+        gtEJUuSyUe2/zWrF/6ZL5f7rzZf8rz5LjDQXmC+X/6+/QPq/5izx/0pThYnXDHIeyAXac8T/q04X+S83
+        SZA0zTAD5CcL/Zfq5yddM8wA8W5e8jTDDKA4L1CUGwnGM5oCAM2ZonEye/uNAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="monitorOnToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Aqua</value>
+  </data>
+  <data name="monitorOnToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="monitorOnToolStripButton.Text" xml:space="preserve">
+    <value>Monitor On</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="monitorOffToolStripButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="monitorOffToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAfpJREFUOE+tk09I
+        k3EYx18MI9MYFKR06VLaX2wzHSuVZCVKTZcRsSQq3Iim/TOIhcxCgigPdijCDkHEiiwogqJDhiRlNSFl
+        zTq4sCiKGJ0i6/Rp372MN8t58oWH9/T9PM/zfb4/w5jt72tsmETfFWJnj/CyzcvzYAPRrjbikct8GnnF
+        jP0+PrpNPLyf98caSZ7w8ru9lkl/OZ99qxluWsOTg17idyPTQyR+e7yJZGcz9LTCuRYI74BD1dC8HOoK
+        iG8u5H5jGSN3rk+FaOx4x16SoZRA4t6Q+T+9C47WwJ4VUG/jZ5XBUOVCbvm2MB4dsiDaeTxYa3bsDsCl
+        drPO+6FjO7RugN3L+OHOY8JpcNNZxOOL3RZAhn0LbIQu34yA7+4CEpV5PHTk07tvpwWQ2798JRDyZAVI
+        /K7Glq5Bew4nnWstgE41uXUxBOxZAR825fPGNZfRqgU8XZfD4dISC6A7T9QVgTvX3PkfD9Q9A4g6DPpW
+        5RL21FsAheTZtmITkIEIlKovLoNEhUFsvYHEqjNL53H1VKcFUML6DzTwonpR2mWVhKqxcoPXZZb4WvEc
+        gqUriQ4MTM2CEnbPY6ffZWM0JZDob6E6S+xfYiPSc2H6NCphCsmNikIeOOan3ZZh2lljq3NWceaRKGEK
+        ie6sU8ltGaad/xt7Nl7yH2lIriWKTSPjAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="monitorOffToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Aqua</value>
+  </data>
+  <data name="monitorOffToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="monitorOffToolStripButton.Text" xml:space="preserve">
+    <value>Monitor Off</value>
+  </data>
+  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="closeToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgxJREFUOE+lkvtL
+        U2EYx+0PEbtpFwnBKPGKiJImGP0gYhIYs1E5GF5gIxkpA00JRSmMEF0ohMh+GaRWYlqabMVcNdS2QpaI
+        VqiDIYhk397vA6fXhCjyhYdzeM/5fp7vczkAdeL2cwho7v/wWzT1zcN+Pwhr51uY2/y41PQaF+wzKKiZ
+        QvaN58g0jyLd5KEUcQbg+84P/Cm2tncQjW3j68YWIqubCC3FcOJc478BAuGoZM6zvoRnakXEruEIjhc4
+        /g5gZop9c+voGAyLbQIfeBZxLL9BA1jzXvuGbWamuKh+GmmVbswE19A59FEBbmoAG7YbsLtm2mZmiml9
+        cvabNDwpz6YB7LYBoMXCumkJr7LOmnnHzBQ/9X2Bo2cOibm1GsBREbAQiYmw/8lnuCeWkVzcgnZlnw1j
+        3HV/wuNXK6i/9x5Hc6wawDlTXHbLJ+LZUBQPRyKwdQdxutwl1h+NLXHh5Ht1ewBHsiwawCW57HyDAfWR
+        dvl0uhZQ1eqX8aVc7EKLqrum651ATLf9OJx5XQM4KmY0xPzZ0hFAiQJnXB0WwME0E3IsL5B17ZlADqWb
+        NYDrOepdlcysmTWWOrxqbceRWtaLk0VO1XW72D5Vckd2gMBfq8zdpmUG62NJvKM4+XyziDk24xmfWoGE
+        s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="closeToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="closeToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>39, 22</value>
+  </data>
+  <data name="closeToolStripButton.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="queryToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAN5JREFUOE9jYBie
+        YOfB0/9nr9gCxqu3HfpPki9Bmjd++f1/zXMIXnrmGfGGLN16EKz55d9//0EARIMMgbmGoEv6Fm+FGwDS
+        DMIgA0GuqKjuJ+wVkAF7fvz/fwroAJBmEA0ygGH/5//5Ve2EDQB5Iff8N7AhIAzTXD1ny/+8rAzCBoD8
+        uHH7YbAhIFtBGKS5sDD+//wKQeIMABkC8goI59XN/O8bkvb/4ByX//+/zyTNEOQQ9zRR//95pxTYkOpk
+        G+JdgmxIooca2BCQV8g2REte8L+LgyN5LiCYiMhVAABURcfCoOfW8QAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="queryToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Aqua</value>
+  </data>
+  <data name="queryToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="queryToolStripButton.Text" xml:space="preserve">
+    <value>Query</value>
+  </data>
+  <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="terminateToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAM1JREFUOE9jYCAV
+        NDD8J1ULQj1IMwzDRG+35fwH4asNaf/PlMf9P5Qb8n9Hstf/9VFO/1eG2GDahu4CkOb/S+f+/z+p4///
+        2uz/v9MD/n8PNfv/yUP9/1ZzAcIGgGz+P733//+k0P//43z/v/Uw+f/ITfP/dVuF/4u0uQkbAHI2yKYN
+        Jnz/VxnwgjXNVuP8P0WR7X+PDAsFAYY9qP+zMLGAMbkxAdNIkQEgzWQbAHI52ZphNiPTJAUFus0kuQTd
+        VpJdgR76JMcGxS7AGVgA6LZ30rUqCxoAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="terminateToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Aqua</value>
+  </data>
+  <data name="terminateToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="terminateToolStripButton.Text" xml:space="preserve">
+    <value>Terminate Workflows</value>
+  </data>
+  <data name="zoomToolStripComboBox.Items" xml:space="preserve">
+    <value>50%</value>
+  </data>
+  <data name="zoomToolStripComboBox.Items1" xml:space="preserve">
+    <value>75%</value>
+  </data>
+  <data name="zoomToolStripComboBox.Items2" xml:space="preserve">
+    <value>100%</value>
+  </data>
+  <data name="zoomToolStripComboBox.Items3" xml:space="preserve">
+    <value>150%</value>
+  </data>
+  <data name="zoomToolStripComboBox.Items4" xml:space="preserve">
+    <value>200%</value>
+  </data>
+  <data name="zoomToolStripComboBox.Items5" xml:space="preserve">
+    <value>300%</value>
+  </data>
+  <data name="zoomToolStripComboBox.Items6" xml:space="preserve">
+    <value>400%</value>
+  </data>
+  <data name="zoomToolStripComboBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="zoomToolStripComboBox.ToolTipText" xml:space="preserve">
+    <value>Workflow Zoom Level</value>
+  </data>
+  <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="monitorToolStripButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="monitorToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgZJREFUOE+Nk11r
+        GkEUhs3/6w/wJ5jaYEVBipFaFFKp31YawV5UrIpBilpBbRBhDWqjtl3dD7NmNbWXoaE3eqHyduekdpvS
+        Jhl4mJmdc56dzx2DVmRZBqvX67Vhs9kQ2/ZqtaL2lm2f1UajcYflGQRBwNXVD0wv5v9kcj7Dn1xefkcq
+        laKfUuF5HtPZVzywZu6FPJ4gmUzqgsFggOn0WmAKtmA/PEWkICLx/gyRd2P4jyQc5K5hMZKkIB6P64Ju
+        twtVvaDB3dAJ8eT1AKGCRDzPiXiWFggWI4oKQqGQLuA4DpOtINzGrsaj2Ec4kp9xkBXw4kiGJyNhPyWS
+        YCSM4fP5dEGj0YAymdLgQy2ZsffylLC+GmD/zQhP0yLBYoZDCR6PRxfUajUoikqD5kiH2Iv3iMeHnwhb
+        ckiwmC+8BJfLpQvK5TLO1dm9ToCWIJ7B4XDogkKhgPn8GwRRIiRZQbPJodfniVr9GDwvoNvtEaIow2q1
+        3jzGSqWCYrEIJmOXpF6vI5/PI5PJoFQqIRgMIhaLIRwOIxAIoFqt6oLfN+pXo9/vI5fLoXXSoR13u93a
+        jJr/T9gKFosF/H6/NpMSuFZbS+rgwzGHdqePdPot7Hb77RJVVZHNZqE9FCyXyxuwb9FoFKPR6HZJIpGA
+        0+mkXbbZbLBYLDCbzTCZTPB6vXcv4+/9uKv/E5EKLyTwaJDdAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="monitorToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="monitorToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="monitorToolStripButton.Text" xml:space="preserve">
+    <value>toolStripButton1</value>
+  </data>
+  <data name="toolStrip1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="toolStrip1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>792, 25</value>
+  </data>
+  <data name="toolStrip1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="toolStrip1.Text" xml:space="preserve">
+    <value>toolStrip1</value>
+  </data>
+  <data name="&gt;&gt;toolStrip1.Name" xml:space="preserve">
+    <value>toolStrip1</value>
+  </data>
+  <data name="&gt;&gt;toolStrip1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStrip1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;toolStrip1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="workflowMonitorControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="workflowMonitorControl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 25</value>
+  </data>
+  <data name="workflowMonitorControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>792, 479</value>
+  </data>
+  <data name="workflowMonitorControl.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;workflowMonitorControl.Name" xml:space="preserve">
+    <value>workflowMonitorControl</value>
+  </data>
+  <data name="&gt;&gt;workflowMonitorControl.Type" xml:space="preserve">
+    <value>Newtera.WorkflowMonitor.WorkflowMonitorControl, Newtera.WorkflowMonitor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;workflowMonitorControl.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;workflowMonitorControl.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 12</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>792, 504</value>
+  </data>
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterScreen</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Workflow Monitor</value>
+  </data>
+  <data name="&gt;&gt;settingsToolStripButton.Name" xml:space="preserve">
+    <value>settingsToolStripButton</value>
+  </data>
+  <data name="&gt;&gt;settingsToolStripButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator2.Name" xml:space="preserve">
+    <value>toolStripSeparator2</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;monitorOnToolStripButton.Name" xml:space="preserve">
+    <value>monitorOnToolStripButton</value>
+  </data>
+  <data name="&gt;&gt;monitorOnToolStripButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;monitorOffToolStripButton.Name" xml:space="preserve">
+    <value>monitorOffToolStripButton</value>
+  </data>
+  <data name="&gt;&gt;monitorOffToolStripButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator1.Name" xml:space="preserve">
+    <value>toolStripSeparator1</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;closeToolStripButton.Name" xml:space="preserve">
+    <value>closeToolStripButton</value>
+  </data>
+  <data name="&gt;&gt;closeToolStripButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;queryToolStripButton.Name" xml:space="preserve">
+    <value>queryToolStripButton</value>
+  </data>
+  <data name="&gt;&gt;queryToolStripButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator3.Name" xml:space="preserve">
+    <value>toolStripSeparator3</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;terminateToolStripButton.Name" xml:space="preserve">
+    <value>terminateToolStripButton</value>
+  </data>
+  <data name="&gt;&gt;terminateToolStripButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;zoomToolStripComboBox.Name" xml:space="preserve">
+    <value>zoomToolStripComboBox</value>
+  </data>
+  <data name="&gt;&gt;zoomToolStripComboBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator4.Name" xml:space="preserve">
+    <value>toolStripSeparator4</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;monitorToolStripButton.Name" xml:space="preserve">
+    <value>monitorToolStripButton</value>
+  </data>
+  <data name="&gt;&gt;monitorToolStripButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>MonitorWorkflowDialog</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+</root>

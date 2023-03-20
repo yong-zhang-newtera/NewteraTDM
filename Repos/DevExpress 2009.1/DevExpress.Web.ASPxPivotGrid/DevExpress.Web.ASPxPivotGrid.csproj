@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EBF55814-10A4-43DA-8CF2-C5BD2151681F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DevExpress.Web.ASPxPivotGrid</RootNamespace>
+    <AssemblyName>DevExpress.Web.ASPxPivotGrid.v9.1</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>NewteraKeys.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\DevExpress.Dll\</OutputPath>
+    <DefineConstants>$(CustomDefine)TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v9.1">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DevExpress.Dll\DevExpress.Data.v9.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxEditors.v9.1">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DevExpress.Dll\DevExpress.Web.ASPxEditors.v9.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Web.v9.1">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DevExpress.Dll\DevExpress.Web.v9.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.configuration">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Design">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Web">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.XML">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="WebDev.WebHost, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Design\DesignUtils.cs" />
+    <Compile Include="Design\Forms\GroupsFormEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\Forms\OLAPConnectionStringEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\Forms\OLAPConnectionStringEditor.Designer.cs">
+      <DependentUpon>OLAPConnectionStringEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ClientSideEvents.cs" />
+    <Compile Include="Design\Forms\FieldsFormEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\PivotGridDesigner.cs">
+    </Compile>
+    <Compile Include="Localization.cs" />
+    <Compile Include="PivotChartDataSource.cs" />
+    <Compile Include="PivotGridControl.cs" />
+    <Compile Include="PivotGridData.cs">
+    </Compile>
+    <Compile Include="PivotGridEvents.cs" />
+    <Compile Include="PivotGridFields.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PivotGridHtmlCustomizationFields.cs" />
+    <Compile Include="PivotGridHtmlDataAreaPopup.cs" />
+    <Compile Include="PivotGridHtmlFilterPopup.cs" />
+    <Compile Include="PivotGridHtmlTable.cs" />
+    <Compile Include="PivotGridImages.cs" />
+    <Compile Include="PivotGridMenu.cs" />
+    <Compile Include="PivotGridOptions.cs" />
+    <Compile Include="PivotGridPager.cs" />
+    <Compile Include="PivotGridPostbackActions.cs" />
+    <Compile Include="PivotGridRenderHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Styles.cs" />
+    <Compile Include="Templates.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\PivotGrid.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\pgDragArrowDown.gif" />
+    <EmbeddedResource Include="Images\pgDragArrowUp.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\pgSortDownButton.gif" />
+    <EmbeddedResource Include="Images\pgSortUpButton.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\pgDragHideField.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\pgFilterResizer.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\pgFilterButton.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\pgCollapsedButton.gif" />
+    <EmbeddedResource Include="Images\pgExpandedButton.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\pgFilterButtonActive.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ASPxPivotGrid.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="about.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Design\Forms\OLAPConnectionStringEditor.resx">
+      <DependentUpon>OLAPConnectionStringEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Css\Default.css" />
+    <EmbeddedResource Include="Images\pgCustomizationFormBackground.gif" />
+    <EmbeddedResource Include="Images\pgCustomizationFormCloseButton.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\Loading.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\pgGroupSeparator.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\pgDataHeaders.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Design\Images\MoveDown.png" />
+    <EmbeddedResource Include="Design\Images\MoveLeft.png" />
+    <EmbeddedResource Include="Design\Images\MoveRight.png" />
+    <EmbeddedResource Include="Design\Images\MoveUp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\pgSortByColumn.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\pgPrefilterButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NewteraKeys.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DevExpress.XtraPivotGrid\DevExpress.XtraPivotGrid.Core\DevExpress.XtraPivotGrid.Core.csproj">
+      <Project>{DA50534F-0CF7-436E-813B-BD030FAD9AE9}</Project>
+      <Name>DevExpress.XtraPivotGrid.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+  </PropertyGroup>
+</Project>

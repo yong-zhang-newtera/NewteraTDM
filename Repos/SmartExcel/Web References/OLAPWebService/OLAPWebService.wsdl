@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.newtera.com/webservices/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://www.newtera.com/webservices/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.newtera.com/webservices/">
+      <s:element name="SaveNamedPivotLayout">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="className" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="desc" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="viewName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveNamedPivotLayoutResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SaveNamedPivotLayoutResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IsPivotLayoutNameUnique">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="className" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IsPivotLayoutNameUniqueResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="IsPivotLayoutNameUniqueResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPivotLayouts">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionStr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="className" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPivotLayoutsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPivotLayoutsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPivotLayoutXmlById">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pivotLayoutId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPivotLayoutXmlByIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPivotLayoutXmlByIdResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeletePivotLayoutById">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pivotLayoutId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeletePivotLayoutByIdResponse">
+        <s:complexType />
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="SaveNamedPivotLayoutSoapIn">
+    <wsdl:part name="parameters" element="tns:SaveNamedPivotLayout" />
+  </wsdl:message>
+  <wsdl:message name="SaveNamedPivotLayoutSoapOut">
+    <wsdl:part name="parameters" element="tns:SaveNamedPivotLayoutResponse" />
+  </wsdl:message>
+  <wsdl:message name="IsPivotLayoutNameUniqueSoapIn">
+    <wsdl:part name="parameters" element="tns:IsPivotLayoutNameUnique" />
+  </wsdl:message>
+  <wsdl:message name="IsPivotLayoutNameUniqueSoapOut">
+    <wsdl:part name="parameters" element="tns:IsPivotLayoutNameUniqueResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPivotLayoutsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPivotLayouts" />
+  </wsdl:message>
+  <wsdl:message name="GetPivotLayoutsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPivotLayoutsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPivotLayoutXmlByIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPivotLayoutXmlById" />
+  </wsdl:message>
+  <wsdl:message name="GetPivotLayoutXmlByIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPivotLayoutXmlByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeletePivotLayoutByIdSoapIn">
+    <wsdl:part name="parameters" element="tns:DeletePivotLayoutById" />
+  </wsdl:message>
+  <wsdl:message name="DeletePivotLayoutByIdSoapOut">
+    <wsdl:part name="parameters" element="tns:DeletePivotLayoutByIdResponse" />
+  </wsdl:message>
+  <wsdl:portType name="OLAPServiceSoap">
+    <wsdl:operation name="SaveNamedPivotLayout">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Save a pivot layout data to database with the given name.</wsdl:documentation>
+      <wsdl:input message="tns:SaveNamedPivotLayoutSoapIn" />
+      <wsdl:output message="tns:SaveNamedPivotLayoutSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="IsPivotLayoutNameUnique">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Check if a pivot layout with the given name has already existed for a class.</wsdl:documentation>
+      <wsdl:input message="tns:IsPivotLayoutNameUniqueSoapIn" />
+      <wsdl:output message="tns:IsPivotLayoutNameUniqueSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPivotLayouts">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets xml that is text represention of a collection of PivotLayout objects of a class</wsdl:documentation>
+      <wsdl:input message="tns:GetPivotLayoutsSoapIn" />
+      <wsdl:output message="tns:GetPivotLayoutsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPivotLayoutXmlById">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets a pivot layout's xml of a given a id..</wsdl:documentation>
+      <wsdl:input message="tns:GetPivotLayoutXmlByIdSoapIn" />
+      <wsdl:output message="tns:GetPivotLayoutXmlByIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeletePivotLayoutById">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Delete a pivot layout of a given id.</wsdl:documentation>
+      <wsdl:input message="tns:DeletePivotLayoutByIdSoapIn" />
+      <wsdl:output message="tns:DeletePivotLayoutByIdSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="OLAPServiceSoap" type="tns:OLAPServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SaveNamedPivotLayout">
+      <soap:operation soapAction="http://www.newtera.com/webservices/SaveNamedPivotLayout" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsPivotLayoutNameUnique">
+      <soap:operation soapAction="http://www.newtera.com/webservices/IsPivotLayoutNameUnique" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPivotLayouts">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetPivotLayouts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPivotLayoutXmlById">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetPivotLayoutXmlById" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeletePivotLayoutById">
+      <soap:operation soapAction="http://www.newtera.com/webservices/DeletePivotLayoutById" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="OLAPServiceSoap12" type="tns:OLAPServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SaveNamedPivotLayout">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/SaveNamedPivotLayout" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsPivotLayoutNameUnique">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/IsPivotLayoutNameUnique" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPivotLayouts">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetPivotLayouts" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPivotLayoutXmlById">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetPivotLayoutXmlById" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeletePivotLayoutById">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/DeletePivotLayoutById" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="OLAPService">
+    <wsdl:port name="OLAPServiceSoap" binding="tns:OLAPServiceSoap">
+      <soap:address location="http://localhost/Newtera/WebService/OLAPWebService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="OLAPServiceSoap12" binding="tns:OLAPServiceSoap12">
+      <soap12:address location="http://localhost/Newtera/WebService/OLAPWebService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

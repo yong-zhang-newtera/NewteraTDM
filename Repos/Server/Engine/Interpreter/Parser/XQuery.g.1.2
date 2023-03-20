@@ -1,0 +1,830 @@
+// XQuery grammar file as an input to ANTLR parser generator
+
+header 
+{
+}
+
+options {
+    language  = "CSharp";
+    namespace = "Precom.Data.Engine.Interpreter.Parser";          // encapsulate code in this namespace
+}
+
+{
+   // global code stuff that will be included in the source file just before the 'XQueryParser' class below
+	using System.Collections;
+	using Precom.Data.Engine.Interpreter;
+	using Precom.Data.Engine.Vdom;
+}
+
+class XQueryParser extends Parser;
+options {
+	k = 2;  // Two token ahead
+}
+{
+   // additional methods and members for the generated 'MyParser' class
+	Stack argStack;
+	Interpreter interpreter;
+	bool hasRoot;
+	bool inContext; // for the path in a predicate
+	int[] loc;
+
+	public XQueryParser(Interpreter interpreter, XQueryLexer lexer) : base(lexer, 1) {
+		this.interpreter = interpreter;
+		hasRoot = false;
+		inContext = false;
+		argStack = new Stack();
+		loc = new int[4];				
+	}
+
+	public Expr Parse() {
+        
+		argStack = new Stack();
+		start();
+		
+		// this is for debugging, it should never show up
+		// stack size should be 1 when all is over, unless an exception
+		// was thrown, in which case it would not be here
+		if (argStack.Count != 1)
+		{
+			throw new Exception("Parser fatal error: Bad stack size: " + argStack.Count);
+		}
+
+		return  (Expr) argStack.Pop();
+	}
+}
+
+start :
+    queryModule
+;
+
+/** [2] **/
+queryModule :
+	(importAs)* expression 
+;
+
+importAs :
+	"import"^ Name "as"^ Name 
+	{
+		String aliasName = (String) argStack.Pop();
+		String className = (String) argStack.Pop();
+		
+		interpreter.GetFunctionMap(FunctionMap.USER).Add(aliasName, className);
+	}
+;
+
+exprSequence
+{int depth = argStack.Count;}
+:
+	expression ((COMMA expression)*)
+	{
+		Expr expr = null;
+		if (argStack.Count > depth)
+		{
+			IList exprs = new ArrayList();
+			while (argStack.Count > depth)
+			{
+				expr = (Expr) argStack.Pop();
+				exprs.Insert(0, expr);
+			}
+			argStack.Push(new SequenceSet(interpreter, loc, exprs));
+		}
+	}
+;
+
+expression: 
+//TODO make this work can improve speed of parser because pathExpression is a common one
+//     (pathExpression)=>pathExpression
+	basicExpression
+;
+		
+pathExpression
+:
+		variable {hasRoot=true;} path
+      | functionCall {hasRoot=true;} path      
+      | path
+;
+
+path
+{
+	int depth = argStack.Count;
+}
+: (step)+
+	{
+		// build a path object from steps
+		Step previous;
+		Step current = (Step) argStack.Pop();
+		while (argStack.Count > depth)
+		{
+			previous = (Step) argStack.Pop();
+			previous.Subpath = current;
+			current = previous;
+		}
+		
+		Path path = new Path(interpreter, loc, current);
+		
+		// set the root of the path if it is available
+		if (hasRoot) {
+			Expr root = (Expr) argStack.Pop();
+			path.Root = root;
+			hasRoot = false;
+		}
+		
+		argStack.Push(path);
+	}
+;
+
+step
+{
+	bool hasPredicate = false;
+	int axisCode = Axis.CHILD;
+	string stepName = null;
+}
+:
+(	(  SLASH^ {axisCode=Axis.CHILD;}
+	 | SLASH_SLASH^ {axisCode=Axis.DESCENDANT;}
+	 | SLASH_AT^ {axisCode=Axis.ATTRIBUTE;}
+	 | DEREFERENCE^ {axisCode=Axis.DEREFERENCE;}
+	) t1:Name {stepName=t1.getText();} (predicate {hasPredicate = true;})?
+	| t2:Name {axisCode=Axis.CHILD; stepName=t2.getText();}  // appears as begining of a path in a predicate
+	| AT^ t3:Name {axisCode=Axis.ATTRIBUTE; stepName=t2.getText();} // appears as begining of a path in a predicate
+)
+	{
+		
+		Expr qualifier = null;
+		bool absolute = false;
+
+		if (hasPredicate)
+		{
+			qualifier = (Expr) argStack.Pop();
+		}
+		
+		if (hasRoot)
+		{
+			absolute = true;
+		}
+		
+		argStack.Push(new Step(stepName, loc, axisCode, qualifier, absolute));
+	}
+;
+
+basicExpression:     
+		flwrExpr
+      | ifExpr 		     
+      | logicalOrExpression      
+;
+
+predicate: L_BRACKET^ expression {inContext = true;} R_BRACKET;
+
+variable: DOLLAR^ t:Name
+	{
+		String name = t.getText();
+		argStack.Push(new Variable(interpreter, loc, name));
+	}
+;
+	
+flwrExpr
+{
+	int depth = argStack.Count;
+	IList sortByList = null;
+	bool hasWhere = false;
+	bool hasSortBy = false;
+}
+:
+	(forClause | letClause)+ (whereClause {hasWhere=true;})? "return"^ primitiveExpression (sortByClause)?
+	{
+		FLWR flwr = null;
+		bool first = true;
+		if (hasSortBy)
+		{
+			sortByList = (IList) (Expr) argStack.Pop();
+		}
+		
+		// it is the RETURN clause now
+		Expr childClause = (Expr) argStack.Pop();
+		
+		Expr where = null;
+		if (hasWhere)
+		{
+			where = (Expr) argStack.Pop();
+		}
+
+		while (argStack.Count > depth)
+		{
+			flwr = (FLWR) argStack.Pop();
+			flwr.setFlwr(childClause, first);
+			if (first)
+			{
+				first = false;
+			} else
+			{
+				((FLWR) childClause).Parent = flwr;
+			}
+			flwr.Where = where;
+			childClause = flwr;
+		}
+		flwr.SortBy = sortByList;
+
+		argStack.Push(flwr);
+	}
+;
+
+forClause
+{int depth = argStack.Count;
+}
+:
+   "for"^ variable "in"^ expression
+   {
+		int i = 0;
+		int size = (argStack.Count - depth)/2;
+		Expr[] hold = new Expr[size];
+		Variable var;
+		Expr initial;
+		ForSymbol symbol = null;
+		
+		while (argStack.Count > depth)
+		{
+			initial = (Expr) argStack.Pop();
+			var = (Variable) argStack.Pop();
+			symbol = new ForSymbol(var.Name, loc, initial);
+			hold[i++] = new For(interpreter, loc, symbol);
+		}
+		
+		for (i = size; i > 0; )
+		{
+			argStack.Push(hold[--i]);
+		}
+	}
+;
+
+letClause
+{
+    int depth = argStack.Count;
+}
+:
+	"let"^ variable SET_EQUAL_TO expression (COMMA variable SET_EQUAL_TO expression)*
+	{
+		int i = 0;
+		int size = (argStack.Count - depth)/2;
+		Expr[] hold = new Expr[size];
+		Variable var;
+		Expr initial;
+		Symbol symbol = null;
+	
+		while (argStack.Count > depth)
+		{
+			initial = (Expr) argStack.Pop();
+			var = (Variable) argStack.Pop();
+			symbol = new Symbol(var.Name, loc, initial);
+			hold[i++] = new Let(interpreter, loc, symbol);
+		}
+		
+		for (i = size; i > 0; )
+		{
+			argStack.Push(hold[--i]);
+		}
+	}
+;
+
+whereClause
+:
+	"where"^ expression
+;
+
+sortByClause
+:
+"sortby"^ L_PAREN sortSpecList R_PAREN
+;
+
+// logical or (or)  (level 11)
+logicalOrExpression
+	:	logicalAndExpression (t:"or"^ logicalAndExpression)*
+   {
+		if (t != null)
+		{
+			Expr left, right;
+			right = (Expr) argStack.Pop();
+			left = (Expr) argStack.Pop();
+			Expr result = new Or(interpreter, loc, left, right);
+			if (left.IsLeaf && right.IsLeaf)
+			{
+				result = result.Eval();
+			}
+			argStack.Push(result);
+		}
+	}	
+	;
+
+
+// logical and (and)  (level 10)
+logicalAndExpression
+	:	rangeExpression (t:"and"^ rangeExpression)*
+	{
+		if (t != null)
+		{
+			Expr left, right;
+			right = (Expr) argStack.Pop();
+			left = (Expr) argStack.Pop();
+			Expr result = new And(interpreter, loc, left, right);
+			if (left.IsLeaf && right.IsLeaf)
+			{
+				result = result.Eval();
+			}
+			argStack.Push(result);
+		}
+	}	
+	;
+	
+rangeExpression
+{
+	bool isRange = false;
+}
+:
+	equalityExpression ("to"^ {isRange = true;} equalityExpression )?
+	{
+		if (isRange)
+		{	
+			Expr to = (Expr) argStack.Pop();
+			Expr from = (Expr) argStack.Pop();
+			argStack.Push(new To(interpreter, loc, from, to));
+		}
+	}	
+;	
+	
+// equality/inequality (==/!=) (level 6)
+equalityExpression
+{
+	bool isEquality = false;
+	int type = 0;
+}
+	:	relationalExpression ((t1:NOT_EQUALS^ {isEquality = true; type = 1;} | t2:EQUALS^ {isEquality = true; type = 2;}) relationalExpression)*
+	{
+	    if (isEquality)
+	    {
+			Expr right = (Expr) argStack.Pop();
+			Expr left = (Expr) argStack.Pop();
+			Expr result = null;
+			
+			switch (type)
+			{
+				case 1:
+					result = new NotEquals(interpreter, loc, left, right);
+					break;
+				case 2:
+					result = new Equals(interpreter, loc, left, right);
+					break;
+			}
+			
+			if (left.IsLeaf && right.IsLeaf)
+			{
+				result = result.Eval();
+			}
+			argStack.Push(result);
+		}
+	}	
+	;
+
+// boolean relational expressions (<, >, <=, >=, in, not in) (level 5)
+relationalExpression
+{
+	bool isRelational = false;
+	int type = 0;
+}
+	:	additiveExpression
+		(	(		LESS_THAN^			{isRelational = true; type = 1;}
+				|	GREATER_THAN^		{isRelational = true; type = 2;}
+				|	LESS_THAN_EQUALS^	{isRelational = true; type = 3;}
+				|	GREATER_THAN_EQUALS^ {isRelational = true; type = 4;}
+				|	"in"^		{isRelational = true; type = 5;}
+				|	"not in"^	{isRelational = true; type = 6;}
+			)
+			additiveExpression
+		)*
+	{
+	    if (isRelational)
+	    {
+			Expr right = (Expr) argStack.Pop();
+			Expr left = (Expr) argStack.Pop();
+			Expr result = null;
+			
+			switch (type)
+			{
+				case 1:
+					result = new LessThan(interpreter, loc, left, right);
+					break;
+				case 2:
+					result = new GreaterThan(interpreter, loc, left, right);
+					break;
+				case 3:
+					result = new LEqual(interpreter, loc, left, right);
+					break;
+				case 4:
+					result = new GEqual(interpreter, loc, left, right);
+					break;
+				case 5:
+					result = new In(interpreter, loc, left, right);
+					break;
+				case 6:
+					result = new NotIn(interpreter, loc, left, right);
+					break;
+			}
+			
+			if (left.IsLeaf && right.IsLeaf)
+			{
+				result = result.Eval();
+			}
+			argStack.Push(result);
+		}
+	}			
+	;
+	
+// addition/subtraction (level 3)
+additiveExpression
+{
+	bool isAdditive = false;
+	int type = 0;
+}
+	:	multiplicativeExpression ((PLUS^ {isAdditive=true; type=1;} | MINUS^ {isAdditive=true; type=2;}) multiplicativeExpression)*
+	{
+		if (isAdditive)
+		{
+			Expr right = (Expr) argStack.Pop();
+			Expr left =  (Expr) argStack.Pop();
+			Expr result = null;
+			
+			switch (type)
+			{
+				case 1:
+					result = new Plus(interpreter, loc, left, right);
+					break;
+				case 2:
+					result = new Minus(interpreter, loc, left, right);
+					break;
+			}		
+
+			if (left.IsLeaf && right.IsLeaf)
+			{
+				result = result.Eval();
+			}
+			
+			argStack.Push(result);
+		}
+	}	
+	;
+
+// multiplication/division/modulo (level 2)
+multiplicativeExpression
+{
+	bool isMulti= false;
+	int type = 0;
+}
+	:	unaryExpression ((STAR^ {isMulti=true; type=1;} | "div"^ {isMulti=true; type=2;} | MOD^ {isMulti=true; type=3;}) unaryExpression)*
+	{
+		if (isMulti)
+		{
+			Expr right = (Expr) argStack.Pop();
+			Expr left =  (Expr) argStack.Pop();
+			Expr result = null;
+			
+			switch (type)
+			{
+				case 1:
+					result = new Times(interpreter, loc, left, right);
+					break;
+				case 2:
+					result = new Divide(interpreter, loc, left, right);
+					break;
+				case 3:
+					result = new Mod(interpreter, loc, left, right);
+					break;				
+			}		
+
+			if (left.IsLeaf && right.IsLeaf)
+			{
+				result = result.Eval();
+			}
+			
+			argStack.Push(result);
+		}
+	}		
+	;
+
+unaryExpression
+	:   MINUS^ unaryExpression
+		{
+			Expr contents = (Expr) argStack.Pop();
+			Expr result = new Negate(interpreter, loc, contents);
+			if (contents.IsLeaf)
+			{
+				result = result.Eval();
+			}
+			argStack.Push(result);
+		} 	
+	|	primitiveExpression
+	;
+
+// the basic element of an expression
+primitiveExpression
+	:	(pathExpression)=>pathExpression
+	|	literal
+	|	"true"^
+	|	"false"^
+	|	"null"^
+	|	elementConstructor
+	|	INLINE
+	|	functionCall
+	|	variable
+	|	L_PAREN^ exprSequence R_PAREN 	
+	;
+
+functionCall
+{
+	bool hasParameters = false;
+}
+:
+	t:Name L_PAREN^ (exprSequence {hasParameters = true;})? R_PAREN
+	{
+		IList parameters = null;
+		
+		if (hasParameters)
+		{
+			SequenceSet expr = (SequenceSet) argStack.Pop();
+			parameters = expr.GetValues();
+		}
+		
+		FunctionCall func = new FunctionCall(interpreter, loc, t.getText(), parameters);
+		
+		argStack.Push(func);
+	}
+;
+
+literal
+{
+	string val = null;
+}
+:
+	(	
+		t1:NUMERIC_LITERAL {val = t1.getText();}
+	|	t2:STRING_LITERAL {val = t2.getText();}
+	)
+	{
+		argStack.Push(new XString(interpreter, loc, val));
+	}
+	;	
+
+sortSpecList 
+{
+	int depth = argStack.Count;
+	IList specList = new ArrayList();
+}
+:
+	 sortSpec (COMMA sortSpec)* 
+	 {
+		Expr expr = null;
+		if (argStack.Count - depth > 1) 
+		{
+			while (argStack.Count > depth)
+			{
+				expr = (Expr) argStack.Pop();
+				specList.Insert(0, expr);
+			}
+			
+			argStack.Push(specList);
+		}
+	}
+;
+
+sortSpec
+{
+	bool isAscending = true;
+	bool hasRoot = false;
+}
+:
+	(variable {hasRoot = true;})? path ("ascending"^ | "descending"^ {isAscending=false;})?
+	{
+		Path specPath = (Path)argStack.Pop();
+		if (hasRoot)
+		{
+			specPath.Root = (Expr) argStack.Pop();
+		}
+
+		argStack.Push(new SortBy(specPath, loc, isAscending));	
+	}
+;
+
+/** [17] **/
+ifExpr
+:
+	"if"^ L_PAREN expression R_PAREN "then"^ expression "else"^ expression
+;
+
+/** [52] **/
+elementConstructor
+:
+	LESS_THAN^ t1:Name GREATER_THAN^ elementContents LESS_THAN_SLASH^ t2:Name GREATER_THAN^
+	{
+		Expr nameSpec = null;
+
+		if (t1.getText() != t2.getText()) 
+		{
+			throw new InterpretException("nonmatching terminator for element " + t1.getText() + " : " + t2.getText());
+		}
+		
+		nameSpec = new XString(interpreter, loc, t1.getText());
+		
+		Expr contents = (Expr) argStack.Pop();
+		
+		argStack.Push(new Element(interpreter, loc, nameSpec, contents, null));
+	}			
+;
+
+elementContents
+{
+	int depth = argStack.Count;
+}
+:
+		literal
+	 | (elementConstructor | enclosedExpr)+
+		{
+			if (argStack.Count > depth)
+			{
+				IList elements = new ArrayList();
+				while (argStack.Count > depth)
+				{
+					elements.Insert(0, (Expr) argStack.Pop());
+				}
+				argStack.Push(new SequenceSet(interpreter, loc, elements));
+			}
+		}
+;
+
+/** [59] **/
+enclosedExpr:
+	L_BRACE^ exprSequence R_BRACE 
+	{
+		Expr expr = (Expr) argStack.Pop();
+		expr = new EvalExpr(interpreter, loc, expr);
+		argStack.Push(expr);
+	}
+;
+
+//****** Lexer ********************
+
+{
+   // global code stuff that will be included in the source file just before the 'MyLexer' class below
+}
+
+class XQueryLexer extends Lexer;
+options {
+	caseSensitiveLiterals=false;
+	charVocabulary='\u0003'..'\uFFFF';   
+	k = 3;
+}
+{
+   // additional methods and members for the generated 'MyParser' class
+}
+
+protected NL
+    : (	options {
+	generateAmbigWarnings=false;
+	greedy = true;
+    }
+		: '\n'
+		|	"\r\n"
+		|	'\r'
+		)
+		{ newline(); }
+	;
+	
+protected CDATA_DATA
+    : 
+        ( options {greedy=true;} : NL
+        | .
+        )*
+    ;
+
+// Character Set
+STRING_LITERAL
+	:	'"'! (ESC|~('"'|'\\'))* '"'!
+	;
+	
+NUMERIC_LITERAL:
+		((("." ('0'..'9')+) | (('0'..'9')+("." ('0'..'9')*)?))('e' | 'E' ('+' | '-')?('0'..'9')+)?)
+;
+
+protected LETTER
+	: 'a'..'z' 
+	| 'A'..'Z'
+;
+
+protected DIGIT
+	:	'0'..'9'
+;
+
+Name
+	options {testLiterals=true;}
+	:	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*
+	;
+
+
+INLINE:
+		("[[" ('\u0000'..'\uffff')* "]]")
+;
+
+protected
+ESC
+	:	'\\'
+		(	'n'
+		|	'r'
+		|	't'
+		|	'b'
+		|	'f'
+		|	'"'
+		|	'\''
+		|	'\\'
+		|	('u')+ HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
+		|	'0'..'3'
+			(
+				options {
+					warnWhenFollowAmbig = false;
+				}
+			:	'0'..'7'
+				(
+					options {
+						warnWhenFollowAmbig = false;
+					}
+				:	'0'..'7'
+				)?
+			)?
+		|	'4'..'7'
+			(
+				options {
+					warnWhenFollowAmbig = false;
+				}
+			:	'0'..'7'
+			)?
+		)
+	;
+	
+// hexadecimal digit (again, note it's protected!)
+protected
+HEX_DIGIT
+	:	('0'..'9'|'A'..'F'|'a'..'f')
+	;
+		
+// ENTITIES
+PREDEFINED_ENTITY_REF:
+		"&" ("lt" | "gt" | "amp" | "quot" | "apos") ";";
+
+// Whitespace -- ignored
+WS	:	(	' '
+		|	'\t'
+		|	'\f'
+		// handle newlines
+		|	(	options {generateAmbigWarnings=false;}
+			:	"\r\n"  // Evil DOS
+			|	'\r'    // Macintosh
+			|	'\n'    // Unix (the right way)
+			)
+			{ newline(); }
+		)+
+		{ _ttype = Token.SKIP; }
+	;
+
+// interpunction
+SEMICOLON:			";";
+EQUALS:				"=";
+L_PAREN:			"(";
+R_PAREN:			")";
+COMMA:				",";
+L_BRACKET:			"[";
+R_BRACKET:			"]";
+COLON:				":";
+D_COLON:			"::";
+L_BRACE:			"{";
+R_BRACE:			"}";
+DEREFERENCE:		"=>";
+AT:					"@";
+SLASH_AT:			"/@";
+STAR:				"*";
+SLASH:				"/";
+SLASH_SLASH:		"//";
+MOD:				'%';
+STAR_COLON:			"*:";
+NOT_EQUALS:			"!=";
+D_EQUALS:			"==";
+NOT_D_EQUALS:		"!==";
+LESS_THAN:			"<";
+GREATER_THAN:		">";
+LESS_THAN_EQUALS:	"<=";
+GREATER_THAN_EQUALS:	">=";
+PLUS:				"+";
+MINUS:				"-";
+BAR:				"|";
+SET_EQUAL_TO:		":=";
+QUOTE:				"\"";
+ESCAPED_QUOTE:		"\\\"";
+S_QUOTE:			"'";
+ESCAPED_S_QUOTE:	"\\'";
+SLASH_GREATER_THAN:	"/>";
+LESS_THAN_SLASH:	"</";
+DOLLAR:				"$";

@@ -1,0 +1,813 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DesignStudio.Exit" xml:space="preserve">
+    <value>Are you sure that you want to exit the design studio?</value>
+  </data>
+  <data name="DesignStudio.PasswordDifferent" xml:space="preserve">
+    <value>Two new passwords are not identical.</value>
+  </data>
+  <data name="DesignStudio.PasswordTooShort" xml:space="preserve">
+    <value>The length of a password has to be greater than 4.</value>
+  </data>
+  <data name="DesignStudio.InvalidPassword" xml:space="preserve">
+    <value>Invalid Password.</value>
+  </data>
+  <data name="DataViewer.NoResults" xml:space="preserve">
+    <value>No Results Found.</value>
+  </data>
+  <data name="DataViewer.NotLeafClass" xml:space="preserve">
+    <value> is not a leaf class. You can only add an instance to a leaf class.</value>
+  </data>
+  <data name="DataViewer.SelectInstance" xml:space="preserve">
+    <value>Please select an instance first.</value>
+  </data>
+  <data name="DataViewer.DeleteInstance" xml:space="preserve">
+    <value>Are you sure that you want to delete the instance?</value>
+  </data>
+  <data name="DataViewer.DataViewChanged" xml:space="preserve">
+    <value>The data view has been changed, do you want to save it to the database?</value>
+  </data>
+  <data name="DataViewer.InvalidDataView" xml:space="preserve">
+    <value>There are problems with the data view.\n Do you want to view the details?</value>
+  </data>
+  <data name="DataViewer.InvalidTaxonomy" xml:space="preserve">
+    <value>There are problems with the taxonomy definition.\n Do you want to view the details?</value>
+  </data>
+  <data name="DataViewer.InvalidArrayValue" xml:space="preserve">
+    <value>There are invalid values in the array</value>
+  </data>
+  <data name="DesignStudio.InvalidAdminPassword" xml:space="preserve">
+    <value>Login Failed, Invalid administrator password.</value>
+  </data>
+  <data name="DesignStudio.InvalidAdminID" xml:space="preserve">
+    <value>Login Failed, Invalid administrator ID.</value>
+  </data>
+  <data name="DesignStudio.InvalidUserLogin" xml:space="preserve">
+    <value>Login Failed, Invalid username or password.</value>
+  </data>
+  <data name="SchemaEditor.InvalidPKClass" xml:space="preserve">
+    <value>Primary keys are not allowed for a subclass.</value>
+  </data>
+  <data name="SchemaEditor.OverwriteSchema" xml:space="preserve">
+    <value>Overwriting an existing schema in the database is not allowed. Please enter a different name.</value>
+  </data>
+  <data name="SchemaEditor.SaveSchema" xml:space="preserve">
+    <value>Are you sure that you want to save the schema to the database?</value>
+  </data>
+  <data name="SchemaEditor.UpdateSchema" xml:space="preserve">
+    <value>The schema has been updated successfully.</value>
+  </data>
+  <data name="SchemaEditor.ValidatingError" xml:space="preserve">
+    <value>Unable to saving the schema to the database due to validating errors.\nPlease fix the errors before saving it to database.\nDo you want to view the errors?</value>
+  </data>
+  <data name="SchemaEditor.DeleteItem" xml:space="preserve">
+    <value>Are you sure to delete the selected item(s)?</value>
+  </data>
+  <data name="SchemaEditor.ValidSchema" xml:space="preserve">
+    <value>The schema is validated successfully.</value>
+  </data>
+  <data name="SchemaEditor.InheritedRuleExists" xml:space="preserve">
+    <value>A propagated rule for the user or role has existed, do you want to replace it?</value>
+  </data>
+  <data name="SchemaEditor.LocalRuleExists" xml:space="preserve">
+    <value>A local rule for the user or role has already existed.</value>
+  </data>
+  <data name="SchemaEditor.SchemaChanged" xml:space="preserve">
+    <value>The schema has been changed, do you want to save it to a file?</value>
+  </data>
+  <data name="SchemaEditor.NoPrimaryKeys" xml:space="preserve">
+    <value>The class that is designated as the join manager in a relationship must have primary keys defined.</value>
+  </data>
+  <data name="SchemaEditor.ReferenceClassAdded" xml:space="preserve">
+    <value>A referenced class has been added.</value>
+  </data>
+  <data name="DataViewer.GettingData" xml:space="preserve">
+    <value>Getting data from the database...</value>
+  </data>
+  <data name="DataViewer.GettingAttachment" xml:space="preserve">
+    <value>Getting attachment info from server...</value>
+  </data>
+  <data name="DataViewer.DeletingAttachment" xml:space="preserve">
+    <value>Deleting an attachment...</value>
+  </data>
+  <data name="DataViewer.DownloadAttachment" xml:space="preserve">
+    <value>Downloading an attachment...</value>
+  </data>
+  <data name="DataViewer.AddingInstance" xml:space="preserve">
+    <value>Adding an instance to the database...</value>
+  </data>
+  <data name="DataViewer.SavingInstance" xml:space="preserve">
+    <value>Saving the changes of an instance to the database...</value>
+  </data>
+  <data name="DataViewer.DeletingInstance" xml:space="preserve">
+    <value>Deleting an instance from the database...</value>
+  </data>
+  <data name="DataViewer.SavingDataView" xml:space="preserve">
+    <value>Saving the data views to the database...</value>
+  </data>
+  <data name="DataViewer.GettingCount" xml:space="preserve">
+    <value>Getting data count from the database...</value>
+  </data>
+  <data name="DesignStudio.GettingSchema" xml:space="preserve">
+    <value>Getting a schema from the database...</value>
+  </data>
+  <data name="DesignStudio.DeletingSchema" xml:space="preserve">
+    <value>Deleting a schema in the database...</value>
+  </data>
+  <data name="DesignStudio.GettingSchemas" xml:space="preserve">
+    <value>Getting schema list...</value>
+  </data>
+  <data name="SchemaEditor.SavingSchema" xml:space="preserve">
+    <value>Saving the schema to the database...</value>
+  </data>
+  <data name="SchemaEditor.LoadingUpdateLog" xml:space="preserve">
+    <value>Loading the update log from the database...</value>
+  </data>
+  <data name="DataViewer.InstanceAdded" xml:space="preserve">
+    <value>The instance has been added.</value>
+  </data>
+  <data name="DataViewer.InstanceDeleted" xml:space="preserve">
+    <value>The instance has been deleted.</value>
+  </data>
+  <data name="DataViewer.InstanceUpdated" xml:space="preserve">
+    <value>The instance has been updated.</value>
+  </data>
+  <data name="ImportExport.CompileErrors" xml:space="preserve">
+    <value>Encounter the following compilation errors: </value>
+  </data>
+  <data name="ImportExport.CompileSuccess" xml:space="preserve">
+    <value>"Built succeeded."</value>
+  </data>
+  <data name="SchemaEditor.EnterName" xml:space="preserve">
+    <value>Please enter a name.</value>
+  </data>
+  <data name="SchemaEditor.InvalidName" xml:space="preserve">
+    <value>A name can only be made up of English letters, optionally followed by digits.</value>
+  </data>
+  <data name="SchemaEditor.InvalidCaption" xml:space="preserve">
+    <value>Please enter a caption.</value>
+  </data>
+  <data name="SchemaEditor.DulicateClassName" xml:space="preserve">
+    <value>A class with the same name already exists in this schema.</value>
+  </data>
+  <data name="SchemaEditor.DulicateAttributeName" xml:space="preserve">
+    <value>An attribute with the same name already exists in the currently selected class, its parent class, or its subclasses.</value>
+  </data>
+  <data name="SchemaEditor.DulicateRelationshipName" xml:space="preserve">
+    <value>A relationship with the same name already exists in the current class, its parent class, or its subclasses.</value>
+  </data>
+  <data name="SchemaEditor.InvalidRelationshipName" xml:space="preserve">
+    <value>The name of a backward relationship cannot be the same as the forward relationship</value>
+  </data>
+  <data name="SchemaEditor.DulicateConstraintName" xml:space="preserve">
+    <value>A constraint with the same name already exists in this schema.</value>
+  </data>
+  <data name="SchemaEditor.DulicateTaxonomyName" xml:space="preserve">
+    <value>A taxonomy with the same name already exists.</value>
+  </data>
+  <data name="SchemaEditor.DulicateTaxonName" xml:space="preserve">
+    <value>A node with the same name already exists.</value>
+  </data>
+  <data name="SchemaEditor.DulicateDataViewName" xml:space="preserve">
+    <value>A dataview with the same name already exists in this schema.</value>
+  </data>
+  <data name="DesignStudio.NoDatabasePermission" xml:space="preserve">
+    <value>Sorry, you don't have the permission to access the database.</value>
+  </data>
+  <data name="SchemaEditor.LeafClassRequired" xml:space="preserve">
+    <value>You must select a leaf class.</value>
+  </data>
+  <data name="SchemaEditor.AddClass" xml:space="preserve">
+    <value>Add Class...</value>
+  </data>
+  <data name="SchemaEditor.UnknowDestinationClass" xml:space="preserve">
+    <value>Please specify the destination class first</value>
+  </data>
+  <data name="SchemaEditor.DulicateSelectorName" xml:space="preserve">
+    <value>A selector with the same name already exists in this schema</value>
+  </data>
+  <data name="DesignStudio.About" xml:space="preserve">
+    <value>AboutDesignStudio.rtf</value>
+  </data>
+  <data name="SchemaEditor.FixDatabase" xml:space="preserve">
+    <value>Fixing the database...</value>
+  </data>
+  <data name="SchemaEditor.FixDatabaseDone" xml:space="preserve">
+    <value>Fixing the database is completed, check the update log.</value>
+  </data>
+  <data name="DesignStudio.OnlineHelp" xml:space="preserve">
+    <value>DesignStudioHelp.chm</value>
+  </data>
+  <data name="DesignStudio.BackupData" xml:space="preserve">
+    <value>Backup the database...</value>
+  </data>
+  <data name="DesignStudio.BackupComplete" xml:space="preserve">
+    <value>Backup completed!</value>
+  </data>
+  <data name="DesignStudio.RestoreData" xml:space="preserve">
+    <value>Restore the database...</value>
+  </data>
+  <data name="DesignStudio.RestoreComplete" xml:space="preserve">
+    <value>Restore the database completed!</value>
+  </data>
+  <data name="DesignStudio.OverrideDatabase" xml:space="preserve">
+    <value>A schema with the same name already exists! Do you want to override it?</value>
+  </data>
+  <data name="DesignStudio.OlderClientVersion" xml:space="preserve">
+    <value>The DesignStudio has an older version than that of the server. You need to upgrade the DesignStudio to version</value>
+  </data>
+  <data name="DesignStudio.NewerClientVersion" xml:space="preserve">
+    <value>The server version is older than that of DesignStudio. Please ask your administrator to upgrade the server version to version</value>
+  </data>
+  <data name="DesignStudio.BackupMetaData" xml:space="preserve">
+    <value>Backing up metadata...</value>
+  </data>
+  <data name="DesignStudio.BackupClassData" xml:space="preserve">
+    <value>Backing up instance data for class</value>
+  </data>
+  <data name="DesignStudio.BackupAttachment" xml:space="preserve">
+    <value>Backing up attachment</value>
+  </data>
+  <data name="DesignStudio.PivotLayout" xml:space="preserve">
+    <value>Backing up pivot layout</value>
+  </data>
+  <data name="DesignStudio.PackFiles" xml:space="preserve">
+    <value>Packing files into a zipped file</value>
+  </data>
+  <data name="DesignStudio.UnpackData" xml:space="preserve">
+    <value>Unpacking files...</value>
+  </data>
+  <data name="DesignStudio.CreateDatabase" xml:space="preserve">
+    <value>Creating a database...</value>
+  </data>
+  <data name="DesignStudio.DeleteDatabase" xml:space="preserve">
+    <value>Deleting the existing database...</value>
+  </data>
+  <data name="DesignStudio.LoadInstances" xml:space="preserve">
+    <value>Loading instance data for class</value>
+  </data>
+  <data name="DesignStudio.FixRelationships" xml:space="preserve">
+    <value>Fixing relationships among instances</value>
+  </data>
+  <data name="DesignStudio.UploadAttachment" xml:space="preserve">
+    <value>Uploading attachment</value>
+  </data>
+  <data name="DesignStudio.UploadPivotLayout" xml:space="preserve">
+    <value>Uploading pivot layout</value>
+  </data>
+  <data name="DesignStudio.DeleteDatabaseError" xml:space="preserve">
+    <value>There are errors occurred during deleting the database. The errors can be ignored.</value>
+  </data>
+  <data name="DesignStudio.MissingRole" xml:space="preserve">
+    <value>Please select a role that has permission to modify the schema.</value>
+  </data>
+  <data name="DesignStudio.DBARequired" xml:space="preserve">
+    <value>Sorry, you are not a schema administrator. This operation can only be performed by a schema administrator</value>
+  </data>
+  <data name="DesignStudio.CreateDatabaseDone" xml:space="preserve">
+    <value>The database schema has been created.</value>
+  </data>
+  <data name="DesignStudio.ImportRange" xml:space="preserve">
+    <value>Importing data instances from </value>
+  </data>
+  <data name="DesignStudio.DisabledFeature" xml:space="preserve">
+    <value>This feature is not available for the evaluation license.</value>
+  </data>
+  <data name="DesignStudio.AdvancedFeature" xml:space="preserve">
+    <value>This feature requires an enterprise-level license</value>
+  </data>
+  <data name="DesignStudio.RemainedDays" xml:space="preserve">
+    <value>Only {0} days remained for the evaluation.</value>
+  </data>
+  <data name="Import.MissingDLL" xml:space="preserve">
+    <value>The assembly of the converter has not been generated. Please user Visual Parser Generator to generate the assemblies for the converters.</value>
+  </data>
+  <data name="Import.MissingXML" xml:space="preserve">
+    <value>The converter settings have not been specified.</value>
+  </data>
+  <data name="Import.DuplicateConverter" xml:space="preserve">
+    <value>The converter with the same assembly name already exists.</value>
+  </data>
+  <data name="Import.AssemblyExists" xml:space="preserve">
+    <value>The assembly has already existed, do you want to replace it?</value>
+  </data>
+  <data name="Import.ConverterExists" xml:space="preserve">
+    <value>The converter has already existed, do you want to replace it?</value>
+  </data>
+  <data name="Import.UnknownDataType" xml:space="preserve">
+    <value>has an unknown data type.</value>
+  </data>
+  <data name="SchemaEditor.UnableDeleteClass" xml:space="preserve">
+    <value>Unable to delete the class since it contains instances. Please use DataEditor to delete the instances first.</value>
+  </data>
+  <data name="DataViewer.DeleteAllInstances" xml:space="preserve">
+    <value>Are you sure that you want to delete all instances in this class?</value>
+  </data>
+  <data name="DataViewer.DeletingAllInstances" xml:space="preserve">
+    <value>Deleting all instances of the class...</value>
+  </data>
+  <data name="DataViewer.ValidData" xml:space="preserve">
+    <value>No validating errors found.</value>
+  </data>
+  <data name="SchemaEditor.LocalRule" xml:space="preserve">
+    <value>Local</value>
+  </data>
+  <data name="SchemaEditor.InheritedRule" xml:space="preserve">
+    <value>Inherited</value>
+  </data>
+  <data name="DataViewer.BuildFullTextIndex" xml:space="preserve">
+    <value>Building full-text index for class</value>
+  </data>
+  <data name="SchemaEditor.ReservedWord" xml:space="preserve">
+    <value>{0} is a reserved word</value>
+  </data>
+  <data name="SchemaEditor.EnterVersion" xml:space="preserve">
+    <value>Please enter a schema version.</value>
+  </data>
+  <data name="SchemaEditor.InvalidSchemaName" xml:space="preserve">
+    <value>A schema name has to start with letters and does not allow spaces, comma, period, etc.</value>
+  </data>
+  <data name="SchemaEditor.MissingClassSpec" xml:space="preserve">
+    <value>Please select a class for the taxon node first.</value>
+  </data>
+  <data name="SchemaEditor.ClassReferencedByDataView" xml:space="preserve">
+    <value>The class has been referenced by data view {0}, and please remove the references first.</value>
+  </data>
+  <data name="SchemaEditor.DataViewReferenced" xml:space="preserve">
+    <value>The data view has been referenced by a node in taxonomy '{0}'. Please remove the references first.</value>
+  </data>
+  <data name="SchemaEditor.DataViewReferencedByClass" xml:space="preserve">
+    <value>The data view has been referenced by a class '{0}'. Please remove the references first.</value>
+  </data>
+  <data name="DataView.LargeData" xml:space="preserve">
+    <value>There are {0} data records to be downloaded which may consume {1} MB memory. Are you that you want to continue this operation?</value>
+  </data>
+  <data name="DataView.MissingInstanceCount" xml:space="preserve">
+    <value>This operation requires information of total instance count. Please click "Cout" button to get the total instance count first.</value>
+  </data>
+  <data name="DataView.GettingData" xml:space="preserve">
+    <value>Getting data records of a range</value>
+  </data>
+  <data name="DataView.ExportFileFilter" xml:space="preserve">
+    <value>Microsoft Excel Files  (*.xls)|*.xls|Text Files (Tab delimited)  (*.txt)|*.txt</value>
+  </data>
+  <data name="DataView.NonExistClass" xml:space="preserve">
+    <value>The class has not been saved to the database, therefore, cannot be viewed.</value>
+  </data>
+  <data name="SchemaEditor.NameTakenByClass" xml:space="preserve">
+    <value>The name has been used as a class name.</value>
+  </data>
+  <data name="SchemaEditor.IsAttributeName" xml:space="preserve">
+    <value>The name has been used as an attribute name in the parent classes.</value>
+  </data>
+  <data name="DesignStudio.DeleteDatabaseDone" xml:space="preserve">
+    <value>The database is deleted.</value>
+  </data>
+  <data name="DataViewer.DeleteInstancesFailed" xml:space="preserve">
+    <value>Failed in deleting the instances. Make sure that the instances are not referenced by other instances. If so, delete the related instances first. (Tip: Use the + sign on the left side of datagrid to find the related instances.)</value>
+  </data>
+  <data name="SchemaEditor.NullEnumValue" xml:space="preserve">
+    <value>Enum value cannot be empty.</value>
+  </data>
+  <data name="SchemaEditor.EnumValueExist" xml:space="preserve">
+    <value>Enum value {0} already exists.</value>
+  </data>
+  <data name="SchemaEditor.NullEnumText" xml:space="preserve">
+    <value>Display Text cannot be empty.</value>
+  </data>
+  <data name="SchemaEditor.EnumTextExist" xml:space="preserve">
+    <value>Display text {0} already exists.</value>
+  </data>
+  <data name="SchemaEditor.ConfirmDeleteEnum" xml:space="preserve">
+    <value>The enum has been referenced. Deleting an enum value may cause data inconsistency in the database. Are you sure that you want to delete it?</value>
+  </data>
+  <data name="DesignStudio.BackupAttachments" xml:space="preserve">
+    <value>Do you want to backup the attachment files? It may take a long time to backup large attachment files.</value>
+  </data>
+  <data name="Import.AttributesOverflow" xml:space="preserve">
+    <value>Too many attributes in this class. The maximum number of attributes per class is </value>
+  </data>
+  <data name="DesignStudio.DuplicateAttributeName" xml:space="preserve">
+    <value>Attribute with name {0} has already existed in the dataview. A dataview doesn't allow attributes with the same name.</value>
+  </data>
+  <data name="SchemaEditor.LockObtained" xml:space="preserve">
+    <value>You've obtained a lock that allows you to modify the metadata model.</value>
+  </data>
+  <data name="SchemaEditor.LockReleased" xml:space="preserve">
+    <value>The lock is released successfully. </value>
+  </data>
+  <data name="SchemaEditor.ForUpdateAndInsert" xml:space="preserve">
+    <value>This property is valid only if the operation type is Insert, Update., or timers</value>
+  </data>
+  <data name="SchemaEditor.ForUpdateOperation" xml:space="preserve">
+    <value>This property is valid only if the operation type is Update.</value>
+  </data>
+  <data name="SmartWord.InvalidTable" xml:space="preserve">
+    <value>A table must have at least two template rows: a header and a Line Item.</value>
+  </data>
+  <data name="SmartWord.InsertViewNode" xml:space="preserve">
+    <value>Insert View Node</value>
+  </data>
+  <data name="SmartWord.InsertPropertyNode" xml:space="preserve">
+    <value>Insert Property Node</value>
+  </data>
+  <data name="SmartWord.TooManyTables" xml:space="preserve">
+    <value>A ClassNode can only contain zero or one table.</value>
+  </data>
+  <data name="SchemaEditor.CompileErrors" xml:space="preserve">
+    <value>Encounter the following compilation errors: </value>
+  </data>
+  <data name="SchemaEditor.CompileFormulaCode" xml:space="preserve">
+    <value>Please compile the code to make sure it has no problems.</value>
+  </data>
+  <data name="SchemaEditor.CompileSuccess" xml:space="preserve">
+    <value>Built succeeded</value>
+  </data>
+  <data name="SchemaEditor.AttributeReferencedByTaxonomy" xml:space="preserve">
+    <value>The attribute has been referenced by the search expression or auto-classifying definition of the node {0}. Please remove the references first.</value>
+  </data>
+  <data name="SchemaEditor.ClassReferencedByTaxonomy" xml:space="preserve">
+    <value>The class has been referenced by taxonomy {0}, and please remove the references first.</value>
+  </data>
+  <data name="SchemaEditor.AttributeReferencedByDataView" xml:space="preserve">
+    <value>The attribute has been referenced by data view {0}, and please remove the references first.</value>
+  </data>
+  <data name="DesignStudio.RefreshMetaData" xml:space="preserve">
+    <value>The local meta-data model has been modified. Are you sure that you want to override it?</value>
+  </data>
+  <data name="SchemaEditor.AttributeReferencedByEvent" xml:space="preserve">
+    <value>The attribute has been referenced by event {0}, and please remove the references first.</value>
+  </data>
+  <data name="InvalidConstraintTypeChange" xml:space="preserve">
+    <value>Changing of data type is disallowed since the constraint has been referenced by some attributes whose owner class has existed data instances.</value>
+  </data>
+  <data name="InvalidSelectionModeChange" xml:space="preserve">
+    <value>Changing of the IsMultipleSelection is disallowed since the enum constraint has been referenced by the attribute {1} in the non-empty class {0}. Please delete the data instances in the class first.</value>
+  </data>
+  <data name="WorkflowMonitor.NoBindingInfo" xml:space="preserve">
+    <value>The workflow instance doesn't have a binding data instance.</value>
+  </data>
+  <data name="WorkflowMonitor.NoTask" xml:space="preserve">
+    <value>The workflow instance doesn't have an associated task.</value>
+  </data>
+  <data name="DesignStudio.UnableToSwitchUser" xml:space="preserve">
+    <value>The DesignStudio has been dedicated to the user {0}. To connect as a different user, and please restart DesignStudio.</value>
+  </data>
+  <data name="SchemaEditor.UKNotAllowedForPK" xml:space="preserve">
+    <value>The attribute whose IsUnique property sets to true, can not be used as a primary key.</value>
+  </data>
+  <data name="SchemaEditor.DisallowReset" xml:space="preserve">
+    <value>Reset on the property of a Schema Model element isn't allowed.</value>
+  </data>
+  <data name="SmartWord.UnknownElement" xml:space="preserve">
+    <value>Unable to find the specified metadata element</value>
+  </data>
+  <data name="SchemaEditor.IncompleteRule" xml:space="preserve">
+    <value>The rule is incomplete. A rule must have a IF and a THEN statements.</value>
+  </data>
+  <data name="DesignStudio.Functions" xml:space="preserve">
+    <value>Functions</value>
+  </data>
+  <data name="SchemaEditor.AttributeReferencedByRules" xml:space="preserve">
+    <value>The attribute has been referenced by rules owned by class {0}, and please remove the rules that reference the attribute first.</value>
+  </data>
+  <data name="SchemaEditor.RelationshipsExist" xml:space="preserve">
+    <value>Please remove the relationship attributes in the class first.</value>
+  </data>
+  <data name="SchemaEditor.SubclassesExist" xml:space="preserve">
+    <value>Please remove the subclasses of this class first.</value>
+  </data>
+  <data name="SchemaEditor.UnknownRelationship" xml:space="preserve">
+    <value>Please select a relationship type.</value>
+  </data>
+  <data name="DataViewer.AllLeafClasses" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="DesignStudio.ClientAdded" xml:space="preserve">
+    <value>The DesignStudio client has been registered on the server</value>
+  </data>
+  <data name="DesignStudio.ClientRemoved" xml:space="preserve">
+    <value>The DesignStudio client has been removed from the server</value>
+  </data>
+  <data name="SmartWord.ClientAdded" xml:space="preserve">
+    <value>The SmartWord client has been registered on the server</value>
+  </data>
+  <data name="SmartWord.ClientRemoved" xml:space="preserve">
+    <value>The SmartWord client has been removed from the server</value>
+  </data>
+  <data name="WorkflowStudio.ClientAdded" xml:space="preserve">
+    <value>The WorkflowStudio client has been registered on the server</value>
+  </data>
+  <data name="WorkflowStudio.ClientRemoved" xml:space="preserve">
+    <value>The WorkflowStudio client has been removed from the server</value>
+  </data>
+  <data name="DesignStudio.DuplicateSortAttribute" xml:space="preserve">
+    <value>The attribute has been used as a sort attribute.</value>
+  </data>
+  <data name="SchemaEditor.InvalidSubclass" xml:space="preserve">
+    <value>Unable to add a subclass to a leaf class since it already has existed instances. Please delete the instances first.</value>
+  </data>
+  <data name="WindowsControl.InvalidParameterValue" xml:space="preserve">
+    <value>The parameter value is invalid. The value must be of type {0}</value>
+  </data>
+  <data name="SchemaEditor.InvalidEnumValue" xml:space="preserve">
+    <value>{0} is an invalid enum display text. The display text has been used by one of the enum values except itself.</value>
+  </data>
+  <data name="DesignStudio.EnterUserId" xml:space="preserve">
+    <value>Please enter a user id</value>
+  </data>
+  <data name="DesignStudio.UserIdExist" xml:space="preserve">
+    <value>The user id has already existed.</value>
+  </data>
+  <data name="InvalidUserId" xml:space="preserve">
+    <value>User ID can't be an integer.</value>
+  </data>
+  <data name="DesignStudio.DifferentPasswords" xml:space="preserve">
+    <value>Passwords in the two text boxes are different.</value>
+  </data>
+  <data name="DesignStudio.EnterPassword" xml:space="preserve">
+    <value>Please enter a password</value>
+  </data>
+  <data name="DesignStudio.EnterPasswordAgain" xml:space="preserve">
+    <value>Please enter the password again</value>
+  </data>
+  <data name="DesignStudio.ReservedUserId" xml:space="preserve">
+    <value>{0} is a reserved user id. </value>
+  </data>
+  <data name="DesignStudio.CorrectURL" xml:space="preserve">
+    <value>The URL for accessing a remote server has been setup successfully. Please restart the client</value>
+  </data>
+  <data name="SmartWord.CorrectURL" xml:space="preserve">
+    <value>The URL for accessing a remote server has been setup successfully, Please restart the client</value>
+  </data>
+  <data name="DesignStudio.UserDisplayNameExist" xml:space="preserve">
+    <value>The user's display name {0} has already existed. Please enter a different one.</value>
+  </data>
+  <data name="DesignStudio.RoleDisplayNameExist" xml:space="preserve">
+    <value>The role's display name {0} has already existed. Please enter a different one.</value>
+  </data>
+  <data name="DesignStudio.DeleteUser" xml:space="preserve">
+    <value>Are you sure that you want to delete the user?</value>
+  </data>
+  <data name="DesignStudio.DeleteRole" xml:space="preserve">
+    <value>Are you sure that you want to delete the role?</value>
+  </data>
+  <data name="WindowsControl.InvalidLikeAttribute" xml:space="preserve">
+    <value>The selected attribute is not appropriate for like operator</value>
+  </data>
+  <data name="SchemaEditor.BadTypesForPK" xml:space="preserve">
+    <value>Attribute with Bool, Date, DateTime, or Text data type cannot be picked as a primary key.</value>
+  </data>
+  <data name="SchemaEditor.NodeWithoutDataView" xml:space="preserve">
+    <value>This node doesn't have an associated data view. A data view can be specified by setting the ClassName or/and DataViewName, or inherited from one of its parent nodes.</value>
+  </data>
+  <data name="SchemaEditor.LevelNodeText" xml:space="preserve">
+    <value>Level {0}</value>
+  </data>
+  <data name="SchemaEditor.MissingClassifyAttribute" xml:space="preserve">
+    <value>The Classifying Attribute of level '{0}' has not been specified.</value>
+  </data>
+  <data name="SchemaEditor.TooManyChildNodes" xml:space="preserve">
+    <value>The node with path {0} has too many children. The limit is {1}.</value>
+  </data>
+  <data name="SchemaEditor.HierarchyGenerationCancelled" xml:space="preserve">
+    <value>The process of generating a hierarchy is canceled.</value>
+  </data>
+  <data name="SchemaEditor.TooBigSize" xml:space="preserve">
+    <value>The class has {0} instances. It will take a long time to generate hierarchy. Do you want to continue?</value>
+  </data>
+  <data name="SchemaEditor.ClearAutoClassify" xml:space="preserve">
+    <value>This change will clear the definition of auto-classifying, do you want to continue?</value>
+  </data>
+  <data name="SmartWord.NotRelatedClass" xml:space="preserve">
+    <value>Cannot add a view into a family that is not related to the base view {0}</value>
+  </data>
+  <data name="SmartWord.TooManyInstances" xml:space="preserve">
+    <value>The class {0} has {1} data instances which are too many to populated into a Word Table. The limit is {2}.</value>
+  </data>
+  <data name="SmartWord.NoReadPermission" xml:space="preserve">
+    <value>You don't have permission to read data associated with view  {0}.</value>
+  </data>
+  <data name="SmartWord.UnknownTitle" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="DesignStudio.BackupImage" xml:space="preserve">
+    <value>Backing up images</value>
+  </data>
+  <data name="DesignStudio.UploadImage" xml:space="preserve">
+    <value>Uploading image:</value>
+  </data>
+  <data name="DataViewer.UpdateDone" xml:space="preserve">
+    <value>Updating completed</value>
+  </data>
+  <data name="DataViewer.Updating" xml:space="preserve">
+    <value>Updating data instances...</value>
+  </data>
+  <data name="SchemaEditor.ObjId" xml:space="preserve">
+    <value>Internal Key</value>
+  </data>
+  <data name="DesignStudio.BindingInstanceIds" xml:space="preserve">
+    <value>Updating workflow binding data instances...</value>
+  </data>
+  <data name="DesignStudio.TooBigForFastImport" xml:space="preserve">
+    <value>Do not allow to import more than {0} records at a time. Please import data in blocks.</value>
+  </data>
+  <data name="SmartWord.InsertDatabaseNode" xml:space="preserve">
+    <value>Insert Database Node</value>
+  </data>
+  <data name="WorkflowStudioApp.NoBindingClass" xml:space="preserve">
+    <value>There isn't a data class specified that is bound to the workflow.</value>
+  </data>
+  <data name="DataViewer.LayoutNameExist" xml:space="preserve">
+    <value>A pivot layout with the same name exists, and please enter a different name.</value>
+  </data>
+  <data name="DataViewer.NoLayoutName" xml:space="preserve">
+    <value>Please enter a name</value>
+  </data>
+  <data name="WorkflowStudio.TaskSubstituteModel" xml:space="preserve">
+    <value>Task Substitute Definition</value>
+  </data>
+  <data name="WorkflowStudio.Rule" xml:space="preserve">
+    <value>Rule</value>
+  </data>
+  <data name="WorkflowStduio.SubjectExist" xml:space="preserve">
+    <value>The subject has existed.</value>
+  </data>
+  <data name="WorkflowStudio.TaskSubstituteLocked" xml:space="preserve">
+    <value>The task substitute model has been locked by another user, do you want to unlock it?</value>
+  </data>
+  <data name="WorkflowMonitor.EnterActivityName" xml:space="preserve">
+    <value>Please enter an activity name</value>
+  </data>
+  <data name="SchemaEditor.InvalidCustomPages" xml:space="preserve">
+    <value>The URL of some of the custom pages are not specified</value>
+  </data>
+  <data name="SchemaEditor.MethodCodeOK" xml:space="preserve">
+    <value>The method code compiled successfully</value>
+  </data>
+  <data name="SchemaEditor.MethodCodeTooLong" xml:space="preserve">
+    <value>The length of the code is too long, it should be less than 5000 characters.</value>
+  </data>
+  <data name="SchemaEditor.IllegalEnumValue" xml:space="preserve">
+    <value>Display text of an enum item cannot be zero.</value>
+  </data>
+  <data name="SchemaEditor.ReferenceLeafClassAdded" xml:space="preserve">
+    <value>One of the classes has been added.</value>
+  </data>
+  <data name="SchemaEditor.TheClassExistInXMLSchema" xml:space="preserve">
+    <value>The class has been added to the XML schema</value>
+  </data>
+  <data name="SchemaEditor.ChildLeafClassExistInXMLSchema" xml:space="preserve">
+    <value>One of the child classes has been added to the XML schema</value>
+  </data>
+  <data name="SchemaEditor.ParentClassExistInXMLSchema" xml:space="preserve">
+    <value>Its parent has been added to the XML schema</value>
+  </data>
+  <data name="SchemaEditor.UserExist" xml:space="preserve">
+    <value>The user has been chosen.</value>
+  </data>
+  <data name="SchemaEditor.InvalidCaptionWithSepcialChars" xml:space="preserve">
+    <value>The display text can not contain single quotes or double quotes.</value>
+  </data>
+  <data name="SchemaEditor.DulicateXMLSchemaViewName" xml:space="preserve">
+    <value>An XML Schema View with the same name already exists.</value>
+  </data>
+  <data name="DataViewer.GeneratingXML" xml:space="preserve">
+    <value>Generating XML document...</value>
+  </data>
+  <data name="DataViewer.GeneratingXMLCompleted" xml:space="preserve">
+    <value>Generating XML document completed</value>
+  </data>
+  <data name="SmartExcel.XMLSchemaExisted" xml:space="preserve">
+    <value>An XML Schema with the same name has already existed in this excel file, so you want to reload the XML Schema?.</value>
+  </data>
+  <data name="SmartExcel.XMLSchemaNotSelected" xml:space="preserve">
+    <value>Please select an XML Schema from the list above</value>
+  </data>
+  <data name="SchemaEditor.Custom" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="SchemaEditor.Standard" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="DesignStudio.SetServerUrlDone" xml:space="preserve">
+    <value>Server URL has been changed, restart the ebaas server</value>
+  </data>
+</root>

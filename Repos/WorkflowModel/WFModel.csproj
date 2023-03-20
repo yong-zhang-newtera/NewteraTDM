@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EF0030AC-1F81-448B-B9F2-3CF5EFFBEA52}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Newtera.WFModel</RootNamespace>
+    <AssemblyName>Newtera.WFModel</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>NewteraKeys.snk</AssemblyOriginatorKeyFile>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Workflow.ComponentModel" />
+    <Reference Include="System.Workflow.Runtime" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CancelWorkflowException.cs" />
+    <Compile Include="CancelActivityEventArgs.cs" />
+    <Compile Include="DBEventSubscription.cs" />
+    <Compile Include="MessageInfo.cs" />
+    <Compile Include="TaskLogInfo.cs" />
+    <Compile Include="WizardPageData.cs" />
+    <Compile Include="WorkflowEventSubscription.cs" />
+    <Compile Include="WorkflowInstanceBindingInfoCollection.cs" />
+    <Compile Include="ParameterDataType.cs" />
+    <Compile Include="INewteraWorkflow.cs" />
+    <Compile Include="StorageProviderFactory.cs" />
+    <Compile Include="IStorageProvider.cs" />
+    <Compile Include="Substitute\SubstituteEntry.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubstituteEntry.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Substitute\TaskSubstituteModel.cs" />
+    <Compile Include="Substitute\SubjectEntry.cs" />
+    <Compile Include="Substitute\SubjectEntryCollection.cs" />
+    <Compile Include="Substitute\SubstituteEntry.cs" />
+    <Compile Include="Substitute\SubstituteEntryCollection.cs" />
+    <Compile Include="Tracking\NewteraTrackingWorkflowInstance.cs" />
+    <Compile Include="Tracking\NewteraActivityTrackingRecord.cs" />
+    <Compile Include="Tracking\NewteraTrackingWorkflowInstanceCollection.cs" />
+    <Compile Include="Tracking\NewteraActivityTrackingRecordCollection.cs" />
+    <Compile Include="WorkflowDataTypeEnum.cs" />
+    <Compile Include="WorkflowInstanceBindingInfo.cs" />
+    <Compile Include="WorkflowModelCollection.cs" />
+    <Compile Include="WorkflowModel.cs" />
+    <Compile Include="ElementFactory.cs" />
+    <Compile Include="ElementTypeEnum.cs" />
+    <Compile Include="WFModelElementCollection.cs" />
+    <Compile Include="WFModelException.cs" />
+    <Compile Include="IWFModelElementVisitor.cs" />
+    <Compile Include="IWFModelElement.cs" />
+    <Compile Include="ProjectModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WFModelElementBase.cs" />
+    <Compile Include="ProjectModelContext.cs" />
+    <Compile Include="WorkflowTypeEnum.cs" />
+    <Compile Include="FileStorageProvider.cs" />
+    <Compile Include="MemoryStorageProvider.cs" />
+    <Compile Include="StorageTypeEnum.cs" />
+    <Compile Include="ProjectInfo.cs" />
+    <Compile Include="ProjectInfoCollection.cs" />
+    <Compile Include="EventInfo.cs" />
+    <Compile Include="TaskInfo.cs" />
+    <Compile Include="InputParameter.cs" />
+    <Compile Include="CustomTypeDescriptorBase.cs" />
+    <Compile Include="ParameterBindingInfo.cs" />
+    <Compile Include="CustomAction.cs" />
+    <Compile Include="CustomActionCollection.cs" />
+    <Compile Include="TaskInfoCollection.cs" />
+    <Compile Include="WorkflowInstanceStateInfo.cs" />
+    <Compile Include="WorkflowInstanceStateInfoCollection.cs" />
+    <Compile Include="DBEventSubscriptionCollection.cs" />
+    <Compile Include="WorkflowEventSubscriptionCollection.cs" />
+    <Compile Include="WizardEventSubscription.cs" />
+    <Compile Include="WizardEventSubscriptionCollection.cs" />
+    <Compile Include="IWizardStep.cs" />
+    <Compile Include="ReassignedTaskInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NewteraKeys.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{CF010325-1364-4754-9192-CF7873C35F90}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\Newtera.WFModel.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="InputParameter.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>InputParameter.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>InputParameter.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputParameter.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>InputParameter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ParameterBindingInfo.resx">
+      <DependentUpon>ParameterBindingInfo.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ParameterBindingInfo.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ParameterBindingInfo.zh-CN.resx">
+      <DependentUpon>ParameterBindingInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomAction.resx">
+      <DependentUpon>CustomAction.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CustomAction.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomAction.zh-CN.resx">
+      <DependentUpon>CustomAction.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Substitute\SubstituteEntry.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SubstituteEntry.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubstituteEntry.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Substitute\SubstituteEntry.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SubstituteEntry.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

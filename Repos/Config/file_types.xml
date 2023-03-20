@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FileTypes>
+	<FileType type="unknown" desc="Unknown Type Document" application="" smallIcon="icons\sunknown.bmp" largeIcon="icons\lunknown.bmp">
+		<Suffix name=""/>
+	</FileType>	
+	<FileType type="application/zip" desc="WinZip File" application="winzip32.exe" smallIcon="icons\szip.bmp" largeIcon="icons\lzip.bmp">
+		<Suffix name="ZIP"/>
+		<Suffix name="Z"/>
+		<Suffix name="ARC"/>
+		<Suffix name="BHX"/>
+		<Suffix name="GZ"/>
+		<Suffix name="HQX"/>
+		<Suffix name="LZH"/>
+		<Suffix name="TAR"/>
+		<Suffix name="TAZ"/>
+		<Suffix name="TZ"/>
+		<Suffix name="UU"/>
+	</FileType>
+	<FileType type="image/bmp" desc="Bitmap File" application="Unknown" smallIcon="icons\sbmp.bmp" largeIcon="icons\lbmp.bmp">
+		<Suffix name="BMP"/>
+	</FileType>	
+	<FileType type="text/cs" desc="C# Source File" application="" smallIcon="icons\scsharp.bmp" largeIcon="icons\lcsharp.bmp">
+		<Suffix name="CS"/>
+	</FileType>
+	<FileType type="application/word" desc="Microsoft Word 2003-2007 File" application="word.exe" smallIcon="icons\sword.bmp" largeIcon="icons\lword.bmp">
+		<Suffix name="DOC"/>
+		<Suffix name="DOCX"/>
+	</FileType>
+	<FileType type="image/gif" desc="GIF Image" application="" smallIcon="icons\sgif.bmp" largeIcon="icons\lgif.bmp">
+		<Suffix name="GIF"/>
+	</FileType>	
+	<FileType type="text/html" desc="HTML Document" application="explorer.exe" smallIcon="icons\shtml.bmp" largeIcon="icons\lhtml.bmp">
+		<Suffix name="HTM"/>
+		<Suffix name="HTML"/>
+		<Suffix name="HTW"/>
+    <Suffix name="aspx"/>
+	</FileType>
+	<FileType type="application/exe" desc="Windows Application" application="" smallIcon="icons\sexe.bmp" largeIcon="icons\lexe.bmp">
+		<Suffix name="EXE"/>
+	</FileType>	
+	<FileType type="image/icon" desc="Icon" application="" smallIcon="icons\sicon.bmp" largeIcon="icons\licon.bmp">
+		<Suffix name="ICO"/>
+	</FileType>	
+	<FileType type="text/java" desc="Java Source File" application="" smallIcon="icons\sjava.bmp" largeIcon="icons\ljava.bmp">
+		<Suffix name="JAVA"/>
+	</FileType>
+	<FileType type="image/jpeg" desc="JPEG Image" application="" smallIcon="icons\sjpeg.bmp" largeIcon="icons\ljpeg.bmp">
+		<Suffix name="JPEG"/>
+		<Suffix name="JFIF"/>
+		<Suffix name="JPE"/>
+		<Suffix name="JPG"/>
+	</FileType>	
+	<FileType type="text/plain" desc="Plain Text File" application="" smallIcon="icons\sptext.bmp" largeIcon="icons\lptext.bmp">
+		<Suffix name="TXT"/>
+		<Suffix name="TEXT"/>
+		<Suffix name="LOG"/>
+		<Suffix name="WTX"/>
+	</FileType>
+	<FileType type="video/mpeg" desc="MPEG Video File" application="" smallIcon="icons\smpeg.bmp" largeIcon="icons\lmpeg.bmp">
+		<Suffix name="MPEG"/>
+		<Suffix name="MPG"/>
+		<Suffix name="MPV2"/>
+	</FileType>
+	<FileType type="application/pdf" desc="Adobe Acrobat File" application="" smallIcon="icons\spdf.bmp" largeIcon="icons\lpdf.bmp">
+		<Suffix name="PDF"/>
+	</FileType>
+	<FileType type="image/png" desc="PNG Image" application="" smallIcon="icons\spng.bmp" largeIcon="icons\lpng.bmp">
+		<Suffix name="PNG"/>
+	</FileType>
+	<FileType type="application/ppt" desc="Microsoft PowerPoint Document" application="" smallIcon="icons\sppt.bmp" largeIcon="icons\lppt.bmp">
+		<Suffix name="PPT"/>
+	</FileType>
+  <FileType type="application/odt" desc="Apache Open Office Word" application="" smallIcon="icons\OdfWord.bmp" largeIcon="icons\OdfWordL.bmp">
+    <Suffix name="ODT"/>
+  </FileType>
+  <FileType type="application/ods" desc="Apache Open Office Excel" application="" smallIcon="icons\OdfExcel.bmp" largeIcon="icons\OdfExcelL.bmp">
+    <Suffix name="ODS"/>
+  </FileType>
+  <FileType type="application/odp" desc="Apache Open Office PowerPoint" application="" smallIcon="icons\OdfPowerPoint.bmp" largeIcon="icons\OdfPowerPointL.bmp">
+    <Suffix name="ODP"/>
+  </FileType>
+  <FileType type="application/odg" desc="Apache Open Office Chart" application="" smallIcon="icons\OdfChart.bmp" largeIcon="icons\OdfChartL.bmp">
+    <Suffix name="ODG"/>
+  </FileType>
+	<FileType type="images/tif" desc="TIF Image" application="" smallIcon="icons\stif.bmp" largeIcon="icons\ltif.bmp">
+		<Suffix name="TIF"/>
+		<Suffix name="TIFF"/>
+	</FileType>
+	<FileType type="application/xls" desc="Microsoft Excel Document" application="" smallIcon="icons\sexcel.bmp" largeIcon="icons\lexcel.bmp">
+		<Suffix name="XLS"/>		
+		<Suffix name="XLB"/>
+    		<Suffix name="XLSX"/>
+	</FileType>
+	<FileType type="text/xml" desc="XML Document" application="" smallIcon="icons\sxml.bmp" largeIcon="icons\lxml.bmp">
+		<Suffix name="XML"/>
+	</FileType>
+	<FileType type="text/xsd" desc="XML Schema Document" application="" smallIcon="icons\sxsd.bmp" largeIcon="icons\lxsd.bmp">
+		<Suffix name="XSD"/>
+	</FileType>
+	<FileType type="text/xsl" desc="XSL Stylesheet" application="" smallIcon="icons\sxsl.bmp" largeIcon="icons\lxsl.bmp">
+		<Suffix name="XSL"/>
+	</FileType>
+	<FileType type="application/plt" desc="TecPlot Document" application="" smallIcon="icons\splt.bmp" largeIcon="icons\lplt.bmp">
+		<Suffix name="PLT"/>
+	</FileType>
+       <FileType type="application/dwf" desc="Autodesk Document" application="" smallIcon="icons\sAutoVue.bmp" largeIcon="icons\lAutoVue.bmp">
+		<Suffix name="dwf"/>
+	</FileType>									
+</FileTypes>

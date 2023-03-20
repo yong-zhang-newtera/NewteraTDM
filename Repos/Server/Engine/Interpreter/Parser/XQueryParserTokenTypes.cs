@@ -1,0 +1,81 @@
+// $ANTLR 2.7.2: "XQuery.g" -> "XQueryParser.cs"$
+
+
+namespace Newtera.Server.Engine.Interpreter.Parser
+{
+	public class XQueryParserTokenTypes
+	{
+		public const int EOF = 1;
+		public const int NULL_TREE_LOOKAHEAD = 3;
+		public const int LITERAL_import = 4;
+		public const int Name = 5;
+		public const int LITERAL_as = 6;
+		public const int COMMA = 7;
+		public const int SLASH = 8;
+		public const int SLASH_SLASH = 9;
+		public const int SLASH_AT = 10;
+		public const int DEREFERENCE = 11;
+		public const int AT = 12;
+		public const int COLON = 13;
+		public const int L_BRACKET = 14;
+		public const int R_BRACKET = 15;
+		public const int DOLLAR = 16;
+		public const int LITERAL_return = 17;
+		public const int LITERAL_for = 18;
+		public const int LITERAL_in = 19;
+		public const int LITERAL_let = 20;
+		public const int SET_EQUAL_TO = 21;
+		public const int LITERAL_where = 22;
+		public const int LITERAL_sortby = 23;
+		public const int L_PAREN = 24;
+		public const int R_PAREN = 25;
+		public const int LITERAL_ascending = 26;
+		public const int LITERAL_descending = 27;
+		public const int LITERAL_or = 28;
+		public const int LITERAL_and = 29;
+		public const int LITERAL_to = 30;
+		public const int NOT_EQUALS = 31;
+		public const int EQUALS = 32;
+		public const int LESS_THAN = 33;
+		public const int GREATER_THAN = 34;
+		public const int LESS_THAN_EQUALS = 35;
+		public const int GREATER_THAN_EQUALS = 36;
+		public const int LITERAL_ni = 37;
+		public const int LITERAL_like = 38;
+		public const int PLUS = 39;
+		public const int MINUS = 40;
+		public const int STAR = 41;
+		public const int LITERAL_div = 42;
+		public const int MOD = 43;
+		public const int LITERAL_null = 44;
+		public const int INLINE = 45;
+		public const int NUMERIC_LITERAL = 46;
+		public const int STRING_LITERAL = 47;
+		public const int LITERAL_if = 48;
+		public const int LITERAL_then = 49;
+		public const int LITERAL_else = 50;
+		public const int LESS_THAN_SLASH = 51;
+		public const int L_BRACE = 52;
+		public const int R_BRACE = 53;
+		public const int NL = 54;
+		public const int CDATA_DATA = 55;
+		public const int LETTER = 56;
+		public const int DIGIT = 57;
+		public const int ESC = 58;
+		public const int HEX_DIGIT = 59;
+		public const int PREDEFINED_ENTITY_REF = 60;
+		public const int WS = 61;
+		public const int SEMICOLON = 62;
+		public const int D_COLON = 63;
+		public const int STAR_COLON = 64;
+		public const int D_EQUALS = 65;
+		public const int NOT_D_EQUALS = 66;
+		public const int BAR = 67;
+		public const int QUOTE = 68;
+		public const int ESCAPED_QUOTE = 69;
+		public const int S_QUOTE = 70;
+		public const int ESCAPED_S_QUOTE = 71;
+		public const int SLASH_GREATER_THAN = 72;
+		
+	}
+}

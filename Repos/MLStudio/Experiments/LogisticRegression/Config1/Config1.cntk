@@ -1,0 +1,112 @@
+# CNTK Machine Learning Configuration
+# commands to run
+command=Train:Test:Output
+modelPath = "model.dnn"
+deviceId = "auto"
+precision = float
+traceLevel = 0
+# Train command
+Train = {
+    action="train"
+
+    # configuration of data reading
+    reader = {
+        readerType = "CNTKTextFormatReader"
+        file = "C:\Newtera\ECM\src\MLStudio\Examples\Data\Train_cntk_text.txt"
+        randomize = "true"
+        input = [
+            features = [
+                dim = $dimension$
+                format = "dense"
+            ]
+            labels = [
+                dim = $labelDimension$
+                format = "dense"
+            ]
+        ]
+    }
+
+    # configuration parameters of the SGD procedure
+    SGD = {
+        epochSize = 0                 # =0 means size of the training set
+        minibatchSize = 25
+        learningRatesPerSample = 0.04  # gradient contribution from each sample
+        maxEpochs = 50
+    }
+
+    # network description
+    BrainScriptNetworkBuilder = {
+        # Feature and label dimensions
+        FeatureDim = $dimension$
+        LabelDim = $labelDimension$
+        
+        features = Input (FeatureDim)
+        labels   = Input (LabelDim)
+        
+        # parameters to learn
+        b = Parameter (LabelDim, 1)     # bias
+        w = Parameter (LabelDim, FeatureDim)  # weights
+        
+        # operations
+        p = Sigmoid (w * features + b)    
+        
+        lr = Logistic (labels, p)
+        err = SquareError (labels, p)
+        
+        # root nodes
+        featureNodes    = (features)
+        labelNodes      = (labels)
+        criterionNodes  = (lr)
+        evaluationNodes = (err)
+        outputNodes     = (p)
+        
+
+    }
+
+}
+
+# Test command
+Test = {
+    action="test"
+
+    # configuration of data reading
+    reader = {
+        readerType = "CNTKTextFormatReader"
+        file = "C:\Newtera\ECM\src\MLStudio\Examples\Data\Test_cntk_text.txt"
+        randomize = "true"
+        input = [
+            features = [
+                dim = $dimension$
+                format = "dense"
+            ]
+            labels = [
+                dim = $labelDimension$
+                format = "dense"
+            ]
+        ]
+    }
+
+}
+
+# Output command
+Output = {
+    action="write"
+
+    # configuration of data reading
+    reader = {
+        readerType = "CNTKTextFormatReader"
+        file = "C:\Newtera\ECM\src\MLStudio\Examples\Data\Test_cntk_text.txt"
+        randomize = "true"
+        input = [
+            features = [
+                dim = $dimension$
+                format = "dense"
+            ]
+        ]
+    }
+
+    outputPath = "output.txt"
+}
+
+dimension = 2
+labelDimension = 1

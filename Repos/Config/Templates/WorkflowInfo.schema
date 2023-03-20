@@ -1,0 +1,449 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:psd="http://www.newtera.com" targetNamespace="http://www.newtera.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element psd:version="1.0" psd:modifiedTime="2017-05-22T07:18:50" psd:id="3" psd:order="0" name="WORKFLOWINFO">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" maxOccurs="1" name="TaskList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="Task" type="Task" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="TaskExecuteLogList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="TaskExecuteLog" type="TaskExecuteLog" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="CompletedTaskList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="CompletedTask" type="CompletedTask" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:all>
+    </xs:complexType>
+    <xs:key name="TaskExecuteLogPK">
+      <xs:selector xpath="TaskExecuteLogList/TaskExecuteLog" />
+      <xs:field xpath="LogID" />
+    </xs:key>
+    <xs:key name="CompletedTaskPK">
+      <xs:selector xpath="CompletedTaskList/CompletedTask" />
+      <xs:field xpath="TaskId" />
+    </xs:key>
+  </xs:element>
+  <xs:simpleType psd:displayMode="Text" psd:displayName="WorkflowInstanceStatus" psd:order="0" name="WorkflowInstanceStatus">
+    <xs:restriction xmlns:q1="http://www.w3.org/2003/XMLSchema" base="q1:string">
+      <xs:enumeration id="Created" value="Created" />
+      <xs:enumeration id="Completed" value="Completed" />
+      <xs:enumeration id="Idle" value="Idle" />
+      <xs:enumeration id="Suspended" value="Suspended" />
+      <xs:enumeration id="Resumed" value="Resumed" />
+      <xs:enumeration id="Persisted" value="Persisted" />
+      <xs:enumeration id="Unloaded" value="Unloaded" />
+      <xs:enumeration id="Loaded" value="Loaded" />
+      <xs:enumeration id="Exception" value="Exception" />
+      <xs:enumeration id="Terminated" value="Terminated" />
+      <xs:enumeration id="Aborted" value="Aborted" />
+      <xs:enumeration id="Changed" value="Changed" />
+      <xs:enumeration id="Started" value="Started" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:displayMode="Text" psd:displayName="ActivityExecutionStatus" psd:order="1" name="ActivityExecutionStatus">
+    <xs:restriction xmlns:q2="http://www.w3.org/2003/XMLSchema" base="q2:string">
+      <xs:enumeration id="Initialized" value="Initialized" />
+      <xs:enumeration id="Executing" value="Executing" />
+      <xs:enumeration id="Canceling" value="Canceling" />
+      <xs:enumeration id="Closed" value="Closed" />
+      <xs:enumeration id="Compensating" value="Compensating" />
+      <xs:enumeration id="Faulting" value="Faulting" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType psd:tableName="T_TASK_4_3" psd:id="4" psd:displayName="Task" psd:order="0" name="Task">
+    <xs:sequence>
+      <xs:element psd:autoIncrement="true" psd:colName="C_TASKID_20" psd:id="20" psd:displayName="TaskId" psd:order="0" minOccurs="0" name="TaskId" xmlns:q3="http://www.w3.org/2003/XMLSchema" type="q3:integer" />
+      <xs:element psd:colName="C_WORKFLOWINSTANCEID_21" psd:id="21" psd:displayName="WorkflowInstanceId" psd:description="The workflow instance id that task belongs to" psd:order="1" minOccurs="0" name="WorkflowInstanceId" xmlns:q4="http://www.w3.org/2003/XMLSchema" type="q4:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_CREATETIME_22" psd:id="22" psd:displayName="CreateTime" psd:description="The create time of the task" psd:order="2" minOccurs="0" name="CreateTime" xmlns:q5="http://www.w3.org/2003/XMLSchema" type="q5:dateTime" />
+      <xs:element psd:colName="C_SUBJECT_23" psd:id="23" psd:displayName="Subject" psd:order="3" minOccurs="0" name="Subject" xmlns:q6="http://www.w3.org/2003/XMLSchema" type="q6:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:multiLine="true" psd:colName="C_DESCRIPTION_24" psd:id="24" psd:displayName="Description" psd:order="4" minOccurs="0" name="Description" xmlns:q7="http://www.w3.org/2003/XMLSchema" type="q7:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="500" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:multiLine="true" psd:colName="C_INSTRUCTION_25" psd:id="25" psd:displayName="Instruction" psd:order="5" minOccurs="0" name="Instruction" xmlns:q8="http://www.w3.org/2003/XMLSchema" type="q8:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="500" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_ACTIVITYNAME_26" psd:id="26" psd:displayName="ActivityName" psd:description="The name of CreateTaskActivity that created this task instance" psd:order="8" minOccurs="0" name="ActivityName" xmlns:q9="http://www.w3.org/2003/XMLSchema" type="q9:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_BINDINGSCHEMAID_27" psd:id="27" psd:displayName="BindingSchemaId" psd:order="9" minOccurs="0" name="BindingSchemaId" xmlns:q10="http://www.w3.org/2003/XMLSchema" type="q10:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_BINDINGCLASSNAME_28" psd:id="28" psd:displayName="BindingClassName" psd:order="10" minOccurs="0" name="BindingClassName" xmlns:q11="http://www.w3.org/2003/XMLSchema" type="q11:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:multiLine="true" psd:rows="10" psd:colName="C_CUSTOMACTIONS_29" psd:id="29" psd:displayName="CustomActions" psd:order="11" minOccurs="0" name="CustomActions" xmlns:q12="http://www.w3.org/2003/XMLSchema" type="q12:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="2000" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_CUSTOMFORMURL_30" psd:id="30" psd:displayName="CustomFormUrl" psd:order="12" minOccurs="0" name="CustomFormUrl" xmlns:q13="http://www.w3.org/2003/XMLSchema" type="q13:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_FORMPROPERTIES_31" psd:id="31" psd:displayName="FormProperties" psd:order="13" minOccurs="0" name="FormProperties" xmlns:q14="http://www.w3.org/2003/XMLSchema" type="q14:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="1000" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_VISIBLE_32" psd:id="32" psd:displayName="Visible" psd:order="14" minOccurs="0" name="Visible" xmlns:q15="http://www.w3.org/2003/XMLSchema" type="q15:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:dimension="1" psd:columns="1" psd:elementType="string" psd:colName="C_USERS_46" psd:id="46" psd:displayName="Users" psd:order="6" minOccurs="0" name="Users" xmlns:q16="http://www.w3.org/2003/XMLSchema" type="q16:string" />
+      <xs:element psd:dimension="1" psd:columns="1" psd:elementType="string" psd:colName="C_ROLES_47" psd:id="47" psd:displayName="Roles" psd:order="7" minOccurs="0" name="Roles" xmlns:q17="http://www.w3.org/2003/XMLSchema" type="q17:string" />
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q18="http://www.w3.org/2003/XMLSchema" type="q18:ID" />
+  </xs:complexType>
+  <xs:complexType psd:tableName="T_TASKEXECUTELOG_5_3" psd:id="5" psd:displayName="TaskExecuteLog" psd:order="1" name="TaskExecuteLog">
+    <xs:sequence>
+      <xs:element psd:autoIncrement="true" psd:key="true" psd:colName="C_LOGID_33" psd:id="33" psd:displayName="LogID" psd:order="0" minOccurs="0" name="LogID" xmlns:q19="http://www.w3.org/2003/XMLSchema" type="q19:integer" />
+      <xs:element psd:operator="LK" psd:colName="C_BINDINGINSTANCEKEY_34" psd:id="34" psd:displayName="BindingInstanceKey" psd:order="1" minOccurs="0" name="BindingInstanceKey" xmlns:q20="http://www.w3.org/2003/XMLSchema" type="q20:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:operator="LK" psd:colName="C_BINDINGINSTANCEDESC_35" psd:id="35" psd:displayName="BindingInstanceDesc" psd:order="2" minOccurs="0" name="BindingInstanceDesc" xmlns:q21="http://www.w3.org/2003/XMLSchema" type="q21:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="500" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_WORKFLOWINSTANCEID_36" psd:id="36" psd:displayName="WorkflowInstanceId" psd:order="3" minOccurs="0" name="WorkflowInstanceId" xmlns:q22="http://www.w3.org/2003/XMLSchema" type="q22:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:operator="LK" psd:colName="C_TASKNAME_37" psd:id="37" psd:displayName="TaskName" psd:order="4" minOccurs="0" name="TaskName" xmlns:q23="http://www.w3.org/2003/XMLSchema" type="q23:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_PROJECTNAME_38" psd:id="38" psd:displayName="ProjectName" psd:order="5" minOccurs="0" name="ProjectName" xmlns:q24="http://www.w3.org/2003/XMLSchema" type="q24:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_PROJECTVERSION_39" psd:id="39" psd:displayName="ProjectVersion" psd:order="6" minOccurs="0" name="ProjectVersion" xmlns:q25="http://www.w3.org/2003/XMLSchema" type="q25:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_WORKFLOWNAME_40" psd:id="40" psd:displayName="WorkflowName" psd:order="7" minOccurs="0" name="WorkflowName" xmlns:q26="http://www.w3.org/2003/XMLSchema" type="q26:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_STARTTIME_41" psd:id="41" psd:displayName="StartTime" psd:order="8" minOccurs="0" name="StartTime" xmlns:q27="http://www.w3.org/2003/XMLSchema" type="q27:dateTime" />
+      <xs:element psd:colName="C_FINISHTIME_42" psd:id="42" psd:displayName="FinishTime" psd:order="9" minOccurs="0" name="FinishTime" xmlns:q28="http://www.w3.org/2003/XMLSchema" type="q28:dateTime" />
+      <xs:element psd:colName="C_EXPECTEDFINISHTIME_43" psd:id="43" psd:displayName="ExpectedFinishTime" psd:order="10" minOccurs="0" name="ExpectedFinishTime" xmlns:q29="http://www.w3.org/2003/XMLSchema" type="q29:dateTime" />
+      <xs:element psd:colName="C_TASKTAKERS_44" psd:id="44" psd:displayName="TaskTakers" psd:order="11" minOccurs="0" name="TaskTakers" xmlns:q30="http://www.w3.org/2003/XMLSchema" type="q30:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_TASKID_45" psd:id="45" psd:displayName="TaskID" psd:order="12" minOccurs="0" name="TaskID" xmlns:q31="http://www.w3.org/2003/XMLSchema" type="q31:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:classtype="F_1100902029" psd:displayName="Year" psd:order="13" name="Year" xmlns:q32="http://www.w3.org/2003/XMLSchema" type="q32:string">
+        <xs:annotation>
+          <xs:appinfo>namespace Newtera.Formula {
+    using System;
+    using System.Collections;
+    using Newtera.Common.Wrapper;
+    using Newtera.Common.MetaData.Schema;
+    using Newtera.Common.MetaData.Schema.Generator;
+    
+    
+    public class F_1100902029 : FormulaBase {
+        
+        public override string Eval(IInstanceWrapper instance, ExecutionContext context) {
+            string startTimeStr = instance.GetString("StartTime");
+      try
+      {
+          DateTime startTime = DateTime.Parse(startTimeStr);
+          int year = startTime.Year;
+         return "Year of " + year;
+      }
+      catch (Exception)
+      {   
+                 return "";
+            }
+        }
+    }
+}
+</xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element psd:classtype="F_649487946" psd:displayName="Month" psd:order="14" name="Month" xmlns:q33="http://www.w3.org/2003/XMLSchema" type="q33:string">
+        <xs:annotation>
+          <xs:appinfo>namespace Newtera.Formula {
+    using System;
+    using System.Collections;
+    using Newtera.Common.Wrapper;
+    using Newtera.Common.MetaData.Schema;
+    using Newtera.Common.MetaData.Schema.Generator;
+    
+    
+    public class F_649487946 : FormulaBase {
+        
+        public override string Eval(IInstanceWrapper instance, ExecutionContext context) {
+            string startTimeStr = instance.GetString("StartTime");
+            try
+           {
+                DateTime startTime = DateTime.Parse(startTimeStr);
+               int month = startTime.Month;
+               return "Month of " + month;
+           }
+          catch (Exception)
+          {   
+                 return "";
+            }
+        }
+    }
+}
+</xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element psd:classtype="F_769848484" psd:displayName="Duration" psd:order="15" name="Duration" xmlns:q34="http://www.w3.org/2003/XMLSchema" type="q34:string">
+        <xs:annotation>
+          <xs:appinfo>namespace Newtera.Formula {
+    using System;
+    using System.Collections;
+    using Newtera.Common.Wrapper;
+    using Newtera.Common.MetaData.Schema;
+    using Newtera.Common.MetaData.Schema.Generator;
+    
+    
+    public class F_769848484 : FormulaBase {
+        
+        public override string Eval(IInstanceWrapper instance, ExecutionContext context) {
+               string startTimeStr = instance.GetString("StartTime");
+               string finishTimeStr = instance.GetString("FinishTime");
+               try
+              {
+                    DateTime startTime = DateTime.Parse(startTimeStr);
+                    DateTime finishTime;
+                   if (!string.IsNullOrEmpty(finishTimeStr))
+                  {
+                      finishTime = DateTime.Parse(finishTimeStr);
+                  }
+                 else
+                 {
+                     finishTime = DateTime.Now;
+                  }
+
+                  TimeSpan timeDifference = finishTime - startTime;
+                    
+                    return timeDifference.Minutes.ToString();
+               }
+               catch (Exception)
+              {   
+                 return "0";
+              }
+        }
+    }
+}
+</xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q35="http://www.w3.org/2003/XMLSchema" type="q35:ID" />
+  </xs:complexType>
+  <xs:complexType psd:tableName="T_COMPLETEDTASK_360_3" psd:id="360" psd:displayName="CompletedTask" psd:order="2" name="CompletedTask">
+    <xs:sequence>
+      <xs:element psd:key="true" psd:colName="C_TASKID_2542" psd:id="2542" psd:displayName="TaskId" psd:order="0" minOccurs="0" name="TaskId" xmlns:q36="http://www.w3.org/2003/XMLSchema" type="q36:integer" />
+      <xs:element psd:colName="C_WORKFLOWINSTANCEID_2543" psd:id="2543" psd:displayName="WorkflowInstanceId" psd:order="1" minOccurs="0" name="WorkflowInstanceId" xmlns:q37="http://www.w3.org/2003/XMLSchema" type="q37:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_CREATETIME_2544" psd:id="2544" psd:displayName="CreateTime" psd:order="2" minOccurs="0" name="CreateTime" xmlns:q38="http://www.w3.org/2003/XMLSchema" type="q38:dateTime" />
+      <xs:element psd:colName="C_FINISHTIME_2545" psd:id="2545" psd:displayName="FinishTime" psd:order="3" minOccurs="0" name="FinishTime" xmlns:q39="http://www.w3.org/2003/XMLSchema" type="q39:dateTime" />
+      <xs:element psd:colName="C_SUBJECT_2546" psd:id="2546" psd:displayName="Subject" psd:order="4" minOccurs="0" name="Subject" xmlns:q40="http://www.w3.org/2003/XMLSchema" type="q40:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_DESCRIPTION_2547" psd:id="2547" psd:displayName="Description" psd:order="5" minOccurs="0" name="Description" xmlns:q41="http://www.w3.org/2003/XMLSchema" type="q41:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="500" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_INSTRUCTION_2548" psd:id="2548" psd:displayName="Instruction" psd:order="6" minOccurs="0" name="Instruction" xmlns:q42="http://www.w3.org/2003/XMLSchema" type="q42:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:index="true" psd:colName="C_USER_2549" psd:id="2549" psd:displayName="User" psd:order="7" minOccurs="0" name="User" xmlns:q43="http://www.w3.org/2003/XMLSchema" type="q43:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_ACTIVITYNAME_2550" psd:id="2550" psd:displayName="ActivityName" psd:order="8" minOccurs="0" name="ActivityName" xmlns:q44="http://www.w3.org/2003/XMLSchema" type="q44:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_BINDINGSCHEMAID_2551" psd:id="2551" psd:displayName="BindingSchemaId" psd:order="9" minOccurs="0" name="BindingSchemaId" xmlns:q45="http://www.w3.org/2003/XMLSchema" type="q45:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_BINDINGCLASSNAME_2552" psd:id="2552" psd:displayName="BindingClassName" psd:order="10" minOccurs="0" name="BindingClassName" xmlns:q46="http://www.w3.org/2003/XMLSchema" type="q46:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_BINDINGOBJID_2553" psd:id="2553" psd:displayName="BindingObjId" psd:order="11" minOccurs="0" name="BindingObjId" xmlns:q47="http://www.w3.org/2003/XMLSchema" type="q47:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_CUSTOMACTIONS_2554" psd:id="2554" psd:displayName="CustomActions" psd:order="12" minOccurs="0" name="CustomActions" xmlns:q48="http://www.w3.org/2003/XMLSchema" type="q48:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="2000" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_CUSTOMFORMURL_2555" psd:id="2555" psd:displayName="CustomFormUrl" psd:order="13" minOccurs="0" name="CustomFormUrl" xmlns:q49="http://www.w3.org/2003/XMLSchema" type="q49:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_FORMPROPERTIES_2556" psd:id="2556" psd:displayName="FormProperties" psd:order="14" minOccurs="0" name="FormProperties" xmlns:q50="http://www.w3.org/2003/XMLSchema" type="q50:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="1000" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q51="http://www.w3.org/2003/XMLSchema" type="q51:ID" />
+  </xs:complexType>
+</xs:schema>

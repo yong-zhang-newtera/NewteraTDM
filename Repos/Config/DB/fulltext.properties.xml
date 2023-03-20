@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fulltext-config>
+	<database name="oracle">
+		<file>
+			<path/>
+		</file>
+		<URL/>
+		<!--Define the filter file. -->
+		<filter>
+			<file>{SANDSTORM_HOME}\config\db\filter_cn.bat</file>
+		</filter>
+		<!--Define the default storage of full text index. -->
+		<storage>
+			<tablespace></tablespace>
+		</storage>
+		<!--Define the default lexer. -->
+		<lexer>CHINESE_VGRAM_LEXER</lexer>
+	</database>
+	<sync>
+		<interval>sysdate+1/24</interval>
+	</sync>
+</fulltext-config>

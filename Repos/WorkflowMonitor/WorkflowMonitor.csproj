@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6F0A640F-91D6-485F-A961-E2994D58756F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Newtera.WorkflowMonitor</RootNamespace>
+    <AssemblyName>Newtera.WorkflowMonitor</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Workflow.Activities" />
+    <Reference Include="System.Workflow.ComponentModel" />
+    <Reference Include="System.Workflow.Runtime" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationSettings.cs" />
+    <Compile Include="CancelActivityDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CancelActivityDialog.Designer.cs">
+      <DependentUpon>CancelActivityDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CurrentTasksDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CurrentTasksDialog.Designer.cs">
+      <DependentUpon>CurrentTasksDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataInstanceDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataInstanceDialog.Designer.cs">
+      <DependentUpon>DataInstanceDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DesignerGlyphProvider.cs" />
+    <Compile Include="Helpers.cs" />
+    <Compile Include="Loader.cs" />
+    <Compile Include="TextResourceManager.cs" />
+    <Compile Include="Properties\Resources.Designer.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="StatusDefinition.cs" />
+    <Compile Include="ViewHost.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WorkflowDesignSurface.cs" />
+    <Compile Include="WorkflowMonitorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WorkflowMonitorControl.Designer.cs">
+      <DependentUpon>WorkflowMonitorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ITrackingQueryService.cs" />
+    <Compile Include="IDataQueryService.cs" />
+    <Compile Include="SubWorkflowInstanceViewedEventArgs.cs" />
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CancelActivityDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CancelActivityDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CancelActivityDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CancelActivityDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CurrentTasksDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CurrentTasksDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CurrentTasksDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CurrentTasksDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataInstanceDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DataInstanceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataInstanceDialog.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DataInstanceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TextResourceManager.resx">
+      <DependentUpon>TextResourceManager.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TextResourceManager.zh-CN.resx">
+      <DependentUpon>TextResourceManager.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WorkflowMonitorControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>WorkflowMonitorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WorkflowMonitorControl.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>WorkflowMonitorControl.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Properties\Resources\Collapse.bmp" />
+    <Content Include="Properties\Resources\complete.bmp" />
+    <Content Include="Properties\Resources\Executing.bmp" />
+    <Content Include="Properties\Resources\Expand.bmp" />
+    <Content Include="Properties\Resources\Find.bmp" />
+    <Content Include="Properties\Resources\main.bmp" />
+    <Content Include="Properties\Resources\MainForm.ico" />
+    <Content Include="Properties\Resources\MonitorOff.bmp" />
+    <Content Include="Properties\Resources\MonitorOn.bmp" />
+    <Content Include="Properties\Resources\ResetOptions.bmp" />
+    <Content Include="Properties\Resources\Settings.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\DataSources\Newtera.WFModel.TaskInfo.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{CF010325-1364-4754-9192-CF7873C35F90}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WinClientCommon\WinClientCommon.csproj">
+      <Project>{ecbb7160-2d73-40c6-8f9a-bb4e818b1c17}</Project>
+      <Name>WinClientCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WindowsControl\WindowsControl.csproj">
+      <Project>{DEFECA59-D0CA-4294-9B2F-A04D6C2A5F26}</Project>
+      <Name>WindowsControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WorkflowActivities\WorkflowActivities.csproj">
+      <Project>{1D98C425-85B4-4281-89A6-5434FB492A86}</Project>
+      <Name>WorkflowActivities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WorkflowModel\WFModel.csproj">
+      <Project>{EF0030AC-1F81-448B-B9F2-3CF5EFFBEA52}</Project>
+      <Name>WFModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

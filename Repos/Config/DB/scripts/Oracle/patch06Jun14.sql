@@ -1,0 +1,16 @@
+create table CM_CLS_ATTACHMENT  (
+   ID					VARCHAR2(100)  not null ,
+   CID					NUMBER(38)     not null,
+   SCHEMA_ID 				NUMBER(38,0),
+   NAME                 VARCHAR2(50)   not null,
+   CLASSNAME            VARCHAR2(30)   not null,
+   TYPE                 VARCHAR2(20)   not null,
+   CREATETIME			DATE		   default SYSDATE,
+   ASIZE				NUMBER(*,0),
+   IS_PUBLIC			NUMBER(1,0)    not null,
+   ATTACHMENT			BLOB,
+   CONSTRAINT PK_CM__CLS_ATTACHMENT PRIMARY KEY (ID),
+   CONSTRAINT CM_CLS_ATTACHMENT_UN_ID UNIQUE(CID, NAME),
+   CONSTRAINT FK_ATTACHEMNT_CLASS FOREIGN KEY(CID)
+		REFERENCES MM_CLASS(ID) ON DELETE CASCADE   
+   );

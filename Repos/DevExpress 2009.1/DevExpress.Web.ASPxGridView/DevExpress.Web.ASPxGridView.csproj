@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{241F7051-40D6-43E2-9AD4-13FF50C246BE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DevExpress.Web.ASPxGridView</RootNamespace>
+    <AssemblyName>DevExpress.Web.ASPxGridView.v9.1</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>NewteraKeys.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;DXWhidbey;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\DevExpress.Dll\</OutputPath>
+    <DefineConstants>$(CustomDefine)TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DebugTest|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\DevExpress.Dll\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;DXCommon;DEBUGTEST</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v9.1">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+      <HintPath>..\DevExpress.Dll\DevExpress.Data.v9.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxEditors.v9.1">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+      <HintPath>..\DevExpress.Dll\DevExpress.Web.ASPxEditors.v9.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.v9.1">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+      <HintPath>..\DevExpress.Dll\DevExpress.Web.v9.1.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Design">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Web">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ClientSideEvents.cs" />
+    <Compile Include="Design\Forms\ColumnsEditorForm.cs" />
+    <Compile Include="Design\DesignUtils.cs" />
+    <Compile Include="Design\GridViewDesigner.cs">
+    </Compile>
+    <Compile Include="Events.cs" />
+    <Compile Include="GridViewColumnEditors.cs" />
+    <Compile Include="GridViewColumns.cs" />
+    <Compile Include="GridViewControl.cs" />
+    <Compile Include="GridViewCallBackReader.cs" />
+    <Compile Include="GridViewStates.cs" />
+    <Compile Include="GridViewUtils.cs" />
+    <Compile Include="Images.cs" />
+    <Compile Include="LicenseProvider.cs" />
+    <Compile Include="Localization.cs" />
+    <Compile Include="Rendering\GridViewContainerControl.cs" />
+    <Compile Include="Rendering\GridViewFilterOwner.cs" />
+    <Compile Include="Rendering\GridViewFilterRowMenu.cs" />
+    <Compile Include="Rendering\GridViewHtmlCustomizationWindow.cs" />
+    <Compile Include="GridViewSummary.cs" />
+    <Compile Include="Rendering\GridViewEditFormLayout.cs" />
+    <Compile Include="Rendering\GridViewHtmlEditing.cs" />
+    <Compile Include="Rendering\GridViewHtmlFilterPopup.cs" />
+    <Compile Include="Rendering\GridViewHtmlPagerPanel.cs" />
+    <Compile Include="Rendering\GridViewHtmlParentRows.cs" />
+    <Compile Include="Rendering\GridViewHtmlStatusBar.cs" />
+    <Compile Include="Rendering\GridViewHtmlTable.cs" />
+    <Compile Include="GridViewPager.cs">
+    </Compile>
+    <Compile Include="Rendering\GridViewHtmlTitle.cs" />
+    <Compile Include="Rendering\GridViewRenderHelper.cs" />
+    <Compile Include="GridViewScripts.cs" />
+    <Compile Include="GridViewSettings.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rendering\GridViewHtmlTableClasses.cs" />
+    <Compile Include="Styles.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Templates.cs" />
+    <Compile Include="Tests\TestGridSEO.cs" Condition="'$(Configuration)' == 'DebugTest'" />
+    <Compile Include="Tests\TestGridViewFilter.cs" Condition="'$(Configuration)' == 'DebugTest'" />
+    <Compile Include="Tests\TestCallBackStates.cs" Condition="'$(Configuration)' == 'DebugTest'" />
+    <Compile Include="Tests\TestDataSourceView.cs" Condition="'$(Configuration)' == 'DebugTest'" />
+    <Compile Include="Tests\TestGridView.cs" Condition="'$(Configuration)' == 'DebugTest'" />
+    <Compile Include="Tests\TestGridViewCallBackReader.cs" Condition="'$(Configuration)' == 'DebugTest'" />
+    <Compile Include="Tests\TestGridViewFormEditLayout.cs" Condition="'$(Configuration)' == 'DebugTest'" />
+    <Compile Include="Tests\TestsWebDataController.cs" Condition="'$(Configuration)' == 'DebugTest'" />
+    <Compile Include="Tests\TestVisibleGridView.cs" Condition="'$(Configuration)' == 'DebugTest'" />
+    <Compile Include="Tests\TestWebDataControllerMultipleKeys.cs" Condition="'$(Configuration)' == 'DebugTest'" />
+    <Compile Include="Tests\WebServerTests.cs" Condition="'$(Configuration)' == 'DebugTest'">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebDataController.cs" />
+    <Compile Include="WebDataSelection.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\GridView.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\gvCollapsedButton.gif" />
+    <EmbeddedResource Include="Images\gvExpandedButton.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\gvHeaderFilterActive.gif" />
+    <EmbeddedResource Include="Images\gvHeaderSortDown.gif" />
+    <EmbeddedResource Include="Images\gvHeaderSortUp.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\gvDragAndDropArrowDown.gif" />
+    <EmbeddedResource Include="Images\gvDragAndDropArrowUp.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\gvDragAndDropHideColumn.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Css\default.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\gvHeaderFilter.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\TableColumnResizing.js" />
+    <EmbeddedResource Include="ASPxGridView.bmp" />
+    <EmbeddedResource Include="About.png" />
+    <EmbeddedResource Include="Images\gvParentGroupRows.gif" />
+    <EmbeddedResource Include="Images\Loading.gif" />
+    <EmbeddedResource Include="Images\gvLoadingOnStatusBar.gif" />
+    <EmbeddedResource Include="Images\gvDetailCollapsedButton.gif" />
+    <EmbeddedResource Include="Images\gvDetailExpandedButton.gif" />
+    <EmbeddedResource Include="Images\gvCollapsedButton.png" />
+    <EmbeddedResource Include="Images\gvDetailCollapsedButton.png" />
+    <EmbeddedResource Include="Images\gvDetailExpandedButton.png" />
+    <EmbeddedResource Include="Images\gvExpandedButton.png" />
+    <EmbeddedResource Include="Images\WindowResizer.gif" />
+    <EmbeddedResource Include="Images\gvFilterRowButton.png" />
+    <Content Include="Tests\Scripts\GridViewTests.js" Condition="'$(Configuration)' == 'DebugTest'" />
+    <Content Include="Tests\Scripts\JSNUnit27.js" Condition="'$(Configuration)' == 'DebugTest'" />
+    <EmbeddedResource Include="Tests\Scripts\ScriptTests.js" Condition="'$(Configuration)' == 'DebugTest'" />
+    <Content Include="Tests\Scripts\TableColumnResizingTests.js" Condition="'$(Configuration)' == 'DebugTest'" />
+    <Content Include="Tests\Scripts\TestRunner.htm" Condition="'$(Configuration)' == 'DebugTest'" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NewteraKeys.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

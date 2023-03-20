@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1FB45528-FD94-48FC-BF7C-1C5EB1B4CB3A}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>DevExpress.XtraPivotGrid.v9.1.Design</AssemblyName>
+    <AssemblyOriginatorKeyFile>..\..\DevExpress.Key\StrongKey.snk</AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>DevExpress.XtraPivotGrid.Design</RootNamespace>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\..\DevExpress.Dll\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DXWhidbey;DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>..\..\DevExpress.Dll\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DXWhidbey;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v9.1">
+      <Name>DevExpress.Data.v9.1</Name>
+      <Private>False</Private>
+    <HintPath>..\..\DevExpress.Dll\DevExpress.Data.v9.1.dll</HintPath></Reference>
+    <Reference Include="DevExpress.Utils.v9.1">
+      <Name>DevExpress.Utils.v9.1</Name>
+      <Private>False</Private>
+    <HintPath>..\..\DevExpress.Dll\DevExpress.Utils.v9.1.dll</HintPath></Reference>
+    <Reference Include="DevExpress.XtraEditors.v9.1">
+      <Name>DevExpress.XtraEditors.v9.1</Name>
+      <Private>False</Private>
+    <HintPath>..\..\DevExpress.Dll\DevExpress.XtraEditors.v9.1.dll</HintPath></Reference>
+    <Reference Include="DevExpress.XtraEditors.v9.1.Design">
+      <Name>DevExpress.XtraEditors.v9.1.Design</Name>
+      <Private>False</Private>
+    <HintPath>..\..\DevExpress.Dll\DevExpress.XtraEditors.v9.1.Design.dll</HintPath></Reference>
+    <Reference Include="DevExpress.XtraNavBar.v9.1">
+      <Name>DevExpress.XtraNavBar.v9.1</Name>
+      <Private>False</Private>
+    <HintPath>..\..\DevExpress.Dll\DevExpress.XtraNavBar.v9.1.dll</HintPath></Reference>
+    <Reference Include="DevExpress.XtraPivotGrid.v9.1">
+      <Name>DevExpress.XtraPivotGrid.v9.1</Name>
+      <Private>False</Private>
+    <HintPath>..\..\DevExpress.Dll\DevExpress.XtraPivotGrid.v9.1.dll</HintPath></Reference>
+    <Reference Include="DevExpress.XtraPivotGrid.v9.1.Core">
+      <SpecificVersion>False</SpecificVersion>
+    <HintPath>..\..\DevExpress.Dll\DevExpress.XtraPivotGrid.v9.1.Core.dll</HintPath><Private>False</Private></Reference>
+    
+    <Reference Include="System">
+      <Name>System</Name>
+    <Private>False</Private></Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    <Private>False</Private></Reference>
+    <Reference Include="System.Design">
+      <Name>System.Design</Name>
+    <Private>False</Private></Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    <Private>False</Private></Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    <Private>False</Private></Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    <Private>False</Private></Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designer\AppearancesDesigner.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Designer\Editors.cs" />
+    <Compile Include="Designer\FormatConditions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Designer\frmEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Designer\GroupsDesigner.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PivotGridDesigner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    
+    <EmbeddedResource Include="Designer\AppearancesDesigner.resx">
+      <DependentUpon>AppearancesDesigner.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Designer\frmEditor.resx">
+      <DependentUpon>frmEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Designer\GroupsDesigner.resx">
+      <DependentUpon>GroupsDesigner.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    
+    
+  </PropertyGroup>
+</Project>

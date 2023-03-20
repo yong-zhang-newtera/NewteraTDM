@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="SmartWord" targetNamespace="http://www.newtera.com/SmartWord.xsd" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns="http://www.newtera.com/SmartWord.xsd" xmlns:tns="http://www.newtera.com/SmartWord.xsd" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="property">
+    <xs:simpleContent msdata:ColumnName="Property_Text" msdata:Ordinal="1">
+      <xs:extension base="xs:string">
+        <xs:attribute name="pname" type="xs:string"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="column">
+    <xs:simpleContent msdata:ColumnName="Column_Text" msdata:Ordinal="1">
+      <xs:extension base="xs:string">
+        <xs:attribute name="cname" type="xs:string"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="array" mixed="true">
+    <xs:sequence>
+      <xs:element name="Column" type="tns:column" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="pname" type="xs:string"/>
+  </xs:complexType>
+  <xs:complexType name="view" mixed="true">
+    <xs:sequence>
+      <xs:element name="Property" type="tns:property" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="Array" type="tns:array" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="ename" type="xs:string"/>
+    <xs:attribute name="tname" type="xs:string"/>
+    <xs:attribute name="etype" type="xs:string"/>
+    <xs:attribute name="xname" type="xs:string"/>
+    <xs:attribute name="path" type="xs:string"/>
+  </xs:complexType>
+  <xs:complexType name="family" mixed="true">
+    <xs:sequence>
+      <xs:element name="View" type="tns:view" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="ename" type="xs:string"/>
+    <xs:attribute name="tname" type="xs:string"/>
+    <xs:attribute name="etype" type="xs:string"/>
+    <xs:attribute name="xname" type="xs:string"/>
+  </xs:complexType>
+  <xs:complexType name="database" mixed="true">
+    <xs:sequence>
+      <xs:element name="View" type="tns:view" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="Family" type="tns:family" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="dname" type="xs:string"/>
+  </xs:complexType> 
+  <xs:element name="Database" type="tns:database">
+  </xs:element>
+</xs:schema>

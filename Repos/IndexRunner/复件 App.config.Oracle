@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<appSettings>
+		<add key="DataBaseType" value="Oracle"/>
+		<add key="DataBaseString" value="Data Source=NEWTERA;User ID=SANDSTORM;Password=SANDSTORM"/>
+		<!-- The default connection string for the application schema-->
+		<add key="DefaultConnectionString" value="SCHEMA_NAME=ProductInfo;SCHEMA_VERSION=1.0"/>
+	</appSettings>
+</configuration>

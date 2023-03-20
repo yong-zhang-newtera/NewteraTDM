@@ -1,0 +1,1075 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.newtera.com/webservices/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://www.newtera.com/webservices/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.newtera.com/webservices/">
+      <s:element name="GetServerVersion">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetServerVersionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetServerVersionResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IsDataSourceValid">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="databaseType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dataSourceName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IsDataSourceValidResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="IsDataSourceValidResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NeedCreateDatabase">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="databaseType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dataSourceName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NeedCreateDatabaseResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="NeedCreateDatabaseResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NeedCreateTablespace">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="databaseType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dataSourceName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NeedCreateTablespaceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="NeedCreateTablespaceResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateTablespace">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="databaseType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dataSourceName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dataFileDir" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateTablespaceResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="UpdateSchema">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="databaseType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dataSourceName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateSchemaResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="UpdateServerConfig">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="databaseType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dataSourceName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="imageBaseURL" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="imageBasePath" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateServerConfigResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetAppSchemaList">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetAppSchemaListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAppSchemaListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAppHomeDir">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetAppHomeDirResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAppHomeDirResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetServerId">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetServerIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetServerIdResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetServerLicenseMsg">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetServerLicenseMsgResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetServerLicenseMsgResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetServerLicenseDetails">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetServerLicenseDetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetServerLicenseDetailsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DisableLicense">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="adminName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="adminPassword" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DisableLicenseResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DisableLicenseResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetClientLicenseMsg">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="clientName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clientId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetClientLicenseMsgResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetClientLicenseMsgResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetLicenseKey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="licenseKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetLicenseKeyResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="IsEvaluationLicense">
+        <s:complexType />
+      </s:element>
+      <s:element name="IsEvaluationLicenseResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="IsEvaluationLicenseResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRemainingEvaluationDays">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetRemainingEvaluationDaysResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetRemainingEvaluationDaysResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRegisteredClients">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="clientName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRegisteredClientsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetRegisteredClientsResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RegisterClient">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="clientName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clientId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="machineName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegisterClientResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="CheckInClient">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="clientName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clientId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckInClientResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="UnregisterClient">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="clientName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clientId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UnregisterClientResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="SetupAppSchemas">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="schemaNames" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetupAppSchemasResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetServerLogText">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetServerLogTextResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetServerLogTextResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ClearServerLog">
+        <s:complexType />
+      </s:element>
+      <s:element name="ClearServerLogResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetServerTraceLog">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetServerTraceLogResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetServerTraceLogResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ClearTraceLog">
+        <s:complexType />
+      </s:element>
+      <s:element name="ClearTraceLogResponse">
+        <s:complexType />
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetServerVersionSoapIn">
+    <wsdl:part name="parameters" element="tns:GetServerVersion" />
+  </wsdl:message>
+  <wsdl:message name="GetServerVersionSoapOut">
+    <wsdl:part name="parameters" element="tns:GetServerVersionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IsDataSourceValidSoapIn">
+    <wsdl:part name="parameters" element="tns:IsDataSourceValid" />
+  </wsdl:message>
+  <wsdl:message name="IsDataSourceValidSoapOut">
+    <wsdl:part name="parameters" element="tns:IsDataSourceValidResponse" />
+  </wsdl:message>
+  <wsdl:message name="NeedCreateDatabaseSoapIn">
+    <wsdl:part name="parameters" element="tns:NeedCreateDatabase" />
+  </wsdl:message>
+  <wsdl:message name="NeedCreateDatabaseSoapOut">
+    <wsdl:part name="parameters" element="tns:NeedCreateDatabaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="NeedCreateTablespaceSoapIn">
+    <wsdl:part name="parameters" element="tns:NeedCreateTablespace" />
+  </wsdl:message>
+  <wsdl:message name="NeedCreateTablespaceSoapOut">
+    <wsdl:part name="parameters" element="tns:NeedCreateTablespaceResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateTablespaceSoapIn">
+    <wsdl:part name="parameters" element="tns:CreateTablespace" />
+  </wsdl:message>
+  <wsdl:message name="CreateTablespaceSoapOut">
+    <wsdl:part name="parameters" element="tns:CreateTablespaceResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateSchemaSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateSchema" />
+  </wsdl:message>
+  <wsdl:message name="UpdateSchemaSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateSchemaResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateServerConfigSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateServerConfig" />
+  </wsdl:message>
+  <wsdl:message name="UpdateServerConfigSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateServerConfigResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAppSchemaListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAppSchemaList" />
+  </wsdl:message>
+  <wsdl:message name="GetAppSchemaListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAppSchemaListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAppHomeDirSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAppHomeDir" />
+  </wsdl:message>
+  <wsdl:message name="GetAppHomeDirSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAppHomeDirResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetServerIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetServerId" />
+  </wsdl:message>
+  <wsdl:message name="GetServerIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetServerIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetServerLicenseMsgSoapIn">
+    <wsdl:part name="parameters" element="tns:GetServerLicenseMsg" />
+  </wsdl:message>
+  <wsdl:message name="GetServerLicenseMsgSoapOut">
+    <wsdl:part name="parameters" element="tns:GetServerLicenseMsgResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetServerLicenseDetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetServerLicenseDetails" />
+  </wsdl:message>
+  <wsdl:message name="GetServerLicenseDetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetServerLicenseDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="DisableLicenseSoapIn">
+    <wsdl:part name="parameters" element="tns:DisableLicense" />
+  </wsdl:message>
+  <wsdl:message name="DisableLicenseSoapOut">
+    <wsdl:part name="parameters" element="tns:DisableLicenseResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetClientLicenseMsgSoapIn">
+    <wsdl:part name="parameters" element="tns:GetClientLicenseMsg" />
+  </wsdl:message>
+  <wsdl:message name="GetClientLicenseMsgSoapOut">
+    <wsdl:part name="parameters" element="tns:GetClientLicenseMsgResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetLicenseKeySoapIn">
+    <wsdl:part name="parameters" element="tns:SetLicenseKey" />
+  </wsdl:message>
+  <wsdl:message name="SetLicenseKeySoapOut">
+    <wsdl:part name="parameters" element="tns:SetLicenseKeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="IsEvaluationLicenseSoapIn">
+    <wsdl:part name="parameters" element="tns:IsEvaluationLicense" />
+  </wsdl:message>
+  <wsdl:message name="IsEvaluationLicenseSoapOut">
+    <wsdl:part name="parameters" element="tns:IsEvaluationLicenseResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetRemainingEvaluationDaysSoapIn">
+    <wsdl:part name="parameters" element="tns:GetRemainingEvaluationDays" />
+  </wsdl:message>
+  <wsdl:message name="GetRemainingEvaluationDaysSoapOut">
+    <wsdl:part name="parameters" element="tns:GetRemainingEvaluationDaysResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetRegisteredClientsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetRegisteredClients" />
+  </wsdl:message>
+  <wsdl:message name="GetRegisteredClientsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetRegisteredClientsResponse" />
+  </wsdl:message>
+  <wsdl:message name="RegisterClientSoapIn">
+    <wsdl:part name="parameters" element="tns:RegisterClient" />
+  </wsdl:message>
+  <wsdl:message name="RegisterClientSoapOut">
+    <wsdl:part name="parameters" element="tns:RegisterClientResponse" />
+  </wsdl:message>
+  <wsdl:message name="CheckInClientSoapIn">
+    <wsdl:part name="parameters" element="tns:CheckInClient" />
+  </wsdl:message>
+  <wsdl:message name="CheckInClientSoapOut">
+    <wsdl:part name="parameters" element="tns:CheckInClientResponse" />
+  </wsdl:message>
+  <wsdl:message name="UnregisterClientSoapIn">
+    <wsdl:part name="parameters" element="tns:UnregisterClient" />
+  </wsdl:message>
+  <wsdl:message name="UnregisterClientSoapOut">
+    <wsdl:part name="parameters" element="tns:UnregisterClientResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetupAppSchemasSoapIn">
+    <wsdl:part name="parameters" element="tns:SetupAppSchemas" />
+  </wsdl:message>
+  <wsdl:message name="SetupAppSchemasSoapOut">
+    <wsdl:part name="parameters" element="tns:SetupAppSchemasResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetServerLogTextSoapIn">
+    <wsdl:part name="parameters" element="tns:GetServerLogText" />
+  </wsdl:message>
+  <wsdl:message name="GetServerLogTextSoapOut">
+    <wsdl:part name="parameters" element="tns:GetServerLogTextResponse" />
+  </wsdl:message>
+  <wsdl:message name="ClearServerLogSoapIn">
+    <wsdl:part name="parameters" element="tns:ClearServerLog" />
+  </wsdl:message>
+  <wsdl:message name="ClearServerLogSoapOut">
+    <wsdl:part name="parameters" element="tns:ClearServerLogResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetServerTraceLogSoapIn">
+    <wsdl:part name="parameters" element="tns:GetServerTraceLog" />
+  </wsdl:message>
+  <wsdl:message name="GetServerTraceLogSoapOut">
+    <wsdl:part name="parameters" element="tns:GetServerTraceLogResponse" />
+  </wsdl:message>
+  <wsdl:message name="ClearTraceLogSoapIn">
+    <wsdl:part name="parameters" element="tns:ClearTraceLog" />
+  </wsdl:message>
+  <wsdl:message name="ClearTraceLogSoapOut">
+    <wsdl:part name="parameters" element="tns:ClearTraceLogResponse" />
+  </wsdl:message>
+  <wsdl:portType name="AdminServiceSoap">
+    <wsdl:operation name="GetServerVersion">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets version of the server.</wsdl:documentation>
+      <wsdl:input message="tns:GetServerVersionSoapIn" />
+      <wsdl:output message="tns:GetServerVersionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="IsDataSourceValid">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets the information indicating whether a data source name is valid or not.</wsdl:documentation>
+      <wsdl:input message="tns:IsDataSourceValidSoapIn" />
+      <wsdl:output message="tns:IsDataSourceValidSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NeedCreateDatabase">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets the information indicating whether a special database needs to be created or not.</wsdl:documentation>
+      <wsdl:input message="tns:NeedCreateDatabaseSoapIn" />
+      <wsdl:output message="tns:NeedCreateDatabaseSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NeedCreateTablespace">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets the information indicating whether a special tablespace needs to be created or not.</wsdl:documentation>
+      <wsdl:input message="tns:NeedCreateTablespaceSoapIn" />
+      <wsdl:output message="tns:NeedCreateTablespaceSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateTablespace">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Create a special tablespace for Newtera Enterprise Catalog Manangement using an user account with DBA privilege.</wsdl:documentation>
+      <wsdl:input message="tns:CreateTablespaceSoapIn" />
+      <wsdl:output message="tns:CreateTablespaceSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateSchema">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Create or update a DB schema required by Newtera Enterrpise Catalog Management.</wsdl:documentation>
+      <wsdl:input message="tns:UpdateSchemaSoapIn" />
+      <wsdl:output message="tns:UpdateSchemaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateServerConfig">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Update the server config file with new appsettings.</wsdl:documentation>
+      <wsdl:input message="tns:UpdateServerConfigSoapIn" />
+      <wsdl:output message="tns:UpdateServerConfigSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAppSchemaList">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get application schema list in a xml string.</wsdl:documentation>
+      <wsdl:input message="tns:GetAppSchemaListSoapIn" />
+      <wsdl:output message="tns:GetAppSchemaListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAppHomeDir">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get home directory where Newtera Server is installed.</wsdl:documentation>
+      <wsdl:input message="tns:GetAppHomeDirSoapIn" />
+      <wsdl:output message="tns:GetAppHomeDirSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetServerId">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets ID of Newtera Server installed.</wsdl:documentation>
+      <wsdl:input message="tns:GetServerIdSoapIn" />
+      <wsdl:output message="tns:GetServerIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetServerLicenseMsg">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets message about Newtera Server installed.</wsdl:documentation>
+      <wsdl:input message="tns:GetServerLicenseMsgSoapIn" />
+      <wsdl:output message="tns:GetServerLicenseMsgSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetServerLicenseDetails">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets details about Newtera Server installed.</wsdl:documentation>
+      <wsdl:input message="tns:GetServerLicenseDetailsSoapIn" />
+      <wsdl:output message="tns:GetServerLicenseDetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DisableLicense">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Disable the current installed license.</wsdl:documentation>
+      <wsdl:input message="tns:DisableLicenseSoapIn" />
+      <wsdl:output message="tns:DisableLicenseSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetClientLicenseMsg">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets licensing message about a particular client.</wsdl:documentation>
+      <wsdl:input message="tns:GetClientLicenseMsgSoapIn" />
+      <wsdl:output message="tns:GetClientLicenseMsgSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetLicenseKey">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Sets a license key for the Newtera Server.</wsdl:documentation>
+      <wsdl:input message="tns:SetLicenseKeySoapIn" />
+      <wsdl:output message="tns:SetLicenseKeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="IsEvaluationLicense">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets the information indicating whether the license is an evaluation one.</wsdl:documentation>
+      <wsdl:input message="tns:IsEvaluationLicenseSoapIn" />
+      <wsdl:output message="tns:IsEvaluationLicenseSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRemainingEvaluationDays">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets the remaining evaluation days. Return -1 if the license is a permenant one.</wsdl:documentation>
+      <wsdl:input message="tns:GetRemainingEvaluationDaysSoapIn" />
+      <wsdl:output message="tns:GetRemainingEvaluationDaysSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRegisteredClients">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets a list of identifiers of registered clients.</wsdl:documentation>
+      <wsdl:input message="tns:GetRegisteredClientsSoapIn" />
+      <wsdl:output message="tns:GetRegisteredClientsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RegisterClient">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Register a client to the server.</wsdl:documentation>
+      <wsdl:input message="tns:RegisterClientSoapIn" />
+      <wsdl:output message="tns:RegisterClientSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckInClient">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Check in the client, an exception is thrown if the client is denied.</wsdl:documentation>
+      <wsdl:input message="tns:CheckInClientSoapIn" />
+      <wsdl:output message="tns:CheckInClientSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UnregisterClient">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Unregister a client from the server.</wsdl:documentation>
+      <wsdl:input message="tns:UnregisterClientSoapIn" />
+      <wsdl:output message="tns:UnregisterClientSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetupAppSchemas">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Setup application schemas.</wsdl:documentation>
+      <wsdl:input message="tns:SetupAppSchemasSoapIn" />
+      <wsdl:output message="tns:SetupAppSchemasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetServerLogText">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get server error log text</wsdl:documentation>
+      <wsdl:input message="tns:GetServerLogTextSoapIn" />
+      <wsdl:output message="tns:GetServerLogTextSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ClearServerLog">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Clear server error log</wsdl:documentation>
+      <wsdl:input message="tns:ClearServerLogSoapIn" />
+      <wsdl:output message="tns:ClearServerLogSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetServerTraceLog">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get server trace log text</wsdl:documentation>
+      <wsdl:input message="tns:GetServerTraceLogSoapIn" />
+      <wsdl:output message="tns:GetServerTraceLogSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ClearTraceLog">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Clear server trace log</wsdl:documentation>
+      <wsdl:input message="tns:ClearTraceLogSoapIn" />
+      <wsdl:output message="tns:ClearTraceLogSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="AdminServiceSoap" type="tns:AdminServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetServerVersion">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetServerVersion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsDataSourceValid">
+      <soap:operation soapAction="http://www.newtera.com/webservices/IsDataSourceValid" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NeedCreateDatabase">
+      <soap:operation soapAction="http://www.newtera.com/webservices/NeedCreateDatabase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NeedCreateTablespace">
+      <soap:operation soapAction="http://www.newtera.com/webservices/NeedCreateTablespace" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateTablespace">
+      <soap:operation soapAction="http://www.newtera.com/webservices/CreateTablespace" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateSchema">
+      <soap:operation soapAction="http://www.newtera.com/webservices/UpdateSchema" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateServerConfig">
+      <soap:operation soapAction="http://www.newtera.com/webservices/UpdateServerConfig" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAppSchemaList">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetAppSchemaList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAppHomeDir">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetAppHomeDir" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetServerId">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetServerId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetServerLicenseMsg">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetServerLicenseMsg" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetServerLicenseDetails">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetServerLicenseDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DisableLicense">
+      <soap:operation soapAction="http://www.newtera.com/webservices/DisableLicense" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetClientLicenseMsg">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetClientLicenseMsg" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetLicenseKey">
+      <soap:operation soapAction="http://www.newtera.com/webservices/SetLicenseKey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsEvaluationLicense">
+      <soap:operation soapAction="http://www.newtera.com/webservices/IsEvaluationLicense" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRemainingEvaluationDays">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetRemainingEvaluationDays" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRegisteredClients">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetRegisteredClients" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterClient">
+      <soap:operation soapAction="http://www.newtera.com/webservices/RegisterClient" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckInClient">
+      <soap:operation soapAction="http://www.newtera.com/webservices/CheckInClient" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnregisterClient">
+      <soap:operation soapAction="http://www.newtera.com/webservices/UnregisterClient" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetupAppSchemas">
+      <soap:operation soapAction="http://www.newtera.com/webservices/SetupAppSchemas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetServerLogText">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetServerLogText" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ClearServerLog">
+      <soap:operation soapAction="http://www.newtera.com/webservices/ClearServerLog" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetServerTraceLog">
+      <soap:operation soapAction="http://www.newtera.com/webservices/GetServerTraceLog" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ClearTraceLog">
+      <soap:operation soapAction="http://www.newtera.com/webservices/ClearTraceLog" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="AdminServiceSoap12" type="tns:AdminServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetServerVersion">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetServerVersion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsDataSourceValid">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/IsDataSourceValid" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NeedCreateDatabase">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/NeedCreateDatabase" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NeedCreateTablespace">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/NeedCreateTablespace" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateTablespace">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/CreateTablespace" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateSchema">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/UpdateSchema" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateServerConfig">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/UpdateServerConfig" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAppSchemaList">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetAppSchemaList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAppHomeDir">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetAppHomeDir" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetServerId">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetServerId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetServerLicenseMsg">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetServerLicenseMsg" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetServerLicenseDetails">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetServerLicenseDetails" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DisableLicense">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/DisableLicense" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetClientLicenseMsg">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetClientLicenseMsg" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetLicenseKey">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/SetLicenseKey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsEvaluationLicense">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/IsEvaluationLicense" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRemainingEvaluationDays">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetRemainingEvaluationDays" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRegisteredClients">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetRegisteredClients" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterClient">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/RegisterClient" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckInClient">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/CheckInClient" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnregisterClient">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/UnregisterClient" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetupAppSchemas">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/SetupAppSchemas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetServerLogText">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetServerLogText" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ClearServerLog">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/ClearServerLog" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetServerTraceLog">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/GetServerTraceLog" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ClearTraceLog">
+      <soap12:operation soapAction="http://www.newtera.com/webservices/ClearTraceLog" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AdminService">
+    <wsdl:port name="AdminServiceSoap" binding="tns:AdminServiceSoap">
+      <soap:address location="http://localhost/Newtera/WebService/AdminWebService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="AdminServiceSoap12" binding="tns:AdminServiceSoap12">
+      <soap12:address location="http://localhost/Newtera/WebService/AdminWebService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

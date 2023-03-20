@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:psd="http://www.newtera.com" targetNamespace="http://www.newtera.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element psd:version="1.0" psd:modifiedTime="2016-12-06T07:51:38" psd:id="4" psd:order="0" name="LoggingInfo">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" maxOccurs="1" name="DataOperationsList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="DataOperations" type="DataOperations" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType psd:displayMode="Text" psd:displayName="OperationType" psd:order="0" name="OperationType">
+    <xs:restriction xmlns:q1="http://www.w3.org/2003/XMLSchema" base="q1:string">
+      <xs:enumeration id="Read" value="1" />
+      <xs:enumeration id="Write" value="2" />
+      <xs:enumeration id="Create" value="3" />
+      <xs:enumeration id="Delete" value="4" />
+      <xs:enumeration id="Upload" value="5" />
+      <xs:enumeration id="Download" value="6" />
+      <xs:enumeration id="Import" value="7" />
+      <xs:enumeration id="Export" value="8" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType psd:tableName="T_DATAOPERATIONS_6_4" psd:id="6" psd:displayName="数据操作日志" psd:order="0" name="DataOperations">
+    <xs:sequence>
+      <xs:element psd:usage="Both" psd:colName="C_OTYPE_48" psd:id="48" psd:displayName="操作类型" psd:order="0" minOccurs="1" name="oType" type="OperationType" />
+      <xs:element psd:usage="Both" psd:displayName="数据实例ID" psd:order="8" minOccurs="0" name="OID" xmlns:q2="http://www.w3.org/2003/XMLSchema" type="q2:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_OTIME_49" psd:id="49" psd:displayName="操作时间" psd:order="1" minOccurs="1" name="oTime" xmlns:q3="http://www.w3.org/2003/XMLSchema" type="q3:dateTime" />
+      <xs:element psd:usage="Both" psd:colName="C_UNAME_50" psd:id="50" psd:displayName="用户名" psd:order="2" minOccurs="1" name="uName" xmlns:q4="http://www.w3.org/2003/XMLSchema" type="q4:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="50" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_UCAPTION_51" psd:id="51" psd:displayName="用户显示名" psd:order="3" minOccurs="0" name="uCaption" xmlns:q5="http://www.w3.org/2003/XMLSchema" type="q5:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="50" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_UROLES_52" psd:id="52" psd:displayName="用户角色" psd:order="4" minOccurs="0" name="uRoles" xmlns:q6="http://www.w3.org/2003/XMLSchema" type="q6:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="300" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Search" psd:colName="C_IPADDRESS_53" psd:id="53" psd:displayName="IP地址" psd:order="5" minOccurs="0" name="ipAddress" xmlns:q7="http://www.w3.org/2003/XMLSchema" type="q7:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="30" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_DBID_54" psd:id="54" psd:displayName="数据库" psd:order="6" minOccurs="0" name="dbId" xmlns:q8="http://www.w3.org/2003/XMLSchema" type="q8:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="200" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Search" psd:colName="C_CNAME_55" psd:id="55" psd:displayName="数据类" psd:order="7" minOccurs="0" name="cName" xmlns:q9="http://www.w3.org/2003/XMLSchema" type="q9:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="200" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="Both" psd:colName="C_CCAPTION_56" psd:id="56" psd:displayName="数据类显示名" psd:order="9" minOccurs="0" name="cCaption" xmlns:q10="http://www.w3.org/2003/XMLSchema" type="q10:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:multiLine="true" psd:rows="10" psd:usage="None" psd:colName="C_ODATA_57" psd:id="57" psd:displayName="相关数据" psd:order="10" minOccurs="0" name="oData" xmlns:q11="http://www.w3.org/2003/XMLSchema" type="q11:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="2000" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q12="http://www.w3.org/2003/XMLSchema" type="q12:ID" />
+  </xs:complexType>
+</xs:schema>

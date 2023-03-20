@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="WorkflowStudio.CustomActionExist" xml:space="preserve">
+    <value> 名为{0}的定制操作已存在。</value>
+  </data>
+  <data name="WorkflowStudio.DisabledFeature" xml:space="preserve">
+    <value>您目前使用的软件为试用版, 不能使用该功能.</value>
+  </data>
+  <data name="WorkflowStudio.EnterName" xml:space="preserve">
+    <value>请输入名称.</value>
+  </data>
+  <data name="WorkflowStudio.MissingRole" xml:space="preserve">
+    <value>请选择一个允许修改数据库的角色</value>
+  </data>
+  <data name="WorkflowStudio.NullCustomActionName" xml:space="preserve">
+    <value>请输入定制操作的名称</value>
+  </data>
+  <data name="WorkflowStudio.NullParameterName" xml:space="preserve">
+    <value>请输入参数名</value>
+  </data>
+  <data name="WorkflowStudio.ParameterExist" xml:space="preserve">
+    <value>{0}参数已经存在</value>
+  </data>
+  <data name="WorkflowStudio.UserExist" xml:space="preserve">
+    <value>该用户已经被选择。</value>
+  </data>
+  <data name="WorkflowStudioApp.About" xml:space="preserve">
+    <value>AboutWorkflowStudio_cn.rtf</value>
+  </data>
+  <data name="WorkflowStudioApp.ActionCodeOK" xml:space="preserve">
+    <value>程序编译成功。</value>
+  </data>
+  <data name="WorkflowStudioApp.ActionCodeTooLong" xml:space="preserve">
+    <value>程序的字符数太多，必须小于2000个字符。</value>
+  </data>
+  <data name="WorkflowStudioApp.BackupComplete" xml:space="preserve">
+    <value>备份工作流项目完毕</value>
+  </data>
+  <data name="WorkflowStudioApp.BackupProject" xml:space="preserve">
+    <value>正在备份工作流项目...</value>
+  </data>
+  <data name="WorkflowStudioApp.BindLeafClass" xml:space="preserve">
+    <value>与工作流绑定的数据类必须是叶类</value>
+  </data>
+  <data name="WorkflowStudioApp.CorrectURL" xml:space="preserve">
+    <value>客户端访问服务器的URL设置完毕。请重新打开工具。</value>
+  </data>
+  <data name="WorkflowStudioApp.DataTypeMismatch" xml:space="preserve">
+    <value>选择项的数据类型不能转换成所期待的数据类型{0}</value>
+  </data>
+  <data name="WorkflowStudioApp.DBARequired" xml:space="preserve">
+    <value>对不起, 你不是项目管理员. 这一操作必须由项目管理员来执行</value>
+  </data>
+  <data name="WorkflowStudioApp.HasRunningInstances" xml:space="preserve">
+    <value>该项目的工作流有正在执行的工作流实例。您希望将该项目保存为新版本吗？回答“是”将保存为新版本，回答“否”将覆盖现有版本。需要注意的是如果覆盖现有版本有可能导致正在执行的工作流实例失效（请参考操作手册）。如果保存为新版本，将不允许对以前版本的项目进行修改。</value>
+  </data>
+  <data name="WorkflowStudioApp.InvalidAdminID" xml:space="preserve">
+    <value>非法管理员名称</value>
+  </data>
+  <data name="WorkflowStudioApp.InvalidAdminPassword" xml:space="preserve">
+    <value>非法管理员密码．</value>
+  </data>
+  <data name="WorkflowStudioApp.InvalidUserLogin" xml:space="preserve">
+    <value>登陆失败. 请确认用户名或密码是否正确?</value>
+  </data>
+  <data name="WorkflowStudioApp.LockObtained" xml:space="preserve">
+    <value>上锁成功. 您可以对项目进行修改.</value>
+  </data>
+  <data name="WorkflowStudioApp.LockReleased" xml:space="preserve">
+    <value>解锁成功. 您将不能修改项目.</value>
+  </data>
+  <data name="WorkflowStudioApp.NoBindingClass" xml:space="preserve">
+    <value>该工作流尚未与数据类绑定</value>
+  </data>
+  <data name="WorkflowStudioApp.NoProjectPermission" xml:space="preserve">
+    <value>对不起, 您没有读取该项目的权限.</value>
+  </data>
+  <data name="WorkflowStudioApp.NotLatestVersion" xml:space="preserve">
+    <value>您所选择的工作流项目不是最新的版本，因而所做的任何修改将不能保存回数据库。</value>
+  </data>
+  <data name="WorkflowStudioApp.OnlineHelp" xml:space="preserve">
+    <value>NewteraWorkflowHelp.chm</value>
+  </data>
+  <data name="WorkflowStudioApp.ProjectChanged" xml:space="preserve">
+    <value>您要退出WorkflowStudio吗?</value>
+  </data>
+  <data name="WorkflowStudioApp.ProjectDeleted" xml:space="preserve">
+    <value>项目已被删除.</value>
+  </data>
+  <data name="WorkflowStudioApp.ProjectExist" xml:space="preserve">
+    <value>同名的项目已经在数据库中存在, 请输入不同的项目名称．</value>
+  </data>
+  <data name="WorkflowStudioApp.ProjectSaved" xml:space="preserve">
+    <value>项目已成功保存到数据库．</value>
+  </data>
+  <data name="WorkflowStudioApp.Ready" xml:space="preserve">
+    <value>就绪</value>
+  </data>
+  <data name="WorkflowStudioApp.RuleExists" xml:space="preserve">
+    <value>相同名称的规则已经存在.</value>
+  </data>
+  <data name="WorkflowStudioApp.SaveProject" xml:space="preserve">
+    <value>您确定要将工作流项目保存到数据库中吗?</value>
+  </data>
+  <data name="WorkflowStudioApp.SavingProjectToDB" xml:space="preserve">
+    <value>正在保存项目数据到数据库．．．</value>
+  </data>
+  <data name="WorkflowStudioApp.SetClassNameFirst" xml:space="preserve">
+    <value>尚未指定绑定的数据类或绑定的数据类已不存在。请先设置工作流的"数据类"属性.</value>
+  </data>
+  <data name="WorkflowStudioApp.SetSchemaIdFirst" xml:space="preserve">
+    <value>尚未指定绑定的数据库或绑定的数据库已不存在。请先设置工作流的"数据库"属性.</value>
+  </data>
+  <data name="WorkflowStudioApp.WorkflowStarted" xml:space="preserve">
+    <value>成功启动该工作流实例, 实例编码为:</value>
+  </data>
+  <data name="WorkflowStudioApp.WorkflowValidated" xml:space="preserve">
+    <value>所有工作流定义通过验证.</value>
+  </data>
+  <data name="WorkflowStudioControl.DefaultName" xml:space="preserve">
+    <value>工作流项目</value>
+  </data>
+  <data name="WorkflowStudioControl.DuplicateLabel" xml:space="preserve">
+    <value>同名称的工作流已经存在.</value>
+  </data>
+  <data name="WorkflowStudioControl.EmptyLabel" xml:space="preserve">
+    <value>节点名称不允许为空</value>
+  </data>
+  <data name="WorkflowStudioControl.ExecutableSequential" xml:space="preserve">
+    <value>顺序工作流(可执行）</value>
+  </data>
+  <data name="WorkflowStudioControl.ExecutableStateMachine" xml:space="preserve">
+    <value>状态机工作流（可执行）</value>
+  </data>
+  <data name="WorkflowStudioControl.ExecutableWizard" xml:space="preserve">
+    <value>向导工作流(可执行）</value>
+  </data>
+  <data name="WorkflowStudioControl.InvalidClassName" xml:space="preserve">
+    <value>在启动事件定义中，“{0}”数据类不存在于“{1}”数据库中</value>
+  </data>
+  <data name="WorkflowStudioControl.InvalidEventName" xml:space="preserve">
+    <value>在启动事件定义中，“{0}”的事件不存在于“{2}”数据库的“{1}”数据类中。</value>
+  </data>
+  <data name="WorkflowStudioControl.InvalidLabelChar" xml:space="preserve">
+    <value>节点名称含有非法字符. 非法字符为'@','.', ',', '!'.</value>
+  </data>
+  <data name="WorkflowStudioControl.InvalidSchemaId" xml:space="preserve">
+    <value>在启动事件定义中，“{0}”数据库不存在或没有读取权限</value>
+  </data>
+  <data name="WorkflowStudioControl.NonExecutableSequential" xml:space="preserve">
+    <value>顺序工作流(不可执行）</value>
+  </data>
+  <data name="WorkflowStudioControl.NonExecutableStateMachine" xml:space="preserve">
+    <value>状态机工作流（不可执行）</value>
+  </data>
+  <data name="WorkflowStudioControl.NonExecutableWizard" xml:space="preserve">
+    <value>向导工作流(不可执行）</value>
+  </data>
+  <data name="WorkflowStudioApp.ProjectModel" xml:space="preserve">
+    <value>正在备份项目模型数据...</value>
+  </data>
+  <data name="WorkflowStudioApp.PackFiles" xml:space="preserve">
+    <value>正在将备份文件打包...</value>
+  </data>
+  <data name="WorkflowStudioApp.RestoreData" xml:space="preserve">
+    <value>恢复工作流项目...</value>
+  </data>
+  <data name="WorkflowStudioApp.RestoreComplete" xml:space="preserve">
+    <value>工作流项目恢复完成</value>
+  </data>
+  <data name="WorkflowStudioApp.OverrideProject" xml:space="preserve">
+    <value>同名的工作流项目已存在，您要覆盖它吗？</value>
+  </data>
+  <data name="WorkflowStudioApp.UnpackData" xml:space="preserve">
+    <value>正在将备份文件解包...</value>
+  </data>
+  <data name="WorkflowStudioApp.CreateProject" xml:space="preserve">
+    <value>正在恢复工作流项目模型...</value>
+  </data>
+  <data name="WorkflowStudioApp.RestoreTrackingInfos" xml:space="preserve">
+    <value>正在恢复“{0}”工作流实例的状态数据...</value>
+  </data>
+  <data name="WorkflowStudioApp.RestoreStateInfos" xml:space="preserve">
+    <value>正在恢复“{0}”工作流实例的状态数据...</value>
+  </data>
+  <data name="WorkflowStudioApp.RestoreTaskInfos" xml:space="preserve">
+    <value>正在恢复“{0}”工作流实例的任务数据...</value>
+  </data>
+  <data name="WorkflowStudioApp.RestoreWFEventSubscriptions" xml:space="preserve">
+    <value>正在恢复“{0}”工作流实例的工作流事件订阅数据...</value>
+  </data>
+  <data name="WorkflowStudioApp.RestoreDBEventSubscriptions" xml:space="preserve">
+    <value>正在恢复“{0}”工作流实例的数据库事件订阅数据...</value>
+  </data>
+  <data name="WorkflowStudioApp.RestoreBindingInfos" xml:space="preserve">
+    <value>正在恢复“{0}”工作流实例与数据库实例的绑定数据...</value>
+  </data>
+  <data name="WorkflowStudio.PropertyExist" xml:space="preserve">
+    <value>该属性已经被选择</value>
+  </data>
+  <data name="WorkflowStudioApp.LogicalORRoles" xml:space="preserve">
+    <value>选择的角色(逻辑或关系)</value>
+  </data>
+	<data name="WorkflowStudioApp.FoundWorkflows" xml:space="preserve">
+    <value>确定要终止所查询到的"{0}"个工作流吗?</value>
+  </data>
+</root>

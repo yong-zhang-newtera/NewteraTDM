@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DataSourceType.Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="DataSourceType.Text" xml:space="preserve">
+    <value>Text File</value>
+  </data>
+  <data name="DataSourceType.Excel" xml:space="preserve">
+    <value>Microsoft Excel 97-2007</value>
+  </data>
+  <data name="DataSourceType.Other" xml:space="preserve">
+    <value>Other Types</value>
+  </data>
+  <data name="DataSourceDescription.Text" xml:space="preserve">
+    <value>Text can be delimited or free-formed, to continue, you can choose multiple files that share the same format.</value>
+  </data>
+  <data name="DataSourceDescription.Excel" xml:space="preserve">
+    <value>To connect to a Microsoft Excel file, you must choose a Excel file.</value>
+  </data>
+  <data name="DataSourceDescription.Other" xml:space="preserve">
+    <value>Please select a file to continue. You must have a customized converter for the file in order to proceed.</value>
+  </data>
+  <data name="DataSourceFilter.Text" xml:space="preserve">
+    <value>Text files (*.txt;*.dat;*.csv)|*.txt;*.dat;*.csv|All files (*.*)|*.*</value>
+  </data>
+  <data name="DataSourceFilter.Excel" xml:space="preserve">
+    <value>Microsoft Excel Files (*.xls;*.xlsx) | *.xls;*.xlsx</value>
+  </data>
+  <data name="DataSourceFilter.Other" xml:space="preserve">
+    <value>Other Files (*.*) | *.*</value>
+  </data>
+  <data name="Error.UnknownFile" xml:space="preserve">
+    <value>The file of given name does not exist.</value>
+  </data>
+  <data name="ImportPackage.None" xml:space="preserve">
+    <value>New Package</value>
+  </data>
+  <data name="Error.MissingDestination" xml:space="preserve">
+    <value>Please select a destination first.</value>
+  </data>
+  <data name="Error.InvalidMapping" xml:space="preserve">
+    <value>Mapping to this item is not allowed, you may try to map to its nested item.</value>
+  </data>
+  <data name="Error.EmptyPackageName" xml:space="preserve">
+    <value>Please enter an import package name.</value>
+  </data>
+  <data name="Error.DuplicatePackageName" xml:space="preserve">
+    <value>The same import package name already exists, do you want to override it?</value>
+  </data>
+  <data name="Error.InvalidConverter" xml:space="preserve">
+    <value>Unable to create the specified converter</value>
+  </data>
+  <data name="Error.InvalidData" xml:space="preserve">
+    <value>There are invalid data row(s). To view the errors, select a row with error sign, click "Modify", then click "Validate" button.</value>
+  </data>
+  <data name="Info.DataIsValid" xml:space="preserve">
+    <value>The data is in valid states</value>
+  </data>
+  <data name="Error.UnspecifiedFile" xml:space="preserve">
+    <value>Please enter a file name.</value>
+  </data>
+  <data name="Error.MappingExist" xml:space="preserve">
+    <value>Duplicated line is not allowed.</value>
+  </data>
+  <data name="Error.InputLimit" xml:space="preserve">
+    <value>Only one input is allowed for one-to-many mapping.</value>
+  </data>
+  <data name="Error.OutputLimit" xml:space="preserve">
+    <value>Only one output is allowed for many-to-one mapping.</value>
+  </data>
+  <data name="Info.NoMatchedConverter" xml:space="preserve">
+    <value>There isn't a converter that is suitable for the source file.</value>
+  </data>
+  <data name="ImportWizard.MissingSrcAttribute" xml:space="preserve">
+    <value>The import script may be incoorect for the source data. Unable to find an attribute in source file:</value>
+  </data>
+  <data name="ImportWizard.MissingDstAttribute" xml:space="preserve">
+    <value>The import script may be incorrect for the destination data. Unable to find an attribute in destination class:</value>
+  </data>
+  <data name="ImportWizard.MissingSrcTable" xml:space="preserve">
+    <value>The import script may be incorrect for the source data. Unable to find a table in source data:</value>
+  </data>
+  <data name="ImportWizard.ConfirmDeletePackage" xml:space="preserve">
+    <value>Are you sure you want to delete the import script?</value>
+  </data>
+  <data name="Error.UnknownPackage" xml:space="preserve">
+    <value>Unknown package name: </value>
+  </data>
+  <data name="ImportWizard.SelectDstClass" xml:space="preserve">
+    <value>Click here to select a class...</value>
+  </data>
+  <data name="Error.NoClassMappings" xml:space="preserve">
+    <value>Please check at least one item in the table.</value>
+  </data>
+  <data name="Error.NoConverterSelected" xml:space="preserve">
+    <value>Please select a converter from the list.</value>
+  </data>
+  <data name="Import.MissingAssemblyName" xml:space="preserve">
+    <value>Please select an assembly of the converter.</value>
+  </data>
+  <data name="Import.MissingClassName" xml:space="preserve">
+    <value>Please enter the class name of the converter.</value>
+  </data>
+  <data name="Import.LargeFile" xml:space="preserve">
+    <value>One of the files to be imported is of size {0} MB, make sure that your computer has enough memory to process it. Otherwise, choose "Block" option to import the file in blocks. Please be advised that some of the features, such as, preview and data validation won't work if you choose "Block" option. </value>
+  </data>
+  <data name="Import.NextBlock" xml:space="preserve">
+    <value>Preparing import data for block {0}.</value>
+  </data>
+  <data name="Info.NotImplementedYet" xml:space="preserve">
+    <value>This functionality has not been implemented yet.</value>
+  </data>
+  <data name="Error.SourceFormatDifferent" xml:space="preserve">
+    <value>The selected files do not have the same data formats. It is required that all the files to be imported at the same time share the same data format.</value>
+  </data>
+  <data name="ImportWizard.DeleteConverter" xml:space="preserve">
+    <value>Are you sure that you want to delete the selected converter?</value>
+  </data>
+  <data name="Info.ConverterNotExist" xml:space="preserve">
+    <value>The converter '{0}' specified by the import package doesn't exist in the local host, therefore, can't be used. </value>
+  </data>
+	<data name="Warning.NoUniqueKeys" xml:space="preserve">
+    <value>There isn't an unique key(s) defined for the class, therefore, the import utility won't be able to perform the modications of existing instance. The class name is  </value>
+  </data>
+</root>

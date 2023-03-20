@@ -1,0 +1,5 @@
+<WFProject ID="32" Name="试验任务项目" order="0">
+  <Workflows>
+    <Workflow ID="75" Name="试验任务审批流程" order="0" Type="StateMachine" Cls="WF1997456990" schemaId="故障记录数据库 1.0" clsName="TestTask" clsCaption="试验任务" eventName="任务生成事件" />
+  </Workflows>
+</WFProject>

@@ -1,0 +1,1482 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CF010325-1364-4754-9192-CF7873C35F90}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Newtera.Common</AssemblyName>
+    <AssemblyOriginatorKeyFile>NewteraKeys.snk</AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Newtera.Common</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <SignAssembly>true</SignAssembly>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE;PUBLIC_LICENSE_CLASS; CHECK_PUBLIC_KEY</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\XmlRegistry\XmlRegistry.csproj">
+      <Project>{883db56b-2e30-435c-9788-ebba9bf3d352}</Project>
+      <Name>XmlRegistry</Name>
+    </ProjectReference>
+    <Reference Include="Microsoft.JScript">
+      <Name>Microsoft.JScript</Name>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Design">
+      <Name>System.Design</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Web">
+      <Name>System.Web</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\Licensing\Licensing.csproj">
+      <Name>Licensing</Name>
+      <Project>{3E2EBEAC-7CE4-49C9-95A7-1CD61187824B}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Attachment\AtachmentInfoCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Attachment\AttachmentException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Attachment\AttachmentInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Attachment\AttachmentTypeEnum.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Attachment\IAttachmentInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Attachment\NodeFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Attachment\NodeTypeEnum.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Config\AppConfig.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Config\ConfigKeyValueCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Config\ClusterServerConfig.cs" />
+    <Compile Include="Config\ElasticsearchConfig.cs" />
+    <Compile Include="Config\FullTextIndexConfig.cs" />
+    <Compile Include="Core\ErrorLog.cs" />
+    <Compile Include="Core\GetMachineInfo.cs" />
+    <Compile Include="Core\LocaleInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\NewteraException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\NewteraNameSpace.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\SchemaInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\SchemaInfoCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\XMLSchemaInstanceNameSpace.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\TraceLog.cs" />
+    <Compile Include="MetaData\Api\IApiNode.cs" />
+    <Compile Include="MetaData\Api\Api.cs" />
+    <Compile Include="MetaData\Api\ApiCollection.cs" />
+    <Compile Include="MetaData\Api\ApiException.cs" />
+    <Compile Include="MetaData\Api\ApiGroup.cs" />
+    <Compile Include="MetaData\Api\ApiGroupCollection.cs" />
+    <Compile Include="MetaData\Api\ApiManager.cs" />
+    <Compile Include="MetaData\Api\ApiNodeBase.cs" />
+    <Compile Include="MetaData\Api\ApiNodeCollection.cs" />
+    <Compile Include="MetaData\Api\ApiNodeFactory.cs" />
+    <Compile Include="MetaData\Api\ApiNodeTypeEnum.cs" />
+    <Compile Include="MetaData\Api\Validate\IApiNodeVisitor.cs" />
+    <Compile Include="MetaData\Api\Validate\ApiModelValidateVisitor.cs" />
+    <Compile Include="MetaData\BottomClassFormTemplateListHandler.cs" />
+    <Compile Include="MetaData\DataViewListHandler.cs" />
+    <Compile Include="MetaData\DataView\ArrayDataCellPropertyDescriptor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\ArrayDataRowPropertyDescriptor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\ArrayDataRowView.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\ArrayDataRowViewConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\ArrayDataTableView.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\ArrayDataTableViewConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\BinaryExpr.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\Comma.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\ContainsFunc.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\DataArrayAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\DataClass.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\DataRelationshipAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\DataSetHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\DataSimpleAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\DataViewElementBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\DataViewElementCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\DataViewException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\DataViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\DataViewModelCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\ElementFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\ElementTypeEnum.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\Filter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\FindSearchParamterVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\FlattenSearchFiltersVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\IDataViewElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\IDataViewlElementVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\InExpr.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\InstanceAttributePropertyDescriptor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\InstanceData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\InstanceView.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\IQueryElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\LeftEmptyOperand.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\LeftParenthesis.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\LogicalExpr.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\MultipleChoiceValueConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\Parameter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\ParameterCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\ParenthesizedExpr.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\ArrayEditElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\ArrayResultElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\BaseClassElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\DeleteVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\EditFunctionClause.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\EditInstanceVisitorBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\ForInDocumentClause.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\ICompositQueryElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\InlinedXmlAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\InlinedXmlClause.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\InsertVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\LetClause.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\PrepareVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\QueryElementBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\QueryElementCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\RelationshipEditElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\RelationshipResultElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\ResultVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\ReturnClause.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\SearchVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\SimpleEditElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\SimpleResultElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\UpdateReferencesVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\UpdateVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\WhereClause.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\XQueryBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\XQueryStatement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\VirtualResultElement.cs" />
+    <Compile Include="MetaData\DataView\QueryBuilder\RuleValidateVisitor.cs" />
+    <Compile Include="MetaData\DataView\QueryBuilder\RuleStatement.cs" />
+    <Compile Include="MetaData\DataView\QueryBuilder\ForClause.cs" />
+    <Compile Include="MetaData\DataView\QueryBuilder\ImageEditElement.cs" />
+    <Compile Include="MetaData\DataView\QueryBuilder\ImageResultElement.cs" />
+    <Compile Include="MetaData\DataView\ReferencedClassCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\RelationalExpr.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\RelationshipBegin.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\RelationshipEnd.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\RelationshipPrimaryKeyView.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\RelationshipPrimaryKeyViewConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\ResultAttributeCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\RightEmptyOperand.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\RightParenthesis.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\SortBy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\Taxonomy\ClassNameConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\Taxonomy\DataViewNameConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\Taxonomy\ITaxonomy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\Taxonomy\TaxonNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\Taxonomy\TaxonNodeCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\Taxonomy\TaxonomyException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\Taxonomy\TaxonomyModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\Taxonomy\TaxonomyModelCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\Validate\DataViewValidateResult.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\Validate\DataViewValidateVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\Validate\InstanceDataValidateVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\Validate\ValidateResultEntry.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\QueryBuilder\Validate\ValidateResultEntryCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\DataView\DataVirtualAttribute.cs" />
+    <Compile Include="MetaData\DataView\FindDataViewElementVisitor.cs" />
+    <Compile Include="MetaData\DataView\ClearSearchValuesVisitor.cs" />
+    <Compile Include="MetaData\DataView\FindSearchAttributeVisitor.cs" />
+    <Compile Include="MetaData\DataView\SortAttribute.cs" />
+    <Compile Include="MetaData\DataView\FunctionFactory.cs" />
+    <Compile Include="MetaData\DataView\Taxonomy\AutoClassifyDef.cs" />
+    <Compile Include="MetaData\DataView\Taxonomy\AutoClassifyLevel.cs" />
+    <Compile Include="MetaData\DataView\Taxonomy\AutoClassifyLevelCollection.cs" />
+    <Compile Include="MetaData\DataView\WFStateFunction.cs" />
+    <Compile Include="MetaData\DataView\IFunctionElement.cs" />
+    <Compile Include="MetaData\DataView\ErrorFunction.cs" />
+    <Compile Include="MetaData\DataView\PropagateFunctionParametersVisitor.cs" />
+    <Compile Include="MetaData\DataView\IParameter.cs" />
+    <Compile Include="MetaData\DataView\SearchExpressionBuilder.cs" />
+    <Compile Include="MetaData\DataView\BeforeValueFunction.cs" />
+    <Compile Include="MetaData\DataView\DataImageAttribute.cs" />
+    <Compile Include="MetaData\EnumTypeFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Events\IEventNode.cs" />
+    <Compile Include="MetaData\Events\EventNodeFactory.cs" />
+    <Compile Include="MetaData\Events\EventNodeTypeEnum.cs" />
+    <Compile Include="MetaData\Events\EventCollection.cs" />
+    <Compile Include="MetaData\Events\EventDef.cs" />
+    <Compile Include="MetaData\Events\EventException.cs" />
+    <Compile Include="MetaData\Events\EventManager.cs" />
+    <Compile Include="MetaData\Events\EventNodeBase.cs" />
+    <Compile Include="MetaData\Events\EventNodeCollection.cs" />
+    <Compile Include="MetaData\Events\EventGroup.cs" />
+    <Compile Include="MetaData\Events\EventGroupCollection.cs" />
+    <Compile Include="MetaData\Events\OperationTypeEnum.cs" />
+    <Compile Include="MetaData\Events\TimerIntervalEnum.cs" />
+    <Compile Include="MetaData\Events\Validate\EventModelValidateVisitor.cs" />
+    <Compile Include="MetaData\Events\Validate\IEventNodeVisitor.cs" />
+    <Compile Include="MetaData\FileType\FileSuffix.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\FileType\FileTypeException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\FileType\FileTypeInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\FileType\FileTypeInfoCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\FileType\FileTypeNodeCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\FileType\IFileTypeNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\FileType\NodeFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\FileType\NodeTypeEnum.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\FormTemplateListHandler.cs" />
+    <Compile Include="MetaData\GlobalizedPropertyDescriptor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\GlobalSettings.cs" />
+    <Compile Include="MetaData\GuidGenerator.cs" />
+    <Compile Include="MetaData\IMetaDataElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\ImportPackageListHandler.cs" />
+    <Compile Include="MetaData\IXMLDataSourceService.cs" />
+    <Compile Include="MetaData\Mappings\ArrayDataCellMapping.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\AttributeMapping.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\AttributeMappingCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\ClassMapping.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\ClassMappingCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\DataSourceTypeEnum.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\DefaultValue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\DefaultValueCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Generator\CodeStubGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Generator\LanguageTypeEnum.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\IdentifyRowScript.cs" />
+    <Compile Include="MetaData\Mappings\IMappingNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\InputOutputAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\ITransformable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\ManyToManyMapping.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\ManyToOneMapping.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\MappingException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\MappingManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\MappingNodeBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\MappingNodeCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\MappingNodeFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\MappingPackage.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\MappingPackageCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\MultiAttributeMappingBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\NodeTypeEnum.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\OneToManyMapping.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\PrimaryKeyMapping.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\ScriptBase.cs" />
+    <Compile Include="MetaData\Mappings\Scripts\ClassScript.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Scripts\ClassScriptCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Scripts\InstanceScript.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Scripts\InstanceScriptCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Scripts\IScriptNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Scripts\NodeTypeEnum.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Scripts\ScriptException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Scripts\ScriptManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Scripts\ScriptNodeBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Scripts\ScriptNodeCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Scripts\ScriptNodeFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Selector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\SelectorCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\SelectorManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\SelectRowScript.cs" />
+    <Compile Include="MetaData\Mappings\TextFormat.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\TransformScript.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Transform\ArrayDataCellGetter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Transform\ArrayDataCellSetter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Transform\AttributeGetterBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Transform\AttributeSetterBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Transform\AttributeSetterCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Transform\BuildDataSetVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Transform\GetterFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Transform\GetterTypeEnum.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Transform\IAttributeGetter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Transform\IAttributeSetter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Transform\ITransformer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Transform\ManyToManyTransformer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Transform\ManyToOneTransformer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Transform\OneToManyTransformer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Transform\OneToOneTransformer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Transform\PrimaryKeyGetter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Transform\PrimaryKeySetter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Transform\SetterTypeEnum.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Transform\SimpleAttributeGetter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Transform\SimpleAttributeSetter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Transform\TableRowIdentifier.cs" />
+    <Compile Include="MetaData\Mappings\Transform\TableRowSelector.cs" />
+    <Compile Include="MetaData\Mappings\Transform\TransformCardinalEnum.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Mappings\Transform\TransformerBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\MetaDataElementSortedList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\MetaDataModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Principal\CustomPrincipal.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Principal\RoleRecord.cs" />
+    <Compile Include="MetaData\Principal\IServerProxy.cs" />
+    <Compile Include="MetaData\Principal\UserRecord.cs" />
+    <Compile Include="MetaData\Principal\IUserManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Rules\IRuleNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Rules\PrioritizedRuleList.cs" />
+    <Compile Include="MetaData\Rules\NodeFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Rules\NodeTypeEnum.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Rules\RuleCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Rules\RuleDef.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Rules\RuleException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Rules\RuleManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Rules\RuleNodeBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Rules\RuleNodeCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Rules\RuleSet.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Rules\RuleSetCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\MetaDataValidateHelper.cs" />
+    <Compile Include="MetaData\Rules\RuleValidateResult.cs" />
+    <Compile Include="MetaData\Schema\ArrayAttributeElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\AttributeElementBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\AttributeUsageEnum.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\CaseStyleEnum.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\ClassElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\ClassNameConverter.cs" />
+    <Compile Include="MetaData\Schema\ConstraintElementBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\ConstraintUsageEnum.cs" />
+    <Compile Include="MetaData\Schema\DataTypeEnum.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\EnumElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\EnumValue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\EnumValueCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\Generator\CodeStubGenerator.cs" />
+    <Compile Include="MetaData\Schema\Generator\IExecutionContext.cs" />
+    <Compile Include="MetaData\Schema\Generator\IFormula.cs" />
+    <Compile Include="MetaData\Schema\Generator\LanguageTypeEnum.cs" />
+    <Compile Include="MetaData\Schema\Generator\FormulaBase.cs" />
+    <Compile Include="MetaData\Schema\Generator\ExecutionContext.cs" />
+    <Compile Include="MetaData\Schema\IListHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\ISchemaModelElementVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\ListElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\PatternElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\RangeElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\RelationshipAttributeElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\SchemaInfoElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\SchemaModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\SchemaModelBody.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\SchemaModelElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\SchemaModelElementCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\SchemaModelException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\SimpleAttributeElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\Validate\SchemaModelValidateVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\Validate\ValidateResult.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\Validate\ValidateResultEntry.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\Validate\ValidateResultEntryCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\Schema\Validate\FindSchemaModelElementVisitor.cs" />
+    <Compile Include="MetaData\Schema\VirtualAttributeElement.cs" />
+    <Compile Include="MetaData\Schema\IAttributeValueGenerator.cs" />
+    <Compile Include="MetaData\Schema\IEnumConstraint.cs" />
+    <Compile Include="MetaData\Schema\ImageAttributeElement.cs" />
+    <Compile Include="MetaData\Schema\CustomPageElement.cs" />
+    <Compile Include="MetaData\SiteMap\ISiteMapNodeVisitor.cs" />
+    <Compile Include="MetaData\SiteMap\StateParameter.cs" />
+    <Compile Include="MetaData\SiteMap\SiteMapException.cs" />
+    <Compile Include="MetaData\SiteMap\SiteMapModelSet.cs" />
+    <Compile Include="MetaData\SiteMap\SiteMapNode.cs" />
+    <Compile Include="MetaData\SiteMap\SiteMap.cs" />
+    <Compile Include="MetaData\SiteMap\SiteMapNodeCollection.cs" />
+    <Compile Include="MetaData\SiteMap\ISiteMapNode.cs" />
+    <Compile Include="MetaData\SiteMap\NodeFactory.cs" />
+    <Compile Include="MetaData\SiteMap\NodeTypeEnum.cs" />
+    <Compile Include="MetaData\SiteMap\SiteMapNodeBase.cs" />
+    <Compile Include="MetaData\SiteMap\SideMenu.cs" />
+    <Compile Include="MetaData\SiteMap\SideMenuGroup.cs" />
+    <Compile Include="MetaData\SiteMap\Menu.cs" />
+    <Compile Include="MetaData\SiteMap\MenuItem.cs" />
+    <Compile Include="MetaData\SiteMap\SiteMapModel.cs" />
+    <Compile Include="MetaData\SiteMap\Validate\SiteMapModelValidateVisitor.cs" />
+    <Compile Include="MetaData\SiteMap\Validate\ValidateResult.cs" />
+    <Compile Include="MetaData\SiteMap\Validate\ValidateResultEntry.cs" />
+    <Compile Include="MetaData\SiteMap\Validate\ValidateResultEntryCollection.cs" />
+    <Compile Include="MetaData\SiteMap\CustomCommandGroup.cs" />
+    <Compile Include="MetaData\SiteMap\CustomCommand.cs" />
+    <Compile Include="MetaData\SiteMap\CustomCommandSet.cs" />
+    <Compile Include="MetaData\Subscribers\SubscriberCollection.cs" />
+    <Compile Include="MetaData\Subscribers\Subscriber.cs" />
+    <Compile Include="MetaData\Subscribers\SubscriberException.cs" />
+    <Compile Include="MetaData\Subscribers\SubscriberGroup.cs" />
+    <Compile Include="MetaData\Subscribers\SubscriberGroupCollection.cs" />
+    <Compile Include="MetaData\Subscribers\SubscriberManager.cs" />
+    <Compile Include="MetaData\Subscribers\SubscriberNodeBase.cs" />
+    <Compile Include="MetaData\Subscribers\SubscriberNodeCollection.cs" />
+    <Compile Include="MetaData\Subscribers\SubscriberNodeFactory.cs" />
+    <Compile Include="MetaData\Subscribers\SubscriberNodeTypeEnum.cs" />
+    <Compile Include="MetaData\Subscribers\ISubscriberNode.cs" />
+    <Compile Include="MetaData\Subscribers\Validate\ISubscriberNodeVisitor.cs" />
+    <Compile Include="MetaData\Subscribers\Validate\SubscriberModelValidateVisitor.cs" />
+    <Compile Include="MetaData\ValueChangedEventArgs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\WordTemplateListHandler.cs" />
+    <Compile Include="MetaData\WorkflowListHandler.cs" />
+    <Compile Include="MetaData\XaclModel\IXaclNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\IXaclNodeVisitor.cs" />
+    <Compile Include="MetaData\XaclModel\IXaclObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\NodeFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\NodeTypeEnum.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\PermissionChecker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\PermissionViolationException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\Processor\AccessRequest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\Processor\AccessRequestBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\Processor\Conclusion.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\Processor\Decision.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\Processor\IConditionRunner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\Processor\RuleMatcher.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\Processor\XaclProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\Validate\XaclModelValidateVisitor.cs" />
+    <Compile Include="MetaData\XaclModel\XaclAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\XaclActionCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\XaclActionType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\XaclCondition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\XaclConflictResolutionType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\XaclDef.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\XaclDefCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\XaclException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\XaclNodeBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\XaclNodeCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\XaclObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\XaclPermissionFlag.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\XaclPermissionType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\XaclPolicy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\XaclPropagationType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\XaclRule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\XaclRuleCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\XaclSetting.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\XaclModel\XaclSubject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaData\UsersListHandler.cs" />
+    <Compile Include="MetaData\RolesListHandler.cs" />
+    <Compile Include="MetaData\DataView\QueryBuilder\Validate\InstanceWrapper.cs" />
+    <Compile Include="MetaData\Logging\ILoggingNode.cs" />
+    <Compile Include="MetaData\Logging\ILogginglNodeVisitor.cs" />
+    <Compile Include="MetaData\Logging\NodeFactory.cs" />
+    <Compile Include="MetaData\Logging\NodeTypeEnum.cs" />
+    <Compile Include="MetaData\Logging\LoggingChecker.cs" />
+    <Compile Include="MetaData\Logging\Processor\LoggingRequest.cs" />
+    <Compile Include="MetaData\Logging\Processor\LoggingRequestBuilder.cs" />
+    <Compile Include="MetaData\Logging\Processor\Conclusion.cs" />
+    <Compile Include="MetaData\Logging\Processor\Decision.cs" />
+    <Compile Include="MetaData\Logging\Processor\RuleMatcher.cs" />
+    <Compile Include="MetaData\Logging\Processor\LoggingProcessor.cs" />
+    <Compile Include="MetaData\Logging\Validate\LoggingModelValidateVisitor.cs" />
+    <Compile Include="MetaData\Logging\LoggingAction.cs" />
+    <Compile Include="MetaData\Logging\LoggingActionCollection.cs" />
+    <Compile Include="MetaData\Logging\LoggingActionType.cs" />
+    <Compile Include="MetaData\Logging\LoggingConflictResolutionType.cs" />
+    <Compile Include="MetaData\Logging\LoggingDef.cs" />
+    <Compile Include="MetaData\Logging\LoggingDefCollection.cs" />
+    <Compile Include="MetaData\Logging\LogginglException.cs" />
+    <Compile Include="MetaData\Logging\LoggingNodeBase.cs" />
+    <Compile Include="MetaData\Logging\LoggingNodeCollection.cs" />
+    <Compile Include="MetaData\Logging\LoggingObject.cs" />
+    <Compile Include="MetaData\Logging\LoggingActionFlag.cs" />
+    <Compile Include="MetaData\Logging\LoggingStatus.cs" />
+    <Compile Include="MetaData\Logging\LoggingPolicy.cs" />
+    <Compile Include="MetaData\Logging\LoggingPropagationType.cs" />
+    <Compile Include="MetaData\Logging\LoggingRule.cs" />
+    <Compile Include="MetaData\Logging\LoggingRuleCollection.cs" />
+    <Compile Include="MetaData\Logging\LoggingSetting.cs" />
+    <Compile Include="MetaData\Logging\LoggingSubject.cs" />
+    <Compile Include="MetaData\XmlDataSourceListHandler.cs" />
+    <Compile Include="MetaData\LeafClassListHandler.cs" />
+    <Compile Include="MetaData\XMLSchemaView\IXMLSchemaNode.cs" />
+    <Compile Include="MetaData\XMLSchemaView\IXMLSchemaNodeVisitor.cs" />
+    <Compile Include="MetaData\XMLSchemaView\XMLSchemaComplexType.cs" />
+    <Compile Include="MetaData\XMLSchemaView\XMLSchemaComplexTypeCollection.cs" />
+    <Compile Include="MetaData\XMLSchemaView\XMLSchemaElement.cs" />
+    <Compile Include="MetaData\XMLSchemaView\XMLSchemaElementCollection.cs" />
+    <Compile Include="MetaData\XMLSchemaView\XMLSchemaNodeBase.cs" />
+    <Compile Include="MetaData\XMLSchemaView\XMLSchemaNodeCollection.cs" />
+    <Compile Include="MetaData\XMLSchemaView\XMLSchemaNodeFactory.cs" />
+    <Compile Include="MetaData\XMLSchemaView\XMLSchemaNodeTypeEnum.cs" />
+    <Compile Include="MetaData\XMLSchemaView\XMLSchemaViewException.cs" />
+    <Compile Include="MetaData\XMLSchemaView\XMLSchemaModel.cs" />
+    <Compile Include="MetaData\XMLSchemaView\XMLSchemaModelCollection.cs" />
+    <Compile Include="Wrapper\ICustomFunction.cs" />
+    <Compile Include="Wrapper\InstanceWrapperFactory.cs" />
+    <Compile Include="Wrapper\WrapperException.cs" />
+    <Compile Include="Wrapper\IInstanceWrapper.cs" />
+    <Compile Include="Wrapper\DummyInstance.cs" />
+    <Compile Include="Wrapper\IBindingInstanceService.cs" />
+    <EmbeddedResource Include="Core\LocaleInfo.resx">
+      <DependentUpon>LocaleInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\LocaleInfo.zh-CN.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\resources\ErrorResource.-en.resources" />
+    <EmbeddedResource Include="MetaData\Api\Api.resx">
+      <DependentUpon>Api.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Api\Api.zh-CN.resx">
+      <DependentUpon>Api.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Api\ApiNodeBase.resx">
+      <DependentUpon>ApiNodeBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Api\ApiNodeBase.zh-CN.resx">
+      <DependentUpon>ApiNodeBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Api\Validate\ApiModelValidateVisitor.resx">
+      <DependentUpon>ApiModelValidateVisitor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Api\Validate\ApiModelValidateVisitor.zh-CN.resx">
+      <DependentUpon>ApiModelValidateVisitor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\DataView\DataViewElementBase.resx" />
+    <EmbeddedResource Include="MetaData\DataView\DataViewElementBase.zh-CN.resx" />
+    <EmbeddedResource Include="MetaData\DataView\ErrorFunction.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ErrorFunction.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ErrorFunction.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\DataView\ErrorFunction.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ErrorFunction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\DataView\Taxonomy\AutoClassifyLevel.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AutoClassifyLevel.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AutoClassifyLevel.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\DataView\Taxonomy\AutoClassifyLevel.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AutoClassifyLevel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\DataView\Taxonomy\TaxonNode.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\DataView\Taxonomy\TaxonNode.zh-CN.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\DataView\Taxonomy\TaxonomyModel.resx" />
+    <EmbeddedResource Include="MetaData\DataView\Taxonomy\TaxonomyModel.zh-CN.resx" />
+    <EmbeddedResource Include="MetaData\DataView\QueryBuilder\Validate\DataViewValidateVisitor.resx">
+      <DependentUpon>DataViewValidateVisitor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\DataView\QueryBuilder\Validate\DataViewValidateVisitor.zh-CN.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\DataView\QueryBuilder\Validate\InstanceDataValidateVisitor.resx">
+      <DependentUpon>InstanceDataValidateVisitor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\DataView\QueryBuilder\Validate\InstanceDataValidateVisitor.zh-CN.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Events\EventDef.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EventDef.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EventDef.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Events\EventDef.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EventDef.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Events\EventNodeBase.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Events\EventNodeBase.zh-CN.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Events\Validate\EventModelValidateVisitor.resx">
+      <DependentUpon>EventModelValidateVisitor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Events\Validate\EventModelValidateVisitor.zh-CN.resx">
+      <DependentUpon>EventModelValidateVisitor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Mappings\MappingNodeBase.resx" />
+    <EmbeddedResource Include="MetaData\Mappings\MappingNodeBase.zh-CN.resx" />
+    <EmbeddedResource Include="MetaData\MetaDataValidateHelper.resx">
+      <DependentUpon>MetaDataValidateHelper.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\MetaDataValidateHelper.zh-CN.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Rules\RuleDef.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>RuleDef.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>RuleDef.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Rules\RuleDef.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>RuleDef.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\ArrayAttributeElement.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\ArrayAttributeElement.zh-CN.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\AttributeElementBase.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\AttributeElementBase.zh-CN.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\ClassElement.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\ClassElement.zh-CN.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\ConstraintElementBase.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\ConstraintElementBase.zh-CN.resx" />
+    <EmbeddedResource Include="MetaData\Schema\EnumElement.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\EnumElement.zh-CN.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\ImageAttributeElement.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ImageAttributeElement.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ImageAttributeElement.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\ImageAttributeElement.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ImageAttributeElement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\ListElement.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\ListElement.zh-CN.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\PatternElement.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\PatternElement.zh-CN.resx" />
+    <EmbeddedResource Include="MetaData\Schema\RangeElement.resx" />
+    <EmbeddedResource Include="MetaData\Schema\RangeElement.zh-CN.resx" />
+    <EmbeddedResource Include="MetaData\Schema\RelationshipAttributeElement.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\RelationshipAttributeElement.zh-CN.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\SchemaInfoElement.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\SchemaInfoElement.zh-CN.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\SchemaModel.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\SchemaModel.zh-CN.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\SchemaModelElement.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\SchemaModelElement.zh-CN.resx" />
+    <EmbeddedResource Include="MetaData\Schema\SimpleAttributeElement.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\SimpleAttributeElement.zh-CN.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\Validate\SchemaModelValidateVisitor.resx">
+      <DependentUpon>SchemaModelValidateVisitor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\Validate\SchemaModelValidateVisitor.zh-CN.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\VirtualAttributeElement.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\VirtualAttributeElement.zh-CN.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\CustomPageElement.resx">
+      <DependentUpon>CustomPageElement.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CustomPageElement.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Schema\CustomPageElement.zh-CN.resx">
+      <DependentUpon>CustomPageElement.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\SiteMap\StateParameter.resx">
+      <DependentUpon>StateParameter.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>StateParameter.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\SiteMap\StateParameter.zh-CN.resx">
+      <DependentUpon>StateParameter.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\SiteMap\Menu.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Menu.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Menu.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\SiteMap\Menu.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Menu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\SiteMap\MenuItem.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MenuItem.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MenuItem.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\SiteMap\MenuItem.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MenuItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\SiteMap\SideMenuGroup.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SideMenuGroup.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SideMenuGroup.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\SiteMap\SideMenuGroup.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SideMenuGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\SiteMap\SiteMapModel.resx">
+      <DependentUpon>SiteMapModel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\SiteMap\SiteMapModel.zh-CN.resx">
+      <DependentUpon>SiteMapModel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\SiteMap\SiteMapModelSet.resx">
+      <DependentUpon>SiteMapModelSet.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\SiteMap\SiteMapModelSet.zh-CN.resx">
+      <DependentUpon>SiteMapModelSet.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\SiteMap\SiteMapNode.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SiteMapNode.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SiteMapNode.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\SiteMap\SiteMapNode.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SiteMapNode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\SiteMap\SiteMapNodeBase.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SiteMapNodeBase.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SiteMapNodeBase.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\SiteMap\SiteMapNodeBase.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SiteMapNodeBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\SiteMap\Validate\SiteMapModelValidateVisitor.resx">
+      <DependentUpon>SiteMapModelValidateVisitor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\SiteMap\Validate\SiteMapModelValidateVisitor.zh-CN.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SiteMapModelValidateVisitor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\SiteMap\CustomCommandGroup.resx">
+      <DependentUpon>CustomCommandGroup.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CustomCommandGroup.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\SiteMap\CustomCommandGroup.zh-CN.resx">
+      <DependentUpon>CustomCommandGroup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\SiteMap\CustomCommand.resx">
+      <DependentUpon>CustomCommand.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CustomCommand.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\SiteMap\CustomCommand.zh-CN.resx">
+      <DependentUpon>CustomCommand.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Subscribers\Subscriber.resx">
+      <DependentUpon>Subscriber.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Subscribers\Subscriber.zh-CN.resx">
+      <DependentUpon>Subscriber.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Subscribers\SubscriberNodeBase.resx">
+      <DependentUpon>SubscriberNodeBase.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Subscribers\SubscriberNodeBase.zh-CN.resx">
+      <DependentUpon>SubscriberNodeBase.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Subscribers\Validate\SubscriberModelValidateVisitor.resx">
+      <DependentUpon>SubscriberModelValidateVisitor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Subscribers\Validate\SubscriberModelValidateVisitor.zh-CN.resx">
+      <DependentUpon>SubscriberModelValidateVisitor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\XaclModel\Validate\XaclModelValidateVisitor.resx">
+      <DependentUpon>XaclModelValidateVisitor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\XaclModel\Validate\XaclModelValidateVisitor.zh-CN.resx">
+      <DependentUpon>XaclModelValidateVisitor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Logging\Validate\LoggingModelValidateVisitor.resx">
+      <DependentUpon>LoggingModelValidateVisitor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\Logging\Validate\LoggingModelValidateVisitor.zh-CN.resx">
+      <DependentUpon>LoggingModelValidateVisitor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\XMLSchemaView\XMLSchemaElement.resx">
+      <DependentUpon>XMLSchemaElement.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\XMLSchemaView\XMLSchemaElement.zh-CN.resx">
+      <DependentUpon>XMLSchemaElement.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\XMLSchemaView\XMLSchemaNodeBase.resx">
+      <DependentUpon>XMLSchemaNodeBase.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaData\XMLSchemaView\XMLSchemaNodeBase.zh-CN.resx">
+      <DependentUpon>XMLSchemaNodeBase.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NewteraKeys.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Newtera.Common.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

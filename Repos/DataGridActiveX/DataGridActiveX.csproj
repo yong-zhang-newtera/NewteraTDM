@@ -1,0 +1,293 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C9021E08-F7F1-4B1E-9725-940EC2505C0D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Newtera.DataGridActiveX</RootNamespace>
+    <AssemblyName>Newtera.DataGridActiveX</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ChartModel\AxisDef.cs" />
+    <Compile Include="ChartModel\ChartDef.cs" />
+    <Compile Include="ChartModel\ChartDefCollection.cs" />
+    <Compile Include="ChartModel\ChartDefEnum.cs" />
+    <Compile Include="ChartModel\ChartInfo.cs" />
+    <Compile Include="ChartModel\ChartInfoCollection.cs" />
+    <Compile Include="ChartModel\ChartModelException.cs" />
+    <Compile Include="ChartModel\ChartModelManager.cs" />
+    <Compile Include="ChartModel\ChartNodeBase.cs" />
+    <Compile Include="ChartModel\ChartNodeCollection.cs" />
+    <Compile Include="ChartModel\ContourChartDef.cs" />
+    <Compile Include="ChartModel\DataPoint.cs" />
+    <Compile Include="ChartModel\DataPointCollection.cs" />
+    <Compile Include="ChartModel\DataSeries.cs" />
+    <Compile Include="ChartModel\IChartNode.cs" />
+    <Compile Include="ChartModel\LineChartDef.cs" />
+    <Compile Include="ChartModel\LineDef.cs" />
+    <Compile Include="ChartModel\LineDefCollection.cs" />
+    <Compile Include="ChartModel\NodeFactory.cs" />
+    <Compile Include="ChartModel\NodeTypeEnum.cs" />
+    <Compile Include="ChartModel\ValueChangedEventArgs.cs" />
+    <Compile Include="ColumnInfo.cs" />
+    <Compile Include="ColumnInfoCollection.cs" />
+    <Compile Include="ComputeResultDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ComputeResultDialog.Designer.cs">
+      <DependentUpon>ComputeResultDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigTableDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\AddExprPopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\AttributeElementListViewItem.cs" />
+    <Compile Include="Controls\ChooseBooleanValuePopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\ChooseDateTimePopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\ChooseEnumValuePopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\ChooseOperatorPopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\ChooseSearchAttributePopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\EnterTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\EnterValuePopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\IExprPopup.cs" />
+    <Compile Include="Controls\SearchExprBuilder.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DataGridControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DataGridControlComboBoxColumn.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataGridControlImageColumn.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataGridEnumColumnImageGetter.cs" />
+    <Compile Include="DataGridView\DataGridViewElementBase.cs" />
+    <Compile Include="DataGridView\DataGridViewElementCollection.cs" />
+    <Compile Include="DataGridView\DataGridViewException.cs" />
+    <Compile Include="DataGridView\DataGridViewModel.cs" />
+    <Compile Include="DataGridView\FindSearchParamterVisitor.cs" />
+    <Compile Include="DataGridView\FlattenSearchFiltersVisitor.cs" />
+    <Compile Include="DataGridView\IComboBoxItem.cs" />
+    <Compile Include="DataGridView\IDataGridViewElement.cs" />
+    <Compile Include="DataGridView\IDataGridViewlElementVisitor.cs" />
+    <Compile Include="DataGridView\ViewArrayAttribute.cs" />
+    <Compile Include="DataGridView\ViewAttribute.cs" />
+    <Compile Include="DataGridView\ViewAttributeCollection.cs" />
+    <Compile Include="DataGridView\ViewBinaryExpr.cs" />
+    <Compile Include="DataGridView\ViewBooleanValue.cs" />
+    <Compile Include="DataGridView\ViewClass.cs" />
+    <Compile Include="DataGridView\ViewComma.cs" />
+    <Compile Include="DataGridView\ViewContainsFunc.cs" />
+    <Compile Include="DataGridView\ViewDataType.cs" />
+    <Compile Include="DataGridView\ViewElementFactory.cs" />
+    <Compile Include="DataGridView\ViewElementType.cs" />
+    <Compile Include="DataGridView\ViewEnumElement.cs" />
+    <Compile Include="DataGridView\ViewEnumValue.cs" />
+    <Compile Include="DataGridView\ViewEnumValueCollection.cs" />
+    <Compile Include="DataGridView\ViewFilter.cs" />
+    <Compile Include="DataGridView\ViewInExpr.cs" />
+    <Compile Include="DataGridView\ViewLeftEmptyOperand.cs" />
+    <Compile Include="DataGridView\ViewLeftParenthesis.cs" />
+    <Compile Include="DataGridView\ViewLocaleInfo.cs" />
+    <Compile Include="DataGridView\ViewLogicalExpr.cs" />
+    <Compile Include="DataGridView\ViewParameter.cs" />
+    <Compile Include="DataGridView\ViewParameterCollection.cs" />
+    <Compile Include="DataGridView\ViewParenthesizedExpr.cs" />
+    <Compile Include="DataGridView\ViewRelationalExpr.cs" />
+    <Compile Include="DataGridView\ViewRelationshipAttribute.cs" />
+    <Compile Include="DataGridView\ViewRightEmptyOperand.cs" />
+    <Compile Include="DataGridView\ViewRightParenthesis.cs" />
+    <Compile Include="DataGridView\ViewSimpleAttribute.cs" />
+    <Compile Include="DataGridView\ViewSortBy.cs" />
+    <Compile Include="DataGridView\ViewVirtualAttribute.cs" />
+    <Compile Include="ExportDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Export\AlgorithmType.cs" />
+    <Compile Include="Export\AlgorithmTypeCollection.cs" />
+    <Compile Include="Export\ChartFormat.cs" />
+    <Compile Include="Export\ChartFormatCollection.cs" />
+    <Compile Include="Export\ExportType.cs" />
+    <Compile Include="Export\ExportTypeCollection.cs" />
+    <Compile Include="Export\MasterServerDef.cs" />
+    <Compile Include="Export\MasterServerDefCollection.cs" />
+    <Compile Include="FullScreenForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HandleChartUtil.cs" />
+    <Compile Include="IDataGridActiveX.cs" />
+    <Compile Include="IDataGridControl.cs" />
+    <Compile Include="IDataGridControlImageGetter.cs" />
+    <Compile Include="ImageInfo.cs" />
+    <Compile Include="ImageInfoCache.cs" />
+    <Compile Include="MessageResourceManager.cs" />
+    <Compile Include="Pivot\PivotLayout.cs" />
+    <Compile Include="Pivot\PivotLayoutCollection.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SearchDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectDataSeriesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectionDataGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ShowTemplatesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ShowTemplatesDialog.Designer.cs">
+      <DependentUpon>ShowTemplatesDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewArrayDataDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewArrayDataDialog.Designer.cs">
+      <DependentUpon>ViewArrayDataDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\ActiveXControlWebService\Reference.cs" />
+    <Compile Include="WorkInProgressDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ComputeResultDialog.resx">
+      <DependentUpon>ComputeResultDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigTableDialog.resx">
+      <DependentUpon>ConfigTableDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\AddExprPopup.resx">
+      <DependentUpon>AddExprPopup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\AddExprPopup.zh-CN.resx">
+      <DependentUpon>AddExprPopup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ChooseBooleanValuePopup.resx">
+      <DependentUpon>ChooseBooleanValuePopup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ChooseDateTimePopup.resx">
+      <DependentUpon>ChooseDateTimePopup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ChooseEnumValuePopup.resx">
+      <DependentUpon>ChooseEnumValuePopup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ChooseOperatorPopup.resx">
+      <DependentUpon>ChooseOperatorPopup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ChooseOperatorPopup.zh-CN.resx">
+      <DependentUpon>ChooseOperatorPopup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ChooseSearchAttributePopup.resx">
+      <DependentUpon>ChooseSearchAttributePopup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ChooseSearchAttributePopup.zh-CN.resx">
+      <DependentUpon>ChooseSearchAttributePopup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\EnterTextBox.resx">
+      <DependentUpon>EnterTextBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\EnterValuePopup.resx">
+      <DependentUpon>EnterValuePopup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SearchExprBuilder.resx">
+      <DependentUpon>SearchExprBuilder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataGridControl.resx">
+      <DependentUpon>DataGridControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExportDialog.resx">
+      <DependentUpon>ExportDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FullScreenForm.resx">
+      <DependentUpon>FullScreenForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageResourceManager.resx">
+      <DependentUpon>MessageResourceManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchDialog.resx">
+      <DependentUpon>SearchDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectDataSeriesDialog.resx">
+      <DependentUpon>SelectDataSeriesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ShowTemplatesDialog.resx">
+      <DependentUpon>ShowTemplatesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewArrayDataDialog.resx">
+      <DependentUpon>ViewArrayDataDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WorkInProgressDialog.resx">
+      <DependentUpon>WorkInProgressDialog.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NewteraKeys.snk" />
+    <None Include="Web References\ActiveXControlWebService\ActiveXControlWebService.wsdl" />
+    <None Include="Web References\ActiveXControlWebService\Reference.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web References\ActiveXControlWebService\ActiveXControlWebService.disco" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

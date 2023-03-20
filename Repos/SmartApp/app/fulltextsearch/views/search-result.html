@@ -1,0 +1,26 @@
+﻿<!-- MAIN CONTENT -->
+<div id="content">
+    <div class="row">
+        <big-breadcrumbs items="[getWord('Home'), getWord('Search Result')]"
+                         class="col-xs-12 col-sm-12"></big-breadcrumbs>
+    </div>
+    <!-- widget grid -->
+    <section id="widget-grid" widget-grid>
+        <!-- /well -->
+        <div class="well padding-10">
+            <h5 class="margin-top-0"><i class="fa fa-folder"></i> {{getWord('Resulting Classes')}}</h5>
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul ng-show="searchCounts.length > 0" class="list-group no-margin">
+                        <li class="list-group-item" ng-repeat="searchCount in searchCounts">
+                            <a ng-click="showClassData(searchCount.className)"> <span class="badge pull-right">{{searchCount.count}}</span> {{searchCount.classDisplayName}} </a>
+                        </li>
+                    </ul>
+                    <span ng-show="!loading && searchCounts.length == 0">{{getWord('No search result')}}</span>
+                    <span ng-show="loading">{{getWord('Please wait')}}</span>
+                </div>
+            </div>
+        </div>
+        <!-- /well -->
+    </section>
+</div>

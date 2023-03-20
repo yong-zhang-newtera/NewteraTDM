@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<Schemas>
+	<Schema Name="UserInfo" Version="1.0" Type="Must"/>
+	<Schema Name="WorkflowInfo" Version="1.0" Type="Must"/>
+	<Schema Name="LoggingInfo" Version="1.0" Type="Must"/>
+	<Schema Name="Common" Version="1.0" Type="Must"/>
+</Schemas>

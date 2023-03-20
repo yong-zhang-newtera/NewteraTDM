@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="GraphWizard.MissingLines" xml:space="preserve">
+    <value>未定义曲线, 请在"曲线定义"选项卡内未定义曲线.</value>
+  </data>
+  <data name="GraphWizard.Finish" xml:space="preserve">
+    <value>完成</value>
+  </data>
+  <data name="GraphWizard.MissingXDef" xml:space="preserve">
+    <value>曲线的X轴缺少数据序列定义</value>
+  </data>
+  <data name="GraphWizard.MissingYDef" xml:space="preserve">
+    <value>曲线的Y轴缺少数据序列定义</value>
+  </data>
+  <data name="GraphWizard.EnterChartName" xml:space="preserve">
+    <value>请指定保存绘图的名称</value>
+  </data>
+  <data name="GraphWizard.Row" xml:space="preserve">
+    <value>数据行</value>
+  </data>
+  <data name="GraphWizard.Line" xml:space="preserve">
+    <value>曲线</value>
+  </data>
+  <data name="GraphWizard.DuplicateLineName" xml:space="preserve">
+    <value>曲线名称已被使用. </value>
+  </data>
+  <data name="DataGrid.NoResult" xml:space="preserve">
+    <value>没有查询结果.</value>
+  </data>
+  <data name="GraphWizard.ChartNameExist" xml:space="preserve">
+    <value>该图形名称已经被使用, 请修改名称.</value>
+  </data>
+  <data name="GraphWizard.Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="DataGrid.LargeData" xml:space="preserve">
+    <value>该操作将下载{0}条数据记录, 可能会消耗{1}MB的内存. 如果您的电脑没有足够的内存, 该操作将会失败. 您确定要继续吗?</value>
+  </data>
+  <data name="GraphWiard.GetChartInfo" xml:space="preserve">
+    <value>正在从数据库获取图形信息.</value>
+  </data>
+  <data name="GraphWizard.SaveChartData" xml:space="preserve">
+    <value>正在保存图形数据到数据库.</value>
+  </data>
+  <data name="DataGrid.GettingData" xml:space="preserve">
+    <value>正在获取数据记录条</value>
+  </data>
+  <data name="DataGrid.ExportLargeData" xml:space="preserve">
+    <value>该操作将导出{0}条数据记录, 可能会花费较长时间. 您确定要继续吗?</value>
+  </data>
+  <data name="DataGrid.NoColumnSelected" xml:space="preserve">
+    <value>请选择一个以上的属性</value>
+  </data>
+  <data name="DataGrid.Exporting" xml:space="preserve">
+    <value>正在导出数据,请稍候...</value>
+  </data>
+  <data name="DataGrid.ExecutingAlgorithm" xml:space="preserve">
+    <value>正在执行计算，请稍候...</value>
+  </data>
+  <data name="ComputeResult.NoColumn" xml:space="preserve">
+    <value>请选择一个或多个列进行计算。</value>
+  </data>
+  <data name="ActiveXControl.InvalidParameterValue" xml:space="preserve">
+    <value>非法参数值.参数值必须符合数据类型{0}.</value>
+  </data>
+  <data name="GraphWizard.TemplateNameExist" xml:space="preserve">
+    <value>该模板名称已经被使用, 请修改名称.</value>
+  </data>
+  <data name="GraphWizard.SaveChartDone" xml:space="preserve">
+    <value>图形保存成功</value>
+  </data>
+  <data name="GraphWizard.SaveTemplateDone" xml:space="preserve">
+    <value>绘图模板保存成功</value>
+  </data>
+  <data name="DataGrid.DataColumnNotExists" xml:space="preserve">
+    <value>图形所引用的数据列'{0}'在数据列表中不存在</value>
+  </data>
+  <data name="DataGrid.DataRowNotExists" xml:space="preserve">
+    <value>图形所引用的第{0}行数据在数据列表中不存在</value>
+  </data>
+  <data name="DataGrid.DataSeriesNotExists" xml:space="preserve">
+    <value>图形所引用的数据序列'{0}'在数据列表中不存在</value>
+  </data>
+  <data name="WindowsControl.InvalidLikeAttribute" xml:space="preserve">
+    <value>所选择的属性不适用于like操作符</value>
+  </data>
+  <data name="DataGrid.UpdateDone" xml:space="preserve">
+    <value>修改完毕</value>
+  </data>
+  <data name="DataGrid.Updating" xml:space="preserve">
+    <value>正在修改数据库...</value>
+  </data>
+  <data name="DataGrid.GetDataForPivot" xml:space="preserve">
+    <value>正在准备数据，请稍候...</value>
+  </data>
+  <data name="DataGrid.PivotOnLargeData" xml:space="preserve">
+    <value>将对{0}条数据记录进行分类汇总, 可能会花费较长时间. 您确定要继续吗?</value>
+  </data>
+</root>

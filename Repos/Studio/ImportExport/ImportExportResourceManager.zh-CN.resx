@@ -1,0 +1,243 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DataSourceType.Unknown" xml:space="preserve">
+    <value>未知文件格式</value>
+  </data>
+  <data name="DataSourceType.Text" xml:space="preserve">
+    <value>文本文件(.txt)</value>
+  </data>
+  <data name="DataSourceType.Excel" xml:space="preserve">
+    <value>微软Excel 97-2007文件(.xls;.xlsx)</value>
+  </data>
+  <data name="DataSourceType.Other" xml:space="preserve">
+    <value>其它文件类型</value>
+  </data>
+  <data name="DataSourceDescription.Text" xml:space="preserve">
+    <value>文本文件可以是分隔符格式或不定格式的. 可选择多个相同格式的文本文件.</value>
+  </data>
+  <data name="DataSourceDescription.Excel" xml:space="preserve">
+    <value>微软Excel 97-2007文件</value>
+  </data>
+  <data name="DataSourceDescription.Other" xml:space="preserve">
+    <value>其它类型的文件,例如,XML,Word等.</value>
+  </data>
+  <data name="DataSourceFilter.Text" xml:space="preserve">
+    <value>文本文件 (*.txt;*.dat;*.csv)|*.txt;*.dat;*.csv|所有文件 (*.*)|*.*</value>
+  </data>
+  <data name="DataSourceFilter.Excel" xml:space="preserve">
+    <value>Microsoft Excel Files (*.xls;*.xlsx) | *.xls;*.xlsx</value>
+  </data>
+  <data name="DataSourceFilter.Other" xml:space="preserve">
+    <value>其它文件 (*.*) | *.*</value>
+  </data>
+  <data name="Error.UnknownFile" xml:space="preserve">
+    <value>文件不存在.</value>
+  </data>
+  <data name="ImportPackage.None" xml:space="preserve">
+    <value>新定义</value>
+  </data>
+  <data name="Error.MissingDestination" xml:space="preserve">
+    <value>请先选择一个目标类</value>
+  </data>
+  <data name="Error.InvalidMapping" xml:space="preserve">
+    <value>非法映射,你可尝试映射到它的子项.</value>
+  </data>
+  <data name="Error.EmptyPackageName" xml:space="preserve">
+    <value>数据导入包名不能为空</value>
+  </data>
+  <data name="Error.DuplicatePackageName" xml:space="preserve">
+    <value>同名脚本已存在,你要替换它吗?</value>
+  </data>
+  <data name="Error.InvalidConverter" xml:space="preserve">
+    <value>无法生成转换器</value>
+  </data>
+  <data name="Error.InvalidData" xml:space="preserve">
+    <value>发现非法数据. 请选择错误标识行, 点击"修改"按键, 再点击"校验"来了解错误详情.</value>
+  </data>
+  <data name="Info.DataIsValid" xml:space="preserve">
+    <value>数据符合校验条件.</value>
+  </data>
+  <data name="Error.UnspecifiedFile" xml:space="preserve">
+    <value>请选择一个数据源文件.</value>
+  </data>
+  <data name="Error.MappingExist" xml:space="preserve">
+    <value>不允许重复连接.</value>
+  </data>
+  <data name="Error.InputLimit" xml:space="preserve">
+    <value>一对多影射只允许一个输入.</value>
+  </data>
+  <data name="Error.OutputLimit" xml:space="preserve">
+    <value>多对一影射只允许一个输出.</value>
+  </data>
+  <data name="Info.NoMatchedConverter" xml:space="preserve">
+    <value>未发现适合源数据格式的转换器</value>
+  </data>
+  <data name="ImportWizard.MissingSrcAttribute" xml:space="preserve">
+    <value>导入脚本与源数据不匹配. 源数据文件中缺少属性:</value>
+  </data>
+  <data name="ImportWizard.MissingDstAttribute" xml:space="preserve">
+    <value>导入脚本与目标数据不匹配. 目标数据类中缺少属性:</value>
+  </data>
+  <data name="ImportWizard.MissingSrcTable" xml:space="preserve">
+    <value>导入脚本与源数据不匹配. 在源数据中缺少表:</value>
+  </data>
+  <data name="ImportWizard.ConfirmDeletePackage" xml:space="preserve">
+    <value>您确定要删除导入脚本吗?</value>
+  </data>
+  <data name="Error.UnknownPackage" xml:space="preserve">
+    <value>不正确的导入脚本名称:</value>
+  </data>
+  <data name="ImportWizard.SelectDstClass" xml:space="preserve">
+    <value>请点击选择一数据类...</value>
+  </data>
+  <data name="Error.NoClassMappings" xml:space="preserve">
+    <value>必须选择列表中的一或多项</value>
+  </data>
+  <data name="Error.NoConverterSelected" xml:space="preserve">
+    <value>请选择一个转换器.</value>
+  </data>
+  <data name="Import.MissingAssemblyName" xml:space="preserve">
+    <value>请指定转换器的程序集.</value>
+  </data>
+  <data name="Import.MissingClassName" xml:space="preserve">
+    <value>请输入转换器的类全名.</value>
+  </data>
+  <data name="Import.LargeFile" xml:space="preserve">
+    <value>您要导入的某个文件的大小为{0}MB. 请确认您的计算机具有足够的内存来处理该文件. 如果您的计算机内存不足的话, 可选用"分块"选项. 需要注意的是, 如果您选用"分块"选项, 导入过程中的某些功能将不起作用, 例如预览数据记录和数据校验等等.</value>
+  </data>
+  <data name="Import.NextBlock" xml:space="preserve">
+    <value>正在准备第{0}块的导入数据.</value>
+  </data>
+  <data name="Info.NotImplementedYet" xml:space="preserve">
+    <value>该功能尚未实现.</value>
+  </data>
+  <data name="Error.SourceFormatDifferent" xml:space="preserve">
+    <value>发现数据格式不一致的文件. 同时导入的数据文件必须具有相同的数据格式.</value>
+  </data>
+  <data name="ImportWizard.DeleteConverter" xml:space="preserve">
+    <value>您确定要删除所选择的转换器吗？</value>
+  </data>
+  <data name="Info.ConverterNotExist" xml:space="preserve">
+    <value>该导入脚本所使用的数据转换器'{0}'不存在在本地计算机上.需要进入到向导的下一步并添加指定的数据转换器后才能使用该导入脚本.</value>
+  </data>
+	<data name="Warning.NoUniqueKeys" xml:space="preserve">
+    <value>该数据类不存在唯一性约束键,因而不能对已有数据实例进行修改,只能将导入的数据进行添加. 数据类名称为:</value>
+  </data>
+</root>
