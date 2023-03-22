@@ -98,11 +98,6 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <ProjectReference Include="..\antlr275\antlr275.csproj">
-      <Name>antlr275</Name>
-      <Project>{ABC28625-050B-4CD4-B7C0-5679894DF57A}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs">
@@ -117,54 +112,20 @@
     <Compile Include="Converter\IDataSourceConverter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ParseTree\CreateDataColumnVisitor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ParseTree\CreateDataRowVisitor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ParseTree\DataGridSettings.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ParseTree\DisplaySettingVisitor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ParseTree\IParseTreeNode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ParseTree\IParseTreeNodeVisitor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ParseTree\ITextParser.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ParseTree\ParseTreeException.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ParseTree\ParseTreeLiteralNode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ParseTree\ParseTreeNodeBase.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ParseTree\ParseTreeNodeCollection.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ParseTree\ParseTreeProcesor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ParseTree\ParseTreeRuleNode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ParseTree\ParseTreeTokenNode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ParseTree\ParseTreeTransformer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ParseTree\PredefinedTokens.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="ParseTree\CreateDataColumnVisitor.cs" />
+    <Compile Include="ParseTree\CreateDataRowVisitor.cs" />
+    <Compile Include="ParseTree\DataGridSettings.cs" />
+    <Compile Include="ParseTree\DisplaySettingVisitor.cs" />
+    <Compile Include="ParseTree\IParseTreeNode.cs" />
+    <Compile Include="ParseTree\IParseTreeNodeVisitor.cs" />
+    <Compile Include="ParseTree\ITextParser.cs" />
+    <Compile Include="ParseTree\ParseTreeException.cs" />
+    <Compile Include="ParseTree\ParseTreeLiteralNode.cs" />
+    <Compile Include="ParseTree\ParseTreeNodeBase.cs" />
+    <Compile Include="ParseTree\ParseTreeNodeCollection.cs" />
+    <Compile Include="ParseTree\ParseTreeRuleNode.cs" />
+    <Compile Include="ParseTree\ParseTreeTokenNode.cs" />
+    <Compile Include="ParseTree\PredefinedTokens.cs" />
     <Compile Include="ProjectModel\ConverterInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -210,13 +171,7 @@
     <Compile Include="ProjectModel\ValueChangedEventArgs.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Util\MismatchedTokenLengthException.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Util\SymbolAndPosition.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Util\WildcardLexer.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
