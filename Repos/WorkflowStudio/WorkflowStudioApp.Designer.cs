@@ -678,18 +678,6 @@ namespace WorkflowStudio
             this.ClientLicenseMenuItem});
             resources.ApplyResources(this.LicenseMenuItem, "LicenseMenuItem");
             // 
-            // ServerLicenseMenuItem
-            // 
-            this.ServerLicenseMenuItem.Index = 0;
-            resources.ApplyResources(this.ServerLicenseMenuItem, "ServerLicenseMenuItem");
-            this.ServerLicenseMenuItem.Click += new System.EventHandler(this.ServerLicenseMenuItem_Click);
-            // 
-            // ClientLicenseMenuItem
-            // 
-            this.ClientLicenseMenuItem.Index = 1;
-            resources.ApplyResources(this.ClientLicenseMenuItem, "ClientLicenseMenuItem");
-            this.ClientLicenseMenuItem.Click += new System.EventHandler(this.ClientLicenseMenuItem_Click);
-            // 
             // toolBarImages
             // 
             this.toolBarImages.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;

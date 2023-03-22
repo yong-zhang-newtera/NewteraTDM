@@ -154,11 +154,6 @@
       <Project>{cf010325-1364-4754-9192-cf7873c35f90}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Licensing\Licensing.csproj">
-      <Name>Licensing</Name>
-      <Project>{3E2EBEAC-7CE4-49C9-95A7-1CD61187824B}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
     <ProjectReference Include="..\WorkflowModel\WFModel.csproj">
       <Project>{EF0030AC-1F81-448B-B9F2-3CF5EFFBEA52}</Project>
       <Name>WFModel</Name>
@@ -1269,17 +1264,6 @@
     <Compile Include="FullText\IndexingManager.cs" />
     <Compile Include="FullText\Spider.cs" />
     <Compile Include="LeaderElection\LeaderElectionManager.cs" />
-    <Compile Include="Licensing\EvaluationMonitorManager.cs" />
-    <Compile Include="Licensing\NewteraLicenseChecker.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Licensing\NewteraLicenseException.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Licensing\NewteraLicenseProvider.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Licensing\NewteraLicenseInfo.cs" />
     <Compile Include="Logging\LoggingMessage.cs" />
     <Compile Include="Logging\LoggingManager.cs" />
     <Compile Include="Logging\ProcessingQueue.cs" />
@@ -1344,13 +1328,6 @@
     <EmbeddedResource Include="Engine\Vdom\Dbimp\UpdateExecutor.zh-CN.resx">
       <SubType>Designer</SubType>
       <DependentUpon>UpdateExecutor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Licensing\NewteraLicenseChecker.resx">
-      <DependentUpon>NewteraLicenseChecker.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Licensing\NewteraLicenseChecker.zh-CN.resx">
-      <DependentUpon>NewteraLicenseChecker.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Engine\Interpreter\Parser\CreateParser.bat" />
     <None Include="Engine\Interpreter\Parser\XQuery.g" />

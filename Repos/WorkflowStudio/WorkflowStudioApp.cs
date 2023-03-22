@@ -1720,24 +1720,6 @@ namespace WorkflowStudio
             aboutDialog.ShowDialog();
         }
 
-        private void ServerLicenseMenuItem_Click(object sender, EventArgs e)
-        {
-            ServerLicenseInfoDialog dialog = new ServerLicenseInfoDialog();
-
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-            }
-        }
-
-        private void ClientLicenseMenuItem_Click(object sender, EventArgs e)
-        {
-            ClientLicenseInfoDialog dialog = new ClientLicenseInfoDialog();
-
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-            }
-        }
-
         private void DeleteProjectMenuItem_Click(object sender, EventArgs e)
         {
             DeleteProjectFromDatabase();

@@ -196,9 +196,6 @@
     <Compile Include="AssignUserRolesDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ChangeLicenseDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="ChangePasswordDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -207,9 +204,6 @@
     </Compile>
     <Compile Include="CleanupSchemaVisitor.cs">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ClientLicenseInfoDialog.cs">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="ConnectionStringBuilder.cs">
       <SubType>Code</SubType>
@@ -603,15 +597,6 @@
     <Compile Include="SelectSchemaDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ServerLicenseDetailDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ServerLicenseDetailDialog.Designer.cs">
-      <DependentUpon>ServerLicenseDetailDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ServerLicenseInfoDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="SplashScreen.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -810,12 +795,6 @@
       <DependentUpon>AssignUserRolesDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChangeLicenseDialog.resx">
-      <DependentUpon>ChangeLicenseDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ChangeLicenseDialog.zh-CN.resx">
-      <DependentUpon>ChangeLicenseDialog.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ChangePasswordDialog.resx">
       <DependentUpon>ChangePasswordDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -828,13 +807,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ChangeUserPwdDialog.zh-CN.resx">
       <DependentUpon>ChangeUserPwdDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ClientLicenseInfoDialog.resx">
-      <DependentUpon>ClientLicenseInfoDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ClientLicenseInfoDialog.zh-CN.resx">
-      <DependentUpon>ClientLicenseInfoDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CreateUserOrRoleDialog.resx">
       <DependentUpon>CreateUserOrRoleDialog.cs</DependentUpon>
@@ -1479,22 +1451,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SelectSchemaDialog.zh-CN.resx">
       <DependentUpon>SelectSchemaDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ServerLicenseDetailDialog.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ServerLicenseDetailDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ServerLicenseDetailDialog.zh-CN.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ServerLicenseDetailDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ServerLicenseInfoDialog.resx">
-      <DependentUpon>ServerLicenseInfoDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ServerLicenseInfoDialog.zh-CN.resx">
-      <DependentUpon>ServerLicenseInfoDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="SplashScreen.resx">
       <DependentUpon>SplashScreen.cs</DependentUpon>
