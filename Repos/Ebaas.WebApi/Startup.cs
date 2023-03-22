@@ -170,8 +170,8 @@ namespace Ebaas.WebApi
 
             XmlRegistryKey staticFilesRootKey = rootKey.GetSubKey(NewteraNameSpace.STATIC_FILES_ROOT, false);
 
-            String rootFolader = (String)staticFilesRootKey.GetStringValue();
-            PhysicalFileSystem fileSystem = new PhysicalFileSystem(rootFolader);
+            String rootFolder = (String)staticFilesRootKey.GetStringValue();
+            PhysicalFileSystem fileSystem = new PhysicalFileSystem(rootFolder);
 
             var options = new FileServerOptions();
 

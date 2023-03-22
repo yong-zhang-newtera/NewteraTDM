@@ -18,7 +18,6 @@ using Newtera.Data;
 using Ebaas.WebApi.Models;
 using Newtera.Common.MetaData.DataView;
 using Newtera.Common.MetaData.FileType;
-using Newtera.MLServer.TimeSeries;
 
 namespace Ebaas.WebApi.Infrastructure
 {
@@ -516,15 +515,7 @@ namespace Ebaas.WebApi.Infrastructure
 
         private bool IsSystemFile(FileInfo fi)
         {
-            if (fi.Name == TimeSeriesGenerator.TIME_SERIES_FILE ||
-                fi.Name == TimeSeriesGenerator.TIME_SERIES_LOG_FILE)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return false;
         }
     }
 }

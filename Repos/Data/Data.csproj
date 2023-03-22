@@ -141,10 +141,6 @@
       <Project>{3E2EBEAC-7CE4-49C9-95A7-1CD61187824B}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <ProjectReference Include="..\MLModels\MLServer.csproj">
-      <Project>{8fd9872d-7fa3-44a5-a617-450364acbaf7}</Project>
-      <Name>MLServer</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Server\Server.csproj">
       <Name>Server</Name>
       <Project>{8D18C53D-0505-4444-A607-A8E7F80A8DBA}</Project>

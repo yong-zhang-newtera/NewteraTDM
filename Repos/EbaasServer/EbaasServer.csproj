@@ -153,10 +153,6 @@
       <Project>{f81ce1dd-3b2c-47f1-bd17-701e653114f7}</Project>
       <Name>Import</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MLModels\MLServer.csproj">
-      <Project>{8fd9872d-7fa3-44a5-a617-450364acbaf7}</Project>
-      <Name>MLServer</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Server\Server.csproj">
       <Project>{8d18c53d-0505-4444-a607-a8e7f80a8dba}</Project>
       <Name>Server</Name>
