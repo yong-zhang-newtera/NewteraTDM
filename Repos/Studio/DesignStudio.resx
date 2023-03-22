@@ -251,15 +251,6 @@
   <data name="aboutMenuItem.Text" xml:space="preserve">
     <value>About DesignStudio...</value>
   </data>
-  <data name="serverLicenseMenuItem.Text" xml:space="preserve">
-    <value>Server License...</value>
-  </data>
-  <data name="clientLicenseMenuItem.Text" xml:space="preserve">
-    <value>Client License...</value>
-  </data>
-  <data name="licenseMenuItem.Text" xml:space="preserve">
-    <value>License Info</value>
-  </data>
   <data name="helpMenuItem.Text" xml:space="preserve">
     <value>&amp;Help</value>
   </data>
@@ -268,7 +259,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="statusBar1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 531</value>
+    <value>0, 519</value>
   </data>
   <data name="statusPanel.Name" xml:space="preserve">
     <value>statusPanel</value>
@@ -277,7 +268,7 @@
     <value>Ready</value>
   </data>
   <data name="statusPanel.Width" type="System.Int32, mscorlib">
-    <value>425</value>
+    <value>417</value>
   </data>
   <data name="selectionPanel.MinWidth" type="System.Int32, mscorlib">
     <value>100</value>
@@ -298,7 +289,7 @@
     <value>150</value>
   </data>
   <data name="statusBar1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>792, 22</value>
+    <value>792, 34</value>
   </data>
   <data name="statusBar1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -515,7 +506,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAABa
-        GgAAAk1TRnQBSQFMAgEBFwEAATQBAAE0AQABEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        GgAAAk1TRnQBSQFMAgEBFwEAAUQBAAFEAQABEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAAWADAAEBAQABCAYAARgYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
@@ -661,7 +652,7 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleBaseSize" type="System.Drawing.Size, System.Drawing">
-    <value>6, 14</value>
+    <value>9, 21</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>792, 553</value>
@@ -937,24 +928,6 @@
     <value>aboutMenuItem</value>
   </data>
   <data name="&gt;&gt;aboutMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.MenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;licenseMenuItem.Name" xml:space="preserve">
-    <value>licenseMenuItem</value>
-  </data>
-  <data name="&gt;&gt;licenseMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.MenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;serverLicenseMenuItem.Name" xml:space="preserve">
-    <value>serverLicenseMenuItem</value>
-  </data>
-  <data name="&gt;&gt;serverLicenseMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.MenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;clientLicenseMenuItem.Name" xml:space="preserve">
-    <value>clientLicenseMenuItem</value>
-  </data>
-  <data name="&gt;&gt;clientLicenseMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.MenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;statusPanel.Name" xml:space="preserve">

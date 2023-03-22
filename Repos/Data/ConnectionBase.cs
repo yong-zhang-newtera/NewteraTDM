@@ -19,32 +19,16 @@ namespace Newtera.Data
 	using Newtera.Server.DB;
 	using Newtera.Common.MetaData;
 	using Newtera.Server.Engine.Cache;
-	using Newtera.Server.Licensing;
     using Newtera.Server.UsrMgr;
 	using Newtera.Common.MetaData.Principal;
 	using Newtera.Common.MetaData.XaclModel;
-
-	using Infralution.Licensing;
 
 	/// <summary>
 	/// Provide common functionality of connections to the Newtera servers.
 	/// </summary>
 	/// <version>  	1.0.0 15 Dec 2006 </version>
-	[LicenseProvider(typeof(NewteraLicenseProvider))]	
 	public abstract class ConnectionBase
 	{
-		// The license parameters is generated using Infralution License Key
-		// generator, based on "Newtera E-Catalog" as the product password
-		const string _licenseParameters =
-			@"<LicenseParameters>
-				<RSAKeyValue>
-					<Modulus>wTMOkJ5TZ4ghSk5+ah4fWN1PP8zNTtvU1N5IODqNYIxfrT1wloEyaiiUzEnSeywLedTsD0ocvBIHuaUnvdq8FaOPRvE0gE/GbBEeDO2lP+db+PmmOR1UaxbrWUyEk28UfEGlmODLKuPUOTTGnu/UKU8jH/LFwJF65iGE452Cd/8=</Modulus>
-					<Exponent>AQAB</Exponent>
-				</RSAKeyValue>
-				<DesignSignature>Leg88pwXDDZa7QMnGRfBnvmhPgQQ4Xbl3p5XA0dAoOEdySXCexk3alitat6gxch2wVvGaxkhQxBlsd4lCAHOszLdjkKOq/RqLE1Sj7XLCNpzh8cV6cn7Dbxye4cggklgjAag2emCnIXLP6HyLSxoCmRr0RZovr5bDK4WV+Suz38=</DesignSignature>
-				<RuntimeSignature>p2hrBzhjESXmDokOt5AUpbx9Cian7jVMhDmt6gwbDGb2F1+dg/oSZzOfe+QY7floX9n/RFtfvlC9pP+Kbt9AkAl/4Q+jFFYaqEe2dkx33XV1XZ099p+V+/R9VIBpiPDq/hbVDKyX3uiOvu1WTlCh4vu2hc8+0pkPqRnG2ZPiCDQ=</RuntimeSignature>
-			</LicenseParameters>";
-
 		// Definitions of keys in the connection string
 		protected const string USER_ID = "USER_ID";
         protected const string PASSWORD = "PASSWORD";
@@ -57,8 +41,6 @@ namespace Newtera.Data
         protected Hashtable _properties;
         protected IDataProvider _dataProvider;
         protected IUserManager _userManager;
-        protected License _license = null;
-        protected LicenseLevel _licenseLevel = LicenseLevel.Trial;
 
         #region common
 
@@ -66,10 +48,7 @@ namespace Newtera.Data
 		/// Default constructor
 		/// </summary>
 		public ConnectionBase()
-		{
-			// Check the license to see if the license is valid.
-			CheckLicense(MessageLevel.None);
-			
+		{	
 			_dataProvider = DataProviderFactory.Instance.Create();
 			_state = ConnectionState.Closed;
 			_userManager = UserManagerFactory.Instance.Create();
@@ -105,12 +84,6 @@ namespace Newtera.Data
             if (_state != ConnectionState.Closed)
             {
                 _state = ConnectionState.Closed;
-            }
-
-            if (_license != null)
-            {
-                _license.Dispose();
-                _license = null;
             }
         }
 
@@ -267,165 +240,6 @@ namespace Newtera.Data
         }
 
         /// <summary>
-        /// Gets the number of sessions available for use
-        /// </summary>
-        public int AvailableSessionNumber
-        {
-            get
-            {
-                return EvaluationMonitorManager.Instance.AvailableSessionNumber;
-            }
-        }
-
-        /// <summary>
-        /// Gets the number of advanced sessions available for use
-        /// </summary>
-        public int AvailableAdvancedSessionNumber
-        {
-            get
-            {
-                return EvaluationMonitorManager.Instance.AvailableAdvancedSessionNumber;
-            }
-        }
-
-        /// <summary>
-        /// Decrement available session number by one
-        /// </summary>
-        public void DecrementSessionNumber()
-        {
-            EvaluationMonitorManager.Instance.DecrementSessionNumber();
-
-            if (TraceLog.Instance.Enabled)
-            {
-                try
-                {
-                    string user = Thread.CurrentPrincipal.Identity.Name;
-                    if (string.IsNullOrEmpty(user))
-                    {
-                        user = "system";
-                    }
-
-                    // it is from a web request
-                    string[] messages = {"A user license has been obtained by user : " +  user,
-                            "IP Address: " + "unknown"};
-                    TraceLog.Instance.WriteLines(messages);
-                }
-                catch (Exception)
-                {
-                }
-            }
-        }
-
-        /// <summary>
-        /// Decrement available advanced session number by one
-        /// </summary>
-        public void DecrementAdvancedSessionNumber()
-        {
-            EvaluationMonitorManager.Instance.DecrementAdvancedSessionNumber();
-
-            if (TraceLog.Instance.Enabled)
-            {
-                try
-                {
-                    string user = Thread.CurrentPrincipal.Identity.Name;
-                    if (string.IsNullOrEmpty(user))
-                    {
-                        user = "system";
-                    }
-
-                    // it is from an asp.net request
-                    string[] messages = {"An advanced license has been obtained by user : " +  user,
-                            "IP Address: " + "unknown"};
-                    TraceLog.Instance.WriteLines(messages);
-                }
-                catch (Exception)
-                {
-                }
-            }
-        }
-
-        /// <summary>
-        /// Increment available session number by one
-        /// </summary>
-        public void IncrementSessionNumber()
-        {
-            EvaluationMonitorManager.Instance.IncrementSessionNumber();
-
-            if (TraceLog.Instance.Enabled)
-            {
-                try
-                {
-                    string user = Thread.CurrentPrincipal.Identity.Name;
-                    if (string.IsNullOrEmpty(user))
-                    {
-                        user = "system";
-                    }
-
-                    string IPAddress = "server";
-
-                    // it is from an asp.net request
-                    string[] messages = {"A user license has been released by user : " +  user,
-                                "IP Address: " + IPAddress};
-                    TraceLog.Instance.WriteLines(messages);
-                }
-                catch (Exception)
-                {
-                }
-            }
-        }
-
-        /// <summary>
-        /// Increment available advanced session number by one
-        /// </summary>
-        public void IncrementAdvancedSessionNumber()
-        {
-            EvaluationMonitorManager.Instance.IncrementAdvancedSessionNumber();
-
-            if (TraceLog.Instance.Enabled)
-            {
-                try
-                {
-                    string user = Thread.CurrentPrincipal.Identity.Name;
-                    if (string.IsNullOrEmpty(user))
-                    {
-                        user = "system";
-                    }
-
-                    string IPAddress = "server";
-
-                    // it is from an asp.net request
-                    string[] messages = {"An advanced license has been released by user : " +  user,
-                                "IP Address: " + IPAddress};
-                    TraceLog.Instance.WriteLines(messages);
-                }
-                catch (Exception)
-                {
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// Get localized out of available session message to display
-        /// </summary>
-        /// <returns></returns>
-        public string GetOutOfSessionsMessage()
-        {
-            ResourceManager resources = new ResourceManager(typeof(ConnectionBase));
-            return resources.GetString("OutOfSessions");
-        }
-
-        /// <summary>
-        /// Get localized out of available advanced session message to display
-        /// </summary>
-        /// <returns></returns>
-        public string GetOutOfAdvancedSessionsMessage()
-        {
-            ResourceManager resources = new ResourceManager(typeof(ConnectionBase));
-            return resources.GetString("OutOfAdvancedSessions");
-        }
-
-        /// <summary>
         /// Gets information indicate whether to update an existing metadata model in a safe mode.
         /// </summary>
         /// <value>True to update in a safe mode, false otherwise</value>
@@ -484,284 +298,5 @@ namespace Newtera.Data
         }
 
         #endregion Common
-
-        #region Licensing
-
-        /// <summary>
-		/// Gets the message about the server license
-		/// </summary>
-        /// <param name="messageLevel">One of MessageLevel enum</param>
-        public string GetLicenseMsg(MessageLevel messageLevel)
-		{
-			string licenseMsg = "Unknown Message";
-
-			try
-			{
-                licenseMsg = CheckLicense(messageLevel);
-			}
-			catch (Exception ex)
-			{
-				// license is invalid, do not throw the exception,
-				// get the error message instead.
-				licenseMsg = ex.Message;
-			}
-			
-			return licenseMsg;
-		}
-
-		/// <summary>
-		/// Gets the license level
-		/// </summary>
-		/// <value>One of the LicenseLevel enum values.</value>
-		public LicenseLevel LicenseLevel
-		{
-			get
-			{
-				return this._licenseLevel;
-			}
-		}
-
-		/// <summary>
-		/// Gets the remaining days of the evaluation.
-		/// </summary>
-		/// <returns>The number of remaining days, -1 if it is a permenant license.</returns>
-		/// <exception cref="NewteraLicenseException">Thrown when there is no valid license.</exception>
-		public int GetRemainingEvaluationDays()
-		{
-			int remainingDays;
-
-			CheckLicense(out remainingDays, MessageLevel.None);
-
-			return remainingDays;
-		}
-
-		/// <summary>
-		/// Install the license key
-		/// </summary>
-		/// <param name="licenseKey">The license key</param>
-		public static void InstallLicense(string licenseKey)
-		{
-            if (licenseKey != null && licenseKey.Length > 0)
-			{
-				// compare the serial number of the new license key with
-                // the old one, the serial number of the new license key must
-                // be greater than the old license key
-				string oldKey = MetaDataCache.Instance.GetLicenseKey();
-
-				if (IsLicenseKeyExpired(licenseKey, oldKey))
-				{
-					ResourceManager resources = new ResourceManager(typeof(ConnectionBase));
-					throw new Exception(resources.GetString("LicenseReused"));
-				}
-
-				MetaDataCache.Instance.SetLicenseKey(licenseKey);
-
-				// reset the evaluation monitor to start counting
-				NewteraLicenseChecker checker = new NewteraLicenseChecker();
-
-				checker.ResetEvaluationMonitor();
-			}
-        }
-
-        /// <summary>
-        /// Disable the installed license key
-        /// </summary>
-        /// <returns>The id for transferring the license.</returns>
-        public static string DisableLicense()
-        {
-            string transferId = null;
-
-            // get the transfer id from the installed key
-            string licenseKey = MetaDataCache.Instance.GetLicenseKey();
-
-            NewteraLicenseProvider.SetParameters(_licenseParameters);
-
-            NewteraLicenseProvider licenseProvider = new NewteraLicenseProvider();
-
-            EncryptedLicense license = licenseProvider.ValidateLicenseKey(licenseKey);
-
-            if (license == null)
-            {
-                ResourceManager resources = new ResourceManager(typeof(ConnectionBase));
-                throw new Exception(resources.GetString("InvalidLicense"));
-            }
-
-            NewteraLicenseChecker checker = new NewteraLicenseChecker();
-            transferId = checker.GetParameterValue(license, NewteraLicenseChecker.TRANSFER_ID);
-
-            // disabled the license
-            checker.Disabled = true;
-
-            return transferId;
-        }
-
-        /// <summary>
-        /// Gets the value of a parameter from the license
-        /// </summary>
-        /// <param name="parameterName">The parameter name</param>
-        /// <returns>The parameter value, null if the parameter does not exits.</returns>
-        public string GetLicenseParameterValue(string parameterName)
-        {
-            string val = null;
-
-            if (_license != null && _license is EncryptedLicense)
-            {
-                NewteraLicenseChecker checker = new NewteraLicenseChecker();
-                val = checker.GetParameterValue((EncryptedLicense)_license, parameterName);
-            }
-
-            return val;
-        }
-
-        /// <summary>
-        /// Gets the information indicating whether the license is of Standalone type
-        /// </summary>
-        /// <returns>true if it is a standalone license, false otherwise</returns>
-        public bool IsStandaloneLicense()
-        {
-            bool status = false;
-
-            if (_license != null && _license is EncryptedLicense)
-            {
-                NewteraLicenseChecker checker = new NewteraLicenseChecker();
-                status = checker.IsStandaloneLicense((EncryptedLicense)_license);
-            }
-
-            return status;
-        }
-
-        /// <summary>
-        /// Check the license to see if the license is valid
-        /// </summary>
-        /// <param name="messageLevel">One of MessageLevel enum</param>
-        /// <returns>A message with regard to the license.</returns>
-        /// <exception cref="NewteraLicenseException">Thrown when the license is invalid or expired.</exception>
-        private string CheckLicense(MessageLevel messageLevel)
-        {
-            int remainingDays;
-
-            return CheckLicense(out remainingDays, messageLevel);
-        }
-
-        /// <summary>
-        /// Check the license to see if the license is valid
-        /// </summary>
-        /// <param name="remainingDays">The remaining days of an evaluation.</param>
-        /// <param name="messageLevel">One of MessageLevel enum</param>
-        /// <returns>A message with regard to the license.</returns>
-        /// <exception cref="NewteraLicenseException">Thrown when the license is invalid or expired.</exception>
-        private string CheckLicense(out int remainingDays, MessageLevel messageLevel)
-        {
-            string msg = "";
-
-            remainingDays = -1; // default value for permenant license
-
-            NewteraLicenseProvider.SetParameters(_licenseParameters);
-
-            // check if there is a valid license for the connection
-            if (!LicenseManager.IsValid(typeof(ConnectionBase), this, out _license))
-            {
-                ResourceManager resources = new ResourceManager(typeof(ConnectionBase));
-                throw new Exception(resources.GetString("InvalidLicense"));
-            }
-
-            // check the product info contained in license key
-            if (_license is EncryptedLicense)
-            {
-                // check the license paramters, if not valid, it will
-                // throw an exception
-                NewteraLicenseChecker checker = new NewteraLicenseChecker();
-                if (checker.Disabled)
-                {
-                    ResourceManager resources = new ResourceManager(typeof(ConnectionBase));
-                    throw new Exception(resources.GetString("LicenseDisabled"));
-                }
-
-                msg = checker.Check((EncryptedLicense)_license, out remainingDays, messageLevel);
-                _licenseLevel = checker.LicenseLevel;
-            }
-
-            return msg;
-        }
-
-        /// <summary>
-        /// compare the serial number of the new license key with
-        /// the old one, the serial number of the new license key must be greater than
-        /// the old license key
-        /// </summary>
-        /// <param name="newLicenseKey"></param>
-        /// <param name="oldLicenseKey"></param>
-        /// <returns></returns>
-        private static bool IsLicenseKeyExpired(string newLicenseKey, string oldLicenseKey)
-        {
-            bool status = false;
-
-            NewteraLicenseProvider.SetParameters(_licenseParameters);
-
-            NewteraLicenseProvider licenseProvider = new NewteraLicenseProvider();
-
-            EncryptedLicense newLicense = licenseProvider.ValidateLicenseKey(newLicenseKey);
-            EncryptedLicense oldLicense = licenseProvider.ValidateLicenseKey(oldLicenseKey);
-
-            if (newLicense == null)
-            {
-                ResourceManager resources = new ResourceManager(typeof(ConnectionBase));
-                throw new Exception(resources.GetString("InvalidLicense"));
-            }
-
-            NewteraLicenseChecker checker = new NewteraLicenseChecker();
-            string newLicenseComputerIDs = checker.GetParameterValue(newLicense, NewteraLicenseChecker.COMPUTER_ID);
-            if (newLicenseComputerIDs != null &&
-                !NewteraNameSpace.IsMachineIdMatched(NewteraNameSpace.ComputerCheckSum, newLicenseComputerIDs))
-            {
-                ResourceManager resources = new ResourceManager(typeof(ConnectionBase));
-                throw new Exception(resources.GetString("InvalidServerID"));
-            }
-
-            string oldLicenseComputerIDs = checker.GetParameterValue(oldLicense, NewteraLicenseChecker.COMPUTER_ID);
-
-            if (newLicenseComputerIDs != null && oldLicenseComputerIDs != null)
-            {
-                // Both licenses are permanent license for the same computer id, compare the serial number
-                if (newLicenseComputerIDs == oldLicenseComputerIDs &&
-                    newLicense.SerialNo <= oldLicense.SerialNo)
-                {
-                    status = true; // license expired
-                }
-            }
-            else if (newLicenseComputerIDs == null && oldLicenseComputerIDs == null)
-            {
-                // both licenses are trial license, compare the serial number
-                if (newLicense.SerialNo <= oldLicense.SerialNo)
-                {
-                    status = true; // license expired
-                }
-            }
-            else if (oldLicenseComputerIDs != null && newLicenseComputerIDs == null)
-            {
-              // changing from fixed id license to a trial license, compare the serial number
-              if (newLicense.SerialNo <= oldLicense.SerialNo)
-              {
-                  status = true; // license expired
-              }
-            } 
-            /*
-            else if (oldLicenseComputerID != null && newLicenseComputerID == null)
-            {
-              // changing from permanent license to trial license is not allowed
-              ResourceManager resources = new ResourceManager(typeof(ConnectionBase));
-              throw new Exception(resources.GetString("TrailLicenseNotAllowed"));
-            }
-            */
-            else
-            {
-                // changing from trial license to permanent license is allowed
-                status = false;
-            }
-
-            return status;
-        }
-
-        #endregion Licensing
 	}
 }

@@ -13,7 +13,6 @@ namespace Newtera.Common.Core
 	using System.Configuration;
 
     using Newtera.Registry;
-    using Infralution.Licensing;
 
 	/// <summary>
 	/// The NewteraNameSpace class is a centralized place where keywords belong to 
@@ -39,13 +38,7 @@ namespace Newtera.Common.Core
         /// <summary>
         /// The software release version, which needs to be updated for each release
         /// </summary>
-        public const string RELEASE_VERSION = "7.6.0";
-        //public const string RELEASE_VERSION = "7.4.1";
-        //public const string RELEASE_VERSION = "7.1.5";
-
-        public const string LICENSED_SESSION = "LicensedSession";
-
-        public const string ADVANCED_SESSION = "AdvancedSession";
+        public const string RELEASE_VERSION = "8.0.0";
 
         /// <summary>
         /// Maximum number of attributes per class
@@ -491,36 +484,6 @@ namespace Newtera.Common.Core
 			}
 		}
 
-        public static bool IsMachineIdMatched(string machineId, string licensedIds)
-        {
-            bool status = false;
-
-            if (!string.IsNullOrEmpty(machineId) && !string.IsNullOrEmpty(licensedIds))
-            {
-                int index = licensedIds.IndexOf(MACHINE_ID_SEPARATOR);
-                if (index > 0)
-                {
-                    // multiple machine ids
-                    string[] idArray = licensedIds.Split(MACHINE_ID_SEPARATOR);
-                    foreach (string licensedId in idArray)
-                    {
-                        if (machineId == licensedId)
-                        {
-                            status = true;
-                            break;
-                        }
-                    }
-                }
-                else if (machineId == licensedIds)
-                {
-                    // single machine id
-                    status = true;
-                }
-            }
-
-            return status;
-        }
-
         /// <summary>
         /// Get the directory for storing attachment files
         /// </summary>
@@ -818,57 +781,6 @@ namespace Newtera.Common.Core
             }
 
             return path;
-        }
-
-        /// <summary>
-        /// Get OS version of the server
-        /// </summary>
-        /// <returns></returns>
-        public static string GetServerSystem()
-        {
-            OperatingSystem os = System.Environment.OSVersion;
-            string osName = "UNKNOWN";
-            switch (os.Platform)
-            {
-                case PlatformID.Win32Windows:
-                    switch (os.Version.Minor)
-                    {
-                        case 0: osName = "Windows 95"; break;
-                        case 10: osName = "Windows 98"; break;
-                        case 90: osName = "Windows ME"; break;
-                    }
-                    break;
-                case PlatformID.Win32NT:
-                    switch (os.Version.Major)
-                    {
-                        case 3: osName = "Windws NT 3.51"; break;
-                        case 4: osName = "Windows NT 4"; break;
-                        case 5: if (os.Version.Minor == 0)
-                            {
-                                osName = "Windows 2000";
-                            }
-                            else if (os.Version.Minor == 1)
-                            {
-                                osName = "Windows XP";
-                            }
-                            else if (os.Version.Minor == 2)
-                            {
-                                osName = "Windows Server 2003";
-                            }
-                            break;
-                        case 6: if (os.Version.Minor == 0)
-                            {
-                                osName = "Windows Vista / Windows Server 2008";
-                            }
-                            else if (os.Version.Minor == 1)
-                            {
-                                osName = "Windows 7 / Windows Server 2008";
-                            }
-                            break;
-                    }
-                    break;
-            }
-            return osName;
         }
 
         private static string GetToolDirStr()

@@ -109,9 +109,6 @@ namespace Newtera.Studio
 		private System.Windows.Forms.MenuItem restoreMenuItem;
 		private System.Windows.Forms.MenuItem deleteSchemaMenuItem;
 		private System.Windows.Forms.MenuItem protectSchemaMenuItem;
-		private System.Windows.Forms.MenuItem licenseMenuItem;
-		private System.Windows.Forms.MenuItem serverLicenseMenuItem;
-		private System.Windows.Forms.MenuItem clientLicenseMenuItem;
 		private System.Windows.Forms.ToolBarButton chartToolBarButton;
 		private System.Windows.Forms.ToolBarButton separator6;
 		private System.Windows.Forms.ToolBarButton exportToolBarButton;
@@ -371,9 +368,6 @@ namespace Newtera.Studio
             this.helpMenuItem = new System.Windows.Forms.MenuItem();
             this.userManualMenuItem = new System.Windows.Forms.MenuItem();
             this.aboutMenuItem = new System.Windows.Forms.MenuItem();
-            this.licenseMenuItem = new System.Windows.Forms.MenuItem();
-            this.serverLicenseMenuItem = new System.Windows.Forms.MenuItem();
-            this.clientLicenseMenuItem = new System.Windows.Forms.MenuItem();
             this.statusBar1 = new System.Windows.Forms.StatusBar();
             this.statusPanel = new System.Windows.Forms.StatusBarPanel();
             this.selectionPanel = new System.Windows.Forms.StatusBarPanel();
@@ -680,8 +674,7 @@ namespace Newtera.Studio
             this.helpMenuItem.Index = 5;
             this.helpMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.userManualMenuItem,
-            this.aboutMenuItem,
-            this.licenseMenuItem});
+            this.aboutMenuItem});
             this.helpMenuItem.MergeOrder = 5;
             resources.ApplyResources(this.helpMenuItem, "helpMenuItem");
             // 
@@ -697,28 +690,6 @@ namespace Newtera.Studio
             this.aboutMenuItem.MergeOrder = 1;
             resources.ApplyResources(this.aboutMenuItem, "aboutMenuItem");
             this.aboutMenuItem.Click += new System.EventHandler(this.aboutMenuItem_Click);
-            // 
-            // licenseMenuItem
-            // 
-            this.licenseMenuItem.Index = 2;
-            this.licenseMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.serverLicenseMenuItem,
-            this.clientLicenseMenuItem});
-            this.licenseMenuItem.MergeOrder = 2;
-            resources.ApplyResources(this.licenseMenuItem, "licenseMenuItem");
-            // 
-            // serverLicenseMenuItem
-            // 
-            this.serverLicenseMenuItem.Index = 0;
-            resources.ApplyResources(this.serverLicenseMenuItem, "serverLicenseMenuItem");
-            this.serverLicenseMenuItem.Click += new System.EventHandler(this.serverLicenseMenuItem_Click);
-            // 
-            // clientLicenseMenuItem
-            // 
-            this.clientLicenseMenuItem.Index = 1;
-            this.clientLicenseMenuItem.MergeOrder = 1;
-            resources.ApplyResources(this.clientLicenseMenuItem, "clientLicenseMenuItem");
-            this.clientLicenseMenuItem.Click += new System.EventHandler(this.clientLicenseMenuItem_Click);
             // 
             // statusBar1
             // 
@@ -2456,15 +2427,6 @@ namespace Newtera.Studio
 			}
 		}
 
-		private void serverLicenseMenuItem_Click(object sender, System.EventArgs e)
-		{
-			ServerLicenseInfoDialog dialog = new ServerLicenseInfoDialog();
-
-			if (dialog.ShowDialog() == DialogResult.OK)
-			{
-			}
-		}
-
 		private void DesignStudio_Layout(object sender, System.Windows.Forms.LayoutEventArgs e)
 		{
 			if( _layoutCalled == false )
@@ -2474,15 +2436,6 @@ namespace Newtera.Studio
 					SplashScreen.SplashForm.Owner = this;
 				this.Activate();
 				SplashScreen.CloseForm();
-			}
-		}
-
-		private void clientLicenseMenuItem_Click(object sender, System.EventArgs e)
-		{
-			ClientLicenseInfoDialog dialog = new ClientLicenseInfoDialog();
-
-			if (dialog.ShowDialog() == DialogResult.OK)
-			{
 			}
 		}
 
