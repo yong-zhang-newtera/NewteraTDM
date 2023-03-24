@@ -3,12 +3,4 @@
   <HOME_DIR value="C:\Work\Ebaas\Repos" />
   <TOOL_DIR value="C:\Work\Ebaas\Repos\Studio" />
   <StaticFilesRoot value="C:\Work\Ebaas\Repos\SmartApp" />
-  <CLSID>
-    <ProductData value="AADE5F05DC0F5A98">
-      <InprocServer32 value="BA2A5A932D6B7A09FD1C4A0665594E8FC84152EF44D9A8A7" />
-      <TypeLib value="C6E31EC08C26586F" />
-      <Control value="70B361C482BEF742D8EC3631DBFF729827211F77A6461C44" />
-      <ObjClassType value="A5FF0772272519FC" />
-    </ProductData>
-  </CLSID>
 </NewteraRegistry>
