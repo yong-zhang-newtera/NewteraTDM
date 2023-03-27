@@ -99,7 +99,8 @@ namespace Newtera.Server.Engine.Workflow
             string typeName = "Newtera.WFTaskCustomActions." + actionId;
 
             // compile the code into an assembly in memory
-            string libPath = NewteraNameSpace.GetAppHomeDir() + @"bin\";
+            string fullPath = System.Reflection.Assembly.GetAssembly(typeof(ActionCodeRunner)).Location;
+            string libPath = Path.GetDirectoryName(fullPath);
             // the assembly isn't generated here, therefore, we can use a single name for the class
             string completeCode = GetCompleteCode(actionId, actionCode);
             CompilerResults cr = CompileFromSource(completeCode, libPath);
