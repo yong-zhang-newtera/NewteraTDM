@@ -1295,8 +1295,6 @@ namespace Newtera.Studio
 		{
 			if (ValidateVersion())
 			{
-				CheckEvaluationDuration();
-					
 				OpenSchemaDialog dialog = new OpenSchemaDialog();
 				dialog.Owner = this;
 				DialogResult result = dialog.ShowDialog();
@@ -1360,36 +1358,6 @@ namespace Newtera.Studio
 			}
 
 			return isEqual;
-		}
-
-		/// <summary>
-		/// Check how long the evaluation time remains, if the remained evaluation time
-		/// is less than 10 days, show a warning message.
-		/// </summary>
-		private void CheckEvaluationDuration()
-		{
-			int daysRemained = 0;
-
-			try
-			{
-				AdminServiceStub adminService = new AdminServiceStub();
-
-				daysRemained = adminService.GetRemainingEvaluationDays();
-
-				// daysRemained is -1, then it is a permenant license
-				if (daysRemained >= 0 && daysRemained < 10)
-				{
-					MessageBox.Show(String.Format(MessageResourceManager.GetString("DesignStudio.RemainedDays"), daysRemained),
-						"Warning Dialog", MessageBoxButtons.OK,
-						MessageBoxIcon.Warning);
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, "Server Error",
-					MessageBoxButtons.OK,
-					MessageBoxIcon.Error);
-			}
 		}
 
 		/// <summary>
