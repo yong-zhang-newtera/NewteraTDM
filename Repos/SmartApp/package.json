@@ -1,7 +1,7 @@
 {
   "name": "ebaas",
-  "version": "7.0.0",
-  "description": "Enterprise Backend As An Service for SPA",
+  "version": "8.0.0",
+  "description": "Newtera TDM Web Client",
   "main": "index.html",
   "keywords": [
     "baas",
@@ -10,7 +10,7 @@
     "Newtera"
   ],
   "author": "Newtera",
-  "homepage": "www.ebaas.cn",
+  "homepage": "www.newtera.com",
   "license": "",
   "devDependencies": {
     "event-stream": "~3.3.1",

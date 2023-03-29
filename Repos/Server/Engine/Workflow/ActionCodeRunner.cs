@@ -197,7 +197,8 @@ namespace Newtera.Server.Engine.Workflow
                 if (assembly == null)
                 {
                     // compile the code into an assembly in memory
-                    string libPath = NewteraNameSpace.GetAppHomeDir() + @"bin\";
+                    string fullPath = System.Reflection.Assembly.GetAssembly(typeof(ActionCodeRunner)).Location;
+                    string libPath = Path.GetDirectoryName(fullPath);
                     // use the unique action id as the class name
                     string completeCode = GetCompleteCode(actionId, actionCode);
                     CompilerResults cr = CompileFromSource(completeCode, libPath);
