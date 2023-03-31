@@ -316,7 +316,6 @@ angular.module('app', [
     'app.tables',
     'app.forms',
     'app.smarttables',
-    'app.masterdetailtable',
     'app.smartforms',
     'app.ui',
     'app.wizards',
