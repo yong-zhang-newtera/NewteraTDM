@@ -96,16 +96,16 @@ angular.module("app.smarttables")
                     }
                 }
             })
-            .state('app.smarttables.datagrid.processdata', {
-                url: '/datagridprocessdata/:schema/:class/:oid/:xmlschema/:formAttribute/:api',
+            .state('app.smarttables.datagrid.taskviewer', {
+                url: '/datagridtaskviewer/:schema/:class/:oid/:itemClass/:packetClass',
                 data: {
-                    title: 'Data Processing',
+                    title: 'Task Viewer',
                     animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
                 },
                 views: {
                     "content@app": {
-                        controller: 'DataViewerCtrl',
-                        templateUrl: "app/dataviewer/views/data-viewer.html"
+                        controller: 'TaskViewerLayoutCtrl',
+                        templateUrl: "app/taskviewer/views/task-viewer-layout.html"
                     }
                 }
             })

@@ -271,16 +271,6 @@ window.appConfig = appConfig;
 $.sound_path = appConfig.sound_path;
 $.sound_on = appConfig.sound_on;
 
-
-$(function () {
-
-    // moment.js default language
-    moment.locale('en')
-
-    angular.bootstrap(document, ['app', 'app.custom']);
- 
-});
-
 'use strict';
 
 /**
@@ -316,6 +306,7 @@ angular.module('app', [
     'app.tables',
     'app.forms',
     'app.smarttables',
+    'app.taskviewer',
     'app.smartforms',
     'app.ui',
     'app.wizards',
@@ -12987,16 +12978,6 @@ angular.module('app').factory('Language', function($http, APP_CONFIG){
 		}
 	}
 
-});
-"use strict";
-
-angular.module('app').directive('languageSelector', function(Language){
-    return {
-        restrict: "EA",
-        replace: true,
-        templateUrl: "app/layout/language/language-selector.tpl.html",
-        scope: true
-    }
 });
 "use strict";
 
