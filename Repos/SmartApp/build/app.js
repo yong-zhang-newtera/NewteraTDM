@@ -554,16 +554,6 @@ window.appConfig = appConfig;
 $.sound_path = appConfig.sound_path;
 $.sound_on = appConfig.sound_on;
 
-
-$(function () {
-
-    // moment.js default language
-    moment.locale('en')
-
-    angular.bootstrap(document, ['app', 'app.custom']);
- 
-});
-
 'use strict';
 
 /**
@@ -599,7 +589,7 @@ angular.module('app', [
     'app.tables',
     'app.forms',
     'app.smarttables',
-    'app.masterdetailtable',
+    'app.taskviewer',
     'app.smartforms',
     'app.ui',
     'app.wizards',
@@ -13271,16 +13261,6 @@ angular.module('app').factory('Language', function($http, APP_CONFIG){
 		}
 	}
 
-});
-"use strict";
-
-angular.module('app').directive('languageSelector', function(Language){
-    return {
-        restrict: "EA",
-        replace: true,
-        templateUrl: "app/layout/language/language-selector.tpl.html",
-        scope: true
-    }
 });
 "use strict";
 
@@ -31253,76 +31233,6 @@ angular.module("app.attachments").config(function ($stateProvider, modalStatePro
     });
 "use strict";
 
-angular.module("app.blog", ["ui.router", "ui.bootstrap"]);
-
-angular.module("app.blog").config(function ($stateProvider, modalStateProvider) {
-
-    $stateProvider
-        .state('app.blog', {
-            url: '/blog/:schema/:class/:groupId/:hash?pageIndex&groupName',
-            data: {
-                title: 'Blog',
-                animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
-            },
-            views: {
-                "content@app": {
-                    templateUrl: "app/blog/views/blog-general.html",
-                    controller: 'blogGeneralCtrl'
-                }
-            },
-            authenticate: true
-        })
-        .state('app.blog.post', {
-            url: '/blogpost/:schema/:blogclass/:oid',
-            data: {
-                title: 'Blog Post'
-            },
-            views: {
-                "content@app": {
-                    templateUrl: "app/blog/views/blog-post.html",
-                    controller: 'blogPostCtrl'
-                }
-            },
-            resolve: {
-                scripts: function (lazyScript) {
-                    return lazyScript.register([
-                        'summernote',
-                        'dropzone'
-                    ]);
-                },
-                promisedImages: function ($http, APP_CONFIG) {
-                    return $http.get(APP_CONFIG.ebaasRootUrl + "/api/images/blogs")
-                },
-                promisedGroups: function ($http, APP_CONFIG, $stateParams) {
-                    var pageSize = 100;
-                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/COMMON/BlogGroup?view=full&size=" + pageSize;
-                    return $http.get(url);
-                }
-            }
-        })
-        .state('app.blog.view', {
-            url: '/blogview/:schema/:blogclass/:oid',
-            data: {
-                title: 'Blog View'
-            },
-            views: {
-                "content@app": {
-                    templateUrl: "app/blog/views/blog-view.html",
-                    controller: 'blogViewCtrl'
-                }
-            }
-        });
-
-        modalStateProvider.state('app.blog.help', {
-            url: '^/bloghelp/:hash',
-            templateUrl: "app/layout/partials/help-viewer.tpl.html",
-            controller: 'helpViewerCtlr',
-            animation: false,
-            size: 'lg'
-        });
-    });
-"use strict";
-
 angular.module('app.auth', [
     'ui.router'
 //        ,
@@ -31440,6 +31350,76 @@ angular.module('app.auth', [
     facebookAppId: ''
 });
 
+"use strict";
+
+angular.module("app.blog", ["ui.router", "ui.bootstrap"]);
+
+angular.module("app.blog").config(function ($stateProvider, modalStateProvider) {
+
+    $stateProvider
+        .state('app.blog', {
+            url: '/blog/:schema/:class/:groupId/:hash?pageIndex&groupName',
+            data: {
+                title: 'Blog',
+                animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
+            },
+            views: {
+                "content@app": {
+                    templateUrl: "app/blog/views/blog-general.html",
+                    controller: 'blogGeneralCtrl'
+                }
+            },
+            authenticate: true
+        })
+        .state('app.blog.post', {
+            url: '/blogpost/:schema/:blogclass/:oid',
+            data: {
+                title: 'Blog Post'
+            },
+            views: {
+                "content@app": {
+                    templateUrl: "app/blog/views/blog-post.html",
+                    controller: 'blogPostCtrl'
+                }
+            },
+            resolve: {
+                scripts: function (lazyScript) {
+                    return lazyScript.register([
+                        'summernote',
+                        'dropzone'
+                    ]);
+                },
+                promisedImages: function ($http, APP_CONFIG) {
+                    return $http.get(APP_CONFIG.ebaasRootUrl + "/api/images/blogs")
+                },
+                promisedGroups: function ($http, APP_CONFIG, $stateParams) {
+                    var pageSize = 100;
+                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/COMMON/BlogGroup?view=full&size=" + pageSize;
+                    return $http.get(url);
+                }
+            }
+        })
+        .state('app.blog.view', {
+            url: '/blogview/:schema/:blogclass/:oid',
+            data: {
+                title: 'Blog View'
+            },
+            views: {
+                "content@app": {
+                    templateUrl: "app/blog/views/blog-view.html",
+                    controller: 'blogViewCtrl'
+                }
+            }
+        });
+
+        modalStateProvider.state('app.blog.help', {
+            url: '^/bloghelp/:hash',
+            templateUrl: "app/layout/partials/help-viewer.tpl.html",
+            controller: 'helpViewerCtlr',
+            animation: false,
+            size: 'lg'
+        });
+    });
 "use strict";
 
 angular.module("app.bulletinboard", ["ui.router", "ui.bootstrap", "angular-carousel-3d"]);
@@ -31560,6 +31540,26 @@ angular.module("app.datacart").config(function ($stateProvider) {
             }
         });
     });
+"use strict";
+
+angular.module("app.dataImporter", ["ui.router", "ui.bootstrap", "ngFileUpload"]);
+
+angular.module("app.dataImporter").config(function ($stateProvider, modalStateProvider) {
+
+    $stateProvider
+        .state('app.dataImporter', {
+            url: '/dataimport/:schema/:class',
+            data: {
+                title: 'Data Importer'
+            },
+            views: {
+                "content@app": {
+                    controller: 'dataImportCtrl',
+                    templateUrl: "app/dataImporter/views/dataimport-view.html"
+                }
+            }
+        });
+});
 "use strict";
 
 angular.module("app.datacatalog", ["ui.router", "ui.bootstrap"]);
@@ -31853,26 +31853,6 @@ angular.module("app.datacatalog").config(function ($stateProvider, modalStatePro
     });
 "use strict";
 
-angular.module("app.dataImporter", ["ui.router", "ui.bootstrap", "ngFileUpload"]);
-
-angular.module("app.dataImporter").config(function ($stateProvider, modalStateProvider) {
-
-    $stateProvider
-        .state('app.dataImporter', {
-            url: '/dataimport/:schema/:class',
-            data: {
-                title: 'Data Importer'
-            },
-            views: {
-                "content@app": {
-                    controller: 'dataImportCtrl',
-                    templateUrl: "app/dataImporter/views/dataimport-view.html"
-                }
-            }
-        });
-});
-"use strict";
-
 angular.module("app.dataviewer", ["ui.router", "ui.bootstrap"]);
 
 angular.module("app.dataviewer").config(function ($stateProvider, modalStateProvider) {
@@ -31976,82 +31956,6 @@ angular.module("app.formeditor").config(function ($stateProvider, modalStateProv
             url: '^/previewviewmanytomany/:masterclass/:relatedclass/:masterid',
             templateUrl: "app/smartforms/views/view-many-to-many.html",
             controller: 'viewManyToManyCtrl',
-            animation: false,
-            size: 'lg'
-        });
-    });
-"use strict";
-
-angular.module("app.forum", ["ui.router", "ui.bootstrap"]);
-
-angular.module("app.forum").config(function ($stateProvider, modalStateProvider) {
-
-    $stateProvider
-        .state('app.forum', {
-            url: '/forum/:schema/:class/:hash?pageIndex',
-            data: {
-                title: 'Forum',
-                animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
-            },
-            views: {
-                "content@app": {
-                    templateUrl: "app/forum/views/forum-general.html",
-                    controller: 'forumGeneralCtrl'
-                }
-            },
-            authenticate: true,
-            resolve: {
-                promisedGroups: function ($http, APP_CONFIG, $stateParams) {
-                    var pageSize = 30;
-                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($stateParams.schema) + "/TopicGroup?view=full&size=" + pageSize;
-                    if ($stateParams.pageIndex) {
-                        var from = $stateParams.pageIndex * pageSize;
-                        url += "&from=" + from;
-                    }
-   
-                    return $http.get(url);
-                }
-            }
-        })
-        .state('app.forum.topics', {
-            url: '/forumtopics/:schema/:class?pageIndex',
-            params: { groupPK: null, groupId: null, category: null, groupName: null, keywords: null },
-            data: {
-                title: 'Topics'
-            },
-            views: {
-                "content@app": {
-                    templateUrl: "app/forum/views/forum-topics.html",
-                    controller: 'forumTopicsCtrl'
-                }
-            }
-        })
-        .state('app.forum.topics.post', {
-            url: '/forumpost/:schema/:class/:topicId?pageIndex',
-            params: {groupId: null, topicName: null, topicPK: null },
-            data: {
-                title: 'Forum Post'
-            },
-            views: {
-                "content@app": {
-                    templateUrl: "app/forum/views/forum-post.html",
-                    controller: 'forumPostCtrl'
-                }
-            },
-            resolve: {
-                scripts: function (lazyScript) {
-                    return lazyScript.register([
-                        'summernote',
-                        'dropzone'
-                    ]);
-                }
-            }
-        });
-
-        modalStateProvider.state('app.forum.help', {
-            url: '^/forumhelp/:hash',
-            templateUrl: "app/layout/partials/help-viewer.tpl.html",
-            controller: 'helpViewerCtlr',
             animation: false,
             size: 'lg'
         });
@@ -32247,6 +32151,82 @@ angular.module('app.forms').config(function ($stateProvider) {
 
 
 });
+"use strict";
+
+angular.module("app.forum", ["ui.router", "ui.bootstrap"]);
+
+angular.module("app.forum").config(function ($stateProvider, modalStateProvider) {
+
+    $stateProvider
+        .state('app.forum', {
+            url: '/forum/:schema/:class/:hash?pageIndex',
+            data: {
+                title: 'Forum',
+                animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
+            },
+            views: {
+                "content@app": {
+                    templateUrl: "app/forum/views/forum-general.html",
+                    controller: 'forumGeneralCtrl'
+                }
+            },
+            authenticate: true,
+            resolve: {
+                promisedGroups: function ($http, APP_CONFIG, $stateParams) {
+                    var pageSize = 30;
+                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($stateParams.schema) + "/TopicGroup?view=full&size=" + pageSize;
+                    if ($stateParams.pageIndex) {
+                        var from = $stateParams.pageIndex * pageSize;
+                        url += "&from=" + from;
+                    }
+   
+                    return $http.get(url);
+                }
+            }
+        })
+        .state('app.forum.topics', {
+            url: '/forumtopics/:schema/:class?pageIndex',
+            params: { groupPK: null, groupId: null, category: null, groupName: null, keywords: null },
+            data: {
+                title: 'Topics'
+            },
+            views: {
+                "content@app": {
+                    templateUrl: "app/forum/views/forum-topics.html",
+                    controller: 'forumTopicsCtrl'
+                }
+            }
+        })
+        .state('app.forum.topics.post', {
+            url: '/forumpost/:schema/:class/:topicId?pageIndex',
+            params: {groupId: null, topicName: null, topicPK: null },
+            data: {
+                title: 'Forum Post'
+            },
+            views: {
+                "content@app": {
+                    templateUrl: "app/forum/views/forum-post.html",
+                    controller: 'forumPostCtrl'
+                }
+            },
+            resolve: {
+                scripts: function (lazyScript) {
+                    return lazyScript.register([
+                        'summernote',
+                        'dropzone'
+                    ]);
+                }
+            }
+        });
+
+        modalStateProvider.state('app.forum.help', {
+            url: '^/forumhelp/:hash',
+            templateUrl: "app/layout/partials/help-viewer.tpl.html",
+            controller: 'helpViewerCtlr',
+            animation: false,
+            size: 'lg'
+        });
+    });
 "use strict";
 
 angular.module("app.fulltextsearch", ["ngResource", "ui.router", "ui.bootstrap", "ui.bootstrap.modal", 'ui.select']);
@@ -32579,326 +32559,6 @@ angular.module("app.logs").config(function ($stateProvider, modalStateProvider) 
     });
 "use strict";
 
-angular.module("app.masterdetailtable", ["ngResource", "smart-table", "dx", "ui.router", "ui.bootstrap", "ui.bootstrap.modal", "ngProgress"]);
-
-angular.module("app.masterdetailtable")
-    .provider('modalState', function ($stateProvider, $injector) {
-        var provider = this;
-        this.$get = function () {
-            return provider;
-        }
-        this.state = function (stateName, options) {
-            var modalInstance;
-            $stateProvider.state(stateName, {
-                url: options.url,
-                data: {
-                    title: 'Modal'
-                },
-                onEnter: function ($modal, $state, $injector) {
-                    modalInstance = $modal.open(options);
-                    modalInstance.result.then(function (data) {
-                        // modal closed
-                        var rScope = $injector.get('$rootScope');
-                        rScope.$emit('modalClosed', data);
-
-                    }, function () {
-                        // modal dismissed
-                        var rScope = $injector.get('$rootScope');
-                        rScope.$emit('modalDismissed', "");
-                    })['finally'](function () {
-                        modalInstance = null;
-                        if ($state.$current.name === stateName) {
-                            $state.go('^', {}, {location:false, notify: false });
-                        }
-                    });
-                },
-                onExit: function () {
-                    if (modalInstance) {
-                        modalInstance.close();
-                    }
-                },
-                resolve : options.resolve
-            });
-        };
-    })
-    .config(function ($stateProvider, modalStateProvider, $urlRouterProvider) {
-
-        $stateProvider
-            .state('app.masterdetailtable', {
-                abstract: true,
-                data: {
-                    title: 'Master Detail Table'
-                },
-                resolve: {
-                    scripts: function (lazyScript) {
-                        return lazyScript.register('dropzone')
-                    }
-                }
-            })
-            .state('app.masterdetailtable.datagrid', {
-                url: '/datagrid/:schema/:class/:edit/:delete/:insert/:track/:export/:import/:cart/:search/:reports/:attachment/:hash',
-                data: {
-                    title: 'Smart Data Table',
-                    animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
-                },
-                authenticate: true,
-                views: {
-                    "content@app": {
-                        controller: 'dataGridCtrl',
-                        templateUrl: "app/masterdetailtable/views/datagrid.html"
-                    }
-                },
-                resolve: {
-                    scripts: function (lazyScript) {
-                        return lazyScript.register(
-                            [
-                                'flot',
-                                'flot-resize',
-                                'flot-selection',
-                                'flot-fillbetween',
-                                'flot-orderBar',
-                                'flot-pie',
-                                'flot-time',
-                                'flot-tooltip',
-                                'dropzone',
-                                'summernote'
-                            ])
-                    },
-                    propmisedParams: function ($http, APP_CONFIG, $stateParams) {
-                        if ($stateParams.hash) {
-                            return $http.get(APP_CONFIG.ebaasRootUrl + "/api/sitemap/parameters/" + $stateParams.hash);
-                        }
-                        else
-                        {
-                            return [];
-                        }
-                    }
-                }
-            })
-            .state('app.masterdetailtable.datagrid.related', {
-                url: '/datagridrelated/:schema/:class/:oid/:relatedclass/:insertrelated/:editrelated/:attachmentrelated/:deleterelated/:exportrelated/:importrelated',
-                data: {
-                    title: 'Smart Data Grid',
-                    animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
-                },
-                views: {
-                    "content@app": {
-                        controller: 'relatedDataGridCtrl',
-                        templateUrl: "app/masterdetailtable/views/related-datagrid.html"
-                    }
-                },
-                resolve: {
-                    promiseParentClassInfo: function ($http, APP_CONFIG, $stateParams) {
-                        var url = APP_CONFIG.ebaasRootUrl + "/api/metadata/class/" + encodeURIComponent($stateParams.schema) + "/" + $stateParams.class;
-                        return $http.get(url);
-                    }
-                }
-            })
-            .state('app.masterdetailtable.datagrid.form', {
-                url: '^/datagridform/:schema/:class/:oid/:template/:formAttribute',
-                data: {
-                    title: 'Smart Form',
-                    animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
-                },
-                views: {
-                    "content@app": {
-                        controller: 'ebaasFormCtrl',
-                        templateUrl: "app/smartforms/views/ebaas-form.html"
-                    }
-                },
-                resolve: {
-                    parentStateName: function ($state) {
-                        return $state.current.name;
-                    }
-                }
-            });
-
-        modalStateProvider.state('app.masterdetailtable.datagrid.help', {
-            url: '^/datagridhelp/:hash',
-            templateUrl: "app/layout/partials/help-viewer.tpl.html",
-            controller: 'helpViewerCtlr',
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.masterdetailtable.datagrid.form.pickpk', {
-            url: '^/datagridformpickpk/:pkclass/:property/:filter/:callback',
-            templateUrl: "app/smartforms/views/pick-primary-key.html",
-            controller: 'pickPrimaryKeyCtrl',
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.masterdetailtable.datagrid.form.viewmanytomany', {
-            url: '^/datagridformviewmanytomany/:masterclass/:relatedclass/:masterid',
-            templateUrl: "app/smartforms/views/view-many-to-many.html",
-            controller: 'viewManyToManyCtrl',
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.masterdetailtable.datagrid.form.uploadimage', {
-            url: '^/datagridformuploadimage/:property/:imageid',
-            templateUrl: "app/smartforms/views/upload-image.html",
-            controller: 'uploadImageCtrl',
-            animation: false,
-            size: 'md'
-        });
-
-        modalStateProvider.state('app.masterdetailtable.datagrid.form.viewlog', {
-            url: '^/datagridformviewlog/:logschema/:logclass/:logoid/:logproperty',
-            templateUrl: "app/logs/views/change-log-viewer.html",
-            controller: 'changeLogViewerCtrl',
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.masterdetailtable.datagrid.form.relatedform', {
-            url: '^/datagridformrelatedform/:rclass/:roid/:rtemplate/:rformAttribute/:readonly',
-            templateUrl: "app/smartforms/views/related-form-modal.html",
-            controller: 'relatedFormModalCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.masterdetailtable.datagrid.related.relatedform', {
-            url: '^/relatedform/:schema/:rclass/:roid/:rtemplate/:rformAttribute/:readonly',
-            templateUrl: "app/smartforms/views/related-form-modal.html",
-            controller: 'relatedFormModalCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.masterdetailtable.datagrid.related.relatedform.pickpk', {
-            url: '^/datagridrelatedrelatedformpickpk/:pkclass/:property/:filter/:callback',
-            templateUrl: "app/smartforms/views/pick-primary-key.html",
-            controller: 'pickPrimaryKeyCtrl',
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.masterdetailtable.datagrid.related.relatedform.viewmanytomany', {
-            url: '^/datagridrelatedrelatedformviewmanytomany/:masterclass/:relatedclass/:masterid',
-            templateUrl: "app/smartforms/views/view-many-to-many.html",
-            controller: 'viewManyToManyCtrl',
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.masterdetailtable.datagrid.related.relatedform.uploadimage', {
-            url: '^/datagridrelatedrelatedformuploadimage/:property/:imageid',
-            templateUrl: "app/smartforms/views/upload-image.html",
-            controller: 'uploadImageCtrl',
-            animation: false,
-            size: 'md'
-        });
-
-        modalStateProvider.state('app.masterdetailtable.datagrid.related.relatedform.viewlog', {
-            url: '^/datagridrelatedrelatedformviewlog/:logschema/:logclass/:logoid/:logproperty',
-            templateUrl: "app/logs/views/change-log-viewer.html",
-            controller: 'changeLogViewerCtrl',
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.masterdetailtable.datagrid.related.attachments', {
-            url: '^/relatedachments/:schema/:class/:oid?readonly',
-            templateUrl: "app/attachments/views/attachments-modal.html",
-            controller: 'attachmentsModalCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.masterdetailtable.datagrid.filemanager', {
-            url: '^/datagridfilemanager/:schema/:class/:oid/:cmdHash',
-            templateUrl: "app/fileManager/views/file-manager-viewer.html",
-            controller: 'fileManagerViewerCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.masterdetailtable.datagrid.dataviewer', {
-            url: '^/datagriddataviewer/:schema/:class/:oid/:xmlschema',
-            templateUrl: "app/dataviewer/views/data-viewer-modal.html",
-            controller: 'DataViewerModalCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.masterdetailtable.datagrid.related.modalform', {
-            url: '^/datagridrelatedmodalform/:schema/:class/:oid/:readonly/:template/:formAttribute/:duplicate/:cmd/:sref',
-            templateUrl: "app/smartforms/views/ebaas-form-modal.html",
-            controller: 'ebaasFormModalCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.masterdetailtable.datagrid.related.modalform.relatedform', {
-            url: '^/datagridrelatedformmodalformrelatedform/:schema/:rclass/:roid/:rtemplate/:rformAttribute/:readonly',
-            templateUrl: "app/smartforms/views/related-form-modal.html",
-            controller: 'relatedFormModalCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.masterdetailtable.datagrid.related.modalform.pickpk', {
-            url: '^/datagridrelatedformmodalformpickpk/:pkclass/:property/:filter/:callback',
-            templateUrl: "app/smartforms/views/pick-primary-key.html",
-            controller: 'pickPrimaryKeyCtrl',
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.masterdetailtable.datagrid.related.modalform.viewmanytomany', {
-            url: '^/datagridrelatedformmodalformviewmanytomany/:masterclass/:relatedclass/:masterid',
-            templateUrl: "app/smartforms/views/view-many-to-many.html",
-            controller: 'viewManyToManyCtrl',
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.masterdetailtable.datagrid.related.modalform.uploadimage', {
-            url: '^/datagridrelatedformmodalformuploadimage/:property/:imageid',
-            templateUrl: "app/smartforms/views/upload-image.html",
-            controller: 'uploadImageCtrl',
-            animation: false,
-            size: 'md'
-        });
-
-        modalStateProvider.state('app.masterdetailtable.datagrid.related.modalform.viewlog', {
-            url: '^/datagridrelatedformmodalformviewlog/:logschema/:logclass/:logoid/:logproperty',
-            templateUrl: "app/logs/views/change-log-viewer.html",
-            controller: 'changeLogViewerCtrl',
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.masterdetailtable.datagrid.related.modalform.attachments', {
-            url: '^/datagridrelatedformmodalformachments/:schema/:class/:oid?readonly',
-            templateUrl: "app/attachments/views/attachments-modal.html",
-            controller: 'attachmentsModalCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'lg'
-        });
-    });
-"use strict";
-
 angular.module("app.mldashboard", ["ui.router", "ui.bootstrap"]);
 
 angular.module("app.mldashboard").config(function ($stateProvider, modalStateProvider) {
@@ -33053,54 +32713,6 @@ angular.module("app.myspace").config(function ($stateProvider, modalStateProvide
             size: 'md'
         });
     });
-angular.module("app").run(["$templateCache", function($templateCache) {$templateCache.put("app/dashboard/live-feeds.tpl.html","<div jarvis-widget id=\"live-feeds-widget\" data-widget-togglebutton=\"false\" data-widget-editbutton=\"false\"\r\n     data-widget-fullscreenbutton=\"false\" data-widget-colorbutton=\"false\" data-widget-deletebutton=\"false\">\r\n<!-- widget options:\r\nusage: <div class=\"jarviswidget\" id=\"wid-id-0\" data-widget-editbutton=\"false\">\r\n\r\ndata-widget-colorbutton=\"false\"\r\ndata-widget-editbutton=\"false\"\r\ndata-widget-togglebutton=\"false\"\r\ndata-widget-deletebutton=\"false\"\r\ndata-widget-fullscreenbutton=\"false\"\r\ndata-widget-custombutton=\"false\"\r\ndata-widget-collapsed=\"true\"\r\ndata-widget-sortable=\"false\"\r\n\r\n-->\r\n<header>\r\n    <span class=\"widget-icon\"> <i class=\"glyphicon glyphicon-stats txt-color-darken\"></i> </span>\r\n\r\n    <h2>Live Feeds </h2>\r\n\r\n    <ul class=\"nav nav-tabs pull-right in\" id=\"myTab\">\r\n        <li class=\"active\">\r\n            <a data-toggle=\"tab\" href=\"#s1\"><i class=\"fa fa-clock-o\"></i> <span class=\"hidden-mobile hidden-tablet\">Live Stats</span></a>\r\n        </li>\r\n\r\n        <li>\r\n            <a data-toggle=\"tab\" href=\"#s2\"><i class=\"fa fa-facebook\"></i> <span class=\"hidden-mobile hidden-tablet\">Social Network</span></a>\r\n        </li>\r\n\r\n        <li>\r\n            <a data-toggle=\"tab\" href=\"#s3\"><i class=\"fa fa-dollar\"></i> <span class=\"hidden-mobile hidden-tablet\">Revenue</span></a>\r\n        </li>\r\n    </ul>\r\n\r\n</header>\r\n\r\n<!-- widget div-->\r\n<div class=\"no-padding\">\r\n\r\n    <div class=\"widget-body\">\r\n        <!-- content -->\r\n        <div id=\"myTabContent\" class=\"tab-content\">\r\n            <div class=\"tab-pane fade active in padding-10 no-padding-bottom\" id=\"s1\">\r\n                <div class=\"row no-space\">\r\n                    <div class=\"col-xs-12 col-sm-12 col-md-8 col-lg-8\">\r\n														<span class=\"demo-liveupdate-1\"> <span\r\n                                                                class=\"onoffswitch-title\">Live switch</span> <span\r\n                                                                class=\"onoffswitch\">\r\n																<input type=\"checkbox\" name=\"start_interval\" ng-model=\"autoUpdate\"\r\n                                                                       class=\"onoffswitch-checkbox\" id=\"start_interval\">\r\n																<label class=\"onoffswitch-label\" for=\"start_interval\">\r\n                                                                    <span class=\"onoffswitch-inner\"\r\n                                                                          data-swchon-text=\"ON\"\r\n                                                                          data-swchoff-text=\"OFF\"></span>\r\n                                                                    <span class=\"onoffswitch-switch\"></span>\r\n                                                                </label> </span> </span>\r\n\r\n                        <div id=\"updating-chart\" class=\"chart-large txt-color-blue\" flot-basic flot-data=\"liveStats\" flot-options=\"liveStatsOptions\"></div>\r\n\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-12 col-md-4 col-lg-4 show-stats\">\r\n\r\n                        <div class=\"row\">\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> My Tasks <span\r\n                                    class=\"pull-right\">130/200</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blueDark\" style=\"width: 65%;\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> Transfered <span\r\n                                    class=\"pull-right\">440 GB</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blue\" style=\"width: 34%;\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> Bugs Squashed<span\r\n                                    class=\"pull-right\">77%</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blue\" style=\"width: 77%;\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> User Testing <span\r\n                                    class=\"pull-right\">7 Days</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-greenLight\" style=\"width: 84%;\"></div>\r\n                                </div>\r\n                            </div>\r\n\r\n                            <span class=\"show-stat-buttons\"> <span class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\"> <a\r\n                                    href-void class=\"btn btn-default btn-block hidden-xs\">Generate PDF</a> </span> <span\r\n                                    class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\"> <a href-void\r\n                                                                                     class=\"btn btn-default btn-block hidden-xs\">Report\r\n                                a bug</a> </span> </span>\r\n\r\n                        </div>\r\n\r\n                    </div>\r\n                </div>\r\n\r\n                <div class=\"show-stat-microcharts\" data-sparkline-container data-easy-pie-chart-container>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n\r\n                        <div class=\"easy-pie-chart txt-color-orangeDark\" data-percent=\"33\" data-pie-size=\"50\">\r\n                            <span class=\"percent percent-sign\">35</span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> Server Load <i class=\"fa fa-caret-up icon-color-bad\"></i> </span>\r\n                        <ul class=\"smaller-stat hidden-sm pull-right\">\r\n                            <li>\r\n                                <span class=\"label bg-color-greenLight\"><i class=\"fa fa-caret-up\"></i> 97%</span>\r\n                            </li>\r\n                            <li>\r\n                                <span class=\"label bg-color-blueLight\"><i class=\"fa fa-caret-down\"></i> 44%</span>\r\n                            </li>\r\n                        </ul>\r\n                        <div class=\"sparkline txt-color-greenLight hidden-sm hidden-md pull-right\"\r\n                             data-sparkline-type=\"line\" data-sparkline-height=\"33px\" data-sparkline-width=\"70px\"\r\n                             data-fill-color=\"transparent\">\r\n                            130, 187, 250, 257, 200, 210, 300, 270, 363, 247, 270, 363, 247\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-greenLight\" data-percent=\"78.9\" data-pie-size=\"50\">\r\n                            <span class=\"percent percent-sign\">78.9 </span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> Disk Space <i class=\"fa fa-caret-down icon-color-good\"></i></span>\r\n                        <ul class=\"smaller-stat hidden-sm pull-right\">\r\n                            <li>\r\n                                <span class=\"label bg-color-blueDark\"><i class=\"fa fa-caret-up\"></i> 76%</span>\r\n                            </li>\r\n                            <li>\r\n                                <span class=\"label bg-color-blue\"><i class=\"fa fa-caret-down\"></i> 3%</span>\r\n                            </li>\r\n                        </ul>\r\n                        <div class=\"sparkline txt-color-blue hidden-sm hidden-md pull-right\" data-sparkline-type=\"line\"\r\n                             data-sparkline-height=\"33px\" data-sparkline-width=\"70px\" data-fill-color=\"transparent\">\r\n                            257, 200, 210, 300, 270, 363, 130, 187, 250, 247, 270, 363, 247\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-blue\" data-percent=\"23\" data-pie-size=\"50\">\r\n                            <span class=\"percent percent-sign\">23 </span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> Transfered <i class=\"fa fa-caret-up icon-color-good\"></i></span>\r\n                        <ul class=\"smaller-stat hidden-sm pull-right\">\r\n                            <li>\r\n                                <span class=\"label bg-color-darken\">10GB</span>\r\n                            </li>\r\n                            <li>\r\n                                <span class=\"label bg-color-blueDark\"><i class=\"fa fa-caret-up\"></i> 10%</span>\r\n                            </li>\r\n                        </ul>\r\n                        <div class=\"sparkline txt-color-darken hidden-sm hidden-md pull-right\"\r\n                             data-sparkline-type=\"line\" data-sparkline-height=\"33px\" data-sparkline-width=\"70px\"\r\n                             data-fill-color=\"transparent\">\r\n                            200, 210, 363, 247, 300, 270, 130, 187, 250, 257, 363, 247, 270\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-darken\" data-percent=\"36\" data-pie-size=\"50\">\r\n                            <span class=\"percent degree-sign\">36 <i class=\"fa fa-caret-up\"></i></span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> Temperature <i\r\n                                class=\"fa fa-caret-down icon-color-good\"></i></span>\r\n                        <ul class=\"smaller-stat hidden-sm pull-right\">\r\n                            <li>\r\n                                <span class=\"label bg-color-red\"><i class=\"fa fa-caret-up\"></i> 124</span>\r\n                            </li>\r\n                            <li>\r\n                                <span class=\"label bg-color-blue\"><i class=\"fa fa-caret-down\"></i> 40 F</span>\r\n                            </li>\r\n                        </ul>\r\n                        <div class=\"sparkline txt-color-red hidden-sm hidden-md pull-right\" data-sparkline-type=\"line\"\r\n                             data-sparkline-height=\"33px\" data-sparkline-width=\"70px\" data-fill-color=\"transparent\">\r\n                            2700, 3631, 2471, 2700, 3631, 2471, 1300, 1877, 2500, 2577, 2000, 2100, 3000\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n\r\n            </div>\r\n            <!-- end s1 tab pane -->\r\n\r\n            <div class=\"tab-pane fade\" id=\"s2\">\r\n                <div class=\"widget-body-toolbar bg-color-white\">\r\n\r\n                    <form class=\"form-inline\" role=\"form\">\r\n\r\n                        <div class=\"form-group\">\r\n                            <label class=\"sr-only\" for=\"s123\">Show From</label>\r\n                            <input type=\"email\" class=\"form-control input-sm\" id=\"s123\" placeholder=\"Show From\">\r\n                        </div>\r\n                        <div class=\"form-group\">\r\n                            <input type=\"email\" class=\"form-control input-sm\" id=\"s124\" placeholder=\"To\">\r\n                        </div>\r\n\r\n                        <div class=\"btn-group hidden-phone pull-right\">\r\n                            <a class=\"btn dropdown-toggle btn-xs btn-default\" data-toggle=\"dropdown\"><i\r\n                                    class=\"fa fa-cog\"></i> More <span class=\"caret\"> </span> </a>\r\n                            <ul class=\"dropdown-menu pull-right\">\r\n                                <li>\r\n                                    <a href-void><i class=\"fa fa-file-text-alt\"></i> Export to PDF</a>\r\n                                </li>\r\n                                <li>\r\n                                    <a href-void><i class=\"fa fa-question-sign\"></i> Help</a>\r\n                                </li>\r\n                            </ul>\r\n                        </div>\r\n\r\n                    </form>\r\n\r\n                </div>\r\n                <div class=\"padding-10\">\r\n                    <div id=\"statsChart\" class=\"chart-large has-legend-unique\" flot-basic flot-data=\"statsData\" flot-options=\"statsDisplayOptions\"></div>\r\n                </div>\r\n\r\n            </div>\r\n            <!-- end s2 tab pane -->\r\n\r\n            <div class=\"tab-pane fade\" id=\"s3\">\r\n\r\n                <div class=\"widget-body-toolbar bg-color-white smart-form\" id=\"rev-toggles\">\r\n\r\n                    <div class=\"inline-group\">\r\n\r\n                        <label for=\"gra-0\" class=\"checkbox\">\r\n                            <input type=\"checkbox\" id=\"gra-0\" ng-model=\"targetsShow\">\r\n                            <i></i> Target </label>\r\n                        <label for=\"gra-1\" class=\"checkbox\">\r\n                            <input type=\"checkbox\" id=\"gra-1\" ng-model=\"actualsShow\">\r\n                            <i></i> Actual </label>\r\n                        <label for=\"gra-2\" class=\"checkbox\">\r\n                            <input type=\"checkbox\" id=\"gra-2\" ng-model=\"signupsShow\">\r\n                            <i></i> Signups </label>\r\n                    </div>\r\n\r\n                    <div class=\"btn-group hidden-phone pull-right\">\r\n                        <a class=\"btn dropdown-toggle btn-xs btn-default\" data-toggle=\"dropdown\"><i\r\n                                class=\"fa fa-cog\"></i> More <span class=\"caret\"> </span> </a>\r\n                        <ul class=\"dropdown-menu pull-right\">\r\n                            <li>\r\n                                <a href-void><i class=\"fa fa-file-text-alt\"></i> Export to PDF</a>\r\n                            </li>\r\n                            <li>\r\n                                <a href-void><i class=\"fa fa-question-sign\"></i> Help</a>\r\n                            </li>\r\n                        </ul>\r\n                    </div>\r\n\r\n                </div>\r\n\r\n                <div class=\"padding-10\">\r\n                    <div id=\"flotcontainer\" class=\"chart-large has-legend-unique\" flot-basic flot-data=\"revenewData\" flot-options=\"revenewDisplayOptions\" ></div>\r\n                </div>\r\n            </div>\r\n            <!-- end s3 tab pane -->\r\n        </div>\r\n\r\n        <!-- end content -->\r\n    </div>\r\n\r\n</div>\r\n<!-- end widget div -->\r\n</div>\r\n");
-$templateCache.put("app/layout/layout.tpl.html","<div ng-intro-options=\"IntroOptions\" ng-intro-method=\"CallMe\">\r\n<!-- HEADER -->\r\n<div data-smart-include=\"app/layout/partials/header.tpl.html\" class=\"placeholder-header\"></div>\r\n<!-- END HEADER -->\r\n\r\n\r\n<!-- Left panel : Navigation area -->\r\n<!-- Note: This width of the aside area can be adjusted through LESS variables -->\r\n<div data-smart-include=\"app/layout/partials/navigation.tpl.html\" class=\"placeholder-left-panel\"></div>\r\n\r\n<!-- END NAVIGATION -->\r\n\r\n<!-- MAIN PANEL -->\r\n<div id=\"main\" role=\"main\">\r\n    <demo-states></demo-states>\r\n\r\n    <!-- RIBBON -->\r\n    <div id=\"ribbon\">\r\n\r\n				<span id=\"reset-settings\" class=\"ribbon-button-alignment\">\r\n					<span id=\"refresh\" class=\"btn btn-ribbon\" reset-widgets\r\n                          tooltip-placement=\"bottom\"\r\n                          tooltip-html=\"<i class=\'text-warning fa fa-warning\'></i> Warning! This will reset all your widget settings.\">\r\n						<i class=\"fa fa-refresh\"></i>\r\n					</span>\r\n				</span>\r\n\r\n        <!-- breadcrumb -->\r\n        <state-breadcrumbs></state-breadcrumbs>\r\n        <!-- end breadcrumb -->\r\n\r\n\r\n    </div>\r\n    <!-- END RIBBON -->\r\n\r\n\r\n    <div data-smart-router-animation-wrap=\"content content@app\" data-wrap-for=\"#content\">\r\n        <div data-ui-view=\"content\" data-autoscroll=\"false\"></div>\r\n    </div>\r\n\r\n</div>\r\n<!-- END MAIN PANEL -->\r\n\r\n<!-- PAGE FOOTER -->\r\n<div data-smart-include=\"app/layout/partials/footer.tpl.html\"></div>\r\n\r\n<div data-smart-include=\"app/layout/shortcut/shortcut.tpl.html\"></div>\r\n\r\n<!-- END PAGE FOOTER -->\r\n </div>\r\n\r\n");
-$templateCache.put("app/auth/directives/login-info.tpl.html","<div class=\"login-info ng-cloak\">\r\n    <span> <!-- User image size is adjusted inside CSS, it should stay as it -->\r\n        <a id=\"my-login-info\" href=\"\" toggle-shortcut>\r\n            <img ng-src=\"{{user.image()}}\" alt=\"me\" class=\"online\">\r\n                <span>{{user.displayName}}\r\n                </span>\r\n            <i class=\"fa fa-angle-down\"></i>\r\n        </a>\r\n     </span>\r\n</div>");
-$templateCache.put("app/dashboard/todo/todo-widget.tpl.html","<div id=\"todo-widget\" jarvis-widget data-widget-editbutton=\"false\" data-widget-color=\"blue\"\r\n     ng-controller=\"TodoCtrl\">\r\n    <header>\r\n        <span class=\"widget-icon\"> <i class=\"fa fa-check txt-color-white\"></i> </span>\r\n\r\n        <h2> ToDo\'s </h2>\r\n\r\n        <div class=\"widget-toolbar\">\r\n            <!-- add: non-hidden - to disable auto hide -->\r\n            <button class=\"btn btn-xs btn-default\" ng-class=\"{active: newTodo}\" ng-click=\"toggleAdd()\"><i ng-class=\"{ \'fa fa-plus\': !newTodo, \'fa fa-times\': newTodo}\"></i> Add</button>\r\n\r\n        </div>\r\n    </header>\r\n    <!-- widget div-->\r\n    <div>\r\n        <div class=\"widget-body no-padding smart-form\">\r\n            <!-- content goes here -->\r\n            <div ng-show=\"newTodo\">\r\n                <h5 class=\"todo-group-title\"><i class=\"fa fa-plus-circle\"></i> New Todo</h5>\r\n\r\n                <form name=\"newTodoForm\" class=\"smart-form\">\r\n                    <fieldset>\r\n                        <section>\r\n                            <label class=\"input\">\r\n                                <input type=\"text\" required class=\"input-lg\" ng-model=\"newTodo.title\"\r\n                                       placeholder=\"What needs to be done?\">\r\n                            </label>\r\n                        </section>\r\n                        <section>\r\n                            <div class=\"col-xs-6\">\r\n                                <label class=\"select\">\r\n                                    <select class=\"input-sm\" ng-model=\"newTodo.state\"\r\n                                            ng-options=\"state as state for state in states\"></select> <i></i> </label>\r\n                            </div>\r\n                        </section>\r\n                    </fieldset>\r\n                    <footer>\r\n                        <button ng-disabled=\"newTodoForm.$invalid\" type=\"button\" class=\"btn btn-primary\"\r\n                                ng-click=\"createTodo()\">\r\n                            Add\r\n                        </button>\r\n                        <button type=\"button\" class=\"btn btn-default\" ng-click=\"toggleAdd()\">\r\n                            Cancel\r\n                        </button>\r\n                    </footer>\r\n                </form>\r\n            </div>\r\n\r\n            <todo-list state=\"Critical\"  title=\"Critical Tasks\" icon=\"warning\" todos=\"todos\"></todo-list>\r\n\r\n            <todo-list state=\"Important\" title=\"Important Tasks\" icon=\"exclamation\" todos=\"todos\"></todo-list>\r\n\r\n            <todo-list state=\"Completed\" title=\"Completed Tasks\" icon=\"check\" todos=\"todos\"></todo-list>\r\n\r\n            <!-- end content -->\r\n        </div>\r\n\r\n    </div>\r\n    <!-- end widget div -->\r\n</div>");
-$templateCache.put("app/dashboard/projects/recent-projects.tpl.html","<div class=\"project-context hidden-xs dropdown\" dropdown>\r\n\r\n    <span class=\"label\">{{getWord(\'Projects\')}}:</span>\r\n    <span class=\"project-selector dropdown-toggle\" dropdown-toggle>{{getWord(\'Recent projects\')}} <i ng-if=\"projects.length\"\r\n            class=\"fa fa-angle-down\"></i></span>\r\n\r\n    <ul class=\"dropdown-menu\" ng-if=\"projects.length\">\r\n        <li ng-repeat=\"project in projects\">\r\n            <a href=\"{{project.href}}\">{{project.title}}</a>\r\n        </li>\r\n        <li class=\"divider\"></li>\r\n        <li>\r\n            <a ng-click=\"clearProjects()\"><i class=\"fa fa-power-off\"></i> Clear</a>\r\n        </li>\r\n    </ul>\r\n\r\n</div>");
-$templateCache.put("app/homepage/views/sub-header.tpl.html","<div class=\"col-xs-12 col-sm-5 col-md-5 col-lg-8\" data-sparkline-container>\r\n    <ul id=\"sparks\" class=\"\">\r\n        <li class=\"sparks-info\">\r\n            <h5> {{getWord(\'TaskCount\')}} <span class=\"txt-color-blue\">1,271</span></h5>\r\n            <div class=\"sparkline txt-color-blue hidden-mobile hidden-md hidden-sm\">\r\n                130, 187, 250, 257, 200, 210, 300, 270, 363, 247, 270, 363, 247\r\n            </div>\r\n        </li>\r\n        <li class=\"sparks-info\">\r\n            <h5> {{getWord(\"Efficiency\")}} <span class=\"txt-color-purple\"><i class=\"fa fa-arrow-circle-up\"></i>&nbsp;25%</span></h5>\r\n            <div class=\"sparkline txt-color-purple hidden-mobile hidden-md hidden-sm\">\r\n                110,150,300,130,400,240,220,310,220,300, 270, 210\r\n            </div>\r\n        </li>\r\n        <li class=\"sparks-info\">\r\n            <h5> {{getWord(\"CompletedTasks\")}} <span class=\"txt-color-greenDark\"><i class=\"fa fa-check-circle\"></i>&nbsp;879</span></h5>\r\n            <div class=\"sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm\">\r\n                110,150,300,130,400,240,220,310,220,300, 270, 210\r\n            </div>\r\n        </li>\r\n    </ul>\r\n</div>\r\n			");
-$templateCache.put("app/mldashboard/views/model-dashboard.tpl.html","<div jarvis-widget id=\"live-feeds-widget\" data-widget-togglebutton=\"false\" data-widget-editbutton=\"false\"\r\n     data-widget-fullscreenbutton=\"false\" data-widget-colorbutton=\"false\" data-widget-deletebutton=\"false\">\r\n    <header>\r\n        <span class=\"widget-icon\"> <i class=\"glyphicon glyphicon-stats txt-color-darken\"></i> </span>\r\n\r\n        <h2>{{project}}=>{{model}}</h2>\r\n\r\n        <ul class=\"nav nav-tabs pull-right in\" id=\"myTab\">\r\n            <li class=\"active\">\r\n                <a data-toggle=\"tab\" href=\"#s1\"><i class=\"fa fa-clock-o\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"Single Record\")}}</span></a>\r\n            </li>\r\n\r\n            <li>\r\n                <a data-toggle=\"tab\" href=\"#s2\"><i class=\"fa fa-cog\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"Batch Records\")}}</span></a>\r\n            </li>\r\n        </ul>\r\n\r\n    </header>\r\n\r\n    <!-- widget div-->\r\n    <div class=\"no-padding\">\r\n\r\n        <div class=\"widget-body\">\r\n            <!-- content -->\r\n            <div id=\"myTabContent\" class=\"tab-content\">\r\n                <div class=\"tab-pane fade active in padding-10 no-padding-bottom\" id=\"s1\">\r\n                    <!-- widget grid -->\r\n                    <section id=\"widget-grid\" class=\"\">\r\n\r\n                        <!-- START ROW -->\r\n                        <div class=\"row\">\r\n\r\n                            <!-- NEW COL START -->\r\n                            <article class=\"col-sm-12 col-md-12 col-lg-12\">\r\n\r\n                                <!-- Widget ID (each widget will need unique ID)-->\r\n                                <div class=\"jarviswidget\" id=\"wid-id-0\" data-widget-colorbutton=\"false\" data-widget-editbutton=\"false\" data-widget-custombutton=\"false\">\r\n                                                <!-- widget options:\r\n                                    usage: <div class=\"jarviswidget\" id=\"wid-id-0\" data-widget-editbutton=\"false\">\r\n\r\n                                    data-widget-colorbutton=\"false\"\r\n                                    data-widget-editbutton=\"false\"\r\n                                    data-widget-togglebutton=\"false\"\r\n                                    data-widget-deletebutton=\"false\"\r\n                                    data-widget-fullscreenbutton=\"false\"\r\n                                    data-widget-custombutton=\"false\"\r\n                                    data-widget-collapsed=\"true\"\r\n                                    data-widget-sortable=\"false\"\r\n\r\n                                    -->\r\n                                    <header>\r\n                                        <span class=\"widget-icon\"> <i class=\"fa fa-edit\"></i> </span>\r\n                                        <h2>{{getWord(\"ML Model Form\")}}</h2>\r\n\r\n                                    </header>\r\n\r\n                                    <!-- widget div-->\r\n                                    <div>\r\n                                        <!-- widget content -->\r\n                                        <div class=\"widget-body no-padding\">\r\n\r\n                                            <form class=\"smart-form\" ng-submit=\"submitModelForm()\">\r\n                                                <header>\r\n                                                    {{getWord(\"ML Model Inputs\")}}\r\n                                                </header>\r\n\r\n                                                <fieldset>\r\n                                                    <div class=\"row\">\r\n                                                        <section class=\"col col-3\" ng-repeat=\"inputField in inputFields\">\r\n                                                            <label class=\"label\">{{inputField.Label}}</label>\r\n                                                            <label class=\"input\">\r\n                                                                <input type=\"text\" id=\"{{inputField.Label}}\" required ng-model=\"inputField.Value\">\r\n                                                            </label>\r\n                                                        </section>\r\n                                                    </div>\r\n                                                </fieldset>\r\n\r\n                                                <header>\r\n                                                    {{getWord(\"ML Model Outputs\")}}\r\n                                                </header>\r\n\r\n                                                <fieldset>\r\n                                                    <div class=\"row\">\r\n                                                        <section class=\"col col-3\" ng-repeat=\"outputField in outputFields\">\r\n                                                            <label class=\"label\">{{outputField.Label}}</label>\r\n                                                            <label class=\"input\">\r\n                                                                <input type=\"text\" id=\"{{outputField.Label}}\" disabled=\"disabled\" ng-model=\"outputField.Value\">\r\n                                                            </label>\r\n                                                        </section>\r\n                                                    </div>\r\n\r\n                                                </fieldset>\r\n\r\n                                                <footer>\r\n                                                    <button type=\"submit\" class=\"btn btn-primary\" button-spinner=\"loading\">\r\n                                                        {{getWord(\"Evaluate\")}}\r\n                                                    </button>\r\n                                                </footer>\r\n                                            </form>\r\n\r\n                                        </div>\r\n                                        <!-- end widget content -->\r\n\r\n                                    </div>\r\n                                    <!-- end widget div -->\r\n\r\n                                </div>\r\n                                <!-- end widget -->\r\n\r\n                            </article>\r\n                            <!-- END COL -->\r\n\r\n                        </div>\r\n\r\n                        <!-- END ROW -->\r\n                    </section>\r\n                    <!-- end widget grid -->\r\n                </div>\r\n                <!-- end s1 tab pane -->\r\n\r\n                <div class=\"tab-pane fade\" id=\"s2\">\r\n                    <div class=\"padding-10\">\r\n                   \r\n                    </div>\r\n                </div>\r\n                <!-- end s2 tab pane -->\r\n            </div>\r\n            <!-- end content -->\r\n        </div>\r\n    </div>\r\n    <!-- end widget div -->\r\n</div>\r\n");
-$templateCache.put("app/layout/language/language-selector.tpl.html","<ul class=\"header-dropdown-list hidden-xs ng-cloak\" ng-controller=\"LanguagesCtrl\">\r\n    <li class=\"dropdown\" dropdown>\r\n        <a class=\"dropdown-toggle\"  dropdown-toggle href> <img src=\"styles/img/blank.gif\" class=\"flag flag-{{currentLanguage.key}}\" alt=\"{{currentLanguage.alt}}\"> <span> {{currentLanguage.title}} </span>\r\n            <i class=\"fa fa-angle-down\"></i> </a>\r\n        <ul class=\"dropdown-menu pull-right\">\r\n            <li ng-class=\"{active: language==currentLanguage}\" ng-repeat=\"language in languages\">\r\n                <a ng-click=\"selectLanguage(language)\" ><img src=\"styles/img/blank.gif\" class=\"flag flag-{{language.key}}\"\r\n                                                   alt=\"{{language.alt}}\"> {{language.title}}</a>\r\n            </li>\r\n        </ul>\r\n    </li>\r\n</ul>");
-$templateCache.put("app/layout/shortcut/shortcut.tpl.html","<div id=\"shortcut\">\r\n	<ul>\r\n		<li>\r\n			<a href=\"#/tasks/list\" class=\"jarvismetro-tile big-cubes bg-color-blue\"> <span class=\"iconbox\"> <i class=\"fa fa-folder-open fa-4x\"></i> <span>{{getWord(\'MyTasks\')}} <span class=\"label pull-right bg-color-darken\">{{getTaskCount()}}</span></span> </span> </a>\r\n		</li>\r\n		<li>\r\n			<a href=\"#/user/profile\" class=\"jarvismetro-tile big-cubes selected bg-color-pinkDark\"> <span class=\"iconbox\"> <i class=\"fa fa-user fa-4x\"></i> <span>{{getWord(\'My Profile\')}} </span> </span> </a>\r\n		</li>\r\n        <li>\r\n            <a href=\"#/user/password\" class=\"jarvismetro-tile big-cubes selected bg-color-darken\"> <span class=\"iconbox\"> <i class=\"fa fa-lock fa-4x\"></i> <span>{{getWord(\'Change Password\')}} </span> </span> </a>\r\n        </li>\r\n	</ul>\r\n</div>");
-$templateCache.put("app/layout/partials/footer.tpl.html","<div class=\"page-footer\">\r\n    <div class=\"row\">\r\n        <div class=\"col-xs-12 col-sm-6\">\r\n            <span class=\"txt-color-white\">Testing Data Management (TDM) System</span>\r\n        </div>\r\n\r\n        <div class=\"col-xs-6 col-sm-6 text-right hidden-xs\">\r\n            \r\n        </div>\r\n    </div>\r\n</div>");
-$templateCache.put("app/layout/partials/header.tpl.html","<header id=\"header\">\r\n<div id=\"logo-group\">\r\n\r\n    <!-- PLACE YOUR LOGO HERE -->\r\n    <span id=\"logo\"><a ui-sref=\"app.homepage.mainmenu\"><img src=\"styles/img/logo.gif\" alt=\"TDM\"></a>\r\n    </span>\r\n    <!-- END LOGO PLACEHOLDER -->\r\n\r\n    <!-- Note: The activity badge color changes when clicked and resets the number to 0\r\n    Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->\r\n   \r\n    <!--\r\n    <span id=\"activity\"> \r\n        <a ui-sref=\"app.tasks.list\" ui-sref-opts=\"{reload: true}\" title=\"{{getWord(\'MyTasks\')}}\"><i class=\"fa fa-user\"></i>\r\n            <b class=\"badge bg-color-red\">{{getTaskCount()}}</b>\r\n        </a>\r\n    </span>\r\n    -->\r\n\r\n    <!-- Note: The activity badge color changes when clicked and resets the number to 0\r\n    Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->\r\n    <span id=\"activity\" class=\"activity-dropdown\" activities-dropdown-toggle>\r\n        <i class=\"fa fa-user\"></i>\r\n        <b class=\"badge bg-color-red\">{{getTotalCount()}}</b>\r\n    </span>\r\n    <div smart-include=\"app/homepage/views/my-activities.html\"></div>\r\n</div>\r\n\r\n<!--\r\n<div style=\"margin-left:300px\">\r\n    <h1 class=\"text-primary hidden-xs hidden-sm hidden-md\">{{getWord(\'AppName\')}}</h1>\r\n</div>\r\n-->\r\n\r\n<!-- pulled right: nav area -->\r\n<div class=\"pull-right\">\r\n\r\n    <!-- intro button -->\r\n    <div id=\"intro\" class=\"btn-header transparent pull-right\">\r\n        <span>\r\n            <a title=\"{{getWord(\'Intro\')}}\" ng-click=\"CallMe();\">\r\n                <i class=\"fa fa-info\"></i>\r\n            </a>\r\n        </span>\r\n    </div>\r\n    <!-- end intro button -->\r\n\r\n    <!-- collapse menu button -->\r\n    <div id=\"hide-menu\" class=\"btn-header pull-right\">\r\n        <span> <a toggle-menu title=\"{{getWord(\'CollapseMenu\')}}\"><i\r\n                class=\"fa fa-reorder\"></i></a> </span>\r\n    </div>\r\n    <!-- end collapse menu -->\r\n\r\n    <!-- #MOBILE -->\r\n    <!-- Top menu profile link : this shows only when top menu is active -->\r\n    <ul id=\"mobile-profile-img\" class=\"header-dropdown-list hidden-xs padding-5\">\r\n        <li class=\"\">\r\n            <a href=\"#\" class=\"dropdown-toggle no-margin userdropdown\" data-toggle=\"dropdown\">\r\n                <img src=\"styles/custom/avatars/male.png\" alt=\"John Doe\" class=\"online\"/>\r\n            </a>\r\n            <ul class=\"dropdown-menu pull-right\">\r\n                <li>\r\n                    <a href-void class=\"padding-10 padding-top-0 padding-bottom-0\"><i\r\n                            class=\"fa fa-cog\"></i> Setting</a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                    <a ui-sref=\"app.appViews.profileDemo\" class=\"padding-10 padding-top-0 padding-bottom-0\"> <i class=\"fa fa-user\"></i>\r\n                        <u>P</u>rofile</a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                    <a href-void class=\"padding-10 padding-top-0 padding-bottom-0\"\r\n                       data-action=\"toggleShortcut\"><i class=\"fa fa-arrow-down\"></i> <u>S</u>hortcut</a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                    <a href-void class=\"padding-10 padding-top-0 padding-bottom-0\"\r\n                       data-action=\"launchFullscreen\"><i class=\"fa fa-arrows-alt\"></i> Full <u>S</u>creen</a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                    <a href=\"#/login\" class=\"padding-10 padding-top-5 padding-bottom-5\" data-action=\"userLogout\"><i\r\n                            class=\"fa fa-sign-out fa-lg\"></i> <strong><u>L</u>ogout</strong></a>\r\n                </li>\r\n            </ul>\r\n        </li>\r\n    </ul>\r\n\r\n    <!-- logout button -->\r\n    <div id=\"logout\" class=\"btn-header transparent pull-right\">\r\n        <span> <a ui-sref=\"logout\" title=\"{{getWord(\'SignOut\')}}\" data-action=\"userLogout\"\r\n                  data-logout-msg=\"You can improve your security further after logging out by closing this opened browser\"><i\r\n                class=\"fa fa-sign-out\"></i></a> </span>\r\n    </div>\r\n    <!-- end logout button -->\r\n\r\n    <!-- search mobile button (this is hidden till mobile view port) -->\r\n    <div id=\"search-mobile\" class=\"btn-header transparent pull-right\" data-search-mobile>\r\n        <span> <a href=\"#\" title=\"Search\"><i class=\"fa fa-search\"></i></a> </span>\r\n    </div>\r\n    <!-- end search mobile button -->\r\n\r\n    <!-- fullscreen button -->\r\n    <div id=\"fullscreen\" class=\"btn-header transparent pull-right\">\r\n        <span> <a full-screen title=\"{{getWord(\'FullScreen\')}}\"><i\r\n                class=\"fa fa-arrows-alt\"></i></a> </span>\r\n    </div>\r\n    <!-- end fullscreen button -->\r\n\r\n    <!-- multiple lang dropdown : find all flags in the flags page -->\r\n    <language-selector></language-selector>\r\n    <!-- end multiple lang -->\r\n\r\n    <!-- input: full text search field -->\r\n    <form ng-show=\"searchEnabled\" ng-submit=\"fullTextSearch()\" class=\"header-search pull-right\" style=\"padding-right:10px\">\r\n        <input id=\"search-keywords\" name=\"searchKeywords\" type=\"text\" autocomplete=\"off\" size=\"50\" \r\n               placeholder=\"{{getWord(\'FindReports\')}}\"\r\n               ng-model=\"searchContext.searchText\"\r\n               typeahead=\"suggestion for suggestion in getSuggestions($viewValue)\"\r\n               typeahead-on-select=\"onSuggestionSelect($item, $model, $label)\">\r\n        <button type=\"submit\" style=\"padding-right:15px\">\r\n            <i class=\"fa fa-search\"></i>\r\n        </button>\r\n        <a href=\"$\" id=\"cancel-search-js\" title=\"Cancel Search\"><i class=\"fa fa-times\"></i></a>\r\n    </form>\r\n    <!-- end input: search field -->\r\n\r\n</div>\r\n<!-- end pulled right: nav area -->\r\n\r\n</header>");
-$templateCache.put("app/layout/partials/help-viewer.tpl.html","<div id=\"content\" class=\"wrapper\">\r\n    <!-- widget grid -->\r\n    <section widget-grid id=\"widget-grid\">\r\n        <div class=\"row\">\r\n            <article class=\"col-sm-12 col-md-12 col-lg-12\">\r\n                <div jarvis-widget id=\"wid-id-1\" data-widget-editbutton=\"false\" data-widget-custombutton=\"false\">\r\n                    <header>\r\n                        <span class=\"widget-icon\"> <i class=\"fa fa-edit\"></i> </span>\r\n                        <h2>{{getWord(\"Help\")}}</h2>\r\n                        <div class=\"widget-toolbar\">\r\n                            <span class=\"jarviswidget-ctrls\" ng-click=\"$dismiss()\"> <i class=\"fa fa-close\"></i> </span>\r\n                        </div>\r\n                    </header>\r\n                    <div style=\"overflow-x:auto;\">\r\n                        <!-- widget content -->\r\n                        <div align=\"center\" class=\"padding-10\">\r\n                            <button ng-click=\"zoomIn()\"><i class=\"fa fa-plus\"></i></button>\r\n                            <button ng-click=\"fit()\"><span>100%</span></button>\r\n                            <button ng-click=\"zoomOut()\"><i class=\"fa fa-minus\"></i></button>\r\n                        </div>\r\n                        <div>\r\n                            <ng-pdf template-url=\"app/layout/partials/help-viewer..html\" scale=\"page-fit\"></ng-pdf>\r\n                        </div>\r\n                        <div align=\"center\" class=\"padding-10\">\r\n                            <button ng-click=\"goPrevious()\"><i class=\"fa fa-chevron-left\"></i><span> {{getWord(\"Prev Page\")}}</span></button>\r\n                            <button ng-click=\"goNext()\"><i class=\"fa fa-chevron-right\"></i><span> {{getWord(\"Next Page\")}}</span></button>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </article>\r\n        </div>\r\n    </section>\r\n</div>");
-$templateCache.put("app/layout/partials/navigation.tpl.html","<aside id=\"left-panel\">\r\n\r\n    <!-- User info -->\r\n    <div login-info></div>\r\n    <!-- end user info -->\r\n\r\n    <nav id=\"sidemenu\">\r\n\r\n        <!-- NOTE: This allows you to pull menu items from server -->\r\n        <ul data-smart-menu-items=\"/api/sitemap/menu\"></ul>\r\n\r\n    </nav>\r\n\r\n  <span id=\"minimize-sidemenu\" class=\"minifyme\" data-action=\"minifyMenu\" minify-menu>\r\n    <i class=\"fa fa-arrow-circle-left hit\"></i>\r\n  </span>\r\n\r\n</aside>");
-$templateCache.put("app/layout/partials/sub-header.tpl.html","<div class=\"col-xs-12 col-sm-5 col-md-5 col-lg-8\" data-sparkline-container>\r\n    <ul id=\"sparks\" class=\"\">\r\n        <li class=\"sparks-info\">\r\n            <h5> My Income <span class=\"txt-color-blue\">$47,171</span></h5>\r\n            <div class=\"sparkline txt-color-blue hidden-mobile hidden-md hidden-sm\">\r\n                1300, 1877, 2500, 2577, 2000, 2100, 3000, 2700, 3631, 2471, 2700, 3631, 2471\r\n            </div>\r\n        </li>\r\n        <li class=\"sparks-info\">\r\n            <h5> Site Traffic <span class=\"txt-color-purple\"><i class=\"fa fa-arrow-circle-up\"></i>&nbsp;45%</span></h5>\r\n            <div class=\"sparkline txt-color-purple hidden-mobile hidden-md hidden-sm\">\r\n                110,150,300,130,400,240,220,310,220,300, 270, 210\r\n            </div>\r\n        </li>\r\n        <li class=\"sparks-info\">\r\n            <h5> Site Orders <span class=\"txt-color-greenDark\"><i class=\"fa fa-shopping-cart\"></i>&nbsp;2447</span></h5>\r\n            <div class=\"sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm\">\r\n                110,150,300,130,400,240,220,310,220,300, 270, 210\r\n            </div>\r\n        </li>\r\n    </ul>\r\n</div>\r\n			");
-$templateCache.put("app/layout/partials/voice-commands.tpl.html","<!-- TRIGGER BUTTON:\r\n<a href=\"/my-ajax-page.html\" data-toggle=\"modal\" data-target=\"#remoteModal\" class=\"btn btn-default\">Open Modal</a>  -->\r\n\r\n<!-- MODAL PLACE HOLDER\r\n<div class=\"modal fade\" id=\"remoteModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"remoteModalLabel\" aria-hidden=\"true\">\r\n<div class=\"modal-dialog\">\r\n<div class=\"modal-content\"></div>\r\n</div>\r\n</div>   -->\r\n<!--////////////////////////////////////-->\r\n\r\n<!--<div class=\"modal-header\">\r\n<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\r\n&times;\r\n</button>\r\n<h4 class=\"modal-title\" id=\"myModalLabel\">Command List</h4>\r\n</div>-->\r\n<div class=\"modal-body\">\r\n\r\n	<h1><i class=\"fa fa-microphone text-muted\"></i>&nbsp;&nbsp; SmartAdmin Voice Command</h1>\r\n	<hr class=\"simple\">\r\n	<h5>Instruction</h5>\r\n\r\n	Click <span class=\"text-success\">\"Allow\"</span> to access your microphone and activate Voice Command.\r\n	You will notice a <span class=\"text-primary\"><strong>BLUE</strong> Flash</span> on the microphone icon indicating activation.\r\n	The icon will appear <span class=\"text-danger\"><strong>RED</strong></span> <span class=\"label label-danger\"><i class=\"fa fa-microphone fa-lg\"></i></span> if you <span class=\"text-danger\">\"Deny\"</span> access or don\'t have any microphone installed.\r\n	<br>\r\n	<br>\r\n	As a security precaution, your browser will disconnect the microphone every 60 to 120 seconds (sooner if not being used). In which case Voice Command will prompt you again to <span class=\"text-success\">\"Allow\"</span> or <span class=\"text-danger\">\"Deny\"</span> access to your microphone.\r\n	<br>\r\n	<br>\r\n	If you host your page over <strong>http<span class=\"text-success\">s</span></strong> (secure socket layer) protocol you can wave this security measure and have an unintrupted Voice Command.\r\n	<br>\r\n	<br>\r\n	<h5>Commands</h5>\r\n	<ul>\r\n		<li>\r\n			<strong>\'show\' </strong> then say the <strong>*page*</strong> you want to go to. For example <strong>\"show inbox\"</strong> or <strong>\"show calendar\"</strong>\r\n		</li>\r\n		<li>\r\n			<strong>\'mute\' </strong> - mutes all sound effects for the theme.\r\n		</li>\r\n		<li>\r\n			<strong>\'sound on\'</strong> - unmutes all sound effects for the theme.\r\n		</li>\r\n		<li>\r\n			<span class=\"text-danger\"><strong>\'stop\'</strong></span> - deactivates voice command.\r\n		</li>\r\n		<li>\r\n			<span class=\"text-primary\"><strong>\'help\'</strong></span> - brings up the command list\r\n		</li>\r\n		<li>\r\n			<span class=\"text-danger\"><strong>\'got it\'</strong></span> - closes help modal\r\n		</li>\r\n		<li>\r\n			<strong>\'hide navigation\'</strong> - toggle navigation collapse\r\n		</li>\r\n		<li>\r\n			<strong>\'show navigation\'</strong> - toggle navigation to open (can be used again to close)\r\n		</li>\r\n		<li>\r\n			<strong>\'scroll up\'</strong> - scrolls to the top of the page\r\n		</li>\r\n		<li>\r\n			<strong>\'scroll down\'</strong> - scrollts to the bottom of the page\r\n		</li>\r\n		<li>\r\n			<strong>\'go back\' </strong> - goes back in history (history -1 click)\r\n		</li>\r\n		<li>\r\n			<strong>\'logout\'</strong> - logs you out\r\n		</li>\r\n	</ul>\r\n	<br>\r\n	<h5>Adding your own commands</h5>\r\n	Voice Command supports up to 80 languages. Adding your own commands is extreamly easy. All commands are stored inside <strong>app.config.js</strong> file under the <code>var commands = {...}</code>. \r\n\r\n	<hr class=\"simple\">\r\n	<div class=\"text-right\">\r\n		<button type=\"button\" class=\"btn btn-success btn-lg\" data-dismiss=\"modal\">\r\n			Got it!\r\n		</button>\r\n	</div>\r\n\r\n</div>\r\n<!--<div class=\"modal-footer\">\r\n<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">Got it!</button>\r\n</div> -->");
-$templateCache.put("app/stations/views/live-feeds.tpl.html","<div jarvis-widget id=\"live-feeds-widget\" data-widget-togglebutton=\"false\" data-widget-editbutton=\"false\"\r\n     data-widget-fullscreenbutton=\"false\" data-widget-colorbutton=\"false\" data-widget-deletebutton=\"false\">\r\n<!-- widget options:\r\nusage: <div class=\"jarviswidget\" id=\"wid-id-0\" data-widget-editbutton=\"false\">\r\n\r\ndata-widget-colorbutton=\"false\"\r\ndata-widget-editbutton=\"false\"\r\ndata-widget-togglebutton=\"false\"\r\ndata-widget-deletebutton=\"false\"\r\ndata-widget-fullscreenbutton=\"false\"\r\ndata-widget-custombutton=\"false\"\r\ndata-widget-collapsed=\"true\"\r\ndata-widget-sortable=\"false\"\r\n\r\n-->\r\n<header>\r\n    <span class=\"widget-icon\"> <i class=\"glyphicon glyphicon-stats txt-color-darken\"></i> </span>\r\n\r\n    <h2>{{CurrentStationName}}</h2>\r\n\r\n    <ul class=\"nav nav-tabs pull-right in\" id=\"myTab\">\r\n        <li ng-class=\"showMonitor? \'active\' : null\" ng-show=\"showMonitor\">\r\n            <a data-toggle=\"tab\" href=\"#s1\"><i class=\"fa fa-clock-o\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"LiveData\")}}</span></a>\r\n        </li>\r\n\r\n        <li ng-class=\"!showMonitor? \'active\' : null\">\r\n            <a data-toggle=\"tab\" href=\"#s2\"><i class=\"fa fa-cog\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"StationConfig\")}}</span></a>\r\n        </li>\r\n\r\n        <li>\r\n            <a data-toggle=\"tab\" href=\"#s3\"><i class=\"fa fa-calendar\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"Scheduler\")}}</span></a>\r\n        </li>\r\n    </ul>\r\n\r\n</header>\r\n\r\n<!-- widget div-->\r\n<div class=\"no-padding\">\r\n\r\n    <div class=\"widget-body\">\r\n        <!-- content -->\r\n        <div id=\"myTabContent\" class=\"tab-content\">\r\n            <div ng-class=\"showMonitor? \'tab-pane fade active in padding-10 no-padding-bottom\' : \'tab-pane fade\'\" id=\"s1\" ng-show=\"showMonitor\">\r\n                <div class=\"row no-space\">\r\n                    <div class=\"col-xs-12 col-sm-12 col-md-8 col-lg-8\">\r\n						<span class=\"demo-liveupdate-1\"> <span\r\n                                class=\"onoffswitch-title\">{{getWord(\"LiveSwitch\")}}</span> <span\r\n                                class=\"onoffswitch\">\r\n								<input type=\"checkbox\" name=\"start_interval\" ng-model=\"autoUpdate\"\r\n                                        class=\"onoffswitch-checkbox\" id=\"start_interval\">\r\n								<label class=\"onoffswitch-label\" for=\"start_interval\">\r\n                                    <span class=\"onoffswitch-inner\"\r\n                                            data-swchon-text=\"{{getWord(\'SwitchOn\')}}\"\r\n                                            data-swchoff-text=\"{{getWord(\'SwitchOff\')}}\"></span>\r\n                                    <span class=\"onoffswitch-switch\"></span>\r\n                                </label> </span> </span>\r\n\r\n                        <div id=\"updating-chart\" class=\"chart-large txt-color-blue\" flot-basic flot-data=\"liveStats\" flot-options=\"liveStatsOptions\"></div>\r\n\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-12 col-md-4 col-lg-4 show-stats\">\r\n\r\n                        <div class=\"row\">\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> {{settings.ProgressName1}} :<span\r\n                                    >{{settings.ProgressValue1}} {{settings.ProgressUnit1}}</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blueDark\" data-smart-progressbar aria-valuenow=\"{{ settings.ProgressPercent1 }}\"  ng-style=\"{width : ( settings.ProgressPercent1 + \'%\' ) }\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> {{settings.ProgressName2}} : <span\r\n                                    >{{settings.ProgressValue2}} {{settings.ProgressUnit2}}</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blue\" data-smart-progressbar aria-valuenow=\"{{ settings.ProgressPercent2 }}\" ng-style=\"{width : ( settings.ProgressPercent2 + \'%\' ) }\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> {{settings.ProgressName3}} : <span\r\n                                    >{{settings.ProgressValue3}} {{settings.ProgressUnit3}}</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blue\" data-smart-progressbar aria-valuenow=\"{{ settings.ProgressPercent3 }}\" ng-style=\"{width : ( settings.ProgressPercent3 + \'%\' ) }\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> {{settings.ProgressName4}} : <span\r\n                                    >{{settings.ProgressValue4}} {{settings.ProgressUnit4}}</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-greenLight\" data-smart-progressbar ng-style=\"{width : ( settings.ProgressPercent4 + \'%\' ) }\">></div>\r\n                                </div>\r\n                            </div>\r\n\r\n                        </div>\r\n\r\n                    </div>\r\n                </div>\r\n\r\n                <div class=\"show-stat-microcharts\" data-sparkline-container data-easy-pie-chart-container>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n\r\n                        <div class=\"easy-pie-chart txt-color-orangeDark\" data-percent=\"0\" data-pie-size=\"50\" data-ng-model=\"PiePercent1\">\r\n                            <span class=\"percent percent-sign\">{{settings.PieValue1}}</span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> {{settings.PieName1}} <i class=\"fa fa-caret-up icon-color-bad\"></i> </span>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-greenLight\" data-percent=\"0\" data-pie-size=\"50\" data-ng-model=\"PiePercent2\">\r\n                            <span class=\"percent percent-sign\">{{settings.PieValue2}} </span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> {{settings.PieName2}} <i class=\"fa fa-caret-down icon-color-good\"></i></span>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-blue\" data-percent=\"0\" data-pie-size=\"50\" data-ng-model=\"PiePercent3\">\r\n                            <span class=\"percent percent-sign\">{{settings.PieValue3}} </span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> {{settings.PieName3}} <i class=\"fa fa-caret-up icon-color-good\"></i></span>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-darken\" data-percent=\"0\" data-pie-size=\"50\" data-ng-model=\"PiePercent4\">\r\n                            <span class=\"percent degree-sign\">{{settings.PieValue4}} <i class=\"fa fa-caret-up\"></i></span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> {{settings.PieName4}} <i\r\n                                class=\"fa fa-caret-down icon-color-good\"></i></span>\r\n                    </div>\r\n                </div>\r\n\r\n            </div>\r\n            <!-- end s1 tab pane -->\r\n\r\n            <div ng-class=\"!showMonitor? \'tab-pane fade active in padding-10 no-padding-bottom\' : \'tab-pane fade\'\" id=\"s2\">\r\n                <div class=\"padding-10\">\r\n                    <form name=\"ebaasform\" novalidate\">\r\n                        <ebaas-form-template dbschema=\"dbschema\" dbclass=\"dbclass\" oid=\"oid\" template=\"template\" formattribute=\"formAttribute\" readonly=\"true\"></ebaas-form-template>\r\n                    </form>\r\n                </div>\r\n            </div>\r\n            <!-- end s2 tab pane -->\r\n\r\n            <div ng-class=\"\'tab-pane fade\'\" id=\"s3\">\r\n                <div class=\"padding-10\">\r\n                    <div dx-scheduler=\"schedulerOptions\"></div>\r\n                </div>\r\n            </div>\r\n            <!-- end s3 tab pane -->\r\n        </div>\r\n\r\n        <!-- end content -->\r\n    </div>\r\n\r\n</div>\r\n<!-- end widget div -->\r\n</div>\r\n");
-$templateCache.put("app/dashboard/todo/directives/todo-list.tpl.html","<div>\r\n    <h5 class=\"todo-group-title\"><i class=\"fa fa-{{icon}}\"></i> {{title}} (\r\n        <small class=\"num-of-tasks\">{{scopeItems.length}}</small>\r\n        )\r\n    </h5>\r\n    <ul class=\"todo\">\r\n        <li ng-class=\"{complete: todo.completedAt}\" ng-repeat=\"todo in todos | orderBy: todo._id | filter: filter  track by todo._id\" >\r\n    	<span class=\"handle\"> <label class=\"checkbox\">\r\n            <input type=\"checkbox\" ng-click=\"todo.toggle()\" ng-checked=\"todo.completedAt\"\r\n                   name=\"checkbox-inline\">\r\n            <i></i> </label> </span>\r\n\r\n            <p>\r\n                <strong>Ticket #{{$index + 1}}</strong> - {{todo.title}}\r\n                <span class=\"text-muted\" ng-if=\"todo.description\">{{todo.description}}</span>\r\n                <span class=\"date\">{{todo.createdAt | date}} &dash; <a ng-click=\"deleteTodo(todo)\" class=\"text-muted\"><i\r\n                        class=\"fa fa-trash\"></i></a></span>\r\n\r\n            </p>\r\n        </li>\r\n    </ul>\r\n</div>");
-$templateCache.put("app/dashboard/chat/directives/aside-chat-widget.tpl.html","<ul>\r\n    <li>\r\n        <div class=\"display-users\">\r\n            <input class=\"form-control chat-user-filter\" placeholder=\"Filter\" type=\"text\">\r\n            <dl>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr\"\r\n                       data-chat-id=\"cha1\"\r\n                       data-chat-fname=\"Sadi\"\r\n                       data-chat-lname=\"Orlaf\"\r\n                       data-chat-status=\"busy\"\r\n                       data-chat-alertmsg=\"Sadi Orlaf is in a meeting. Please do not disturb!\"\r\n                       data-chat-alertshow=\"true\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/5.png\' alt=\'Sadi Orlaf\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Sadi Orlaf</h3>\r\n												<p>Marketing Executive</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Sadi Orlaf\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr\"\r\n                       data-chat-id=\"cha2\"\r\n                       data-chat-fname=\"Jessica\"\r\n                       data-chat-lname=\"Dolof\"\r\n                       data-chat-status=\"online\"\r\n                       data-chat-alertmsg=\"\"\r\n                       data-chat-alertshow=\"false\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/1.png\' alt=\'Jessica Dolof\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Jessica Dolof</h3>\r\n												<p>Sales Administrator</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Jessica Dolof\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr\"\r\n                       data-chat-id=\"cha3\"\r\n                       data-chat-fname=\"Zekarburg\"\r\n                       data-chat-lname=\"Almandalie\"\r\n                       data-chat-status=\"online\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/3.png\' alt=\'Zekarburg Almandalie\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Zekarburg Almandalie</h3>\r\n												<p>Sales Admin</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Zekarburg Almandalie\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr\"\r\n                       data-chat-id=\"cha4\"\r\n                       data-chat-fname=\"Barley\"\r\n                       data-chat-lname=\"Krazurkth\"\r\n                       data-chat-status=\"away\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/4.png\' alt=\'Barley Krazurkth\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Barley Krazurkth</h3>\r\n												<p>Sales Director</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Barley Krazurkth\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr offline\"\r\n                       data-chat-id=\"cha5\"\r\n                       data-chat-fname=\"Farhana\"\r\n                       data-chat-lname=\"Amrin\"\r\n                       data-chat-status=\"incognito\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/female.png\' alt=\'Farhana Amrin\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Farhana Amrin</h3>\r\n												<p>Support Admin <small><i class=\'fa fa-music\'></i> Playing Beethoven Classics</small></p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Farhana Amrin (offline)\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr offline\"\r\n                       data-chat-id=\"cha6\"\r\n                       data-chat-fname=\"Lezley\"\r\n                       data-chat-lname=\"Jacob\"\r\n                       data-chat-status=\"incognito\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/male.png\' alt=\'Lezley Jacob\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Lezley Jacob</h3>\r\n												<p>Sales Director</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Lezley Jacob (offline)\r\n                    </a>\r\n                </dt>\r\n            </dl>\r\n\r\n\r\n            <!--<a href=\"chat.html\" class=\"btn btn-xs btn-default btn-block sa-chat-learnmore-btn\">About the API</a>-->\r\n        </div>\r\n    </li>\r\n</ul>");
-$templateCache.put("app/dashboard/chat/directives/chat-users.tpl.html","<div id=\"chat-container\" ng-class=\"{open: open}\">\r\n    <span class=\"chat-list-open-close\" ng-click=\"openToggle()\"><i class=\"fa fa-user\"></i><b>!</b></span>\r\n\r\n    <div class=\"chat-list-body custom-scroll\">\r\n        <ul id=\"chat-users\">\r\n            <li ng-repeat=\"chatUser in chatUsers | filter: chatUserFilter\">\r\n                <a ng-click=\"messageTo(chatUser)\"><img ng-src=\"{{chatUser.picture}}\">{{chatUser.username}} <span\r\n                        class=\"badge badge-inverse\">{{chatUser.username.length}}</span><span class=\"state\"><i\r\n                        class=\"fa fa-circle txt-color-green pull-right\"></i></span></a>\r\n            </li>\r\n        </ul>\r\n    </div>\r\n    <div class=\"chat-list-footer\">\r\n        <div class=\"control-group\">\r\n            <form class=\"smart-form\">\r\n                <section>\r\n                    <label class=\"input\" >\r\n                        <input type=\"text\" ng-model=\"chatUserFilter\" id=\"filter-chat-list\" placeholder=\"Filter\">\r\n                    </label>\r\n                </section>\r\n            </form>\r\n        </div>\r\n    </div>\r\n</div>");
-$templateCache.put("app/dashboard/chat/directives/chat-widget.tpl.html","<div id=\"chat-widget\" jarvis-widget data-widget-color=\"blueDark\" data-widget-editbutton=\"false\"\r\n     data-widget-fullscreenbutton=\"false\">\r\n\r\n\r\n    <header>\r\n        <span class=\"widget-icon\"> <i class=\"fa fa-comments txt-color-white\"></i> </span>\r\n\r\n        <h2> SmartMessage </h2>\r\n\r\n        <div class=\"widget-toolbar\">\r\n            <!-- add: non-hidden - to disable auto hide -->\r\n\r\n            <div class=\"btn-group\" data-dropdown>\r\n                <button class=\"btn dropdown-toggle btn-xs btn-success\" dropdown-toggle>\r\n                    Status <i class=\"fa fa-caret-down\"></i>\r\n                </button>\r\n                <ul class=\"dropdown-menu pull-right js-status-update\">\r\n                    <li>\r\n                        <a href-void><i class=\"fa fa-circle txt-color-green\"></i> Online</a>\r\n                    </li>\r\n                    <li>\r\n                        <a href-void><i class=\"fa fa-circle txt-color-red\"></i> Busy</a>\r\n                    </li>\r\n                    <li>\r\n                        <a href-void><i class=\"fa fa-circle txt-color-orange\"></i> Away</a>\r\n                    </li>\r\n                    <li class=\"divider\"></li>\r\n                    <li>\r\n                        <a href-void><i class=\"fa fa-power-off\"></i> Log Off</a>\r\n                    </li>\r\n                </ul>\r\n            </div>\r\n        </div>\r\n    </header>\r\n\r\n    <!-- widget div-->\r\n    <div>\r\n        <div class=\"widget-body widget-hide-overflow no-padding\">\r\n            <!-- content goes here -->\r\n\r\n            <chat-users></chat-users>\r\n\r\n            <!-- CHAT BODY -->\r\n            <div id=\"chat-body\" class=\"chat-body custom-scroll\">\r\n                <ul>\r\n                    <li class=\"message\" ng-repeat=\"message in chatMessages\">\r\n                        <img class=\"message-picture online\" ng-src=\"{{message.user.picture}}\">\r\n\r\n                        <div class=\"message-text\">\r\n                            <time>\r\n                                {{message.date | date }}\r\n                            </time>\r\n                            <a ng-click=\"messageTo(message.user)\" class=\"username\">{{message.user.username}}</a>\r\n                            <div ng-bind-html=\"message.body\"></div>\r\n\r\n                        </div>\r\n                    </li>\r\n                </ul>\r\n            </div>\r\n\r\n            <!-- CHAT FOOTER -->\r\n            <div class=\"chat-footer\">\r\n\r\n                <!-- CHAT TEXTAREA -->\r\n                <div class=\"textarea-div\">\r\n\r\n                    <div class=\"typearea\">\r\n                        <textarea placeholder=\"Write a reply...\" id=\"textarea-expand\"\r\n                                  class=\"custom-scroll\" ng-model=\"newMessage\"></textarea>\r\n                    </div>\r\n\r\n                </div>\r\n\r\n                <!-- CHAT REPLY/SEND -->\r\n											<span class=\"textarea-controls\">\r\n												<button class=\"btn btn-sm btn-primary pull-right\" ng-click=\"sendMessage()\">\r\n                                                    Reply\r\n                                                </button> <span class=\"pull-right smart-form\"\r\n                                                                style=\"margin-top: 3px; margin-right: 10px;\"> <label\r\n                                                    class=\"checkbox pull-right\">\r\n                                                <input type=\"checkbox\" name=\"subscription\" id=\"subscription\">\r\n                                                <i></i>Press <strong> ENTER </strong> to send </label> </span> <a\r\n                                                    href-void class=\"pull-left\"><i\r\n                                                    class=\"fa fa-camera fa-fw fa-lg\"></i></a> </span>\r\n\r\n            </div>\r\n\r\n            <!-- end content -->\r\n        </div>\r\n\r\n    </div>\r\n    <!-- end widget div -->\r\n</div>");
-$templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-attribute-form.tpl.html","<form id=\"attributeForm\" class=\"form-horizontal\"\r\n      data-bv-message=\"This value is not valid\"\r\n      data-bv-feedbackicons-valid=\"glyphicon glyphicon-ok\"\r\n      data-bv-feedbackicons-invalid=\"glyphicon glyphicon-remove\"\r\n      data-bv-feedbackicons-validating=\"glyphicon glyphicon-refresh\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Set validator options via HTML attributes\r\n        </legend>\r\n\r\n        <div class=\"alert alert-warning\">\r\n            <code>&lt; input\r\n                data-bv-validatorname\r\n                data-bv-validatorname-validatoroption=\"...\" / &gt;</code>\r\n\r\n            <br>\r\n            <br>\r\n            More validator options can be found here:\r\n            <a href=\"http://bootstrapvalidator.com/validators/\" target=\"_blank\">http://bootstrapvalidator.com/validators/</a>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Full name</label>\r\n            <div class=\"col-lg-4\">\r\n                <input type=\"text\" class=\"form-control\" name=\"firstName\" placeholder=\"First name\"\r\n                       data-bv-notempty=\"true\"\r\n                       data-bv-notempty-message=\"The first name is required and cannot be empty\" />\r\n            </div>\r\n            <div class=\"col-lg-4\">\r\n                <input type=\"text\" class=\"form-control\" name=\"lastName\" placeholder=\"Last name\"\r\n                       data-bv-notempty=\"true\"\r\n                       data-bv-notempty-message=\"The last name is required and cannot be empty\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Username</label>\r\n            <div class=\"col-lg-5\">\r\n                <input type=\"text\" class=\"form-control\" name=\"username\"\r\n                       data-bv-message=\"The username is not valid\"\r\n\r\n                       data-bv-notempty=\"true\"\r\n                       data-bv-notempty-message=\"The username is required and cannot be empty\"\r\n\r\n                       data-bv-regexp=\"true\"\r\n                       data-bv-regexp-regexp=\"^[a-zA-Z0-9_\\.]+$\"\r\n                       data-bv-regexp-message=\"The username can only consist of alphabetical, number, dot and underscore\"\r\n\r\n                       data-bv-stringlength=\"true\"\r\n                       data-bv-stringlength-min=\"6\"\r\n                       data-bv-stringlength-max=\"30\"\r\n                       data-bv-stringlength-message=\"The username must be more than 6 and less than 30 characters long\"\r\n\r\n                       data-bv-different=\"true\"\r\n                       data-bv-different-field=\"password\"\r\n                       data-bv-different-message=\"The username and password cannot be the same as each other\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Email address</label>\r\n            <div class=\"col-lg-5\">\r\n                <input class=\"form-control\" name=\"email\" type=\"email\"\r\n                       data-bv-emailaddress=\"true\"\r\n                       data-bv-emailaddress-message=\"The input is not a valid email address\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Password</label>\r\n            <div class=\"col-lg-5\">\r\n                <input type=\"password\" class=\"form-control\" name=\"password\"\r\n                       data-bv-notempty=\"true\"\r\n                       data-bv-notempty-message=\"The password is required and cannot be empty\"\r\n\r\n                       data-bv-identical=\"true\"\r\n                       data-bv-identical-field=\"confirmPassword\"\r\n                       data-bv-identical-message=\"The password and its confirm are not the same\"\r\n\r\n                       data-bv-different=\"true\"\r\n                       data-bv-different-field=\"username\"\r\n                       data-bv-different-message=\"The password cannot be the same as username\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Retype password</label>\r\n            <div class=\"col-lg-5\">\r\n                <input type=\"password\" class=\"form-control\" name=\"confirmPassword\"\r\n                       data-bv-notempty=\"true\"\r\n                       data-bv-notempty-message=\"The confirm password is required and cannot be empty\"\r\n\r\n                       data-bv-identical=\"true\"\r\n                       data-bv-identical-field=\"password\"\r\n                       data-bv-identical-message=\"The password and its confirm are not the same\"\r\n\r\n                       data-bv-different=\"true\"\r\n                       data-bv-different-field=\"username\"\r\n                       data-bv-different-message=\"The password cannot be the same as username\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Languages</label>\r\n            <div class=\"col-lg-5\">\r\n                <div class=\"checkbox\">\r\n                    <label>\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"english\"\r\n                               data-bv-message=\"Please specify at least one language you can speak\"\r\n                               data-bv-notempty=\"true\" />\r\n                        English </label>\r\n                </div>\r\n                <div class=\"checkbox\">\r\n                    <label>\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"french\" />\r\n                        French </label>\r\n                </div>\r\n                <div class=\"checkbox\">\r\n                    <label>\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"german\" />\r\n                        German </label>\r\n                </div>\r\n                <div class=\"checkbox\">\r\n                    <label>\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"russian\" />\r\n                        Russian </label>\r\n                </div>\r\n                <div class=\"checkbox\">\r\n                    <label>\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"other\" />\r\n                        Other </label>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n</form>\r\n     ");
-$templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-button-group-form.tpl.html","<form id=\"buttonGroupForm\" method=\"post\" class=\"form-horizontal\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Default Form Elements\r\n        </legend>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Gender</label>\r\n            <div class=\"col-lg-9\">\r\n                <div class=\"btn-group\" data-toggle=\"buttons\">\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"radio\" name=\"gender\" value=\"male\" />\r\n                        Male </label>\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"radio\" name=\"gender\" value=\"female\" />\r\n                        Female </label>\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"radio\" name=\"gender\" value=\"other\" />\r\n                        Other </label>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Languages</label>\r\n            <div class=\"col-lg-9\">\r\n                <div class=\"btn-group\" data-toggle=\"buttons\">\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"english\" />\r\n                        English </label>\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"german\" />\r\n                        German </label>\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"french\" />\r\n                        French </label>\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"russian\" />\r\n                        Russian </label>\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"italian\">\r\n                        Italian </label>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n</form>\r\n");
-$templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-contact-form.tpl.html","<form id=\"contactForm\" method=\"post\" class=\"form-horizontal\">\r\n\r\n    <fieldset>\r\n        <legend>Showing messages in custom area</legend>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-md-3 control-label\">Full name</label>\r\n            <div class=\"col-md-6\">\r\n                <input type=\"text\" class=\"form-control\" name=\"fullName\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-md-3 control-label\">Email</label>\r\n            <div class=\"col-md-6\">\r\n                <input type=\"text\" class=\"form-control\" name=\"email\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-md-3 control-label\">Title</label>\r\n            <div class=\"col-md-6\">\r\n                <input type=\"text\" class=\"form-control\" name=\"title\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-md-3 control-label\">Content</label>\r\n            <div class=\"col-md-6\">\r\n                <textarea class=\"form-control\" name=\"content\" rows=\"5\"></textarea>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <!-- #messages is where the messages are placed inside -->\r\n        <div class=\"form-group\">\r\n            <div class=\"col-md-9 col-md-offset-3\">\r\n                <div id=\"messages\"></div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n</form>\r\n");
-$templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-movie-form.tpl.html","\r\n<form id=\"movieForm\" method=\"post\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Default Form Elements\r\n        </legend>\r\n        <div class=\"form-group\">\r\n            <div class=\"row\">\r\n                <div class=\"col-md-8\">\r\n                    <label class=\"control-label\">Movie title</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"title\" />\r\n                </div>\r\n\r\n                <div class=\"col-md-4 selectContainer\">\r\n                    <label class=\"control-label\">Genre</label>\r\n                    <select class=\"form-control\" name=\"genre\">\r\n                        <option value=\"\">Choose a genre</option>\r\n                        <option value=\"action\">Action</option>\r\n                        <option value=\"comedy\">Comedy</option>\r\n                        <option value=\"horror\">Horror</option>\r\n                        <option value=\"romance\">Romance</option>\r\n                    </select>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <div class=\"row\">\r\n                <div class=\"col-sm-12 col-md-4\">\r\n                    <label class=\"control-label\">Director</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"director\" />\r\n                </div>\r\n\r\n                <div class=\"col-sm-12 col-md-4\">\r\n                    <label class=\"control-label\">Writer</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"writer\" />\r\n                </div>\r\n\r\n                <div class=\"col-sm-12 col-md-4\">\r\n                    <label class=\"control-label\">Producer</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"producer\" />\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <div class=\"row\">\r\n                <div class=\"col-sm-12 col-md-6\">\r\n                    <label class=\"control-label\">Website</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"website\" />\r\n                </div>\r\n\r\n                <div class=\"col-sm-12 col-md-6\">\r\n                    <label class=\"control-label\">Youtube trailer</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"trailer\" />\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"control-label\">Review</label>\r\n            <textarea class=\"form-control\" name=\"review\" rows=\"8\"></textarea>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n\r\n            <div class=\"row\">\r\n                <div class=\"col-sm-12 col-md-12\">\r\n                    <label class=\"control-label\">Rating</label>\r\n                </div>\r\n\r\n                <div class=\"col-sm-12 col-md-10\">\r\n\r\n                    <label class=\"radio radio-inline no-margin\">\r\n                        <input type=\"radio\" name=\"rating\" value=\"terrible\" class=\"radiobox style-2\" />\r\n                        <span>Terrible</span> </label>\r\n\r\n                    <label class=\"radio radio-inline\">\r\n                        <input type=\"radio\" name=\"rating\" value=\"watchable\" class=\"radiobox style-2\" />\r\n                        <span>Watchable</span> </label>\r\n                    <label class=\"radio radio-inline\">\r\n                        <input type=\"radio\" name=\"rating\" value=\"best\" class=\"radiobox style-2\" />\r\n                        <span>Best ever</span> </label>\r\n\r\n                </div>\r\n\r\n            </div>\r\n\r\n        </div>\r\n    </fieldset>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n</form>\r\n\r\n ");
-$templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-product-form.tpl.html","<form id=\"productForm\" class=\"form-horizontal\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Default Form Elements\r\n        </legend>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-xs-2 col-lg-3 control-label\">Price</label>\r\n            <div class=\"col-xs-9 col-lg-6 inputGroupContainer\">\r\n                <div class=\"input-group\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"price\" />\r\n                    <span class=\"input-group-addon\">$</span>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-xs-2 col-lg-3 control-label\">Amount</label>\r\n            <div class=\"col-xs-9 col-lg-6 inputGroupContainer\">\r\n                <div class=\"input-group\">\r\n                    <span class=\"input-group-addon\">&#8364;</span>\r\n                    <input type=\"text\" class=\"form-control\" name=\"amount\" />\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-xs-2 col-lg-3 control-label\">Color</label>\r\n            <div class=\"col-xs-9 col-lg-6 selectContainer\">\r\n                <select class=\"form-control\" name=\"color\">\r\n                    <option value=\"\">Choose a color</option>\r\n                    <option value=\"blue\">Blue</option>\r\n                    <option value=\"green\">Green</option>\r\n                    <option value=\"red\">Red</option>\r\n                    <option value=\"yellow\">Yellow</option>\r\n                    <option value=\"white\">White</option>\r\n                </select>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-xs-2 col-lg-3 control-label\">Size</label>\r\n            <div class=\"col-xs-9 col-lg-6 selectContainer\">\r\n                <select class=\"form-control\" name=\"size\">\r\n                    <option value=\"\">Choose a size</option>\r\n                    <option value=\"S\">S</option>\r\n                    <option value=\"M\">M</option>\r\n                    <option value=\"L\">L</option>\r\n                    <option value=\"XL\">XL</option>\r\n                </select>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</form>\r\n\r\n");
-$templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-profile-form.tpl.html","<form id=\"profileForm\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Default Form Elements\r\n        </legend>\r\n        <div class=\"form-group\">\r\n            <label>Email address</label>\r\n            <input type=\"text\" class=\"form-control\" name=\"email\" />\r\n        </div>\r\n    </fieldset>\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label>Password</label>\r\n            <input type=\"password\" class=\"form-control\" name=\"password\" />\r\n        </div>\r\n    </fieldset>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</form>\r\n");
-$templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-toggling-form.tpl.html","<form id=\"togglingForm\" method=\"post\" class=\"form-horizontal\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Default Form Elements\r\n        </legend>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Full name <sup>*</sup></label>\r\n            <div class=\"col-lg-4\">\r\n                <input type=\"text\" class=\"form-control\" name=\"firstName\" placeholder=\"First name\" />\r\n            </div>\r\n            <div class=\"col-lg-4\">\r\n                <input type=\"text\" class=\"form-control\" name=\"lastName\" placeholder=\"Last name\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Company <sup>*</sup></label>\r\n            <div class=\"col-lg-5\">\r\n                <input type=\"text\" class=\"form-control\" name=\"company\"\r\n                       required data-bv-notempty-message=\"The company name is required\" />\r\n            </div>\r\n            <div class=\"col-lg-2\">\r\n                <button type=\"button\" class=\"btn btn-info btn-sm\" data-toggle=\"#jobInfo\">\r\n                    Add more info\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <!-- These fields will not be validated as long as they are not visible -->\r\n    <div id=\"jobInfo\" style=\"display: none;\">\r\n        <fieldset>\r\n            <div class=\"form-group\">\r\n                <label class=\"col-lg-3 control-label\">Job title <sup>*</sup></label>\r\n                <div class=\"col-lg-5\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"job\" />\r\n                </div>\r\n            </div>\r\n        </fieldset>\r\n\r\n        <fieldset>\r\n            <div class=\"form-group\">\r\n                <label class=\"col-lg-3 control-label\">Department <sup>*</sup></label>\r\n                <div class=\"col-lg-5\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"department\" />\r\n                </div>\r\n            </div>\r\n        </fieldset>\r\n    </div>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Mobile phone <sup>*</sup></label>\r\n            <div class=\"col-lg-5\">\r\n                <input type=\"text\" class=\"form-control\" name=\"mobilePhone\" />\r\n            </div>\r\n            <div class=\"col-lg-2\">\r\n                <button type=\"button\" class=\"btn btn-info btn-sm\" data-toggle=\"#phoneInfo\">\r\n                    Add more phone numbers\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n    <!-- These fields will not be validated as long as they are not visible -->\r\n    <div id=\"phoneInfo\" style=\"display: none;\">\r\n\r\n        <fieldset>\r\n            <div class=\"form-group\">\r\n                <label class=\"col-lg-3 control-label\">Home phone</label>\r\n                <div class=\"col-lg-5\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"homePhone\" />\r\n                </div>\r\n            </div>\r\n        </fieldset>\r\n        <fieldset>\r\n            <div class=\"form-group\">\r\n                <label class=\"col-lg-3 control-label\">Office phone</label>\r\n                <div class=\"col-lg-5\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"officePhone\" />\r\n                </div>\r\n            </div>\r\n        </fieldset>\r\n    </div>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</form>");
-$templateCache.put("app/_common/layout/directives/demo/demo-states.tpl.html","<div class=\"demo\"><span id=\"demo-setting\"><i class=\"fa fa-cog txt-color-blueDark\"></i></span>\r\n\r\n    <form>\r\n        <legend class=\"no-padding margin-bottom-10\">Layout Options</legend>\r\n        <section>\r\n            <label><input type=\"checkbox\" ng-model=\"fixedHeader\"\r\n                          class=\"checkbox style-0\"><span>Fixed Header</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"fixedNavigation\"\r\n                          class=\"checkbox style-0\"><span>Fixed Navigation</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"fixedRibbon\"\r\n                          class=\"checkbox style-0\"><span>Fixed Ribbon</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"fixedPageFooter\"\r\n                          class=\"checkbox style-0\"><span>Fixed Footer</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"insideContainer\"\r\n                          class=\"checkbox style-0\"><span>Inside <b>.container</b></span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"rtl\"\r\n                          class=\"checkbox style-0\"><span>RTL</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"menuOnTop\"\r\n                          class=\"checkbox style-0\"><span>Menu on <b>top</b></span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"colorblindFriendly\"\r\n                          class=\"checkbox style-0\"><span>For Colorblind <div\r\n                    class=\"font-xs text-right\">(experimental)\r\n            </div></span>\r\n            </label><span id=\"smart-bgimages\"></span></section>\r\n        <section><h6 class=\"margin-top-10 semi-bold margin-bottom-5\">Clear Localstorage</h6><a\r\n                ng-click=\"factoryReset()\" class=\"btn btn-xs btn-block btn-primary\" id=\"reset-smart-widget\"><i\r\n                class=\"fa fa-refresh\"></i> Factory Reset</a></section>\r\n\r\n        <h6 class=\"margin-top-10 semi-bold margin-bottom-5\">SmartAdmin Skins</h6>\r\n\r\n\r\n        <section id=\"smart-styles\">\r\n            <a ng-repeat=\"skin in skins\" ng-click=\"setSkin(skin)\" class=\"{{skin.class}}\" style=\"{{skin.style}}\"><i ng-if=\"skin.name == $parent.smartSkin\" class=\"fa fa-check fa-fw\"></i> {{skin.label}}</a>\r\n        </section>\r\n    </form>\r\n</div>");}]);
-"use strict";
-
-angular.module("app.smartreports", ["ui.router", "ui.bootstrap"]);
-
-angular.module("app.smartreports").config(function ($stateProvider) {
-
-    $stateProvider
-        .state('app.smartreports', {
-            url: '/smartreports/:schema/:class/:oid/:xmlschema/:fileType/:cmdHash',
-            data: {
-                title: 'Smart Reports'
-            },
-            views: {
-                "content@app": {
-                    controller: 'downloadReportCtrl',
-                    templateUrl: "app/smartreports/views/download-report.html"
-                }
-            }
-        });
-    });
 "use strict";
 
 angular.module("app.smartforms", ["ui.router", "ui.bootstrap"]);
@@ -33216,6 +32828,54 @@ angular.module("app.smartforms").config(function ($stateProvider, modalStateProv
     });
 "use strict";
 
+angular.module("app.smartreports", ["ui.router", "ui.bootstrap"]);
+
+angular.module("app.smartreports").config(function ($stateProvider) {
+
+    $stateProvider
+        .state('app.smartreports', {
+            url: '/smartreports/:schema/:class/:oid/:xmlschema/:fileType/:cmdHash',
+            data: {
+                title: 'Smart Reports'
+            },
+            views: {
+                "content@app": {
+                    controller: 'downloadReportCtrl',
+                    templateUrl: "app/smartreports/views/download-report.html"
+                }
+            }
+        });
+    });
+angular.module("app").run(["$templateCache", function($templateCache) {$templateCache.put("app/dashboard/live-feeds.tpl.html","<div jarvis-widget id=\"live-feeds-widget\" data-widget-togglebutton=\"false\" data-widget-editbutton=\"false\"\r\n     data-widget-fullscreenbutton=\"false\" data-widget-colorbutton=\"false\" data-widget-deletebutton=\"false\">\r\n<!-- widget options:\r\nusage: <div class=\"jarviswidget\" id=\"wid-id-0\" data-widget-editbutton=\"false\">\r\n\r\ndata-widget-colorbutton=\"false\"\r\ndata-widget-editbutton=\"false\"\r\ndata-widget-togglebutton=\"false\"\r\ndata-widget-deletebutton=\"false\"\r\ndata-widget-fullscreenbutton=\"false\"\r\ndata-widget-custombutton=\"false\"\r\ndata-widget-collapsed=\"true\"\r\ndata-widget-sortable=\"false\"\r\n\r\n-->\r\n<header>\r\n    <span class=\"widget-icon\"> <i class=\"glyphicon glyphicon-stats txt-color-darken\"></i> </span>\r\n\r\n    <h2>Live Feeds </h2>\r\n\r\n    <ul class=\"nav nav-tabs pull-right in\" id=\"myTab\">\r\n        <li class=\"active\">\r\n            <a data-toggle=\"tab\" href=\"#s1\"><i class=\"fa fa-clock-o\"></i> <span class=\"hidden-mobile hidden-tablet\">Live Stats</span></a>\r\n        </li>\r\n\r\n        <li>\r\n            <a data-toggle=\"tab\" href=\"#s2\"><i class=\"fa fa-facebook\"></i> <span class=\"hidden-mobile hidden-tablet\">Social Network</span></a>\r\n        </li>\r\n\r\n        <li>\r\n            <a data-toggle=\"tab\" href=\"#s3\"><i class=\"fa fa-dollar\"></i> <span class=\"hidden-mobile hidden-tablet\">Revenue</span></a>\r\n        </li>\r\n    </ul>\r\n\r\n</header>\r\n\r\n<!-- widget div-->\r\n<div class=\"no-padding\">\r\n\r\n    <div class=\"widget-body\">\r\n        <!-- content -->\r\n        <div id=\"myTabContent\" class=\"tab-content\">\r\n            <div class=\"tab-pane fade active in padding-10 no-padding-bottom\" id=\"s1\">\r\n                <div class=\"row no-space\">\r\n                    <div class=\"col-xs-12 col-sm-12 col-md-8 col-lg-8\">\r\n														<span class=\"demo-liveupdate-1\"> <span\r\n                                                                class=\"onoffswitch-title\">Live switch</span> <span\r\n                                                                class=\"onoffswitch\">\r\n																<input type=\"checkbox\" name=\"start_interval\" ng-model=\"autoUpdate\"\r\n                                                                       class=\"onoffswitch-checkbox\" id=\"start_interval\">\r\n																<label class=\"onoffswitch-label\" for=\"start_interval\">\r\n                                                                    <span class=\"onoffswitch-inner\"\r\n                                                                          data-swchon-text=\"ON\"\r\n                                                                          data-swchoff-text=\"OFF\"></span>\r\n                                                                    <span class=\"onoffswitch-switch\"></span>\r\n                                                                </label> </span> </span>\r\n\r\n                        <div id=\"updating-chart\" class=\"chart-large txt-color-blue\" flot-basic flot-data=\"liveStats\" flot-options=\"liveStatsOptions\"></div>\r\n\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-12 col-md-4 col-lg-4 show-stats\">\r\n\r\n                        <div class=\"row\">\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> My Tasks <span\r\n                                    class=\"pull-right\">130/200</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blueDark\" style=\"width: 65%;\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> Transfered <span\r\n                                    class=\"pull-right\">440 GB</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blue\" style=\"width: 34%;\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> Bugs Squashed<span\r\n                                    class=\"pull-right\">77%</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blue\" style=\"width: 77%;\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> User Testing <span\r\n                                    class=\"pull-right\">7 Days</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-greenLight\" style=\"width: 84%;\"></div>\r\n                                </div>\r\n                            </div>\r\n\r\n                            <span class=\"show-stat-buttons\"> <span class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\"> <a\r\n                                    href-void class=\"btn btn-default btn-block hidden-xs\">Generate PDF</a> </span> <span\r\n                                    class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\"> <a href-void\r\n                                                                                     class=\"btn btn-default btn-block hidden-xs\">Report\r\n                                a bug</a> </span> </span>\r\n\r\n                        </div>\r\n\r\n                    </div>\r\n                </div>\r\n\r\n                <div class=\"show-stat-microcharts\" data-sparkline-container data-easy-pie-chart-container>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n\r\n                        <div class=\"easy-pie-chart txt-color-orangeDark\" data-percent=\"33\" data-pie-size=\"50\">\r\n                            <span class=\"percent percent-sign\">35</span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> Server Load <i class=\"fa fa-caret-up icon-color-bad\"></i> </span>\r\n                        <ul class=\"smaller-stat hidden-sm pull-right\">\r\n                            <li>\r\n                                <span class=\"label bg-color-greenLight\"><i class=\"fa fa-caret-up\"></i> 97%</span>\r\n                            </li>\r\n                            <li>\r\n                                <span class=\"label bg-color-blueLight\"><i class=\"fa fa-caret-down\"></i> 44%</span>\r\n                            </li>\r\n                        </ul>\r\n                        <div class=\"sparkline txt-color-greenLight hidden-sm hidden-md pull-right\"\r\n                             data-sparkline-type=\"line\" data-sparkline-height=\"33px\" data-sparkline-width=\"70px\"\r\n                             data-fill-color=\"transparent\">\r\n                            130, 187, 250, 257, 200, 210, 300, 270, 363, 247, 270, 363, 247\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-greenLight\" data-percent=\"78.9\" data-pie-size=\"50\">\r\n                            <span class=\"percent percent-sign\">78.9 </span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> Disk Space <i class=\"fa fa-caret-down icon-color-good\"></i></span>\r\n                        <ul class=\"smaller-stat hidden-sm pull-right\">\r\n                            <li>\r\n                                <span class=\"label bg-color-blueDark\"><i class=\"fa fa-caret-up\"></i> 76%</span>\r\n                            </li>\r\n                            <li>\r\n                                <span class=\"label bg-color-blue\"><i class=\"fa fa-caret-down\"></i> 3%</span>\r\n                            </li>\r\n                        </ul>\r\n                        <div class=\"sparkline txt-color-blue hidden-sm hidden-md pull-right\" data-sparkline-type=\"line\"\r\n                             data-sparkline-height=\"33px\" data-sparkline-width=\"70px\" data-fill-color=\"transparent\">\r\n                            257, 200, 210, 300, 270, 363, 130, 187, 250, 247, 270, 363, 247\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-blue\" data-percent=\"23\" data-pie-size=\"50\">\r\n                            <span class=\"percent percent-sign\">23 </span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> Transfered <i class=\"fa fa-caret-up icon-color-good\"></i></span>\r\n                        <ul class=\"smaller-stat hidden-sm pull-right\">\r\n                            <li>\r\n                                <span class=\"label bg-color-darken\">10GB</span>\r\n                            </li>\r\n                            <li>\r\n                                <span class=\"label bg-color-blueDark\"><i class=\"fa fa-caret-up\"></i> 10%</span>\r\n                            </li>\r\n                        </ul>\r\n                        <div class=\"sparkline txt-color-darken hidden-sm hidden-md pull-right\"\r\n                             data-sparkline-type=\"line\" data-sparkline-height=\"33px\" data-sparkline-width=\"70px\"\r\n                             data-fill-color=\"transparent\">\r\n                            200, 210, 363, 247, 300, 270, 130, 187, 250, 257, 363, 247, 270\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-darken\" data-percent=\"36\" data-pie-size=\"50\">\r\n                            <span class=\"percent degree-sign\">36 <i class=\"fa fa-caret-up\"></i></span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> Temperature <i\r\n                                class=\"fa fa-caret-down icon-color-good\"></i></span>\r\n                        <ul class=\"smaller-stat hidden-sm pull-right\">\r\n                            <li>\r\n                                <span class=\"label bg-color-red\"><i class=\"fa fa-caret-up\"></i> 124</span>\r\n                            </li>\r\n                            <li>\r\n                                <span class=\"label bg-color-blue\"><i class=\"fa fa-caret-down\"></i> 40 F</span>\r\n                            </li>\r\n                        </ul>\r\n                        <div class=\"sparkline txt-color-red hidden-sm hidden-md pull-right\" data-sparkline-type=\"line\"\r\n                             data-sparkline-height=\"33px\" data-sparkline-width=\"70px\" data-fill-color=\"transparent\">\r\n                            2700, 3631, 2471, 2700, 3631, 2471, 1300, 1877, 2500, 2577, 2000, 2100, 3000\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n\r\n            </div>\r\n            <!-- end s1 tab pane -->\r\n\r\n            <div class=\"tab-pane fade\" id=\"s2\">\r\n                <div class=\"widget-body-toolbar bg-color-white\">\r\n\r\n                    <form class=\"form-inline\" role=\"form\">\r\n\r\n                        <div class=\"form-group\">\r\n                            <label class=\"sr-only\" for=\"s123\">Show From</label>\r\n                            <input type=\"email\" class=\"form-control input-sm\" id=\"s123\" placeholder=\"Show From\">\r\n                        </div>\r\n                        <div class=\"form-group\">\r\n                            <input type=\"email\" class=\"form-control input-sm\" id=\"s124\" placeholder=\"To\">\r\n                        </div>\r\n\r\n                        <div class=\"btn-group hidden-phone pull-right\">\r\n                            <a class=\"btn dropdown-toggle btn-xs btn-default\" data-toggle=\"dropdown\"><i\r\n                                    class=\"fa fa-cog\"></i> More <span class=\"caret\"> </span> </a>\r\n                            <ul class=\"dropdown-menu pull-right\">\r\n                                <li>\r\n                                    <a href-void><i class=\"fa fa-file-text-alt\"></i> Export to PDF</a>\r\n                                </li>\r\n                                <li>\r\n                                    <a href-void><i class=\"fa fa-question-sign\"></i> Help</a>\r\n                                </li>\r\n                            </ul>\r\n                        </div>\r\n\r\n                    </form>\r\n\r\n                </div>\r\n                <div class=\"padding-10\">\r\n                    <div id=\"statsChart\" class=\"chart-large has-legend-unique\" flot-basic flot-data=\"statsData\" flot-options=\"statsDisplayOptions\"></div>\r\n                </div>\r\n\r\n            </div>\r\n            <!-- end s2 tab pane -->\r\n\r\n            <div class=\"tab-pane fade\" id=\"s3\">\r\n\r\n                <div class=\"widget-body-toolbar bg-color-white smart-form\" id=\"rev-toggles\">\r\n\r\n                    <div class=\"inline-group\">\r\n\r\n                        <label for=\"gra-0\" class=\"checkbox\">\r\n                            <input type=\"checkbox\" id=\"gra-0\" ng-model=\"targetsShow\">\r\n                            <i></i> Target </label>\r\n                        <label for=\"gra-1\" class=\"checkbox\">\r\n                            <input type=\"checkbox\" id=\"gra-1\" ng-model=\"actualsShow\">\r\n                            <i></i> Actual </label>\r\n                        <label for=\"gra-2\" class=\"checkbox\">\r\n                            <input type=\"checkbox\" id=\"gra-2\" ng-model=\"signupsShow\">\r\n                            <i></i> Signups </label>\r\n                    </div>\r\n\r\n                    <div class=\"btn-group hidden-phone pull-right\">\r\n                        <a class=\"btn dropdown-toggle btn-xs btn-default\" data-toggle=\"dropdown\"><i\r\n                                class=\"fa fa-cog\"></i> More <span class=\"caret\"> </span> </a>\r\n                        <ul class=\"dropdown-menu pull-right\">\r\n                            <li>\r\n                                <a href-void><i class=\"fa fa-file-text-alt\"></i> Export to PDF</a>\r\n                            </li>\r\n                            <li>\r\n                                <a href-void><i class=\"fa fa-question-sign\"></i> Help</a>\r\n                            </li>\r\n                        </ul>\r\n                    </div>\r\n\r\n                </div>\r\n\r\n                <div class=\"padding-10\">\r\n                    <div id=\"flotcontainer\" class=\"chart-large has-legend-unique\" flot-basic flot-data=\"revenewData\" flot-options=\"revenewDisplayOptions\" ></div>\r\n                </div>\r\n            </div>\r\n            <!-- end s3 tab pane -->\r\n        </div>\r\n\r\n        <!-- end content -->\r\n    </div>\r\n\r\n</div>\r\n<!-- end widget div -->\r\n</div>\r\n");
+$templateCache.put("app/layout/layout.tpl.html","<div ng-intro-options=\"IntroOptions\" ng-intro-method=\"CallMe\">\r\n<!-- HEADER -->\r\n<div data-smart-include=\"app/layout/partials/header.tpl.html\" class=\"placeholder-header\"></div>\r\n<!-- END HEADER -->\r\n\r\n\r\n<!-- Left panel : Navigation area -->\r\n<!-- Note: This width of the aside area can be adjusted through LESS variables -->\r\n<div data-smart-include=\"app/layout/partials/navigation.tpl.html\" class=\"placeholder-left-panel\"></div>\r\n\r\n<!-- END NAVIGATION -->\r\n\r\n<!-- MAIN PANEL -->\r\n<div id=\"main\" role=\"main\">\r\n    <demo-states></demo-states>\r\n\r\n    <!-- RIBBON -->\r\n    <div id=\"ribbon\">\r\n\r\n				<span id=\"reset-settings\" class=\"ribbon-button-alignment\">\r\n					<span id=\"refresh\" class=\"btn btn-ribbon\" reset-widgets\r\n                          tooltip-placement=\"bottom\"\r\n                          tooltip-html=\"<i class=\'text-warning fa fa-warning\'></i> Warning! This will reset all your widget settings.\">\r\n						<i class=\"fa fa-refresh\"></i>\r\n					</span>\r\n				</span>\r\n\r\n        <!-- breadcrumb -->\r\n        <state-breadcrumbs></state-breadcrumbs>\r\n        <!-- end breadcrumb -->\r\n\r\n\r\n    </div>\r\n    <!-- END RIBBON -->\r\n\r\n\r\n    <div data-smart-router-animation-wrap=\"content content@app\" data-wrap-for=\"#content\">\r\n        <div data-ui-view=\"content\" data-autoscroll=\"false\"></div>\r\n    </div>\r\n\r\n</div>\r\n<!-- END MAIN PANEL -->\r\n\r\n<!-- PAGE FOOTER -->\r\n<div data-smart-include=\"app/layout/partials/footer.tpl.html\"></div>\r\n\r\n<div data-smart-include=\"app/layout/shortcut/shortcut.tpl.html\"></div>\r\n\r\n<!-- END PAGE FOOTER -->\r\n </div>\r\n\r\n");
+$templateCache.put("app/auth/directives/login-info.tpl.html","<div class=\"login-info ng-cloak\">\r\n    <span> <!-- User image size is adjusted inside CSS, it should stay as it -->\r\n        <a id=\"my-login-info\" href=\"\" toggle-shortcut>\r\n            <img ng-src=\"{{user.image()}}\" alt=\"me\" class=\"online\">\r\n                <span>{{user.displayName}}\r\n                </span>\r\n            <i class=\"fa fa-angle-down\"></i>\r\n        </a>\r\n     </span>\r\n</div>");
+$templateCache.put("app/dashboard/projects/recent-projects.tpl.html","<div class=\"project-context hidden-xs dropdown\" dropdown>\r\n\r\n    <span class=\"label\">{{getWord(\'Projects\')}}:</span>\r\n    <span class=\"project-selector dropdown-toggle\" dropdown-toggle>{{getWord(\'Recent projects\')}} <i ng-if=\"projects.length\"\r\n            class=\"fa fa-angle-down\"></i></span>\r\n\r\n    <ul class=\"dropdown-menu\" ng-if=\"projects.length\">\r\n        <li ng-repeat=\"project in projects\">\r\n            <a href=\"{{project.href}}\">{{project.title}}</a>\r\n        </li>\r\n        <li class=\"divider\"></li>\r\n        <li>\r\n            <a ng-click=\"clearProjects()\"><i class=\"fa fa-power-off\"></i> Clear</a>\r\n        </li>\r\n    </ul>\r\n\r\n</div>");
+$templateCache.put("app/dashboard/todo/todo-widget.tpl.html","<div id=\"todo-widget\" jarvis-widget data-widget-editbutton=\"false\" data-widget-color=\"blue\"\r\n     ng-controller=\"TodoCtrl\">\r\n    <header>\r\n        <span class=\"widget-icon\"> <i class=\"fa fa-check txt-color-white\"></i> </span>\r\n\r\n        <h2> ToDo\'s </h2>\r\n\r\n        <div class=\"widget-toolbar\">\r\n            <!-- add: non-hidden - to disable auto hide -->\r\n            <button class=\"btn btn-xs btn-default\" ng-class=\"{active: newTodo}\" ng-click=\"toggleAdd()\"><i ng-class=\"{ \'fa fa-plus\': !newTodo, \'fa fa-times\': newTodo}\"></i> Add</button>\r\n\r\n        </div>\r\n    </header>\r\n    <!-- widget div-->\r\n    <div>\r\n        <div class=\"widget-body no-padding smart-form\">\r\n            <!-- content goes here -->\r\n            <div ng-show=\"newTodo\">\r\n                <h5 class=\"todo-group-title\"><i class=\"fa fa-plus-circle\"></i> New Todo</h5>\r\n\r\n                <form name=\"newTodoForm\" class=\"smart-form\">\r\n                    <fieldset>\r\n                        <section>\r\n                            <label class=\"input\">\r\n                                <input type=\"text\" required class=\"input-lg\" ng-model=\"newTodo.title\"\r\n                                       placeholder=\"What needs to be done?\">\r\n                            </label>\r\n                        </section>\r\n                        <section>\r\n                            <div class=\"col-xs-6\">\r\n                                <label class=\"select\">\r\n                                    <select class=\"input-sm\" ng-model=\"newTodo.state\"\r\n                                            ng-options=\"state as state for state in states\"></select> <i></i> </label>\r\n                            </div>\r\n                        </section>\r\n                    </fieldset>\r\n                    <footer>\r\n                        <button ng-disabled=\"newTodoForm.$invalid\" type=\"button\" class=\"btn btn-primary\"\r\n                                ng-click=\"createTodo()\">\r\n                            Add\r\n                        </button>\r\n                        <button type=\"button\" class=\"btn btn-default\" ng-click=\"toggleAdd()\">\r\n                            Cancel\r\n                        </button>\r\n                    </footer>\r\n                </form>\r\n            </div>\r\n\r\n            <todo-list state=\"Critical\"  title=\"Critical Tasks\" icon=\"warning\" todos=\"todos\"></todo-list>\r\n\r\n            <todo-list state=\"Important\" title=\"Important Tasks\" icon=\"exclamation\" todos=\"todos\"></todo-list>\r\n\r\n            <todo-list state=\"Completed\" title=\"Completed Tasks\" icon=\"check\" todos=\"todos\"></todo-list>\r\n\r\n            <!-- end content -->\r\n        </div>\r\n\r\n    </div>\r\n    <!-- end widget div -->\r\n</div>");
+$templateCache.put("app/homepage/views/sub-header.tpl.html","<div class=\"col-xs-12 col-sm-5 col-md-5 col-lg-8\" data-sparkline-container>\r\n    <ul id=\"sparks\" class=\"\">\r\n        <li class=\"sparks-info\">\r\n            <h5> {{getWord(\'TaskCount\')}} <span class=\"txt-color-blue\">1,271</span></h5>\r\n            <div class=\"sparkline txt-color-blue hidden-mobile hidden-md hidden-sm\">\r\n                130, 187, 250, 257, 200, 210, 300, 270, 363, 247, 270, 363, 247\r\n            </div>\r\n        </li>\r\n        <li class=\"sparks-info\">\r\n            <h5> {{getWord(\"Efficiency\")}} <span class=\"txt-color-purple\"><i class=\"fa fa-arrow-circle-up\"></i>&nbsp;25%</span></h5>\r\n            <div class=\"sparkline txt-color-purple hidden-mobile hidden-md hidden-sm\">\r\n                110,150,300,130,400,240,220,310,220,300, 270, 210\r\n            </div>\r\n        </li>\r\n        <li class=\"sparks-info\">\r\n            <h5> {{getWord(\"CompletedTasks\")}} <span class=\"txt-color-greenDark\"><i class=\"fa fa-check-circle\"></i>&nbsp;879</span></h5>\r\n            <div class=\"sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm\">\r\n                110,150,300,130,400,240,220,310,220,300, 270, 210\r\n            </div>\r\n        </li>\r\n    </ul>\r\n</div>\r\n			");
+$templateCache.put("app/layout/language/language-selector.tpl.html","<ul class=\"header-dropdown-list hidden-xs ng-cloak\" ng-controller=\"LanguagesCtrl\">\r\n    <li class=\"dropdown\" dropdown>\r\n        <a class=\"dropdown-toggle\"  dropdown-toggle href> <img src=\"styles/img/blank.gif\" class=\"flag flag-{{currentLanguage.key}}\" alt=\"{{currentLanguage.alt}}\"> <span> {{currentLanguage.title}} </span>\r\n            <i class=\"fa fa-angle-down\"></i> </a>\r\n        <ul class=\"dropdown-menu pull-right\">\r\n            <li ng-class=\"{active: language==currentLanguage}\" ng-repeat=\"language in languages\">\r\n                <a ng-click=\"selectLanguage(language)\" ><img src=\"styles/img/blank.gif\" class=\"flag flag-{{language.key}}\"\r\n                                                   alt=\"{{language.alt}}\"> {{language.title}}</a>\r\n            </li>\r\n        </ul>\r\n    </li>\r\n</ul>");
+$templateCache.put("app/layout/partials/footer.tpl.html","<div class=\"page-footer\">\r\n    <div class=\"row\">\r\n        <div class=\"col-xs-12 col-sm-6\">\r\n            <span class=\"txt-color-white\">Testing Data Management (TDM) System</span>\r\n        </div>\r\n\r\n        <div class=\"col-xs-6 col-sm-6 text-right hidden-xs\">\r\n            \r\n        </div>\r\n    </div>\r\n</div>");
+$templateCache.put("app/layout/partials/header.tpl.html","<header id=\"header\">\r\n<div id=\"logo-group\">\r\n\r\n    <!-- PLACE YOUR LOGO HERE -->\r\n    <span id=\"logo\"><a ui-sref=\"app.homepage.mainmenu\"><img src=\"styles/img/logo.gif\" alt=\"TDM\"></a>\r\n    </span>\r\n    <!-- END LOGO PLACEHOLDER -->\r\n\r\n    <!-- Note: The activity badge color changes when clicked and resets the number to 0\r\n    Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->\r\n   \r\n    <!--\r\n    <span id=\"activity\"> \r\n        <a ui-sref=\"app.tasks.list\" ui-sref-opts=\"{reload: true}\" title=\"{{getWord(\'MyTasks\')}}\"><i class=\"fa fa-user\"></i>\r\n            <b class=\"badge bg-color-red\">{{getTaskCount()}}</b>\r\n        </a>\r\n    </span>\r\n    -->\r\n\r\n    <!-- Note: The activity badge color changes when clicked and resets the number to 0\r\n    Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->\r\n    <span id=\"activity\" class=\"activity-dropdown\" activities-dropdown-toggle>\r\n        <i class=\"fa fa-user\"></i>\r\n        <b class=\"badge bg-color-red\">{{getTotalCount()}}</b>\r\n    </span>\r\n    <div smart-include=\"app/homepage/views/my-activities.html\"></div>\r\n</div>\r\n\r\n<!--\r\n<div style=\"margin-left:300px\">\r\n    <h1 class=\"text-primary hidden-xs hidden-sm hidden-md\">{{getWord(\'AppName\')}}</h1>\r\n</div>\r\n-->\r\n\r\n<!-- pulled right: nav area -->\r\n<div class=\"pull-right\">\r\n\r\n    <!-- intro button -->\r\n    <div id=\"intro\" class=\"btn-header transparent pull-right\">\r\n        <span>\r\n            <a title=\"{{getWord(\'Intro\')}}\" ng-click=\"CallMe();\">\r\n                <i class=\"fa fa-info\"></i>\r\n            </a>\r\n        </span>\r\n    </div>\r\n    <!-- end intro button -->\r\n\r\n    <!-- collapse menu button -->\r\n    <div id=\"hide-menu\" class=\"btn-header pull-right\">\r\n        <span> <a toggle-menu title=\"{{getWord(\'CollapseMenu\')}}\"><i\r\n                class=\"fa fa-reorder\"></i></a> </span>\r\n    </div>\r\n    <!-- end collapse menu -->\r\n\r\n    <!-- #MOBILE -->\r\n    <!-- Top menu profile link : this shows only when top menu is active -->\r\n    <ul id=\"mobile-profile-img\" class=\"header-dropdown-list hidden-xs padding-5\">\r\n        <li class=\"\">\r\n            <a href=\"#\" class=\"dropdown-toggle no-margin userdropdown\" data-toggle=\"dropdown\">\r\n                <img src=\"styles/custom/avatars/male.png\" alt=\"John Doe\" class=\"online\"/>\r\n            </a>\r\n            <ul class=\"dropdown-menu pull-right\">\r\n                <li>\r\n                    <a href-void class=\"padding-10 padding-top-0 padding-bottom-0\"><i\r\n                            class=\"fa fa-cog\"></i> Setting</a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                    <a ui-sref=\"app.appViews.profileDemo\" class=\"padding-10 padding-top-0 padding-bottom-0\"> <i class=\"fa fa-user\"></i>\r\n                        <u>P</u>rofile</a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                    <a href-void class=\"padding-10 padding-top-0 padding-bottom-0\"\r\n                       data-action=\"toggleShortcut\"><i class=\"fa fa-arrow-down\"></i> <u>S</u>hortcut</a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                    <a href-void class=\"padding-10 padding-top-0 padding-bottom-0\"\r\n                       data-action=\"launchFullscreen\"><i class=\"fa fa-arrows-alt\"></i> Full <u>S</u>creen</a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                    <a href=\"#/login\" class=\"padding-10 padding-top-5 padding-bottom-5\" data-action=\"userLogout\"><i\r\n                            class=\"fa fa-sign-out fa-lg\"></i> <strong><u>L</u>ogout</strong></a>\r\n                </li>\r\n            </ul>\r\n        </li>\r\n    </ul>\r\n\r\n    <!-- logout button -->\r\n    <div id=\"logout\" class=\"btn-header transparent pull-right\">\r\n        <span> <a ui-sref=\"logout\" title=\"{{getWord(\'SignOut\')}}\" data-action=\"userLogout\"\r\n                  data-logout-msg=\"You can improve your security further after logging out by closing this opened browser\"><i\r\n                class=\"fa fa-sign-out\"></i></a> </span>\r\n    </div>\r\n    <!-- end logout button -->\r\n\r\n    <!-- search mobile button (this is hidden till mobile view port) -->\r\n    <div id=\"search-mobile\" class=\"btn-header transparent pull-right\" data-search-mobile>\r\n        <span> <a href=\"#\" title=\"Search\"><i class=\"fa fa-search\"></i></a> </span>\r\n    </div>\r\n    <!-- end search mobile button -->\r\n\r\n    <!-- fullscreen button -->\r\n    <div id=\"fullscreen\" class=\"btn-header transparent pull-right\">\r\n        <span> <a full-screen title=\"{{getWord(\'FullScreen\')}}\"><i\r\n                class=\"fa fa-arrows-alt\"></i></a> </span>\r\n    </div>\r\n    <!-- end fullscreen button -->\r\n\r\n    <!-- multiple lang dropdown : find all flags in the flags page -->\r\n    <language-selector></language-selector>\r\n    <!-- end multiple lang -->\r\n\r\n    <!-- input: full text search field -->\r\n    <form ng-show=\"searchEnabled\" ng-submit=\"fullTextSearch()\" class=\"header-search pull-right\" style=\"padding-right:10px\">\r\n        <input id=\"search-keywords\" name=\"searchKeywords\" type=\"text\" autocomplete=\"off\" size=\"50\" \r\n               placeholder=\"{{getWord(\'FindReports\')}}\"\r\n               ng-model=\"searchContext.searchText\"\r\n               typeahead=\"suggestion for suggestion in getSuggestions($viewValue)\"\r\n               typeahead-on-select=\"onSuggestionSelect($item, $model, $label)\">\r\n        <button type=\"submit\" style=\"padding-right:15px\">\r\n            <i class=\"fa fa-search\"></i>\r\n        </button>\r\n        <a href=\"$\" id=\"cancel-search-js\" title=\"Cancel Search\"><i class=\"fa fa-times\"></i></a>\r\n    </form>\r\n    <!-- end input: search field -->\r\n\r\n</div>\r\n<!-- end pulled right: nav area -->\r\n\r\n</header>");
+$templateCache.put("app/layout/partials/help-viewer.tpl.html","<div id=\"content\" class=\"wrapper\">\r\n    <!-- widget grid -->\r\n    <section widget-grid id=\"widget-grid\">\r\n        <div class=\"row\">\r\n            <article class=\"col-sm-12 col-md-12 col-lg-12\">\r\n                <div jarvis-widget id=\"wid-id-1\" data-widget-editbutton=\"false\" data-widget-custombutton=\"false\">\r\n                    <header>\r\n                        <span class=\"widget-icon\"> <i class=\"fa fa-edit\"></i> </span>\r\n                        <h2>{{getWord(\"Help\")}}</h2>\r\n                        <div class=\"widget-toolbar\">\r\n                            <span class=\"jarviswidget-ctrls\" ng-click=\"$dismiss()\"> <i class=\"fa fa-close\"></i> </span>\r\n                        </div>\r\n                    </header>\r\n                    <div style=\"overflow-x:auto;\">\r\n                        <!-- widget content -->\r\n                        <div align=\"center\" class=\"padding-10\">\r\n                            <button ng-click=\"zoomIn()\"><i class=\"fa fa-plus\"></i></button>\r\n                            <button ng-click=\"fit()\"><span>100%</span></button>\r\n                            <button ng-click=\"zoomOut()\"><i class=\"fa fa-minus\"></i></button>\r\n                        </div>\r\n                        <div>\r\n                            <ng-pdf template-url=\"app/layout/partials/help-viewer..html\" scale=\"page-fit\"></ng-pdf>\r\n                        </div>\r\n                        <div align=\"center\" class=\"padding-10\">\r\n                            <button ng-click=\"goPrevious()\"><i class=\"fa fa-chevron-left\"></i><span> {{getWord(\"Prev Page\")}}</span></button>\r\n                            <button ng-click=\"goNext()\"><i class=\"fa fa-chevron-right\"></i><span> {{getWord(\"Next Page\")}}</span></button>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </article>\r\n        </div>\r\n    </section>\r\n</div>");
+$templateCache.put("app/layout/partials/navigation.tpl.html","<aside id=\"left-panel\">\r\n\r\n    <!-- User info -->\r\n    <div login-info></div>\r\n    <!-- end user info -->\r\n\r\n    <nav id=\"sidemenu\">\r\n\r\n        <!-- NOTE: This allows you to pull menu items from server -->\r\n        <ul data-smart-menu-items=\"/api/sitemap/menu\"></ul>\r\n\r\n    </nav>\r\n\r\n  <span id=\"minimize-sidemenu\" class=\"minifyme\" data-action=\"minifyMenu\" minify-menu>\r\n    <i class=\"fa fa-arrow-circle-left hit\"></i>\r\n  </span>\r\n\r\n</aside>");
+$templateCache.put("app/layout/partials/sub-header.tpl.html","<div class=\"col-xs-12 col-sm-5 col-md-5 col-lg-8\" data-sparkline-container>\r\n    <ul id=\"sparks\" class=\"\">\r\n        <li class=\"sparks-info\">\r\n            <h5> My Income <span class=\"txt-color-blue\">$47,171</span></h5>\r\n            <div class=\"sparkline txt-color-blue hidden-mobile hidden-md hidden-sm\">\r\n                1300, 1877, 2500, 2577, 2000, 2100, 3000, 2700, 3631, 2471, 2700, 3631, 2471\r\n            </div>\r\n        </li>\r\n        <li class=\"sparks-info\">\r\n            <h5> Site Traffic <span class=\"txt-color-purple\"><i class=\"fa fa-arrow-circle-up\"></i>&nbsp;45%</span></h5>\r\n            <div class=\"sparkline txt-color-purple hidden-mobile hidden-md hidden-sm\">\r\n                110,150,300,130,400,240,220,310,220,300, 270, 210\r\n            </div>\r\n        </li>\r\n        <li class=\"sparks-info\">\r\n            <h5> Site Orders <span class=\"txt-color-greenDark\"><i class=\"fa fa-shopping-cart\"></i>&nbsp;2447</span></h5>\r\n            <div class=\"sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm\">\r\n                110,150,300,130,400,240,220,310,220,300, 270, 210\r\n            </div>\r\n        </li>\r\n    </ul>\r\n</div>\r\n			");
+$templateCache.put("app/layout/partials/voice-commands.tpl.html","<!-- TRIGGER BUTTON:\r\n<a href=\"/my-ajax-page.html\" data-toggle=\"modal\" data-target=\"#remoteModal\" class=\"btn btn-default\">Open Modal</a>  -->\r\n\r\n<!-- MODAL PLACE HOLDER\r\n<div class=\"modal fade\" id=\"remoteModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"remoteModalLabel\" aria-hidden=\"true\">\r\n<div class=\"modal-dialog\">\r\n<div class=\"modal-content\"></div>\r\n</div>\r\n</div>   -->\r\n<!--////////////////////////////////////-->\r\n\r\n<!--<div class=\"modal-header\">\r\n<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\r\n&times;\r\n</button>\r\n<h4 class=\"modal-title\" id=\"myModalLabel\">Command List</h4>\r\n</div>-->\r\n<div class=\"modal-body\">\r\n\r\n	<h1><i class=\"fa fa-microphone text-muted\"></i>&nbsp;&nbsp; SmartAdmin Voice Command</h1>\r\n	<hr class=\"simple\">\r\n	<h5>Instruction</h5>\r\n\r\n	Click <span class=\"text-success\">\"Allow\"</span> to access your microphone and activate Voice Command.\r\n	You will notice a <span class=\"text-primary\"><strong>BLUE</strong> Flash</span> on the microphone icon indicating activation.\r\n	The icon will appear <span class=\"text-danger\"><strong>RED</strong></span> <span class=\"label label-danger\"><i class=\"fa fa-microphone fa-lg\"></i></span> if you <span class=\"text-danger\">\"Deny\"</span> access or don\'t have any microphone installed.\r\n	<br>\r\n	<br>\r\n	As a security precaution, your browser will disconnect the microphone every 60 to 120 seconds (sooner if not being used). In which case Voice Command will prompt you again to <span class=\"text-success\">\"Allow\"</span> or <span class=\"text-danger\">\"Deny\"</span> access to your microphone.\r\n	<br>\r\n	<br>\r\n	If you host your page over <strong>http<span class=\"text-success\">s</span></strong> (secure socket layer) protocol you can wave this security measure and have an unintrupted Voice Command.\r\n	<br>\r\n	<br>\r\n	<h5>Commands</h5>\r\n	<ul>\r\n		<li>\r\n			<strong>\'show\' </strong> then say the <strong>*page*</strong> you want to go to. For example <strong>\"show inbox\"</strong> or <strong>\"show calendar\"</strong>\r\n		</li>\r\n		<li>\r\n			<strong>\'mute\' </strong> - mutes all sound effects for the theme.\r\n		</li>\r\n		<li>\r\n			<strong>\'sound on\'</strong> - unmutes all sound effects for the theme.\r\n		</li>\r\n		<li>\r\n			<span class=\"text-danger\"><strong>\'stop\'</strong></span> - deactivates voice command.\r\n		</li>\r\n		<li>\r\n			<span class=\"text-primary\"><strong>\'help\'</strong></span> - brings up the command list\r\n		</li>\r\n		<li>\r\n			<span class=\"text-danger\"><strong>\'got it\'</strong></span> - closes help modal\r\n		</li>\r\n		<li>\r\n			<strong>\'hide navigation\'</strong> - toggle navigation collapse\r\n		</li>\r\n		<li>\r\n			<strong>\'show navigation\'</strong> - toggle navigation to open (can be used again to close)\r\n		</li>\r\n		<li>\r\n			<strong>\'scroll up\'</strong> - scrolls to the top of the page\r\n		</li>\r\n		<li>\r\n			<strong>\'scroll down\'</strong> - scrollts to the bottom of the page\r\n		</li>\r\n		<li>\r\n			<strong>\'go back\' </strong> - goes back in history (history -1 click)\r\n		</li>\r\n		<li>\r\n			<strong>\'logout\'</strong> - logs you out\r\n		</li>\r\n	</ul>\r\n	<br>\r\n	<h5>Adding your own commands</h5>\r\n	Voice Command supports up to 80 languages. Adding your own commands is extreamly easy. All commands are stored inside <strong>app.config.js</strong> file under the <code>var commands = {...}</code>. \r\n\r\n	<hr class=\"simple\">\r\n	<div class=\"text-right\">\r\n		<button type=\"button\" class=\"btn btn-success btn-lg\" data-dismiss=\"modal\">\r\n			Got it!\r\n		</button>\r\n	</div>\r\n\r\n</div>\r\n<!--<div class=\"modal-footer\">\r\n<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">Got it!</button>\r\n</div> -->");
+$templateCache.put("app/mldashboard/views/model-dashboard.tpl.html","<div jarvis-widget id=\"live-feeds-widget\" data-widget-togglebutton=\"false\" data-widget-editbutton=\"false\"\r\n     data-widget-fullscreenbutton=\"false\" data-widget-colorbutton=\"false\" data-widget-deletebutton=\"false\">\r\n    <header>\r\n        <span class=\"widget-icon\"> <i class=\"glyphicon glyphicon-stats txt-color-darken\"></i> </span>\r\n\r\n        <h2>{{project}}=>{{model}}</h2>\r\n\r\n        <ul class=\"nav nav-tabs pull-right in\" id=\"myTab\">\r\n            <li class=\"active\">\r\n                <a data-toggle=\"tab\" href=\"#s1\"><i class=\"fa fa-clock-o\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"Single Record\")}}</span></a>\r\n            </li>\r\n\r\n            <li>\r\n                <a data-toggle=\"tab\" href=\"#s2\"><i class=\"fa fa-cog\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"Batch Records\")}}</span></a>\r\n            </li>\r\n        </ul>\r\n\r\n    </header>\r\n\r\n    <!-- widget div-->\r\n    <div class=\"no-padding\">\r\n\r\n        <div class=\"widget-body\">\r\n            <!-- content -->\r\n            <div id=\"myTabContent\" class=\"tab-content\">\r\n                <div class=\"tab-pane fade active in padding-10 no-padding-bottom\" id=\"s1\">\r\n                    <!-- widget grid -->\r\n                    <section id=\"widget-grid\" class=\"\">\r\n\r\n                        <!-- START ROW -->\r\n                        <div class=\"row\">\r\n\r\n                            <!-- NEW COL START -->\r\n                            <article class=\"col-sm-12 col-md-12 col-lg-12\">\r\n\r\n                                <!-- Widget ID (each widget will need unique ID)-->\r\n                                <div class=\"jarviswidget\" id=\"wid-id-0\" data-widget-colorbutton=\"false\" data-widget-editbutton=\"false\" data-widget-custombutton=\"false\">\r\n                                                <!-- widget options:\r\n                                    usage: <div class=\"jarviswidget\" id=\"wid-id-0\" data-widget-editbutton=\"false\">\r\n\r\n                                    data-widget-colorbutton=\"false\"\r\n                                    data-widget-editbutton=\"false\"\r\n                                    data-widget-togglebutton=\"false\"\r\n                                    data-widget-deletebutton=\"false\"\r\n                                    data-widget-fullscreenbutton=\"false\"\r\n                                    data-widget-custombutton=\"false\"\r\n                                    data-widget-collapsed=\"true\"\r\n                                    data-widget-sortable=\"false\"\r\n\r\n                                    -->\r\n                                    <header>\r\n                                        <span class=\"widget-icon\"> <i class=\"fa fa-edit\"></i> </span>\r\n                                        <h2>{{getWord(\"ML Model Form\")}}</h2>\r\n\r\n                                    </header>\r\n\r\n                                    <!-- widget div-->\r\n                                    <div>\r\n                                        <!-- widget content -->\r\n                                        <div class=\"widget-body no-padding\">\r\n\r\n                                            <form class=\"smart-form\" ng-submit=\"submitModelForm()\">\r\n                                                <header>\r\n                                                    {{getWord(\"ML Model Inputs\")}}\r\n                                                </header>\r\n\r\n                                                <fieldset>\r\n                                                    <div class=\"row\">\r\n                                                        <section class=\"col col-3\" ng-repeat=\"inputField in inputFields\">\r\n                                                            <label class=\"label\">{{inputField.Label}}</label>\r\n                                                            <label class=\"input\">\r\n                                                                <input type=\"text\" id=\"{{inputField.Label}}\" required ng-model=\"inputField.Value\">\r\n                                                            </label>\r\n                                                        </section>\r\n                                                    </div>\r\n                                                </fieldset>\r\n\r\n                                                <header>\r\n                                                    {{getWord(\"ML Model Outputs\")}}\r\n                                                </header>\r\n\r\n                                                <fieldset>\r\n                                                    <div class=\"row\">\r\n                                                        <section class=\"col col-3\" ng-repeat=\"outputField in outputFields\">\r\n                                                            <label class=\"label\">{{outputField.Label}}</label>\r\n                                                            <label class=\"input\">\r\n                                                                <input type=\"text\" id=\"{{outputField.Label}}\" disabled=\"disabled\" ng-model=\"outputField.Value\">\r\n                                                            </label>\r\n                                                        </section>\r\n                                                    </div>\r\n\r\n                                                </fieldset>\r\n\r\n                                                <footer>\r\n                                                    <button type=\"submit\" class=\"btn btn-primary\" button-spinner=\"loading\">\r\n                                                        {{getWord(\"Evaluate\")}}\r\n                                                    </button>\r\n                                                </footer>\r\n                                            </form>\r\n\r\n                                        </div>\r\n                                        <!-- end widget content -->\r\n\r\n                                    </div>\r\n                                    <!-- end widget div -->\r\n\r\n                                </div>\r\n                                <!-- end widget -->\r\n\r\n                            </article>\r\n                            <!-- END COL -->\r\n\r\n                        </div>\r\n\r\n                        <!-- END ROW -->\r\n                    </section>\r\n                    <!-- end widget grid -->\r\n                </div>\r\n                <!-- end s1 tab pane -->\r\n\r\n                <div class=\"tab-pane fade\" id=\"s2\">\r\n                    <div class=\"padding-10\">\r\n                   \r\n                    </div>\r\n                </div>\r\n                <!-- end s2 tab pane -->\r\n            </div>\r\n            <!-- end content -->\r\n        </div>\r\n    </div>\r\n    <!-- end widget div -->\r\n</div>\r\n");
+$templateCache.put("app/layout/shortcut/shortcut.tpl.html","<div id=\"shortcut\">\r\n	<ul>\r\n		<li>\r\n			<a href=\"#/tasks/list\" class=\"jarvismetro-tile big-cubes bg-color-blue\"> <span class=\"iconbox\"> <i class=\"fa fa-folder-open fa-4x\"></i> <span>{{getWord(\'MyTasks\')}} <span class=\"label pull-right bg-color-darken\">{{getTaskCount()}}</span></span> </span> </a>\r\n		</li>\r\n		<li>\r\n			<a href=\"#/user/profile\" class=\"jarvismetro-tile big-cubes selected bg-color-pinkDark\"> <span class=\"iconbox\"> <i class=\"fa fa-user fa-4x\"></i> <span>{{getWord(\'My Profile\')}} </span> </span> </a>\r\n		</li>\r\n        <li>\r\n            <a href=\"#/user/password\" class=\"jarvismetro-tile big-cubes selected bg-color-darken\"> <span class=\"iconbox\"> <i class=\"fa fa-lock fa-4x\"></i> <span>{{getWord(\'Change Password\')}} </span> </span> </a>\r\n        </li>\r\n	</ul>\r\n</div>");
+$templateCache.put("app/stations/views/live-feeds.tpl.html","<div jarvis-widget id=\"live-feeds-widget\" data-widget-togglebutton=\"false\" data-widget-editbutton=\"false\"\r\n     data-widget-fullscreenbutton=\"false\" data-widget-colorbutton=\"false\" data-widget-deletebutton=\"false\">\r\n<!-- widget options:\r\nusage: <div class=\"jarviswidget\" id=\"wid-id-0\" data-widget-editbutton=\"false\">\r\n\r\ndata-widget-colorbutton=\"false\"\r\ndata-widget-editbutton=\"false\"\r\ndata-widget-togglebutton=\"false\"\r\ndata-widget-deletebutton=\"false\"\r\ndata-widget-fullscreenbutton=\"false\"\r\ndata-widget-custombutton=\"false\"\r\ndata-widget-collapsed=\"true\"\r\ndata-widget-sortable=\"false\"\r\n\r\n-->\r\n<header>\r\n    <span class=\"widget-icon\"> <i class=\"glyphicon glyphicon-stats txt-color-darken\"></i> </span>\r\n\r\n    <h2>{{CurrentStationName}}</h2>\r\n\r\n    <ul class=\"nav nav-tabs pull-right in\" id=\"myTab\">\r\n        <li ng-class=\"showMonitor? \'active\' : null\" ng-show=\"showMonitor\">\r\n            <a data-toggle=\"tab\" href=\"#s1\"><i class=\"fa fa-clock-o\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"LiveData\")}}</span></a>\r\n        </li>\r\n\r\n        <li ng-class=\"!showMonitor? \'active\' : null\">\r\n            <a data-toggle=\"tab\" href=\"#s2\"><i class=\"fa fa-cog\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"StationConfig\")}}</span></a>\r\n        </li>\r\n\r\n        <li>\r\n            <a data-toggle=\"tab\" href=\"#s3\"><i class=\"fa fa-calendar\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"Scheduler\")}}</span></a>\r\n        </li>\r\n    </ul>\r\n\r\n</header>\r\n\r\n<!-- widget div-->\r\n<div class=\"no-padding\">\r\n\r\n    <div class=\"widget-body\">\r\n        <!-- content -->\r\n        <div id=\"myTabContent\" class=\"tab-content\">\r\n            <div ng-class=\"showMonitor? \'tab-pane fade active in padding-10 no-padding-bottom\' : \'tab-pane fade\'\" id=\"s1\" ng-show=\"showMonitor\">\r\n                <div class=\"row no-space\">\r\n                    <div class=\"col-xs-12 col-sm-12 col-md-8 col-lg-8\">\r\n						<span class=\"demo-liveupdate-1\"> <span\r\n                                class=\"onoffswitch-title\">{{getWord(\"LiveSwitch\")}}</span> <span\r\n                                class=\"onoffswitch\">\r\n								<input type=\"checkbox\" name=\"start_interval\" ng-model=\"autoUpdate\"\r\n                                        class=\"onoffswitch-checkbox\" id=\"start_interval\">\r\n								<label class=\"onoffswitch-label\" for=\"start_interval\">\r\n                                    <span class=\"onoffswitch-inner\"\r\n                                            data-swchon-text=\"{{getWord(\'SwitchOn\')}}\"\r\n                                            data-swchoff-text=\"{{getWord(\'SwitchOff\')}}\"></span>\r\n                                    <span class=\"onoffswitch-switch\"></span>\r\n                                </label> </span> </span>\r\n\r\n                        <div id=\"updating-chart\" class=\"chart-large txt-color-blue\" flot-basic flot-data=\"liveStats\" flot-options=\"liveStatsOptions\"></div>\r\n\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-12 col-md-4 col-lg-4 show-stats\">\r\n\r\n                        <div class=\"row\">\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> {{settings.ProgressName1}} :<span\r\n                                    >{{settings.ProgressValue1}} {{settings.ProgressUnit1}}</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blueDark\" data-smart-progressbar aria-valuenow=\"{{ settings.ProgressPercent1 }}\"  ng-style=\"{width : ( settings.ProgressPercent1 + \'%\' ) }\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> {{settings.ProgressName2}} : <span\r\n                                    >{{settings.ProgressValue2}} {{settings.ProgressUnit2}}</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blue\" data-smart-progressbar aria-valuenow=\"{{ settings.ProgressPercent2 }}\" ng-style=\"{width : ( settings.ProgressPercent2 + \'%\' ) }\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> {{settings.ProgressName3}} : <span\r\n                                    >{{settings.ProgressValue3}} {{settings.ProgressUnit3}}</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blue\" data-smart-progressbar aria-valuenow=\"{{ settings.ProgressPercent3 }}\" ng-style=\"{width : ( settings.ProgressPercent3 + \'%\' ) }\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> {{settings.ProgressName4}} : <span\r\n                                    >{{settings.ProgressValue4}} {{settings.ProgressUnit4}}</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-greenLight\" data-smart-progressbar ng-style=\"{width : ( settings.ProgressPercent4 + \'%\' ) }\">></div>\r\n                                </div>\r\n                            </div>\r\n\r\n                        </div>\r\n\r\n                    </div>\r\n                </div>\r\n\r\n                <div class=\"show-stat-microcharts\" data-sparkline-container data-easy-pie-chart-container>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n\r\n                        <div class=\"easy-pie-chart txt-color-orangeDark\" data-percent=\"0\" data-pie-size=\"50\" data-ng-model=\"PiePercent1\">\r\n                            <span class=\"percent percent-sign\">{{settings.PieValue1}}</span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> {{settings.PieName1}} <i class=\"fa fa-caret-up icon-color-bad\"></i> </span>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-greenLight\" data-percent=\"0\" data-pie-size=\"50\" data-ng-model=\"PiePercent2\">\r\n                            <span class=\"percent percent-sign\">{{settings.PieValue2}} </span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> {{settings.PieName2}} <i class=\"fa fa-caret-down icon-color-good\"></i></span>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-blue\" data-percent=\"0\" data-pie-size=\"50\" data-ng-model=\"PiePercent3\">\r\n                            <span class=\"percent percent-sign\">{{settings.PieValue3}} </span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> {{settings.PieName3}} <i class=\"fa fa-caret-up icon-color-good\"></i></span>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-darken\" data-percent=\"0\" data-pie-size=\"50\" data-ng-model=\"PiePercent4\">\r\n                            <span class=\"percent degree-sign\">{{settings.PieValue4}} <i class=\"fa fa-caret-up\"></i></span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> {{settings.PieName4}} <i\r\n                                class=\"fa fa-caret-down icon-color-good\"></i></span>\r\n                    </div>\r\n                </div>\r\n\r\n            </div>\r\n            <!-- end s1 tab pane -->\r\n\r\n            <div ng-class=\"!showMonitor? \'tab-pane fade active in padding-10 no-padding-bottom\' : \'tab-pane fade\'\" id=\"s2\">\r\n                <div class=\"padding-10\">\r\n                    <form name=\"ebaasform\" novalidate\">\r\n                        <ebaas-form-template dbschema=\"dbschema\" dbclass=\"dbclass\" oid=\"oid\" template=\"template\" formattribute=\"formAttribute\" readonly=\"true\"></ebaas-form-template>\r\n                    </form>\r\n                </div>\r\n            </div>\r\n            <!-- end s2 tab pane -->\r\n\r\n            <div ng-class=\"\'tab-pane fade\'\" id=\"s3\">\r\n                <div class=\"padding-10\">\r\n                    <div dx-scheduler=\"schedulerOptions\"></div>\r\n                </div>\r\n            </div>\r\n            <!-- end s3 tab pane -->\r\n        </div>\r\n\r\n        <!-- end content -->\r\n    </div>\r\n\r\n</div>\r\n<!-- end widget div -->\r\n</div>\r\n");
+$templateCache.put("app/dashboard/chat/directives/aside-chat-widget.tpl.html","<ul>\r\n    <li>\r\n        <div class=\"display-users\">\r\n            <input class=\"form-control chat-user-filter\" placeholder=\"Filter\" type=\"text\">\r\n            <dl>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr\"\r\n                       data-chat-id=\"cha1\"\r\n                       data-chat-fname=\"Sadi\"\r\n                       data-chat-lname=\"Orlaf\"\r\n                       data-chat-status=\"busy\"\r\n                       data-chat-alertmsg=\"Sadi Orlaf is in a meeting. Please do not disturb!\"\r\n                       data-chat-alertshow=\"true\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/5.png\' alt=\'Sadi Orlaf\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Sadi Orlaf</h3>\r\n												<p>Marketing Executive</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Sadi Orlaf\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr\"\r\n                       data-chat-id=\"cha2\"\r\n                       data-chat-fname=\"Jessica\"\r\n                       data-chat-lname=\"Dolof\"\r\n                       data-chat-status=\"online\"\r\n                       data-chat-alertmsg=\"\"\r\n                       data-chat-alertshow=\"false\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/1.png\' alt=\'Jessica Dolof\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Jessica Dolof</h3>\r\n												<p>Sales Administrator</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Jessica Dolof\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr\"\r\n                       data-chat-id=\"cha3\"\r\n                       data-chat-fname=\"Zekarburg\"\r\n                       data-chat-lname=\"Almandalie\"\r\n                       data-chat-status=\"online\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/3.png\' alt=\'Zekarburg Almandalie\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Zekarburg Almandalie</h3>\r\n												<p>Sales Admin</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Zekarburg Almandalie\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr\"\r\n                       data-chat-id=\"cha4\"\r\n                       data-chat-fname=\"Barley\"\r\n                       data-chat-lname=\"Krazurkth\"\r\n                       data-chat-status=\"away\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/4.png\' alt=\'Barley Krazurkth\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Barley Krazurkth</h3>\r\n												<p>Sales Director</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Barley Krazurkth\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr offline\"\r\n                       data-chat-id=\"cha5\"\r\n                       data-chat-fname=\"Farhana\"\r\n                       data-chat-lname=\"Amrin\"\r\n                       data-chat-status=\"incognito\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/female.png\' alt=\'Farhana Amrin\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Farhana Amrin</h3>\r\n												<p>Support Admin <small><i class=\'fa fa-music\'></i> Playing Beethoven Classics</small></p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Farhana Amrin (offline)\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr offline\"\r\n                       data-chat-id=\"cha6\"\r\n                       data-chat-fname=\"Lezley\"\r\n                       data-chat-lname=\"Jacob\"\r\n                       data-chat-status=\"incognito\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/male.png\' alt=\'Lezley Jacob\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Lezley Jacob</h3>\r\n												<p>Sales Director</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Lezley Jacob (offline)\r\n                    </a>\r\n                </dt>\r\n            </dl>\r\n\r\n\r\n            <!--<a href=\"chat.html\" class=\"btn btn-xs btn-default btn-block sa-chat-learnmore-btn\">About the API</a>-->\r\n        </div>\r\n    </li>\r\n</ul>");
+$templateCache.put("app/dashboard/chat/directives/chat-users.tpl.html","<div id=\"chat-container\" ng-class=\"{open: open}\">\r\n    <span class=\"chat-list-open-close\" ng-click=\"openToggle()\"><i class=\"fa fa-user\"></i><b>!</b></span>\r\n\r\n    <div class=\"chat-list-body custom-scroll\">\r\n        <ul id=\"chat-users\">\r\n            <li ng-repeat=\"chatUser in chatUsers | filter: chatUserFilter\">\r\n                <a ng-click=\"messageTo(chatUser)\"><img ng-src=\"{{chatUser.picture}}\">{{chatUser.username}} <span\r\n                        class=\"badge badge-inverse\">{{chatUser.username.length}}</span><span class=\"state\"><i\r\n                        class=\"fa fa-circle txt-color-green pull-right\"></i></span></a>\r\n            </li>\r\n        </ul>\r\n    </div>\r\n    <div class=\"chat-list-footer\">\r\n        <div class=\"control-group\">\r\n            <form class=\"smart-form\">\r\n                <section>\r\n                    <label class=\"input\" >\r\n                        <input type=\"text\" ng-model=\"chatUserFilter\" id=\"filter-chat-list\" placeholder=\"Filter\">\r\n                    </label>\r\n                </section>\r\n            </form>\r\n        </div>\r\n    </div>\r\n</div>");
+$templateCache.put("app/dashboard/chat/directives/chat-widget.tpl.html","<div id=\"chat-widget\" jarvis-widget data-widget-color=\"blueDark\" data-widget-editbutton=\"false\"\r\n     data-widget-fullscreenbutton=\"false\">\r\n\r\n\r\n    <header>\r\n        <span class=\"widget-icon\"> <i class=\"fa fa-comments txt-color-white\"></i> </span>\r\n\r\n        <h2> SmartMessage </h2>\r\n\r\n        <div class=\"widget-toolbar\">\r\n            <!-- add: non-hidden - to disable auto hide -->\r\n\r\n            <div class=\"btn-group\" data-dropdown>\r\n                <button class=\"btn dropdown-toggle btn-xs btn-success\" dropdown-toggle>\r\n                    Status <i class=\"fa fa-caret-down\"></i>\r\n                </button>\r\n                <ul class=\"dropdown-menu pull-right js-status-update\">\r\n                    <li>\r\n                        <a href-void><i class=\"fa fa-circle txt-color-green\"></i> Online</a>\r\n                    </li>\r\n                    <li>\r\n                        <a href-void><i class=\"fa fa-circle txt-color-red\"></i> Busy</a>\r\n                    </li>\r\n                    <li>\r\n                        <a href-void><i class=\"fa fa-circle txt-color-orange\"></i> Away</a>\r\n                    </li>\r\n                    <li class=\"divider\"></li>\r\n                    <li>\r\n                        <a href-void><i class=\"fa fa-power-off\"></i> Log Off</a>\r\n                    </li>\r\n                </ul>\r\n            </div>\r\n        </div>\r\n    </header>\r\n\r\n    <!-- widget div-->\r\n    <div>\r\n        <div class=\"widget-body widget-hide-overflow no-padding\">\r\n            <!-- content goes here -->\r\n\r\n            <chat-users></chat-users>\r\n\r\n            <!-- CHAT BODY -->\r\n            <div id=\"chat-body\" class=\"chat-body custom-scroll\">\r\n                <ul>\r\n                    <li class=\"message\" ng-repeat=\"message in chatMessages\">\r\n                        <img class=\"message-picture online\" ng-src=\"{{message.user.picture}}\">\r\n\r\n                        <div class=\"message-text\">\r\n                            <time>\r\n                                {{message.date | date }}\r\n                            </time>\r\n                            <a ng-click=\"messageTo(message.user)\" class=\"username\">{{message.user.username}}</a>\r\n                            <div ng-bind-html=\"message.body\"></div>\r\n\r\n                        </div>\r\n                    </li>\r\n                </ul>\r\n            </div>\r\n\r\n            <!-- CHAT FOOTER -->\r\n            <div class=\"chat-footer\">\r\n\r\n                <!-- CHAT TEXTAREA -->\r\n                <div class=\"textarea-div\">\r\n\r\n                    <div class=\"typearea\">\r\n                        <textarea placeholder=\"Write a reply...\" id=\"textarea-expand\"\r\n                                  class=\"custom-scroll\" ng-model=\"newMessage\"></textarea>\r\n                    </div>\r\n\r\n                </div>\r\n\r\n                <!-- CHAT REPLY/SEND -->\r\n											<span class=\"textarea-controls\">\r\n												<button class=\"btn btn-sm btn-primary pull-right\" ng-click=\"sendMessage()\">\r\n                                                    Reply\r\n                                                </button> <span class=\"pull-right smart-form\"\r\n                                                                style=\"margin-top: 3px; margin-right: 10px;\"> <label\r\n                                                    class=\"checkbox pull-right\">\r\n                                                <input type=\"checkbox\" name=\"subscription\" id=\"subscription\">\r\n                                                <i></i>Press <strong> ENTER </strong> to send </label> </span> <a\r\n                                                    href-void class=\"pull-left\"><i\r\n                                                    class=\"fa fa-camera fa-fw fa-lg\"></i></a> </span>\r\n\r\n            </div>\r\n\r\n            <!-- end content -->\r\n        </div>\r\n\r\n    </div>\r\n    <!-- end widget div -->\r\n</div>");
+$templateCache.put("app/dashboard/todo/directives/todo-list.tpl.html","<div>\r\n    <h5 class=\"todo-group-title\"><i class=\"fa fa-{{icon}}\"></i> {{title}} (\r\n        <small class=\"num-of-tasks\">{{scopeItems.length}}</small>\r\n        )\r\n    </h5>\r\n    <ul class=\"todo\">\r\n        <li ng-class=\"{complete: todo.completedAt}\" ng-repeat=\"todo in todos | orderBy: todo._id | filter: filter  track by todo._id\" >\r\n    	<span class=\"handle\"> <label class=\"checkbox\">\r\n            <input type=\"checkbox\" ng-click=\"todo.toggle()\" ng-checked=\"todo.completedAt\"\r\n                   name=\"checkbox-inline\">\r\n            <i></i> </label> </span>\r\n\r\n            <p>\r\n                <strong>Ticket #{{$index + 1}}</strong> - {{todo.title}}\r\n                <span class=\"text-muted\" ng-if=\"todo.description\">{{todo.description}}</span>\r\n                <span class=\"date\">{{todo.createdAt | date}} &dash; <a ng-click=\"deleteTodo(todo)\" class=\"text-muted\"><i\r\n                        class=\"fa fa-trash\"></i></a></span>\r\n\r\n            </p>\r\n        </li>\r\n    </ul>\r\n</div>");
+$templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-attribute-form.tpl.html","<form id=\"attributeForm\" class=\"form-horizontal\"\r\n      data-bv-message=\"This value is not valid\"\r\n      data-bv-feedbackicons-valid=\"glyphicon glyphicon-ok\"\r\n      data-bv-feedbackicons-invalid=\"glyphicon glyphicon-remove\"\r\n      data-bv-feedbackicons-validating=\"glyphicon glyphicon-refresh\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Set validator options via HTML attributes\r\n        </legend>\r\n\r\n        <div class=\"alert alert-warning\">\r\n            <code>&lt; input\r\n                data-bv-validatorname\r\n                data-bv-validatorname-validatoroption=\"...\" / &gt;</code>\r\n\r\n            <br>\r\n            <br>\r\n            More validator options can be found here:\r\n            <a href=\"http://bootstrapvalidator.com/validators/\" target=\"_blank\">http://bootstrapvalidator.com/validators/</a>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Full name</label>\r\n            <div class=\"col-lg-4\">\r\n                <input type=\"text\" class=\"form-control\" name=\"firstName\" placeholder=\"First name\"\r\n                       data-bv-notempty=\"true\"\r\n                       data-bv-notempty-message=\"The first name is required and cannot be empty\" />\r\n            </div>\r\n            <div class=\"col-lg-4\">\r\n                <input type=\"text\" class=\"form-control\" name=\"lastName\" placeholder=\"Last name\"\r\n                       data-bv-notempty=\"true\"\r\n                       data-bv-notempty-message=\"The last name is required and cannot be empty\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Username</label>\r\n            <div class=\"col-lg-5\">\r\n                <input type=\"text\" class=\"form-control\" name=\"username\"\r\n                       data-bv-message=\"The username is not valid\"\r\n\r\n                       data-bv-notempty=\"true\"\r\n                       data-bv-notempty-message=\"The username is required and cannot be empty\"\r\n\r\n                       data-bv-regexp=\"true\"\r\n                       data-bv-regexp-regexp=\"^[a-zA-Z0-9_\\.]+$\"\r\n                       data-bv-regexp-message=\"The username can only consist of alphabetical, number, dot and underscore\"\r\n\r\n                       data-bv-stringlength=\"true\"\r\n                       data-bv-stringlength-min=\"6\"\r\n                       data-bv-stringlength-max=\"30\"\r\n                       data-bv-stringlength-message=\"The username must be more than 6 and less than 30 characters long\"\r\n\r\n                       data-bv-different=\"true\"\r\n                       data-bv-different-field=\"password\"\r\n                       data-bv-different-message=\"The username and password cannot be the same as each other\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Email address</label>\r\n            <div class=\"col-lg-5\">\r\n                <input class=\"form-control\" name=\"email\" type=\"email\"\r\n                       data-bv-emailaddress=\"true\"\r\n                       data-bv-emailaddress-message=\"The input is not a valid email address\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Password</label>\r\n            <div class=\"col-lg-5\">\r\n                <input type=\"password\" class=\"form-control\" name=\"password\"\r\n                       data-bv-notempty=\"true\"\r\n                       data-bv-notempty-message=\"The password is required and cannot be empty\"\r\n\r\n                       data-bv-identical=\"true\"\r\n                       data-bv-identical-field=\"confirmPassword\"\r\n                       data-bv-identical-message=\"The password and its confirm are not the same\"\r\n\r\n                       data-bv-different=\"true\"\r\n                       data-bv-different-field=\"username\"\r\n                       data-bv-different-message=\"The password cannot be the same as username\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Retype password</label>\r\n            <div class=\"col-lg-5\">\r\n                <input type=\"password\" class=\"form-control\" name=\"confirmPassword\"\r\n                       data-bv-notempty=\"true\"\r\n                       data-bv-notempty-message=\"The confirm password is required and cannot be empty\"\r\n\r\n                       data-bv-identical=\"true\"\r\n                       data-bv-identical-field=\"password\"\r\n                       data-bv-identical-message=\"The password and its confirm are not the same\"\r\n\r\n                       data-bv-different=\"true\"\r\n                       data-bv-different-field=\"username\"\r\n                       data-bv-different-message=\"The password cannot be the same as username\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Languages</label>\r\n            <div class=\"col-lg-5\">\r\n                <div class=\"checkbox\">\r\n                    <label>\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"english\"\r\n                               data-bv-message=\"Please specify at least one language you can speak\"\r\n                               data-bv-notempty=\"true\" />\r\n                        English </label>\r\n                </div>\r\n                <div class=\"checkbox\">\r\n                    <label>\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"french\" />\r\n                        French </label>\r\n                </div>\r\n                <div class=\"checkbox\">\r\n                    <label>\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"german\" />\r\n                        German </label>\r\n                </div>\r\n                <div class=\"checkbox\">\r\n                    <label>\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"russian\" />\r\n                        Russian </label>\r\n                </div>\r\n                <div class=\"checkbox\">\r\n                    <label>\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"other\" />\r\n                        Other </label>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n</form>\r\n     ");
+$templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-button-group-form.tpl.html","<form id=\"buttonGroupForm\" method=\"post\" class=\"form-horizontal\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Default Form Elements\r\n        </legend>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Gender</label>\r\n            <div class=\"col-lg-9\">\r\n                <div class=\"btn-group\" data-toggle=\"buttons\">\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"radio\" name=\"gender\" value=\"male\" />\r\n                        Male </label>\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"radio\" name=\"gender\" value=\"female\" />\r\n                        Female </label>\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"radio\" name=\"gender\" value=\"other\" />\r\n                        Other </label>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Languages</label>\r\n            <div class=\"col-lg-9\">\r\n                <div class=\"btn-group\" data-toggle=\"buttons\">\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"english\" />\r\n                        English </label>\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"german\" />\r\n                        German </label>\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"french\" />\r\n                        French </label>\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"russian\" />\r\n                        Russian </label>\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"italian\">\r\n                        Italian </label>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n</form>\r\n");
+$templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-contact-form.tpl.html","<form id=\"contactForm\" method=\"post\" class=\"form-horizontal\">\r\n\r\n    <fieldset>\r\n        <legend>Showing messages in custom area</legend>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-md-3 control-label\">Full name</label>\r\n            <div class=\"col-md-6\">\r\n                <input type=\"text\" class=\"form-control\" name=\"fullName\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-md-3 control-label\">Email</label>\r\n            <div class=\"col-md-6\">\r\n                <input type=\"text\" class=\"form-control\" name=\"email\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-md-3 control-label\">Title</label>\r\n            <div class=\"col-md-6\">\r\n                <input type=\"text\" class=\"form-control\" name=\"title\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-md-3 control-label\">Content</label>\r\n            <div class=\"col-md-6\">\r\n                <textarea class=\"form-control\" name=\"content\" rows=\"5\"></textarea>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <!-- #messages is where the messages are placed inside -->\r\n        <div class=\"form-group\">\r\n            <div class=\"col-md-9 col-md-offset-3\">\r\n                <div id=\"messages\"></div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n</form>\r\n");
+$templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-movie-form.tpl.html","\r\n<form id=\"movieForm\" method=\"post\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Default Form Elements\r\n        </legend>\r\n        <div class=\"form-group\">\r\n            <div class=\"row\">\r\n                <div class=\"col-md-8\">\r\n                    <label class=\"control-label\">Movie title</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"title\" />\r\n                </div>\r\n\r\n                <div class=\"col-md-4 selectContainer\">\r\n                    <label class=\"control-label\">Genre</label>\r\n                    <select class=\"form-control\" name=\"genre\">\r\n                        <option value=\"\">Choose a genre</option>\r\n                        <option value=\"action\">Action</option>\r\n                        <option value=\"comedy\">Comedy</option>\r\n                        <option value=\"horror\">Horror</option>\r\n                        <option value=\"romance\">Romance</option>\r\n                    </select>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <div class=\"row\">\r\n                <div class=\"col-sm-12 col-md-4\">\r\n                    <label class=\"control-label\">Director</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"director\" />\r\n                </div>\r\n\r\n                <div class=\"col-sm-12 col-md-4\">\r\n                    <label class=\"control-label\">Writer</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"writer\" />\r\n                </div>\r\n\r\n                <div class=\"col-sm-12 col-md-4\">\r\n                    <label class=\"control-label\">Producer</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"producer\" />\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <div class=\"row\">\r\n                <div class=\"col-sm-12 col-md-6\">\r\n                    <label class=\"control-label\">Website</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"website\" />\r\n                </div>\r\n\r\n                <div class=\"col-sm-12 col-md-6\">\r\n                    <label class=\"control-label\">Youtube trailer</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"trailer\" />\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"control-label\">Review</label>\r\n            <textarea class=\"form-control\" name=\"review\" rows=\"8\"></textarea>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n\r\n            <div class=\"row\">\r\n                <div class=\"col-sm-12 col-md-12\">\r\n                    <label class=\"control-label\">Rating</label>\r\n                </div>\r\n\r\n                <div class=\"col-sm-12 col-md-10\">\r\n\r\n                    <label class=\"radio radio-inline no-margin\">\r\n                        <input type=\"radio\" name=\"rating\" value=\"terrible\" class=\"radiobox style-2\" />\r\n                        <span>Terrible</span> </label>\r\n\r\n                    <label class=\"radio radio-inline\">\r\n                        <input type=\"radio\" name=\"rating\" value=\"watchable\" class=\"radiobox style-2\" />\r\n                        <span>Watchable</span> </label>\r\n                    <label class=\"radio radio-inline\">\r\n                        <input type=\"radio\" name=\"rating\" value=\"best\" class=\"radiobox style-2\" />\r\n                        <span>Best ever</span> </label>\r\n\r\n                </div>\r\n\r\n            </div>\r\n\r\n        </div>\r\n    </fieldset>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n</form>\r\n\r\n ");
+$templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-product-form.tpl.html","<form id=\"productForm\" class=\"form-horizontal\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Default Form Elements\r\n        </legend>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-xs-2 col-lg-3 control-label\">Price</label>\r\n            <div class=\"col-xs-9 col-lg-6 inputGroupContainer\">\r\n                <div class=\"input-group\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"price\" />\r\n                    <span class=\"input-group-addon\">$</span>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-xs-2 col-lg-3 control-label\">Amount</label>\r\n            <div class=\"col-xs-9 col-lg-6 inputGroupContainer\">\r\n                <div class=\"input-group\">\r\n                    <span class=\"input-group-addon\">&#8364;</span>\r\n                    <input type=\"text\" class=\"form-control\" name=\"amount\" />\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-xs-2 col-lg-3 control-label\">Color</label>\r\n            <div class=\"col-xs-9 col-lg-6 selectContainer\">\r\n                <select class=\"form-control\" name=\"color\">\r\n                    <option value=\"\">Choose a color</option>\r\n                    <option value=\"blue\">Blue</option>\r\n                    <option value=\"green\">Green</option>\r\n                    <option value=\"red\">Red</option>\r\n                    <option value=\"yellow\">Yellow</option>\r\n                    <option value=\"white\">White</option>\r\n                </select>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-xs-2 col-lg-3 control-label\">Size</label>\r\n            <div class=\"col-xs-9 col-lg-6 selectContainer\">\r\n                <select class=\"form-control\" name=\"size\">\r\n                    <option value=\"\">Choose a size</option>\r\n                    <option value=\"S\">S</option>\r\n                    <option value=\"M\">M</option>\r\n                    <option value=\"L\">L</option>\r\n                    <option value=\"XL\">XL</option>\r\n                </select>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</form>\r\n\r\n");
+$templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-profile-form.tpl.html","<form id=\"profileForm\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Default Form Elements\r\n        </legend>\r\n        <div class=\"form-group\">\r\n            <label>Email address</label>\r\n            <input type=\"text\" class=\"form-control\" name=\"email\" />\r\n        </div>\r\n    </fieldset>\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label>Password</label>\r\n            <input type=\"password\" class=\"form-control\" name=\"password\" />\r\n        </div>\r\n    </fieldset>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</form>\r\n");
+$templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-toggling-form.tpl.html","<form id=\"togglingForm\" method=\"post\" class=\"form-horizontal\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Default Form Elements\r\n        </legend>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Full name <sup>*</sup></label>\r\n            <div class=\"col-lg-4\">\r\n                <input type=\"text\" class=\"form-control\" name=\"firstName\" placeholder=\"First name\" />\r\n            </div>\r\n            <div class=\"col-lg-4\">\r\n                <input type=\"text\" class=\"form-control\" name=\"lastName\" placeholder=\"Last name\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Company <sup>*</sup></label>\r\n            <div class=\"col-lg-5\">\r\n                <input type=\"text\" class=\"form-control\" name=\"company\"\r\n                       required data-bv-notempty-message=\"The company name is required\" />\r\n            </div>\r\n            <div class=\"col-lg-2\">\r\n                <button type=\"button\" class=\"btn btn-info btn-sm\" data-toggle=\"#jobInfo\">\r\n                    Add more info\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <!-- These fields will not be validated as long as they are not visible -->\r\n    <div id=\"jobInfo\" style=\"display: none;\">\r\n        <fieldset>\r\n            <div class=\"form-group\">\r\n                <label class=\"col-lg-3 control-label\">Job title <sup>*</sup></label>\r\n                <div class=\"col-lg-5\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"job\" />\r\n                </div>\r\n            </div>\r\n        </fieldset>\r\n\r\n        <fieldset>\r\n            <div class=\"form-group\">\r\n                <label class=\"col-lg-3 control-label\">Department <sup>*</sup></label>\r\n                <div class=\"col-lg-5\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"department\" />\r\n                </div>\r\n            </div>\r\n        </fieldset>\r\n    </div>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Mobile phone <sup>*</sup></label>\r\n            <div class=\"col-lg-5\">\r\n                <input type=\"text\" class=\"form-control\" name=\"mobilePhone\" />\r\n            </div>\r\n            <div class=\"col-lg-2\">\r\n                <button type=\"button\" class=\"btn btn-info btn-sm\" data-toggle=\"#phoneInfo\">\r\n                    Add more phone numbers\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n    <!-- These fields will not be validated as long as they are not visible -->\r\n    <div id=\"phoneInfo\" style=\"display: none;\">\r\n\r\n        <fieldset>\r\n            <div class=\"form-group\">\r\n                <label class=\"col-lg-3 control-label\">Home phone</label>\r\n                <div class=\"col-lg-5\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"homePhone\" />\r\n                </div>\r\n            </div>\r\n        </fieldset>\r\n        <fieldset>\r\n            <div class=\"form-group\">\r\n                <label class=\"col-lg-3 control-label\">Office phone</label>\r\n                <div class=\"col-lg-5\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"officePhone\" />\r\n                </div>\r\n            </div>\r\n        </fieldset>\r\n    </div>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</form>");
+$templateCache.put("app/_common/layout/directives/demo/demo-states.tpl.html","<div class=\"demo\"><span id=\"demo-setting\"><i class=\"fa fa-cog txt-color-blueDark\"></i></span>\r\n\r\n    <form>\r\n        <legend class=\"no-padding margin-bottom-10\">Layout Options</legend>\r\n        <section>\r\n            <label><input type=\"checkbox\" ng-model=\"fixedHeader\"\r\n                          class=\"checkbox style-0\"><span>Fixed Header</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"fixedNavigation\"\r\n                          class=\"checkbox style-0\"><span>Fixed Navigation</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"fixedRibbon\"\r\n                          class=\"checkbox style-0\"><span>Fixed Ribbon</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"fixedPageFooter\"\r\n                          class=\"checkbox style-0\"><span>Fixed Footer</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"insideContainer\"\r\n                          class=\"checkbox style-0\"><span>Inside <b>.container</b></span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"rtl\"\r\n                          class=\"checkbox style-0\"><span>RTL</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"menuOnTop\"\r\n                          class=\"checkbox style-0\"><span>Menu on <b>top</b></span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"colorblindFriendly\"\r\n                          class=\"checkbox style-0\"><span>For Colorblind <div\r\n                    class=\"font-xs text-right\">(experimental)\r\n            </div></span>\r\n            </label><span id=\"smart-bgimages\"></span></section>\r\n        <section><h6 class=\"margin-top-10 semi-bold margin-bottom-5\">Clear Localstorage</h6><a\r\n                ng-click=\"factoryReset()\" class=\"btn btn-xs btn-block btn-primary\" id=\"reset-smart-widget\"><i\r\n                class=\"fa fa-refresh\"></i> Factory Reset</a></section>\r\n\r\n        <h6 class=\"margin-top-10 semi-bold margin-bottom-5\">SmartAdmin Skins</h6>\r\n\r\n\r\n        <section id=\"smart-styles\">\r\n            <a ng-repeat=\"skin in skins\" ng-click=\"setSkin(skin)\" class=\"{{skin.class}}\" style=\"{{skin.style}}\"><i ng-if=\"skin.name == $parent.smartSkin\" class=\"fa fa-check fa-fw\"></i> {{skin.label}}</a>\r\n        </section>\r\n    </form>\r\n</div>");}]);
+"use strict";
+
 angular.module("app.smarttables", ["ngResource", "smart-table", "dx", "ui.router", "ui.bootstrap", "ui.bootstrap.modal", "ngProgress"]);
 
 angular.module("app.smarttables")
@@ -33312,16 +32972,16 @@ angular.module("app.smarttables")
                     }
                 }
             })
-            .state('app.smarttables.datagrid.processdata', {
-                url: '/datagridprocessdata/:schema/:class/:oid/:xmlschema/:formAttribute/:api',
+            .state('app.smarttables.datagrid.taskviewer', {
+                url: '/datagridtaskviewer/:schema/:class/:oid/:itemClass/:packetClass',
                 data: {
-                    title: 'Data Processing',
+                    title: 'Task Viewer',
                     animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
                 },
                 views: {
                     "content@app": {
-                        controller: 'DataViewerCtrl',
-                        templateUrl: "app/dataviewer/views/data-viewer.html"
+                        controller: 'TaskViewerLayoutCtrl',
+                        templateUrl: "app/taskviewer/views/task-viewer-layout.html"
                     }
                 }
             })
@@ -33952,73 +33612,6 @@ angular.module("app.smarttables")
     });
 "use strict";
 
-angular.module("app.stations", ["ui.router", "ui.bootstrap"]);
-
-angular.module("app.stations").config(function ($stateProvider, modalStateProvider) {
-
-    $stateProvider
-        .state('app.stations', {
-            url: '/stations/:schema/:class/:hash',
-            data: {
-                title: 'Stations',
-                animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
-            },
-            views: {
-                "content@app": {
-                    templateUrl: "app/stations/views/stations-layout.html",
-                    controller: 'StationsLayoutCtrl'
-                }
-            },
-            resolve: {
-                stationParams: function ($http, APP_CONFIG, $stateParams) {
-                    return $http.get(APP_CONFIG.ebaasRootUrl + "/api/sitemap/parameters/" + $stateParams.hash);
-                }
-            }
-
-        })
-        .state('app.stations.dashboard', {
-            url: '/stationdashboard/:schema/:class/:oid/:xmlschema/:index',
-            data: {
-                title: 'Station Dashboard',
-                animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
-            },
-            views: {
-                "dashboard@app.stations": {
-                    controller: 'StationDashboardCtrl',
-                    templateUrl: "app/stations/views/station-dashboard.html"
-                }
-            },
-            authenticate: true,
-            resolve: {
-                scripts: function (lazyScript) {
-                    return lazyScript.register([
-                            'jquery-jvectormap-world-mill-en',
-                            'flot-time',
-                            'flot-resize'
-                    ]);
-                },
-                promisedSettings: function ($http, APP_CONFIG, $stateParams) {
-                    if ($stateParams.xmlschema) {
-                        return $http.get(APP_CONFIG.ebaasRootUrl + "/api/data/extract/" + encodeURIComponent($stateParams.schema) + "/" + $stateParams.class + "/" + $stateParams.oid + "/" + $stateParams.xmlschema);
-                    }
-                    else
-                    {
-                        return undefined;
-                    }
-                }
-            }
-        });
-
-        modalStateProvider.state('app.stations.help', {
-            url: '^/stationshelp/:hash',
-            templateUrl: "app/layout/partials/help-viewer.tpl.html",
-            controller: 'helpViewerCtlr',
-            animation: false,
-            size: 'lg'
-        });
-    });
-"use strict";
-
 angular.module('app.tables', [ 'ui.router']);
 
 angular.module('app.tables').config(function ($stateProvider) {
@@ -34093,38 +33686,71 @@ angular.module('app.tables').config(function ($stateProvider) {
 });
 "use strict";
 
-angular.module("app.taskforum", ["ui.router", "ui.bootstrap", "summernote"]);
+angular.module("app.stations", ["ui.router", "ui.bootstrap"]);
 
-angular.module("app.taskforum").config(function ($stateProvider, modalStateProvider) {
+angular.module("app.stations").config(function ($stateProvider, modalStateProvider) {
 
     $stateProvider
-        .state('app.taskforum', {
-            abstract: true,
+        .state('app.stations', {
+            url: '/stations/:schema/:class/:hash',
             data: {
-                title: 'Task Forum'
-            }
-        })
-        .state('app.taskforum.postview', {
-            url: '/taskforum/postview/:schema/:class/:oid/:postClass?from&size&subject&content&url&urlparams',
-            data: {
-                title: 'Post View'
+                title: 'Stations',
+                animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
             },
             views: {
                 "content@app": {
-                    templateUrl: 'app/taskforum/views/post-view.html',
-                    controller: 'PostViewCtrl',
+                    templateUrl: "app/stations/views/stations-layout.html",
+                    controller: 'StationsLayoutCtrl'
                 }
             },
             resolve: {
+                stationParams: function ($http, APP_CONFIG, $stateParams) {
+                    return $http.get(APP_CONFIG.ebaasRootUrl + "/api/sitemap/parameters/" + $stateParams.hash);
+                }
+            }
+
+        })
+        .state('app.stations.dashboard', {
+            url: '/stationdashboard/:schema/:class/:oid/:xmlschema/:index',
+            data: {
+                title: 'Station Dashboard',
+                animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
+            },
+            views: {
+                "dashboard@app.stations": {
+                    controller: 'StationDashboardCtrl',
+                    templateUrl: "app/stations/views/station-dashboard.html"
+                }
+            },
+            authenticate: true,
+            resolve: {
                 scripts: function (lazyScript) {
                     return lazyScript.register([
-                        'summernote',
-                        'dropzone'
+                            'jquery-jvectormap-world-mill-en',
+                            'flot-time',
+                            'flot-resize'
                     ]);
+                },
+                promisedSettings: function ($http, APP_CONFIG, $stateParams) {
+                    if ($stateParams.xmlschema) {
+                        return $http.get(APP_CONFIG.ebaasRootUrl + "/api/data/extract/" + encodeURIComponent($stateParams.schema) + "/" + $stateParams.class + "/" + $stateParams.oid + "/" + $stateParams.xmlschema);
+                    }
+                    else
+                    {
+                        return undefined;
+                    }
                 }
             }
         });
-});
+
+        modalStateProvider.state('app.stations.help', {
+            url: '^/stationshelp/:hash',
+            templateUrl: "app/layout/partials/help-viewer.tpl.html",
+            controller: 'helpViewerCtlr',
+            animation: false,
+            size: 'lg'
+        });
+    });
 "use strict";
 
 angular.module("app.taskkanban", ["ui.router", "ui.bootstrap", "DlhSoft.Kanban.Angular.Components"]);
@@ -34654,6 +34280,90 @@ angular.module("app.tasktrack").config(function ($stateProvider, modalStateProvi
         size: 'lg'
     });
 });
+"use strict";
+
+angular.module("app.taskforum", ["ui.router", "ui.bootstrap", "summernote"]);
+
+angular.module("app.taskforum").config(function ($stateProvider, modalStateProvider) {
+
+    $stateProvider
+        .state('app.taskforum', {
+            abstract: true,
+            data: {
+                title: 'Task Forum'
+            }
+        })
+        .state('app.taskforum.postview', {
+            url: '/taskforum/postview/:schema/:class/:oid/:postClass?from&size&subject&content&url&urlparams',
+            data: {
+                title: 'Post View'
+            },
+            views: {
+                "content@app": {
+                    templateUrl: 'app/taskforum/views/post-view.html',
+                    controller: 'PostViewCtrl',
+                }
+            },
+            resolve: {
+                scripts: function (lazyScript) {
+                    return lazyScript.register([
+                        'summernote',
+                        'dropzone'
+                    ]);
+                }
+            }
+        });
+});
+"use strict";
+
+angular.module("app.taskviewer", ["ui.router", "ui.bootstrap"]);
+
+angular.module("app.taskviewer").config(function ($stateProvider, modalStateProvider) {
+
+    $stateProvider
+        .state('app.taskviewer', {
+            url: '/taskviewer/:schema/:class/:oid/:edit/:delete/:insert/:itemClass/:packetClass/:hash',
+            data: {
+                title: 'Task Viewer'
+            },
+            views: {
+                "content@app": {
+                    templateUrl: "app/taskviewer/views/task-viewer-layout.html",
+                    controller: 'TaskViewerLayoutCtrl'
+                }
+            }
+        })
+        .state('app.taskviewer.taskinfoview', {
+            url: '/infoview/:schema/:class/:node/:itemClass/:packetClass',
+            data: {
+                title: 'Task Info View'
+            },
+            views: {
+                "taskinfoview@app.taskviewer": {
+                    controller: 'TaskInfoViewCtrl',
+                    templateUrl: "app/taskviewer/views/task-info-view.html"
+                }
+            },
+            authenticate: true,
+            resolve: {
+                scripts: function (lazyScript) {
+                    return lazyScript.register(
+                        [
+                            'flot',
+                            'flot-resize',
+                            'flot-selection',
+                            'flot-fillbetween',
+                            'flot-orderBar',
+                            'flot-pie',
+                            'flot-time',
+                            'flot-tooltip',
+                            'dropzone',
+                            'summernote'
+                        ])
+                }
+            }
+        });
+});
 'use strict'
 
 angular.module('app.ui', ['ui.router']);
@@ -34800,6 +34510,53 @@ angular.module('app.ui').config(function($stateProvider){
 });
 "use strict";
 
+angular.module("app.user", ["ngResource", "ui.router", "ui.bootstrap", "ui.bootstrap.modal"]);
+
+angular.module("app.user")
+    .config(function ($stateProvider, modalStateProvider) {
+
+        $stateProvider
+            .state('app.user', {
+                abstract: true,
+                data: {
+                    title: 'User'
+                }
+            })
+            .state('app.user.profile', {
+                url: '/user/profile',
+                authenticate: true,
+                data: {
+                    title: 'User Profile',
+                    animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
+                },
+                views: {
+                    "content@app": {
+                        templateUrl: 'app/user/views/edit-profile.html',
+                        controller: 'EditProfileController'
+                    }
+                },
+                resolve: {
+                }
+            })
+            .state('app.user.password', {
+                url: '/user/password',
+                authenticate: true,
+                data: {
+                    title: 'Change Password',
+                    animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
+                },
+                views: {
+                    "content@app": {
+                        templateUrl: 'app/user/views/change-password.html',
+                        controller: 'ChangePasswordController'
+                    }
+                },
+                resolve: {
+                }
+            });
+    });
+"use strict";
+
 angular.module("app.userdirectory", ["ui.router", "ui.bootstrap"]);
 
 angular.module("app.userdirectory").config(function ($stateProvider, modalStateProvider) {
@@ -34940,53 +34697,6 @@ angular.module("app.userdirectory").config(function ($stateProvider, modalStateP
             animation: false,
             size: 'md'
         });
-    });
-"use strict";
-
-angular.module("app.user", ["ngResource", "ui.router", "ui.bootstrap", "ui.bootstrap.modal"]);
-
-angular.module("app.user")
-    .config(function ($stateProvider, modalStateProvider) {
-
-        $stateProvider
-            .state('app.user', {
-                abstract: true,
-                data: {
-                    title: 'User'
-                }
-            })
-            .state('app.user.profile', {
-                url: '/user/profile',
-                authenticate: true,
-                data: {
-                    title: 'User Profile',
-                    animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
-                },
-                views: {
-                    "content@app": {
-                        templateUrl: 'app/user/views/edit-profile.html',
-                        controller: 'EditProfileController'
-                    }
-                },
-                resolve: {
-                }
-            })
-            .state('app.user.password', {
-                url: '/user/password',
-                authenticate: true,
-                data: {
-                    title: 'Change Password',
-                    animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
-                },
-                views: {
-                    "content@app": {
-                        templateUrl: 'app/user/views/change-password.html',
-                        controller: 'ChangePasswordController'
-                    }
-                },
-                resolve: {
-                }
-            });
     });
 "use strict";
 
@@ -36047,222 +35757,6 @@ angular.module('app.attachments').controller('attachmentsModalCtrl', function ($
 
 'use strict';
 
-angular.module('app.attachments').directive('attachments', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/attachments/views/attachments.html',
-        replace: true,
-        scope: {},
-        bindToController: {
-            dbschema: '=',
-            dbclass: '=',
-            oid: '=',
-            read: '='
-        },
-        controllerAs: 'vm',
-        controller: 'attachmentsCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
-'use strict';
-
-angular.module('app.attachments').directive('dropzone', function ($rootScope, APP_CONFIG, fileManager) {
-    return {
-        restrict: 'C',
-        link: function (scope, element, attributes) {
-            
-            var config = {
-                url: APP_CONFIG.ebaasRootUrl + "/" + fileManager.params.api + "/" + encodeURIComponent(fileManager.params.schema) + "/" + fileManager.params.cls + "/" + fileManager.params.oid + "?path=" + encodeURIComponent(fileManager.params.path),
-                maxFilesize: 100,
-                maxFiles: 20,
-                maxThumbnailFilesize: 10,
-                previewTemplate: '<div class="dz-preview dz-file-preview"><div><div class="dz-filename"><span data-dz-name></span></span></div><span class="fa fa-lg fa-file-text-o"></span></div><div><span class="dz-size" data-dz-size></div><div><span class="dz-upload" data-dz-uploadprogress></span></div><div class="dz-success-mark"><span class="fa fa-check"></span></div><div class="dz-error-mark"><span class="fa fa-exclamation-triangle"></span></div><div class="dz-error-message"><span data-dz-errormessage></span></div></div>',
-                addRemoveLinks: false,
-                paramName: "uploadFile",
-                parallelUploads: 20,
-                autoProcessQueue: false,
-                dictDefaultMessage: '<span class="text-center"><span class="font-md visible-lg-block"><span class="font-md"><i class="fa fa-caret-right text-danger"></i><span class="font-xs">' + $rootScope.getWord("DropZone") + '</span></span>',
-                dictResponseError: $rootScope.getWord("UploadError"),
-                dictCancelUpload: "Cancel Upload",
-                dictRemoveFile: "Remove File",
-
-            };
-
-            var eventHandlers = {
-                'addedFile': function (file) {
-                    scope.file = file;
-                    if (this.files[1] != null) {
-                        this.removeFile(this.files[0]);
-                    }
-                    scope.$apply(function () {
-                        scope.fileAdded = true;
-                    });
-                },
-
-                'success': function (file, response) {
-                },
-
-                'removedFile': function(file)
-                {
-                    console.debug("Removed file called");
-                },
-
-                'queuecomplete': function () {
-                    fileManager.load();
-
-                    setTimeout(function () {
-                        //scope.resetDropzone();
-                    }, 2000);
-                }
-            };
-
-            var dropzone = new Dropzone(element[0], config);
-
-            angular.forEach(eventHandlers, function (handler, event) {
-                dropzone.on(event, handler);
-            });
-
-            scope.processDropzone = function () {
-
-                var url = undefined;
-                if (fileManager.params.oid)
-                {
-                    url = APP_CONFIG.ebaasRootUrl + "/" + fileManager.params.api + "/" + encodeURIComponent(fileManager.params.schema) + "/" + fileManager.params.cls + "/" + fileManager.params.oid + "?path=" + encodeURIComponent(fileManager.params.path);
-                }
-
-                dropzone.options.url = url;
-                dropzone.processQueue();
-            };
-
-            scope.resetDropzone = function () {
-                dropzone.removeAllFiles();
-            }
-        }
-    }
-});
-
-'use strict';
-
-angular.module('app.attachments').directive('egAppStatus', function (loadingInfo) {
-    var directive = {
-        link: link,
-        restrict: 'E',
-        templateUrl: 'app/attachments/views/egAppStatus.html'
-    };
-    return directive;
-
-    function link(scope, element, attrs) {
-        scope.status = loadingInfo.status;
-    }
-});
-'use strict';
-
-angular.module('app.attachments').directive('egFiles', function () {
-
-    var directive = {
-        link: link,
-        restrict: 'A',
-        scope: {
-            files: '=egFiles',
-            hasFiles: '='
-        }
-    };
-    return directive;
-
-    function link(scope, element, attrs) {
-        element.bind('change', function () {
-            scope.$apply(function () {
-                if (element[0].files) {
-                    scope.files.length = 0;
-
-                    angular.forEach(element[0].files, function (f) {
-                        scope.files.push(f);
-                    });
-
-                    scope.hasFiles = true;
-                }
-            });
-        });
-
-        if (element[0].form) {
-            angular.element(element[0].form)
-                    .bind('reset', function () {
-                        scope.$apply(function () {
-                            scope.files.length = 0;
-                            scope.hasFiles = false;
-                        });
-                    });
-        }
-    }
-});
-'use strict';
-
-angular.module('app.attachments').directive('egUpload', function ($timeout) {
-    var directive = {
-        link: link,
-        restrict: 'A',
-        scope: {
-            upload: '&egUpload'
-        }
-    };
-    return directive;
-
-    function link(scope, element, attrs) {
-        var parentForm = element[0].form;
-        if (parentForm) {
-            element.on('click', function (event) {
-                return scope.upload().then(function () {
-                    //see:https://docs.angularjs.org/error/$rootScope/inprog?p0=$digest for why there is a need to use timeout to avoid conflict
-                    $timeout(function () {
-                        parentForm.reset();
-                    });
-                });
-            });
-        }
-    }
-});
-'use strict';
-
-angular.module('app.attachments').directive('fileDropzone', function ($rootScope) {
-    return {
-        restrict: 'A',
-        compile: function (tElement, tAttributes) {
-            tElement.removeAttr('smart-dropzone data-smart-dropzone');
-
-            tElement.dropzone({
-                addRemoveLinks : true,
-                maxFilesize: 0.5,
-                dictDefaultMessage: '<span class="text-center"><span class="font-lg visible-xs-block visible-sm-block visible-lg-block"><span class="font-lg"><i class="fa fa-caret-right text-danger"></i><span class="font-xs">' + $rootScope.getWord("DropZone") + '</span></span>',
-                dictResponseError: $rootScope.getWord("UploadError")
-            });
-        }
-    }
-});
-
-'use strict';
-
-angular.module('app.attachments').directive('egFileUploader', function (loadingInfo, fileManager) {
-
-    var directive = {
-        link: link,
-        restrict: 'E',
-        templateUrl: 'app/attachments/views/fileUploader.html',
-        scope: true
-    };
-    return directive;
-
-    function link(scope, element, attrs) {
-        scope.hasFiles = false;
-        scope.files = [];
-        scope.upload = fileManager.upload;
-        scope.appStatus = loadingInfo.status;
-        scope.fileManagerStatus = fileManager.status;
-    }
-
-});
-'use strict';
-
 angular.module('app.attachments').factory('fileManager', function ($q, fileManagerClient, $http, loadingInfo) {
 
     var service = {
@@ -36561,6 +36055,260 @@ angular.module('app.attachments').factory('loadingInfo', function () {
         }
     }
 });
+'use strict';
+
+angular.module('app.attachments').directive('attachments', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/attachments/views/attachments.html',
+        replace: true,
+        scope: {},
+        bindToController: {
+            dbschema: '=',
+            dbclass: '=',
+            oid: '=',
+            read: '='
+        },
+        controllerAs: 'vm',
+        controller: 'attachmentsCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
+'use strict';
+
+angular.module('app.attachments').directive('dropzone', function ($rootScope, APP_CONFIG, fileManager) {
+    return {
+        restrict: 'C',
+        link: function (scope, element, attributes) {
+            
+            var config = {
+                url: APP_CONFIG.ebaasRootUrl + "/" + fileManager.params.api + "/" + encodeURIComponent(fileManager.params.schema) + "/" + fileManager.params.cls + "/" + fileManager.params.oid + "?path=" + encodeURIComponent(fileManager.params.path),
+                maxFilesize: 100,
+                maxFiles: 20,
+                maxThumbnailFilesize: 10,
+                previewTemplate: '<div class="dz-preview dz-file-preview"><div><div class="dz-filename"><span data-dz-name></span></span></div><span class="fa fa-lg fa-file-text-o"></span></div><div><span class="dz-size" data-dz-size></div><div><span class="dz-upload" data-dz-uploadprogress></span></div><div class="dz-success-mark"><span class="fa fa-check"></span></div><div class="dz-error-mark"><span class="fa fa-exclamation-triangle"></span></div><div class="dz-error-message"><span data-dz-errormessage></span></div></div>',
+                addRemoveLinks: false,
+                paramName: "uploadFile",
+                parallelUploads: 20,
+                autoProcessQueue: false,
+                dictDefaultMessage: '<span class="text-center"><span class="font-md visible-lg-block"><span class="font-md"><i class="fa fa-caret-right text-danger"></i><span class="font-xs">' + $rootScope.getWord("DropZone") + '</span></span>',
+                dictResponseError: $rootScope.getWord("UploadError"),
+                dictCancelUpload: "Cancel Upload",
+                dictRemoveFile: "Remove File",
+
+            };
+
+            var eventHandlers = {
+                'addedFile': function (file) {
+                    scope.file = file;
+                    if (this.files[1] != null) {
+                        this.removeFile(this.files[0]);
+                    }
+                    scope.$apply(function () {
+                        scope.fileAdded = true;
+                    });
+                },
+
+                'success': function (file, response) {
+                },
+
+                'removedFile': function(file)
+                {
+                    console.debug("Removed file called");
+                },
+
+                'queuecomplete': function () {
+                    fileManager.load();
+
+                    setTimeout(function () {
+                        //scope.resetDropzone();
+                    }, 2000);
+                }
+            };
+
+            var dropzone = new Dropzone(element[0], config);
+
+            angular.forEach(eventHandlers, function (handler, event) {
+                dropzone.on(event, handler);
+            });
+
+            scope.processDropzone = function () {
+
+                var url = undefined;
+                if (fileManager.params.oid)
+                {
+                    url = APP_CONFIG.ebaasRootUrl + "/" + fileManager.params.api + "/" + encodeURIComponent(fileManager.params.schema) + "/" + fileManager.params.cls + "/" + fileManager.params.oid + "?path=" + encodeURIComponent(fileManager.params.path);
+                }
+
+                dropzone.options.url = url;
+                dropzone.processQueue();
+            };
+
+            scope.resetDropzone = function () {
+                dropzone.removeAllFiles();
+            }
+        }
+    }
+});
+
+'use strict';
+
+angular.module('app.attachments').directive('egAppStatus', function (loadingInfo) {
+    var directive = {
+        link: link,
+        restrict: 'E',
+        templateUrl: 'app/attachments/views/egAppStatus.html'
+    };
+    return directive;
+
+    function link(scope, element, attrs) {
+        scope.status = loadingInfo.status;
+    }
+});
+'use strict';
+
+angular.module('app.attachments').directive('egFiles', function () {
+
+    var directive = {
+        link: link,
+        restrict: 'A',
+        scope: {
+            files: '=egFiles',
+            hasFiles: '='
+        }
+    };
+    return directive;
+
+    function link(scope, element, attrs) {
+        element.bind('change', function () {
+            scope.$apply(function () {
+                if (element[0].files) {
+                    scope.files.length = 0;
+
+                    angular.forEach(element[0].files, function (f) {
+                        scope.files.push(f);
+                    });
+
+                    scope.hasFiles = true;
+                }
+            });
+        });
+
+        if (element[0].form) {
+            angular.element(element[0].form)
+                    .bind('reset', function () {
+                        scope.$apply(function () {
+                            scope.files.length = 0;
+                            scope.hasFiles = false;
+                        });
+                    });
+        }
+    }
+});
+'use strict';
+
+angular.module('app.attachments').directive('egUpload', function ($timeout) {
+    var directive = {
+        link: link,
+        restrict: 'A',
+        scope: {
+            upload: '&egUpload'
+        }
+    };
+    return directive;
+
+    function link(scope, element, attrs) {
+        var parentForm = element[0].form;
+        if (parentForm) {
+            element.on('click', function (event) {
+                return scope.upload().then(function () {
+                    //see:https://docs.angularjs.org/error/$rootScope/inprog?p0=$digest for why there is a need to use timeout to avoid conflict
+                    $timeout(function () {
+                        parentForm.reset();
+                    });
+                });
+            });
+        }
+    }
+});
+'use strict';
+
+angular.module('app.attachments').directive('fileDropzone', function ($rootScope) {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttributes) {
+            tElement.removeAttr('smart-dropzone data-smart-dropzone');
+
+            tElement.dropzone({
+                addRemoveLinks : true,
+                maxFilesize: 0.5,
+                dictDefaultMessage: '<span class="text-center"><span class="font-lg visible-xs-block visible-sm-block visible-lg-block"><span class="font-lg"><i class="fa fa-caret-right text-danger"></i><span class="font-xs">' + $rootScope.getWord("DropZone") + '</span></span>',
+                dictResponseError: $rootScope.getWord("UploadError")
+            });
+        }
+    }
+});
+
+'use strict';
+
+angular.module('app.attachments').directive('egFileUploader', function (loadingInfo, fileManager) {
+
+    var directive = {
+        link: link,
+        restrict: 'E',
+        templateUrl: 'app/attachments/views/fileUploader.html',
+        scope: true
+    };
+    return directive;
+
+    function link(scope, element, attrs) {
+        scope.hasFiles = false;
+        scope.files = [];
+        scope.upload = fileManager.upload;
+        scope.appStatus = loadingInfo.status;
+        scope.fileManagerStatus = fileManager.status;
+    }
+
+});
+"use strict";
+
+angular.module('app.auth').directive('loginInfo', function(User){
+
+    return {
+        restrict: 'A',
+        templateUrl: 'app/auth/directives/login-info.tpl.html',
+        link: function(scope, element){
+            User.initialized.then(function () {
+                scope.user = User
+            });
+        }
+    }
+})
+
+"use strict";
+
+angular.module('app.auth').controller('LoginCtrl', function ($scope, $state, GooglePlus, User, ezfb) {
+
+    $scope.$on('event:google-plus-signin-success', function (event, authResult) {
+        if (authResult.status.method == 'PROMPT') {
+            GooglePlus.getUser().then(function (user) {
+                User.userName = user.name;
+                User.picture = user.picture;
+                $state.go('app.dashboard');
+            });
+        }
+    });
+
+    $scope.$on('event:facebook-signin-success', function (event, authResult) {
+        ezfb.api('/me', function (res) {
+            User.userName = res.name;
+            User.picture = 'https://graph.facebook.com/' + res.id + '/picture';
+            $state.go('app.dashboard');
+        });
+    });
+})
+
 "use strict";
 
 angular.module("app.auth").factory("authService", function($rootScope, $http, $q, localStorageService, APP_CONFIG) {
@@ -36746,44 +36494,6 @@ angular.module('app.auth').controller('RegisterController', function ($scope, $l
         }
 
     });
-"use strict";
-
-angular.module('app.auth').directive('loginInfo', function(User){
-
-    return {
-        restrict: 'A',
-        templateUrl: 'app/auth/directives/login-info.tpl.html',
-        link: function(scope, element){
-            User.initialized.then(function () {
-                scope.user = User
-            });
-        }
-    }
-})
-
-"use strict";
-
-angular.module('app.auth').controller('LoginCtrl', function ($scope, $state, GooglePlus, User, ezfb) {
-
-    $scope.$on('event:google-plus-signin-success', function (event, authResult) {
-        if (authResult.status.method == 'PROMPT') {
-            GooglePlus.getUser().then(function (user) {
-                User.userName = user.name;
-                User.picture = user.picture;
-                $state.go('app.dashboard');
-            });
-        }
-    });
-
-    $scope.$on('event:facebook-signin-success', function (event, authResult) {
-        ezfb.api('/me', function (res) {
-            User.userName = res.name;
-            User.picture = 'https://graph.facebook.com/' + res.id + '/picture';
-            $state.go('app.dashboard');
-        });
-    });
-})
-
 
 
 'use strict';
@@ -37783,217 +37493,6 @@ angular.module('app.bulletinboard').controller('bulletinViewCtrl', function ($sc
         $scope.post = {};
     }
 });
-"use strict";	
-
-angular.module('app').controller("ActivitiesCtrl", function ActivitiesCtrl($scope, $log, activityService){
-
-	$scope.activeTab = 'default';
-	$scope.currentActivityItems = [];
-	
-	// Getting different type of activites
-	activityService.get(function(data){
-
-		$scope.activities = data.activities;
-		
-	});
-
-
-	$scope.isActive = function(tab){
-		return $scope.activeTab === tab;
-	};
-
-	$scope.setTab = function(activityType){
-		$scope.activeTab = activityType;
-
-		activityService.getbytype(activityType, function(data) {
-
-			$scope.currentActivityItems = data.data;
-
-		});
-
-	};
-
-});
-"use strict";
-
-// Speed up calls to hasOwnProperty
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-
-function isEmpty(obj) {
-
-    // null and undefined are "empty"
-    if (obj == null) return true;
-
-    // Assume if it has a length property with a non-zero value
-    // that that property is correct.
-    if (obj.length > 0) return false;
-    if (obj.length === 0) return true;
-
-    // Otherwise, does it have any properties of its own?
-    // Note that this doesn't handle
-    // toString and valueOf enumeration bugs in IE < 9
-    for (var key in obj) {
-        if (hasOwnProperty.call(obj, key)) return false;
-    }
-
-    return true;
-}
-
-angular.module('app').directive('activitiesDropdownToggle', function($log) {
-
-	var link = function($scope,$element, attrs){
-		var ajax_dropdown = null;
-
-		$element.on('click', function () {
-			var badge = $(this).find('.badge');
-
-            /*
-			if (badge.hasClass('bg-color-red')) {
-
-				badge.removeClass('bg-color-red').text(0);
-
-			}
-            */
-
-			ajax_dropdown = $(this).next('.ajax-dropdown');
-
-			if (!ajax_dropdown.is(':visible')) {
-
-				ajax_dropdown.fadeIn(150);
-
-				$(this).addClass('active');
-
-			}
-			 else {
-				
-				ajax_dropdown.fadeOut(150);
-				
-				$(this).removeClass('active');
-
-			}
-
-		})
-
-		$(document).mouseup(function (e) {
-		    if (ajax_dropdown && !ajax_dropdown.is(e.target) && (ajax_dropdown.has(e.target).length === 0 || isEmpty(e.target))) {
-				ajax_dropdown.fadeOut(150);
-				$element.removeClass('active');
-			}
-		});
-	}
-	
-	return{
-		restrict:'EA',
-		link:link
-	}
-});
-"use strict";
-
-angular.module('app').factory('activityService', function($http, $log, APP_CONFIG) {
-
-	function getActivities(callback){
-
-		$http.get(APP_CONFIG.apiRootUrl + '/activities/activity.json').success(function(data){
-
-			callback(data);
-				
-		}).error(function(){
-
-			$log.log('Error');
-			callback([]);
-
-		});
-
-	}
-
-	function getActivitiesByType(type, callback){
-
-		$http.get(APP_CONFIG.apiRootUrl + '/activities/activity-' + type + '.json').success(function(data){
-
-			callback(data);
-				
-		}).error(function(){
-
-			$log.log('Error');
-			callback([]);
-
-		});
-
-	}
-	
-	return{
-		get:function(callback){
-			getActivities(callback);
-		},
-		getbytype:function(type,callback){
-			getActivitiesByType(type, callback);
-		}
-	}
-});
-"use strict";
-
-angular.module('app').controller('TodoCtrl', function ($scope, $timeout, Todo) {
-    $scope.newTodo = undefined;
-
-    $scope.states = ['Critical', 'Important', 'Completed'];
-
-    $scope.todos = Todo.getList().$object;
-
-    // $scope.$watch('todos', function(){ }, true)
-
-    $scope.toggleAdd = function () {
-        if (!$scope.newTodo) {
-            $scope.newTodo = {
-                state: 'Important'
-            };
-        } else {
-            $scope.newTodo = undefined;
-        }
-    };
-
-    $scope.createTodo = function () {
-        $scope.todos.push($scope.newTodo);
-        $scope.newTodo = undefined;
-        // $scope.newTodo.$save(function (respoonse) {
-        //     $scope.todos.push(respoonse);
-        //     $scope.newTodo = undefined;
-        // });
-    };
-
-    $scope.deleteTodo = function (todo) {
-        todo.remove().then(function () {
-            $scope.todos.splice($scope.todos.indexOf(todo), 1);
-        });
-
-    };
-
-});
-"use strict";
-
-angular.module('app').factory('Project', function($http, APP_CONFIG){
-    return {
-        list: $http.get(APP_CONFIG.apiRootUrl + '/projects.json')
-    }
-});
-"use strict";
-
-angular.module('app').directive('recentProjects', function(Project){
-    return {
-        restrict: "EA",
-        replace: true,
-        templateUrl: "app/dashboard/projects/recent-projects.tpl.html",
-        scope: true,
-        link: function(scope, element){
-
-            Project.list.then(function(response){
-                scope.projects = response.data;
-            });
-            scope.clearProjects = function(){
-                scope.projects = [];
-            }
-        }
-    }
-});
 "use strict";
 
 angular.module('app.datacart').controller('addToDataCartCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, CartInfo, dataCartService) {
@@ -38359,6 +37858,339 @@ angular.module('app.datacart').factory('CartInfo', function () {
     }
 });
 
+"use strict";	
+
+angular.module('app').controller("ActivitiesCtrl", function ActivitiesCtrl($scope, $log, activityService){
+
+	$scope.activeTab = 'default';
+	$scope.currentActivityItems = [];
+	
+	// Getting different type of activites
+	activityService.get(function(data){
+
+		$scope.activities = data.activities;
+		
+	});
+
+
+	$scope.isActive = function(tab){
+		return $scope.activeTab === tab;
+	};
+
+	$scope.setTab = function(activityType){
+		$scope.activeTab = activityType;
+
+		activityService.getbytype(activityType, function(data) {
+
+			$scope.currentActivityItems = data.data;
+
+		});
+
+	};
+
+});
+"use strict";
+
+// Speed up calls to hasOwnProperty
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+function isEmpty(obj) {
+
+    // null and undefined are "empty"
+    if (obj == null) return true;
+
+    // Assume if it has a length property with a non-zero value
+    // that that property is correct.
+    if (obj.length > 0) return false;
+    if (obj.length === 0) return true;
+
+    // Otherwise, does it have any properties of its own?
+    // Note that this doesn't handle
+    // toString and valueOf enumeration bugs in IE < 9
+    for (var key in obj) {
+        if (hasOwnProperty.call(obj, key)) return false;
+    }
+
+    return true;
+}
+
+angular.module('app').directive('activitiesDropdownToggle', function($log) {
+
+	var link = function($scope,$element, attrs){
+		var ajax_dropdown = null;
+
+		$element.on('click', function () {
+			var badge = $(this).find('.badge');
+
+            /*
+			if (badge.hasClass('bg-color-red')) {
+
+				badge.removeClass('bg-color-red').text(0);
+
+			}
+            */
+
+			ajax_dropdown = $(this).next('.ajax-dropdown');
+
+			if (!ajax_dropdown.is(':visible')) {
+
+				ajax_dropdown.fadeIn(150);
+
+				$(this).addClass('active');
+
+			}
+			 else {
+				
+				ajax_dropdown.fadeOut(150);
+				
+				$(this).removeClass('active');
+
+			}
+
+		})
+
+		$(document).mouseup(function (e) {
+		    if (ajax_dropdown && !ajax_dropdown.is(e.target) && (ajax_dropdown.has(e.target).length === 0 || isEmpty(e.target))) {
+				ajax_dropdown.fadeOut(150);
+				$element.removeClass('active');
+			}
+		});
+	}
+	
+	return{
+		restrict:'EA',
+		link:link
+	}
+});
+"use strict";
+
+angular.module('app').factory('activityService', function($http, $log, APP_CONFIG) {
+
+	function getActivities(callback){
+
+		$http.get(APP_CONFIG.apiRootUrl + '/activities/activity.json').success(function(data){
+
+			callback(data);
+				
+		}).error(function(){
+
+			$log.log('Error');
+			callback([]);
+
+		});
+
+	}
+
+	function getActivitiesByType(type, callback){
+
+		$http.get(APP_CONFIG.apiRootUrl + '/activities/activity-' + type + '.json').success(function(data){
+
+			callback(data);
+				
+		}).error(function(){
+
+			$log.log('Error');
+			callback([]);
+
+		});
+
+	}
+	
+	return{
+		get:function(callback){
+			getActivities(callback);
+		},
+		getbytype:function(type,callback){
+			getActivitiesByType(type, callback);
+		}
+	}
+});
+"use strict";
+
+angular.module('app').factory('Project', function($http, APP_CONFIG){
+    return {
+        list: $http.get(APP_CONFIG.apiRootUrl + '/projects.json')
+    }
+});
+"use strict";
+
+angular.module('app').directive('recentProjects', function(Project){
+    return {
+        restrict: "EA",
+        replace: true,
+        templateUrl: "app/dashboard/projects/recent-projects.tpl.html",
+        scope: true,
+        link: function(scope, element){
+
+            Project.list.then(function(response){
+                scope.projects = response.data;
+            });
+            scope.clearProjects = function(){
+                scope.projects = [];
+            }
+        }
+    }
+});
+"use strict";
+
+angular.module('app').controller('TodoCtrl', function ($scope, $timeout, Todo) {
+    $scope.newTodo = undefined;
+
+    $scope.states = ['Critical', 'Important', 'Completed'];
+
+    $scope.todos = Todo.getList().$object;
+
+    // $scope.$watch('todos', function(){ }, true)
+
+    $scope.toggleAdd = function () {
+        if (!$scope.newTodo) {
+            $scope.newTodo = {
+                state: 'Important'
+            };
+        } else {
+            $scope.newTodo = undefined;
+        }
+    };
+
+    $scope.createTodo = function () {
+        $scope.todos.push($scope.newTodo);
+        $scope.newTodo = undefined;
+        // $scope.newTodo.$save(function (respoonse) {
+        //     $scope.todos.push(respoonse);
+        //     $scope.newTodo = undefined;
+        // });
+    };
+
+    $scope.deleteTodo = function (todo) {
+        todo.remove().then(function () {
+            $scope.todos.splice($scope.todos.indexOf(todo), 1);
+        });
+
+    };
+
+});
+'use strict';
+
+angular.module('app.dataImporter').controller('dataImportCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, Upload) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+    $scope.oid = $stateParams.oid;
+    $scope.relatedclass = $stateParams.relatedclass;
+
+    $scope.selectedScript = undefined;
+    $scope.submitted = false;
+    $scope.loading = false;
+
+    var url;
+    if (!$scope.relatedclass) {
+        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/All";
+    }
+    else
+    {
+        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.relatedclass + "/All";
+    }
+
+    $http.get(url).success(function (data) {
+        $scope.scripts = data.scripts;
+    });
+
+    // upload on file select or drop
+    $scope.uploadFile = function (file) {
+        $scope.loading = true;
+        var uploadUrl;
+
+        if ($scope.selectedScript.name === "Data Package") {
+            uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/import/datapackage/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass;
+        }
+        else {
+            if (!$scope.relatedclass) {
+                uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/import/files/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + encodeURIComponent($scope.selectedScript.name);
+            }
+            else {
+                uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/import/files/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + $scope.oid + "/" + $scope.relatedclass + "/" + encodeURIComponent($scope.selectedScript.name);
+            }
+        }
+
+        if ($scope.selectedScript) {
+            
+            Upload.upload({
+                url: uploadUrl,
+                data: { file: file }
+            }).then(function (resp) {
+                $scope.errorMsg = "";
+                file.result = resp.data;
+                $scope.loading = false;
+                $scope.submitted = true;
+                $scope.selectedScript = undefined;
+                //console.log(resp);
+            }, function (resp) {
+                if (resp.status > 0)
+                    $scope.errorMsg = resp.status + ': ' + resp.data.message;
+                $scope.loading = false;
+            }, function (evt) {
+                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                file.progress = progressPercentage;
+            });
+        }
+    };
+
+    $scope.selectFile = function()
+    {
+        var fileType = undefined
+        if ($scope.file && $scope.file.name) {
+            var extension = $scope.file.name.split('.').pop();
+            if (extension) {
+                switch (extension.toUpperCase()) {
+                    case "XLS":
+                    case "XLSX":
+                        fileType = "Excel";
+                        break;
+                    case "TXT":
+                    case "CSV":
+                    case "DAT":
+
+                        fileType = "Text";
+                        break;
+                    case "PAK":
+
+                        fileType = "DataPackage";
+                        break;
+                    default:
+                        fileType = "Other";
+                        break;
+                }
+
+                var url;
+                if (fileType != "DataPackage") {
+                    if (!$scope.relatedclass) {
+                        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + fileType;
+                    }
+                    else {
+                        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.relatedclass + "/" + fileType;
+                    }
+
+                    $http.get(url).success(function (data) {
+                        $scope.scripts = data.scripts;
+                    });
+                }
+                else
+                {
+                    $scope.selectedScript = { name: "Data Package" };
+                    $scope.scripts = [{ name: "Data Package" }];
+                }
+            }
+        }
+    }
+
+    $scope.closeModal = function ()
+    {
+        if ($scope.submitted)
+            $modalInstance.close("update");
+        else
+            $modalInstance.dismiss("dismiss");
+    }
+});
 'use strict';
 
 angular.module('app.datacatalog').controller('DataCatalogLayoutCtrl', function ($http, APP_CONFIG, $scope, $state, $stateParams, propmisedParams, MetaDataCache, CartInfo) {
@@ -38772,128 +38604,6 @@ angular.module('app.datacatalog').controller('DataTableViewCtrl', function ($con
         }
 
         return found;
-    }
-});
-'use strict';
-
-angular.module('app.dataImporter').controller('dataImportCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, Upload) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
-    $scope.oid = $stateParams.oid;
-    $scope.relatedclass = $stateParams.relatedclass;
-
-    $scope.selectedScript = undefined;
-    $scope.submitted = false;
-    $scope.loading = false;
-
-    var url;
-    if (!$scope.relatedclass) {
-        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/All";
-    }
-    else
-    {
-        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.relatedclass + "/All";
-    }
-
-    $http.get(url).success(function (data) {
-        $scope.scripts = data.scripts;
-    });
-
-    // upload on file select or drop
-    $scope.uploadFile = function (file) {
-        $scope.loading = true;
-        var uploadUrl;
-
-        if ($scope.selectedScript.name === "Data Package") {
-            uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/import/datapackage/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass;
-        }
-        else {
-            if (!$scope.relatedclass) {
-                uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/import/files/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + encodeURIComponent($scope.selectedScript.name);
-            }
-            else {
-                uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/import/files/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + $scope.oid + "/" + $scope.relatedclass + "/" + encodeURIComponent($scope.selectedScript.name);
-            }
-        }
-
-        if ($scope.selectedScript) {
-            
-            Upload.upload({
-                url: uploadUrl,
-                data: { file: file }
-            }).then(function (resp) {
-                $scope.errorMsg = "";
-                file.result = resp.data;
-                $scope.loading = false;
-                $scope.submitted = true;
-                $scope.selectedScript = undefined;
-                //console.log(resp);
-            }, function (resp) {
-                if (resp.status > 0)
-                    $scope.errorMsg = resp.status + ': ' + resp.data.message;
-                $scope.loading = false;
-            }, function (evt) {
-                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                file.progress = progressPercentage;
-            });
-        }
-    };
-
-    $scope.selectFile = function()
-    {
-        var fileType = undefined
-        if ($scope.file && $scope.file.name) {
-            var extension = $scope.file.name.split('.').pop();
-            if (extension) {
-                switch (extension.toUpperCase()) {
-                    case "XLS":
-                    case "XLSX":
-                        fileType = "Excel";
-                        break;
-                    case "TXT":
-                    case "CSV":
-                    case "DAT":
-
-                        fileType = "Text";
-                        break;
-                    case "PAK":
-
-                        fileType = "DataPackage";
-                        break;
-                    default:
-                        fileType = "Other";
-                        break;
-                }
-
-                var url;
-                if (fileType != "DataPackage") {
-                    if (!$scope.relatedclass) {
-                        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + fileType;
-                    }
-                    else {
-                        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.relatedclass + "/" + fileType;
-                    }
-
-                    $http.get(url).success(function (data) {
-                        $scope.scripts = data.scripts;
-                    });
-                }
-                else
-                {
-                    $scope.selectedScript = { name: "Data Package" };
-                    $scope.scripts = [{ name: "Data Package" }];
-                }
-            }
-        }
-    }
-
-    $scope.closeModal = function ()
-    {
-        if ($scope.submitted)
-            $modalInstance.close("update");
-        else
-            $modalInstance.dismiss("dismiss");
     }
 });
 function rowSelect() {
@@ -42262,6 +41972,368 @@ angular.module('app.forum').controller('forumTopicsCtrl', function ($scope, $roo
         });
     }
 });
+"use strict";
+
+
+angular.module('app.fulltextsearch').controller('searchResultCtrl', function ($scope, $http, $state, $stateParams, APP_CONFIG, searchContext, searchService) {
+
+    $scope.searchCounts = [];
+    $scope.loading = true;
+    searchService.getSearchResultCounts(APP_CONFIG.dbschema, searchContext.searchText, function (counts) {
+
+        $scope.searchCounts = counts;
+        $scope.loading = false;
+
+        if (counts.length == 1) {
+            // show the matched items if there is only one class contains them
+            $state.go('app.smarttables.datagrid', { schema: APP_CONFIG.dbschema, class: counts[0].className, search: 'fulltext' });
+        }
+    });
+
+    $scope.showClassData = function (className) {
+        $state.go('app.smarttables.datagrid', { schema: APP_CONFIG.dbschema, class: className, search: 'fulltext' });
+    }
+});
+"use strict";
+
+angular.module('app.fulltextsearch').factory('searchService', function ($http, APP_CONFIG) {
+
+    function getResultCounts(dbschema, searchtext, callback) {
+      
+        var url = APP_CONFIG.ebaasRootUrl + "/api/search/" + encodeURIComponent(dbschema) + "/counts?searchtext=" + encodeURIComponent(searchtext);
+
+	    $http.get(url).success(function (data) {
+	        callback(data);
+				
+		}).error(function(){
+		    callback([]);
+		});
+    }
+	
+	return {
+	    getSearchResultCounts: function (dbschema, searchtext, callback) {
+	        getResultCounts(dbschema, searchtext, callback);
+	    }
+	}
+});
+
+
+'use strict';
+
+angular.module('app.fulltextsearch').factory('searchContext', function () {
+
+    var SearchContextModel = {
+            searchText: undefined
+        };
+
+    return SearchContextModel;
+});
+
+"use strict";
+
+angular.module('app.graphs').controller('FlotCtrl', function ($scope) {
+
+
+    $scope.salesChartData = [
+        [1196463600000, 0],
+        [1196550000000, 0],
+        [1196636400000, 0],
+        [1196722800000, 77],
+        [1196809200000, 3636],
+        [1196895600000, 3575],
+        [1196982000000, 2736],
+        [1197068400000, 1086],
+        [1197154800000, 676],
+        [1197241200000, 1205],
+        [1197327600000, 906],
+        [1197414000000, 710],
+        [1197500400000, 639],
+        [1197586800000, 540],
+        [1197673200000, 435],
+        [1197759600000, 301],
+        [1197846000000, 575],
+        [1197932400000, 481],
+        [1198018800000, 591],
+        [1198105200000, 608],
+        [1198191600000, 459],
+        [1198278000000, 234],
+        [1198364400000, 1352],
+        [1198450800000, 686],
+        [1198537200000, 279],
+        [1198623600000, 449],
+        [1198710000000, 468],
+        [1198796400000, 392],
+        [1198882800000, 282],
+        [1198969200000, 208],
+        [1199055600000, 229],
+        [1199142000000, 177],
+        [1199228400000, 374],
+        [1199314800000, 436],
+        [1199401200000, 404],
+        [1199487600000, 253],
+        [1199574000000, 218],
+        [1199660400000, 476],
+        [1199746800000, 462],
+        [1199833200000, 500],
+        [1199919600000, 700],
+        [1200006000000, 750],
+        [1200092400000, 600],
+        [1200178800000, 500],
+        [1200265200000, 900],
+        [1200351600000, 930],
+        [1200438000000, 1200],
+        [1200524400000, 980],
+        [1200610800000, 950],
+        [1200697200000, 900],
+        [1200783600000, 1000],
+        [1200870000000, 1050],
+        [1200956400000, 1150],
+        [1201042800000, 1100],
+        [1201129200000, 1200],
+        [1201215600000, 1300],
+        [1201302000000, 1700],
+        [1201388400000, 1450],
+        [1201474800000, 1500],
+        [1201561200000, 546],
+        [1201647600000, 614],
+        [1201734000000, 954],
+        [1201820400000, 1700],
+        [1201906800000, 1800],
+        [1201993200000, 1900],
+        [1202079600000, 2000],
+        [1202166000000, 2100],
+        [1202252400000, 2200],
+        [1202338800000, 2300],
+        [1202425200000, 2400],
+        [1202511600000, 2550],
+        [1202598000000, 2600],
+        [1202684400000, 2500],
+        [1202770800000, 2700],
+        [1202857200000, 2750],
+        [1202943600000, 2800],
+        [1203030000000, 3245],
+        [1203116400000, 3345],
+        [1203202800000, 3000],
+        [1203289200000, 3200],
+        [1203375600000, 3300],
+        [1203462000000, 3400],
+        [1203548400000, 3600],
+        [1203634800000, 3700],
+        [1203721200000, 3800],
+        [1203807600000, 4000],
+        [1203894000000, 4500]
+    ]
+        .map(function (item) {
+            return [
+                item[0] + 60 * 60 * 1000,
+                item[1]
+            ]
+        });
+
+    $scope.barChartData = _.range(3).map(function (barNum) {
+        return {
+            data: _.range(12).map(function (i) {
+                return [i, parseInt(Math.random() * 30)]
+            }),
+            bars: {
+                show: true,
+                barWidth: 0.2,
+                order: barNum + 1
+            }
+        }
+    });
+
+    $scope.horizontalBarChartData = _.range(3).map(function (barNum) {
+        return {
+            data: _.range(4).map(function (i) {
+                return [i, parseInt(Math.random() * 30)]
+            }),
+            bars: {
+                horizontal: true,
+                show: true,
+                barWidth: 0.2,
+                order: barNum + 1
+            }
+        }
+    });
+
+    $scope.sinChartData = [
+        {
+            data: _.range(16).map(function (i) {
+                return [i, Math.sin(i)];
+            }),
+            label: "sin(x)"
+        },
+        {
+            data: _.range(16).map(function (i) {
+                return [i, Math.cos(i)];
+            }),
+            label: "cos(x)"
+        }
+    ];
+
+
+    // fill chart
+
+    var males = {
+        '15%' : [[2, 88.0], [3, 93.3], [4, 102.0], [5, 108.5], [6, 115.7], [7, 115.6], [8, 124.6], [9, 130.3], [10, 134.3], [11, 141.4], [12, 146.5], [13, 151.7], [14, 159.9], [15, 165.4], [16, 167.8], [17, 168.7], [18, 169.5], [19, 168.0]],
+        '90%' : [[2, 96.8], [3, 105.2], [4, 113.9], [5, 120.8], [6, 127.0], [7, 133.1], [8, 139.1], [9, 143.9], [10, 151.3], [11, 161.1], [12, 164.8], [13, 173.5], [14, 179.0], [15, 182.0], [16, 186.9], [17, 185.2], [18, 186.3], [19, 186.6]],
+        '25%' : [[2, 89.2], [3, 94.9], [4, 104.4], [5, 111.4], [6, 117.5], [7, 120.2], [8, 127.1], [9, 132.9], [10, 136.8], [11, 144.4], [12, 149.5], [13, 154.1], [14, 163.1], [15, 169.2], [16, 170.4], [17, 171.2], [18, 172.4], [19, 170.8]],
+        '10%' : [[2, 86.9], [3, 92.6], [4, 99.9], [5, 107.0], [6, 114.0], [7, 113.5], [8, 123.6], [9, 129.2], [10, 133.0], [11, 140.6], [12, 145.2], [13, 149.7], [14, 158.4], [15, 163.5], [16, 166.9], [17, 167.5], [18, 167.1], [19, 165.3]],
+        'mean' : [[2, 91.9], [3, 98.5], [4, 107.1], [5, 114.4], [6, 120.6], [7, 124.7], [8, 131.1], [9, 136.8], [10, 142.3], [11, 150.0], [12, 154.7], [13, 161.9], [14, 168.7], [15, 173.6], [16, 175.9], [17, 176.6], [18, 176.8], [19, 176.7]],
+        '75%' : [[2, 94.5], [3, 102.1], [4, 110.8], [5, 117.9], [6, 124.0], [7, 129.3], [8, 134.6], [9, 141.4], [10, 147.0], [11, 156.1], [12, 160.3], [13, 168.3], [14, 174.7], [15, 178.0], [16, 180.2], [17, 181.7], [18, 181.3], [19, 182.5]],
+        '85%' : [[2, 96.2], [3, 103.8], [4, 111.8], [5, 119.6], [6, 125.6], [7, 131.5], [8, 138.0], [9, 143.3], [10, 149.3], [11, 159.8], [12, 162.5], [13, 171.3], [14, 177.5], [15, 180.2], [16, 183.8], [17, 183.4], [18, 183.5], [19, 185.5]],
+        '50%' : [[2, 91.9], [3, 98.2], [4, 106.8], [5, 114.6], [6, 120.8], [7, 125.2], [8, 130.3], [9, 137.1], [10, 141.5], [11, 149.4], [12, 153.9], [13, 162.2], [14, 169.0], [15, 174.8], [16, 176.0], [17, 176.8], [18, 176.4], [19, 177.4]]
+    };
+
+    var females = {
+        '15%' : [[2, 84.8], [3, 93.7], [4, 100.6], [5, 105.8], [6, 113.3], [7, 119.3], [8, 124.3], [9, 131.4], [10, 136.9], [11, 143.8], [12, 149.4], [13, 151.2], [14, 152.3], [15, 155.9], [16, 154.7], [17, 157.0], [18, 156.1], [19, 155.4]],
+        '90%' : [[2, 95.6], [3, 104.1], [4, 111.9], [5, 119.6], [6, 127.6], [7, 133.1], [8, 138.7], [9, 147.1], [10, 152.8], [11, 161.3], [12, 166.6], [13, 167.9], [14, 169.3], [15, 170.1], [16, 172.4], [17, 169.2], [18, 171.1], [19, 172.4]],
+        '25%' : [[2, 87.2], [3, 95.9], [4, 101.9], [5, 107.4], [6, 114.8], [7, 121.4], [8, 126.8], [9, 133.4], [10, 138.6], [11, 146.2], [12, 152.0], [13, 153.8], [14, 155.7], [15, 158.4], [16, 157.0], [17, 158.5], [18, 158.4], [19, 158.1]],
+        '10%' : [[2, 84.0], [3, 91.9], [4, 99.2], [5, 105.2], [6, 112.7], [7, 118.0], [8, 123.3], [9, 130.2], [10, 135.0], [11, 141.1], [12, 148.3], [13, 150.0], [14, 150.7], [15, 154.3], [16, 153.6], [17, 155.6], [18, 154.7], [19, 153.1]],
+        'mean' : [[2, 90.2], [3, 98.3], [4, 105.2], [5, 112.2], [6, 119.0], [7, 125.8], [8, 131.3], [9, 138.6], [10, 144.2], [11, 151.3], [12, 156.7], [13, 158.6], [14, 160.5], [15, 162.1], [16, 162.9], [17, 162.2], [18, 163.0], [19, 163.1]],
+        '75%' : [[2, 93.2], [3, 101.5], [4, 107.9], [5, 116.6], [6, 122.8], [7, 129.3], [8, 135.2], [9, 143.7], [10, 148.7], [11, 156.9], [12, 160.8], [13, 163.0], [14, 165.0], [15, 165.8], [16, 168.7], [17, 166.2], [18, 167.6], [19, 168.0]],
+        '85%' : [[2, 94.5], [3, 102.8], [4, 110.4], [5, 119.0], [6, 125.7], [7, 131.5], [8, 137.9], [9, 146.0], [10, 151.3], [11, 159.9], [12, 164.0], [13, 166.5], [14, 167.5], [15, 168.5], [16, 171.5], [17, 168.0], [18, 169.8], [19, 170.3]],
+        '50%' : [[2, 90.2], [3, 98.1], [4, 105.2], [5, 111.7], [6, 118.2], [7, 125.6], [8, 130.5], [9, 138.3], [10, 143.7], [11, 151.4], [12, 156.7], [13, 157.7], [14, 161.0], [15, 162.0], [16, 162.8], [17, 162.2], [18, 162.8], [19, 163.3]]
+    };
+
+    $scope.fillChartData = [{
+        label : 'female mean',
+        data : females['mean'],
+        lines : {
+            show : true
+        },
+        color : "rgb(255,50,50)"
+    }, {
+        id : 'f15%',
+        data : females['15%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : false
+        },
+        color : "rgb(255,50,50)"
+    }, {
+        id : 'f25%',
+        data : females['25%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : 0.2
+        },
+        color : "rgb(255,50,50)",
+        fillBetween : 'f15%'
+    }, {
+        id : 'f50%',
+        data : females['50%'],
+        lines : {
+            show : true,
+            lineWidth : 0.5,
+            fill : 0.4,
+            shadowSize : 0
+        },
+        color : "rgb(255,50,50)",
+        fillBetween : 'f25%'
+    }, {
+        id : 'f75%',
+        data : females['75%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : 0.4
+        },
+        color : "rgb(255,50,50)",
+        fillBetween : 'f50%'
+    }, {
+        id : 'f85%',
+        data : females['85%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : 0.2
+        },
+        color : "rgb(255,50,50)",
+        fillBetween : 'f75%'
+    }, {
+        label : 'male mean',
+        data : males['mean'],
+        lines : {
+            show : true
+        },
+        color : "rgb(50,50,255)"
+    }, {
+        id : 'm15%',
+        data : males['15%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : false
+        },
+        color : "rgb(50,50,255)"
+    }, {
+        id : 'm25%',
+        data : males['25%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : 0.2
+        },
+        color : "rgb(50,50,255)",
+        fillBetween : 'm15%'
+    }, {
+        id : 'm50%',
+        data : males['50%'],
+        lines : {
+            show : true,
+            lineWidth : 0.5,
+            fill : 0.4,
+            shadowSize : 0
+        },
+        color : "rgb(50,50,255)",
+        fillBetween : 'm25%'
+    }, {
+        id : 'm75%',
+        data : males['75%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : 0.4
+        },
+        color : "rgb(50,50,255)",
+        fillBetween : 'm50%'
+    }, {
+        id : 'm85%',
+        data : males['85%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : 0.2
+        },
+        color : "rgb(50,50,255)",
+        fillBetween : 'm75%'
+    }];
+
+
+
+    //
+    $scope.pieChartData = _.range(Math.floor(Math.random() * 10) + 1).map(function(i){
+        return {
+            label : "Series" + (i + 1),
+            data : Math.floor(Math.random() * 100) + 1
+        }
+    });
+
+    var pageviews = [[1, 75], [3, 87], [4, 93], [5, 127], [6, 116], [7, 137], [8, 135], [9, 130], [10, 167], [11, 169], [12, 179], [13, 185], [14, 176], [15, 180], [16, 174], [17, 193], [18, 186], [19, 177], [20, 153], [21, 149], [22, 130], [23, 100], [24, 50]];
+    var visitors = [[1, 65], [3, 50], [4, 73], [5, 100], [6, 95], [7, 103], [8, 111], [9, 97], [10, 125], [11, 100], [12, 95], [13, 141], [14, 126], [15, 131], [16, 146], [17, 158], [18, 160], [19, 151], [20, 125], [21, 110], [22, 100], [23, 85], [24, 37]];
+
+    $scope.siteStatsData = [{
+        data : pageviews,
+        label : "Your pageviews"
+    }, {
+        data : visitors,
+        label : "Site visitors"
+    }];
+});
 'use strict';
 
 angular.module('app.galleryview').controller('galleryViewCtrl', function ($scope, $rootScope, $http, $state, $stateParams, APP_CONFIG, promiseParams, promiseClassInfo, promiseItems, promisedCommands) {
@@ -42459,61 +42531,83 @@ angular.module('app.galleryview').controller('galleryViewCtrl', function ($scope
 });
 "use strict";
 
+angular.module("app.hub").factory("hubService", function($http, $q, localStorageService, APP_CONFIG, User) {
 
-angular.module('app.fulltextsearch').controller('searchResultCtrl', function ($scope, $http, $state, $stateParams, APP_CONFIG, searchContext, searchService) {
+    var hubServiceFactory = {};
 
-    $scope.searchCounts = [];
-    $scope.loading = true;
-    searchService.getSearchResultCounts(APP_CONFIG.dbschema, searchContext.searchText, function (counts) {
+    var _connect = function(schema, callback) {
+        // establish signalr connection
+        var hub = $.connection.messageHub; // create a proxy to signalr hub on web server
 
-        $scope.searchCounts = counts;
-        $scope.loading = false;
-
-        if (counts.length == 1) {
-            // show the matched items if there is only one class contains them
-            $state.go('app.smarttables.datagrid', { schema: APP_CONFIG.dbschema, class: counts[0].className, search: 'fulltext' });
-        }
-    });
-
-    $scope.showClassData = function (className) {
-        $state.go('app.smarttables.datagrid', { schema: APP_CONFIG.dbschema, class: className, search: 'fulltext' });
-    }
-});
-"use strict";
-
-angular.module('app.fulltextsearch').factory('searchService', function ($http, APP_CONFIG) {
-
-    function getResultCounts(dbschema, searchtext, callback) {
-      
-        var url = APP_CONFIG.ebaasRootUrl + "/api/search/" + encodeURIComponent(dbschema) + "/counts?searchtext=" + encodeURIComponent(searchtext);
-
-	    $http.get(url).success(function (data) {
-	        callback(data);
-				
-		}).error(function(){
-		    callback([]);
-		});
-    }
-	
-	return {
-	    getSearchResultCounts: function (dbschema, searchtext, callback) {
-	        getResultCounts(dbschema, searchtext, callback);
-	    }
-	}
-});
-
-
-'use strict';
-
-angular.module('app.fulltextsearch').factory('searchContext', function () {
-
-    var SearchContextModel = {
-            searchText: undefined
+        // Create a function that the hub can call to broadcast messages.
+        hub.client.addMessage = function (type, message) {
+            if (callback)
+            {
+                callback(type, message);
+            }
         };
 
-    return SearchContextModel;
-});
+        $.connection.hub.stop();
 
+        $.connection.hub.qs = { 'user': User.userName, 'schema': schema }; // user name as part of query string of signalr connection
+ 
+        $.connection.hub.start(); // connect to signalr hub
+
+        $.connection.hub.error(function (error) {
+            console.log('SignalR error: ' + error)
+        });
+    };
+
+    var _dicconnect = function () {
+        $.connection.hub.stop();
+    };
+
+    var _addToGroup = function (group) {
+
+        var hub = $.connection.messageHub; // create a proxy to signalr hub on web server
+
+        hub.server.addToGroup(group);
+    };
+
+    var _removeFromGroup = function (group, callback) {
+
+        var hub = $.connection.messageHub; // create a proxy to signalr hub on web server
+
+        hub.server.removeFromGroup(group).done(function () {
+            if (callback)
+            {
+                callback();
+            }
+        });
+    };
+
+    var _getUserGroups = function (callback) {
+
+        var hub = $.connection.messageHub; // create a proxy to signalr hub on web server
+
+        hub.server.getUserGroups().done(function (groups) {
+            callback(groups);
+        });
+    };
+
+    var _isUserInGroup = function (group, callback) {
+
+        var hub = $.connection.messageHub; // create a proxy to signalr hub on web server
+
+        hub.server.isUserInGroup(group).done(function (status) {
+            callback(status);
+        });
+    };
+
+    hubServiceFactory.connect = _connect;
+    hubServiceFactory.disconnect = _dicconnect;
+    hubServiceFactory.addToGroup = _addToGroup;
+    hubServiceFactory.removeFromGroup = _removeFromGroup;
+    hubServiceFactory.getUserGroups = _getUserGroups;
+    hubServiceFactory.isUserInGroup = _isUserInGroup;
+
+    return hubServiceFactory;
+});
 "use strict";	
 
 angular.module('app.homepage').controller("myActivitiesCtrl", function ActivitiesCtrl($scope, $log, $state, APP_CONFIG, User, myActivityService) {
@@ -42939,1296 +43033,6 @@ angular.module('app.homepage').controller("myTasksController", function Activiti
 });
 "use strict";
 
-angular.module('app.graphs').controller('FlotCtrl', function ($scope) {
-
-
-    $scope.salesChartData = [
-        [1196463600000, 0],
-        [1196550000000, 0],
-        [1196636400000, 0],
-        [1196722800000, 77],
-        [1196809200000, 3636],
-        [1196895600000, 3575],
-        [1196982000000, 2736],
-        [1197068400000, 1086],
-        [1197154800000, 676],
-        [1197241200000, 1205],
-        [1197327600000, 906],
-        [1197414000000, 710],
-        [1197500400000, 639],
-        [1197586800000, 540],
-        [1197673200000, 435],
-        [1197759600000, 301],
-        [1197846000000, 575],
-        [1197932400000, 481],
-        [1198018800000, 591],
-        [1198105200000, 608],
-        [1198191600000, 459],
-        [1198278000000, 234],
-        [1198364400000, 1352],
-        [1198450800000, 686],
-        [1198537200000, 279],
-        [1198623600000, 449],
-        [1198710000000, 468],
-        [1198796400000, 392],
-        [1198882800000, 282],
-        [1198969200000, 208],
-        [1199055600000, 229],
-        [1199142000000, 177],
-        [1199228400000, 374],
-        [1199314800000, 436],
-        [1199401200000, 404],
-        [1199487600000, 253],
-        [1199574000000, 218],
-        [1199660400000, 476],
-        [1199746800000, 462],
-        [1199833200000, 500],
-        [1199919600000, 700],
-        [1200006000000, 750],
-        [1200092400000, 600],
-        [1200178800000, 500],
-        [1200265200000, 900],
-        [1200351600000, 930],
-        [1200438000000, 1200],
-        [1200524400000, 980],
-        [1200610800000, 950],
-        [1200697200000, 900],
-        [1200783600000, 1000],
-        [1200870000000, 1050],
-        [1200956400000, 1150],
-        [1201042800000, 1100],
-        [1201129200000, 1200],
-        [1201215600000, 1300],
-        [1201302000000, 1700],
-        [1201388400000, 1450],
-        [1201474800000, 1500],
-        [1201561200000, 546],
-        [1201647600000, 614],
-        [1201734000000, 954],
-        [1201820400000, 1700],
-        [1201906800000, 1800],
-        [1201993200000, 1900],
-        [1202079600000, 2000],
-        [1202166000000, 2100],
-        [1202252400000, 2200],
-        [1202338800000, 2300],
-        [1202425200000, 2400],
-        [1202511600000, 2550],
-        [1202598000000, 2600],
-        [1202684400000, 2500],
-        [1202770800000, 2700],
-        [1202857200000, 2750],
-        [1202943600000, 2800],
-        [1203030000000, 3245],
-        [1203116400000, 3345],
-        [1203202800000, 3000],
-        [1203289200000, 3200],
-        [1203375600000, 3300],
-        [1203462000000, 3400],
-        [1203548400000, 3600],
-        [1203634800000, 3700],
-        [1203721200000, 3800],
-        [1203807600000, 4000],
-        [1203894000000, 4500]
-    ]
-        .map(function (item) {
-            return [
-                item[0] + 60 * 60 * 1000,
-                item[1]
-            ]
-        });
-
-    $scope.barChartData = _.range(3).map(function (barNum) {
-        return {
-            data: _.range(12).map(function (i) {
-                return [i, parseInt(Math.random() * 30)]
-            }),
-            bars: {
-                show: true,
-                barWidth: 0.2,
-                order: barNum + 1
-            }
-        }
-    });
-
-    $scope.horizontalBarChartData = _.range(3).map(function (barNum) {
-        return {
-            data: _.range(4).map(function (i) {
-                return [i, parseInt(Math.random() * 30)]
-            }),
-            bars: {
-                horizontal: true,
-                show: true,
-                barWidth: 0.2,
-                order: barNum + 1
-            }
-        }
-    });
-
-    $scope.sinChartData = [
-        {
-            data: _.range(16).map(function (i) {
-                return [i, Math.sin(i)];
-            }),
-            label: "sin(x)"
-        },
-        {
-            data: _.range(16).map(function (i) {
-                return [i, Math.cos(i)];
-            }),
-            label: "cos(x)"
-        }
-    ];
-
-
-    // fill chart
-
-    var males = {
-        '15%' : [[2, 88.0], [3, 93.3], [4, 102.0], [5, 108.5], [6, 115.7], [7, 115.6], [8, 124.6], [9, 130.3], [10, 134.3], [11, 141.4], [12, 146.5], [13, 151.7], [14, 159.9], [15, 165.4], [16, 167.8], [17, 168.7], [18, 169.5], [19, 168.0]],
-        '90%' : [[2, 96.8], [3, 105.2], [4, 113.9], [5, 120.8], [6, 127.0], [7, 133.1], [8, 139.1], [9, 143.9], [10, 151.3], [11, 161.1], [12, 164.8], [13, 173.5], [14, 179.0], [15, 182.0], [16, 186.9], [17, 185.2], [18, 186.3], [19, 186.6]],
-        '25%' : [[2, 89.2], [3, 94.9], [4, 104.4], [5, 111.4], [6, 117.5], [7, 120.2], [8, 127.1], [9, 132.9], [10, 136.8], [11, 144.4], [12, 149.5], [13, 154.1], [14, 163.1], [15, 169.2], [16, 170.4], [17, 171.2], [18, 172.4], [19, 170.8]],
-        '10%' : [[2, 86.9], [3, 92.6], [4, 99.9], [5, 107.0], [6, 114.0], [7, 113.5], [8, 123.6], [9, 129.2], [10, 133.0], [11, 140.6], [12, 145.2], [13, 149.7], [14, 158.4], [15, 163.5], [16, 166.9], [17, 167.5], [18, 167.1], [19, 165.3]],
-        'mean' : [[2, 91.9], [3, 98.5], [4, 107.1], [5, 114.4], [6, 120.6], [7, 124.7], [8, 131.1], [9, 136.8], [10, 142.3], [11, 150.0], [12, 154.7], [13, 161.9], [14, 168.7], [15, 173.6], [16, 175.9], [17, 176.6], [18, 176.8], [19, 176.7]],
-        '75%' : [[2, 94.5], [3, 102.1], [4, 110.8], [5, 117.9], [6, 124.0], [7, 129.3], [8, 134.6], [9, 141.4], [10, 147.0], [11, 156.1], [12, 160.3], [13, 168.3], [14, 174.7], [15, 178.0], [16, 180.2], [17, 181.7], [18, 181.3], [19, 182.5]],
-        '85%' : [[2, 96.2], [3, 103.8], [4, 111.8], [5, 119.6], [6, 125.6], [7, 131.5], [8, 138.0], [9, 143.3], [10, 149.3], [11, 159.8], [12, 162.5], [13, 171.3], [14, 177.5], [15, 180.2], [16, 183.8], [17, 183.4], [18, 183.5], [19, 185.5]],
-        '50%' : [[2, 91.9], [3, 98.2], [4, 106.8], [5, 114.6], [6, 120.8], [7, 125.2], [8, 130.3], [9, 137.1], [10, 141.5], [11, 149.4], [12, 153.9], [13, 162.2], [14, 169.0], [15, 174.8], [16, 176.0], [17, 176.8], [18, 176.4], [19, 177.4]]
-    };
-
-    var females = {
-        '15%' : [[2, 84.8], [3, 93.7], [4, 100.6], [5, 105.8], [6, 113.3], [7, 119.3], [8, 124.3], [9, 131.4], [10, 136.9], [11, 143.8], [12, 149.4], [13, 151.2], [14, 152.3], [15, 155.9], [16, 154.7], [17, 157.0], [18, 156.1], [19, 155.4]],
-        '90%' : [[2, 95.6], [3, 104.1], [4, 111.9], [5, 119.6], [6, 127.6], [7, 133.1], [8, 138.7], [9, 147.1], [10, 152.8], [11, 161.3], [12, 166.6], [13, 167.9], [14, 169.3], [15, 170.1], [16, 172.4], [17, 169.2], [18, 171.1], [19, 172.4]],
-        '25%' : [[2, 87.2], [3, 95.9], [4, 101.9], [5, 107.4], [6, 114.8], [7, 121.4], [8, 126.8], [9, 133.4], [10, 138.6], [11, 146.2], [12, 152.0], [13, 153.8], [14, 155.7], [15, 158.4], [16, 157.0], [17, 158.5], [18, 158.4], [19, 158.1]],
-        '10%' : [[2, 84.0], [3, 91.9], [4, 99.2], [5, 105.2], [6, 112.7], [7, 118.0], [8, 123.3], [9, 130.2], [10, 135.0], [11, 141.1], [12, 148.3], [13, 150.0], [14, 150.7], [15, 154.3], [16, 153.6], [17, 155.6], [18, 154.7], [19, 153.1]],
-        'mean' : [[2, 90.2], [3, 98.3], [4, 105.2], [5, 112.2], [6, 119.0], [7, 125.8], [8, 131.3], [9, 138.6], [10, 144.2], [11, 151.3], [12, 156.7], [13, 158.6], [14, 160.5], [15, 162.1], [16, 162.9], [17, 162.2], [18, 163.0], [19, 163.1]],
-        '75%' : [[2, 93.2], [3, 101.5], [4, 107.9], [5, 116.6], [6, 122.8], [7, 129.3], [8, 135.2], [9, 143.7], [10, 148.7], [11, 156.9], [12, 160.8], [13, 163.0], [14, 165.0], [15, 165.8], [16, 168.7], [17, 166.2], [18, 167.6], [19, 168.0]],
-        '85%' : [[2, 94.5], [3, 102.8], [4, 110.4], [5, 119.0], [6, 125.7], [7, 131.5], [8, 137.9], [9, 146.0], [10, 151.3], [11, 159.9], [12, 164.0], [13, 166.5], [14, 167.5], [15, 168.5], [16, 171.5], [17, 168.0], [18, 169.8], [19, 170.3]],
-        '50%' : [[2, 90.2], [3, 98.1], [4, 105.2], [5, 111.7], [6, 118.2], [7, 125.6], [8, 130.5], [9, 138.3], [10, 143.7], [11, 151.4], [12, 156.7], [13, 157.7], [14, 161.0], [15, 162.0], [16, 162.8], [17, 162.2], [18, 162.8], [19, 163.3]]
-    };
-
-    $scope.fillChartData = [{
-        label : 'female mean',
-        data : females['mean'],
-        lines : {
-            show : true
-        },
-        color : "rgb(255,50,50)"
-    }, {
-        id : 'f15%',
-        data : females['15%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : false
-        },
-        color : "rgb(255,50,50)"
-    }, {
-        id : 'f25%',
-        data : females['25%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : 0.2
-        },
-        color : "rgb(255,50,50)",
-        fillBetween : 'f15%'
-    }, {
-        id : 'f50%',
-        data : females['50%'],
-        lines : {
-            show : true,
-            lineWidth : 0.5,
-            fill : 0.4,
-            shadowSize : 0
-        },
-        color : "rgb(255,50,50)",
-        fillBetween : 'f25%'
-    }, {
-        id : 'f75%',
-        data : females['75%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : 0.4
-        },
-        color : "rgb(255,50,50)",
-        fillBetween : 'f50%'
-    }, {
-        id : 'f85%',
-        data : females['85%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : 0.2
-        },
-        color : "rgb(255,50,50)",
-        fillBetween : 'f75%'
-    }, {
-        label : 'male mean',
-        data : males['mean'],
-        lines : {
-            show : true
-        },
-        color : "rgb(50,50,255)"
-    }, {
-        id : 'm15%',
-        data : males['15%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : false
-        },
-        color : "rgb(50,50,255)"
-    }, {
-        id : 'm25%',
-        data : males['25%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : 0.2
-        },
-        color : "rgb(50,50,255)",
-        fillBetween : 'm15%'
-    }, {
-        id : 'm50%',
-        data : males['50%'],
-        lines : {
-            show : true,
-            lineWidth : 0.5,
-            fill : 0.4,
-            shadowSize : 0
-        },
-        color : "rgb(50,50,255)",
-        fillBetween : 'm25%'
-    }, {
-        id : 'm75%',
-        data : males['75%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : 0.4
-        },
-        color : "rgb(50,50,255)",
-        fillBetween : 'm50%'
-    }, {
-        id : 'm85%',
-        data : males['85%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : 0.2
-        },
-        color : "rgb(50,50,255)",
-        fillBetween : 'm75%'
-    }];
-
-
-
-    //
-    $scope.pieChartData = _.range(Math.floor(Math.random() * 10) + 1).map(function(i){
-        return {
-            label : "Series" + (i + 1),
-            data : Math.floor(Math.random() * 100) + 1
-        }
-    });
-
-    var pageviews = [[1, 75], [3, 87], [4, 93], [5, 127], [6, 116], [7, 137], [8, 135], [9, 130], [10, 167], [11, 169], [12, 179], [13, 185], [14, 176], [15, 180], [16, 174], [17, 193], [18, 186], [19, 177], [20, 153], [21, 149], [22, 130], [23, 100], [24, 50]];
-    var visitors = [[1, 65], [3, 50], [4, 73], [5, 100], [6, 95], [7, 103], [8, 111], [9, 97], [10, 125], [11, 100], [12, 95], [13, 141], [14, 126], [15, 131], [16, 146], [17, 158], [18, 160], [19, 151], [20, 125], [21, 110], [22, 100], [23, 85], [24, 37]];
-
-    $scope.siteStatsData = [{
-        data : pageviews,
-        label : "Your pageviews"
-    }, {
-        data : visitors,
-        label : "Site visitors"
-    }];
-});
-"use strict";
-
-angular.module("app.hub").factory("hubService", function($http, $q, localStorageService, APP_CONFIG, User) {
-
-    var hubServiceFactory = {};
-
-    var _connect = function(schema, callback) {
-        // establish signalr connection
-        var hub = $.connection.messageHub; // create a proxy to signalr hub on web server
-
-        // Create a function that the hub can call to broadcast messages.
-        hub.client.addMessage = function (type, message) {
-            if (callback)
-            {
-                callback(type, message);
-            }
-        };
-
-        $.connection.hub.stop();
-
-        $.connection.hub.qs = { 'user': User.userName, 'schema': schema }; // user name as part of query string of signalr connection
- 
-        $.connection.hub.start(); // connect to signalr hub
-
-        $.connection.hub.error(function (error) {
-            console.log('SignalR error: ' + error)
-        });
-    };
-
-    var _dicconnect = function () {
-        $.connection.hub.stop();
-    };
-
-    var _addToGroup = function (group) {
-
-        var hub = $.connection.messageHub; // create a proxy to signalr hub on web server
-
-        hub.server.addToGroup(group);
-    };
-
-    var _removeFromGroup = function (group, callback) {
-
-        var hub = $.connection.messageHub; // create a proxy to signalr hub on web server
-
-        hub.server.removeFromGroup(group).done(function () {
-            if (callback)
-            {
-                callback();
-            }
-        });
-    };
-
-    var _getUserGroups = function (callback) {
-
-        var hub = $.connection.messageHub; // create a proxy to signalr hub on web server
-
-        hub.server.getUserGroups().done(function (groups) {
-            callback(groups);
-        });
-    };
-
-    var _isUserInGroup = function (group, callback) {
-
-        var hub = $.connection.messageHub; // create a proxy to signalr hub on web server
-
-        hub.server.isUserInGroup(group).done(function (status) {
-            callback(status);
-        });
-    };
-
-    hubServiceFactory.connect = _connect;
-    hubServiceFactory.disconnect = _dicconnect;
-    hubServiceFactory.addToGroup = _addToGroup;
-    hubServiceFactory.removeFromGroup = _removeFromGroup;
-    hubServiceFactory.getUserGroups = _getUserGroups;
-    hubServiceFactory.isUserInGroup = _isUserInGroup;
-
-    return hubServiceFactory;
-});
-'use strict';
-
-angular.module('app.logs').controller('changeLogCtrl', function ($scope, $rootScope, APP_CONFIG, logManager, $stateParams) {
-
-    var vm = this;
-    vm.title = 'Log Viewer';
-
-    vm.getWord = getWord;
-
-    logManager.params.dbschema = $stateParams.logschema;
-    logManager.params.dbclass = $stateParams.logclass;
-    logManager.params.oid = $stateParams.logoid;
-    logManager.params.property = $stateParams.logproperty;
-
-    activate();
-
-    function activate() {
-        logManager.load(function (logs) {
-            console.log(logs);
-            vm.logs = logs;
-        });
-    }
-
-    function getWord(key) {
-        return $rootScope.getWord(key);
-    }
-});
-
-'use strict';
-
-angular.module('app.logs').controller('changeLogViewerCtrl', function ($scope, $rootScope, APP_CONFIG, $stateParams, $modalInstance) {
-
-    $scope.dbschema = $stateParams.logschema;
-    $scope.dbclass = $stateParams.logclass;
-    $scope.oid = $stateParams.logoid;
-    $scope.property = $stateParams.logproperty;
-
-
-    $scope.closeModal = function () {
-        $modalInstance.dismiss("dismiss");
-    };
-});
-
-'use strict';
-
-angular.module('app.logs').directive('changelog', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/logs/views/change-log.html',
-        replace: true,
-        scope: {},
-        controllerAs: 'vm',
-        controller: 'changeLogCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
-'use strict';
-
-angular.module('app.logs').factory('logManager', function ($q, $http, APP_CONFIG) {
-
-    var service = {
-        logs: [],
-        load: load,
-        status: {
-            uploading: false
-        },
-        params: {
-            dbschema: "",
-            dbclass: "",
-            oid: "",
-            property: ""
-        }
-    };
-
-    return service;
-
-    function load(callback) {
-        service.logs.length = 0;
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/log/" + encodeURIComponent(service.params.dbschema) + "/" + service.params.dbclass + "/" + service.params.oid + "/" + service.params.property;
-
-        $http.get(url).success(function (data) {
-
-            callback(convertLogs(data));
-
-        }).error(function () {
-
-        });
-    }
-
-    function convertLogs(logRecordCollection) {
-
-        var logs = [];
-
-        if (logRecordCollection) {
-
-            for (var i = 0; i < logRecordCollection.length; i++) {
-                var logRecord = logRecordCollection[i];
-
-                var log = {};
-
-                switch (logRecord.actionType)
-                {
-                    case 1:
-                        log.type = "Create";
-                        break;
-
-                    case 2:
-                        log.type = "Modify";
-                        break
-                }
-                
-                log.user = logRecord.userDisplayText;
-                log.time = logRecord.actionTime;
-                log.content = logRecord.actionData;
-
-                logs.push(log);
-            }
-        }
-
-        return logs;
-    }
-});
-'use strict';
-
-angular.module('app.masterdetailtable').controller('dataGridCtrl', function ($scope, $controller, $rootScope, $http, APP_CONFIG, $stateParams, $state, CartInfo, propmisedParams, hubService) {
-   
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
-    $scope.oid = $stateParams.oid;
-
-    var params = propmisedParams.data;
-
-    if (params) {
-        $scope.view = params['dataView'];
-        $scope.formTemplate = params['formTemplate'];
-    }
-    else
-    {
-        $scope.view = undefined;
-        $scope.formTemplate = undefined;
-    }
-
-    if ($stateParams.insert && $stateParams.insert === "false") {
-        $scope.add = false;
-    }
-    else {
-        $scope.add = true;
-    }
-
-    if ($stateParams.attachment && $stateParams.attachment === "false") {
-        $scope.attachment = false;
-    }
-    else {
-        $scope.attachment = true;
-    }
- 
-    if ($stateParams.export && $stateParams.export === "true")
-    {
-        $scope.exportData = true;
-    }
-    else
-    {
-        $scope.exportData = false;
-    }
-
-    if ($stateParams.import && $stateParams.import === "true") {
-        $scope.importData = true;
-    }
-    else {
-        $scope.importData = false;
-    }
-
-    if ($stateParams.reports && $stateParams.reports === "true") {
-        $scope.reports = true;
-    }
-    else {
-        $scope.reports = false;
-    }
-
-    if ($stateParams.cart && $stateParams.cart === "true") {
-        $scope.hasDataCart = true;
-    }
-    else {
-        $scope.hasDataCart = false;
-    }
-
-    if ($stateParams.track && $stateParams.track === "true") {
-        $scope.track = true;
-    }
-    else {
-        $scope.track = false;
-    }
-
-    if ($stateParams.search && $stateParams.search === "fulltext")
-    {
-        $scope.isfulltextsearch = true;
-    }
-    else
-    {
-        $scope.isfulltextsearch = false;
-    }
-
-    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG}));
-
-    $scope.openModal = function() {
-        $state.go('.modalform', { schema: $scope.dbschema, class: $scope.dbclass, template: $scope.formTemplate }, { location: false, notify: false });
-    };
-
-    $scope.GetCommands = function (rowIndex, data)
-    {
-        var items = new Array();
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/sitemap/commands/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + data.obj_id;
-
-        $http.get(url).success(function (commands) {
-
-            // custom commands
-            $scope.commands = commands;
-            var cmdInfo;
-            var item;
-            for (var cmd in commands) {
-                if (commands.hasOwnProperty(cmd)) {
-                    cmdInfo = commands[cmd];
-                    item = new Object();
-                    item.text = cmdInfo.title;
-                    item.css = "btn btn-primary btn-md btn-nav";
-                    item.track = false;
-                    if (cmdInfo.icon) {
-                        item.icon = cmdInfo.icon;
-                    }
-                    else
-                    {
-                        item.icon = "fa fa-lg fa-tasks";
-                    }
-
-                    item.onItemClick = function (text) {
-                        gotoState(text, $scope.dbschema, data.type, data.obj_id, !data.allowWrite)
-                    }
-
-                    items.push(item);
-
-                    if (cmdInfo.baseUrl && !APP_CONFIG.hashedBaseUrls[cmdInfo.hash]) {
-                        APP_CONFIG.hashedBaseUrls[cmdInfo.hash] = cmdInfo.baseUrl;
-                    }
-                }
-            }
-
-            // add standard commands
-            if (data.allowWrite && $stateParams.edit !== "false") {
-                items.push({
-                    text: $rootScope.getWord('Edit'),
-                    icon: "fa fa-lg fa-edit",
-                    css: "btn btn-default btn-md",
-                    track : false,
-                    onItemClick: function () {
-                        $state.go('.modalform', { schema: $scope.dbschema, class: data.type, oid: data.obj_id, template: $scope.formTemplate, duplicate: "true" }, { location: false, notify: false });
-                    }
-                });
-            }
-
-            /*
-            if (data.allowCreate && $stateParams.insert !== "false") {
-                items.push({
-                    text: $rootScope.getWord('Add'),
-                    icon: "fa fa-lg fa-plus-square",
-                    css: "btn btn-default btn-md btn-nav",
-                    track : false,
-                    onItemClick: function () {
-                        $state.go('.modalform', { schema: $scope.dbschema, class: data.type }, { location: false, notify: false });
-                    }
-                });
-            }
-            */
-
-            if (data.allowDelete && $stateParams.delete !== "false") {
-                items.push({
-                    text: $rootScope.getWord('Delete'),
-                    icon: "fa fa-lg fa-times",
-                    css: "btn btn-default btn-md",
-                    track: false,
-                    onItemClick: function () {
-                        $scope.gridInstance.deleteRow(rowIndex);
-                    }
-                });
-            }
-
-            if ($scope.attachment) {
-                items.push({
-                    text: $rootScope.getWord('Attachments'),
-                    icon: "fa fa-lg fa-file-archive-o",
-                    css: "btn btn-default btn-md",
-                    track: false,
-                    onItemClick: function () {
-                        $state.go('.attachments', { schema: $scope.dbschema, class: data.type, oid: data.obj_id, readonly: !data.allowWrite}, { location: false, notify: false });
-                    }
-                });
-            }
-
-            if ($scope.track) {
-                var groupName = $scope.dbschema + "-" + data.type + "-" + data.obj_id;
-                var isTracking = false;
-                hubService.isUserInGroup(groupName, function (status) {
-                    isTracking = status;
-
-                    items.push({
-                        text: $rootScope.getWord('Track Status'),
-                        icon: "fa fa-lg fa-file-archive-o",
-                        css: "btn btn-default btn-md",
-                        track: true,
-                        trackStatus: isTracking,
-                        onItemClick: function () {
-
-                            if (isTracking) {
-                                hubService.removeFromGroup(groupName); // hubService removes the current user from the group
-                            }
-                            else {
-                                hubService.addToGroup(groupName); // hubService adds the current user to the group
-                            }
-                        }
-                    });
-                });
-            }
-        });
-        return items;
-    }
-
-    var gotoState = function (title, dbschema, dbclass, oid, readonly)
-    {
-        var commands = $scope.commands;
-        var url = undefined;
-        var cmdUrl = undefined;
-        var params = undefined;
-        var cmdInfo;
-        for (var cmd in commands) {
-            if (commands.hasOwnProperty(cmd)) {
-                cmdInfo = commands[cmd];
-                if (cmdInfo.title === title) {
-                    url = cmdInfo.url;
-                    cmdUrl = cmdInfo.url;
-                    params = new Object();
-                    params.schema = dbschema;
-                    params.class = dbclass;
-                    params.oid = oid;
-                    params.readonly = readonly;
-                    params.cmdHash = cmdInfo.hash;
-   
-                    // add command's parameters to the state parameters
-                    if (cmdInfo.parameters) {
-                        for (var key in cmdInfo.parameters) {
-                            if (cmdInfo.parameters.hasOwnProperty(key)) {
-                                params[key] = cmdInfo.parameters[key];
-                            }
-                        }
-                    };
-
-                    break;
-                }
-            }
-        }
-
-        if (url) {
-
-            if (cmdUrl === ".modalform") {
-                $state.go(url, params, { location: false, notify: false });
-            }
-            else {
-                $state.go(url, params);
-            }
-        }
-    }
-
-    $scope.gridInstance = null;
-    $scope.dataGridSettings = {
-        dataSource : {
-            store: $scope.customStore
-        },
-        columnAutoWidth: true,
-        height: $rootScope.isChrome() === true ? '750px' : undefined,
-        sorting: {
-            mode: "multiple"
-        },
-        searchPanel: {
-            visible: $stateParams.search && $stateParams.search === "true"? true: false,
-            width: 300,
-            placeholder: $rootScope.getWord("Keyword Search")
-        },
-        editing: {
-            allowAdding: false,
-            allowUpdating: false,
-            allowDeleting: false
-        },
-        grouping: {
-            autoExpandAll: false
-        },
-        pager: {
-            visible: true,
-            showPageSizeSelector: false,
-            showInfo: true
-        },
-        filterRow: {
-            visible: $scope.isfulltextsearch ? false : true,
-            applyFilter: "auto"
-        },
-        selection: { mode: 'single' },
-        remoteOperations: true,
-        bindingOptions: {
-            columns: 'columns',
-            'scrolling.showScrollbar': 'never'
-        },
-        headerFilter: {
-            visible: true
-        },
-        rowAlternationEnabled: true,
-        masterDetail: {
-            enabled: true,
-            template: "detail"
-        },
-        onRowClick: function(e)
-        {
-            if (e.rowType === "data") {
-                var isExpanded = $scope.gridInstance.isRowExpanded(e.key);
-                $scope.gridInstance.collapseAll(-1); // collaspsed all
-                if (!isExpanded)
-                    {
-                    $scope.gridInstance.expandRow(e.key);
-                    }
-            }
-        },
-        onInitialized: function (e) {
-            $scope.gridInstance = e.component;
-        }
-    };
-
-    $rootScope.$on('modalClosed', function (event, data) {
-        if ($scope.gridInstance && data === "update")
-            $scope.gridInstance.refresh();
-    });
-
-    $scope.getCartItemCount = function () {
-        var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
-        return cart.count;
-    }
-
-    $scope.openCart = function () {
-        $state.go(".datacart", { schema: $scope.dbschema, class: $scope.dbclass }, { location: false, notify: false });
-    }
-
-    $scope.downloadReports = function () {
-        $state.go(".downloadreports", { schema: $scope.dbschema, class: $scope.dbclass }, { location: false, notify: false });
-    }
-});
-'use strict';
-
-angular.module('app.mldashboard').controller('MLDashboardLayoutCtrl', function ($http, APP_CONFIG, $scope, $state, $stateParams, propmisedParams) {
-
-    var params = propmisedParams.data;
-
-    // url to get tree model
-    var url = APP_CONFIG.ebaasRootUrl + "/api/dnn/projects";
-
-    $http.get(url).then(function (res) {
-
-        var projectData = res.data;
-
-        if (projectData) {
-
-            $scope.modelTree = createProjectTree(projectData);
-        }
-    });
-
-    $scope.OpenModelDashboard = function(project, model) {
-        $state.go('app.mldashboard.modeldashboard', { project: project, model: model});
-    }
-
-    var addModelItems = function (parentItem, project, models)
-    {
-        var model, modelItem;
-
-        if (models) {
-            for (var i = 0; i < models.length; i += 1) {
-                model = models[i];
-                modelItem = {};
-                modelItem.title = model;
-                modelItem.content = "<span class='label label-info'><a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('modelTree')).scope().OpenModelDashboard('" + project + "', '" + model + "');\">" + model + "</a></span>";
-
-                parentItem.children.push(modelItem);
-            }
-        }
-    }
-
-    function createProjectTree(projects) {
-        var roots = [];
-
-        // add models to the project
-        asyncLoop({
-            length: projects.length,
-            functionToLoop: function (loop, i) {
-                $http.get(APP_CONFIG.ebaasRootUrl + "/api/dnn/models/" + projects[i])
-                     .success(function (data) {
-
-                         var project = projects[i];
-                         var projectItem = {};
-                         projectItem.title = project;
-                         projectItem.content = "<span><i class=\"fa fa-lg fa-plus-circle\"></i> " + project + "</span>";
-                         projectItem.children = [];
-                         projectItem.expanded = true;
-                         roots.push(projectItem);
-
-                         addModelItems(projectItem, project, data);
-
-                         loop();
-                     });
-            },
-            callback: function () {
-            }
-        });
-
-        return roots;
-    }
-
-    var asyncLoop = function (o) {
-        var i = -1;
-
-        var loop = function () {
-            i++;
-            if (i == o.length) {
-                o.callback();
-                return;
-            }
-
-            o.functionToLoop(loop, i);
-        }
-
-        loop(); // init
-    }
-})
-'use strict';
-
-angular.module('app.mldashboard').controller('MLModelDashboardCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams) {
-
-    $scope.project = $stateParams.project;
-    $scope.model = $stateParams.model;
-
-    $scope.inputFields = [];
-    $scope.outputFields = [];
-
-
-    $scope.loading = false;
-   
-    // url to get model info
-    var url = APP_CONFIG.ebaasRootUrl + "/api/dnn/model/" + $scope.project + "/" + $scope.model;
-
-    $http.get(url).then(function (res) {
-        $scope.modelInfo = res.data;
-
-        var inputField, outputField;
-
-        for (var i = 0; i < $scope.modelInfo.inputVariables.length; i += 1)
-        {
-            var inputVar = $scope.modelInfo.inputVariables[i];
-
-            for (var j = 0; j < inputVar.dimension; j += 1)
-            {
-                inputField = {};
-                inputField.Name = inputVar.name;
-                inputField.Label = inputVar.name + "-" + j;
-                inputField.DataType = inputVar.dataType;
-                inputField.Value = "";
-
-                $scope.inputFields.push(inputField);
-            }
-        }
-
-        for (var i = 0; i < $scope.modelInfo.outputVariables.length; i += 1) {
-            var outputVar = $scope.modelInfo.outputVariables[i];
-
-            outputField = {};
-            outputField.Label = outputVar.name;
-            outputField.Name = outputVar.name;
-            outputField.DataType = outputVar.dataType;
-            outputField.Value = "";
-
-            $scope.outputFields.push(outputField);
-        }
-    });
-
-    $scope.submitModelForm = function()
-    {
-        $scope.loading = true;
-        var features = GetFeatures();
-        var labels = GetLabels();
-  
-        // url to get model info
-        var url = APP_CONFIG.ebaasRootUrl + "/api/dnn/classify/" + $scope.project + "/" + $scope.model + "/" + features + "/" + labels;
-
-        $http.get(url).then(function (res) {
-            var outputs = res.data;
-
-            for (var i = 0; i < $scope.outputFields.length; i += 1) {
-                var outputField = $scope.outputFields[i];
-                if (outputs[outputField.Name])
-                {
-                    outputField.Value = outputs[outputField.Name];
-                }
-            }
-
-            $scope.loading = false;
-        })
-    }
-
-
-    function GetFeatures()
-    {
-        var features = "";
-        for (var i = 0; i < $scope.inputFields.length; i += 1) {
-            var inputField = $scope.inputFields[i];
-            if (inputField.Name == "features") {
-                if (features)
-                {
-                    features += ";";
-                }
-
-                features += inputField.Value;
-            }
-        }
-
-        return features;
-    }
-
-    function GetLabels() {
-        var labels = "";
-        for (var i = 0; i < $scope.inputFields.length; i += 1) {
-            var inputField = $scope.inputFields[i];
-            if (inputField.Name == "labels") {
-                if (labels) {
-                    labels += ";";
-                }
-
-                labels += inputField.Value;
-            }
-        }
-
-        return labels;
-    }
-});
-"use strict";
-
-angular.module('app.myspace').controller('finishedTaskFormCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $stateParams, $state, promiseFinishedTaskInfo) {
-
-    if (!promiseFinishedTaskInfo.data) {
-
-        BootstrapDialog.show({
-            title: $rootScope.getWord("Info Dialog"),
-            type: BootstrapDialog.TYPE_INFO,
-            message: $rootScope.getWord("Non-exist task"),
-            buttons: [{
-                label: $rootScope.getWord("Cancel"),
-                action: function (dialog) {
-                    dialog.close();
-                }
-            }]
-        });
-
-        return;
-    }
-    if (promiseFinishedTaskInfo.data.formUrl)
-    {
-        if (promiseFinishedTaskInfo.data.formParams) {
-            // task with custom module, goto the custom module
-            var params = JSON.parse(promiseFinishedTaskInfo.data.formParams);
-            params["schema"] = $stateParams.schema;
-            params["class"] = promiseFinishedTaskInfo.data.bindingClassName;
-            params["oid"] = promiseFinishedTaskInfo.data.bindingInstanceId;
-            params["taskid"] = $stateParams.taskid;
-
-            $state.go(promiseFinishedTaskInfo.data.formUrl, params);
-        }
-    }
-
-    $scope.taskId = $stateParams.taskid;
-
-    $scope.dbschema = $stateParams.schema;
-
-    $scope.dbclass = promiseFinishedTaskInfo.data.bindingClassName;
-
-    $scope.oid = promiseFinishedTaskInfo.data.bindingInstanceId; // id of the instance bound to the task
-
-    $scope.loading = false;
-
-    $scope.showCommands = false;
-
-    $scope.ToolTip = "command";
-
-    if (promiseFinishedTaskInfo.data.formParams) {
-        var params = JSON.parse(promiseFinishedTaskInfo.data.formParams);
-
-        $scope.template = params["template"];
-        $scope.formAttribute = params["formAttribute"];
-        if (params["showCommands"]) {
-            $scope.showCommands = params["showCommands"];
-        }
-    }
-    else {
-        $scope.template = undefined;
-        $scope.formAttribute = undefined;
-    }
-
-    angular.extend(this, $controller('ebaasFormBaseCtrl', { $rootScope: $rootScope, $scope: $scope, $http: $http, APP_CONFIG: APP_CONFIG }));
-
-    $scope.goBack = function()
-    {
-        history.back(1);
-    }
-});
-
-'use strict';
-
-angular.module('app.myspace').controller('mySpaceCtrl', function ($scope, $rootScope, $http, $state, $stateParams, APP_CONFIG, User, TasksInfo, myActivityService, blogService, promiseTasks) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.blogClass = "Blog";
-
-    $scope.user = User;
-
-    $scope.itemsByPage = 15;
-
-    $scope.rowCollection = promiseTasks.data;
-
-    $scope.numOfPages = Math.ceil(promiseTasks.data.length / $scope.itemsByPage);
-
-    TasksInfo.tasks = promiseTasks.data;
-    TasksInfo.count = promiseTasks.data.length; // other components are watching task number changes through this service
-    $scope.taskCount = TasksInfo.count;
-
-    myActivityService.getbytype("msgs", function (data) {
-        myActivityService.MessageModel.items = data;
-
-    });
-
-    // Getting my blogs
-    blogService.getMyBlogs("COMMON", $scope.blogClass, User.userName, function (result) {
-        $scope.blogs = result.data;
-
-    });
-
-    $scope.getPosterImage = function(posterId)
-    {
-        return User.getUserImage(posterId);
-    }
-
-    $scope.getMsgItems = function () {
-        return myActivityService.MessageModel.items;
-    }
-
-    $scope.getMsgCount = function () {
-        return myActivityService.MessageModel.items.length;
-    }
-
-    $scope.readMsg = function (msg) {
-        var url = msg.url;
-        var urlparams = msg.urlparams;
-
-        urlparams = urlparams.replace(/msg.dbschema/, "\"" + msg.dbschema + "\""); // replace msg.dbschema
-        urlparams = urlparams.replace(/msg.dbclass/, "\"" + msg.dbclass + "\""); // replace msg.dbclass
-        urlparams = urlparams.replace(/msg.oid/, "\"" + msg.oid + "\""); // replace msg.dbclass
-
-        var params = JSON.parse(urlparams);
-
-        if (url) {
-            $state.go(url, params);
-        }
-    }
-
-    $scope.deleteMsg = function (msg) {
-        var found = false;
-        var index = undefined;
-
-        for (var i = 0; i < myActivityService.MessageModel.items.length; i++) {
-            var activity = myActivityService.MessageModel.items[i];
-            if (activity.objId === msg.objId) {
-                index = i;
-                found = true;
-                break;
-            }
-        }
-
-        if (found) {
-            myActivityService.MessageModel.items.splice(index, 1);
-        }
-
-        myActivityService.remove("msgs", msg.objId, function (data) {
-            myActivityService.MessageModel.count = myActivityService.MessageModel.items.length;
-        });
-    }
-
-    $scope.RefreshTasks = function()
-    {
-        $state.reload();
-    }
-
-    $scope.OpenSetSubstitute = function () {
-        $state.go(".substitute", { schema: $scope.dbschema });
-    }
-
-    $rootScope.$on('modalClosed', function (event, data) {
-        if (data === "update")
-            $scope.RefreshTasks();
-    });
-
-    $scope.finishedTasks = [];
-    $scope.tableState;
-    $scope.pageSize = 15;
-
-    $scope.isLoading = true;
-
-    $scope.callServer = function (tableState) {
-
-        $scope.isLoading = true;
-
-        $scope.tableState = tableState;
-
-        var pagination = tableState.pagination;
-
-        var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
-        var number = pagination.number || $scope.pageSize;  // Number of entries showed per page.
-
-        $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/user/" + encodeURIComponent($scope.dbschema) + "?from=" + start + "&size=" + number).success(function (data) {
-            // then get total count
-            $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/user/" + encodeURIComponent($scope.dbschema) + "/count").success(function (count) {
-                $scope.finishedTasks = data;
-
-                tableState.pagination.numberOfPages = Math.ceil(count / $scope.pageSize);//set the number of pages so the pagination can update
-                
-                $scope.isLoading = false;
-            });
-        })
-    };
-
-    $scope.refreshFinishedTasks = function () {
-        $scope.callServer($scope.tableState);
-    }
-
-    $scope.clearFinishedTasks = function()
-    {
-        $scope.isLoading = true;
-
-        $http.delete(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/" + encodeURIComponent($scope.dbschema)).success(function () {
-
-            $scope.isLoading = false;
-
-            $scope.callServer($scope.tableState);
-        })
-    }
-
-    $scope.hasFinishedTasks = function () {
-        if ($scope.finishedTasks && $scope.finishedTasks.length > 0)
-            return true;
-        else
-            return false;
-    }
-});
-"use strict";
-
-angular.module('app.myspace').controller('uploadPictureCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, User, Upload, $timeout) {
-
-
-    $scope.upload = function (dataUrl, name) {
-
-        var fileName = User.userName + ".png";
-
-        var uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/images/avatars";
-
-        Upload.upload({
-            url: uploadUrl,
-            data: {
-                file: Upload.dataUrltoBlob(dataUrl, fileName)
-            },
-        }).then(function (response) {
-            $timeout(function () {
-                $scope.result = response.data;
-                User.imageUrl = undefined;
-                User.pictureChangeTime = new Date().getTime();
-
-                if (!User.picture) {
-                    User.picture = fileName;
-    
-                    User.save();
-                }
-            });
-        }, function (response) {
-            $scope.loading = false;
-            if (response.status > 0) $scope.errorMsg = response.status
-                + ': ' + response.data;
-        }, function (evt) {
-
-            $scope.progress = parseInt(100.0 * evt.loaded / evt.total);
-        });
-    };
-
-    $scope.closeModal = function () {
-        $modalInstance.dismiss("dismiss");
-
-    };
-});
-"use strict";
-
 angular.module('app.layout').controller('helpViewerCtlr', function ($rootScope, $scope, $stateParams, $http, APP_CONFIG) {
 
     $scope.hash = undefined;
@@ -44465,147 +43269,322 @@ angular.module('app').directive('toggleShortcut', function($log,$timeout) {
 })
 'use strict';
 
-angular.module('app.smartforms').directive('buttonSpinner', function ($compile) {
-    return {
-        restrict: 'A',
-        scope: {
-            spinning: '=buttonSpinner',
-            spinningIcon: '@?',
-            buttonPrepend: '@?',
-            buttonAppend: '@?'
-        },
-        transclude: true,
-        template: 
-        "<span ng-if=\"!!buttonPrepend\" ng-hide=\"spinning\"><i class=\"{{ buttonPrepend }}\"></i>&nbsp;</span>" +
-        "<span ng-if=\"!!buttonPrepend\" ng-show=\"spinning\"><i class=\"{{ !!spinningIcon ? spinningIcon : 'fa fa-spinner fa-spin' }}\"></i>&nbsp;</span>" +
-        "<ng-transclude></ng-transclude>" +
-        "<span ng-if=\"!!buttonAppend\" ng-hide=\"spinning\">&nbsp;<i class=\"{{ buttonAppend }}\"></i></span>" +
-        "<span ng-if=\"!buttonPrepend\" ng-show=\"spinning\">&nbsp;<i class=\"{{ !!spinningIcon ? spinningIcon : 'fa fa-spinner fa-spin' }}\"></i></span>"
-    }
-});
-'use strict';
+angular.module('app.mldashboard').controller('MLDashboardLayoutCtrl', function ($http, APP_CONFIG, $scope, $state, $stateParams, propmisedParams) {
 
-angular.module('app.smartforms').directive('dynamic', function ($compile) {
-    return {
-        restrict: 'A',
-        replace: true,
-        link: function (scope, ele, attrs) {
-            scope.$watch(attrs.dynamic, function (html) {
-                ele.html(html);
-                $compile(ele.contents())(scope);
-            });
+    var params = propmisedParams.data;
+
+    // url to get tree model
+    var url = APP_CONFIG.ebaasRootUrl + "/api/dnn/projects";
+
+    $http.get(url).then(function (res) {
+
+        var projectData = res.data;
+
+        if (projectData) {
+
+            $scope.modelTree = createProjectTree(projectData);
         }
-    };
-});
+    });
+
+    $scope.OpenModelDashboard = function(project, model) {
+        $state.go('app.mldashboard.modeldashboard', { project: project, model: model});
+    }
+
+    var addModelItems = function (parentItem, project, models)
+    {
+        var model, modelItem;
+
+        if (models) {
+            for (var i = 0; i < models.length; i += 1) {
+                model = models[i];
+                modelItem = {};
+                modelItem.title = model;
+                modelItem.content = "<span class='label label-info'><a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('modelTree')).scope().OpenModelDashboard('" + project + "', '" + model + "');\">" + model + "</a></span>";
+
+                parentItem.children.push(modelItem);
+            }
+        }
+    }
+
+    function createProjectTree(projects) {
+        var roots = [];
+
+        // add models to the project
+        asyncLoop({
+            length: projects.length,
+            functionToLoop: function (loop, i) {
+                $http.get(APP_CONFIG.ebaasRootUrl + "/api/dnn/models/" + projects[i])
+                     .success(function (data) {
+
+                         var project = projects[i];
+                         var projectItem = {};
+                         projectItem.title = project;
+                         projectItem.content = "<span><i class=\"fa fa-lg fa-plus-circle\"></i> " + project + "</span>";
+                         projectItem.children = [];
+                         projectItem.expanded = true;
+                         roots.push(projectItem);
+
+                         addModelItems(projectItem, project, data);
+
+                         loop();
+                     });
+            },
+            callback: function () {
+            }
+        });
+
+        return roots;
+    }
+
+    var asyncLoop = function (o) {
+        var i = -1;
+
+        var loop = function () {
+            i++;
+            if (i == o.length) {
+                o.callback();
+                return;
+            }
+
+            o.functionToLoop(loop, i);
+        }
+
+        loop(); // init
+    }
+})
 'use strict';
 
-angular.module('app.smartforms').directive('ebaasFormTemplate', function ($templateRequest, $compile, $sce, APP_CONFIG, $stateParams) {
-    return {
-        restrict: "E",
-        scope: true,
-        link: function (scope, element, attrs) {
-            var schema = scope.$eval(attrs.dbschema);
-            var cls = scope.$eval(attrs.dbclass);
-            var oid = scope.$eval(attrs.oid);
-            var template = scope.$eval(attrs.template);
-            var formAttribute = scope.$eval(attrs.formattribute);
-            var previewid = scope.$eval(attrs.previewid);
-            var taskId = undefined;
-            var readOnly = false;
-            if (attrs.readonly)
+angular.module('app.mldashboard').controller('MLModelDashboardCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams) {
+
+    $scope.project = $stateParams.project;
+    $scope.model = $stateParams.model;
+
+    $scope.inputFields = [];
+    $scope.outputFields = [];
+
+
+    $scope.loading = false;
+   
+    // url to get model info
+    var url = APP_CONFIG.ebaasRootUrl + "/api/dnn/model/" + $scope.project + "/" + $scope.model;
+
+    $http.get(url).then(function (res) {
+        $scope.modelInfo = res.data;
+
+        var inputField, outputField;
+
+        for (var i = 0; i < $scope.modelInfo.inputVariables.length; i += 1)
+        {
+            var inputVar = $scope.modelInfo.inputVariables[i];
+
+            for (var j = 0; j < inputVar.dimension; j += 1)
             {
-                readOnly = scope.$eval(attrs.readonly);
-            }
+                inputField = {};
+                inputField.Name = inputVar.name;
+                inputField.Label = inputVar.name + "-" + j;
+                inputField.DataType = inputVar.dataType;
+                inputField.Value = "";
 
-            if (attrs.taskid) {
-                taskId = scope.$eval(attrs.taskid);
-            }
-
-            var url = undefined;
-            if (cls) {
-                if (formAttribute && oid)
-                {
-                    // get custom form from an property value
-                    url = APP_CONFIG.ebaasRootUrl + "/api/form/template/" + encodeURIComponent(schema) + "/" + cls + "/" + oid + "?templateSource=property&property=" + formAttribute + "&readOnly=" + readOnly;
-                }
-                else if (template) {
-                    if (oid) {
-                        // get custom form
-                        url = APP_CONFIG.ebaasRootUrl + "/api/form/template/" + encodeURIComponent(schema) + "/" + cls + "/" + oid + "?templateSource=file&template=" + encodeURIComponent(template) + "&readOnly=" + readOnly;
-                    }
-                    else {
-                        url = APP_CONFIG.ebaasRootUrl + "/api/form/template/" + encodeURIComponent(schema) + "/" + cls + "?templateSource=file&template=" + encodeURIComponent(template) + "&readOnly=" + readOnly;
-                    }
-                }
-                else {
-                    if (oid) {
-                        // get a default form
-                        url = APP_CONFIG.ebaasRootUrl + "/api/form/template/" + encodeURIComponent(schema) + "/" + cls + "/" + oid + "?readonly=" + readOnly;
-                    }
-                    else {
-                        url = APP_CONFIG.ebaasRootUrl + "/api/form/template/" + encodeURIComponent(schema) + "/" + cls + "?readOnly=" + readOnly;
-                    }
-                }
-
-                if (previewid)
-                {
-                    url += "&previewid=" + previewid;
-                }
-
-                if (taskId)
-                {
-                    url += "&taskId=" + taskId;
-                }
-            }
-            
-            if (url) {
-                // Load the html through $templateRequest
-                $templateRequest($sce.trustAsResourceUrl(url)).then(function (html) {
-                    // Convert the html to an actual DOM node
-                    
-                    html = html.slice(1, html.length); // remove double quote at start and end
-                    html = html.replace(/\\/g, "");
-
-                    //console.log(html);
-                    var template = angular.element($.trim(html)); // remove spaces
-
-                    // Append it to the directive element
-                    element.append(template);
-                    // And let Angular $compile it
-                    $compile(template)(scope);
-                });
+                $scope.inputFields.push(inputField);
             }
         }
+
+        for (var i = 0; i < $scope.modelInfo.outputVariables.length; i += 1) {
+            var outputVar = $scope.modelInfo.outputVariables[i];
+
+            outputField = {};
+            outputField.Label = outputVar.name;
+            outputField.Name = outputVar.name;
+            outputField.DataType = outputVar.dataType;
+            outputField.Value = "";
+
+            $scope.outputFields.push(outputField);
+        }
+    });
+
+    $scope.submitModelForm = function()
+    {
+        $scope.loading = true;
+        var features = GetFeatures();
+        var labels = GetLabels();
+  
+        // url to get model info
+        var url = APP_CONFIG.ebaasRootUrl + "/api/dnn/classify/" + $scope.project + "/" + $scope.model + "/" + features + "/" + labels;
+
+        $http.get(url).then(function (res) {
+            var outputs = res.data;
+
+            for (var i = 0; i < $scope.outputFields.length; i += 1) {
+                var outputField = $scope.outputFields[i];
+                if (outputs[outputField.Name])
+                {
+                    outputField.Value = outputs[outputField.Name];
+                }
+            }
+
+            $scope.loading = false;
+        })
+    }
+
+
+    function GetFeatures()
+    {
+        var features = "";
+        for (var i = 0; i < $scope.inputFields.length; i += 1) {
+            var inputField = $scope.inputFields[i];
+            if (inputField.Name == "features") {
+                if (features)
+                {
+                    features += ";";
+                }
+
+                features += inputField.Value;
+            }
+        }
+
+        return features;
+    }
+
+    function GetLabels() {
+        var labels = "";
+        for (var i = 0; i < $scope.inputFields.length; i += 1) {
+            var inputField = $scope.inputFields[i];
+            if (inputField.Name == "labels") {
+                if (labels) {
+                    labels += ";";
+                }
+
+                labels += inputField.Value;
+            }
+        }
+
+        return labels;
+    }
+});
+'use strict';
+
+angular.module('app.logs').controller('changeLogCtrl', function ($scope, $rootScope, APP_CONFIG, logManager, $stateParams) {
+
+    var vm = this;
+    vm.title = 'Log Viewer';
+
+    vm.getWord = getWord;
+
+    logManager.params.dbschema = $stateParams.logschema;
+    logManager.params.dbclass = $stateParams.logclass;
+    logManager.params.oid = $stateParams.logoid;
+    logManager.params.property = $stateParams.logproperty;
+
+    activate();
+
+    function activate() {
+        logManager.load(function (logs) {
+            console.log(logs);
+            vm.logs = logs;
+        });
+    }
+
+    function getWord(key) {
+        return $rootScope.getWord(key);
     }
 });
 
 'use strict';
 
-angular.module('app.smartforms').directive('compile', function ($compile) {
-    return function (scope, element, attrs) {
-        var ensureCompileRunsOnce = scope.$watch(
-          function (scope) {
-              // watch the 'compile' expression for changes
-              return scope.$eval(attrs.compile);
-          },
-          function (value) {
-              // when the 'compile' expression changes
-              // assign it into the current DOM
-              element.html(value);
+angular.module('app.logs').controller('changeLogViewerCtrl', function ($scope, $rootScope, APP_CONFIG, $stateParams, $modalInstance) {
 
-              // compile the new DOM and link it to the current
-              // scope.
-              // NOTE: we only compile .childNodes so that
-              // we don't get into infinite loop compiling ourselves
-              $compile(element.contents())(scope);
+    $scope.dbschema = $stateParams.logschema;
+    $scope.dbclass = $stateParams.logclass;
+    $scope.oid = $stateParams.logoid;
+    $scope.property = $stateParams.logproperty;
 
-              // Use Angular's un-watch feature to ensure compilation only happens once.
-              ensureCompileRunsOnce();
-          }
-      );
+
+    $scope.closeModal = function () {
+        $modalInstance.dismiss("dismiss");
     };
 });
 
+'use strict';
+
+angular.module('app.logs').directive('changelog', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/logs/views/change-log.html',
+        replace: true,
+        scope: {},
+        controllerAs: 'vm',
+        controller: 'changeLogCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
+'use strict';
+
+angular.module('app.logs').factory('logManager', function ($q, $http, APP_CONFIG) {
+
+    var service = {
+        logs: [],
+        load: load,
+        status: {
+            uploading: false
+        },
+        params: {
+            dbschema: "",
+            dbclass: "",
+            oid: "",
+            property: ""
+        }
+    };
+
+    return service;
+
+    function load(callback) {
+        service.logs.length = 0;
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/log/" + encodeURIComponent(service.params.dbschema) + "/" + service.params.dbclass + "/" + service.params.oid + "/" + service.params.property;
+
+        $http.get(url).success(function (data) {
+
+            callback(convertLogs(data));
+
+        }).error(function () {
+
+        });
+    }
+
+    function convertLogs(logRecordCollection) {
+
+        var logs = [];
+
+        if (logRecordCollection) {
+
+            for (var i = 0; i < logRecordCollection.length; i++) {
+                var logRecord = logRecordCollection[i];
+
+                var log = {};
+
+                switch (logRecord.actionType)
+                {
+                    case 1:
+                        log.type = "Create";
+                        break;
+
+                    case 2:
+                        log.type = "Modify";
+                        break
+                }
+                
+                log.user = logRecord.userDisplayText;
+                log.time = logRecord.actionTime;
+                log.content = logRecord.actionData;
+
+                logs.push(log);
+            }
+        }
+
+        return logs;
+    }
+});
 'use strict';
 
 angular.module('app.smartforms').controller('ebaasFormBaseCtrl', function ($rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, MetaDataCache) {
@@ -45717,64 +44696,406 @@ angular.module('app.smartforms').controller('viewManyToManyCtrl', function ($sco
 
 'use strict';
 
-angular.module('app.smartreports').controller('downloadReportCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $stateParams, $modalInstance, fileManager) {
- 
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
-    $scope.oid = $stateParams.oid;
-    $scope.template = $stateParams.template;
-    $scope.templateAttribute = $stateParams.templateAttribute;
-
-    $scope.baseUrl = APP_CONFIG.ebaasRootUrl;
-    if (APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash])
-    {
-        $scope.baseUrl = APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash];
+angular.module('app.smartforms').directive('buttonSpinner', function ($compile) {
+    return {
+        restrict: 'A',
+        scope: {
+            spinning: '=buttonSpinner',
+            spinningIcon: '@?',
+            buttonPrepend: '@?',
+            buttonAppend: '@?'
+        },
+        transclude: true,
+        template: 
+        "<span ng-if=\"!!buttonPrepend\" ng-hide=\"spinning\"><i class=\"{{ buttonPrepend }}\"></i>&nbsp;</span>" +
+        "<span ng-if=\"!!buttonPrepend\" ng-show=\"spinning\"><i class=\"{{ !!spinningIcon ? spinningIcon : 'fa fa-spinner fa-spin' }}\"></i>&nbsp;</span>" +
+        "<ng-transclude></ng-transclude>" +
+        "<span ng-if=\"!!buttonAppend\" ng-hide=\"spinning\">&nbsp;<i class=\"{{ buttonAppend }}\"></i></span>" +
+        "<span ng-if=\"!buttonPrepend\" ng-show=\"spinning\">&nbsp;<i class=\"{{ !!spinningIcon ? spinningIcon : 'fa fa-spinner fa-spin' }}\"></i></span>"
     }
-   
-    $scope.loading = false;
+});
+'use strict';
 
-    $scope.closeModal = function () {
-        $modalInstance.dismiss("dismiss");
+angular.module('app.smartforms').directive('dynamic', function ($compile) {
+    return {
+        restrict: 'A',
+        replace: true,
+        link: function (scope, ele, attrs) {
+            scope.$watch(attrs.dynamic, function (html) {
+                ele.html(html);
+                $compile(ele.contents())(scope);
+            });
+        }
     };
+});
+'use strict';
 
-    $scope.download = function() {
+angular.module('app.smartforms').directive('ebaasFormTemplate', function ($templateRequest, $compile, $sce, APP_CONFIG, $stateParams) {
+    return {
+        restrict: "E",
+        scope: true,
+        link: function (scope, element, attrs) {
+            var schema = scope.$eval(attrs.dbschema);
+            var cls = scope.$eval(attrs.dbclass);
+            var oid = scope.$eval(attrs.oid);
+            var template = scope.$eval(attrs.template);
+            var formAttribute = scope.$eval(attrs.formattribute);
+            var previewid = scope.$eval(attrs.previewid);
+            var taskId = undefined;
+            var readOnly = false;
+            if (attrs.readonly)
+            {
+                readOnly = scope.$eval(attrs.readonly);
+            }
 
-        var getFileUrl = undefined;
- 
-        if ($scope.templateAttribute)
-        {
-            getFileUrl = $scope.baseUrl + "/api/report/" + $scope.dbschema + "/" + $scope.dbclass + "/" + $scope.oid + "?templateSource=property&property=" + $scope.templateAttribute;
+            if (attrs.taskid) {
+                taskId = scope.$eval(attrs.taskid);
+            }
 
-        }
-        else if ($scope.template) {
-            getFileUrl = $scope.baseUrl + "/api/report/" + $scope.dbschema + "/" + $scope.dbclass + "/" + $scope.oid + "?templateSource=file&template=" + encodeURIComponent($scope.template);
-        }
-
-        if (getFileUrl) {
-            $scope.loading = true;
-
-            fileManager.performDownload(getFileUrl, function () {
-                $scope.loading = false;
-            });
-        }
-        else
-        {
-            BootstrapDialog.show({
-                title: $rootScope.getWord("Info Dialog"),
-                type: BootstrapDialog.TYPE_DANGER,
-                message: "template or property parameter not defined",
-                buttons: [{
-                    label: $rootScope.getWord("Cancel"),
-                    action: function (dialog) {
-                        dialog.close();
+            var url = undefined;
+            if (cls) {
+                if (formAttribute && oid)
+                {
+                    // get custom form from an property value
+                    url = APP_CONFIG.ebaasRootUrl + "/api/form/template/" + encodeURIComponent(schema) + "/" + cls + "/" + oid + "?templateSource=property&property=" + formAttribute + "&readOnly=" + readOnly;
+                }
+                else if (template) {
+                    if (oid) {
+                        // get custom form
+                        url = APP_CONFIG.ebaasRootUrl + "/api/form/template/" + encodeURIComponent(schema) + "/" + cls + "/" + oid + "?templateSource=file&template=" + encodeURIComponent(template) + "&readOnly=" + readOnly;
                     }
-                }]
-            });
+                    else {
+                        url = APP_CONFIG.ebaasRootUrl + "/api/form/template/" + encodeURIComponent(schema) + "/" + cls + "?templateSource=file&template=" + encodeURIComponent(template) + "&readOnly=" + readOnly;
+                    }
+                }
+                else {
+                    if (oid) {
+                        // get a default form
+                        url = APP_CONFIG.ebaasRootUrl + "/api/form/template/" + encodeURIComponent(schema) + "/" + cls + "/" + oid + "?readonly=" + readOnly;
+                    }
+                    else {
+                        url = APP_CONFIG.ebaasRootUrl + "/api/form/template/" + encodeURIComponent(schema) + "/" + cls + "?readOnly=" + readOnly;
+                    }
+                }
+
+                if (previewid)
+                {
+                    url += "&previewid=" + previewid;
+                }
+
+                if (taskId)
+                {
+                    url += "&taskId=" + taskId;
+                }
+            }
             
+            if (url) {
+                // Load the html through $templateRequest
+                $templateRequest($sce.trustAsResourceUrl(url)).then(function (html) {
+                    // Convert the html to an actual DOM node
+                    
+                    html = html.slice(1, html.length); // remove double quote at start and end
+                    html = html.replace(/\\/g, "");
+
+                    //console.log(html);
+                    var template = angular.element($.trim(html)); // remove spaces
+
+                    // Append it to the directive element
+                    element.append(template);
+                    // And let Angular $compile it
+                    $compile(template)(scope);
+                });
+            }
         }
     }
 });
 
+'use strict';
+
+angular.module('app.smartforms').directive('compile', function ($compile) {
+    return function (scope, element, attrs) {
+        var ensureCompileRunsOnce = scope.$watch(
+          function (scope) {
+              // watch the 'compile' expression for changes
+              return scope.$eval(attrs.compile);
+          },
+          function (value) {
+              // when the 'compile' expression changes
+              // assign it into the current DOM
+              element.html(value);
+
+              // compile the new DOM and link it to the current
+              // scope.
+              // NOTE: we only compile .childNodes so that
+              // we don't get into infinite loop compiling ourselves
+              $compile(element.contents())(scope);
+
+              // Use Angular's un-watch feature to ensure compilation only happens once.
+              ensureCompileRunsOnce();
+          }
+      );
+    };
+});
+
+"use strict";
+
+angular.module('app.myspace').controller('finishedTaskFormCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $stateParams, $state, promiseFinishedTaskInfo) {
+
+    if (!promiseFinishedTaskInfo.data) {
+
+        BootstrapDialog.show({
+            title: $rootScope.getWord("Info Dialog"),
+            type: BootstrapDialog.TYPE_INFO,
+            message: $rootScope.getWord("Non-exist task"),
+            buttons: [{
+                label: $rootScope.getWord("Cancel"),
+                action: function (dialog) {
+                    dialog.close();
+                }
+            }]
+        });
+
+        return;
+    }
+    if (promiseFinishedTaskInfo.data.formUrl)
+    {
+        if (promiseFinishedTaskInfo.data.formParams) {
+            // task with custom module, goto the custom module
+            var params = JSON.parse(promiseFinishedTaskInfo.data.formParams);
+            params["schema"] = $stateParams.schema;
+            params["class"] = promiseFinishedTaskInfo.data.bindingClassName;
+            params["oid"] = promiseFinishedTaskInfo.data.bindingInstanceId;
+            params["taskid"] = $stateParams.taskid;
+
+            $state.go(promiseFinishedTaskInfo.data.formUrl, params);
+        }
+    }
+
+    $scope.taskId = $stateParams.taskid;
+
+    $scope.dbschema = $stateParams.schema;
+
+    $scope.dbclass = promiseFinishedTaskInfo.data.bindingClassName;
+
+    $scope.oid = promiseFinishedTaskInfo.data.bindingInstanceId; // id of the instance bound to the task
+
+    $scope.loading = false;
+
+    $scope.showCommands = false;
+
+    $scope.ToolTip = "command";
+
+    if (promiseFinishedTaskInfo.data.formParams) {
+        var params = JSON.parse(promiseFinishedTaskInfo.data.formParams);
+
+        $scope.template = params["template"];
+        $scope.formAttribute = params["formAttribute"];
+        if (params["showCommands"]) {
+            $scope.showCommands = params["showCommands"];
+        }
+    }
+    else {
+        $scope.template = undefined;
+        $scope.formAttribute = undefined;
+    }
+
+    angular.extend(this, $controller('ebaasFormBaseCtrl', { $rootScope: $rootScope, $scope: $scope, $http: $http, APP_CONFIG: APP_CONFIG }));
+
+    $scope.goBack = function()
+    {
+        history.back(1);
+    }
+});
+
+'use strict';
+
+angular.module('app.myspace').controller('mySpaceCtrl', function ($scope, $rootScope, $http, $state, $stateParams, APP_CONFIG, User, TasksInfo, myActivityService, blogService, promiseTasks) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.blogClass = "Blog";
+
+    $scope.user = User;
+
+    $scope.itemsByPage = 15;
+
+    $scope.rowCollection = promiseTasks.data;
+
+    $scope.numOfPages = Math.ceil(promiseTasks.data.length / $scope.itemsByPage);
+
+    TasksInfo.tasks = promiseTasks.data;
+    TasksInfo.count = promiseTasks.data.length; // other components are watching task number changes through this service
+    $scope.taskCount = TasksInfo.count;
+
+    myActivityService.getbytype("msgs", function (data) {
+        myActivityService.MessageModel.items = data;
+
+    });
+
+    // Getting my blogs
+    blogService.getMyBlogs("COMMON", $scope.blogClass, User.userName, function (result) {
+        $scope.blogs = result.data;
+
+    });
+
+    $scope.getPosterImage = function(posterId)
+    {
+        return User.getUserImage(posterId);
+    }
+
+    $scope.getMsgItems = function () {
+        return myActivityService.MessageModel.items;
+    }
+
+    $scope.getMsgCount = function () {
+        return myActivityService.MessageModel.items.length;
+    }
+
+    $scope.readMsg = function (msg) {
+        var url = msg.url;
+        var urlparams = msg.urlparams;
+
+        urlparams = urlparams.replace(/msg.dbschema/, "\"" + msg.dbschema + "\""); // replace msg.dbschema
+        urlparams = urlparams.replace(/msg.dbclass/, "\"" + msg.dbclass + "\""); // replace msg.dbclass
+        urlparams = urlparams.replace(/msg.oid/, "\"" + msg.oid + "\""); // replace msg.dbclass
+
+        var params = JSON.parse(urlparams);
+
+        if (url) {
+            $state.go(url, params);
+        }
+    }
+
+    $scope.deleteMsg = function (msg) {
+        var found = false;
+        var index = undefined;
+
+        for (var i = 0; i < myActivityService.MessageModel.items.length; i++) {
+            var activity = myActivityService.MessageModel.items[i];
+            if (activity.objId === msg.objId) {
+                index = i;
+                found = true;
+                break;
+            }
+        }
+
+        if (found) {
+            myActivityService.MessageModel.items.splice(index, 1);
+        }
+
+        myActivityService.remove("msgs", msg.objId, function (data) {
+            myActivityService.MessageModel.count = myActivityService.MessageModel.items.length;
+        });
+    }
+
+    $scope.RefreshTasks = function()
+    {
+        $state.reload();
+    }
+
+    $scope.OpenSetSubstitute = function () {
+        $state.go(".substitute", { schema: $scope.dbschema });
+    }
+
+    $rootScope.$on('modalClosed', function (event, data) {
+        if (data === "update")
+            $scope.RefreshTasks();
+    });
+
+    $scope.finishedTasks = [];
+    $scope.tableState;
+    $scope.pageSize = 15;
+
+    $scope.isLoading = true;
+
+    $scope.callServer = function (tableState) {
+
+        $scope.isLoading = true;
+
+        $scope.tableState = tableState;
+
+        var pagination = tableState.pagination;
+
+        var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
+        var number = pagination.number || $scope.pageSize;  // Number of entries showed per page.
+
+        $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/user/" + encodeURIComponent($scope.dbschema) + "?from=" + start + "&size=" + number).success(function (data) {
+            // then get total count
+            $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/user/" + encodeURIComponent($scope.dbschema) + "/count").success(function (count) {
+                $scope.finishedTasks = data;
+
+                tableState.pagination.numberOfPages = Math.ceil(count / $scope.pageSize);//set the number of pages so the pagination can update
+                
+                $scope.isLoading = false;
+            });
+        })
+    };
+
+    $scope.refreshFinishedTasks = function () {
+        $scope.callServer($scope.tableState);
+    }
+
+    $scope.clearFinishedTasks = function()
+    {
+        $scope.isLoading = true;
+
+        $http.delete(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/" + encodeURIComponent($scope.dbschema)).success(function () {
+
+            $scope.isLoading = false;
+
+            $scope.callServer($scope.tableState);
+        })
+    }
+
+    $scope.hasFinishedTasks = function () {
+        if ($scope.finishedTasks && $scope.finishedTasks.length > 0)
+            return true;
+        else
+            return false;
+    }
+});
+"use strict";
+
+angular.module('app.myspace').controller('uploadPictureCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, User, Upload, $timeout) {
+
+
+    $scope.upload = function (dataUrl, name) {
+
+        var fileName = User.userName + ".png";
+
+        var uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/images/avatars";
+
+        Upload.upload({
+            url: uploadUrl,
+            data: {
+                file: Upload.dataUrltoBlob(dataUrl, fileName)
+            },
+        }).then(function (response) {
+            $timeout(function () {
+                $scope.result = response.data;
+                User.imageUrl = undefined;
+                User.pictureChangeTime = new Date().getTime();
+
+                if (!User.picture) {
+                    User.picture = fileName;
+    
+                    User.save();
+                }
+            });
+        }, function (response) {
+            $scope.loading = false;
+            if (response.status > 0) $scope.errorMsg = response.status
+                + ': ' + response.data;
+        }, function (evt) {
+
+            $scope.progress = parseInt(100.0 * evt.loaded / evt.total);
+        });
+    };
+
+    $scope.closeModal = function () {
+        $modalInstance.dismiss("dismiss");
+
+    };
+});
 'use strict';
 
 angular.module('app.smarttables').controller('dataGridBaseCtrl', function ($scope, $rootScope, $state, $http, APP_CONFIG, $timeout, MetaDataCache, ngProgressFactory, searchContext) {
@@ -47965,6 +47286,66 @@ angular.module('app.stations').factory('TestStations', function () {
 
 'use strict';
 
+angular.module('app.smartreports').controller('downloadReportCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $stateParams, $modalInstance, fileManager) {
+ 
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+    $scope.oid = $stateParams.oid;
+    $scope.template = $stateParams.template;
+    $scope.templateAttribute = $stateParams.templateAttribute;
+
+    $scope.baseUrl = APP_CONFIG.ebaasRootUrl;
+    if (APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash])
+    {
+        $scope.baseUrl = APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash];
+    }
+   
+    $scope.loading = false;
+
+    $scope.closeModal = function () {
+        $modalInstance.dismiss("dismiss");
+    };
+
+    $scope.download = function() {
+
+        var getFileUrl = undefined;
+ 
+        if ($scope.templateAttribute)
+        {
+            getFileUrl = $scope.baseUrl + "/api/report/" + $scope.dbschema + "/" + $scope.dbclass + "/" + $scope.oid + "?templateSource=property&property=" + $scope.templateAttribute;
+
+        }
+        else if ($scope.template) {
+            getFileUrl = $scope.baseUrl + "/api/report/" + $scope.dbschema + "/" + $scope.dbclass + "/" + $scope.oid + "?templateSource=file&template=" + encodeURIComponent($scope.template);
+        }
+
+        if (getFileUrl) {
+            $scope.loading = true;
+
+            fileManager.performDownload(getFileUrl, function () {
+                $scope.loading = false;
+            });
+        }
+        else
+        {
+            BootstrapDialog.show({
+                title: $rootScope.getWord("Info Dialog"),
+                type: BootstrapDialog.TYPE_DANGER,
+                message: "template or property parameter not defined",
+                buttons: [{
+                    label: $rootScope.getWord("Cancel"),
+                    action: function (dialog) {
+                        dialog.close();
+                    }
+                }]
+            });
+            
+        }
+    }
+});
+
+'use strict';
+
 angular.module('app.tables').controller('JqGridCtrl', function ($scope) {
     $scope.gridData = {
         data: [
@@ -48187,250 +47568,6 @@ angular.module('app.tables').controller('JqGridCtrl', function ($scope) {
     $scope.selectRow = function(row){
        jQuery('table').jqGrid('setSelection', row);
 
-    }
-});
-'use strict';
-
-angular.module('app.taskforum').controller('PostViewCtrl', function ($scope, $http, $state, $stateParams, APP_CONFIG, User, $modalInstance, myActivityService) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
-    $scope.oid = $stateParams.oid;
-    $scope.postClass = $stateParams.postClass;
-
-    // get posts related to a task class
-    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($stateParams.schema) + "/" + $stateParams.class + "/" + $stateParams.oid + "/" + $stateParams.postClass + "?view=full&from=0&size=50";
-    $http.get(url).success(function (data) {
-        $scope.posts = data;
-
-        if (!$scope.posts) {
-            $scope.posts = new Array();
-        }
-    });
- 
-    // get posts related to a task class
-    url = APP_CONFIG.ebaasRootUrl + "/api/form/primarykey/" + encodeURIComponent($stateParams.schema) + "/" + $stateParams.class + "/" + $stateParams.oid;
-    $http.get(url).success(function (data) {
-        $scope.taskPK = data;
-    });
- 
-    $scope.content = "";
-    $scope.postId = undefined;
-    $scope.loading = false;
-
-    $scope.options = {
-        height: 200,
-        focus: true,
-        toolbar: [
-                ['edit', ['undo', 'redo']],
-                ['headline', ['style']],
-                ['style', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'strikethrough', 'clear']],
-                ['fontface', ['fontname']],
-                ['textsize', ['fontsize']],
-                ['fontclr', ['color']],
-                ['alignment', ['ul', 'ol', 'paragraph', 'lineheight']],
-                ['table', ['table']],
-                ['insert', ['link', 'picture', 'video', 'hr']],
-                ['view', ['fullscreen', 'codeview']]
-        ]
-    };
-
-    $scope.getPosterImage = function(posterId)
-    {
-        return User.getUserImage(posterId);
-    }
-
-    $scope.isOwner = function (poster) {
-        if (poster === User.userName) {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    $scope.getMyImage = function()
-    {
-        return User.image();
-    }
-
-    $scope.getCurrentTime = function()
-    {
-        return new Date().toLocaleString();
-    }
-
-    $scope.EnableEditing = function(post)
-    {
-        post.IsEditing = true;
-        var element = angular.element(document.getElementById("post-" + post.PostID));
-        element.summernote($scope.options);
-    }
-
-    $scope.DisableEditing = function (post) {  
-        var model = new Object();
-        model.Content = angular.element(document.getElementById("post-" + post.PostID)).summernote('code');
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.postClass + "/" + post.obj_id;
-
-        $http.post(url, model)
-            .success(function (data) {
-            });
-
-        post.IsEditing = false;
-
-        angular.element(document.getElementById("post-" + post.PostID)).summernote('destroy');
-    }
-
-    $scope.getContentId = function (post) {
-        return "post-" + post.PostID;
-    }
-
-    $scope.showAttachments = function (post)
-    {
-        $state.go('.attachments', { schema: $scope.dbschema, class: $scope.postClass, oid: post.obj_id }, { location: false, notify: false });
-    }
-
-    $scope.showReadOnlyAttachments = function (post) {
-        $state.go('.attachments', { schema: $scope.dbschema, class: $scope.postClass, oid: post.obj_id, readonly: true }, { location: false, notify: false });
-    }
-
-    function htmlToPlaintext(text) {
-        return text ? String(text).replace(/<[^>]+>/gm, '') : '';
-    }
-
-    $scope.Post = function()
-    {
-        var model = new Object();
-        model.Poster = User.userName;
-        model.PostTime = new Date();
-        model.IsPublic = "1";
-        model.Content = $scope.content;
-        
-        model.toTestTask = $scope.taskPK;
-
-        // add data for a default form
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.postClass;
-        if ($scope.postId) {
-            url += "/" + $scope.postId;
-        }
-
-        $scope.loading = true;
-        $http.post(url, model)
-            .success(function (data) {
-                $scope.loading = false;
-                $scope.posts.push(data);
-
-                // clear the content
-                angular.element(document.getElementById("newPost")).summernote('code', "");
-
-                // post a message to the task group
-                var message = $scope.getMessage(model);
-                if (message) {
-                    myActivityService.create("msgs", message, function (data) {
-                    });
-                }
-            })
-            .error(function () {
-                console.debug("error=" + JSON.stringify(err));
-                $scope.loading = false;
-            });
-    }
-
-    $scope.getMessage = function (model)
-    {
-        var message = undefined;
-
-        if ($stateParams.url && $stateParams.urlparams && $stateParams.subject) {
-            message = {};
-            message.dbschema = $scope.dbschema;
-            message.dbclass = $scope.dbclass;
-            message.oid = $scope.oid;
-            message.posterId = model.Poster;
-            message.postTime = model.PostTime;
-            message.subject = $stateParams.subject;
-
-            var text = htmlToPlaintext($scope.content);
-            if (text.length > 0) {
-                if (text.length > 20) {
-                    text = text.substring(0, 20);
-                    text += "...";
-                }
-            }
-            else
-            {
-                text = $stateParams.content;
-            }
-
-            message.content = text;
-            message.url = $stateParams.url;
-            message.urlparams = $stateParams.urlparams;
-        }
-
-        return message;
-    }
-
-    $scope.Delete = function (post) {
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.postClass + "/" + post.obj_id;
-
-        $scope.loading = true;
-        $http.delete(url)
-            .success(function (data) {
-                $scope.loading = false;
-                
-                var index = -1;
-                for (var i = 0; i < $scope.posts.length; i++)
-                {
-                    if ($scope.posts[i] === post)
-                    {
-                        index = i;
-                        break;
-                    }
-                }
-
-                if (index >= 0) {
-                    $scope.posts.splice(index, 1);
-                }
-            })
-        .error(function () {
-            $scope.loading = false;
-        });
-    }
-
-    $scope.Save = function()
-    {
-        var model = new Object();
-        model.Poster = User.userName;
-        model.PostTime = new Date();
-        model.IsPublic = "0";
-        model.Content = $scope.content;
-        model.toTestTask = $scope.taskPK;
-
-        // add data for a default form
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.postClass;
-        if ($scope.postId)
-        {
-            url += "/" + $scope.postId;
-        }
-
-        $http.post(url, model)
-            .success(function (data) {
-                $scope.postId = data.obj_id
-            });
-    }
-
-    $scope.closeModal = function () {
-        $modalInstance.dismiss("dismiss");
-    };
-
-    var reload = function (dbschema, dbclass, oid) {
-        var url = ".postview";
-        var params = new Object();
-        params.schema = dbschema;
-        params.class = dbclass;
-        params.oid = oid;
-  
-        $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
     }
 });
 /// <reference path='./DlhSoft.Kanban.Angular.Components.ts'/>
@@ -48930,6 +48067,250 @@ angular.module('app.taskkanban').directive('ngEnter', function () {
     };
 });
 
+'use strict';
+
+angular.module('app.taskforum').controller('PostViewCtrl', function ($scope, $http, $state, $stateParams, APP_CONFIG, User, $modalInstance, myActivityService) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+    $scope.oid = $stateParams.oid;
+    $scope.postClass = $stateParams.postClass;
+
+    // get posts related to a task class
+    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($stateParams.schema) + "/" + $stateParams.class + "/" + $stateParams.oid + "/" + $stateParams.postClass + "?view=full&from=0&size=50";
+    $http.get(url).success(function (data) {
+        $scope.posts = data;
+
+        if (!$scope.posts) {
+            $scope.posts = new Array();
+        }
+    });
+ 
+    // get posts related to a task class
+    url = APP_CONFIG.ebaasRootUrl + "/api/form/primarykey/" + encodeURIComponent($stateParams.schema) + "/" + $stateParams.class + "/" + $stateParams.oid;
+    $http.get(url).success(function (data) {
+        $scope.taskPK = data;
+    });
+ 
+    $scope.content = "";
+    $scope.postId = undefined;
+    $scope.loading = false;
+
+    $scope.options = {
+        height: 200,
+        focus: true,
+        toolbar: [
+                ['edit', ['undo', 'redo']],
+                ['headline', ['style']],
+                ['style', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'strikethrough', 'clear']],
+                ['fontface', ['fontname']],
+                ['textsize', ['fontsize']],
+                ['fontclr', ['color']],
+                ['alignment', ['ul', 'ol', 'paragraph', 'lineheight']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video', 'hr']],
+                ['view', ['fullscreen', 'codeview']]
+        ]
+    };
+
+    $scope.getPosterImage = function(posterId)
+    {
+        return User.getUserImage(posterId);
+    }
+
+    $scope.isOwner = function (poster) {
+        if (poster === User.userName) {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    $scope.getMyImage = function()
+    {
+        return User.image();
+    }
+
+    $scope.getCurrentTime = function()
+    {
+        return new Date().toLocaleString();
+    }
+
+    $scope.EnableEditing = function(post)
+    {
+        post.IsEditing = true;
+        var element = angular.element(document.getElementById("post-" + post.PostID));
+        element.summernote($scope.options);
+    }
+
+    $scope.DisableEditing = function (post) {  
+        var model = new Object();
+        model.Content = angular.element(document.getElementById("post-" + post.PostID)).summernote('code');
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.postClass + "/" + post.obj_id;
+
+        $http.post(url, model)
+            .success(function (data) {
+            });
+
+        post.IsEditing = false;
+
+        angular.element(document.getElementById("post-" + post.PostID)).summernote('destroy');
+    }
+
+    $scope.getContentId = function (post) {
+        return "post-" + post.PostID;
+    }
+
+    $scope.showAttachments = function (post)
+    {
+        $state.go('.attachments', { schema: $scope.dbschema, class: $scope.postClass, oid: post.obj_id }, { location: false, notify: false });
+    }
+
+    $scope.showReadOnlyAttachments = function (post) {
+        $state.go('.attachments', { schema: $scope.dbschema, class: $scope.postClass, oid: post.obj_id, readonly: true }, { location: false, notify: false });
+    }
+
+    function htmlToPlaintext(text) {
+        return text ? String(text).replace(/<[^>]+>/gm, '') : '';
+    }
+
+    $scope.Post = function()
+    {
+        var model = new Object();
+        model.Poster = User.userName;
+        model.PostTime = new Date();
+        model.IsPublic = "1";
+        model.Content = $scope.content;
+        
+        model.toTestTask = $scope.taskPK;
+
+        // add data for a default form
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.postClass;
+        if ($scope.postId) {
+            url += "/" + $scope.postId;
+        }
+
+        $scope.loading = true;
+        $http.post(url, model)
+            .success(function (data) {
+                $scope.loading = false;
+                $scope.posts.push(data);
+
+                // clear the content
+                angular.element(document.getElementById("newPost")).summernote('code', "");
+
+                // post a message to the task group
+                var message = $scope.getMessage(model);
+                if (message) {
+                    myActivityService.create("msgs", message, function (data) {
+                    });
+                }
+            })
+            .error(function () {
+                console.debug("error=" + JSON.stringify(err));
+                $scope.loading = false;
+            });
+    }
+
+    $scope.getMessage = function (model)
+    {
+        var message = undefined;
+
+        if ($stateParams.url && $stateParams.urlparams && $stateParams.subject) {
+            message = {};
+            message.dbschema = $scope.dbschema;
+            message.dbclass = $scope.dbclass;
+            message.oid = $scope.oid;
+            message.posterId = model.Poster;
+            message.postTime = model.PostTime;
+            message.subject = $stateParams.subject;
+
+            var text = htmlToPlaintext($scope.content);
+            if (text.length > 0) {
+                if (text.length > 20) {
+                    text = text.substring(0, 20);
+                    text += "...";
+                }
+            }
+            else
+            {
+                text = $stateParams.content;
+            }
+
+            message.content = text;
+            message.url = $stateParams.url;
+            message.urlparams = $stateParams.urlparams;
+        }
+
+        return message;
+    }
+
+    $scope.Delete = function (post) {
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.postClass + "/" + post.obj_id;
+
+        $scope.loading = true;
+        $http.delete(url)
+            .success(function (data) {
+                $scope.loading = false;
+                
+                var index = -1;
+                for (var i = 0; i < $scope.posts.length; i++)
+                {
+                    if ($scope.posts[i] === post)
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+
+                if (index >= 0) {
+                    $scope.posts.splice(index, 1);
+                }
+            })
+        .error(function () {
+            $scope.loading = false;
+        });
+    }
+
+    $scope.Save = function()
+    {
+        var model = new Object();
+        model.Poster = User.userName;
+        model.PostTime = new Date();
+        model.IsPublic = "0";
+        model.Content = $scope.content;
+        model.toTestTask = $scope.taskPK;
+
+        // add data for a default form
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.postClass;
+        if ($scope.postId)
+        {
+            url += "/" + $scope.postId;
+        }
+
+        $http.post(url, model)
+            .success(function (data) {
+                $scope.postId = data.obj_id
+            });
+    }
+
+    $scope.closeModal = function () {
+        $modalInstance.dismiss("dismiss");
+    };
+
+    var reload = function (dbschema, dbclass, oid) {
+        var url = ".postview";
+        var params = new Object();
+        params.schema = dbschema;
+        params.class = dbclass;
+        params.oid = oid;
+  
+        $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
+    }
+});
 "use strict";
 
 angular.module('app.tasks').controller('reassignTaskCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, User) {
@@ -49229,21 +48610,6 @@ angular.module('app.tasks').controller('taskSubstituteCtrl', function ($scope, $
         $modalInstance.dismiss("dismiss");
     };
 });
-
-
-'use strict';
-
-angular.module('app.tasks').factory('TasksInfo', function () {
-
-    var TaskModel = {
-            count: 0,
-            tasks: [],
-            currentTask: undefined
-        };
-
-    return TaskModel;
-});
-
 angular.module('app.tasks').directive('convertToNumber', function () {
     return {
         require: 'ngModel',
@@ -49460,6 +48826,21 @@ angular.module('app.tasktrack').factory('taskTrackService', function ($http, APP
 	    }
 	}
 });
+
+
+'use strict';
+
+angular.module('app.tasks').factory('TasksInfo', function () {
+
+    var TaskModel = {
+            count: 0,
+            tasks: [],
+            currentTask: undefined
+        };
+
+    return TaskModel;
+});
+
 "use strict";
 
 angular.module('app.ui').controller('GeneralElementsCtrl', function ($scope) {
@@ -50340,6 +49721,1198 @@ angular.module('app.user').controller('EditProfileController', function ($http, 
         }
 
     });
+'use strict';
+
+angular.module('app.wizards').directive('ebaasFormWizard', function () {
+    return {
+        restrict: 'A',
+        scope: {
+            ebaasWizard : '=',
+            ebaasWizardCallback: '&',
+            ebaasWizardStepEntered: '&',
+            ebaasWizardStepChanged: '&'
+        },
+        link: function (scope, element, attributes) {
+
+            var wizard = element.wizard();
+
+            scope.ebaasWizard = wizard;
+
+            var $form = element.find('form');
+
+            wizard.on('actionclicked.fu.wizard', function (e, data) {
+                if (typeof scope.ebaasWizardStepChanged() === 'function') {
+                    scope.ebaasWizardStepChanged()(e, data)
+                }
+            });
+
+            wizard.on('changed.fu.wizard', function (e, data) {
+                if (typeof scope.ebaasWizardStepEntered() === 'function') {
+                    scope.ebaasWizardStepEntered()(e, data)
+                }
+            });
+
+            wizard.on('finished.fu.wizard', function (e, data) {
+                var formData = {};
+                _.each($form.serializeArray(), function(field){
+                    formData[field.name] = field.value
+                });
+                if(typeof scope.ebaasWizardCallback() === 'function'){
+                    scope.ebaasWizardCallback()(formData)
+                }
+            });
+        }
+    }
+});
+'use strict';
+
+angular.module('app.wizards').directive('previewSubmitStep', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/wizards/views/preview-submit-step.html',
+        replace: true,
+        scope: {},
+        bindToController: {
+            dbschema: '=',
+            dbclass: '=',
+            template: '=',
+            taskId: '=',
+            control: '=',
+            callbackMethod: '&stepCallback'
+        },
+        controllerAs: 'ctrl',
+        controller: 'previewSubmitStepCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
+'use strict';
+
+angular.module('app.wizards').directive('requestInfoStep', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/wizards/views/request-info-step.html',
+        replace: true,
+        scope: {},
+        bindToController: {
+            dbschema: '=',
+            dbclass: '=',
+            template: '=',
+            control: '=',
+            callbackMethod: '&stepCallback'
+        },
+        controllerAs: 'ctrl',
+        controller: 'requestInfoStepCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
+'use strict';
+
+angular.module('app.wizards').directive('requestItems', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/wizards/views/request-items.html',
+        replace: true,
+        scope: {},
+        bindToController: {
+            dbschema: '=',
+            dbclass: '='
+        },
+        controllerAs: 'ctrl',
+        controller: 'requestItemsCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
+'use strict';
+
+angular.module('app.wizards').directive('requestSamples', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/wizards/views/request-samples.html',
+        replace: true,
+        scope: {},
+        bindToController: {
+            dbschema: '=',
+            dbclass: '='
+        },
+        controllerAs: 'ctrl',
+        controller: 'requestSamplesCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
+'use strict';
+
+angular.module('app.wizards').directive('sampleItemStep', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/wizards/views/sample-item-step.html',
+        replace: true,
+        scope: {},
+        bindToController: {
+            dbschema: '=',
+            dbclass: '=',
+            control: '=',
+            callbackMethod: '&stepCallback'
+        },
+        controllerAs: 'ctrl',
+        controller: 'sampleItemStepCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
+'use strict';
+
+angular.module('app.userdirectory').controller('assignRolesCtrl', function ($scope, $controller, $rootScope, $http, APP_CONFIG, $stateParams, $modalInstance) {
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = "Role";
+    $scope.masterclass = $stateParams.class;
+    $scope.masterid = $stateParams.oid;
+    $scope.roletype = $stateParams.roletype;
+
+    if ($stateParams.dataview)
+    {
+        $scope.view = $stateParams.dataview;
+    }
+    else
+    {
+        $scope.view = undefined;
+    }
+
+    $scope.filter = "['RType', '=', '" + $scope.roletype + "']";
+
+    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG }));
+
+    $scope.gridInstance = null;
+    $scope.existingKeys = null;
+    $scope.currentKeys = null;
+    $scope.isUpdated = false;
+    $scope.loading = false;
+    $scope.dataGridSettings = {
+        dataSource: {
+            store: $scope.customStore
+        },
+        columnAutoWidth: true,
+        sorting: {
+            mode: "multiple"
+        },
+        editing: {
+            allowAdding: false,
+            allowUpdating: false,
+            allowDeleting: false
+        },
+        grouping: {
+            autoExpandAll: false
+        },
+        pager: {
+            visible: true,
+            showPageSizeSelector: true,
+            showInfo: true
+        },
+        filterRow: {
+            visible: true,
+            applyFilter: "auto"
+        },
+        searchPanel: { visible: false },
+        selection: { mode: 'multiple' },
+        remoteOperations: true,
+        bindingOptions: {
+            columns: 'columns'
+        },
+        headerFilter: {
+            visible: true
+        },
+        rowAlternationEnabled: true,
+        onInitialized: function (e) {
+            $scope.gridInstance = e.component;
+        },
+        onContentReady: function (e) {
+            selectGridRows();
+        },
+        onSelectionChanged: function (e) {
+            changeSelections(e.currentSelectedRowKeys, e.currentDeselectedRowKeys);
+        }
+    };
+
+    var asyncLoop = function(o)
+    {
+        var i = -1;
+
+        var loop = function() {
+            i++;
+            if (i == o.length)
+            {
+                o.callback();
+                return;
+            }
+
+            o.functionToLoop(loop, i);
+        }
+
+        loop(); // init
+    }
+
+    var selectGridRows = function()
+    {
+        if ($scope.currentKeys) {
+            var keys = $scope.currentKeys;
+            var indexes = [];
+            for (var i = 0; i < keys.length; i++) {
+                var index = $scope.gridInstance.getRowIndexByKey(keys[i]);
+
+                if (index >= 0)
+                    indexes.push(index);
+            }
+
+            $scope.gridInstance.selectRowsByIndexes(indexes, true);
+        }
+        else {
+            if ($scope.masterid) {
+                $http.get(APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($stateParams.schema) + "/" + $scope.masterclass + "/" + $scope.masterid + "/" + $scope.dbclass)
+                    .success(function (data) {
+                        var keys = new Array();
+                        if (data) {
+                            for (var i = 0; i < data.length; i++) {
+                                keys.push(data[i].obj_id);
+                            }
+
+                            if (keys.length > 0) {
+                                // set the existing selections of rows
+                                $scope.gridInstance.selectRows(keys, false);
+                            }
+                        }
+
+                        $scope.existingKeys = keys; // keep the existing keys
+                        // initialize the current keys
+                        $scope.currentKeys = [];
+                        for (var i = 0; i < keys.length; i++) {
+                            $scope.currentKeys.push(keys[i]);
+                        }
+                    });
+            }
+        }
+    }
+
+    // keep the current keys in sync with grid row selections
+    var changeSelections = function (selectedKeys, deselectedKeys) {
+        var addedKeys = new Array();
+        var removedKeys = new Array();
+        var found;
+
+        // find the newly selected keys
+        if (selectedKeys && $scope.currentKeys) {
+            for (var i = 0; i < selectedKeys.length; i++) {
+                found = false;
+
+                var index = $scope.gridInstance.getRowIndexByKey(selectedKeys[i]);
+                if (index > -1) {
+                    for (var j = 0; j < $scope.currentKeys.length; j++) {
+                        if (selectedKeys[i] === $scope.currentKeys[j]) {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!found) {
+                    addedKeys.push(selectedKeys[i]);
+                }
+            }
+        }
+
+        if (deselectedKeys && $scope.currentKeys) {
+            // find the unselected keys
+            for (var i = 0; i < $scope.currentKeys.length; i++) {
+                found = false;
+
+                for (var j = 0; j < deselectedKeys.length; j++) {
+                    var index = $scope.gridInstance.getRowIndexByKey(deselectedKeys[j]);
+                    if (index > -1) {
+                        if ($scope.currentKeys[i] === deselectedKeys[j]) {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (found) {
+                    removedKeys.push($scope.currentKeys[i]);
+                }
+            }
+        }
+
+        for (var i = 0; i < addedKeys.length; i++) {
+            $scope.currentKeys.push(addedKeys[i]);
+        }
+
+        for (var i = 0; i < removedKeys.length; i++) {
+            var index = $scope.currentKeys.indexOf(removedKeys[i]);
+            if (index > -1)
+                $scope.currentKeys.splice(index, 1);
+        }
+
+        //console.log("after current keys = " + $scope.currentKeys);
+    }
+
+    $scope.saveSelection = function () {
+        var addedKeys = new Array();
+        var removedKeys = new Array();
+        var found;
+
+        // find the added selections
+        for (var i = 0; i < $scope.currentKeys.length; i++) {
+            found = false;
+
+            for (var j = 0; j < $scope.existingKeys.length; j++) {
+                if ($scope.currentKeys[i] === $scope.existingKeys[j]) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                addedKeys.push($scope.currentKeys[i]);
+            }
+        }
+
+        // find the removed selections
+        for (var i = 0; i < $scope.existingKeys.length; i++) {
+            found = false;
+
+            for (var j = 0; j < $scope.currentKeys.length; j++) {
+                if ($scope.existingKeys[i] === $scope.currentKeys[j]) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                removedKeys.push($scope.existingKeys[i]);
+            }
+        }
+
+        if (addedKeys.length > 0) {
+            $scope.loading = true;
+
+            // add relationhsips to the db
+            asyncLoop({
+                length: addedKeys.length,
+                functionToLoop: function (loop, i) {
+                    if ($scope.masterid) {
+                        $http.post(APP_CONFIG.ebaasRootUrl + "/api/relationship/" + encodeURIComponent($stateParams.schema) + "/" + $scope.masterclass + "/" + $scope.masterid + "/" + $scope.dbclass + "/" + encodeURIComponent(addedKeys[i]))
+                             .success(function (data) {
+                                 loop();
+                             });
+                    }
+                },
+                callback: function () {
+                    $scope.loading = false;
+                    $scope.isUpdated = true;
+                }
+            })
+        }
+
+        if (removedKeys.length > 0) {
+            $scope.loading = true;
+            // delete relationhsips from the db
+            asyncLoop({
+                length: removedKeys.length,
+                functionToLoop: function (loop, i) {
+                    $http.delete(APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($stateParams.schema) + "/" + $scope.masterclass + "/" + $scope.masterid + "/" + $scope.dbclass + "/" + encodeURIComponent(removedKeys[i]))
+                         .success(function (data) {
+                             loop();
+                         });
+                },
+                callback: function () {
+                    $scope.existingKeys = [];
+                    for (var i = 0; i < $scope.currentKeys.length; i++)
+                        $scope.existingKeys.push($scope.currentKeys[i]);
+                    $scope.loading = false;
+                    $scope.isUpdated = true;
+                }
+            })
+        }
+
+    };
+
+    $scope.goBack = function () {
+        if ($scope.isUpdated) {
+            $modalInstance.close({ "modal": "viewManyToMany"});
+        }
+        else {
+            $modalInstance.dismiss("dismiss");
+        }
+    };
+});
+
+'use strict';
+
+angular.module('app.userdirectory').controller('RoleListViewCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, TestStations, $interval, userService) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.baseclass;
+    $scope.roletype = $stateParams.roletype;
+
+    $scope.filter = "['RType', '=', '" + $scope.roletype + "']";
+
+    if ($stateParams.insert && $stateParams.insert === "false") {
+        $scope.add = false;
+    }
+    else {
+        $scope.add = true;
+    }
+
+    if ($stateParams.export && $stateParams.export === "true") {
+        $scope.exportData = true;
+    }
+    else {
+        $scope.exportData = false;
+    }
+
+    if ($stateParams.import && $stateParams.import === "true") {
+        $scope.importData = true;
+    }
+    else {
+        $scope.importData = false;
+    }
+
+    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG }));
+
+    $scope.openModal = function () {
+        $state.go('.modalform', { schema: $scope.dbschema, class: $scope.dbclass }, { location: false, notify: false });
+    };
+
+    $scope.GetCommands = function (rowIndex, data) {
+        var items = new Array();
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/sitemap/commands/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass;
+
+        $http.get(url).success(function (commands) {
+
+            // custom commands
+            $scope.commands = commands;
+            var cmdInfo;
+            var item;
+            for (var cmd in commands) {
+                if (commands.hasOwnProperty(cmd)) {
+                    cmdInfo = commands[cmd];
+                    item = new Object();
+                    item.text = cmdInfo.title;
+                    item.css = "btn btn-primary btn-md btn-nav";
+                    if (cmdInfo.icon) {
+                        item.icon = cmdInfo.icon;
+                    }
+                    else {
+                        item.icon = "fa fa-lg fa-tasks";
+                    }
+
+                    item.onItemClick = function (text) {
+                        gotoState(text, $scope.dbschema, data.type, data.obj_id)
+                    }
+
+                    items.push(item);
+
+                    if (cmdInfo.baseUrl && !APP_CONFIG.hashedBaseUrls[cmdInfo.hash]) {
+                        APP_CONFIG.hashedBaseUrls[cmdInfo.hash] = cmdInfo.baseUrl;
+                    }
+                }
+            }
+
+            if (data.allowWrite && $stateParams.edit !== "false") {
+                items.push({
+                    text: $rootScope.getWord('Edit'),
+                    icon: "fa fa-lg fa-edit",
+                    css: "btn btn-default btn-md btn-nav",
+                    onItemClick: function () {
+                        $state.go('.modalform', { schema: $scope.dbschema, class: data.type, oid: data.obj_id }, { location: false, notify: false });
+                    }
+                });
+            }
+
+            if (data.allowDelete && $stateParams.delete !== "false") {
+                items.push({
+                    text: $rootScope.getWord('Delete'),
+                    icon: "fa fa-lg fa-times",
+                    css: "btn btn-default btn-md btn-nav",
+                    onItemClick: function () {
+                        $scope.gridInstance.deleteRow(rowIndex);
+                    }
+                });
+            }
+        });
+        return items;
+    }
+
+    var gotoState = function (title, dbschema, dbclass, oid) {
+        var commands = $scope.commands;
+        var url = undefined;
+        var cmdUrl = undefined;
+        var params = undefined;
+        var cmdInfo;
+        for (var cmd in commands) {
+            if (commands.hasOwnProperty(cmd)) {
+                cmdInfo = commands[cmd];
+                if (cmdInfo.title === title) {
+                    url = cmdInfo.url;
+                    cmdUrl = cmdInfo.url;
+                    params = new Object();
+                    params.schema = dbschema;
+                    params.class = dbclass;
+                    params.oid = oid;
+                    params.cmdHash = cmdInfo.hash;
+
+                    // add command's parameters to the state parameters
+                    if (cmdInfo.parameters) {
+                        for (var key in cmdInfo.parameters) {
+                            if (cmdInfo.parameters.hasOwnProperty(key)) {
+                                params[key] = cmdInfo.parameters[key];
+                            }
+                        }
+                    };
+
+                    break;
+                }
+            }
+        }
+
+        if (url) {
+            try
+            {
+                if (cmdUrl === ".modalform") {
+                    $state.go(url, params, { location: false, notify: false });
+                }
+                else {
+                    $state.go(url, params);
+                }
+            }
+            catch (err)
+            {
+                BootstrapDialog.show({
+                    title: $rootScope.getWord("Info Dialog"),
+                    type: BootstrapDialog.TYPE_INFO,
+                    message: $rootScope.getWord("Invalid Command"),
+                    buttons: [{
+                        label: $rootScope.getWord("Cancel"),
+                        action: function (dialog) {
+                            dialog.close();
+                        }
+                    }]
+                });
+            }
+        }
+    }
+
+    $scope.gridInstance = null;
+    $scope.dataGridSettings = {
+        dataSource: {
+            store: $scope.customStore
+        },
+        columnAutoWidth: true,
+        height: $rootScope.isChrome() === true ? '750px' : undefined,
+        sorting: {
+            mode: "multiple"
+        },
+        searchPanel: {
+            visible: $stateParams.search && $stateParams.search === "true"? true: false,
+            width: 300,
+            placeholder: $rootScope.getWord("Keyword Search")
+        },
+        editing: {
+            allowAdding: false,
+            allowUpdating: false,
+            allowDeleting: false
+        },
+        grouping: {
+            autoExpandAll: false
+        },
+        pager: {
+            visible: true,
+            showPageSizeSelector: true,
+            showInfo: true
+        },
+        filterRow: {
+            visible: true,
+            applyFilter: "auto"
+        },
+        selection: { mode: 'single' },
+        remoteOperations: true,
+        bindingOptions: {
+            columns: 'columns'
+        },
+        headerFilter: {
+            visible: true
+        },
+        rowAlternationEnabled: true,
+        masterDetail: {
+            enabled: true,
+            template: "detail"
+        },
+        onRowClick: function (e) {
+            if (e.rowType === "data") {
+                var isExpanded = $scope.gridInstance.isRowExpanded(e.key);
+                $scope.gridInstance.collapseAll(-1); // collaspsed all
+                if (!isExpanded) {
+                    $scope.gridInstance.expandRow(e.key);
+                }
+            }
+        },
+        onInitialized: function (e) {
+            $scope.gridInstance = e.component;
+        },
+        onRowPrepared: function (e) {
+        }
+    };
+
+    $rootScope.$on('modalClosed', function (event, data) {
+        if ($scope.gridInstance && data === "update")
+            $scope.gridInstance.refresh();
+    });
+});
+'use strict';
+
+angular.module('app.userdirectory').controller('UserDirectoryLayoutCtrl', function ($http, APP_CONFIG, $scope, $rootScope, $state, $stateParams, userService, propmisedParams) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.userclass = $stateParams.class;
+    $scope.roleclass = "Role";
+
+    // Getting unit tree
+    $scope.unitObjId = $stateParams.unitObjId;
+
+    var params = propmisedParams.data;
+
+    $scope.view = params['dataView'];
+    $scope.formTemplate = params['formTemplate'];
+
+    userService.getUnitTree($stateParams.schema, $scope.roleclass, $scope.unitObjId, function (data) {
+        $scope.unitTree = data;
+    });
+
+    // Getting function list
+    userService.getFunctions($stateParams.schema, $scope.roleclass, function (data) {
+        // add "Every One" as the first function
+        var role = {};
+        role.Text = $rootScope.getWord("Everyone");
+        role.obj_id = undefined;
+        if (data)
+        {
+            data.unshift(role);
+        }
+        else
+        {
+            data = [];
+            data.push(role);
+        }
+ 
+        $scope.functions = data;
+    });
+
+    $state.go('app.userdirectory.usertable', { schema: $scope.dbschema, baseclass: $scope.roleclass, baseoid: undefined, relatedclass: $scope.userclass, view: $scope.view, formtemplate: $scope.formTemplate });
+
+    $scope.functionObjId = undefined;
+    
+    $scope.getFunctionUsers = function (functionObjId) {
+        $scope.functionObjId = functionObjId;
+        $state.go('app.userdirectory.usertable', { schema: $scope.dbschema, baseclass: $scope.roleclass, baseoid: functionObjId, relatedclass: $scope.userclass, view: $scope.view, formtemplate: $scope.formTemplate });
+    }
+
+    $scope.getUnitUsers = function (unitObjId) {
+        $scope.unitObjId = unitObjId;
+        $state.go('app.userdirectory.usertable', { schema: $scope.dbschema, baseclass: $scope.roleclass, baseoid: unitObjId, relatedclass: $scope.userclass, view: $scope.view, formtemplate: $scope.formTemplate });
+    }
+
+    $scope.openFunctions = function () {
+        $state.go('app.userdirectory.roletable', { schema: $scope.dbschema, baseclass: $scope.roleclass, roletype: "Function" });
+    }
+
+    $scope.openUnits = function () {
+        $state.go('app.userdirectory.roletable', { schema: $scope.dbschema, baseclass: $scope.roleclass, roletype: "Unit" });
+    }
+
+    $scope.refresh = function () {
+        $state.reload();
+    }
+});
+'use strict';
+
+angular.module('app.userdirectory').controller('UserListCtrl', function ($scope, $rootScope, $state, $stateParams, APP_CONFIG, userService, promisedUsers) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.userclass = $stateParams.class;
+    $scope.roleclass = "Role";
+
+    $scope.getWord = function(key)
+    {
+        return key;
+    }
+
+    $scope.tableOptions = {
+        "data": userService.convertUsers(promisedUsers.data),
+        //            "bDestroy": true,
+        "iDisplayLength": 20,
+        "columns": [
+            {
+                "class": 'details-control',
+                "orderable": false,
+                "data": null,
+                "defaultContent": ''
+            },
+            { "data": "FullName" },
+            { "data": "ID" },
+            { "data": "PhoneNumber" },
+            { "data": "Email" }
+        ],
+        "order": [[1, 'asc']]
+    }
+
+    // Getting unit tree
+    $scope.unitObjId = $stateParams.unitObjId;
+
+    userService.getUnitTree($stateParams.schema, $scope.roleclass, $scope.unitObjId, function (data) {
+        $scope.unitTree = data;
+
+    });
+
+    // Getting function list
+    userService.getFunctions($stateParams.schema, $scope.roleclass, function (data) {
+       
+        $scope.functions = data;
+
+    });
+
+    $scope.functionObjId = $stateParams.functionObjId;
+    $scope.getFunctionUsers = function (functionObjId) {
+        var params = new Object();
+
+        params.functionObjId = functionObjId;
+        params.unitObjId = undefined;
+        $scope.functionObjId = functionObjId;
+        $scope.unitObjId = undefined;
+
+        $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
+    }
+
+    $scope.getUnitUsers = function(unitObjId)
+    {
+        var params = new Object();
+
+        params.unitObjId = unitObjId;
+        params.functionObjId = undefined;
+        $scope.unitObjId = unitObjId;
+        $scope.functionObjId = undefined;
+
+        $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
+    }
+});
+'use strict';
+
+angular.module('app.userdirectory').controller('UserListViewCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, TestStations, $interval, userService) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.userclass = $stateParams.relatedclass;
+    
+    $scope.formTemplate = $stateParams.formtemplate;
+
+    if ($stateParams.baseoid) {
+        $scope.dbclass = $stateParams.baseclass;
+        $scope.relatedclass = $stateParams.relatedclass;
+        $scope.relatedview = $stateParams.view;
+        $scope.oid = $stateParams.baseoid;
+        
+        $scope.isrelated = true;
+    }
+    else
+    {
+        // get all users
+        $scope.dbclass = $stateParams.relatedclass;
+        $scope.view = $stateParams.view;
+    }
+
+    if ($stateParams.insert && $stateParams.insert === "false") {
+        $scope.add = false;
+    }
+    else {
+        $scope.add = true;
+    }
+
+    if ($stateParams.export && $stateParams.export === "true") {
+        $scope.exportData = true;
+    }
+    else {
+        $scope.exportData = false;
+    }
+
+    if ($stateParams.import && $stateParams.import === "true") {
+        $scope.importData = true;
+    }
+    else {
+        $scope.importData = false;
+    }
+
+    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG }));
+
+    $scope.openModal = function () {
+        $state.go('.modalform', { schema: $scope.dbschema, class: $scope.userclass, template: $scope.formTemplate }, { location: false, notify: false });
+    };
+
+    $scope.GetCommands = function (rowIndex, data) {
+        var items = new Array();
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/sitemap/commands/" + encodeURIComponent($scope.dbschema) + "/" + $scope.userclass;
+
+        $http.get(url).success(function (commands) {
+
+            // custom commands
+            $scope.commands = commands;
+            var cmdInfo;
+            var item;
+            for (var cmd in commands) {
+                if (commands.hasOwnProperty(cmd)) {
+                    cmdInfo = commands[cmd];
+                    item = new Object();
+                    item.text = cmdInfo.title;
+                    item.css = "btn btn-primary btn-md btn-nav";
+                    if (cmdInfo.icon) {
+                        item.icon = cmdInfo.icon;
+                    }
+                    else {
+                        item.icon = "fa fa-lg fa-tasks";
+                    }
+
+                    item.onItemClick = function (text) {
+                        gotoState(text, $scope.dbschema, data.type, data.obj_id)
+                    }
+
+                    items.push(item);
+
+                    if (cmdInfo.baseUrl && !APP_CONFIG.hashedBaseUrls[cmdInfo.hash]) {
+                        APP_CONFIG.hashedBaseUrls[cmdInfo.hash] = cmdInfo.baseUrl;
+                    }
+                }
+            }
+
+            if (data.allowWrite && $stateParams.edit !== "false") {
+                items.push({
+                    text: $rootScope.getWord('Edit'),
+                    icon: "fa fa-lg fa-edit",
+                    css: "btn btn-default btn-md btn-nav",
+                    onItemClick: function () {
+                        $state.go('.modalform', { schema: $scope.dbschema, class: data.type, oid: data.obj_id, template: $scope.formTemplate }, { location: false, notify: false });
+                    }
+                });
+            }
+
+            if (data.allowDelete && $stateParams.delete !== "false") {
+                items.push({
+                    text: $rootScope.getWord('Delete'),
+                    icon: "fa fa-lg fa-times",
+                    css: "btn btn-default btn-md btn-nav",
+                    onItemClick: function () {
+                        $scope.gridInstance.deleteRow(rowIndex);
+                    }
+                });
+            }
+        });
+        return items;
+    }
+
+    var gotoState = function (title, dbschema, dbclass, oid) {
+        var commands = $scope.commands;
+        var url = undefined;
+        var cmdUrl = undefined;
+        var params = undefined;
+        var cmdInfo;
+        for (var cmd in commands) {
+            if (commands.hasOwnProperty(cmd)) {
+                cmdInfo = commands[cmd];
+                if (cmdInfo.title === title) {
+                    url = cmdInfo.url;
+                    cmdUrl = cmdInfo.url;
+                    params = new Object();
+                    params.schema = dbschema;
+                    params.class = dbclass;
+                    params.oid = oid;
+                    params.cmdHash = cmdInfo.hash;
+
+                    // add command's parameters to the state parameters
+                    if (cmdInfo.parameters) {
+                        for (var key in cmdInfo.parameters) {
+                            if (cmdInfo.parameters.hasOwnProperty(key)) {
+                                params[key] = cmdInfo.parameters[key];
+                            }
+                        }
+                    };
+
+                    break;
+                }
+            }
+        }
+
+        if (url) {
+            try
+            {
+                if (cmdUrl === ".modalform") {
+                    $state.go(url, params, { location: false, notify: false });
+                }
+                else {
+                    $state.go(url, params);
+                }
+            }
+            catch (err)
+            {
+                BootstrapDialog.show({
+                    title: $rootScope.getWord("Info Dialog"),
+                    type: BootstrapDialog.TYPE_INFO,
+                    message: $rootScope.getWord("Invalid Command"),
+                    buttons: [{
+                        label: $rootScope.getWord("Cancel"),
+                        action: function (dialog) {
+                            dialog.close();
+                        }
+                    }]
+                });
+            }
+        }
+    }
+
+    $scope.gridInstance = null;
+    $scope.dataGridSettings = {
+        dataSource: {
+            store: $scope.customStore
+        },
+        columnAutoWidth: true,
+        height: $rootScope.isChrome() === true ? '750px' : undefined,
+        sorting: {
+            mode: "multiple"
+        },
+        searchPanel: {
+            visible: $stateParams.search && $stateParams.search === "true"? true: false,
+            width: 300,
+            placeholder: $rootScope.getWord("Keyword Search")
+        },
+        editing: {
+            allowAdding: false,
+            allowUpdating: false,
+            allowDeleting: false
+        },
+        grouping: {
+            autoExpandAll: false
+        },
+        pager: {
+            visible: true,
+            showPageSizeSelector: true,
+            showInfo: true
+        },
+        filterRow: {
+            visible: true,
+            applyFilter: "auto"
+        },
+        selection: { mode: 'single' },
+        remoteOperations: true,
+        bindingOptions: {
+            columns: 'columns'
+        },
+        headerFilter: {
+            visible: true
+        },
+        rowAlternationEnabled: true,
+        masterDetail: {
+            enabled: true,
+            template: "detail"
+        },
+        onRowClick: function (e) {
+            if (e.rowType === "data") {
+                var isExpanded = $scope.gridInstance.isRowExpanded(e.key);
+                $scope.gridInstance.collapseAll(-1); // collaspsed all
+                if (!isExpanded) {
+                    $scope.gridInstance.expandRow(e.key);
+                }
+            }
+        },
+        onInitialized: function (e) {
+            $scope.gridInstance = e.component;
+        },
+        onRowPrepared: function (e) {
+        }
+    };
+
+    $rootScope.$on('modalClosed', function (event, data) {
+        if ($scope.gridInstance && data === "update")
+            $scope.gridInstance.refresh();
+    });
+});
+"use strict";
+
+angular.module('app.userdirectory').factory('userService', function ($http, APP_CONFIG) {
+
+    var convertUsers = function (userCollection) {
+
+        var id = "ID";
+        var firstName = "FirstName";
+        var lastName = "LastName";
+        var phoneNumber = "PhoneNumber";
+        var email = "Email";
+        var picture = "Picture";
+        var division = "Department";
+        var address = "Location";
+        var displayText = "DisplayText";
+
+        var users = new Array();
+
+        if (userCollection) {
+
+            for (var i = 0; i < userCollection.length; i++) {
+                var user = userCollection[i];
+
+                var userItem = new Object();
+
+                userItem.obj_id = user["obj_id"];
+                userItem.ID = user[id];
+                if (user[displayText]) {
+                    userItem.FullName = user[displayText];
+                }
+                else
+                {
+                    userItem.FullName = user[lastName] + user[firstName];
+                }
+                userItem.PhoneNumber = user[phoneNumber];
+                userItem.Email = user[email];
+                userItem.Division = user[division];
+                userItem.Address = user[address];
+                if (user[picture]) {
+                    userItem.Picture = APP_CONFIG.avatarsUrl + userItem.ID + ".png";
+                }
+                else
+                {
+                    userItem.Picture = APP_CONFIG.avatarsUrl + "male.png";
+                }
+
+                users.push(userItem);
+            }
+        }
+
+        return users;
+    }
+
+    var createUnitTree = function (nodes, currentNodeObjId) {
+        var map = {}, node, menuItem, parentItem, roots = [], menuItems = [];
+        for (var i = 0; i < nodes.length; i += 1) {
+            node = nodes[i];
+            
+            menuItem = new Object();
+            menuItem.name = node.Name;
+            menuItem.text = node.Text;
+            menuItem.children = new Array();
+            map[menuItem.name] = i; // use map to look-up the parents
+            menuItems.push(menuItem);
+        }
+
+        for (var i = 0; i < nodes.length; i += 1) {
+            node = nodes[i];
+            menuItem = menuItems[i];
+
+            if (node.parentRole != "") {
+                parentItem = menuItems[map[node.parentRole]];
+                parentItem.children.push(menuItem);
+                menuItem.parentItem = parentItem;
+            } else {
+                //menuItem.expanded = true;
+                menuItem.parentItem = undefined;
+                roots.push(menuItem);
+            }
+        }
+
+        for (var i = 0; i < nodes.length; i += 1) {
+            node = nodes[i];
+            menuItem = menuItems[i];
+
+            if (menuItem.children.length > 0) {
+                menuItem.content = "<span><i class=\"fa fa-lg fa-plus-circle\"></i> " + node.Text + "</span>";
+                //menuItem.content = "<span class='label label-info'><i class=\"fa fa-lg fa-plus-circle\"></i>&nbsp;&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('unitTreeContainer')).scope().getUnitUsers(" + node.obj_id + ");\">" + node.Text + "</a></span>";
+            } else {
+                if (currentNodeObjId && currentNodeObjId === node.obj_id)
+                {
+                    menuItem.content = "<span class='label label-warning'><a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('unitTreeContainer')).scope().getUnitUsers(" + node.obj_id + ");\">" + node.Text + "</a></span>";
+
+                    var thisItem = menuItem;
+                    while (thisItem.parentItem) {
+                        thisItem = thisItem.parentItem;
+                        thisItem.expanded = true;
+                    }
+                }
+                else
+                {
+                    menuItem.content = "<span class='label label-info'><a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('unitTreeContainer')).scope().getUnitUsers(" + node.obj_id + ");\">" + node.Text + "</a></span>";
+                }
+            }
+        }
+
+        return roots;
+    };
+
+    function getAllUsers(dbschema, userclass, pageIndex, callback) {
+	    
+	    var pageSize = 20;
+	    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + userclass + "?view=full&size=" + pageSize;
+	    if (pageIndex) {
+	        var from = pageIndex * pageSize;
+	        url += "&from=" + from;
+	    }
+
+        $http.get(url).success(function (data) {
+	        callback(convertUsers(data));
+				
+		}).error(function(){
+		    callback([]);
+
+		});
+    }
+
+    function getUnitTree(dbschema, roleclass, currentNodeId, callback) {
+
+        var pageSize = 200;
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + roleclass + "?view=full&size=" + pageSize + "&filter=['RType', '=', 'Unit']";
+
+        $http.get(url).success(function (data) {
+            callback(createUnitTree(data, currentNodeId));
+
+        }).error(function () {
+            callback(undefined);
+
+        });
+    }
+
+    function getFunctions(dbschema, roleclass, callback) {
+
+        var pageSize = 200;
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + roleclass + "?view=full&size=" + pageSize + "&filter=['RType', '=', 'Function']";
+
+        $http.get(url).success(function (data) {
+            callback(data);
+
+        }).error(function () {
+            callback(undefined);
+
+        });
+    }
+	
+	return {
+	    getAllUsers: function (dbschema, userclass, pageIndex, callback) {
+	        getAllUsers(dbschema, userclass, pageIndex, callback);
+	    },
+	    convertUsers: function (userCollection) {
+	        return convertUsers(userCollection);
+	    },
+	    getUnitTree: function (dbschema, roleclass, currentNodeId, callback) {
+	        return getUnitTree(dbschema, roleclass, currentNodeId, callback);
+	    },
+	    getFunctions: function (dbschema, roleclass, callback) {
+	        return getFunctions(dbschema, roleclass, callback);
+	    }
+	}
+});
 "use strict";
 
 angular.module('app.wizards').controller('createRequestCtrl', function ($scope, $state, $http, $stateParams, $modalInstance, APP_CONFIG, CartInfo, dataCartService) {
@@ -51700,148 +52273,6 @@ angular.module('app.wizards').controller('sampleTreeModalCtrl', function ($rootS
     }
 });
 
-'use strict';
-
-angular.module('app.wizards').directive('ebaasFormWizard', function () {
-    return {
-        restrict: 'A',
-        scope: {
-            ebaasWizard : '=',
-            ebaasWizardCallback: '&',
-            ebaasWizardStepEntered: '&',
-            ebaasWizardStepChanged: '&'
-        },
-        link: function (scope, element, attributes) {
-
-            var wizard = element.wizard();
-
-            scope.ebaasWizard = wizard;
-
-            var $form = element.find('form');
-
-            wizard.on('actionclicked.fu.wizard', function (e, data) {
-                if (typeof scope.ebaasWizardStepChanged() === 'function') {
-                    scope.ebaasWizardStepChanged()(e, data)
-                }
-            });
-
-            wizard.on('changed.fu.wizard', function (e, data) {
-                if (typeof scope.ebaasWizardStepEntered() === 'function') {
-                    scope.ebaasWizardStepEntered()(e, data)
-                }
-            });
-
-            wizard.on('finished.fu.wizard', function (e, data) {
-                var formData = {};
-                _.each($form.serializeArray(), function(field){
-                    formData[field.name] = field.value
-                });
-                if(typeof scope.ebaasWizardCallback() === 'function'){
-                    scope.ebaasWizardCallback()(formData)
-                }
-            });
-        }
-    }
-});
-'use strict';
-
-angular.module('app.wizards').directive('previewSubmitStep', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/wizards/views/preview-submit-step.html',
-        replace: true,
-        scope: {},
-        bindToController: {
-            dbschema: '=',
-            dbclass: '=',
-            template: '=',
-            taskId: '=',
-            control: '=',
-            callbackMethod: '&stepCallback'
-        },
-        controllerAs: 'ctrl',
-        controller: 'previewSubmitStepCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
-'use strict';
-
-angular.module('app.wizards').directive('requestInfoStep', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/wizards/views/request-info-step.html',
-        replace: true,
-        scope: {},
-        bindToController: {
-            dbschema: '=',
-            dbclass: '=',
-            template: '=',
-            control: '=',
-            callbackMethod: '&stepCallback'
-        },
-        controllerAs: 'ctrl',
-        controller: 'requestInfoStepCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
-'use strict';
-
-angular.module('app.wizards').directive('requestItems', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/wizards/views/request-items.html',
-        replace: true,
-        scope: {},
-        bindToController: {
-            dbschema: '=',
-            dbclass: '='
-        },
-        controllerAs: 'ctrl',
-        controller: 'requestItemsCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
-'use strict';
-
-angular.module('app.wizards').directive('requestSamples', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/wizards/views/request-samples.html',
-        replace: true,
-        scope: {},
-        bindToController: {
-            dbschema: '=',
-            dbclass: '='
-        },
-        controllerAs: 'ctrl',
-        controller: 'requestSamplesCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
-'use strict';
-
-angular.module('app.wizards').directive('sampleItemStep', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/wizards/views/sample-item-step.html',
-        replace: true,
-        scope: {},
-        bindToController: {
-            dbschema: '=',
-            dbclass: '=',
-            control: '=',
-            callbackMethod: '&stepCallback'
-        },
-        controllerAs: 'ctrl',
-        controller: 'sampleItemStepCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
 
 
 'use strict';
@@ -51926,297 +52357,13 @@ angular.module('app.wizards').factory('RequestInfo', function () {
 
 'use strict';
 
-angular.module('app.userdirectory').controller('assignRolesCtrl', function ($scope, $controller, $rootScope, $http, APP_CONFIG, $stateParams, $modalInstance) {
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = "Role";
-    $scope.masterclass = $stateParams.class;
-    $scope.masterid = $stateParams.oid;
-    $scope.roletype = $stateParams.roletype;
-
-    if ($stateParams.dataview)
-    {
-        $scope.view = $stateParams.dataview;
-    }
-    else
-    {
-        $scope.view = undefined;
-    }
-
-    $scope.filter = "['RType', '=', '" + $scope.roletype + "']";
-
-    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG }));
-
-    $scope.gridInstance = null;
-    $scope.existingKeys = null;
-    $scope.currentKeys = null;
-    $scope.isUpdated = false;
-    $scope.loading = false;
-    $scope.dataGridSettings = {
-        dataSource: {
-            store: $scope.customStore
-        },
-        columnAutoWidth: true,
-        sorting: {
-            mode: "multiple"
-        },
-        editing: {
-            allowAdding: false,
-            allowUpdating: false,
-            allowDeleting: false
-        },
-        grouping: {
-            autoExpandAll: false
-        },
-        pager: {
-            visible: true,
-            showPageSizeSelector: true,
-            showInfo: true
-        },
-        filterRow: {
-            visible: true,
-            applyFilter: "auto"
-        },
-        searchPanel: { visible: false },
-        selection: { mode: 'multiple' },
-        remoteOperations: true,
-        bindingOptions: {
-            columns: 'columns'
-        },
-        headerFilter: {
-            visible: true
-        },
-        rowAlternationEnabled: true,
-        onInitialized: function (e) {
-            $scope.gridInstance = e.component;
-        },
-        onContentReady: function (e) {
-            selectGridRows();
-        },
-        onSelectionChanged: function (e) {
-            changeSelections(e.currentSelectedRowKeys, e.currentDeselectedRowKeys);
-        }
-    };
-
-    var asyncLoop = function(o)
-    {
-        var i = -1;
-
-        var loop = function() {
-            i++;
-            if (i == o.length)
-            {
-                o.callback();
-                return;
-            }
-
-            o.functionToLoop(loop, i);
-        }
-
-        loop(); // init
-    }
-
-    var selectGridRows = function()
-    {
-        if ($scope.currentKeys) {
-            var keys = $scope.currentKeys;
-            var indexes = [];
-            for (var i = 0; i < keys.length; i++) {
-                var index = $scope.gridInstance.getRowIndexByKey(keys[i]);
-
-                if (index >= 0)
-                    indexes.push(index);
-            }
-
-            $scope.gridInstance.selectRowsByIndexes(indexes, true);
-        }
-        else {
-            if ($scope.masterid) {
-                $http.get(APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($stateParams.schema) + "/" + $scope.masterclass + "/" + $scope.masterid + "/" + $scope.dbclass)
-                    .success(function (data) {
-                        var keys = new Array();
-                        if (data) {
-                            for (var i = 0; i < data.length; i++) {
-                                keys.push(data[i].obj_id);
-                            }
-
-                            if (keys.length > 0) {
-                                // set the existing selections of rows
-                                $scope.gridInstance.selectRows(keys, false);
-                            }
-                        }
-
-                        $scope.existingKeys = keys; // keep the existing keys
-                        // initialize the current keys
-                        $scope.currentKeys = [];
-                        for (var i = 0; i < keys.length; i++) {
-                            $scope.currentKeys.push(keys[i]);
-                        }
-                    });
-            }
-        }
-    }
-
-    // keep the current keys in sync with grid row selections
-    var changeSelections = function (selectedKeys, deselectedKeys) {
-        var addedKeys = new Array();
-        var removedKeys = new Array();
-        var found;
-
-        // find the newly selected keys
-        if (selectedKeys && $scope.currentKeys) {
-            for (var i = 0; i < selectedKeys.length; i++) {
-                found = false;
-
-                var index = $scope.gridInstance.getRowIndexByKey(selectedKeys[i]);
-                if (index > -1) {
-                    for (var j = 0; j < $scope.currentKeys.length; j++) {
-                        if (selectedKeys[i] === $scope.currentKeys[j]) {
-                            found = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (!found) {
-                    addedKeys.push(selectedKeys[i]);
-                }
-            }
-        }
-
-        if (deselectedKeys && $scope.currentKeys) {
-            // find the unselected keys
-            for (var i = 0; i < $scope.currentKeys.length; i++) {
-                found = false;
-
-                for (var j = 0; j < deselectedKeys.length; j++) {
-                    var index = $scope.gridInstance.getRowIndexByKey(deselectedKeys[j]);
-                    if (index > -1) {
-                        if ($scope.currentKeys[i] === deselectedKeys[j]) {
-                            found = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (found) {
-                    removedKeys.push($scope.currentKeys[i]);
-                }
-            }
-        }
-
-        for (var i = 0; i < addedKeys.length; i++) {
-            $scope.currentKeys.push(addedKeys[i]);
-        }
-
-        for (var i = 0; i < removedKeys.length; i++) {
-            var index = $scope.currentKeys.indexOf(removedKeys[i]);
-            if (index > -1)
-                $scope.currentKeys.splice(index, 1);
-        }
-
-        //console.log("after current keys = " + $scope.currentKeys);
-    }
-
-    $scope.saveSelection = function () {
-        var addedKeys = new Array();
-        var removedKeys = new Array();
-        var found;
-
-        // find the added selections
-        for (var i = 0; i < $scope.currentKeys.length; i++) {
-            found = false;
-
-            for (var j = 0; j < $scope.existingKeys.length; j++) {
-                if ($scope.currentKeys[i] === $scope.existingKeys[j]) {
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found) {
-                addedKeys.push($scope.currentKeys[i]);
-            }
-        }
-
-        // find the removed selections
-        for (var i = 0; i < $scope.existingKeys.length; i++) {
-            found = false;
-
-            for (var j = 0; j < $scope.currentKeys.length; j++) {
-                if ($scope.existingKeys[i] === $scope.currentKeys[j]) {
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found) {
-                removedKeys.push($scope.existingKeys[i]);
-            }
-        }
-
-        if (addedKeys.length > 0) {
-            $scope.loading = true;
-
-            // add relationhsips to the db
-            asyncLoop({
-                length: addedKeys.length,
-                functionToLoop: function (loop, i) {
-                    if ($scope.masterid) {
-                        $http.post(APP_CONFIG.ebaasRootUrl + "/api/relationship/" + encodeURIComponent($stateParams.schema) + "/" + $scope.masterclass + "/" + $scope.masterid + "/" + $scope.dbclass + "/" + encodeURIComponent(addedKeys[i]))
-                             .success(function (data) {
-                                 loop();
-                             });
-                    }
-                },
-                callback: function () {
-                    $scope.loading = false;
-                    $scope.isUpdated = true;
-                }
-            })
-        }
-
-        if (removedKeys.length > 0) {
-            $scope.loading = true;
-            // delete relationhsips from the db
-            asyncLoop({
-                length: removedKeys.length,
-                functionToLoop: function (loop, i) {
-                    $http.delete(APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($stateParams.schema) + "/" + $scope.masterclass + "/" + $scope.masterid + "/" + $scope.dbclass + "/" + encodeURIComponent(removedKeys[i]))
-                         .success(function (data) {
-                             loop();
-                         });
-                },
-                callback: function () {
-                    $scope.existingKeys = [];
-                    for (var i = 0; i < $scope.currentKeys.length; i++)
-                        $scope.existingKeys.push($scope.currentKeys[i]);
-                    $scope.loading = false;
-                    $scope.isUpdated = true;
-                }
-            })
-        }
-
-    };
-
-    $scope.goBack = function () {
-        if ($scope.isUpdated) {
-            $modalInstance.close({ "modal": "viewManyToMany"});
-        }
-        else {
-            $modalInstance.dismiss("dismiss");
-        }
-    };
-});
-
-'use strict';
-
-angular.module('app.userdirectory').controller('RoleListViewCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, TestStations, $interval, userService) {
+angular.module('app.taskviewer').controller('TaskInfoViewCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, MetaDataCache) {
 
     $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.baseclass;
-    $scope.roletype = $stateParams.roletype;
-
-    $scope.filter = "['RType', '=', '" + $scope.roletype + "']";
+    $scope.dbclass = $stateParams.class;
+    $scope.oid = $stateParams.oid;
+    $scope.itemclass = $stateParams.itemClass;
+    $scope.packetclass = $stateParams.packetClass;
 
     if ($stateParams.insert && $stateParams.insert === "false") {
         $scope.add = false;
@@ -52225,795 +52372,132 @@ angular.module('app.userdirectory').controller('RoleListViewCtrl', function ($co
         $scope.add = true;
     }
 
-    if ($stateParams.export && $stateParams.export === "true") {
-        $scope.exportData = true;
-    }
-    else {
-        $scope.exportData = false;
-    }
-
-    if ($stateParams.import && $stateParams.import === "true") {
-        $scope.importData = true;
-    }
-    else {
-        $scope.importData = false;
-    }
-
-    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG }));
-
-    $scope.openModal = function () {
-        $state.go('.modalform', { schema: $scope.dbschema, class: $scope.dbclass }, { location: false, notify: false });
-    };
-
-    $scope.GetCommands = function (rowIndex, data) {
-        var items = new Array();
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/sitemap/commands/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass;
-
-        $http.get(url).success(function (commands) {
-
-            // custom commands
-            $scope.commands = commands;
-            var cmdInfo;
-            var item;
-            for (var cmd in commands) {
-                if (commands.hasOwnProperty(cmd)) {
-                    cmdInfo = commands[cmd];
-                    item = new Object();
-                    item.text = cmdInfo.title;
-                    item.css = "btn btn-primary btn-md btn-nav";
-                    if (cmdInfo.icon) {
-                        item.icon = cmdInfo.icon;
-                    }
-                    else {
-                        item.icon = "fa fa-lg fa-tasks";
-                    }
-
-                    item.onItemClick = function (text) {
-                        gotoState(text, $scope.dbschema, data.type, data.obj_id)
-                    }
-
-                    items.push(item);
-
-                    if (cmdInfo.baseUrl && !APP_CONFIG.hashedBaseUrls[cmdInfo.hash]) {
-                        APP_CONFIG.hashedBaseUrls[cmdInfo.hash] = cmdInfo.baseUrl;
-                    }
-                }
-            }
-
-            if (data.allowWrite && $stateParams.edit !== "false") {
-                items.push({
-                    text: $rootScope.getWord('Edit'),
-                    icon: "fa fa-lg fa-edit",
-                    css: "btn btn-default btn-md btn-nav",
-                    onItemClick: function () {
-                        $state.go('.modalform', { schema: $scope.dbschema, class: data.type, oid: data.obj_id }, { location: false, notify: false });
-                    }
-                });
-            }
-
-            if (data.allowDelete && $stateParams.delete !== "false") {
-                items.push({
-                    text: $rootScope.getWord('Delete'),
-                    icon: "fa fa-lg fa-times",
-                    css: "btn btn-default btn-md btn-nav",
-                    onItemClick: function () {
-                        $scope.gridInstance.deleteRow(rowIndex);
-                    }
-                });
-            }
-        });
-        return items;
-    }
-
-    var gotoState = function (title, dbschema, dbclass, oid) {
-        var commands = $scope.commands;
-        var url = undefined;
-        var cmdUrl = undefined;
-        var params = undefined;
-        var cmdInfo;
-        for (var cmd in commands) {
-            if (commands.hasOwnProperty(cmd)) {
-                cmdInfo = commands[cmd];
-                if (cmdInfo.title === title) {
-                    url = cmdInfo.url;
-                    cmdUrl = cmdInfo.url;
-                    params = new Object();
-                    params.schema = dbschema;
-                    params.class = dbclass;
-                    params.oid = oid;
-                    params.cmdHash = cmdInfo.hash;
-
-                    // add command's parameters to the state parameters
-                    if (cmdInfo.parameters) {
-                        for (var key in cmdInfo.parameters) {
-                            if (cmdInfo.parameters.hasOwnProperty(key)) {
-                                params[key] = cmdInfo.parameters[key];
-                            }
-                        }
-                    };
-
-                    break;
-                }
-            }
-        }
-
-        if (url) {
-            try
-            {
-                if (cmdUrl === ".modalform") {
-                    $state.go(url, params, { location: false, notify: false });
-                }
-                else {
-                    $state.go(url, params);
-                }
-            }
-            catch (err)
-            {
-                BootstrapDialog.show({
-                    title: $rootScope.getWord("Info Dialog"),
-                    type: BootstrapDialog.TYPE_INFO,
-                    message: $rootScope.getWord("Invalid Command"),
-                    buttons: [{
-                        label: $rootScope.getWord("Cancel"),
-                        action: function (dialog) {
-                            dialog.close();
-                        }
-                    }]
-                });
-            }
-        }
-    }
-
-    $scope.gridInstance = null;
-    $scope.dataGridSettings = {
-        dataSource: {
-            store: $scope.customStore
-        },
-        columnAutoWidth: true,
-        height: $rootScope.isChrome() === true ? '750px' : undefined,
-        sorting: {
-            mode: "multiple"
-        },
-        searchPanel: {
-            visible: $stateParams.search && $stateParams.search === "true"? true: false,
-            width: 300,
-            placeholder: $rootScope.getWord("Keyword Search")
-        },
-        editing: {
-            allowAdding: false,
-            allowUpdating: false,
-            allowDeleting: false
-        },
-        grouping: {
-            autoExpandAll: false
-        },
-        pager: {
-            visible: true,
-            showPageSizeSelector: true,
-            showInfo: true
-        },
-        filterRow: {
-            visible: true,
-            applyFilter: "auto"
-        },
-        selection: { mode: 'single' },
-        remoteOperations: true,
-        bindingOptions: {
-            columns: 'columns'
-        },
-        headerFilter: {
-            visible: true
-        },
-        rowAlternationEnabled: true,
-        masterDetail: {
-            enabled: true,
-            template: "detail"
-        },
-        onRowClick: function (e) {
-            if (e.rowType === "data") {
-                var isExpanded = $scope.gridInstance.isRowExpanded(e.key);
-                $scope.gridInstance.collapseAll(-1); // collaspsed all
-                if (!isExpanded) {
-                    $scope.gridInstance.expandRow(e.key);
-                }
-            }
-        },
-        onInitialized: function (e) {
-            $scope.gridInstance = e.component;
-        },
-        onRowPrepared: function (e) {
-        }
-    };
-
-    $rootScope.$on('modalClosed', function (event, data) {
-        if ($scope.gridInstance && data === "update")
-            $scope.gridInstance.refresh();
-    });
-});
-'use strict';
-
-angular.module('app.userdirectory').controller('UserDirectoryLayoutCtrl', function ($http, APP_CONFIG, $scope, $rootScope, $state, $stateParams, userService, propmisedParams) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.userclass = $stateParams.class;
-    $scope.roleclass = "Role";
-
-    // Getting unit tree
-    $scope.unitObjId = $stateParams.unitObjId;
-
-    var params = propmisedParams.data;
-
-    $scope.view = params['dataView'];
-    $scope.formTemplate = params['formTemplate'];
-
-    userService.getUnitTree($stateParams.schema, $scope.roleclass, $scope.unitObjId, function (data) {
-        $scope.unitTree = data;
-    });
-
-    // Getting function list
-    userService.getFunctions($stateParams.schema, $scope.roleclass, function (data) {
-        // add "Every One" as the first function
-        var role = {};
-        role.Text = $rootScope.getWord("Everyone");
-        role.obj_id = undefined;
-        if (data)
-        {
-            data.unshift(role);
-        }
-        else
-        {
-            data = [];
-            data.push(role);
-        }
- 
-        $scope.functions = data;
-    });
-
-    $state.go('app.userdirectory.usertable', { schema: $scope.dbschema, baseclass: $scope.roleclass, baseoid: undefined, relatedclass: $scope.userclass, view: $scope.view, formtemplate: $scope.formTemplate });
-
-    $scope.functionObjId = undefined;
-    
-    $scope.getFunctionUsers = function (functionObjId) {
-        $scope.functionObjId = functionObjId;
-        $state.go('app.userdirectory.usertable', { schema: $scope.dbschema, baseclass: $scope.roleclass, baseoid: functionObjId, relatedclass: $scope.userclass, view: $scope.view, formtemplate: $scope.formTemplate });
-    }
-
-    $scope.getUnitUsers = function (unitObjId) {
-        $scope.unitObjId = unitObjId;
-        $state.go('app.userdirectory.usertable', { schema: $scope.dbschema, baseclass: $scope.roleclass, baseoid: unitObjId, relatedclass: $scope.userclass, view: $scope.view, formtemplate: $scope.formTemplate });
-    }
-
-    $scope.openFunctions = function () {
-        $state.go('app.userdirectory.roletable', { schema: $scope.dbschema, baseclass: $scope.roleclass, roletype: "Function" });
-    }
-
-    $scope.openUnits = function () {
-        $state.go('app.userdirectory.roletable', { schema: $scope.dbschema, baseclass: $scope.roleclass, roletype: "Unit" });
-    }
-
-    $scope.refresh = function () {
-        $state.reload();
-    }
-});
-'use strict';
-
-angular.module('app.userdirectory').controller('UserListCtrl', function ($scope, $rootScope, $state, $stateParams, APP_CONFIG, userService, promisedUsers) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.userclass = $stateParams.class;
-    $scope.roleclass = "Role";
-
-    $scope.getWord = function(key)
-    {
-        return key;
-    }
-
-    $scope.tableOptions = {
-        "data": userService.convertUsers(promisedUsers.data),
-        //            "bDestroy": true,
-        "iDisplayLength": 20,
-        "columns": [
-            {
-                "class": 'details-control',
-                "orderable": false,
-                "data": null,
-                "defaultContent": ''
-            },
-            { "data": "FullName" },
-            { "data": "ID" },
-            { "data": "PhoneNumber" },
-            { "data": "Email" }
-        ],
-        "order": [[1, 'asc']]
-    }
-
-    // Getting unit tree
-    $scope.unitObjId = $stateParams.unitObjId;
-
-    userService.getUnitTree($stateParams.schema, $scope.roleclass, $scope.unitObjId, function (data) {
-        $scope.unitTree = data;
-
-    });
-
-    // Getting function list
-    userService.getFunctions($stateParams.schema, $scope.roleclass, function (data) {
-       
-        $scope.functions = data;
-
-    });
-
-    $scope.functionObjId = $stateParams.functionObjId;
-    $scope.getFunctionUsers = function (functionObjId) {
-        var params = new Object();
-
-        params.functionObjId = functionObjId;
-        params.unitObjId = undefined;
-        $scope.functionObjId = functionObjId;
-        $scope.unitObjId = undefined;
-
-        $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
-    }
-
-    $scope.getUnitUsers = function(unitObjId)
-    {
-        var params = new Object();
-
-        params.unitObjId = unitObjId;
-        params.functionObjId = undefined;
-        $scope.unitObjId = unitObjId;
-        $scope.functionObjId = undefined;
-
-        $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
-    }
-});
-'use strict';
-
-angular.module('app.userdirectory').controller('UserListViewCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, TestStations, $interval, userService) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.userclass = $stateParams.relatedclass;
-    
-    $scope.formTemplate = $stateParams.formtemplate;
-
-    if ($stateParams.baseoid) {
-        $scope.dbclass = $stateParams.baseclass;
-        $scope.relatedclass = $stateParams.relatedclass;
-        $scope.relatedview = $stateParams.view;
-        $scope.oid = $stateParams.baseoid;
-        
-        $scope.isrelated = true;
-    }
-    else
-    {
-        // get all users
-        $scope.dbclass = $stateParams.relatedclass;
-        $scope.view = $stateParams.view;
-    }
-
-    if ($stateParams.insert && $stateParams.insert === "false") {
-        $scope.add = false;
-    }
-    else {
-        $scope.add = true;
-    }
-
-    if ($stateParams.export && $stateParams.export === "true") {
-        $scope.exportData = true;
-    }
-    else {
-        $scope.exportData = false;
-    }
-
-    if ($stateParams.import && $stateParams.import === "true") {
-        $scope.importData = true;
-    }
-    else {
-        $scope.importData = false;
-    }
-
-    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG }));
-
-    $scope.openModal = function () {
-        $state.go('.modalform', { schema: $scope.dbschema, class: $scope.userclass, template: $scope.formTemplate }, { location: false, notify: false });
-    };
-
-    $scope.GetCommands = function (rowIndex, data) {
-        var items = new Array();
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/sitemap/commands/" + encodeURIComponent($scope.dbschema) + "/" + $scope.userclass;
-
-        $http.get(url).success(function (commands) {
-
-            // custom commands
-            $scope.commands = commands;
-            var cmdInfo;
-            var item;
-            for (var cmd in commands) {
-                if (commands.hasOwnProperty(cmd)) {
-                    cmdInfo = commands[cmd];
-                    item = new Object();
-                    item.text = cmdInfo.title;
-                    item.css = "btn btn-primary btn-md btn-nav";
-                    if (cmdInfo.icon) {
-                        item.icon = cmdInfo.icon;
-                    }
-                    else {
-                        item.icon = "fa fa-lg fa-tasks";
-                    }
-
-                    item.onItemClick = function (text) {
-                        gotoState(text, $scope.dbschema, data.type, data.obj_id)
-                    }
-
-                    items.push(item);
-
-                    if (cmdInfo.baseUrl && !APP_CONFIG.hashedBaseUrls[cmdInfo.hash]) {
-                        APP_CONFIG.hashedBaseUrls[cmdInfo.hash] = cmdInfo.baseUrl;
-                    }
-                }
-            }
-
-            if (data.allowWrite && $stateParams.edit !== "false") {
-                items.push({
-                    text: $rootScope.getWord('Edit'),
-                    icon: "fa fa-lg fa-edit",
-                    css: "btn btn-default btn-md btn-nav",
-                    onItemClick: function () {
-                        $state.go('.modalform', { schema: $scope.dbschema, class: data.type, oid: data.obj_id, template: $scope.formTemplate }, { location: false, notify: false });
-                    }
-                });
-            }
-
-            if (data.allowDelete && $stateParams.delete !== "false") {
-                items.push({
-                    text: $rootScope.getWord('Delete'),
-                    icon: "fa fa-lg fa-times",
-                    css: "btn btn-default btn-md btn-nav",
-                    onItemClick: function () {
-                        $scope.gridInstance.deleteRow(rowIndex);
-                    }
-                });
-            }
-        });
-        return items;
-    }
-
-    var gotoState = function (title, dbschema, dbclass, oid) {
-        var commands = $scope.commands;
-        var url = undefined;
-        var cmdUrl = undefined;
-        var params = undefined;
-        var cmdInfo;
-        for (var cmd in commands) {
-            if (commands.hasOwnProperty(cmd)) {
-                cmdInfo = commands[cmd];
-                if (cmdInfo.title === title) {
-                    url = cmdInfo.url;
-                    cmdUrl = cmdInfo.url;
-                    params = new Object();
-                    params.schema = dbschema;
-                    params.class = dbclass;
-                    params.oid = oid;
-                    params.cmdHash = cmdInfo.hash;
-
-                    // add command's parameters to the state parameters
-                    if (cmdInfo.parameters) {
-                        for (var key in cmdInfo.parameters) {
-                            if (cmdInfo.parameters.hasOwnProperty(key)) {
-                                params[key] = cmdInfo.parameters[key];
-                            }
-                        }
-                    };
-
-                    break;
-                }
-            }
-        }
-
-        if (url) {
-            try
-            {
-                if (cmdUrl === ".modalform") {
-                    $state.go(url, params, { location: false, notify: false });
-                }
-                else {
-                    $state.go(url, params);
-                }
-            }
-            catch (err)
-            {
-                BootstrapDialog.show({
-                    title: $rootScope.getWord("Info Dialog"),
-                    type: BootstrapDialog.TYPE_INFO,
-                    message: $rootScope.getWord("Invalid Command"),
-                    buttons: [{
-                        label: $rootScope.getWord("Cancel"),
-                        action: function (dialog) {
-                            dialog.close();
-                        }
-                    }]
-                });
-            }
-        }
-    }
-
-    $scope.gridInstance = null;
-    $scope.dataGridSettings = {
-        dataSource: {
-            store: $scope.customStore
-        },
-        columnAutoWidth: true,
-        height: $rootScope.isChrome() === true ? '750px' : undefined,
-        sorting: {
-            mode: "multiple"
-        },
-        searchPanel: {
-            visible: $stateParams.search && $stateParams.search === "true"? true: false,
-            width: 300,
-            placeholder: $rootScope.getWord("Keyword Search")
-        },
-        editing: {
-            allowAdding: false,
-            allowUpdating: false,
-            allowDeleting: false
-        },
-        grouping: {
-            autoExpandAll: false
-        },
-        pager: {
-            visible: true,
-            showPageSizeSelector: true,
-            showInfo: true
-        },
-        filterRow: {
-            visible: true,
-            applyFilter: "auto"
-        },
-        selection: { mode: 'single' },
-        remoteOperations: true,
-        bindingOptions: {
-            columns: 'columns'
-        },
-        headerFilter: {
-            visible: true
-        },
-        rowAlternationEnabled: true,
-        masterDetail: {
-            enabled: true,
-            template: "detail"
-        },
-        onRowClick: function (e) {
-            if (e.rowType === "data") {
-                var isExpanded = $scope.gridInstance.isRowExpanded(e.key);
-                $scope.gridInstance.collapseAll(-1); // collaspsed all
-                if (!isExpanded) {
-                    $scope.gridInstance.expandRow(e.key);
-                }
-            }
-        },
-        onInitialized: function (e) {
-            $scope.gridInstance = e.component;
-        },
-        onRowPrepared: function (e) {
-        }
-    };
-
-    $rootScope.$on('modalClosed', function (event, data) {
-        if ($scope.gridInstance && data === "update")
-            $scope.gridInstance.refresh();
-    });
+    angular.extend(this, $controller('ebaasFormBaseCtrl', { $rootScope: $rootScope, $scope: $scope, $http: $http, APP_CONFIG: APP_CONFIG }));
 });
 "use strict";
 
-angular.module('app.userdirectory').factory('userService', function ($http, APP_CONFIG) {
+angular.module('app.taskviewer').factory('taskService', function ($http, APP_CONFIG) {
 
-    var convertUsers = function (userCollection) {
+    var createTaskTree = function (treeData) {
+        var node, rootMenuItem, roots = [];
+        node = treeData;
 
-        var id = "ID";
-        var firstName = "FirstName";
-        var lastName = "LastName";
-        var phoneNumber = "PhoneNumber";
-        var email = "Email";
-        var picture = "Picture";
-        var division = "Department";
-        var address = "Location";
-        var displayText = "DisplayText";
+        var rootMenuItem = {};
+        //rootMenuItem.content = "<span><i class=\"fa fa-lg fa-plus-circle\"></i> " + node.title + "</span>";
+        rootMenuItem.content = "<span class='label label-info'><i class=\"fa fa-lg fa-plus-circle\"></i>&nbsp;&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('taskDataTree')).scope().GoToTaskInfoView('" + node.id + "');\">" + node.name + "</a></span>";
+        rootMenuItem.children = [];
+        rootMenuItem.expanded = true;
+        roots.push(rootMenuItem);
 
-        var users = new Array();
-
-        if (userCollection) {
-
-            for (var i = 0; i < userCollection.length; i++) {
-                var user = userCollection[i];
-
-                var userItem = new Object();
-
-                userItem.obj_id = user["obj_id"];
-                userItem.ID = user[id];
-                if (user[displayText]) {
-                    userItem.FullName = user[displayText];
-                }
-                else
-                {
-                    userItem.FullName = user[lastName] + user[firstName];
-                }
-                userItem.PhoneNumber = user[phoneNumber];
-                userItem.Email = user[email];
-                userItem.Division = user[division];
-                userItem.Address = user[address];
-                if (user[picture]) {
-                    userItem.Picture = APP_CONFIG.avatarsUrl + userItem.ID + ".png";
-                }
-                else
-                {
-                    userItem.Picture = APP_CONFIG.avatarsUrl + "male.png";
-                }
-
-                users.push(userItem);
-            }
-        }
-
-        return users;
-    }
-
-    var createUnitTree = function (nodes, currentNodeObjId) {
-        var map = {}, node, menuItem, parentItem, roots = [], menuItems = [];
-        for (var i = 0; i < nodes.length; i += 1) {
-            node = nodes[i];
-            
-            menuItem = new Object();
-            menuItem.name = node.Name;
-            menuItem.text = node.Text;
-            menuItem.children = new Array();
-            map[menuItem.name] = i; // use map to look-up the parents
-            menuItems.push(menuItem);
-        }
-
-        for (var i = 0; i < nodes.length; i += 1) {
-            node = nodes[i];
-            menuItem = menuItems[i];
-
-            if (node.parentRole != "") {
-                parentItem = menuItems[map[node.parentRole]];
-                parentItem.children.push(menuItem);
-                menuItem.parentItem = parentItem;
-            } else {
-                //menuItem.expanded = true;
-                menuItem.parentItem = undefined;
-                roots.push(menuItem);
-            }
-        }
-
-        for (var i = 0; i < nodes.length; i += 1) {
-            node = nodes[i];
-            menuItem = menuItems[i];
-
-            if (menuItem.children.length > 0) {
-                menuItem.content = "<span><i class=\"fa fa-lg fa-plus-circle\"></i> " + node.Text + "</span>";
-                //menuItem.content = "<span class='label label-info'><i class=\"fa fa-lg fa-plus-circle\"></i>&nbsp;&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('unitTreeContainer')).scope().getUnitUsers(" + node.obj_id + ");\">" + node.Text + "</a></span>";
-            } else {
-                if (currentNodeObjId && currentNodeObjId === node.obj_id)
-                {
-                    menuItem.content = "<span class='label label-warning'><a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('unitTreeContainer')).scope().getUnitUsers(" + node.obj_id + ");\">" + node.Text + "</a></span>";
-
-                    var thisItem = menuItem;
-                    while (thisItem.parentItem) {
-                        thisItem = thisItem.parentItem;
-                        thisItem.expanded = true;
-                    }
-                }
-                else
-                {
-                    menuItem.content = "<span class='label label-info'><a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('unitTreeContainer')).scope().getUnitUsers(" + node.obj_id + ");\">" + node.Text + "</a></span>";
-                }
-            }
-        }
+        addChildMenuItems(rootMenuItem, treeData.children);
 
         return roots;
     };
 
-    function getAllUsers(dbschema, userclass, pageIndex, callback) {
-	    
-	    var pageSize = 20;
-	    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + userclass + "?view=full&size=" + pageSize;
-	    if (pageIndex) {
-	        var from = pageIndex * pageSize;
-	        url += "&from=" + from;
-	    }
+    var addChildMenuItems = function (parentItem, nodes) {
+        var node, menuItem;
 
-        $http.get(url).success(function (data) {
-	        callback(convertUsers(data));
-				
-		}).error(function(){
-		    callback([]);
+        if (nodes != null) {
+            for (var i = 0; i < nodes.length; i += 1) {
+                node = nodes[i];
 
-		});
+                menuItem = {};
+                menuItem.children = [];
+
+                if (node.children.length > 0) {
+                    menuItem.content = "<span class='label label-info'><i class=\"fa fa-lg fa-plus-circle\"></i>&nbsp;&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('taskDataTree')).scope().GoToTaskInfoView('" + node.name + "');\">" + node.title + "</a></span>";
+                } else {
+                    menuItem.content = "<span class='label label-info'><a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('taskDataTree')).scope().GoToTaskInfoView('" + node.name + "');\">" + node.title + "</a></span>";
+                }
+
+                parentItem.children.push(menuItem);
+
+                addChildMenuItems(menuItem, node.children);
+            }
+        }
     }
 
-    function getUnitTree(dbschema, roleclass, currentNodeId, callback) {
+    function getTaskTree(dbschema, taskclass, taskoid, itemclass, packetclass, callback) {
 
-        var pageSize = 200;
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + roleclass + "?view=full&size=" + pageSize + "&filter=['RType', '=', 'Unit']";
+        // url to get task instance
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + taskclass + "/" + taskoid;
+        $http.get(url).success(function (task) {
+            var pageSize = 500;
+            var taskNode = new Object();
+            taskNode.id = task.obj_id;
+            taskNode.name = task.OrderNumber;
+            // url to get related test items of a task
+            url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + taskclass + "/" + taskoid + "/" + itemclass + "?size=" + pageSize;
+            $http.get(url).success(function (items) {
+                if (items != null) {
+                    var itemNodes = [];
+                    taskNode.children = itemNodes;
+                    for (var i = 0; i < items.length; i += 1) {
+                        var item = terms[i];
+                        var itemNode = new Object();
+                        itemNode.id = item.obj_id;
+                        itemNode.name = item.ItemID;
+                        itemNodes.push(itemNode);
 
-        $http.get(url).success(function (data) {
-            callback(createUnitTree(data, currentNodeId));
+                        // url to get related packets to the item
+                        url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + itemclass + "/" + item.objId + "/" + packetclass + "?size=" + pageSize;
+                        $http.get(url).success(function (packets) {
+                            if (packets != null) {
+                                var packetNodes = [];
+                                itemNodes.children = packetNodes;
 
+                                for (var i = 0; i < packets.length; i += 1) {
+                                    var packet = packets[i];
+                                    var packetNode = new Object();
+                                    packetNode.id = packet.obj_id;
+                                    packetNode.name = packet.PacketNumber;
+                                    packetNodes.push(packetNode);
+                                }
+                            }
+                        }).error(function () {
+                            callback(undefined);
+                        })
+                    }
+                }
+                callback(createTaskTree(taskNode));
+            }).error(function () {
+                callback(undefined);
+            });
         }).error(function () {
             callback(undefined);
-
-        });
-    }
-
-    function getFunctions(dbschema, roleclass, callback) {
-
-        var pageSize = 200;
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + roleclass + "?view=full&size=" + pageSize + "&filter=['RType', '=', 'Function']";
-
-        $http.get(url).success(function (data) {
-            callback(data);
-
-        }).error(function () {
-            callback(undefined);
-
-        });
+        })
     }
 	
 	return {
-	    getAllUsers: function (dbschema, userclass, pageIndex, callback) {
-	        getAllUsers(dbschema, userclass, pageIndex, callback);
-	    },
-	    convertUsers: function (userCollection) {
-	        return convertUsers(userCollection);
-	    },
-	    getUnitTree: function (dbschema, roleclass, currentNodeId, callback) {
-	        return getUnitTree(dbschema, roleclass, currentNodeId, callback);
-	    },
-	    getFunctions: function (dbschema, roleclass, callback) {
-	        return getFunctions(dbschema, roleclass, callback);
+        getTaskTree: function (dbschema, taskclass, taskoid, itemclass, packetclass, callback) {
+            return getTaskTree(dbschema, taskclass, taskoid, itemclass, packetclass, callback);
 	    }
 	}
 });
-"use strict";
+'use strict';
 
-angular.module('app.auth').directive('facebookSignin', function ($rootScope, ezfb) {
-    return {
-        replace: true,
-        restrict: 'E',
-        template: '<a class="btn btn-block btn-social btn-facebook"><i class="fa fa-facebook"></i> Sign in with Facebook</a>',
-        link: function(scope, element){
-            element.on('click', function(){
-                ezfb.login(function (res) {
-                    if (res.authResponse) {
-                        $rootScope.$broadcast('event:facebook-signin-success', res.authResponse);
-                    }
-                }, {scope: 'public_profile'});
-            })
+angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($http, APP_CONFIG, $scope, $state, $stateParams, MetaDataCache, taskService) {
 
-        }
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+    $scope.oid = $stateParams.oid;
+    $scope.formAttribute = undefined;
+    $scope.itemclass = $stateParams.itemClass;
+    $scope.packetclass = $stateParams.packetClass;
+
+    $scope.node = undefined;
+
+    taskService.getTaskTree($stateParams.schema, $stateParams.class, $stateParams.oid, $stateParams.itemClass, $stateParams.packetClass, function (treeData) {
+        $scope.taskDataTree = treeData;
+
+        $state.go('app.taskviewer.taskinfoview', { schema: $scope.dbschema, class: $scope.dbclass, oid: $scope.oid, node: $scope.node, itemClass: $scope.itemclass, packetClass: $scope.packetclass});
+    });
+
+    $scope.GoToTaskInfoView = function GoToTaskInfoView(nodeName) {
+
+        $state.go('app.taskviewer.taskinfoview', { schema: $scope.dbschema, class: $scope.dbclass, oid: $scope.oid, node: nodeName, itemClass: $scope.itemclass, packetClass: $scope.packetclass });
     }
 });
-"use strict";
-
-angular.module('app.auth').directive('googleSignin', function ($rootScope, GooglePlus) {
-    return {
-        restrict: 'E',
-        template: '<a class="g-signin btn btn-block btn-social btn-google-plus"><i class="fa fa-google-plus"></i> Sign in with Google</a>',
-        replace: true,
-        link: function (scope, element) {
-            element.on('click', function(){
-                GooglePlus.login().then(function (authResult) {
-                    $rootScope.$broadcast('event:google-plus-signin-success', authResult);
-
-                }, function (err) {
-                    $rootScope.$broadcast('event:google-plus-signin-failure', err);
-
-                });
-            })
-        }
-    };
-});
-
 'use strict';
 
 angular.module('app.chat').factory('ChatApi', function ($q, $rootScope, User, $http, APP_CONFIG) {
@@ -53077,79 +52561,44 @@ angular.module('app.chat').factory('ChatApi', function ($q, $rootScope, User, $h
 });
 "use strict";
 
- angular.module('app').directive('todoList', function ($timeout, Todo) {
-
+angular.module('app.auth').directive('facebookSignin', function ($rootScope, ezfb) {
     return {
-        restrict: 'E',
         replace: true,
-        templateUrl: 'app/dashboard/todo/directives/todo-list.tpl.html',
-        scope: {
-            todos: '='
-        },
-        link: function (scope, element, attributes) {
-            scope.title = attributes.title
-            scope.icon = attributes.icon
-            scope.state = attributes.state
-            scope.filter = {
-                state: scope.state
-            }
-
-            element.find('.todo').sortable({
-                handle: '.handle',
-                connectWith: ".todo",
-                receive: function (event, ui) {
-
-                    console.log(ui.item.scope().todo,scope.state)
-                    var todo = ui.item.scope().todo;
-                    var state = scope.state
-                    // // console.log(ui.item, todo, state)
-                    // // console.log(state, todo)
-                    if (todo && state) {
-                        todo.setState(state);
-                         // ui.sender.sortable("cancel");
-                        // scope.$apply();
-                    } else {
-                        console.log('Wat', todo, state);
+        restrict: 'E',
+        template: '<a class="btn btn-block btn-social btn-facebook"><i class="fa fa-facebook"></i> Sign in with Facebook</a>',
+        link: function(scope, element){
+            element.on('click', function(){
+                ezfb.login(function (res) {
+                    if (res.authResponse) {
+                        $rootScope.$broadcast('event:facebook-signin-success', res.authResponse);
                     }
-                    
-                }
-            }).disableSelection();
+                }, {scope: 'public_profile'});
+            })
 
         }
     }
 });
 "use strict";
 
-angular.module('app').factory('Todo', function (Restangular, APP_CONFIG) {
+angular.module('app.auth').directive('googleSignin', function ($rootScope, GooglePlus) {
+    return {
+        restrict: 'E',
+        template: '<a class="g-signin btn btn-block btn-social btn-google-plus"><i class="fa fa-google-plus"></i> Sign in with Google</a>',
+        replace: true,
+        link: function (scope, element) {
+            element.on('click', function(){
+                GooglePlus.login().then(function (authResult) {
+                    $rootScope.$broadcast('event:google-plus-signin-success', authResult);
 
+                }, function (err) {
+                    $rootScope.$broadcast('event:google-plus-signin-failure', err);
 
-    Restangular.extendModel(APP_CONFIG.apiRootUrl + '/todos.json', function(todo) {
-        todo.toggle = function(){
-            if (!todo.completedAt) {
-                todo.state = 'Completed';
-                todo.completedAt = JSON.stringify(new Date());
-            } else {
-                todo.state = 'Critical';
-                todo.completedAt = null;
-            }
-            // return this.$update();
-        };
-
-        todo.setState = function(state){
-            todo.state = state;
-            if (state == 'Completed') {
-                todo.completedAt = JSON.stringify(new Date());
-            } else {
-                todo.completedAt = null;
-            }
-            // return this.$update();
-        };
-
-        return todo;
-      });
-
-    return Restangular.all(APP_CONFIG.apiRootUrl + '/todos.json')
+                });
+            })
+        }
+    };
 });
+
 (function() {
         
    'use strict';
@@ -53757,299 +53206,80 @@ angular.module('app.chat').directive('chatWidget', function (ChatApi) {
         }
     }
 });
-'use strict';
+"use strict";
 
-angular.module('app.homepage').directive('demoBarChart', function ($http, APP_CONFIG) {
+ angular.module('app').directive('todoList', function ($timeout, Todo) {
+
     return {
-        restrict: 'A',
+        restrict: 'E',
+        replace: true,
+        templateUrl: 'app/dashboard/todo/directives/todo-list.tpl.html',
+        scope: {
+            todos: '='
+        },
         link: function (scope, element, attributes) {
-
-            var barOptions = {
-                //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-                scaleBeginAtZero : true,
-                //Boolean - Whether grid lines are shown across the chart
-                scaleShowGridLines : true,
-                //String - Colour of the grid lines
-                scaleGridLineColor : "rgba(0,0,0,.05)",
-                //Number - Width of the grid lines
-                scaleGridLineWidth : 1,
-                //Boolean - If there is a stroke on each bar
-                barShowStroke : true,
-                //Number - Pixel width of the bar stroke
-                barStrokeWidth : 1,
-                //Number - Spacing between each of the X value sets
-                barValueSpacing : 5,
-                //Number - Spacing between data sets within X values
-                barDatasetSpacing : 1,
-                //Boolean - Re-draw chart on page resize
-                responsive: true,
-                //String - A legend template
-                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+            scope.title = attributes.title
+            scope.icon = attributes.icon
+            scope.state = attributes.state
+            scope.filter = {
+                state: scope.state
             }
 
-            var barChartUrl = scope.pageparams["barChart"];
+            element.find('.todo').sortable({
+                handle: '.handle',
+                connectWith: ".todo",
+                receive: function (event, ui) {
 
-            if (barChartUrl) {
-                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(barChartUrl))
-                    .success(function (res) {
-                        scope.barChartTitle = res.title;
-                        var ctx = element[0].getContext("2d");
-                        new Chart(ctx).Bar(res.chart, barOptions);
-                    })
-            }
+                    console.log(ui.item.scope().todo,scope.state)
+                    var todo = ui.item.scope().todo;
+                    var state = scope.state
+                    // // console.log(ui.item, todo, state)
+                    // // console.log(state, todo)
+                    if (todo && state) {
+                        todo.setState(state);
+                         // ui.sender.sortable("cancel");
+                        // scope.$apply();
+                    } else {
+                        console.log('Wat', todo, state);
+                    }
+                    
+                }
+            }).disableSelection();
 
         }
     }
 });
-'use strict';
+"use strict";
 
-angular.module('app.homepage').directive('demoDoughnutChart', function ($http, APP_CONFIG) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attributes) {
-            var doughnutOptions = {
-                //Boolean - Whether we should show a stroke on each segment
-                segmentShowStroke : true,
-                //String - The colour of each segment stroke
-                segmentStrokeColor : "#fff",
-                //Number - The width of each segment stroke
-                segmentStrokeWidth : 2,
-                //Number - The percentage of the chart that we cut out of the middle
-                percentageInnerCutout : 50, // This is 0 for Pie charts
-                //Number - Amount of animation steps
-                animationSteps : 100,
-                //String - Animation easing effect
-                animationEasing : "easeOutBounce",
-                //Boolean - Whether we animate the rotation of the Doughnut
-                animateRotate : true,
-                //Boolean - Whether we animate scaling the Doughnut from the centre
-                animateScale : false,
-                //Boolean - Re-draw chart on page resize
-                responsive: true,
-                //String - A legend template
-                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
-            };
+angular.module('app').factory('Todo', function (Restangular, APP_CONFIG) {
 
 
-            var doughnutChartUrl = scope.pageparams["doughnutChart"];
-
-            if (doughnutChartUrl) {
-                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(doughnutChartUrl))
-                    .success(function (res) {
-                        scope.doughnutChartTitle = res.title;
-                        // render chart
-                        var ctx = element[0].getContext("2d");
-                        new Chart(ctx).Doughnut(res.chart, doughnutOptions);
-                    })
+    Restangular.extendModel(APP_CONFIG.apiRootUrl + '/todos.json', function(todo) {
+        todo.toggle = function(){
+            if (!todo.completedAt) {
+                todo.state = 'Completed';
+                todo.completedAt = JSON.stringify(new Date());
+            } else {
+                todo.state = 'Critical';
+                todo.completedAt = null;
             }
-        }}
-});
-'use strict';
+            // return this.$update();
+        };
 
-angular.module('app.homepage').directive('demoLineChart', function ($http, APP_CONFIG) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attributes) {
-
-            // LINE CHART
-            // ref: http://www.chartjs.org/docs/#line-chart-introduction
-            var lineOptions = {
-                ///Boolean - Whether grid lines are shown across the chart
-                scaleShowGridLines : true,
-                //String - Colour of the grid lines
-                scaleGridLineColor : "rgba(0,0,0,.05)",
-                //Number - Width of the grid lines
-                scaleGridLineWidth : 1,
-                //Boolean - Whether the line is curved between points
-                bezierCurve : true,
-                //Number - Tension of the bezier curve between points
-                bezierCurveTension : 0.4,
-                //Boolean - Whether to show a dot for each point
-                pointDot : true,
-                //Number - Radius of each point dot in pixels
-                pointDotRadius : 4,
-                //Number - Pixel width of point dot stroke
-                pointDotStrokeWidth : 1,
-                //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-                pointHitDetectionRadius : 20,
-                //Boolean - Whether to show a stroke for datasets
-                datasetStroke : true,
-                //Number - Pixel width of dataset stroke
-                datasetStrokeWidth : 2,
-                //Boolean - Whether to fill the dataset with a colour
-                datasetFill : true,
-                //Boolean - Re-draw chart on page resize
-                responsive: true,
-                //String - A legend template
-                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
-            };
-
-            var lineChartUrl = scope.pageparams["lineChart"];
-            
-            if (lineChartUrl) {
-                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(lineChartUrl))
-                    .success(function (res) {
-                        scope.lineChartTitle = res.title;
-                        var ctx = element[0].getContext("2d");
-                        var myNewChart = new Chart(ctx).Line(res.chart, lineOptions);
-                    })
+        todo.setState = function(state){
+            todo.state = state;
+            if (state == 'Completed') {
+                todo.completedAt = JSON.stringify(new Date());
+            } else {
+                todo.completedAt = null;
             }
-        }
-    }
-});
-'use strict';
+            // return this.$update();
+        };
 
-angular.module('app.homepage').directive('demoPieChart', function ($http, APP_CONFIG) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attributes) {
-            var pieOptions = {
-                //Boolean - Whether we should show a stroke on each segment
-                segmentShowStroke: true,
-                //String - The colour of each segment stroke
-                segmentStrokeColor: "#fff",
-                //Number - The width of each segment stroke
-                segmentStrokeWidth: 2,
-                //Number - Amount of animation steps
-                animationSteps: 100,
-                //String - types of animation
-                animationEasing: "easeOutBounce",
-                //Boolean - Whether we animate the rotation of the Doughnut
-                animateRotate: true,
-                //Boolean - Whether we animate scaling the Doughnut from the centre
-                animateScale: false,
-                //Boolean - Re-draw chart on page resize
-                responsive: true,
-                //String - A legend template
-                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
-            };
+        return todo;
+      });
 
-
-            var pieChartUrl = scope.pageparams["pieChart"];
-
-            if (pieChartUrl) {
-                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(pieChartUrl))
-                    .success(function (res) {
-                        scope.pieChartTitle = res.title;
-                        // render chart
-                        var ctx = element[0].getContext("2d");
-                        var myNewChart = new Chart(ctx).Pie(res.chart, pieOptions);
-                    })
-            }
-        }}
-});
-'use strict';
-
-angular.module('app.homepage').directive('demoPolarChart', function ($http, APP_CONFIG) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attributes) {
-            var polarOptions = {
-                //Boolean - Show a backdrop to the scale label
-                scaleShowLabelBackdrop : true,
-                //String - The colour of the label backdrop
-                scaleBackdropColor : "rgba(255,255,255,0.75)",
-                // Boolean - Whether the scale should begin at zero
-                scaleBeginAtZero : true,
-                //Number - The backdrop padding above & below the label in pixels
-                scaleBackdropPaddingY : 2,
-                //Number - The backdrop padding to the side of the label in pixels
-                scaleBackdropPaddingX : 2,
-                //Boolean - Show line for each value in the scale
-                scaleShowLine : true,
-                //Boolean - Stroke a line around each segment in the chart
-                segmentShowStroke : true,
-                //String - The colour of the stroke on each segement.
-                segmentStrokeColor : "#fff",
-                //Number - The width of the stroke value in pixels
-                segmentStrokeWidth : 2,
-                //Number - Amount of animation steps
-                animationSteps : 100,
-                //String - Animation easing effect.
-                animationEasing : "easeOutBounce",
-                //Boolean - Whether to animate the rotation of the chart
-                animateRotate : true,
-                //Boolean - Whether to animate scaling the chart from the centre
-                animateScale : false,
-                //Boolean - Re-draw chart on page resize
-                responsive: true,
-                //String - A legend template
-                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
-            };
-
-            var polarChartUrl = scope.pageparams["polarChart"];
-
-            if (polarChartUrl) {
-                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(polarChartUrl))
-                    .success(function (res) {
-                        scope.polarChartTitle = res.title;
-                        // render chart
-                        var ctx = element[0].getContext("2d");
-                        new Chart(ctx).PolarArea(res.chart, polarOptions);
-                    })
-            }
-        }}
-});
-'use strict';
-
-angular.module('app.homepage').directive('demoRadarChart', function ($http, APP_CONFIG) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attributes) {
-
-            var radarOptions = {
-                //Boolean - Whether to show lines for each scale point
-                scaleShowLine : true,
-                //Boolean - Whether we show the angle lines out of the radar
-                angleShowLineOut : true,
-                //Boolean - Whether to show labels on the scale
-                scaleShowLabels : false,
-                // Boolean - Whether the scale should begin at zero
-                scaleBeginAtZero : true,
-                //String - Colour of the angle line
-                angleLineColor : "rgba(0,0,0,.1)",
-                //Number - Pixel width of the angle line
-                angleLineWidth : 1,
-                //String - Point label font declaration
-                pointLabelFontFamily : "'Arial'",
-                //String - Point label font weight
-                pointLabelFontStyle : "normal",
-                //Number - Point label font size in pixels
-                pointLabelFontSize : 10,
-                //String - Point label font colour
-                pointLabelFontColor : "#666",
-                //Boolean - Whether to show a dot for each point
-                pointDot : true,
-                //Number - Radius of each point dot in pixels
-                pointDotRadius : 3,
-                //Number - Pixel width of point dot stroke
-                pointDotStrokeWidth : 1,
-                //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-                pointHitDetectionRadius : 20,
-                //Boolean - Whether to show a stroke for datasets
-                datasetStroke : true,
-                //Number - Pixel width of dataset stroke
-                datasetStrokeWidth : 2,
-                //Boolean - Whether to fill the dataset with a colour
-                datasetFill : true,
-                //Boolean - Re-draw chart on page resize
-                responsive: true,
-                //String - A legend template
-                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
-            }
-
-            var radarChartUrl = scope.pageparams["radarChart"];
-
-            if (radarChartUrl) {
-                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(radarChartUrl))
-                    .success(function (res) {
-                        scope.radarChartTitle = res.title;
-                        // render chart
-                        var ctx = element[0].getContext("2d");
-                        var myNewChart = new Chart(ctx).Radar(res.chart, radarOptions);
-                    })
-            }
-        }}
+    return Restangular.all(APP_CONFIG.apiRootUrl + '/todos.json')
 });
 'use strict';
 
@@ -54974,6 +54204,846 @@ angular.module('app.graphs').directive('dygraphsNoRollTimestamp', function (Dygr
         }
     }
 });
+'use strict';
+
+angular.module('app.graphs').directive('easyPieChartContainer', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, element) {
+            /*
+             * EASY PIE CHARTS
+             * DEPENDENCY: js/plugins/easy-pie-chart/jquery.easy-pie-chart.min.js
+             * Usage: <div class="easy-pie-chart txt-color-orangeDark" data-pie-percent="33" data-pie-size="72" data-size="72">
+             *			<span class="percent percent-sign">35</span>
+             * 	  	  </div>
+             */
+
+            if ($.fn.easyPieChart) {
+
+                $('.easy-pie-chart').each(function() {
+                    var $this = $(this),
+                        barColor = $this.css('color') || $this.data('pie-color'),
+                        trackColor = $this.data('pie-track-color') || 'rgba(0,0,0,0.04)',
+                        size = parseInt($this.data('pie-size')) || 25;
+
+                    var pieChart = $this.easyPieChart({
+
+                        barColor : barColor,
+                        trackColor : trackColor,
+                        scaleColor : false,
+                        lineCap : 'butt',
+                        lineWidth : parseInt(size / 8.5),
+                        animate : 1500,
+                        rotate : -90,
+                        size : size,
+                        onStep: function(from, to, percent) {
+                            $(this.el).find('.percent').text(Math.round(percent)).data('easyPieChart');
+                        }
+
+                    });
+
+                    var model = $this.data('ng-model');
+                    scope.$watch("settings." + model, function (n, o) {
+                        pieChart.data('easyPieChart').update(scope.settings[model]);
+                    });
+
+                    $this = null;
+                });
+
+            } // end if
+        }
+    }
+});
+"use strict";
+
+angular.module('app.graphs').directive('sparklineContainer', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, element) {
+            /*
+             * SPARKLINES
+             * DEPENDENCY: js/plugins/sparkline/jquery.sparkline.min.js
+             * See usage example below...
+             */
+
+            /* Usage:
+             * 		<div class="sparkline-line txt-color-blue" data-fill-color="transparent" data-sparkline-height="26px">
+             *			5,6,7,9,9,5,9,6,5,6,6,7,7,6,7,8,9,7
+             *		</div>
+             */
+            // variable declearations:
+
+            var barColor,
+                sparklineHeight,
+                sparklineBarWidth,
+                sparklineBarSpacing,
+                sparklineNegBarColor,
+                sparklineStackedColor,
+                thisLineColor,
+                thisLineWidth,
+                thisFill,
+                thisSpotColor,
+                thisMinSpotColor,
+                thisMaxSpotColor,
+                thishighlightSpotColor,
+                thisHighlightLineColor,
+                thisSpotRadius,
+                pieColors,
+                pieWidthHeight,
+                pieBorderColor,
+                pieOffset,
+                thisBoxWidth,
+                thisBoxHeight,
+                thisBoxRaw,
+                thisBoxTarget,
+                thisBoxMin,
+                thisBoxMax,
+                thisShowOutlier,
+                thisIQR,
+                thisBoxSpotRadius,
+                thisBoxLineColor,
+                thisBoxFillColor,
+                thisBoxWhisColor,
+                thisBoxOutlineColor,
+                thisBoxOutlineFill,
+                thisBoxMedianColor,
+                thisBoxTargetColor,
+                thisBulletHeight,
+                thisBulletWidth,
+                thisBulletColor,
+                thisBulletPerformanceColor,
+                thisBulletRangeColors,
+                thisDiscreteHeight,
+                thisDiscreteWidth,
+                thisDiscreteLineColor,
+                thisDiscreteLineHeight,
+                thisDiscreteThrushold,
+                thisDiscreteThrusholdColor,
+                thisTristateHeight,
+                thisTristatePosBarColor,
+                thisTristateNegBarColor,
+                thisTristateZeroBarColor,
+                thisTristateBarWidth,
+                thisTristateBarSpacing,
+                thisZeroAxis,
+                thisBarColor,
+                sparklineWidth,
+                sparklineValue,
+                sparklineValueSpots1,
+                sparklineValueSpots2,
+                thisLineWidth1,
+                thisLineWidth2,
+                thisLineColor1,
+                thisLineColor2,
+                thisSpotRadius1,
+                thisSpotRadius2,
+                thisMinSpotColor1,
+                thisMaxSpotColor1,
+                thisMinSpotColor2,
+                thisMaxSpotColor2,
+                thishighlightSpotColor1,
+                thisHighlightLineColor1,
+                thishighlightSpotColor2,
+                thisHighlightLineColor2,
+                thisFillColor1,
+                thisFillColor2,
+                thisChartMinYRange ,
+                thisChartMaxYRange ,
+                thisChartMinXRange ,
+                thisChartMaxXRange ,
+                thisMinNormValue ,
+                thisMaxNormValue ,
+                thisNormColor ,
+                thisDrawNormalOnTop;
+
+            function drawSparklines() {
+                $('.sparkline:not(:has(>canvas))', element).each(function () {
+                    var $this = $(this),
+                        sparklineType = $this.data('sparkline-type') || 'bar';
+
+                    // BAR CHART
+                    if (sparklineType == 'bar') {
+
+                        barColor = $this.data('sparkline-bar-color') || $this.css('color') || '#0000f0';
+                        sparklineHeight = $this.data('sparkline-height') || '26px';
+                        sparklineBarWidth = $this.data('sparkline-barwidth') || 5;
+                        sparklineBarSpacing = $this.data('sparkline-barspacing') || 2;
+                        sparklineNegBarColor = $this.data('sparkline-negbar-color') || '#A90329';
+                        sparklineStackedColor = $this.data('sparkline-barstacked-color') || ["#A90329", "#0099c6", "#98AA56", "#da532c", "#4490B1", "#6E9461", "#990099", "#B4CAD3"];
+
+                        $this.sparkline('html', {
+                            barColor: barColor,
+                            type: sparklineType,
+                            height: sparklineHeight,
+                            barWidth: sparklineBarWidth,
+                            barSpacing: sparklineBarSpacing,
+                            stackedBarColor: sparklineStackedColor,
+                            negBarColor: sparklineNegBarColor,
+                            zeroAxis: 'false'
+                        });
+
+                        $this = null;
+
+                    }
+
+                    // LINE CHART
+                    if (sparklineType == 'line') {
+
+                        sparklineHeight = $this.data('sparkline-height') || '20px';
+                        sparklineWidth = $this.data('sparkline-width') || '90px';
+                        thisLineColor = $this.data('sparkline-line-color') || $this.css('color') || '#0000f0';
+                        thisLineWidth = $this.data('sparkline-line-width') || 1;
+                        thisFill = $this.data('fill-color') || '#c0d0f0';
+                        thisSpotColor = $this.data('sparkline-spot-color') || '#f08000';
+                        thisMinSpotColor = $this.data('sparkline-minspot-color') || '#ed1c24';
+                        thisMaxSpotColor = $this.data('sparkline-maxspot-color') || '#f08000';
+                        thishighlightSpotColor = $this.data('sparkline-highlightspot-color') || '#50f050';
+                        thisHighlightLineColor = $this.data('sparkline-highlightline-color') || 'f02020';
+                        thisSpotRadius = $this.data('sparkline-spotradius') || 1.5;
+                        thisChartMinYRange = $this.data('sparkline-min-y') || 'undefined';
+                        thisChartMaxYRange = $this.data('sparkline-max-y') || 'undefined';
+                        thisChartMinXRange = $this.data('sparkline-min-x') || 'undefined';
+                        thisChartMaxXRange = $this.data('sparkline-max-x') || 'undefined';
+                        thisMinNormValue = $this.data('min-val') || 'undefined';
+                        thisMaxNormValue = $this.data('max-val') || 'undefined';
+                        thisNormColor = $this.data('norm-color') || '#c0c0c0';
+                        thisDrawNormalOnTop = $this.data('draw-normal') || false;
+
+                        $this.sparkline('html', {
+                            type: 'line',
+                            width: sparklineWidth,
+                            height: sparklineHeight,
+                            lineWidth: thisLineWidth,
+                            lineColor: thisLineColor,
+                            fillColor: thisFill,
+                            spotColor: thisSpotColor,
+                            minSpotColor: thisMinSpotColor,
+                            maxSpotColor: thisMaxSpotColor,
+                            highlightSpotColor: thishighlightSpotColor,
+                            highlightLineColor: thisHighlightLineColor,
+                            spotRadius: thisSpotRadius,
+                            chartRangeMin: thisChartMinYRange,
+                            chartRangeMax: thisChartMaxYRange,
+                            chartRangeMinX: thisChartMinXRange,
+                            chartRangeMaxX: thisChartMaxXRange,
+                            normalRangeMin: thisMinNormValue,
+                            normalRangeMax: thisMaxNormValue,
+                            normalRangeColor: thisNormColor,
+                            drawNormalOnTop: thisDrawNormalOnTop
+
+                        });
+
+                        $this = null;
+
+                    }
+
+                    // PIE CHART
+                    if (sparklineType == 'pie') {
+
+                        pieColors = $this.data('sparkline-piecolor') || ["#B4CAD3", "#4490B1", "#98AA56", "#da532c", "#6E9461", "#0099c6", "#990099", "#717D8A"];
+                        pieWidthHeight = $this.data('sparkline-piesize') || 90;
+                        pieBorderColor = $this.data('border-color') || '#45494C';
+                        pieOffset = $this.data('sparkline-offset') || 0;
+
+                        $this.sparkline('html', {
+                            type: 'pie',
+                            width: pieWidthHeight,
+                            height: pieWidthHeight,
+                            tooltipFormat: '<span style="color: {{color}}">&#9679;</span> ({{percent.1}}%)',
+                            sliceColors: pieColors,
+                            borderWidth: 1,
+                            offset: pieOffset,
+                            borderColor: pieBorderColor
+                        });
+
+                        $this = null;
+
+                    }
+
+                    // BOX PLOT
+                    if (sparklineType == 'box') {
+
+                        thisBoxWidth = $this.data('sparkline-width') || 'auto';
+                        thisBoxHeight = $this.data('sparkline-height') || 'auto';
+                        thisBoxRaw = $this.data('sparkline-boxraw') || false;
+                        thisBoxTarget = $this.data('sparkline-targetval') || 'undefined';
+                        thisBoxMin = $this.data('sparkline-min') || 'undefined';
+                        thisBoxMax = $this.data('sparkline-max') || 'undefined';
+                        thisShowOutlier = $this.data('sparkline-showoutlier') || true;
+                        thisIQR = $this.data('sparkline-outlier-iqr') || 1.5;
+                        thisBoxSpotRadius = $this.data('sparkline-spotradius') || 1.5;
+                        thisBoxLineColor = $this.css('color') || '#000000';
+                        thisBoxFillColor = $this.data('fill-color') || '#c0d0f0';
+                        thisBoxWhisColor = $this.data('sparkline-whis-color') || '#000000';
+                        thisBoxOutlineColor = $this.data('sparkline-outline-color') || '#303030';
+                        thisBoxOutlineFill = $this.data('sparkline-outlinefill-color') || '#f0f0f0';
+                        thisBoxMedianColor = $this.data('sparkline-outlinemedian-color') || '#f00000';
+                        thisBoxTargetColor = $this.data('sparkline-outlinetarget-color') || '#40a020';
+
+                        $this.sparkline('html', {
+                            type: 'box',
+                            width: thisBoxWidth,
+                            height: thisBoxHeight,
+                            raw: thisBoxRaw,
+                            target: thisBoxTarget,
+                            minValue: thisBoxMin,
+                            maxValue: thisBoxMax,
+                            showOutliers: thisShowOutlier,
+                            outlierIQR: thisIQR,
+                            spotRadius: thisBoxSpotRadius,
+                            boxLineColor: thisBoxLineColor,
+                            boxFillColor: thisBoxFillColor,
+                            whiskerColor: thisBoxWhisColor,
+                            outlierLineColor: thisBoxOutlineColor,
+                            outlierFillColor: thisBoxOutlineFill,
+                            medianColor: thisBoxMedianColor,
+                            targetColor: thisBoxTargetColor
+
+                        });
+
+                        $this = null;
+
+                    }
+
+                    // BULLET
+                    if (sparklineType == 'bullet') {
+
+                        var thisBulletHeight = $this.data('sparkline-height') || 'auto';
+                        thisBulletWidth = $this.data('sparkline-width') || 2;
+                        thisBulletColor = $this.data('sparkline-bullet-color') || '#ed1c24';
+                        thisBulletPerformanceColor = $this.data('sparkline-performance-color') || '#3030f0';
+                        thisBulletRangeColors = $this.data('sparkline-bulletrange-color') || ["#d3dafe", "#a8b6ff", "#7f94ff"];
+
+                        $this.sparkline('html', {
+
+                            type: 'bullet',
+                            height: thisBulletHeight,
+                            targetWidth: thisBulletWidth,
+                            targetColor: thisBulletColor,
+                            performanceColor: thisBulletPerformanceColor,
+                            rangeColors: thisBulletRangeColors
+
+                        });
+
+                        $this = null;
+
+                    }
+
+                    // DISCRETE
+                    if (sparklineType == 'discrete') {
+
+                        thisDiscreteHeight = $this.data('sparkline-height') || 26;
+                        thisDiscreteWidth = $this.data('sparkline-width') || 50;
+                        thisDiscreteLineColor = $this.css('color');
+                        thisDiscreteLineHeight = $this.data('sparkline-line-height') || 5;
+                        thisDiscreteThrushold = $this.data('sparkline-threshold') || 'undefined';
+                        thisDiscreteThrusholdColor = $this.data('sparkline-threshold-color') || '#ed1c24';
+
+                        $this.sparkline('html', {
+
+                            type: 'discrete',
+                            width: thisDiscreteWidth,
+                            height: thisDiscreteHeight,
+                            lineColor: thisDiscreteLineColor,
+                            lineHeight: thisDiscreteLineHeight,
+                            thresholdValue: thisDiscreteThrushold,
+                            thresholdColor: thisDiscreteThrusholdColor
+
+                        });
+
+                        $this = null;
+
+                    }
+
+                    // TRISTATE
+                    if (sparklineType == 'tristate') {
+
+                        thisTristateHeight = $this.data('sparkline-height') || 26;
+                        thisTristatePosBarColor = $this.data('sparkline-posbar-color') || '#60f060';
+                        thisTristateNegBarColor = $this.data('sparkline-negbar-color') || '#f04040';
+                        thisTristateZeroBarColor = $this.data('sparkline-zerobar-color') || '#909090';
+                        thisTristateBarWidth = $this.data('sparkline-barwidth') || 5;
+                        thisTristateBarSpacing = $this.data('sparkline-barspacing') || 2;
+                        thisZeroAxis = $this.data('sparkline-zeroaxis') || false;
+
+                        $this.sparkline('html', {
+
+                            type: 'tristate',
+                            height: thisTristateHeight,
+                            posBarColor: thisBarColor,
+                            negBarColor: thisTristateNegBarColor,
+                            zeroBarColor: thisTristateZeroBarColor,
+                            barWidth: thisTristateBarWidth,
+                            barSpacing: thisTristateBarSpacing,
+                            zeroAxis: thisZeroAxis
+
+                        });
+
+                        $this = null;
+
+                    }
+
+                    //COMPOSITE: BAR
+                    if (sparklineType == 'compositebar') {
+
+                        sparklineHeight = $this.data('sparkline-height') || '20px';
+                        sparklineWidth = $this.data('sparkline-width') || '100%';
+                        sparklineBarWidth = $this.data('sparkline-barwidth') || 3;
+                        thisLineWidth = $this.data('sparkline-line-width') || 1;
+                        thisLineColor = $this.data('sparkline-color-top') || '#ed1c24';
+                        thisBarColor = $this.data('sparkline-color-bottom') || '#333333';
+
+                        $this.sparkline($this.data('sparkline-bar-val'), {
+
+                            type: 'bar',
+                            width: sparklineWidth,
+                            height: sparklineHeight,
+                            barColor: thisBarColor,
+                            barWidth: sparklineBarWidth
+                            //barSpacing: 5
+
+                        });
+
+                        $this.sparkline($this.data('sparkline-line-val'), {
+
+                            width: sparklineWidth,
+                            height: sparklineHeight,
+                            lineColor: thisLineColor,
+                            lineWidth: thisLineWidth,
+                            composite: true,
+                            fillColor: false
+
+                        });
+
+                        $this = null;
+
+                    }
+
+                    //COMPOSITE: LINE
+                    if (sparklineType == 'compositeline') {
+
+                        sparklineHeight = $this.data('sparkline-height') || '20px';
+                        sparklineWidth = $this.data('sparkline-width') || '90px';
+                        sparklineValue = $this.data('sparkline-bar-val');
+                        sparklineValueSpots1 = $this.data('sparkline-bar-val-spots-top') || null;
+                        sparklineValueSpots2 = $this.data('sparkline-bar-val-spots-bottom') || null;
+                        thisLineWidth1 = $this.data('sparkline-line-width-top') || 1;
+                        thisLineWidth2 = $this.data('sparkline-line-width-bottom') || 1;
+                        thisLineColor1 = $this.data('sparkline-color-top') || '#333333';
+                        thisLineColor2 = $this.data('sparkline-color-bottom') || '#ed1c24';
+                        thisSpotRadius1 = $this.data('sparkline-spotradius-top') || 1.5;
+                        thisSpotRadius2 = $this.data('sparkline-spotradius-bottom') || thisSpotRadius1;
+                        thisSpotColor = $this.data('sparkline-spot-color') || '#f08000';
+                        thisMinSpotColor1 = $this.data('sparkline-minspot-color-top') || '#ed1c24';
+                        thisMaxSpotColor1 = $this.data('sparkline-maxspot-color-top') || '#f08000';
+                        thisMinSpotColor2 = $this.data('sparkline-minspot-color-bottom') || thisMinSpotColor1;
+                        thisMaxSpotColor2 = $this.data('sparkline-maxspot-color-bottom') || thisMaxSpotColor1;
+                        thishighlightSpotColor1 = $this.data('sparkline-highlightspot-color-top') || '#50f050';
+                        thisHighlightLineColor1 = $this.data('sparkline-highlightline-color-top') || '#f02020';
+                        thishighlightSpotColor2 = $this.data('sparkline-highlightspot-color-bottom') ||
+                            thishighlightSpotColor1;
+                        thisHighlightLineColor2 = $this.data('sparkline-highlightline-color-bottom') ||
+                            thisHighlightLineColor1;
+                        thisFillColor1 = $this.data('sparkline-fillcolor-top') || 'transparent';
+                        thisFillColor2 = $this.data('sparkline-fillcolor-bottom') || 'transparent';
+
+                        $this.sparkline(sparklineValue, {
+
+                            type: 'line',
+                            spotRadius: thisSpotRadius1,
+
+                            spotColor: thisSpotColor,
+                            minSpotColor: thisMinSpotColor1,
+                            maxSpotColor: thisMaxSpotColor1,
+                            highlightSpotColor: thishighlightSpotColor1,
+                            highlightLineColor: thisHighlightLineColor1,
+
+                            valueSpots: sparklineValueSpots1,
+
+                            lineWidth: thisLineWidth1,
+                            width: sparklineWidth,
+                            height: sparklineHeight,
+                            lineColor: thisLineColor1,
+                            fillColor: thisFillColor1
+
+                        });
+
+                        $this.sparkline($this.data('sparkline-line-val'), {
+
+                            type: 'line',
+                            spotRadius: thisSpotRadius2,
+
+                            spotColor: thisSpotColor,
+                            minSpotColor: thisMinSpotColor2,
+                            maxSpotColor: thisMaxSpotColor2,
+                            highlightSpotColor: thishighlightSpotColor2,
+                            highlightLineColor: thisHighlightLineColor2,
+
+                            valueSpots: sparklineValueSpots2,
+
+                            lineWidth: thisLineWidth2,
+                            width: sparklineWidth,
+                            height: sparklineHeight,
+                            lineColor: thisLineColor2,
+                            composite: true,
+                            fillColor: thisFillColor2
+
+                        });
+
+                        $this = null;
+
+                    }
+
+                });
+            }
+
+
+            drawSparklines();
+
+        }
+    }
+});
+'use strict';
+
+angular.module('app.homepage').directive('demoBarChart', function ($http, APP_CONFIG) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attributes) {
+
+            var barOptions = {
+                //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+                scaleBeginAtZero : true,
+                //Boolean - Whether grid lines are shown across the chart
+                scaleShowGridLines : true,
+                //String - Colour of the grid lines
+                scaleGridLineColor : "rgba(0,0,0,.05)",
+                //Number - Width of the grid lines
+                scaleGridLineWidth : 1,
+                //Boolean - If there is a stroke on each bar
+                barShowStroke : true,
+                //Number - Pixel width of the bar stroke
+                barStrokeWidth : 1,
+                //Number - Spacing between each of the X value sets
+                barValueSpacing : 5,
+                //Number - Spacing between data sets within X values
+                barDatasetSpacing : 1,
+                //Boolean - Re-draw chart on page resize
+                responsive: true,
+                //String - A legend template
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+            }
+
+            var barChartUrl = scope.pageparams["barChart"];
+
+            if (barChartUrl) {
+                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(barChartUrl))
+                    .success(function (res) {
+                        scope.barChartTitle = res.title;
+                        var ctx = element[0].getContext("2d");
+                        new Chart(ctx).Bar(res.chart, barOptions);
+                    })
+            }
+
+        }
+    }
+});
+'use strict';
+
+angular.module('app.homepage').directive('demoDoughnutChart', function ($http, APP_CONFIG) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attributes) {
+            var doughnutOptions = {
+                //Boolean - Whether we should show a stroke on each segment
+                segmentShowStroke : true,
+                //String - The colour of each segment stroke
+                segmentStrokeColor : "#fff",
+                //Number - The width of each segment stroke
+                segmentStrokeWidth : 2,
+                //Number - The percentage of the chart that we cut out of the middle
+                percentageInnerCutout : 50, // This is 0 for Pie charts
+                //Number - Amount of animation steps
+                animationSteps : 100,
+                //String - Animation easing effect
+                animationEasing : "easeOutBounce",
+                //Boolean - Whether we animate the rotation of the Doughnut
+                animateRotate : true,
+                //Boolean - Whether we animate scaling the Doughnut from the centre
+                animateScale : false,
+                //Boolean - Re-draw chart on page resize
+                responsive: true,
+                //String - A legend template
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+            };
+
+
+            var doughnutChartUrl = scope.pageparams["doughnutChart"];
+
+            if (doughnutChartUrl) {
+                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(doughnutChartUrl))
+                    .success(function (res) {
+                        scope.doughnutChartTitle = res.title;
+                        // render chart
+                        var ctx = element[0].getContext("2d");
+                        new Chart(ctx).Doughnut(res.chart, doughnutOptions);
+                    })
+            }
+        }}
+});
+'use strict';
+
+angular.module('app.homepage').directive('demoLineChart', function ($http, APP_CONFIG) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attributes) {
+
+            // LINE CHART
+            // ref: http://www.chartjs.org/docs/#line-chart-introduction
+            var lineOptions = {
+                ///Boolean - Whether grid lines are shown across the chart
+                scaleShowGridLines : true,
+                //String - Colour of the grid lines
+                scaleGridLineColor : "rgba(0,0,0,.05)",
+                //Number - Width of the grid lines
+                scaleGridLineWidth : 1,
+                //Boolean - Whether the line is curved between points
+                bezierCurve : true,
+                //Number - Tension of the bezier curve between points
+                bezierCurveTension : 0.4,
+                //Boolean - Whether to show a dot for each point
+                pointDot : true,
+                //Number - Radius of each point dot in pixels
+                pointDotRadius : 4,
+                //Number - Pixel width of point dot stroke
+                pointDotStrokeWidth : 1,
+                //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+                pointHitDetectionRadius : 20,
+                //Boolean - Whether to show a stroke for datasets
+                datasetStroke : true,
+                //Number - Pixel width of dataset stroke
+                datasetStrokeWidth : 2,
+                //Boolean - Whether to fill the dataset with a colour
+                datasetFill : true,
+                //Boolean - Re-draw chart on page resize
+                responsive: true,
+                //String - A legend template
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+            };
+
+            var lineChartUrl = scope.pageparams["lineChart"];
+            
+            if (lineChartUrl) {
+                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(lineChartUrl))
+                    .success(function (res) {
+                        scope.lineChartTitle = res.title;
+                        var ctx = element[0].getContext("2d");
+                        var myNewChart = new Chart(ctx).Line(res.chart, lineOptions);
+                    })
+            }
+        }
+    }
+});
+'use strict';
+
+angular.module('app.homepage').directive('demoPieChart', function ($http, APP_CONFIG) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attributes) {
+            var pieOptions = {
+                //Boolean - Whether we should show a stroke on each segment
+                segmentShowStroke: true,
+                //String - The colour of each segment stroke
+                segmentStrokeColor: "#fff",
+                //Number - The width of each segment stroke
+                segmentStrokeWidth: 2,
+                //Number - Amount of animation steps
+                animationSteps: 100,
+                //String - types of animation
+                animationEasing: "easeOutBounce",
+                //Boolean - Whether we animate the rotation of the Doughnut
+                animateRotate: true,
+                //Boolean - Whether we animate scaling the Doughnut from the centre
+                animateScale: false,
+                //Boolean - Re-draw chart on page resize
+                responsive: true,
+                //String - A legend template
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+            };
+
+
+            var pieChartUrl = scope.pageparams["pieChart"];
+
+            if (pieChartUrl) {
+                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(pieChartUrl))
+                    .success(function (res) {
+                        scope.pieChartTitle = res.title;
+                        // render chart
+                        var ctx = element[0].getContext("2d");
+                        var myNewChart = new Chart(ctx).Pie(res.chart, pieOptions);
+                    })
+            }
+        }}
+});
+'use strict';
+
+angular.module('app.homepage').directive('demoPolarChart', function ($http, APP_CONFIG) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attributes) {
+            var polarOptions = {
+                //Boolean - Show a backdrop to the scale label
+                scaleShowLabelBackdrop : true,
+                //String - The colour of the label backdrop
+                scaleBackdropColor : "rgba(255,255,255,0.75)",
+                // Boolean - Whether the scale should begin at zero
+                scaleBeginAtZero : true,
+                //Number - The backdrop padding above & below the label in pixels
+                scaleBackdropPaddingY : 2,
+                //Number - The backdrop padding to the side of the label in pixels
+                scaleBackdropPaddingX : 2,
+                //Boolean - Show line for each value in the scale
+                scaleShowLine : true,
+                //Boolean - Stroke a line around each segment in the chart
+                segmentShowStroke : true,
+                //String - The colour of the stroke on each segement.
+                segmentStrokeColor : "#fff",
+                //Number - The width of the stroke value in pixels
+                segmentStrokeWidth : 2,
+                //Number - Amount of animation steps
+                animationSteps : 100,
+                //String - Animation easing effect.
+                animationEasing : "easeOutBounce",
+                //Boolean - Whether to animate the rotation of the chart
+                animateRotate : true,
+                //Boolean - Whether to animate scaling the chart from the centre
+                animateScale : false,
+                //Boolean - Re-draw chart on page resize
+                responsive: true,
+                //String - A legend template
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+            };
+
+            var polarChartUrl = scope.pageparams["polarChart"];
+
+            if (polarChartUrl) {
+                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(polarChartUrl))
+                    .success(function (res) {
+                        scope.polarChartTitle = res.title;
+                        // render chart
+                        var ctx = element[0].getContext("2d");
+                        new Chart(ctx).PolarArea(res.chart, polarOptions);
+                    })
+            }
+        }}
+});
+'use strict';
+
+angular.module('app.homepage').directive('demoRadarChart', function ($http, APP_CONFIG) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attributes) {
+
+            var radarOptions = {
+                //Boolean - Whether to show lines for each scale point
+                scaleShowLine : true,
+                //Boolean - Whether we show the angle lines out of the radar
+                angleShowLineOut : true,
+                //Boolean - Whether to show labels on the scale
+                scaleShowLabels : false,
+                // Boolean - Whether the scale should begin at zero
+                scaleBeginAtZero : true,
+                //String - Colour of the angle line
+                angleLineColor : "rgba(0,0,0,.1)",
+                //Number - Pixel width of the angle line
+                angleLineWidth : 1,
+                //String - Point label font declaration
+                pointLabelFontFamily : "'Arial'",
+                //String - Point label font weight
+                pointLabelFontStyle : "normal",
+                //Number - Point label font size in pixels
+                pointLabelFontSize : 10,
+                //String - Point label font colour
+                pointLabelFontColor : "#666",
+                //Boolean - Whether to show a dot for each point
+                pointDot : true,
+                //Number - Radius of each point dot in pixels
+                pointDotRadius : 3,
+                //Number - Pixel width of point dot stroke
+                pointDotStrokeWidth : 1,
+                //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+                pointHitDetectionRadius : 20,
+                //Boolean - Whether to show a stroke for datasets
+                datasetStroke : true,
+                //Number - Pixel width of dataset stroke
+                datasetStrokeWidth : 2,
+                //Boolean - Whether to fill the dataset with a colour
+                datasetFill : true,
+                //Boolean - Re-draw chart on page resize
+                responsive: true,
+                //String - A legend template
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+            }
+
+            var radarChartUrl = scope.pageparams["radarChart"];
+
+            if (radarChartUrl) {
+                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(radarChartUrl))
+                    .success(function (res) {
+                        scope.radarChartTitle = res.title;
+                        // render chart
+                        var ctx = element[0].getContext("2d");
+                        var myNewChart = new Chart(ctx).Radar(res.chart, radarOptions);
+                    })
+            }
+        }}
+});
+'use strict';
+
+angular.module('app.graphs').directive('vectorMap', function () {
+    return {
+        restrict: 'EA',
+        scope: {
+            mapData: '='
+        },
+        link: function (scope, element, attributes) {
+            var data = scope.mapData;
+
+            element.vectorMap({
+                map: 'world_mill_en',
+                backgroundColor: '#fff',
+                regionStyle: {
+                    initial: {
+                        fill: '#c4c4c4'
+                    },
+                    hover: {
+                        "fill-opacity": 1
+                    }
+                },
+                series: {
+                    regions: [
+                        {
+                            values: data,
+                            scale: ['#85a8b6', '#4d7686'],
+                            normalizeFunction: 'polynomial'
+                        }
+                    ]
+                },
+                onRegionLabelShow: function (e, el, code) {
+                    if (typeof data[code] == 'undefined') {
+                        e.preventDefault();
+                    } else {
+                        var countrylbl = data[code];
+                        el.html(el.html() + ': ' + countrylbl + ' visits');
+                    }
+                }
+            });
+
+            element.on('$destroy', function(){
+                element.children('.jvectormap-container').data('mapObject').remove();
+            })
+        }
+    }
+});
 
 "use strict";
 
@@ -55668,552 +55738,6 @@ angular.module('app.graphs').directive('morrisYearGraph', function(){
 });
 'use strict';
 
-angular.module('app.graphs').directive('vectorMap', function () {
-    return {
-        restrict: 'EA',
-        scope: {
-            mapData: '='
-        },
-        link: function (scope, element, attributes) {
-            var data = scope.mapData;
-
-            element.vectorMap({
-                map: 'world_mill_en',
-                backgroundColor: '#fff',
-                regionStyle: {
-                    initial: {
-                        fill: '#c4c4c4'
-                    },
-                    hover: {
-                        "fill-opacity": 1
-                    }
-                },
-                series: {
-                    regions: [
-                        {
-                            values: data,
-                            scale: ['#85a8b6', '#4d7686'],
-                            normalizeFunction: 'polynomial'
-                        }
-                    ]
-                },
-                onRegionLabelShow: function (e, el, code) {
-                    if (typeof data[code] == 'undefined') {
-                        e.preventDefault();
-                    } else {
-                        var countrylbl = data[code];
-                        el.html(el.html() + ': ' + countrylbl + ' visits');
-                    }
-                }
-            });
-
-            element.on('$destroy', function(){
-                element.children('.jvectormap-container').data('mapObject').remove();
-            })
-        }
-    }
-});
-'use strict';
-
-angular.module('app.graphs').directive('easyPieChartContainer', function () {
-    return {
-        restrict: 'A',
-        link: function (scope, element) {
-            /*
-             * EASY PIE CHARTS
-             * DEPENDENCY: js/plugins/easy-pie-chart/jquery.easy-pie-chart.min.js
-             * Usage: <div class="easy-pie-chart txt-color-orangeDark" data-pie-percent="33" data-pie-size="72" data-size="72">
-             *			<span class="percent percent-sign">35</span>
-             * 	  	  </div>
-             */
-
-            if ($.fn.easyPieChart) {
-
-                $('.easy-pie-chart').each(function() {
-                    var $this = $(this),
-                        barColor = $this.css('color') || $this.data('pie-color'),
-                        trackColor = $this.data('pie-track-color') || 'rgba(0,0,0,0.04)',
-                        size = parseInt($this.data('pie-size')) || 25;
-
-                    var pieChart = $this.easyPieChart({
-
-                        barColor : barColor,
-                        trackColor : trackColor,
-                        scaleColor : false,
-                        lineCap : 'butt',
-                        lineWidth : parseInt(size / 8.5),
-                        animate : 1500,
-                        rotate : -90,
-                        size : size,
-                        onStep: function(from, to, percent) {
-                            $(this.el).find('.percent').text(Math.round(percent)).data('easyPieChart');
-                        }
-
-                    });
-
-                    var model = $this.data('ng-model');
-                    scope.$watch("settings." + model, function (n, o) {
-                        pieChart.data('easyPieChart').update(scope.settings[model]);
-                    });
-
-                    $this = null;
-                });
-
-            } // end if
-        }
-    }
-});
-"use strict";
-
-angular.module('app.graphs').directive('sparklineContainer', function () {
-    return {
-        restrict: 'A',
-        link: function (scope, element) {
-            /*
-             * SPARKLINES
-             * DEPENDENCY: js/plugins/sparkline/jquery.sparkline.min.js
-             * See usage example below...
-             */
-
-            /* Usage:
-             * 		<div class="sparkline-line txt-color-blue" data-fill-color="transparent" data-sparkline-height="26px">
-             *			5,6,7,9,9,5,9,6,5,6,6,7,7,6,7,8,9,7
-             *		</div>
-             */
-            // variable declearations:
-
-            var barColor,
-                sparklineHeight,
-                sparklineBarWidth,
-                sparklineBarSpacing,
-                sparklineNegBarColor,
-                sparklineStackedColor,
-                thisLineColor,
-                thisLineWidth,
-                thisFill,
-                thisSpotColor,
-                thisMinSpotColor,
-                thisMaxSpotColor,
-                thishighlightSpotColor,
-                thisHighlightLineColor,
-                thisSpotRadius,
-                pieColors,
-                pieWidthHeight,
-                pieBorderColor,
-                pieOffset,
-                thisBoxWidth,
-                thisBoxHeight,
-                thisBoxRaw,
-                thisBoxTarget,
-                thisBoxMin,
-                thisBoxMax,
-                thisShowOutlier,
-                thisIQR,
-                thisBoxSpotRadius,
-                thisBoxLineColor,
-                thisBoxFillColor,
-                thisBoxWhisColor,
-                thisBoxOutlineColor,
-                thisBoxOutlineFill,
-                thisBoxMedianColor,
-                thisBoxTargetColor,
-                thisBulletHeight,
-                thisBulletWidth,
-                thisBulletColor,
-                thisBulletPerformanceColor,
-                thisBulletRangeColors,
-                thisDiscreteHeight,
-                thisDiscreteWidth,
-                thisDiscreteLineColor,
-                thisDiscreteLineHeight,
-                thisDiscreteThrushold,
-                thisDiscreteThrusholdColor,
-                thisTristateHeight,
-                thisTristatePosBarColor,
-                thisTristateNegBarColor,
-                thisTristateZeroBarColor,
-                thisTristateBarWidth,
-                thisTristateBarSpacing,
-                thisZeroAxis,
-                thisBarColor,
-                sparklineWidth,
-                sparklineValue,
-                sparklineValueSpots1,
-                sparklineValueSpots2,
-                thisLineWidth1,
-                thisLineWidth2,
-                thisLineColor1,
-                thisLineColor2,
-                thisSpotRadius1,
-                thisSpotRadius2,
-                thisMinSpotColor1,
-                thisMaxSpotColor1,
-                thisMinSpotColor2,
-                thisMaxSpotColor2,
-                thishighlightSpotColor1,
-                thisHighlightLineColor1,
-                thishighlightSpotColor2,
-                thisHighlightLineColor2,
-                thisFillColor1,
-                thisFillColor2,
-                thisChartMinYRange ,
-                thisChartMaxYRange ,
-                thisChartMinXRange ,
-                thisChartMaxXRange ,
-                thisMinNormValue ,
-                thisMaxNormValue ,
-                thisNormColor ,
-                thisDrawNormalOnTop;
-
-            function drawSparklines() {
-                $('.sparkline:not(:has(>canvas))', element).each(function () {
-                    var $this = $(this),
-                        sparklineType = $this.data('sparkline-type') || 'bar';
-
-                    // BAR CHART
-                    if (sparklineType == 'bar') {
-
-                        barColor = $this.data('sparkline-bar-color') || $this.css('color') || '#0000f0';
-                        sparklineHeight = $this.data('sparkline-height') || '26px';
-                        sparklineBarWidth = $this.data('sparkline-barwidth') || 5;
-                        sparklineBarSpacing = $this.data('sparkline-barspacing') || 2;
-                        sparklineNegBarColor = $this.data('sparkline-negbar-color') || '#A90329';
-                        sparklineStackedColor = $this.data('sparkline-barstacked-color') || ["#A90329", "#0099c6", "#98AA56", "#da532c", "#4490B1", "#6E9461", "#990099", "#B4CAD3"];
-
-                        $this.sparkline('html', {
-                            barColor: barColor,
-                            type: sparklineType,
-                            height: sparklineHeight,
-                            barWidth: sparklineBarWidth,
-                            barSpacing: sparklineBarSpacing,
-                            stackedBarColor: sparklineStackedColor,
-                            negBarColor: sparklineNegBarColor,
-                            zeroAxis: 'false'
-                        });
-
-                        $this = null;
-
-                    }
-
-                    // LINE CHART
-                    if (sparklineType == 'line') {
-
-                        sparklineHeight = $this.data('sparkline-height') || '20px';
-                        sparklineWidth = $this.data('sparkline-width') || '90px';
-                        thisLineColor = $this.data('sparkline-line-color') || $this.css('color') || '#0000f0';
-                        thisLineWidth = $this.data('sparkline-line-width') || 1;
-                        thisFill = $this.data('fill-color') || '#c0d0f0';
-                        thisSpotColor = $this.data('sparkline-spot-color') || '#f08000';
-                        thisMinSpotColor = $this.data('sparkline-minspot-color') || '#ed1c24';
-                        thisMaxSpotColor = $this.data('sparkline-maxspot-color') || '#f08000';
-                        thishighlightSpotColor = $this.data('sparkline-highlightspot-color') || '#50f050';
-                        thisHighlightLineColor = $this.data('sparkline-highlightline-color') || 'f02020';
-                        thisSpotRadius = $this.data('sparkline-spotradius') || 1.5;
-                        thisChartMinYRange = $this.data('sparkline-min-y') || 'undefined';
-                        thisChartMaxYRange = $this.data('sparkline-max-y') || 'undefined';
-                        thisChartMinXRange = $this.data('sparkline-min-x') || 'undefined';
-                        thisChartMaxXRange = $this.data('sparkline-max-x') || 'undefined';
-                        thisMinNormValue = $this.data('min-val') || 'undefined';
-                        thisMaxNormValue = $this.data('max-val') || 'undefined';
-                        thisNormColor = $this.data('norm-color') || '#c0c0c0';
-                        thisDrawNormalOnTop = $this.data('draw-normal') || false;
-
-                        $this.sparkline('html', {
-                            type: 'line',
-                            width: sparklineWidth,
-                            height: sparklineHeight,
-                            lineWidth: thisLineWidth,
-                            lineColor: thisLineColor,
-                            fillColor: thisFill,
-                            spotColor: thisSpotColor,
-                            minSpotColor: thisMinSpotColor,
-                            maxSpotColor: thisMaxSpotColor,
-                            highlightSpotColor: thishighlightSpotColor,
-                            highlightLineColor: thisHighlightLineColor,
-                            spotRadius: thisSpotRadius,
-                            chartRangeMin: thisChartMinYRange,
-                            chartRangeMax: thisChartMaxYRange,
-                            chartRangeMinX: thisChartMinXRange,
-                            chartRangeMaxX: thisChartMaxXRange,
-                            normalRangeMin: thisMinNormValue,
-                            normalRangeMax: thisMaxNormValue,
-                            normalRangeColor: thisNormColor,
-                            drawNormalOnTop: thisDrawNormalOnTop
-
-                        });
-
-                        $this = null;
-
-                    }
-
-                    // PIE CHART
-                    if (sparklineType == 'pie') {
-
-                        pieColors = $this.data('sparkline-piecolor') || ["#B4CAD3", "#4490B1", "#98AA56", "#da532c", "#6E9461", "#0099c6", "#990099", "#717D8A"];
-                        pieWidthHeight = $this.data('sparkline-piesize') || 90;
-                        pieBorderColor = $this.data('border-color') || '#45494C';
-                        pieOffset = $this.data('sparkline-offset') || 0;
-
-                        $this.sparkline('html', {
-                            type: 'pie',
-                            width: pieWidthHeight,
-                            height: pieWidthHeight,
-                            tooltipFormat: '<span style="color: {{color}}">&#9679;</span> ({{percent.1}}%)',
-                            sliceColors: pieColors,
-                            borderWidth: 1,
-                            offset: pieOffset,
-                            borderColor: pieBorderColor
-                        });
-
-                        $this = null;
-
-                    }
-
-                    // BOX PLOT
-                    if (sparklineType == 'box') {
-
-                        thisBoxWidth = $this.data('sparkline-width') || 'auto';
-                        thisBoxHeight = $this.data('sparkline-height') || 'auto';
-                        thisBoxRaw = $this.data('sparkline-boxraw') || false;
-                        thisBoxTarget = $this.data('sparkline-targetval') || 'undefined';
-                        thisBoxMin = $this.data('sparkline-min') || 'undefined';
-                        thisBoxMax = $this.data('sparkline-max') || 'undefined';
-                        thisShowOutlier = $this.data('sparkline-showoutlier') || true;
-                        thisIQR = $this.data('sparkline-outlier-iqr') || 1.5;
-                        thisBoxSpotRadius = $this.data('sparkline-spotradius') || 1.5;
-                        thisBoxLineColor = $this.css('color') || '#000000';
-                        thisBoxFillColor = $this.data('fill-color') || '#c0d0f0';
-                        thisBoxWhisColor = $this.data('sparkline-whis-color') || '#000000';
-                        thisBoxOutlineColor = $this.data('sparkline-outline-color') || '#303030';
-                        thisBoxOutlineFill = $this.data('sparkline-outlinefill-color') || '#f0f0f0';
-                        thisBoxMedianColor = $this.data('sparkline-outlinemedian-color') || '#f00000';
-                        thisBoxTargetColor = $this.data('sparkline-outlinetarget-color') || '#40a020';
-
-                        $this.sparkline('html', {
-                            type: 'box',
-                            width: thisBoxWidth,
-                            height: thisBoxHeight,
-                            raw: thisBoxRaw,
-                            target: thisBoxTarget,
-                            minValue: thisBoxMin,
-                            maxValue: thisBoxMax,
-                            showOutliers: thisShowOutlier,
-                            outlierIQR: thisIQR,
-                            spotRadius: thisBoxSpotRadius,
-                            boxLineColor: thisBoxLineColor,
-                            boxFillColor: thisBoxFillColor,
-                            whiskerColor: thisBoxWhisColor,
-                            outlierLineColor: thisBoxOutlineColor,
-                            outlierFillColor: thisBoxOutlineFill,
-                            medianColor: thisBoxMedianColor,
-                            targetColor: thisBoxTargetColor
-
-                        });
-
-                        $this = null;
-
-                    }
-
-                    // BULLET
-                    if (sparklineType == 'bullet') {
-
-                        var thisBulletHeight = $this.data('sparkline-height') || 'auto';
-                        thisBulletWidth = $this.data('sparkline-width') || 2;
-                        thisBulletColor = $this.data('sparkline-bullet-color') || '#ed1c24';
-                        thisBulletPerformanceColor = $this.data('sparkline-performance-color') || '#3030f0';
-                        thisBulletRangeColors = $this.data('sparkline-bulletrange-color') || ["#d3dafe", "#a8b6ff", "#7f94ff"];
-
-                        $this.sparkline('html', {
-
-                            type: 'bullet',
-                            height: thisBulletHeight,
-                            targetWidth: thisBulletWidth,
-                            targetColor: thisBulletColor,
-                            performanceColor: thisBulletPerformanceColor,
-                            rangeColors: thisBulletRangeColors
-
-                        });
-
-                        $this = null;
-
-                    }
-
-                    // DISCRETE
-                    if (sparklineType == 'discrete') {
-
-                        thisDiscreteHeight = $this.data('sparkline-height') || 26;
-                        thisDiscreteWidth = $this.data('sparkline-width') || 50;
-                        thisDiscreteLineColor = $this.css('color');
-                        thisDiscreteLineHeight = $this.data('sparkline-line-height') || 5;
-                        thisDiscreteThrushold = $this.data('sparkline-threshold') || 'undefined';
-                        thisDiscreteThrusholdColor = $this.data('sparkline-threshold-color') || '#ed1c24';
-
-                        $this.sparkline('html', {
-
-                            type: 'discrete',
-                            width: thisDiscreteWidth,
-                            height: thisDiscreteHeight,
-                            lineColor: thisDiscreteLineColor,
-                            lineHeight: thisDiscreteLineHeight,
-                            thresholdValue: thisDiscreteThrushold,
-                            thresholdColor: thisDiscreteThrusholdColor
-
-                        });
-
-                        $this = null;
-
-                    }
-
-                    // TRISTATE
-                    if (sparklineType == 'tristate') {
-
-                        thisTristateHeight = $this.data('sparkline-height') || 26;
-                        thisTristatePosBarColor = $this.data('sparkline-posbar-color') || '#60f060';
-                        thisTristateNegBarColor = $this.data('sparkline-negbar-color') || '#f04040';
-                        thisTristateZeroBarColor = $this.data('sparkline-zerobar-color') || '#909090';
-                        thisTristateBarWidth = $this.data('sparkline-barwidth') || 5;
-                        thisTristateBarSpacing = $this.data('sparkline-barspacing') || 2;
-                        thisZeroAxis = $this.data('sparkline-zeroaxis') || false;
-
-                        $this.sparkline('html', {
-
-                            type: 'tristate',
-                            height: thisTristateHeight,
-                            posBarColor: thisBarColor,
-                            negBarColor: thisTristateNegBarColor,
-                            zeroBarColor: thisTristateZeroBarColor,
-                            barWidth: thisTristateBarWidth,
-                            barSpacing: thisTristateBarSpacing,
-                            zeroAxis: thisZeroAxis
-
-                        });
-
-                        $this = null;
-
-                    }
-
-                    //COMPOSITE: BAR
-                    if (sparklineType == 'compositebar') {
-
-                        sparklineHeight = $this.data('sparkline-height') || '20px';
-                        sparklineWidth = $this.data('sparkline-width') || '100%';
-                        sparklineBarWidth = $this.data('sparkline-barwidth') || 3;
-                        thisLineWidth = $this.data('sparkline-line-width') || 1;
-                        thisLineColor = $this.data('sparkline-color-top') || '#ed1c24';
-                        thisBarColor = $this.data('sparkline-color-bottom') || '#333333';
-
-                        $this.sparkline($this.data('sparkline-bar-val'), {
-
-                            type: 'bar',
-                            width: sparklineWidth,
-                            height: sparklineHeight,
-                            barColor: thisBarColor,
-                            barWidth: sparklineBarWidth
-                            //barSpacing: 5
-
-                        });
-
-                        $this.sparkline($this.data('sparkline-line-val'), {
-
-                            width: sparklineWidth,
-                            height: sparklineHeight,
-                            lineColor: thisLineColor,
-                            lineWidth: thisLineWidth,
-                            composite: true,
-                            fillColor: false
-
-                        });
-
-                        $this = null;
-
-                    }
-
-                    //COMPOSITE: LINE
-                    if (sparklineType == 'compositeline') {
-
-                        sparklineHeight = $this.data('sparkline-height') || '20px';
-                        sparklineWidth = $this.data('sparkline-width') || '90px';
-                        sparklineValue = $this.data('sparkline-bar-val');
-                        sparklineValueSpots1 = $this.data('sparkline-bar-val-spots-top') || null;
-                        sparklineValueSpots2 = $this.data('sparkline-bar-val-spots-bottom') || null;
-                        thisLineWidth1 = $this.data('sparkline-line-width-top') || 1;
-                        thisLineWidth2 = $this.data('sparkline-line-width-bottom') || 1;
-                        thisLineColor1 = $this.data('sparkline-color-top') || '#333333';
-                        thisLineColor2 = $this.data('sparkline-color-bottom') || '#ed1c24';
-                        thisSpotRadius1 = $this.data('sparkline-spotradius-top') || 1.5;
-                        thisSpotRadius2 = $this.data('sparkline-spotradius-bottom') || thisSpotRadius1;
-                        thisSpotColor = $this.data('sparkline-spot-color') || '#f08000';
-                        thisMinSpotColor1 = $this.data('sparkline-minspot-color-top') || '#ed1c24';
-                        thisMaxSpotColor1 = $this.data('sparkline-maxspot-color-top') || '#f08000';
-                        thisMinSpotColor2 = $this.data('sparkline-minspot-color-bottom') || thisMinSpotColor1;
-                        thisMaxSpotColor2 = $this.data('sparkline-maxspot-color-bottom') || thisMaxSpotColor1;
-                        thishighlightSpotColor1 = $this.data('sparkline-highlightspot-color-top') || '#50f050';
-                        thisHighlightLineColor1 = $this.data('sparkline-highlightline-color-top') || '#f02020';
-                        thishighlightSpotColor2 = $this.data('sparkline-highlightspot-color-bottom') ||
-                            thishighlightSpotColor1;
-                        thisHighlightLineColor2 = $this.data('sparkline-highlightline-color-bottom') ||
-                            thisHighlightLineColor1;
-                        thisFillColor1 = $this.data('sparkline-fillcolor-top') || 'transparent';
-                        thisFillColor2 = $this.data('sparkline-fillcolor-bottom') || 'transparent';
-
-                        $this.sparkline(sparklineValue, {
-
-                            type: 'line',
-                            spotRadius: thisSpotRadius1,
-
-                            spotColor: thisSpotColor,
-                            minSpotColor: thisMinSpotColor1,
-                            maxSpotColor: thisMaxSpotColor1,
-                            highlightSpotColor: thishighlightSpotColor1,
-                            highlightLineColor: thisHighlightLineColor1,
-
-                            valueSpots: sparklineValueSpots1,
-
-                            lineWidth: thisLineWidth1,
-                            width: sparklineWidth,
-                            height: sparklineHeight,
-                            lineColor: thisLineColor1,
-                            fillColor: thisFillColor1
-
-                        });
-
-                        $this.sparkline($this.data('sparkline-line-val'), {
-
-                            type: 'line',
-                            spotRadius: thisSpotRadius2,
-
-                            spotColor: thisSpotColor,
-                            minSpotColor: thisMinSpotColor2,
-                            maxSpotColor: thisMaxSpotColor2,
-                            highlightSpotColor: thishighlightSpotColor2,
-                            highlightLineColor: thisHighlightLineColor2,
-
-                            valueSpots: sparklineValueSpots2,
-
-                            lineWidth: thisLineWidth2,
-                            width: sparklineWidth,
-                            height: sparklineHeight,
-                            lineColor: thisLineColor2,
-                            composite: true,
-                            fillColor: thisFillColor2
-
-                        });
-
-                        $this = null;
-
-                    }
-
-                });
-            }
-
-
-            drawSparklines();
-
-        }
-    }
-});
-'use strict';
-
 angular.module('app.tables').directive('jqGrid', function ($compile) {
     var jqGridCounter = 0;
 
@@ -56619,337 +56143,6 @@ angular.module('app.tables').directive('datatableTableTools', function () {
         }
     }
 });
-"use strict";
-
-angular.module('SmartAdmin.Layout').directive('fullScreen', function(){
-    return {
-        restrict: 'A',
-        link: function(scope, element){
-            var $body = $('body');
-            var toggleFullSceen = function(e){
-                if (!$body.hasClass("full-screen")) {
-                    $body.addClass("full-screen");
-                    if (document.documentElement.requestFullscreen) {
-                        document.documentElement.requestFullscreen();
-                    } else if (document.documentElement.mozRequestFullScreen) {
-                        document.documentElement.mozRequestFullScreen();
-                    } else if (document.documentElement.webkitRequestFullscreen) {
-                        document.documentElement.webkitRequestFullscreen();
-                    } else if (document.documentElement.msRequestFullscreen) {
-                        document.documentElement.msRequestFullscreen();
-                    }
-                } else {
-                    $body.removeClass("full-screen");
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
-                    } else if (document.mozCancelFullScreen) {
-                        document.mozCancelFullScreen();
-                    } else if (document.webkitExitFullscreen) {
-                        document.webkitExitFullscreen();
-                    }
-                }
-            };
-
-            element.on('click', toggleFullSceen);
-
-        }
-    }
-});
-"use strict";
-
-angular.module('SmartAdmin.Layout').directive('minifyMenu', function(){
-    return {
-        restrict: 'A',
-        link: function(scope, element){
-                var $body = $('body');
-            var minifyMenu = function() {
-                if (!$body.hasClass("menu-on-top")) {
-                    $body.toggleClass("minified");
-                    $body.removeClass("hidden-menu");
-                    $('html').removeClass("hidden-menu-mobile-lock");
-                }
-            };
-
-            element.on('click', minifyMenu);
-        }
-    }
-})
-'use strict';
-
-angular.module('SmartAdmin.Layout').directive('reloadState', function ($rootScope) {
-    return {
-        restrict: 'A',
-        compile: function (tElement, tAttributes) {
-            tElement.removeAttr('reload-state data-reload-state');
-            tElement.on('click', function (e) {
-                $rootScope.$state.transitionTo($rootScope.$state.current, $rootScope.$stateParams, {
-                    reload: true,
-                    inherit: false,
-                    notify: true
-                });
-                e.preventDefault();
-            })
-        }
-    }
-});
-
-"use strict";
-
-angular.module('SmartAdmin.Layout').directive('resetWidgets', function($state){
-
-    return {
-        restrict: 'A',
-        link: function(scope, element){
-            element.on('click', function(){
-                $.SmartMessageBox({
-                    title : "<i class='fa fa-refresh' style='color:green'></i> Clear Local Storage",
-                    content : "Would you like to RESET all your saved widgets and clear LocalStorage?1",
-                    buttons : '[No][Yes]'
-                }, function(ButtonPressed) {
-                    if (ButtonPressed == "Yes" && localStorage) {
-                        localStorage.clear();
-                        location.reload()
-                    }
-                });
-
-            });
-        }
-    }
-
-});
-
-'use strict';
-
-angular.module('SmartAdmin.Layout').directive('searchMobile', function () {
-    return {
-        restrict: 'A',
-        compile: function (element, attributes) {
-            element.removeAttr('search-mobile data-search-mobile');
-
-            element.on('click', function (e) {
-                $('body').addClass('search-mobile');
-                e.preventDefault();
-            });
-
-            $('#cancel-search-js').on('click', function (e) {
-                $('body').removeClass('search-mobile');
-                e.preventDefault();
-            });
-        }
-    }
-});
-"use strict";
-
-angular.module('SmartAdmin.Layout').directive('toggleMenu', function(){
-    return {
-        restrict: 'A',
-        link: function(scope, element){
-            var $body = $('body');
-
-            var toggleMenu = function(){
-                if (!$body.hasClass("menu-on-top")){
-                    $('html').toggleClass("hidden-menu-mobile-lock");
-                    $body.toggleClass("hidden-menu");
-                    $body.removeClass("minified");
-                } else if ( $body.hasClass("menu-on-top") && $body.hasClass("mobile-view-activated") ) {
-                    $('html').toggleClass("hidden-menu-mobile-lock");
-                    $body.toggleClass("hidden-menu");
-                    $body.removeClass("minified");
-                }
-            };
-
-            element.on('click', toggleMenu);
-
-            scope.$on('requestToggleMenu', function(){
-                toggleMenu();
-            });
-        }
-    }
-});
-'use strict';
-
-angular.module('SmartAdmin.Layout').factory('lazyScript', function($q, $http){
-    var scripts = null;
-    var initialized = false;
-    var initializingPromise = null;
-
-    function init(){        
-        if(!initialized){
-            if(!initializingPromise){
-                initializingPromise = $http.get('app.scripts.json').then(function(res){
-                    scripts = res.data
-                    initialized = true;
-                });     
-            }
-            return initializingPromise;
-               
-        } else {
-            return $q.resolve();
-        }
-    }
-
-    var cache = {};
-
-    function isPending(scriptName){
-        return (cache.hasOwnProperty(scriptName) && cache[scriptName].promise && cache[scriptName].promise.$$state.pending)
-    }
-
-    function isRegistered(scriptName){
-        if(cache.hasOwnProperty(scriptName)){
-            return true;
-        } else {
-            return (scripts.prebuild.indexOf(scriptName) > -1);
-        }
-    }
-    function loadScript(scriptName){
-        if(!cache[scriptName]){
-            cache[scriptName] = $q.defer();
-            var el = document.createElement( 'script' );
-            el.onload = function(script){
-                console.log('script is lazy loaded:', scriptName)
-                cache[scriptName].resolve(scriptName);
-            };
-            el.src = scripts.paths[scriptName];
-            var x = document.getElementsByTagName('script')[0];
-            x.parentNode.insertBefore(el, x);
-            
-        }
-        return cache[scriptName].promise;
-
-    }
-
-    function register(scriptName){
-        if(isPending(scriptName)){
-            return cache[scriptName].promise
-        }
-        if(isRegistered(scriptName)){
-            return $q.resolve(scriptName);
-        } else {
-            var dfd = $q.defer();
-            if(scripts.shim.hasOwnProperty(scriptName) && scripts.shim[scriptName].deps){
-                var depsPromises = [];
-                angular.forEach(scripts.shim[scriptName].deps, function(dep){
-
-                    depsPromises.push(register(dep))
-                    
-                })
-                $q.all(depsPromises).then(function(){
-                    loadScript(scriptName).then(function(){
-                        dfd.resolve(scriptName);
-                    })
-                })
-
-            } else {
-                
-                loadScript(scriptName).then(function(){
-                    dfd.resolve(scriptName);
-                })
-                 
-            }
-            return dfd.promise; 
-
-        }
-    }
-    return {
-        register: function (scripts) {
-            
-            var dfd = $q.defer();
-            init().then(function(){
-                var promises = [];
-                if (angular.isString(scripts)) 
-                    scripts = [scripts];    
-
-                angular.forEach(scripts, function(script){
-                    promises.push(register(script));
-                })
-
-                $q.all(promises).then(function(resolves){
-                    dfd.resolve(resolves);
-                })
-            })
-            return dfd.promise;
-
-        }
-    };
-});
-'use strict';
-
-angular.module('SmartAdmin.Layout').factory('SmartCss', function ($rootScope, $timeout) {
-
-    var sheet = (function () {
-        // Create the <style> tag
-        var style = document.createElement("style");
-
-        // Add a media (and/or media query) here if you'd like!
-        // style.setAttribute("media", "screen")
-        // style.setAttribute("media", "@media only screen and (max-width : 1024px)")
-
-        // WebKit hack :(
-        style.appendChild(document.createTextNode(""));
-
-        // Add the <style> element to the page
-        document.head.appendChild(style);
-
-        return style.sheet;
-    })();
-
-    var _styles = {};
-
-
-    var SmartCss = {
-        writeRule: function(selector){
-            SmartCss.deleteRuleFor(selector);
-            if(_.has(_styles, selector)){
-                var css = selector + '{ ' + _.map(_styles[selector], function(v, k){
-                    return  k + ':' +  v + ';'
-                }).join(' ') +'}';
-                sheet.insertRule(css, _.size(_styles) - 1);
-            }
-        },
-        add: function (selector, property, value, delay) {
-            if(!_.has(_styles, selector))
-                _styles[selector] = {};
-
-            if(value == undefined || value == null || value == '')
-                delete _styles[selector][property];
-            else
-                _styles[selector][property] = value;
-
-
-            if(_.keys(_styles[selector]).length == 0)
-                delete _styles[selector];
-
-            if(!delay)
-                delay = 0;
-            $timeout(function(){
-                SmartCss.writeRule(selector);
-            }, delay);
-
-        },
-        remove: function(selector, property, delay){
-            SmartCss.add(selector, property, null, delay);
-        },
-        deleteRuleFor: function (selector) {
-            _(sheet.rules).forEach(function (rule, idx) {
-                if (rule.selectorText == selector) {
-                    sheet.deleteRule(idx);
-                }
-            });
-        },
-        appViewSize: null
-    };
-
-    $rootScope.$on('$smartContentResize', function (event, data) {
-        SmartCss.appViewSize = data;
-    });
-
-    return SmartCss;
-
-});
-
-
-
-
 'use strict';
 
 angular.module('SmartAdmin.Layout').directive('bigBreadcrumbs', function () {
@@ -58028,6 +57221,519 @@ angular.module('SmartAdmin.Layout').directive('stateBreadcrumbs', function ($roo
         }
     }
 });
+'use strict';
+
+angular.module('SmartAdmin.Layout').factory('lazyScript', function($q, $http){
+    var scripts = null;
+    var initialized = false;
+    var initializingPromise = null;
+
+    function init(){        
+        if(!initialized){
+            if(!initializingPromise){
+                initializingPromise = $http.get('app.scripts.json').then(function(res){
+                    scripts = res.data
+                    initialized = true;
+                });     
+            }
+            return initializingPromise;
+               
+        } else {
+            return $q.resolve();
+        }
+    }
+
+    var cache = {};
+
+    function isPending(scriptName){
+        return (cache.hasOwnProperty(scriptName) && cache[scriptName].promise && cache[scriptName].promise.$$state.pending)
+    }
+
+    function isRegistered(scriptName){
+        if(cache.hasOwnProperty(scriptName)){
+            return true;
+        } else {
+            return (scripts.prebuild.indexOf(scriptName) > -1);
+        }
+    }
+    function loadScript(scriptName){
+        if(!cache[scriptName]){
+            cache[scriptName] = $q.defer();
+            var el = document.createElement( 'script' );
+            el.onload = function(script){
+                console.log('script is lazy loaded:', scriptName)
+                cache[scriptName].resolve(scriptName);
+            };
+            el.src = scripts.paths[scriptName];
+            var x = document.getElementsByTagName('script')[0];
+            x.parentNode.insertBefore(el, x);
+            
+        }
+        return cache[scriptName].promise;
+
+    }
+
+    function register(scriptName){
+        if(isPending(scriptName)){
+            return cache[scriptName].promise
+        }
+        if(isRegistered(scriptName)){
+            return $q.resolve(scriptName);
+        } else {
+            var dfd = $q.defer();
+            if(scripts.shim.hasOwnProperty(scriptName) && scripts.shim[scriptName].deps){
+                var depsPromises = [];
+                angular.forEach(scripts.shim[scriptName].deps, function(dep){
+
+                    depsPromises.push(register(dep))
+                    
+                })
+                $q.all(depsPromises).then(function(){
+                    loadScript(scriptName).then(function(){
+                        dfd.resolve(scriptName);
+                    })
+                })
+
+            } else {
+                
+                loadScript(scriptName).then(function(){
+                    dfd.resolve(scriptName);
+                })
+                 
+            }
+            return dfd.promise; 
+
+        }
+    }
+    return {
+        register: function (scripts) {
+            
+            var dfd = $q.defer();
+            init().then(function(){
+                var promises = [];
+                if (angular.isString(scripts)) 
+                    scripts = [scripts];    
+
+                angular.forEach(scripts, function(script){
+                    promises.push(register(script));
+                })
+
+                $q.all(promises).then(function(resolves){
+                    dfd.resolve(resolves);
+                })
+            })
+            return dfd.promise;
+
+        }
+    };
+});
+'use strict';
+
+angular.module('SmartAdmin.Layout').factory('SmartCss', function ($rootScope, $timeout) {
+
+    var sheet = (function () {
+        // Create the <style> tag
+        var style = document.createElement("style");
+
+        // Add a media (and/or media query) here if you'd like!
+        // style.setAttribute("media", "screen")
+        // style.setAttribute("media", "@media only screen and (max-width : 1024px)")
+
+        // WebKit hack :(
+        style.appendChild(document.createTextNode(""));
+
+        // Add the <style> element to the page
+        document.head.appendChild(style);
+
+        return style.sheet;
+    })();
+
+    var _styles = {};
+
+
+    var SmartCss = {
+        writeRule: function(selector){
+            SmartCss.deleteRuleFor(selector);
+            if(_.has(_styles, selector)){
+                var css = selector + '{ ' + _.map(_styles[selector], function(v, k){
+                    return  k + ':' +  v + ';'
+                }).join(' ') +'}';
+                sheet.insertRule(css, _.size(_styles) - 1);
+            }
+        },
+        add: function (selector, property, value, delay) {
+            if(!_.has(_styles, selector))
+                _styles[selector] = {};
+
+            if(value == undefined || value == null || value == '')
+                delete _styles[selector][property];
+            else
+                _styles[selector][property] = value;
+
+
+            if(_.keys(_styles[selector]).length == 0)
+                delete _styles[selector];
+
+            if(!delay)
+                delay = 0;
+            $timeout(function(){
+                SmartCss.writeRule(selector);
+            }, delay);
+
+        },
+        remove: function(selector, property, delay){
+            SmartCss.add(selector, property, null, delay);
+        },
+        deleteRuleFor: function (selector) {
+            _(sheet.rules).forEach(function (rule, idx) {
+                if (rule.selectorText == selector) {
+                    sheet.deleteRule(idx);
+                }
+            });
+        },
+        appViewSize: null
+    };
+
+    $rootScope.$on('$smartContentResize', function (event, data) {
+        SmartCss.appViewSize = data;
+    });
+
+    return SmartCss;
+
+});
+
+
+
+
+"use strict";
+
+angular.module('SmartAdmin.Layout').directive('fullScreen', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element){
+            var $body = $('body');
+            var toggleFullSceen = function(e){
+                if (!$body.hasClass("full-screen")) {
+                    $body.addClass("full-screen");
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen();
+                    } else if (document.documentElement.mozRequestFullScreen) {
+                        document.documentElement.mozRequestFullScreen();
+                    } else if (document.documentElement.webkitRequestFullscreen) {
+                        document.documentElement.webkitRequestFullscreen();
+                    } else if (document.documentElement.msRequestFullscreen) {
+                        document.documentElement.msRequestFullscreen();
+                    }
+                } else {
+                    $body.removeClass("full-screen");
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.mozCancelFullScreen) {
+                        document.mozCancelFullScreen();
+                    } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    }
+                }
+            };
+
+            element.on('click', toggleFullSceen);
+
+        }
+    }
+});
+"use strict";
+
+angular.module('SmartAdmin.Layout').directive('minifyMenu', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element){
+                var $body = $('body');
+            var minifyMenu = function() {
+                if (!$body.hasClass("menu-on-top")) {
+                    $body.toggleClass("minified");
+                    $body.removeClass("hidden-menu");
+                    $('html').removeClass("hidden-menu-mobile-lock");
+                }
+            };
+
+            element.on('click', minifyMenu);
+        }
+    }
+})
+'use strict';
+
+angular.module('SmartAdmin.Layout').directive('reloadState', function ($rootScope) {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttributes) {
+            tElement.removeAttr('reload-state data-reload-state');
+            tElement.on('click', function (e) {
+                $rootScope.$state.transitionTo($rootScope.$state.current, $rootScope.$stateParams, {
+                    reload: true,
+                    inherit: false,
+                    notify: true
+                });
+                e.preventDefault();
+            })
+        }
+    }
+});
+
+"use strict";
+
+angular.module('SmartAdmin.Layout').directive('resetWidgets', function($state){
+
+    return {
+        restrict: 'A',
+        link: function(scope, element){
+            element.on('click', function(){
+                $.SmartMessageBox({
+                    title : "<i class='fa fa-refresh' style='color:green'></i> Clear Local Storage",
+                    content : "Would you like to RESET all your saved widgets and clear LocalStorage?1",
+                    buttons : '[No][Yes]'
+                }, function(ButtonPressed) {
+                    if (ButtonPressed == "Yes" && localStorage) {
+                        localStorage.clear();
+                        location.reload()
+                    }
+                });
+
+            });
+        }
+    }
+
+});
+
+'use strict';
+
+angular.module('SmartAdmin.Layout').directive('searchMobile', function () {
+    return {
+        restrict: 'A',
+        compile: function (element, attributes) {
+            element.removeAttr('search-mobile data-search-mobile');
+
+            element.on('click', function (e) {
+                $('body').addClass('search-mobile');
+                e.preventDefault();
+            });
+
+            $('#cancel-search-js').on('click', function (e) {
+                $('body').removeClass('search-mobile');
+                e.preventDefault();
+            });
+        }
+    }
+});
+"use strict";
+
+angular.module('SmartAdmin.Layout').directive('toggleMenu', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element){
+            var $body = $('body');
+
+            var toggleMenu = function(){
+                if (!$body.hasClass("menu-on-top")){
+                    $('html').toggleClass("hidden-menu-mobile-lock");
+                    $body.toggleClass("hidden-menu");
+                    $body.removeClass("minified");
+                } else if ( $body.hasClass("menu-on-top") && $body.hasClass("mobile-view-activated") ) {
+                    $('html').toggleClass("hidden-menu-mobile-lock");
+                    $body.toggleClass("hidden-menu");
+                    $body.removeClass("minified");
+                }
+            };
+
+            element.on('click', toggleMenu);
+
+            scope.$on('requestToggleMenu', function(){
+                toggleMenu();
+            });
+        }
+    }
+});
+"use strict";
+
+(function ($) {
+
+    $.fn.smartCollapseToggle = function () {
+
+        return this.each(function () {
+
+            var $body = $('body');
+            var $this = $(this);
+
+            // only if not  'menu-on-top'
+            if ($body.hasClass('menu-on-top')) {
+
+
+            } else {
+
+                $body.hasClass('mobile-view-activated')
+
+                // toggle open
+                $this.toggleClass('open');
+
+                // for minified menu collapse only second level
+                if ($body.hasClass('minified')) {
+                    if ($this.closest('nav ul ul').length) {
+                        $this.find('>a .collapse-sign .fa').toggleClass('fa-minus-square-o fa-plus-square-o');
+                        $this.find('ul:first').slideToggle(appConfig.menu_speed || 200);
+                    }
+                } else {
+                    // toggle expand item
+                    $this.find('>a .collapse-sign .fa').toggleClass('fa-minus-square-o fa-plus-square-o');
+                    $this.find('ul:first').slideToggle(appConfig.menu_speed || 200);
+                }
+            }
+        });
+    };
+})(jQuery);
+
+angular.module('SmartAdmin.Layout').directive('smartMenu', function ($state, $rootScope) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var $body = $('body');
+
+            var $collapsible = element.find('li[data-menu-collapse]');
+
+            var bindEvents = function(){
+                $collapsible.each(function (idx, li) {
+                    var $li = $(li);
+                    $li
+                        .on('click', '>a', function (e) {
+
+                            // collapse all open siblings
+                            $li.siblings('.open').smartCollapseToggle();
+
+                            // toggle element
+                            $li.smartCollapseToggle();
+
+                            // add active marker to collapsed element if it has active childs
+                            if (!$li.hasClass('open') && $li.find('li.active').length > 0) {
+                                $li.addClass('active')
+                            }
+
+                            e.preventDefault();
+                        })
+                        .find('>a').append('<b class="collapse-sign"><em class="fa fa-plus-square-o"></em></b>');
+
+                    // initialization toggle
+                    if ($li.find('li.active').length) {
+                        $li.smartCollapseToggle();
+                        $li.find('li.active').parents('li').addClass('active');
+                    }
+                });
+            }
+            bindEvents();
+
+
+            // click on route link
+            element.on('click', 'a[data-ui-sref]', function (e) {
+                // collapse all siblings to element parents and remove active markers
+                $(this)
+                    .parents('li').addClass('active')
+                    .each(function () {
+                        $(this).siblings('li.open').smartCollapseToggle();
+                        $(this).siblings('li').removeClass('active')
+                    });
+
+                if ($body.hasClass('mobile-view-activated')) {
+                    $rootScope.$broadcast('requestToggleMenu');
+                }
+            });
+
+
+            scope.$on('$smartLayoutMenuOnTop', function (event, menuOnTop) {
+                if (menuOnTop) {
+                    $collapsible.filter('.open').smartCollapseToggle();
+                }
+            });
+        }
+    }
+});
+(function(){
+    "use strict";
+
+    angular.module('SmartAdmin.Layout').directive('smartMenuItems', function ($http, $rootScope, $compile, APP_CONFIG) {
+    return {
+        restrict: 'A',
+        compile: function (element, attrs) {
+            
+
+            function createItem(item, parent, level){
+                var li = $('<li />' ,{'ui-sref-active': "active"})
+                var a = $('<a />');
+                var i = $('<i />');
+
+                li.append(a);
+
+                if (item.sref) {
+                    a.attr('ui-sref', item.sref);
+                    // add this option to reload state when clicked
+
+                    a.attr("ui-sref-opts", "{reload: true}");
+                }
+                if(item.href)
+                    a.attr('href', item.href);
+                if(item.icon){
+                    i.attr('class', item.icon);
+                    a.append(i);
+                }
+                if(item.title){
+                    a.attr('title', item.title);
+                    if(level == 1){ 
+                        a.append(' <span class="menu-item-parent">' + item.title + '</span>');
+                    } else {
+                        a.append(' ' + item.title);
+
+                    }
+
+                    // add a badge to the app.tasks.list item
+                    if (item.sref) {
+                        var myTaskSref = "app.myspace";
+                        if (item.sref.substring(0, myTaskSref.length) === myTaskSref) {
+                            a.append('<span class="badge pull-right inbox-badge">{{getTotalCount()}}</span>');
+                        }
+                    }
+                }
+
+                if(item.items){
+                    var ul = $('<ul />');
+                    li.append(ul);
+                    li.attr('data-menu-collapse', '');
+                    _.forEach(item.items, function(child) {
+                        createItem(child, ul, level+1);
+                    })
+                } 
+
+                parent.append(li); 
+            }
+
+            $http.get(APP_CONFIG.ebaasRootUrl + attrs.smartMenuItems).then(function (res) {
+
+                var ul = $('<ul />', {
+                    'smart-menu': ''
+                })
+                _.forEach(res.data.items, function (item) {
+                    if (item.visible) {
+                        createItem(item, ul, 1);
+                    }
+                })
+                
+                var $scope = $rootScope.$new();
+                var html = $('<div>').append(ul).html(); 
+                var linkingFunction = $compile(html);
+                
+                var _element = linkingFunction($scope);
+
+                element.replaceWith(_element);                
+            })
+        }
+    }
+});
+})();
 "use strict";
 
 
@@ -58466,6 +58172,340 @@ angular.module('SmartAdmin.Forms').directive('bootstrapTogglingForm', function()
 
 
 });
+/**
+ * Jarvis Widget Directive
+ *
+ *    colorbutton="false"
+ *    editbutton="false"
+      togglebutton="false"
+       deletebutton="false"
+        fullscreenbutton="false"
+        custombutton="false"
+        collapsed="true"
+          sortable="false"
+ *
+ *
+ */
+"use strict";
+
+angular.module('SmartAdmin.Layout').directive('jarvisWidget', function($rootScope){
+    return {
+        restrict: "A",
+        compile: function(element, attributes){
+            if(element.data('widget-color'))
+                element.addClass('jarviswidget-color-' + element.data('widget-color'));
+
+
+            element.find('.widget-body').prepend('<div class="jarviswidget-editbox"><input class="form-control" type="text"></div>');
+
+            element.addClass('jarviswidget jarviswidget-sortable');
+            $rootScope.$emit('jarvisWidgetAdded', element )
+
+        }
+    }
+});
+ "use strict";
+ 
+ angular.module('SmartAdmin.Layout').directive('widgetGrid', function ($rootScope, $compile, $q, $state, $timeout) {
+
+    var jarvisWidgetsDefaults = {
+        grid: 'article',
+        widgets: '.jarviswidget',
+        localStorage: true,
+        deleteSettingsKey: '#deletesettingskey-options',
+        settingsKeyLabel: 'Reset settings?',
+        deletePositionKey: '#deletepositionkey-options',
+        positionKeyLabel: 'Reset position?',
+        sortable: true,
+        buttonsHidden: false,
+        // toggle button
+        toggleButton: true,
+        toggleClass: 'fa fa-minus | fa fa-plus',
+        toggleSpeed: 200,
+        onToggle: function () {
+        },
+        // delete btn
+        deleteButton: true,
+        deleteMsg: 'Warning: This action cannot be undone!',
+        deleteClass: 'fa fa-times',
+        deleteSpeed: 200,
+        onDelete: function () {
+        },
+        // edit btn
+        editButton: true,
+        editPlaceholder: '.jarviswidget-editbox',
+        editClass: 'fa fa-cog | fa fa-save',
+        editSpeed: 200,
+        onEdit: function () {
+        },
+        // color button
+        colorButton: true,
+        // full screen
+        fullscreenButton: true,
+        fullscreenClass: 'fa fa-expand | fa fa-compress',
+        fullscreenDiff: 3,
+        onFullscreen: function () {
+        },
+        // custom btn
+        customButton: false,
+        customClass: 'folder-10 | next-10',
+        customStart: function () {
+            alert('Hello you, this is a custom button...');
+        },
+        customEnd: function () {
+            alert('bye, till next time...');
+        },
+        // order
+        buttonOrder: '%refresh% %custom% %edit% %toggle% %fullscreen% %delete%',
+        opacity: 1.0,
+        dragHandle: '> header',
+        placeholderClass: 'jarviswidget-placeholder',
+        indicator: true,
+        indicatorTime: 600,
+        ajax: true,
+        timestampPlaceholder: '.jarviswidget-timestamp',
+        timestampFormat: 'Last update: %m%/%d%/%y% %h%:%i%:%s%',
+        refreshButton: true,
+        refreshButtonClass: 'fa fa-refresh',
+        labelError: 'Sorry but there was a error:',
+        labelUpdated: 'Last Update:',
+        labelRefresh: 'Refresh',
+        labelDelete: 'Delete widget:',
+        afterLoad: function () {
+        },
+        rtl: false, // best not to toggle this!
+        onChange: function () {
+
+        },
+        onSave: function () {
+
+        },
+        ajaxnav: true
+
+    }
+
+    var dispatchedWidgetIds = [];
+    var setupWaiting = false;
+
+    var debug = 1;
+
+    var setupWidgets = function (element, widgetIds) {
+
+        if (!setupWaiting) {
+
+            if(_.intersection(widgetIds, dispatchedWidgetIds).length != widgetIds.length){
+
+                dispatchedWidgetIds = _.union(widgetIds, dispatchedWidgetIds);
+
+//                    console.log('setupWidgets', debug++);
+
+                element.data('jarvisWidgets') && element.data('jarvisWidgets').destroy();
+                element.jarvisWidgets(jarvisWidgetsDefaults);
+                initDropdowns(widgetIds);
+            }
+
+        } else {
+            if (!setupWaiting) {
+                setupWaiting = true;
+                $timeout(function () {
+                    setupWaiting = false;
+                    setupWidgets(element, widgetIds)
+                }, 200);
+            }
+        }
+
+    };
+
+    var destroyWidgets = function(element, widgetIds){
+        element.data('jarvisWidgets') && element.data('jarvisWidgets').destroy();
+        dispatchedWidgetIds = _.xor(dispatchedWidgetIds, widgetIds);
+    };
+
+    var initDropdowns = function (widgetIds) {
+        angular.forEach(widgetIds, function (wid) {
+            $('#' + wid + ' [data-toggle="dropdown"]').each(function () {
+                var $parent = $(this).parent();
+                // $(this).removeAttr('data-toggle');
+                if (!$parent.attr('dropdown')) {
+                    $(this).removeAttr('href');
+                    $parent.attr('dropdown', '');
+                    var compiled = $compile($parent)($parent.scope())
+                    $parent.replaceWith(compiled);
+                }
+            })
+        });
+    };
+
+    var jarvisWidgetAddedOff,
+        $viewContentLoadedOff,
+        $stateChangeStartOff;
+
+    return {
+        restrict: 'A',
+        compile: function(element){
+
+            element.removeAttr('widget-grid data-widget-grid');
+
+            var widgetIds = [];
+
+            $viewContentLoadedOff = $rootScope.$on('$viewContentLoaded', function (event, data) {
+                $timeout(function () {
+                    setupWidgets(element, widgetIds)
+                }, 100);
+            });
+
+
+            $stateChangeStartOff = $rootScope.$on('$stateChangeStart',
+                function(event, toState, toParams, fromState, fromParams){
+                    jarvisWidgetAddedOff();
+                    $viewContentLoadedOff();
+                    $stateChangeStartOff();
+                    destroyWidgets(element, widgetIds)
+                });
+
+            jarvisWidgetAddedOff = $rootScope.$on('jarvisWidgetAdded', function (event, widget) {
+                if (widgetIds.indexOf(widget.attr('id')) == -1) {
+                    widgetIds.push(widget.attr('id'));
+                    $timeout(function () {
+                        setupWidgets(element, widgetIds)
+                    }, 100);
+                }
+//                    console.log('jarvisWidgetAdded', widget.attr('id'));
+            });
+
+        }
+    }
+});
+
+'use strict';
+
+angular.module('SmartAdmin.Layout').directive('demoStates', function ($rootScope) {
+    return {
+        restrict: 'EA',
+        replace: true,
+        templateUrl: 'app/_common/layout/directives/demo/demo-states.tpl.html',
+        scope: true,
+        link: function (scope, element, attributes) {
+            element.parent().css({
+                position: 'relative'
+            });
+
+            element.on('click', '#demo-setting', function () {
+                element.toggleClass('activate')
+            })
+        },
+        controller: function ($scope) {
+            var $root = $('body');
+
+            $scope.$watch('fixedHeader', function (fixedHeader) {
+                localStorage.setItem('sm-fixed-header', fixedHeader);
+                $root.toggleClass('fixed-header', fixedHeader);
+                if (fixedHeader == false) {
+                    $scope.fixedRibbon = false;
+                    $scope.fixedNavigation = false;
+                }
+            });
+
+
+            $scope.$watch('fixedNavigation', function (fixedNavigation) {
+                localStorage.setItem('sm-fixed-navigation', fixedNavigation);
+                $root.toggleClass('fixed-navigation', fixedNavigation);
+                if (fixedNavigation) {
+                    $scope.insideContainer = false;
+                    $scope.fixedHeader = true;
+                } else {
+                    $scope.fixedRibbon = false;
+                }
+            });
+
+
+            $scope.$watch('fixedRibbon', function (fixedRibbon) {
+                localStorage.setItem('sm-fixed-ribbon', fixedRibbon);
+                $root.toggleClass('fixed-ribbon', fixedRibbon);
+                if (fixedRibbon) {
+                    $scope.fixedHeader = true;
+                    $scope.fixedNavigation = true;
+                    $scope.insideContainer = false;
+                }
+            });
+
+            $scope.$watch('fixedPageFooter', function (fixedPageFooter) {
+                localStorage.setItem('sm-fixed-page-footer', fixedPageFooter);
+                $root.toggleClass('fixed-page-footer', fixedPageFooter);
+            });
+
+            $scope.$watch('insideContainer', function (insideContainer) {
+                localStorage.setItem('sm-inside-container', insideContainer);
+                $root.toggleClass('container', insideContainer);
+                if (insideContainer) {
+                    $scope.fixedRibbon = false;
+                    $scope.fixedNavigation = false;
+                }
+            });
+
+            $scope.$watch('rtl', function (rtl) {
+                localStorage.setItem('sm-rtl', rtl);
+                $root.toggleClass('smart-rtl', rtl);
+            });
+
+            $scope.$watch('menuOnTop', function (menuOnTop) {
+                $rootScope.$broadcast('$smartLayoutMenuOnTop', menuOnTop);
+                localStorage.setItem('sm-menu-on-top', menuOnTop);
+                $root.toggleClass('menu-on-top', menuOnTop);
+
+                if(menuOnTop)$root.removeClass('minified');
+            });
+
+            $scope.$watch('colorblindFriendly', function (colorblindFriendly) {
+                localStorage.setItem('sm-colorblind-friendly', colorblindFriendly);
+                $root.toggleClass('colorblind-friendly', colorblindFriendly);
+            });
+
+
+            $scope.fixedHeader = localStorage.getItem('sm-fixed-header') == 'true';
+            $scope.fixedNavigation = localStorage.getItem('sm-fixed-navigation') == 'true';
+            $scope.fixedRibbon = localStorage.getItem('sm-fixed-ribbon') == 'true';
+            $scope.fixedPageFooter = localStorage.getItem('sm-fixed-page-footer') == 'true';
+            $scope.insideContainer = localStorage.getItem('sm-inside-container') == 'true';
+            $scope.rtl = localStorage.getItem('sm-rtl') == 'true';
+            $scope.menuOnTop = localStorage.getItem('sm-menu-on-top') == 'true' || $root.hasClass('menu-on-top');
+            $scope.colorblindFriendly = localStorage.getItem('sm-colorblind-friendly') == 'true';
+
+
+            $scope.skins = appConfig.skins;
+
+            $scope.smartSkin = localStorage.getItem('sm-skin') || appConfig.smartSkin;
+
+
+            $scope.setSkin = function (skin) {
+                $scope.smartSkin = skin.name;
+                $root.removeClass(_.pluck($scope.skins, 'name').join(' '));
+                $root.addClass(skin.name);
+                localStorage.setItem('sm-skin', skin.name);
+                $("#logo img").attr('src', skin.logo);
+            };
+
+
+            if($scope.smartSkin != "smart-style-0"){
+                $scope.setSkin(_.find($scope.skins, {name: $scope.smartSkin}))
+            }
+
+
+            $scope.factoryReset = function () {
+                $.SmartMessageBox({
+                    title: "<i class='fa fa-refresh' style='color:green'></i> Clear Local Storage",
+                    content: "Would you like to RESET all your saved widgets and clear LocalStorage?1",
+                    buttons: '[No][Yes]'
+                }, function (ButtonPressed) {
+                    if (ButtonPressed == "Yes" && localStorage) {
+                        localStorage.clear();
+                        location.reload()
+                    }
+                });
+            }
+        }
+    }
+});
 'use strict';
 
 angular.module('SmartAdmin.Forms').directive('smartCkEditor', function () {
@@ -58553,6 +58593,196 @@ angular.module('SmartAdmin.Forms').directive('smartSummernoteEditor', function (
             lazyScript.register('summernote').then(function(){
                 tElement.summernote(options);
             });
+        }
+    }
+});
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartJcrop', function ($q) {
+    return {
+        restrict: 'A',
+        scope: {
+            coords: '=',
+            options: '=',
+            selection: '='
+        },
+        link: function (scope, element, attributes) {
+            var jcropApi, imageWidth, imageHeight, imageLoaded = $q.defer();
+
+            var listeners = {
+                onSelectHandlers: [],
+                onChangeHandlers: [],
+                onSelect: function (c) {
+                    angular.forEach(listeners.onSelectHandlers, function (handler) {
+                        handler.call(jcropApi, c)
+                    })
+                },
+                onChange: function (c) {
+                    angular.forEach(listeners.onChangeHandlers, function (handler) {
+                        handler.call(jcropApi, c)
+                    })
+                }
+            };
+
+            if (attributes.coords) {
+                var coordsUpdate = function (c) {
+                    scope.$apply(function () {
+                        scope.coords = c;
+                    });
+                };
+                listeners.onSelectHandlers.push(coordsUpdate);
+                listeners.onChangeHandlers.push(coordsUpdate);
+            }
+
+            var $previewPane = $(attributes.smartJcropPreview),
+                $previewContainer = $previewPane.find('.preview-container'),
+                $previewImg = $previewPane.find('img');
+
+            if ($previewPane.length && $previewImg.length) {
+                var previewUpdate = function (coords) {
+                    if (parseInt(coords.w) > 0) {
+                        var rx = $previewContainer.width() / coords.w;
+                        var ry = $previewContainer.height() / coords.h;
+
+                        $previewImg.css({
+                            width: Math.round(rx * imageWidth) + 'px',
+                            height: Math.round(ry * imageHeight) + 'px',
+                            marginLeft: '-' + Math.round(rx * coords.x) + 'px',
+                            marginTop: '-' + Math.round(ry * coords.y) + 'px'
+                        });
+                    }
+                };
+                listeners.onSelectHandlers.push(previewUpdate);
+                listeners.onChangeHandlers.push(previewUpdate);
+            }
+
+
+            var options = {
+                onSelect: listeners.onSelect,
+                onChange: listeners.onChange
+            };
+
+            if ($previewContainer.length) {
+                options.aspectRatio = $previewContainer.width() / $previewContainer.height()
+            }
+
+            if (attributes.selection) {
+                scope.$watch('selection', function (newVal, oldVal) {
+                    if (newVal != oldVal) {
+                        var rectangle = newVal == 'release' ? [imageWidth / 2, imageHeight / 2, imageWidth / 2, imageHeight / 2] : newVal;
+
+                        var callback = newVal == 'release' ? function () {
+                            jcropApi.release();
+                        } : angular.noop;
+
+                        imageLoaded.promise.then(function () {
+                            if (scope.options && scope.options.animate) {
+                                jcropApi.animateTo(rectangle, callback);
+                            } else {
+                                jcropApi.setSelect(rectangle);
+                            }
+                        });
+                    }
+                });
+            }
+
+            if (attributes.options) {
+
+                var optionNames = [
+                    'bgOpacity', 'bgColor', 'bgFade', 'shade', 'outerImage',
+                    'allowSelect', 'allowMove', 'allowResize',
+                    'aspectRatio'
+                ];
+
+                angular.forEach(optionNames, function (name) {
+                    if (scope.options[name])
+                        options[name] = scope.options[name]
+
+                    scope.$watch('options.' + name, function (newVal, oldVal) {
+                        if (newVal != oldVal) {
+                            imageLoaded.promise.then(function () {
+                                var update = {};
+                                update[name] = newVal;
+                                jcropApi.setOptions(update);
+                            });
+                        }
+                    });
+
+                });
+
+
+                scope.$watch('options.disabled', function (newVal, oldVal) {
+                    if (newVal != oldVal) {
+                        if (newVal) {
+                            jcropApi.disable();
+                        } else {
+                            jcropApi.enable();
+                        }
+                    }
+                });
+
+                scope.$watch('options.destroyed', function (newVal, oldVal) {
+                    if (newVal != oldVal) {
+                        if (newVal) {
+                            jcropApi.destroy();
+                        } else {
+                            _init();
+                        }
+                    }
+                });
+
+                scope.$watch('options.src', function (newVal, oldVal) {
+                    imageLoaded = $q.defer();
+                    if (newVal != oldVal) {
+                        jcropApi.setImage(scope.options.src, function () {
+                            imageLoaded.resolve();
+                        });
+                    }
+                });
+
+                var updateSize = function(){
+                    jcropApi.setOptions({
+                        minSize: [scope.options.minSizeWidth, scope.options.minSizeHeight],
+                        maxSize: [scope.options.maxSizeWidth, scope.options.maxSizeHeight]
+                    });
+                };
+
+                scope.$watch('options.minSizeWidth', function (newVal, oldVal) {
+                    if (newVal != oldVal) updateSize();
+                });
+                scope.$watch('options.minSizeHeight', function (newVal, oldVal) {
+                    if (newVal != oldVal) updateSize();
+                });
+                scope.$watch('options.maxSizeWidth', function (newVal, oldVal) {
+                    if (newVal != oldVal) updateSize();
+                });
+                scope.$watch('options.maxSizeHeight', function (newVal, oldVal) {
+                    if (newVal != oldVal) updateSize();
+                });
+            }
+
+            var _init = function () {
+                element.Jcrop(options, function () {
+                    jcropApi = this;
+                    // Use the API to get the real image size
+                    var bounds = this.getBounds();
+                    imageWidth = bounds[0];
+                    imageHeight = bounds[1];
+
+                    if (attributes.selection && angular.isArray(scope.selection)) {
+                        if (scope.options && scope.options.animate) {
+                            jcropApi.animateTo(scope.selection);
+                        } else {
+                            jcropApi.setSelect(scope.selection);
+                        }
+                    }
+                    imageLoaded.resolve();
+                });
+            };
+
+            _init()
+
+
         }
     }
 });
@@ -58969,194 +59199,90 @@ angular.module('SmartAdmin.Forms').directive('smartReviewForm', function (formsC
 });
 'use strict';
 
-angular.module('SmartAdmin.Forms').directive('smartJcrop', function ($q) {
+angular.module('SmartAdmin.Forms').directive('smartDropzone', function () {
     return {
         restrict: 'A',
-        scope: {
-            coords: '=',
-            options: '=',
-            selection: '='
-        },
-        link: function (scope, element, attributes) {
-            var jcropApi, imageWidth, imageHeight, imageLoaded = $q.defer();
+        compile: function (tElement, tAttributes) {
+            tElement.removeAttr('file-dropzone data-file-dropzone');
 
-            var listeners = {
-                onSelectHandlers: [],
-                onChangeHandlers: [],
-                onSelect: function (c) {
-                    angular.forEach(listeners.onSelectHandlers, function (handler) {
-                        handler.call(jcropApi, c)
-                    })
+            tElement.dropzone({
+                addRemoveLinks : true,
+                maxFilesize: 0.5,
+                dictDefaultMessage: '<span class="text-center"><span class="font-lg visible-xs-block visible-sm-block visible-lg-block"><span class="font-lg"><i class="fa fa-caret-right text-danger"></i> Drop files <span class="font-xs">to upload</span></span><span>&nbsp&nbsp<h4 class="display-inline"> (Or Click)</h4></span>',
+                dictResponseError: 'Error uploading file!'
+            });
+        }
+    }
+});
+
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartValidateForm', function (formsCommon) {
+    return {
+        restrict: 'A',
+        link: function (scope, form, attributes) {
+
+            var validateOptions = {
+                rules: {},
+                messages: {},
+                highlight: function (element) {
+                    $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
                 },
-                onChange: function (c) {
-                    angular.forEach(listeners.onChangeHandlers, function (handler) {
-                        handler.call(jcropApi, c)
-                    })
+                unhighlight: function (element) {
+                    $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+                },
+                errorElement: 'span',
+                errorClass: 'help-block',
+                errorPlacement: function (error, element) {
+                    if (element.parent('.input-group').length) {
+                        error.insertAfter(element.parent());
+                    } else {
+                        error.insertAfter(element);
+                    }
                 }
             };
+            form.find('[data-smart-validate-input], [smart-validate-input]').each(function () {
+                var $input = $(this), fieldName = $input.attr('name');
 
-            if (attributes.coords) {
-                var coordsUpdate = function (c) {
-                    scope.$apply(function () {
-                        scope.coords = c;
-                    });
-                };
-                listeners.onSelectHandlers.push(coordsUpdate);
-                listeners.onChangeHandlers.push(coordsUpdate);
-            }
+                validateOptions.rules[fieldName] = {};
 
-            var $previewPane = $(attributes.smartJcropPreview),
-                $previewContainer = $previewPane.find('.preview-container'),
-                $previewImg = $previewPane.find('img');
+                if ($input.data('required') != undefined) {
+                    validateOptions.rules[fieldName].required = true;
+                }
+                if ($input.data('email') != undefined) {
+                    validateOptions.rules[fieldName].email = true;
+                }
 
-            if ($previewPane.length && $previewImg.length) {
-                var previewUpdate = function (coords) {
-                    if (parseInt(coords.w) > 0) {
-                        var rx = $previewContainer.width() / coords.w;
-                        var ry = $previewContainer.height() / coords.h;
+                if ($input.data('maxlength') != undefined) {
+                    validateOptions.rules[fieldName].maxlength = $input.data('maxlength');
+                }
 
-                        $previewImg.css({
-                            width: Math.round(rx * imageWidth) + 'px',
-                            height: Math.round(ry * imageHeight) + 'px',
-                            marginLeft: '-' + Math.round(rx * coords.x) + 'px',
-                            marginTop: '-' + Math.round(ry * coords.y) + 'px'
-                        });
-                    }
-                };
-                listeners.onSelectHandlers.push(previewUpdate);
-                listeners.onChangeHandlers.push(previewUpdate);
-            }
+                if ($input.data('minlength') != undefined) {
+                    validateOptions.rules[fieldName].minlength = $input.data('minlength');
+                }
 
+                if($input.data('message')){
+                    validateOptions.messages[fieldName] = $input.data('message');
+                } else {
+                    angular.forEach($input.data(), function(value, key){
+                        if(key.search(/message/)== 0){
+                            if(!validateOptions.messages[fieldName])
+                                validateOptions.messages[fieldName] = {};
 
-            var options = {
-                onSelect: listeners.onSelect,
-                onChange: listeners.onChange
-            };
-
-            if ($previewContainer.length) {
-                options.aspectRatio = $previewContainer.width() / $previewContainer.height()
-            }
-
-            if (attributes.selection) {
-                scope.$watch('selection', function (newVal, oldVal) {
-                    if (newVal != oldVal) {
-                        var rectangle = newVal == 'release' ? [imageWidth / 2, imageHeight / 2, imageWidth / 2, imageHeight / 2] : newVal;
-
-                        var callback = newVal == 'release' ? function () {
-                            jcropApi.release();
-                        } : angular.noop;
-
-                        imageLoaded.promise.then(function () {
-                            if (scope.options && scope.options.animate) {
-                                jcropApi.animateTo(rectangle, callback);
-                            } else {
-                                jcropApi.setSelect(rectangle);
-                            }
-                        });
-                    }
-                });
-            }
-
-            if (attributes.options) {
-
-                var optionNames = [
-                    'bgOpacity', 'bgColor', 'bgFade', 'shade', 'outerImage',
-                    'allowSelect', 'allowMove', 'allowResize',
-                    'aspectRatio'
-                ];
-
-                angular.forEach(optionNames, function (name) {
-                    if (scope.options[name])
-                        options[name] = scope.options[name]
-
-                    scope.$watch('options.' + name, function (newVal, oldVal) {
-                        if (newVal != oldVal) {
-                            imageLoaded.promise.then(function () {
-                                var update = {};
-                                update[name] = newVal;
-                                jcropApi.setOptions(update);
-                            });
+                            var messageKey = key.toLowerCase().replace(/^message/,'')
+                            validateOptions.messages[fieldName][messageKey] = value;
                         }
                     });
+                }
+            });
 
-                });
 
-
-                scope.$watch('options.disabled', function (newVal, oldVal) {
-                    if (newVal != oldVal) {
-                        if (newVal) {
-                            jcropApi.disable();
-                        } else {
-                            jcropApi.enable();
-                        }
-                    }
-                });
-
-                scope.$watch('options.destroyed', function (newVal, oldVal) {
-                    if (newVal != oldVal) {
-                        if (newVal) {
-                            jcropApi.destroy();
-                        } else {
-                            _init();
-                        }
-                    }
-                });
-
-                scope.$watch('options.src', function (newVal, oldVal) {
-                    imageLoaded = $q.defer();
-                    if (newVal != oldVal) {
-                        jcropApi.setImage(scope.options.src, function () {
-                            imageLoaded.resolve();
-                        });
-                    }
-                });
-
-                var updateSize = function(){
-                    jcropApi.setOptions({
-                        minSize: [scope.options.minSizeWidth, scope.options.minSizeHeight],
-                        maxSize: [scope.options.maxSizeWidth, scope.options.maxSizeHeight]
-                    });
-                };
-
-                scope.$watch('options.minSizeWidth', function (newVal, oldVal) {
-                    if (newVal != oldVal) updateSize();
-                });
-                scope.$watch('options.minSizeHeight', function (newVal, oldVal) {
-                    if (newVal != oldVal) updateSize();
-                });
-                scope.$watch('options.maxSizeWidth', function (newVal, oldVal) {
-                    if (newVal != oldVal) updateSize();
-                });
-                scope.$watch('options.maxSizeHeight', function (newVal, oldVal) {
-                    if (newVal != oldVal) updateSize();
-                });
-            }
-
-            var _init = function () {
-                element.Jcrop(options, function () {
-                    jcropApi = this;
-                    // Use the API to get the real image size
-                    var bounds = this.getBounds();
-                    imageWidth = bounds[0];
-                    imageHeight = bounds[1];
-
-                    if (attributes.selection && angular.isArray(scope.selection)) {
-                        if (scope.options && scope.options.animate) {
-                            jcropApi.animateTo(scope.selection);
-                        } else {
-                            jcropApi.setSelect(scope.selection);
-                        }
-                    }
-                    imageLoaded.resolve();
-                });
-            };
-
-            _init()
-
+            form.validate(validateOptions);
 
         }
     }
 });
+
 'use strict';
 
 angular.module('SmartAdmin.Forms').directive('smartClockpicker', function () {
@@ -59544,92 +59670,6 @@ angular.module('SmartAdmin.Forms').directive('smartXeditable', function($timeout
 });
 'use strict';
 
-angular.module('SmartAdmin.Forms').directive('smartDropzone', function () {
-    return {
-        restrict: 'A',
-        compile: function (tElement, tAttributes) {
-            tElement.removeAttr('file-dropzone data-file-dropzone');
-
-            tElement.dropzone({
-                addRemoveLinks : true,
-                maxFilesize: 0.5,
-                dictDefaultMessage: '<span class="text-center"><span class="font-lg visible-xs-block visible-sm-block visible-lg-block"><span class="font-lg"><i class="fa fa-caret-right text-danger"></i> Drop files <span class="font-xs">to upload</span></span><span>&nbsp&nbsp<h4 class="display-inline"> (Or Click)</h4></span>',
-                dictResponseError: 'Error uploading file!'
-            });
-        }
-    }
-});
-
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartValidateForm', function (formsCommon) {
-    return {
-        restrict: 'A',
-        link: function (scope, form, attributes) {
-
-            var validateOptions = {
-                rules: {},
-                messages: {},
-                highlight: function (element) {
-                    $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-                },
-                unhighlight: function (element) {
-                    $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
-                },
-                errorElement: 'span',
-                errorClass: 'help-block',
-                errorPlacement: function (error, element) {
-                    if (element.parent('.input-group').length) {
-                        error.insertAfter(element.parent());
-                    } else {
-                        error.insertAfter(element);
-                    }
-                }
-            };
-            form.find('[data-smart-validate-input], [smart-validate-input]').each(function () {
-                var $input = $(this), fieldName = $input.attr('name');
-
-                validateOptions.rules[fieldName] = {};
-
-                if ($input.data('required') != undefined) {
-                    validateOptions.rules[fieldName].required = true;
-                }
-                if ($input.data('email') != undefined) {
-                    validateOptions.rules[fieldName].email = true;
-                }
-
-                if ($input.data('maxlength') != undefined) {
-                    validateOptions.rules[fieldName].maxlength = $input.data('maxlength');
-                }
-
-                if ($input.data('minlength') != undefined) {
-                    validateOptions.rules[fieldName].minlength = $input.data('minlength');
-                }
-
-                if($input.data('message')){
-                    validateOptions.messages[fieldName] = $input.data('message');
-                } else {
-                    angular.forEach($input.data(), function(value, key){
-                        if(key.search(/message/)== 0){
-                            if(!validateOptions.messages[fieldName])
-                                validateOptions.messages[fieldName] = {};
-
-                            var messageKey = key.toLowerCase().replace(/^message/,'')
-                            validateOptions.messages[fieldName][messageKey] = value;
-                        }
-                    });
-                }
-            });
-
-
-            form.validate(validateOptions);
-
-        }
-    }
-});
-
-'use strict';
-
 angular.module('SmartAdmin.Forms').directive('smartFueluxWizard', function () {
     return {
         restrict: 'A',
@@ -59750,521 +59790,6 @@ angular.module('SmartAdmin.Forms').directive('smartWizard', function () {
 
 
             setStep(currentStep);
-
-        }
-    }
-});
-'use strict';
-
-angular.module('SmartAdmin.Layout').directive('demoStates', function ($rootScope) {
-    return {
-        restrict: 'EA',
-        replace: true,
-        templateUrl: 'app/_common/layout/directives/demo/demo-states.tpl.html',
-        scope: true,
-        link: function (scope, element, attributes) {
-            element.parent().css({
-                position: 'relative'
-            });
-
-            element.on('click', '#demo-setting', function () {
-                element.toggleClass('activate')
-            })
-        },
-        controller: function ($scope) {
-            var $root = $('body');
-
-            $scope.$watch('fixedHeader', function (fixedHeader) {
-                localStorage.setItem('sm-fixed-header', fixedHeader);
-                $root.toggleClass('fixed-header', fixedHeader);
-                if (fixedHeader == false) {
-                    $scope.fixedRibbon = false;
-                    $scope.fixedNavigation = false;
-                }
-            });
-
-
-            $scope.$watch('fixedNavigation', function (fixedNavigation) {
-                localStorage.setItem('sm-fixed-navigation', fixedNavigation);
-                $root.toggleClass('fixed-navigation', fixedNavigation);
-                if (fixedNavigation) {
-                    $scope.insideContainer = false;
-                    $scope.fixedHeader = true;
-                } else {
-                    $scope.fixedRibbon = false;
-                }
-            });
-
-
-            $scope.$watch('fixedRibbon', function (fixedRibbon) {
-                localStorage.setItem('sm-fixed-ribbon', fixedRibbon);
-                $root.toggleClass('fixed-ribbon', fixedRibbon);
-                if (fixedRibbon) {
-                    $scope.fixedHeader = true;
-                    $scope.fixedNavigation = true;
-                    $scope.insideContainer = false;
-                }
-            });
-
-            $scope.$watch('fixedPageFooter', function (fixedPageFooter) {
-                localStorage.setItem('sm-fixed-page-footer', fixedPageFooter);
-                $root.toggleClass('fixed-page-footer', fixedPageFooter);
-            });
-
-            $scope.$watch('insideContainer', function (insideContainer) {
-                localStorage.setItem('sm-inside-container', insideContainer);
-                $root.toggleClass('container', insideContainer);
-                if (insideContainer) {
-                    $scope.fixedRibbon = false;
-                    $scope.fixedNavigation = false;
-                }
-            });
-
-            $scope.$watch('rtl', function (rtl) {
-                localStorage.setItem('sm-rtl', rtl);
-                $root.toggleClass('smart-rtl', rtl);
-            });
-
-            $scope.$watch('menuOnTop', function (menuOnTop) {
-                $rootScope.$broadcast('$smartLayoutMenuOnTop', menuOnTop);
-                localStorage.setItem('sm-menu-on-top', menuOnTop);
-                $root.toggleClass('menu-on-top', menuOnTop);
-
-                if(menuOnTop)$root.removeClass('minified');
-            });
-
-            $scope.$watch('colorblindFriendly', function (colorblindFriendly) {
-                localStorage.setItem('sm-colorblind-friendly', colorblindFriendly);
-                $root.toggleClass('colorblind-friendly', colorblindFriendly);
-            });
-
-
-            $scope.fixedHeader = localStorage.getItem('sm-fixed-header') == 'true';
-            $scope.fixedNavigation = localStorage.getItem('sm-fixed-navigation') == 'true';
-            $scope.fixedRibbon = localStorage.getItem('sm-fixed-ribbon') == 'true';
-            $scope.fixedPageFooter = localStorage.getItem('sm-fixed-page-footer') == 'true';
-            $scope.insideContainer = localStorage.getItem('sm-inside-container') == 'true';
-            $scope.rtl = localStorage.getItem('sm-rtl') == 'true';
-            $scope.menuOnTop = localStorage.getItem('sm-menu-on-top') == 'true' || $root.hasClass('menu-on-top');
-            $scope.colorblindFriendly = localStorage.getItem('sm-colorblind-friendly') == 'true';
-
-
-            $scope.skins = appConfig.skins;
-
-            $scope.smartSkin = localStorage.getItem('sm-skin') || appConfig.smartSkin;
-
-
-            $scope.setSkin = function (skin) {
-                $scope.smartSkin = skin.name;
-                $root.removeClass(_.pluck($scope.skins, 'name').join(' '));
-                $root.addClass(skin.name);
-                localStorage.setItem('sm-skin', skin.name);
-                $("#logo img").attr('src', skin.logo);
-            };
-
-
-            if($scope.smartSkin != "smart-style-0"){
-                $scope.setSkin(_.find($scope.skins, {name: $scope.smartSkin}))
-            }
-
-
-            $scope.factoryReset = function () {
-                $.SmartMessageBox({
-                    title: "<i class='fa fa-refresh' style='color:green'></i> Clear Local Storage",
-                    content: "Would you like to RESET all your saved widgets and clear LocalStorage?1",
-                    buttons: '[No][Yes]'
-                }, function (ButtonPressed) {
-                    if (ButtonPressed == "Yes" && localStorage) {
-                        localStorage.clear();
-                        location.reload()
-                    }
-                });
-            }
-        }
-    }
-});
-"use strict";
-
-(function ($) {
-
-    $.fn.smartCollapseToggle = function () {
-
-        return this.each(function () {
-
-            var $body = $('body');
-            var $this = $(this);
-
-            // only if not  'menu-on-top'
-            if ($body.hasClass('menu-on-top')) {
-
-
-            } else {
-
-                $body.hasClass('mobile-view-activated')
-
-                // toggle open
-                $this.toggleClass('open');
-
-                // for minified menu collapse only second level
-                if ($body.hasClass('minified')) {
-                    if ($this.closest('nav ul ul').length) {
-                        $this.find('>a .collapse-sign .fa').toggleClass('fa-minus-square-o fa-plus-square-o');
-                        $this.find('ul:first').slideToggle(appConfig.menu_speed || 200);
-                    }
-                } else {
-                    // toggle expand item
-                    $this.find('>a .collapse-sign .fa').toggleClass('fa-minus-square-o fa-plus-square-o');
-                    $this.find('ul:first').slideToggle(appConfig.menu_speed || 200);
-                }
-            }
-        });
-    };
-})(jQuery);
-
-angular.module('SmartAdmin.Layout').directive('smartMenu', function ($state, $rootScope) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attrs) {
-            var $body = $('body');
-
-            var $collapsible = element.find('li[data-menu-collapse]');
-
-            var bindEvents = function(){
-                $collapsible.each(function (idx, li) {
-                    var $li = $(li);
-                    $li
-                        .on('click', '>a', function (e) {
-
-                            // collapse all open siblings
-                            $li.siblings('.open').smartCollapseToggle();
-
-                            // toggle element
-                            $li.smartCollapseToggle();
-
-                            // add active marker to collapsed element if it has active childs
-                            if (!$li.hasClass('open') && $li.find('li.active').length > 0) {
-                                $li.addClass('active')
-                            }
-
-                            e.preventDefault();
-                        })
-                        .find('>a').append('<b class="collapse-sign"><em class="fa fa-plus-square-o"></em></b>');
-
-                    // initialization toggle
-                    if ($li.find('li.active').length) {
-                        $li.smartCollapseToggle();
-                        $li.find('li.active').parents('li').addClass('active');
-                    }
-                });
-            }
-            bindEvents();
-
-
-            // click on route link
-            element.on('click', 'a[data-ui-sref]', function (e) {
-                // collapse all siblings to element parents and remove active markers
-                $(this)
-                    .parents('li').addClass('active')
-                    .each(function () {
-                        $(this).siblings('li.open').smartCollapseToggle();
-                        $(this).siblings('li').removeClass('active')
-                    });
-
-                if ($body.hasClass('mobile-view-activated')) {
-                    $rootScope.$broadcast('requestToggleMenu');
-                }
-            });
-
-
-            scope.$on('$smartLayoutMenuOnTop', function (event, menuOnTop) {
-                if (menuOnTop) {
-                    $collapsible.filter('.open').smartCollapseToggle();
-                }
-            });
-        }
-    }
-});
-(function(){
-    "use strict";
-
-    angular.module('SmartAdmin.Layout').directive('smartMenuItems', function ($http, $rootScope, $compile, APP_CONFIG) {
-    return {
-        restrict: 'A',
-        compile: function (element, attrs) {
-            
-
-            function createItem(item, parent, level){
-                var li = $('<li />' ,{'ui-sref-active': "active"})
-                var a = $('<a />');
-                var i = $('<i />');
-
-                li.append(a);
-
-                if (item.sref) {
-                    a.attr('ui-sref', item.sref);
-                    // add this option to reload state when clicked
-
-                    a.attr("ui-sref-opts", "{reload: true}");
-                }
-                if(item.href)
-                    a.attr('href', item.href);
-                if(item.icon){
-                    i.attr('class', item.icon);
-                    a.append(i);
-                }
-                if(item.title){
-                    a.attr('title', item.title);
-                    if(level == 1){ 
-                        a.append(' <span class="menu-item-parent">' + item.title + '</span>');
-                    } else {
-                        a.append(' ' + item.title);
-
-                    }
-
-                    // add a badge to the app.tasks.list item
-                    if (item.sref) {
-                        var myTaskSref = "app.myspace";
-                        if (item.sref.substring(0, myTaskSref.length) === myTaskSref) {
-                            a.append('<span class="badge pull-right inbox-badge">{{getTotalCount()}}</span>');
-                        }
-                    }
-                }
-
-                if(item.items){
-                    var ul = $('<ul />');
-                    li.append(ul);
-                    li.attr('data-menu-collapse', '');
-                    _.forEach(item.items, function(child) {
-                        createItem(child, ul, level+1);
-                    })
-                } 
-
-                parent.append(li); 
-            }
-
-            $http.get(APP_CONFIG.ebaasRootUrl + attrs.smartMenuItems).then(function (res) {
-
-                var ul = $('<ul />', {
-                    'smart-menu': ''
-                })
-                _.forEach(res.data.items, function (item) {
-                    if (item.visible) {
-                        createItem(item, ul, 1);
-                    }
-                })
-                
-                var $scope = $rootScope.$new();
-                var html = $('<div>').append(ul).html(); 
-                var linkingFunction = $compile(html);
-                
-                var _element = linkingFunction($scope);
-
-                element.replaceWith(_element);                
-            })
-        }
-    }
-});
-})();
-/**
- * Jarvis Widget Directive
- *
- *    colorbutton="false"
- *    editbutton="false"
-      togglebutton="false"
-       deletebutton="false"
-        fullscreenbutton="false"
-        custombutton="false"
-        collapsed="true"
-          sortable="false"
- *
- *
- */
-"use strict";
-
-angular.module('SmartAdmin.Layout').directive('jarvisWidget', function($rootScope){
-    return {
-        restrict: "A",
-        compile: function(element, attributes){
-            if(element.data('widget-color'))
-                element.addClass('jarviswidget-color-' + element.data('widget-color'));
-
-
-            element.find('.widget-body').prepend('<div class="jarviswidget-editbox"><input class="form-control" type="text"></div>');
-
-            element.addClass('jarviswidget jarviswidget-sortable');
-            $rootScope.$emit('jarvisWidgetAdded', element )
-
-        }
-    }
-});
- "use strict";
- 
- angular.module('SmartAdmin.Layout').directive('widgetGrid', function ($rootScope, $compile, $q, $state, $timeout) {
-
-    var jarvisWidgetsDefaults = {
-        grid: 'article',
-        widgets: '.jarviswidget',
-        localStorage: true,
-        deleteSettingsKey: '#deletesettingskey-options',
-        settingsKeyLabel: 'Reset settings?',
-        deletePositionKey: '#deletepositionkey-options',
-        positionKeyLabel: 'Reset position?',
-        sortable: true,
-        buttonsHidden: false,
-        // toggle button
-        toggleButton: true,
-        toggleClass: 'fa fa-minus | fa fa-plus',
-        toggleSpeed: 200,
-        onToggle: function () {
-        },
-        // delete btn
-        deleteButton: true,
-        deleteMsg: 'Warning: This action cannot be undone!',
-        deleteClass: 'fa fa-times',
-        deleteSpeed: 200,
-        onDelete: function () {
-        },
-        // edit btn
-        editButton: true,
-        editPlaceholder: '.jarviswidget-editbox',
-        editClass: 'fa fa-cog | fa fa-save',
-        editSpeed: 200,
-        onEdit: function () {
-        },
-        // color button
-        colorButton: true,
-        // full screen
-        fullscreenButton: true,
-        fullscreenClass: 'fa fa-expand | fa fa-compress',
-        fullscreenDiff: 3,
-        onFullscreen: function () {
-        },
-        // custom btn
-        customButton: false,
-        customClass: 'folder-10 | next-10',
-        customStart: function () {
-            alert('Hello you, this is a custom button...');
-        },
-        customEnd: function () {
-            alert('bye, till next time...');
-        },
-        // order
-        buttonOrder: '%refresh% %custom% %edit% %toggle% %fullscreen% %delete%',
-        opacity: 1.0,
-        dragHandle: '> header',
-        placeholderClass: 'jarviswidget-placeholder',
-        indicator: true,
-        indicatorTime: 600,
-        ajax: true,
-        timestampPlaceholder: '.jarviswidget-timestamp',
-        timestampFormat: 'Last update: %m%/%d%/%y% %h%:%i%:%s%',
-        refreshButton: true,
-        refreshButtonClass: 'fa fa-refresh',
-        labelError: 'Sorry but there was a error:',
-        labelUpdated: 'Last Update:',
-        labelRefresh: 'Refresh',
-        labelDelete: 'Delete widget:',
-        afterLoad: function () {
-        },
-        rtl: false, // best not to toggle this!
-        onChange: function () {
-
-        },
-        onSave: function () {
-
-        },
-        ajaxnav: true
-
-    }
-
-    var dispatchedWidgetIds = [];
-    var setupWaiting = false;
-
-    var debug = 1;
-
-    var setupWidgets = function (element, widgetIds) {
-
-        if (!setupWaiting) {
-
-            if(_.intersection(widgetIds, dispatchedWidgetIds).length != widgetIds.length){
-
-                dispatchedWidgetIds = _.union(widgetIds, dispatchedWidgetIds);
-
-//                    console.log('setupWidgets', debug++);
-
-                element.data('jarvisWidgets') && element.data('jarvisWidgets').destroy();
-                element.jarvisWidgets(jarvisWidgetsDefaults);
-                initDropdowns(widgetIds);
-            }
-
-        } else {
-            if (!setupWaiting) {
-                setupWaiting = true;
-                $timeout(function () {
-                    setupWaiting = false;
-                    setupWidgets(element, widgetIds)
-                }, 200);
-            }
-        }
-
-    };
-
-    var destroyWidgets = function(element, widgetIds){
-        element.data('jarvisWidgets') && element.data('jarvisWidgets').destroy();
-        dispatchedWidgetIds = _.xor(dispatchedWidgetIds, widgetIds);
-    };
-
-    var initDropdowns = function (widgetIds) {
-        angular.forEach(widgetIds, function (wid) {
-            $('#' + wid + ' [data-toggle="dropdown"]').each(function () {
-                var $parent = $(this).parent();
-                // $(this).removeAttr('data-toggle');
-                if (!$parent.attr('dropdown')) {
-                    $(this).removeAttr('href');
-                    $parent.attr('dropdown', '');
-                    var compiled = $compile($parent)($parent.scope())
-                    $parent.replaceWith(compiled);
-                }
-            })
-        });
-    };
-
-    var jarvisWidgetAddedOff,
-        $viewContentLoadedOff,
-        $stateChangeStartOff;
-
-    return {
-        restrict: 'A',
-        compile: function(element){
-
-            element.removeAttr('widget-grid data-widget-grid');
-
-            var widgetIds = [];
-
-            $viewContentLoadedOff = $rootScope.$on('$viewContentLoaded', function (event, data) {
-                $timeout(function () {
-                    setupWidgets(element, widgetIds)
-                }, 100);
-            });
-
-
-            $stateChangeStartOff = $rootScope.$on('$stateChangeStart',
-                function(event, toState, toParams, fromState, fromParams){
-                    jarvisWidgetAddedOff();
-                    $viewContentLoadedOff();
-                    $stateChangeStartOff();
-                    destroyWidgets(element, widgetIds)
-                });
-
-            jarvisWidgetAddedOff = $rootScope.$on('jarvisWidgetAdded', function (event, widget) {
-                if (widgetIds.indexOf(widget.attr('id')) == -1) {
-                    widgetIds.push(widget.attr('id'));
-                    $timeout(function () {
-                        setupWidgets(element, widgetIds)
-                    }, 100);
-                }
-//                    console.log('jarvisWidgetAdded', widget.attr('id'));
-            });
 
         }
     }

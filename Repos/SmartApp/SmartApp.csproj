@@ -261,13 +261,6 @@
     <Content Include="app\logs\services\logManager.js" />
     <Content Include="app\logs\views\change-log-viewer.html" />
     <Content Include="app\logs\views\change-log.html" />
-    <Content Include="app\masterdetailtable\controllers\dataGridBaseController.js" />
-    <Content Include="app\masterdetailtable\controllers\dataGridController.js" />
-    <Content Include="app\masterdetailtable\controllers\relatedDataGridCtrl.js" />
-    <Content Include="app\masterdetailtable\models\MetaDataCache.js" />
-    <Content Include="app\masterdetailtable\module.js" />
-    <Content Include="app\masterdetailtable\views\datagrid.html" />
-    <Content Include="app\masterdetailtable\views\related-datagrid.html" />
     <Content Include="app\mldashboard\controllers\MLDashboardLayoutCtrl.js" />
     <Content Include="app\mldashboard\controllers\MLModelDashboardCtrl.js" />
     <Content Include="app\mldashboard\module.js" />
@@ -322,6 +315,10 @@
     <Content Include="app\tasktrack\controllers\taskTrackService.js" />
     <Content Include="app\tasktrack\module.js" />
     <Content Include="app\tasktrack\views\task-list.html" />
+    <Content Include="app\taskviewer\controllers\TaskViewerCtrl.js" />
+    <Content Include="app\taskviewer\controllers\taskService.js" />
+    <Content Include="app\taskviewer\module.js" />
+    <Content Include="app\taskviewer\views\task-viewer.html" />
     <Content Include="app\ui\controllers\GeneralElementsCtrl.js" />
     <Content Include="app\ui\controllers\JquiCtrl.js" />
     <Content Include="app\ui\controllers\TreeviewCtrl.js" />
@@ -3546,6 +3543,7 @@
     <Folder Include="app\hub\views\" />
     <Folder Include="app\myspace\directives\" />
     <Folder Include="app\smarttables\directives\" />
+    <Folder Include="app\taskviewer\directives\" />
     <Folder Include="jasmine\" />
     <Folder Include="test\e2e\app\auth\" />
     <Folder Include="test\e2e\app\smarttables\" />
@@ -3564,6 +3562,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="web.config" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
