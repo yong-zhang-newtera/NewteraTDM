@@ -196,7 +196,7 @@ namespace Ebaas.WebApi.Infrastructure
 
                 if (string.IsNullOrEmpty(fileDir))
                 {
-                    throw new Exception("Theere isn't a property with name " + FILE_BASE_DIR_PROPERTY + " in the class " + className + " or the property doesn't return a directory path");
+                    throw new Exception("There isn't a property with name " + FILE_BASE_DIR_PROPERTY + " in the class " + className + " or the property doesn't return a directory path");
                 }
 
                 if (!Directory.Exists(fileDir))
@@ -326,7 +326,7 @@ namespace Ebaas.WebApi.Infrastructure
 
             if (string.IsNullOrEmpty(fileDir))
             {
-                throw new Exception("Theere isn't a property with name " + FILE_BASE_DIR_PROPERTY + " in the class " + className + " or the property doesn't return a directory path");
+                return fileViews;
             }
 
             if (!Directory.Exists(fileDir))
@@ -383,7 +383,7 @@ namespace Ebaas.WebApi.Infrastructure
 
             if (string.IsNullOrEmpty(baseDir))
             {
-                throw new Exception("Theere isn't a property with name " + FILE_BASE_DIR_PROPERTY + " in the class " + className + " or the property doesn't return a directory path");
+                throw new Exception("There isn't a property with name " + FILE_BASE_DIR_PROPERTY + " in the class " + className + " or the property doesn't return a directory path");
             }
 
             if (!Directory.Exists(baseDir))

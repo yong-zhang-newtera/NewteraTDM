@@ -423,7 +423,7 @@ angular.module('app.smartforms').controller('ebaasFormBaseCtrl', function ($root
     };
 
     $scope.showError = function (formModelController, ngModelController, error) {
-        return (ngModelController.$dirty || $scope.submitted) && ngModelController.$error[error];
+        return (formModelController.$dirty || $scope.submitted) && formModelController.$error[error];
  
     };
 

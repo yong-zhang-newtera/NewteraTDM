@@ -6,7 +6,8 @@ angular.module("app.taskviewer").config(function ($stateProvider, modalStateProv
 
     $stateProvider
         .state('app.taskviewer', {
-            url: '/taskviewer/:schema/:class/:oid/:edit/:delete/:insert/:itemClass/:packetClass/:hash',
+            abstract: true,
+            url: '/taskviewer/:schema/:class/:oid/:taskNodeAttribute/:itemClass/:itemNodeAttribute/:packetClass/:packetNodeAttribute/:hash',
             data: {
                 title: 'Task Viewer'
             },
@@ -14,37 +15,25 @@ angular.module("app.taskviewer").config(function ($stateProvider, modalStateProv
                 "content@app": {
                     templateUrl: "app/taskviewer/views/task-viewer-layout.html",
                     controller: 'TaskViewerLayoutCtrl'
-                }
+                },
+                'taskdetails@app.taskviewer': { templateUrl: 'app/taskviewer/views/task-details.html', },
             }
         })
-        .state('app.taskviewer.taskinfoview', {
-            url: '/infoview/:schema/:class/:node/:itemClass/:packetClass',
-            data: {
-                title: 'Task Info View'
-            },
+        .state('app.taskviewer.details', {
+            url: '/details/:schema/:class/:oid/:taskNodeAttribute/:itemClass/:itemOid/:itemNodeAttribute/:packetClass/:packetOid/:packetNodeAttribute',
             views: {
-                "taskinfoview@app.taskviewer": {
-                    controller: 'TaskInfoViewCtrl',
-                    templateUrl: "app/taskviewer/views/task-info-view.html"
+                "taskform@app.taskviewer": {
+                    controller: 'TaskFormCtrl',
+                    templateUrl: "app/taskviewer/views/task-form.html"
+                },
+                "itemform@app.taskviewer": {
+                    controller: 'ItemFormCtrl',
+                    templateUrl: "app/taskviewer/views/item-form.html"
+                },
+                "packetform@app.taskviewer": {
+                    controller: 'PacketFormCtrl',
+                    templateUrl: "app/taskviewer/views/packet-form.html"
                 }
             },
-            authenticate: true,
-            resolve: {
-                scripts: function (lazyScript) {
-                    return lazyScript.register(
-                        [
-                            'flot',
-                            'flot-resize',
-                            'flot-selection',
-                            'flot-fillbetween',
-                            'flot-orderBar',
-                            'flot-pie',
-                            'flot-time',
-                            'flot-tooltip',
-                            'dropzone',
-                            'summernote'
-                        ])
-                }
-            }
         });
 });
