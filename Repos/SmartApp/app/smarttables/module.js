@@ -96,8 +96,8 @@ angular.module("app.smarttables")
                     }
                 }
             })
-            .state('app.smarttables.datagrid.taskviewer', {
-                url: '/datagridtaskviewer/:schema/:class/:oid/:itemClass/:packetClass',
+            .state('app.smarttables.datagrid.taskview', {
+                url: '/datagridtaskviewer/:schema/:class/:oid/:taskNodeAttribute/:itemClass/:itemNodeAttribute/:packetClass/:packetNodeAttribute',
                 data: {
                     title: 'Task Viewer',
                     animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */

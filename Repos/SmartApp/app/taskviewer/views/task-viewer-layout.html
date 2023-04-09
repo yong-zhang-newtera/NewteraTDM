@@ -9,34 +9,27 @@
         <!-- row -->
         <div class="row">
             <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-                <!-- new widget -->
-                <div class="jarviswidget" id="StationsLayoutCtrl" data-widget-togglebutton="false" data-widget-editbutton="false"
-                     data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
-                    <header>
-                        <h2>{{getWord("Task Data Structure")}}</h2>
-                    </header>
-   
-                    <!-- widget div-->
-                    <div>
-                        <div id="taskDataTree" class="widget-body">
-                            <!-- content goes here -->
-                            <div class="tree smart-form">
+                <div id="taskleft" ui-view="taskleft" class="widget-body">
+                    <div class="jarviswidget" id="StationsLayoutCtrl" data-widget-togglebutton="false" data-widget-editbutton="false"
+                         data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+                        <header>
+                            <h2>{{getWord("Task Data Structure")}}</h2>
+                        </header>
+
+                        <!-- widget div-->
+                        <div>
+                            <div id="taskDataTree" class="tree smart-form">
                                 <ul data-smart-treeview data-items="taskDataTree" role="tree"></ul>
                             </div>
-                            <!-- end content -->
                         </div>
-
+                        <!-- end widget div -->
                     </div>
-                    <!-- end widget div -->
                 </div>
-                <!-- end widget -->
             </div>
 
             <article class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
                 <!-- task info view div-->
-                <div id="taskinfoview" data-ui-view="taskinfoview" class="widget-body">
-                    <!-- content goes here -->
-                    <!-- end content -->
+                <div id="taskdetails" data-ui-view="taskdetails" class="widget-body">
                 </div>
                 <!-- end task info view div -->
             </article>

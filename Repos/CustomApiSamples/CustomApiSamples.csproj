@@ -49,6 +49,7 @@
     <Compile Include="APIUtil.cs" />
     <Compile Include="CreateTestOrder.cs" />
     <Compile Include="GetInstanceByKey.cs" />
+    <Compile Include="GetTaskTree.cs" />
     <Compile Include="UpdateInstance.cs" />
     <Compile Include="CreateInstance.cs" />
     <Compile Include="GetInstanceByObjID.cs" />
