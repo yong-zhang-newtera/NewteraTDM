@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($scope, $state, $stateParams, taskService) {
+angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($rootScope, $scope, $state, $stateParams, taskService) {
 
     $scope.dbschema = $stateParams.schema;
     $scope.dbclass = $stateParams.class;
@@ -13,8 +13,6 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($s
     $scope.taskNodeAttribute = $stateParams.taskNodeAttribute;
     $scope.itemNodeAttribute = $stateParams.itemNodeAttribute;
     $scope.packetNodeAttribute = $stateParams.packetNodeAttribute;
-    $scope.hasItemOid = taskService.hasValue($scope.itemOid);
-    $scope.hasPacketOid = taskService.hasValue($scope.packetOid);
 
     var parameters = {};
     parameters.schema = $stateParams.schema;
@@ -47,7 +45,9 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($s
 
         if (nodeClass == $scope.itemClass) {
             params.itemOid = nodeOid;
+            params.packetOid = null;
             $scope.itemOid = nodeOid;
+            $scope.packetOid = null;
             $state.go("app.taskviewer.details", params, { reload: true });
         }
         else if (nodeClass == $scope.packetClass) {

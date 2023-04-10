@@ -62,8 +62,8 @@ angular.module('app.taskviewer').factory('taskService', function ($http, $q, APP
     }
 
     function hasValue(val) {
-        if (val == null || val == nil || val == undefined || val == "") {
-            return true;
+        if (val == null || val == undefined || val == "") {
+            return false;
         }
         else {
             return true;
