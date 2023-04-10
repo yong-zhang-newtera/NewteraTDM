@@ -32622,6 +32622,99 @@ angular.module("app.mldashboard").config(function ($stateProvider, modalStatePro
     });
 "use strict";
 
+angular.module("app.myspace", ["ui.router", "ui.bootstrap", "superbox", 'ngFileUpload', 'ngImgCrop']);
+
+angular.module("app.myspace").config(function ($stateProvider, modalStateProvider) {
+
+    $stateProvider
+        .state('app.myspace', {
+            url: '/myspace/:schema/:hash',
+            data: {
+                title: 'My Space',
+                animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
+            },
+            views: {
+                "content@app": {
+                    templateUrl: "app/myspace/views/my-space.html",
+                    controller: 'mySpaceCtrl'
+                }
+            },
+            authenticate: true,
+            resolve: {
+                promiseTasks: function ($http, APP_CONFIG, $stateParams) {
+                    return $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/" + encodeURIComponent($stateParams.schema));
+                }
+            }
+        })
+        .state('app.myspace.finished', {
+            url: '/myspace/form/:schema/:taskid',
+            authenticate: true,
+            data: {
+                title: 'Finished Task Form',
+                animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
+            },
+            views: {
+                "content@app": {
+                    controller: 'finishedTaskFormCtrl',
+                    templateUrl: "app/myspace/views/finished-task-form.html"
+                }
+            },
+            resolve: {
+                promiseFinishedTaskInfo: function ($http, APP_CONFIG, $stateParams) {
+                    return $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/" + encodeURIComponent($stateParams.schema) + "/" + $stateParams.taskid);
+                },
+                srcipts: function (lazyScript) {
+                    return lazyScript.register(
+                       [
+                        'flot',
+                        'flot-resize',
+                        'flot-selection',
+                        'flot-fillbetween',
+                        'flot-orderBar',
+                        'flot-pie',
+                        'flot-time',
+                        'flot-tooltip',
+                        'dropzone'
+                       ]
+                        )
+                }
+            }
+        });
+
+        modalStateProvider.state('app.myspace.help', {
+            url: '^/myspacehelp/:hash',
+            templateUrl: "app/layout/partials/help-viewer.tpl.html",
+            controller: 'helpViewerCtlr',
+            animation: false,
+            size: 'lg'
+        });
+
+        modalStateProvider.state('app.myspace.uploadpicture', {
+            url: '^/myspaceuploadpic',
+            templateUrl: "app/myspace/views/upload-picture.html",
+            controller: 'uploadPictureCtrl',
+            animation: false,
+            size: 'lg'
+        });
+
+        modalStateProvider.state('app.myspace.reassign', {
+            url: '^/myspacereassigntask/:schema/:taskid',
+            templateUrl: "app/tasks/views/reassign-task.html",
+            controller: 'reassignTaskCtrl',
+            animation: false,
+            size: 'sm'
+        });
+
+        modalStateProvider.state('app.myspace.substitute', {
+            url: '^/myspacetasksubstitute/:schema',
+            templateUrl: "app/tasks/views/task-substitute.html",
+            controller: 'taskSubstituteCtrl',
+            animation: false,
+            size: 'md'
+        });
+    });
+"use strict";
+
 angular.module("app.smartforms", ["ui.router", "ui.bootstrap"]);
 
 angular.module("app.smartforms").config(function ($stateProvider, modalStateProvider) {
@@ -32733,104 +32826,12 @@ angular.module("app.smartforms").config(function ($stateProvider, modalStateProv
         });
 
     });
-"use strict";
-
-angular.module("app.myspace", ["ui.router", "ui.bootstrap", "superbox", 'ngFileUpload', 'ngImgCrop']);
-
-angular.module("app.myspace").config(function ($stateProvider, modalStateProvider) {
-
-    $stateProvider
-        .state('app.myspace', {
-            url: '/myspace/:schema/:hash',
-            data: {
-                title: 'My Space',
-                animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
-            },
-            views: {
-                "content@app": {
-                    templateUrl: "app/myspace/views/my-space.html",
-                    controller: 'mySpaceCtrl'
-                }
-            },
-            authenticate: true,
-            resolve: {
-                promiseTasks: function ($http, APP_CONFIG, $stateParams) {
-                    return $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/" + encodeURIComponent($stateParams.schema));
-                }
-            }
-        })
-        .state('app.myspace.finished', {
-            url: '/myspace/form/:schema/:taskid',
-            authenticate: true,
-            data: {
-                title: 'Finished Task Form',
-                animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
-            },
-            views: {
-                "content@app": {
-                    controller: 'finishedTaskFormCtrl',
-                    templateUrl: "app/myspace/views/finished-task-form.html"
-                }
-            },
-            resolve: {
-                promiseFinishedTaskInfo: function ($http, APP_CONFIG, $stateParams) {
-                    return $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/" + encodeURIComponent($stateParams.schema) + "/" + $stateParams.taskid);
-                },
-                srcipts: function (lazyScript) {
-                    return lazyScript.register(
-                       [
-                        'flot',
-                        'flot-resize',
-                        'flot-selection',
-                        'flot-fillbetween',
-                        'flot-orderBar',
-                        'flot-pie',
-                        'flot-time',
-                        'flot-tooltip',
-                        'dropzone'
-                       ]
-                        )
-                }
-            }
-        });
-
-        modalStateProvider.state('app.myspace.help', {
-            url: '^/myspacehelp/:hash',
-            templateUrl: "app/layout/partials/help-viewer.tpl.html",
-            controller: 'helpViewerCtlr',
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.myspace.uploadpicture', {
-            url: '^/myspaceuploadpic',
-            templateUrl: "app/myspace/views/upload-picture.html",
-            controller: 'uploadPictureCtrl',
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.myspace.reassign', {
-            url: '^/myspacereassigntask/:schema/:taskid',
-            templateUrl: "app/tasks/views/reassign-task.html",
-            controller: 'reassignTaskCtrl',
-            animation: false,
-            size: 'sm'
-        });
-
-        modalStateProvider.state('app.myspace.substitute', {
-            url: '^/myspacetasksubstitute/:schema',
-            templateUrl: "app/tasks/views/task-substitute.html",
-            controller: 'taskSubstituteCtrl',
-            animation: false,
-            size: 'md'
-        });
-    });
 angular.module("app").run(["$templateCache", function($templateCache) {$templateCache.put("app/dashboard/live-feeds.tpl.html","<div jarvis-widget id=\"live-feeds-widget\" data-widget-togglebutton=\"false\" data-widget-editbutton=\"false\"\r\n     data-widget-fullscreenbutton=\"false\" data-widget-colorbutton=\"false\" data-widget-deletebutton=\"false\">\r\n<!-- widget options:\r\nusage: <div class=\"jarviswidget\" id=\"wid-id-0\" data-widget-editbutton=\"false\">\r\n\r\ndata-widget-colorbutton=\"false\"\r\ndata-widget-editbutton=\"false\"\r\ndata-widget-togglebutton=\"false\"\r\ndata-widget-deletebutton=\"false\"\r\ndata-widget-fullscreenbutton=\"false\"\r\ndata-widget-custombutton=\"false\"\r\ndata-widget-collapsed=\"true\"\r\ndata-widget-sortable=\"false\"\r\n\r\n-->\r\n<header>\r\n    <span class=\"widget-icon\"> <i class=\"glyphicon glyphicon-stats txt-color-darken\"></i> </span>\r\n\r\n    <h2>Live Feeds </h2>\r\n\r\n    <ul class=\"nav nav-tabs pull-right in\" id=\"myTab\">\r\n        <li class=\"active\">\r\n            <a data-toggle=\"tab\" href=\"#s1\"><i class=\"fa fa-clock-o\"></i> <span class=\"hidden-mobile hidden-tablet\">Live Stats</span></a>\r\n        </li>\r\n\r\n        <li>\r\n            <a data-toggle=\"tab\" href=\"#s2\"><i class=\"fa fa-facebook\"></i> <span class=\"hidden-mobile hidden-tablet\">Social Network</span></a>\r\n        </li>\r\n\r\n        <li>\r\n            <a data-toggle=\"tab\" href=\"#s3\"><i class=\"fa fa-dollar\"></i> <span class=\"hidden-mobile hidden-tablet\">Revenue</span></a>\r\n        </li>\r\n    </ul>\r\n\r\n</header>\r\n\r\n<!-- widget div-->\r\n<div class=\"no-padding\">\r\n\r\n    <div class=\"widget-body\">\r\n        <!-- content -->\r\n        <div id=\"myTabContent\" class=\"tab-content\">\r\n            <div class=\"tab-pane fade active in padding-10 no-padding-bottom\" id=\"s1\">\r\n                <div class=\"row no-space\">\r\n                    <div class=\"col-xs-12 col-sm-12 col-md-8 col-lg-8\">\r\n														<span class=\"demo-liveupdate-1\"> <span\r\n                                                                class=\"onoffswitch-title\">Live switch</span> <span\r\n                                                                class=\"onoffswitch\">\r\n																<input type=\"checkbox\" name=\"start_interval\" ng-model=\"autoUpdate\"\r\n                                                                       class=\"onoffswitch-checkbox\" id=\"start_interval\">\r\n																<label class=\"onoffswitch-label\" for=\"start_interval\">\r\n                                                                    <span class=\"onoffswitch-inner\"\r\n                                                                          data-swchon-text=\"ON\"\r\n                                                                          data-swchoff-text=\"OFF\"></span>\r\n                                                                    <span class=\"onoffswitch-switch\"></span>\r\n                                                                </label> </span> </span>\r\n\r\n                        <div id=\"updating-chart\" class=\"chart-large txt-color-blue\" flot-basic flot-data=\"liveStats\" flot-options=\"liveStatsOptions\"></div>\r\n\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-12 col-md-4 col-lg-4 show-stats\">\r\n\r\n                        <div class=\"row\">\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> My Tasks <span\r\n                                    class=\"pull-right\">130/200</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blueDark\" style=\"width: 65%;\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> Transfered <span\r\n                                    class=\"pull-right\">440 GB</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blue\" style=\"width: 34%;\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> Bugs Squashed<span\r\n                                    class=\"pull-right\">77%</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blue\" style=\"width: 77%;\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> User Testing <span\r\n                                    class=\"pull-right\">7 Days</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-greenLight\" style=\"width: 84%;\"></div>\r\n                                </div>\r\n                            </div>\r\n\r\n                            <span class=\"show-stat-buttons\"> <span class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\"> <a\r\n                                    href-void class=\"btn btn-default btn-block hidden-xs\">Generate PDF</a> </span> <span\r\n                                    class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\"> <a href-void\r\n                                                                                     class=\"btn btn-default btn-block hidden-xs\">Report\r\n                                a bug</a> </span> </span>\r\n\r\n                        </div>\r\n\r\n                    </div>\r\n                </div>\r\n\r\n                <div class=\"show-stat-microcharts\" data-sparkline-container data-easy-pie-chart-container>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n\r\n                        <div class=\"easy-pie-chart txt-color-orangeDark\" data-percent=\"33\" data-pie-size=\"50\">\r\n                            <span class=\"percent percent-sign\">35</span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> Server Load <i class=\"fa fa-caret-up icon-color-bad\"></i> </span>\r\n                        <ul class=\"smaller-stat hidden-sm pull-right\">\r\n                            <li>\r\n                                <span class=\"label bg-color-greenLight\"><i class=\"fa fa-caret-up\"></i> 97%</span>\r\n                            </li>\r\n                            <li>\r\n                                <span class=\"label bg-color-blueLight\"><i class=\"fa fa-caret-down\"></i> 44%</span>\r\n                            </li>\r\n                        </ul>\r\n                        <div class=\"sparkline txt-color-greenLight hidden-sm hidden-md pull-right\"\r\n                             data-sparkline-type=\"line\" data-sparkline-height=\"33px\" data-sparkline-width=\"70px\"\r\n                             data-fill-color=\"transparent\">\r\n                            130, 187, 250, 257, 200, 210, 300, 270, 363, 247, 270, 363, 247\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-greenLight\" data-percent=\"78.9\" data-pie-size=\"50\">\r\n                            <span class=\"percent percent-sign\">78.9 </span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> Disk Space <i class=\"fa fa-caret-down icon-color-good\"></i></span>\r\n                        <ul class=\"smaller-stat hidden-sm pull-right\">\r\n                            <li>\r\n                                <span class=\"label bg-color-blueDark\"><i class=\"fa fa-caret-up\"></i> 76%</span>\r\n                            </li>\r\n                            <li>\r\n                                <span class=\"label bg-color-blue\"><i class=\"fa fa-caret-down\"></i> 3%</span>\r\n                            </li>\r\n                        </ul>\r\n                        <div class=\"sparkline txt-color-blue hidden-sm hidden-md pull-right\" data-sparkline-type=\"line\"\r\n                             data-sparkline-height=\"33px\" data-sparkline-width=\"70px\" data-fill-color=\"transparent\">\r\n                            257, 200, 210, 300, 270, 363, 130, 187, 250, 247, 270, 363, 247\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-blue\" data-percent=\"23\" data-pie-size=\"50\">\r\n                            <span class=\"percent percent-sign\">23 </span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> Transfered <i class=\"fa fa-caret-up icon-color-good\"></i></span>\r\n                        <ul class=\"smaller-stat hidden-sm pull-right\">\r\n                            <li>\r\n                                <span class=\"label bg-color-darken\">10GB</span>\r\n                            </li>\r\n                            <li>\r\n                                <span class=\"label bg-color-blueDark\"><i class=\"fa fa-caret-up\"></i> 10%</span>\r\n                            </li>\r\n                        </ul>\r\n                        <div class=\"sparkline txt-color-darken hidden-sm hidden-md pull-right\"\r\n                             data-sparkline-type=\"line\" data-sparkline-height=\"33px\" data-sparkline-width=\"70px\"\r\n                             data-fill-color=\"transparent\">\r\n                            200, 210, 363, 247, 300, 270, 130, 187, 250, 257, 363, 247, 270\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-darken\" data-percent=\"36\" data-pie-size=\"50\">\r\n                            <span class=\"percent degree-sign\">36 <i class=\"fa fa-caret-up\"></i></span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> Temperature <i\r\n                                class=\"fa fa-caret-down icon-color-good\"></i></span>\r\n                        <ul class=\"smaller-stat hidden-sm pull-right\">\r\n                            <li>\r\n                                <span class=\"label bg-color-red\"><i class=\"fa fa-caret-up\"></i> 124</span>\r\n                            </li>\r\n                            <li>\r\n                                <span class=\"label bg-color-blue\"><i class=\"fa fa-caret-down\"></i> 40 F</span>\r\n                            </li>\r\n                        </ul>\r\n                        <div class=\"sparkline txt-color-red hidden-sm hidden-md pull-right\" data-sparkline-type=\"line\"\r\n                             data-sparkline-height=\"33px\" data-sparkline-width=\"70px\" data-fill-color=\"transparent\">\r\n                            2700, 3631, 2471, 2700, 3631, 2471, 1300, 1877, 2500, 2577, 2000, 2100, 3000\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n\r\n            </div>\r\n            <!-- end s1 tab pane -->\r\n\r\n            <div class=\"tab-pane fade\" id=\"s2\">\r\n                <div class=\"widget-body-toolbar bg-color-white\">\r\n\r\n                    <form class=\"form-inline\" role=\"form\">\r\n\r\n                        <div class=\"form-group\">\r\n                            <label class=\"sr-only\" for=\"s123\">Show From</label>\r\n                            <input type=\"email\" class=\"form-control input-sm\" id=\"s123\" placeholder=\"Show From\">\r\n                        </div>\r\n                        <div class=\"form-group\">\r\n                            <input type=\"email\" class=\"form-control input-sm\" id=\"s124\" placeholder=\"To\">\r\n                        </div>\r\n\r\n                        <div class=\"btn-group hidden-phone pull-right\">\r\n                            <a class=\"btn dropdown-toggle btn-xs btn-default\" data-toggle=\"dropdown\"><i\r\n                                    class=\"fa fa-cog\"></i> More <span class=\"caret\"> </span> </a>\r\n                            <ul class=\"dropdown-menu pull-right\">\r\n                                <li>\r\n                                    <a href-void><i class=\"fa fa-file-text-alt\"></i> Export to PDF</a>\r\n                                </li>\r\n                                <li>\r\n                                    <a href-void><i class=\"fa fa-question-sign\"></i> Help</a>\r\n                                </li>\r\n                            </ul>\r\n                        </div>\r\n\r\n                    </form>\r\n\r\n                </div>\r\n                <div class=\"padding-10\">\r\n                    <div id=\"statsChart\" class=\"chart-large has-legend-unique\" flot-basic flot-data=\"statsData\" flot-options=\"statsDisplayOptions\"></div>\r\n                </div>\r\n\r\n            </div>\r\n            <!-- end s2 tab pane -->\r\n\r\n            <div class=\"tab-pane fade\" id=\"s3\">\r\n\r\n                <div class=\"widget-body-toolbar bg-color-white smart-form\" id=\"rev-toggles\">\r\n\r\n                    <div class=\"inline-group\">\r\n\r\n                        <label for=\"gra-0\" class=\"checkbox\">\r\n                            <input type=\"checkbox\" id=\"gra-0\" ng-model=\"targetsShow\">\r\n                            <i></i> Target </label>\r\n                        <label for=\"gra-1\" class=\"checkbox\">\r\n                            <input type=\"checkbox\" id=\"gra-1\" ng-model=\"actualsShow\">\r\n                            <i></i> Actual </label>\r\n                        <label for=\"gra-2\" class=\"checkbox\">\r\n                            <input type=\"checkbox\" id=\"gra-2\" ng-model=\"signupsShow\">\r\n                            <i></i> Signups </label>\r\n                    </div>\r\n\r\n                    <div class=\"btn-group hidden-phone pull-right\">\r\n                        <a class=\"btn dropdown-toggle btn-xs btn-default\" data-toggle=\"dropdown\"><i\r\n                                class=\"fa fa-cog\"></i> More <span class=\"caret\"> </span> </a>\r\n                        <ul class=\"dropdown-menu pull-right\">\r\n                            <li>\r\n                                <a href-void><i class=\"fa fa-file-text-alt\"></i> Export to PDF</a>\r\n                            </li>\r\n                            <li>\r\n                                <a href-void><i class=\"fa fa-question-sign\"></i> Help</a>\r\n                            </li>\r\n                        </ul>\r\n                    </div>\r\n\r\n                </div>\r\n\r\n                <div class=\"padding-10\">\r\n                    <div id=\"flotcontainer\" class=\"chart-large has-legend-unique\" flot-basic flot-data=\"revenewData\" flot-options=\"revenewDisplayOptions\" ></div>\r\n                </div>\r\n            </div>\r\n            <!-- end s3 tab pane -->\r\n        </div>\r\n\r\n        <!-- end content -->\r\n    </div>\r\n\r\n</div>\r\n<!-- end widget div -->\r\n</div>\r\n");
 $templateCache.put("app/layout/layout.tpl.html","<div ng-intro-options=\"IntroOptions\" ng-intro-method=\"CallMe\">\r\n<!-- HEADER -->\r\n<div data-smart-include=\"app/layout/partials/header.tpl.html\" class=\"placeholder-header\"></div>\r\n<!-- END HEADER -->\r\n\r\n\r\n<!-- Left panel : Navigation area -->\r\n<!-- Note: This width of the aside area can be adjusted through LESS variables -->\r\n<div data-smart-include=\"app/layout/partials/navigation.tpl.html\" class=\"placeholder-left-panel\"></div>\r\n\r\n<!-- END NAVIGATION -->\r\n\r\n<!-- MAIN PANEL -->\r\n<div id=\"main\" role=\"main\">\r\n    <demo-states></demo-states>\r\n\r\n    <!-- RIBBON -->\r\n    <div id=\"ribbon\">\r\n\r\n				<span id=\"reset-settings\" class=\"ribbon-button-alignment\">\r\n					<span id=\"refresh\" class=\"btn btn-ribbon\" reset-widgets\r\n                          tooltip-placement=\"bottom\"\r\n                          tooltip-html=\"<i class=\'text-warning fa fa-warning\'></i> Warning! This will reset all your widget settings.\">\r\n						<i class=\"fa fa-refresh\"></i>\r\n					</span>\r\n				</span>\r\n\r\n        <!-- breadcrumb -->\r\n        <state-breadcrumbs></state-breadcrumbs>\r\n        <!-- end breadcrumb -->\r\n\r\n\r\n    </div>\r\n    <!-- END RIBBON -->\r\n\r\n\r\n    <div data-smart-router-animation-wrap=\"content content@app\" data-wrap-for=\"#content\">\r\n        <div data-ui-view=\"content\" data-autoscroll=\"false\"></div>\r\n    </div>\r\n\r\n</div>\r\n<!-- END MAIN PANEL -->\r\n\r\n<!-- PAGE FOOTER -->\r\n<div data-smart-include=\"app/layout/partials/footer.tpl.html\"></div>\r\n\r\n<div data-smart-include=\"app/layout/shortcut/shortcut.tpl.html\"></div>\r\n\r\n<!-- END PAGE FOOTER -->\r\n </div>\r\n\r\n");
 $templateCache.put("app/auth/directives/login-info.tpl.html","<div class=\"login-info ng-cloak\">\r\n    <span> <!-- User image size is adjusted inside CSS, it should stay as it -->\r\n        <a id=\"my-login-info\" href=\"\" toggle-shortcut>\r\n            <img ng-src=\"{{user.image()}}\" alt=\"me\" class=\"online\">\r\n                <span>{{user.displayName}}\r\n                </span>\r\n            <i class=\"fa fa-angle-down\"></i>\r\n        </a>\r\n     </span>\r\n</div>");
 $templateCache.put("app/dashboard/projects/recent-projects.tpl.html","<div class=\"project-context hidden-xs dropdown\" dropdown>\r\n\r\n    <span class=\"label\">{{getWord(\'Projects\')}}:</span>\r\n    <span class=\"project-selector dropdown-toggle\" dropdown-toggle>{{getWord(\'Recent projects\')}} <i ng-if=\"projects.length\"\r\n            class=\"fa fa-angle-down\"></i></span>\r\n\r\n    <ul class=\"dropdown-menu\" ng-if=\"projects.length\">\r\n        <li ng-repeat=\"project in projects\">\r\n            <a href=\"{{project.href}}\">{{project.title}}</a>\r\n        </li>\r\n        <li class=\"divider\"></li>\r\n        <li>\r\n            <a ng-click=\"clearProjects()\"><i class=\"fa fa-power-off\"></i> Clear</a>\r\n        </li>\r\n    </ul>\r\n\r\n</div>");
 $templateCache.put("app/dashboard/todo/todo-widget.tpl.html","<div id=\"todo-widget\" jarvis-widget data-widget-editbutton=\"false\" data-widget-color=\"blue\"\r\n     ng-controller=\"TodoCtrl\">\r\n    <header>\r\n        <span class=\"widget-icon\"> <i class=\"fa fa-check txt-color-white\"></i> </span>\r\n\r\n        <h2> ToDo\'s </h2>\r\n\r\n        <div class=\"widget-toolbar\">\r\n            <!-- add: non-hidden - to disable auto hide -->\r\n            <button class=\"btn btn-xs btn-default\" ng-class=\"{active: newTodo}\" ng-click=\"toggleAdd()\"><i ng-class=\"{ \'fa fa-plus\': !newTodo, \'fa fa-times\': newTodo}\"></i> Add</button>\r\n\r\n        </div>\r\n    </header>\r\n    <!-- widget div-->\r\n    <div>\r\n        <div class=\"widget-body no-padding smart-form\">\r\n            <!-- content goes here -->\r\n            <div ng-show=\"newTodo\">\r\n                <h5 class=\"todo-group-title\"><i class=\"fa fa-plus-circle\"></i> New Todo</h5>\r\n\r\n                <form name=\"newTodoForm\" class=\"smart-form\">\r\n                    <fieldset>\r\n                        <section>\r\n                            <label class=\"input\">\r\n                                <input type=\"text\" required class=\"input-lg\" ng-model=\"newTodo.title\"\r\n                                       placeholder=\"What needs to be done?\">\r\n                            </label>\r\n                        </section>\r\n                        <section>\r\n                            <div class=\"col-xs-6\">\r\n                                <label class=\"select\">\r\n                                    <select class=\"input-sm\" ng-model=\"newTodo.state\"\r\n                                            ng-options=\"state as state for state in states\"></select> <i></i> </label>\r\n                            </div>\r\n                        </section>\r\n                    </fieldset>\r\n                    <footer>\r\n                        <button ng-disabled=\"newTodoForm.$invalid\" type=\"button\" class=\"btn btn-primary\"\r\n                                ng-click=\"createTodo()\">\r\n                            Add\r\n                        </button>\r\n                        <button type=\"button\" class=\"btn btn-default\" ng-click=\"toggleAdd()\">\r\n                            Cancel\r\n                        </button>\r\n                    </footer>\r\n                </form>\r\n            </div>\r\n\r\n            <todo-list state=\"Critical\"  title=\"Critical Tasks\" icon=\"warning\" todos=\"todos\"></todo-list>\r\n\r\n            <todo-list state=\"Important\" title=\"Important Tasks\" icon=\"exclamation\" todos=\"todos\"></todo-list>\r\n\r\n            <todo-list state=\"Completed\" title=\"Completed Tasks\" icon=\"check\" todos=\"todos\"></todo-list>\r\n\r\n            <!-- end content -->\r\n        </div>\r\n\r\n    </div>\r\n    <!-- end widget div -->\r\n</div>");
+$templateCache.put("app/homepage/views/sub-header.tpl.html","<div class=\"col-xs-12 col-sm-5 col-md-5 col-lg-8\" data-sparkline-container>\r\n    <ul id=\"sparks\" class=\"\">\r\n        <li class=\"sparks-info\">\r\n            <h5> {{getWord(\'TaskCount\')}} <span class=\"txt-color-blue\">1,271</span></h5>\r\n            <div class=\"sparkline txt-color-blue hidden-mobile hidden-md hidden-sm\">\r\n                130, 187, 250, 257, 200, 210, 300, 270, 363, 247, 270, 363, 247\r\n            </div>\r\n        </li>\r\n        <li class=\"sparks-info\">\r\n            <h5> {{getWord(\"Efficiency\")}} <span class=\"txt-color-purple\"><i class=\"fa fa-arrow-circle-up\"></i>&nbsp;25%</span></h5>\r\n            <div class=\"sparkline txt-color-purple hidden-mobile hidden-md hidden-sm\">\r\n                110,150,300,130,400,240,220,310,220,300, 270, 210\r\n            </div>\r\n        </li>\r\n        <li class=\"sparks-info\">\r\n            <h5> {{getWord(\"CompletedTasks\")}} <span class=\"txt-color-greenDark\"><i class=\"fa fa-check-circle\"></i>&nbsp;879</span></h5>\r\n            <div class=\"sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm\">\r\n                110,150,300,130,400,240,220,310,220,300, 270, 210\r\n            </div>\r\n        </li>\r\n    </ul>\r\n</div>\r\n			");
 $templateCache.put("app/layout/language/language-selector.tpl.html","<ul class=\"header-dropdown-list hidden-xs ng-cloak\" ng-controller=\"LanguagesCtrl\">\r\n    <li class=\"dropdown\" dropdown>\r\n        <a class=\"dropdown-toggle\"  dropdown-toggle href> <img src=\"styles/img/blank.gif\" class=\"flag flag-{{currentLanguage.key}}\" alt=\"{{currentLanguage.alt}}\"> <span> {{currentLanguage.title}} </span>\r\n            <i class=\"fa fa-angle-down\"></i> </a>\r\n        <ul class=\"dropdown-menu pull-right\">\r\n            <li ng-class=\"{active: language==currentLanguage}\" ng-repeat=\"language in languages\">\r\n                <a ng-click=\"selectLanguage(language)\" ><img src=\"styles/img/blank.gif\" class=\"flag flag-{{language.key}}\"\r\n                                                   alt=\"{{language.alt}}\"> {{language.title}}</a>\r\n            </li>\r\n        </ul>\r\n    </li>\r\n</ul>");
 $templateCache.put("app/layout/partials/footer.tpl.html","<div class=\"page-footer\">\r\n    <div class=\"row\">\r\n        <div class=\"col-xs-12 col-sm-6\">\r\n            <span class=\"txt-color-white\">Testing Data Management (TDM) System</span>\r\n        </div>\r\n\r\n        <div class=\"col-xs-6 col-sm-6 text-right hidden-xs\">\r\n            \r\n        </div>\r\n    </div>\r\n</div>");
 $templateCache.put("app/layout/partials/header.tpl.html","<header id=\"header\">\r\n<div id=\"logo-group\">\r\n\r\n    <!-- PLACE YOUR LOGO HERE -->\r\n    <span id=\"logo\"><a ui-sref=\"app.homepage.mainmenu\"><img src=\"styles/img/logo.gif\" alt=\"TDM\"></a>\r\n    </span>\r\n    <!-- END LOGO PLACEHOLDER -->\r\n\r\n    <!-- Note: The activity badge color changes when clicked and resets the number to 0\r\n    Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->\r\n   \r\n    <!--\r\n    <span id=\"activity\"> \r\n        <a ui-sref=\"app.tasks.list\" ui-sref-opts=\"{reload: true}\" title=\"{{getWord(\'MyTasks\')}}\"><i class=\"fa fa-user\"></i>\r\n            <b class=\"badge bg-color-red\">{{getTaskCount()}}</b>\r\n        </a>\r\n    </span>\r\n    -->\r\n\r\n    <!-- Note: The activity badge color changes when clicked and resets the number to 0\r\n    Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->\r\n    <span id=\"activity\" class=\"activity-dropdown\" activities-dropdown-toggle>\r\n        <i class=\"fa fa-user\"></i>\r\n        <b class=\"badge bg-color-red\">{{getTotalCount()}}</b>\r\n    </span>\r\n    <div smart-include=\"app/homepage/views/my-activities.html\"></div>\r\n</div>\r\n\r\n<!--\r\n<div style=\"margin-left:300px\">\r\n    <h1 class=\"text-primary hidden-xs hidden-sm hidden-md\">{{getWord(\'AppName\')}}</h1>\r\n</div>\r\n-->\r\n\r\n<!-- pulled right: nav area -->\r\n<div class=\"pull-right\">\r\n\r\n    <!-- intro button -->\r\n    <div id=\"intro\" class=\"btn-header transparent pull-right\">\r\n        <span>\r\n            <a title=\"{{getWord(\'Intro\')}}\" ng-click=\"CallMe();\">\r\n                <i class=\"fa fa-info\"></i>\r\n            </a>\r\n        </span>\r\n    </div>\r\n    <!-- end intro button -->\r\n\r\n    <!-- collapse menu button -->\r\n    <div id=\"hide-menu\" class=\"btn-header pull-right\">\r\n        <span> <a toggle-menu title=\"{{getWord(\'CollapseMenu\')}}\"><i\r\n                class=\"fa fa-reorder\"></i></a> </span>\r\n    </div>\r\n    <!-- end collapse menu -->\r\n\r\n    <!-- #MOBILE -->\r\n    <!-- Top menu profile link : this shows only when top menu is active -->\r\n    <ul id=\"mobile-profile-img\" class=\"header-dropdown-list hidden-xs padding-5\">\r\n        <li class=\"\">\r\n            <a href=\"#\" class=\"dropdown-toggle no-margin userdropdown\" data-toggle=\"dropdown\">\r\n                <img src=\"styles/custom/avatars/male.png\" alt=\"John Doe\" class=\"online\"/>\r\n            </a>\r\n            <ul class=\"dropdown-menu pull-right\">\r\n                <li>\r\n                    <a href-void class=\"padding-10 padding-top-0 padding-bottom-0\"><i\r\n                            class=\"fa fa-cog\"></i> Setting</a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                    <a ui-sref=\"app.appViews.profileDemo\" class=\"padding-10 padding-top-0 padding-bottom-0\"> <i class=\"fa fa-user\"></i>\r\n                        <u>P</u>rofile</a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                    <a href-void class=\"padding-10 padding-top-0 padding-bottom-0\"\r\n                       data-action=\"toggleShortcut\"><i class=\"fa fa-arrow-down\"></i> <u>S</u>hortcut</a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                    <a href-void class=\"padding-10 padding-top-0 padding-bottom-0\"\r\n                       data-action=\"launchFullscreen\"><i class=\"fa fa-arrows-alt\"></i> Full <u>S</u>creen</a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                    <a href=\"#/login\" class=\"padding-10 padding-top-5 padding-bottom-5\" data-action=\"userLogout\"><i\r\n                            class=\"fa fa-sign-out fa-lg\"></i> <strong><u>L</u>ogout</strong></a>\r\n                </li>\r\n            </ul>\r\n        </li>\r\n    </ul>\r\n\r\n    <!-- logout button -->\r\n    <div id=\"logout\" class=\"btn-header transparent pull-right\">\r\n        <span> <a ui-sref=\"logout\" title=\"{{getWord(\'SignOut\')}}\" data-action=\"userLogout\"\r\n                  data-logout-msg=\"You can improve your security further after logging out by closing this opened browser\"><i\r\n                class=\"fa fa-sign-out\"></i></a> </span>\r\n    </div>\r\n    <!-- end logout button -->\r\n\r\n    <!-- search mobile button (this is hidden till mobile view port) -->\r\n    <div id=\"search-mobile\" class=\"btn-header transparent pull-right\" data-search-mobile>\r\n        <span> <a href=\"#\" title=\"Search\"><i class=\"fa fa-search\"></i></a> </span>\r\n    </div>\r\n    <!-- end search mobile button -->\r\n\r\n    <!-- fullscreen button -->\r\n    <div id=\"fullscreen\" class=\"btn-header transparent pull-right\">\r\n        <span> <a full-screen title=\"{{getWord(\'FullScreen\')}}\"><i\r\n                class=\"fa fa-arrows-alt\"></i></a> </span>\r\n    </div>\r\n    <!-- end fullscreen button -->\r\n\r\n    <!-- multiple lang dropdown : find all flags in the flags page -->\r\n    <language-selector></language-selector>\r\n    <!-- end multiple lang -->\r\n\r\n    <!-- input: full text search field -->\r\n    <form ng-show=\"searchEnabled\" ng-submit=\"fullTextSearch()\" class=\"header-search pull-right\" style=\"padding-right:10px\">\r\n        <input id=\"search-keywords\" name=\"searchKeywords\" type=\"text\" autocomplete=\"off\" size=\"50\" \r\n               placeholder=\"{{getWord(\'FindReports\')}}\"\r\n               ng-model=\"searchContext.searchText\"\r\n               typeahead=\"suggestion for suggestion in getSuggestions($viewValue)\"\r\n               typeahead-on-select=\"onSuggestionSelect($item, $model, $label)\">\r\n        <button type=\"submit\" style=\"padding-right:15px\">\r\n            <i class=\"fa fa-search\"></i>\r\n        </button>\r\n        <a href=\"$\" id=\"cancel-search-js\" title=\"Cancel Search\"><i class=\"fa fa-times\"></i></a>\r\n    </form>\r\n    <!-- end input: search field -->\r\n\r\n</div>\r\n<!-- end pulled right: nav area -->\r\n\r\n</header>");
@@ -32839,7 +32840,6 @@ $templateCache.put("app/layout/partials/navigation.tpl.html","<aside id=\"left-p
 $templateCache.put("app/layout/partials/sub-header.tpl.html","<div class=\"col-xs-12 col-sm-5 col-md-5 col-lg-8\" data-sparkline-container>\r\n    <ul id=\"sparks\" class=\"\">\r\n        <li class=\"sparks-info\">\r\n            <h5> My Income <span class=\"txt-color-blue\">$47,171</span></h5>\r\n            <div class=\"sparkline txt-color-blue hidden-mobile hidden-md hidden-sm\">\r\n                1300, 1877, 2500, 2577, 2000, 2100, 3000, 2700, 3631, 2471, 2700, 3631, 2471\r\n            </div>\r\n        </li>\r\n        <li class=\"sparks-info\">\r\n            <h5> Site Traffic <span class=\"txt-color-purple\"><i class=\"fa fa-arrow-circle-up\"></i>&nbsp;45%</span></h5>\r\n            <div class=\"sparkline txt-color-purple hidden-mobile hidden-md hidden-sm\">\r\n                110,150,300,130,400,240,220,310,220,300, 270, 210\r\n            </div>\r\n        </li>\r\n        <li class=\"sparks-info\">\r\n            <h5> Site Orders <span class=\"txt-color-greenDark\"><i class=\"fa fa-shopping-cart\"></i>&nbsp;2447</span></h5>\r\n            <div class=\"sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm\">\r\n                110,150,300,130,400,240,220,310,220,300, 270, 210\r\n            </div>\r\n        </li>\r\n    </ul>\r\n</div>\r\n			");
 $templateCache.put("app/layout/partials/voice-commands.tpl.html","<!-- TRIGGER BUTTON:\r\n<a href=\"/my-ajax-page.html\" data-toggle=\"modal\" data-target=\"#remoteModal\" class=\"btn btn-default\">Open Modal</a>  -->\r\n\r\n<!-- MODAL PLACE HOLDER\r\n<div class=\"modal fade\" id=\"remoteModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"remoteModalLabel\" aria-hidden=\"true\">\r\n<div class=\"modal-dialog\">\r\n<div class=\"modal-content\"></div>\r\n</div>\r\n</div>   -->\r\n<!--////////////////////////////////////-->\r\n\r\n<!--<div class=\"modal-header\">\r\n<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\r\n&times;\r\n</button>\r\n<h4 class=\"modal-title\" id=\"myModalLabel\">Command List</h4>\r\n</div>-->\r\n<div class=\"modal-body\">\r\n\r\n	<h1><i class=\"fa fa-microphone text-muted\"></i>&nbsp;&nbsp; SmartAdmin Voice Command</h1>\r\n	<hr class=\"simple\">\r\n	<h5>Instruction</h5>\r\n\r\n	Click <span class=\"text-success\">\"Allow\"</span> to access your microphone and activate Voice Command.\r\n	You will notice a <span class=\"text-primary\"><strong>BLUE</strong> Flash</span> on the microphone icon indicating activation.\r\n	The icon will appear <span class=\"text-danger\"><strong>RED</strong></span> <span class=\"label label-danger\"><i class=\"fa fa-microphone fa-lg\"></i></span> if you <span class=\"text-danger\">\"Deny\"</span> access or don\'t have any microphone installed.\r\n	<br>\r\n	<br>\r\n	As a security precaution, your browser will disconnect the microphone every 60 to 120 seconds (sooner if not being used). In which case Voice Command will prompt you again to <span class=\"text-success\">\"Allow\"</span> or <span class=\"text-danger\">\"Deny\"</span> access to your microphone.\r\n	<br>\r\n	<br>\r\n	If you host your page over <strong>http<span class=\"text-success\">s</span></strong> (secure socket layer) protocol you can wave this security measure and have an unintrupted Voice Command.\r\n	<br>\r\n	<br>\r\n	<h5>Commands</h5>\r\n	<ul>\r\n		<li>\r\n			<strong>\'show\' </strong> then say the <strong>*page*</strong> you want to go to. For example <strong>\"show inbox\"</strong> or <strong>\"show calendar\"</strong>\r\n		</li>\r\n		<li>\r\n			<strong>\'mute\' </strong> - mutes all sound effects for the theme.\r\n		</li>\r\n		<li>\r\n			<strong>\'sound on\'</strong> - unmutes all sound effects for the theme.\r\n		</li>\r\n		<li>\r\n			<span class=\"text-danger\"><strong>\'stop\'</strong></span> - deactivates voice command.\r\n		</li>\r\n		<li>\r\n			<span class=\"text-primary\"><strong>\'help\'</strong></span> - brings up the command list\r\n		</li>\r\n		<li>\r\n			<span class=\"text-danger\"><strong>\'got it\'</strong></span> - closes help modal\r\n		</li>\r\n		<li>\r\n			<strong>\'hide navigation\'</strong> - toggle navigation collapse\r\n		</li>\r\n		<li>\r\n			<strong>\'show navigation\'</strong> - toggle navigation to open (can be used again to close)\r\n		</li>\r\n		<li>\r\n			<strong>\'scroll up\'</strong> - scrolls to the top of the page\r\n		</li>\r\n		<li>\r\n			<strong>\'scroll down\'</strong> - scrollts to the bottom of the page\r\n		</li>\r\n		<li>\r\n			<strong>\'go back\' </strong> - goes back in history (history -1 click)\r\n		</li>\r\n		<li>\r\n			<strong>\'logout\'</strong> - logs you out\r\n		</li>\r\n	</ul>\r\n	<br>\r\n	<h5>Adding your own commands</h5>\r\n	Voice Command supports up to 80 languages. Adding your own commands is extreamly easy. All commands are stored inside <strong>app.config.js</strong> file under the <code>var commands = {...}</code>. \r\n\r\n	<hr class=\"simple\">\r\n	<div class=\"text-right\">\r\n		<button type=\"button\" class=\"btn btn-success btn-lg\" data-dismiss=\"modal\">\r\n			Got it!\r\n		</button>\r\n	</div>\r\n\r\n</div>\r\n<!--<div class=\"modal-footer\">\r\n<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">Got it!</button>\r\n</div> -->");
 $templateCache.put("app/layout/shortcut/shortcut.tpl.html","<div id=\"shortcut\">\r\n	<ul>\r\n		<li>\r\n			<a href=\"#/tasks/list\" class=\"jarvismetro-tile big-cubes bg-color-blue\"> <span class=\"iconbox\"> <i class=\"fa fa-folder-open fa-4x\"></i> <span>{{getWord(\'MyTasks\')}} <span class=\"label pull-right bg-color-darken\">{{getTaskCount()}}</span></span> </span> </a>\r\n		</li>\r\n		<li>\r\n			<a href=\"#/user/profile\" class=\"jarvismetro-tile big-cubes selected bg-color-pinkDark\"> <span class=\"iconbox\"> <i class=\"fa fa-user fa-4x\"></i> <span>{{getWord(\'My Profile\')}} </span> </span> </a>\r\n		</li>\r\n        <li>\r\n            <a href=\"#/user/password\" class=\"jarvismetro-tile big-cubes selected bg-color-darken\"> <span class=\"iconbox\"> <i class=\"fa fa-lock fa-4x\"></i> <span>{{getWord(\'Change Password\')}} </span> </span> </a>\r\n        </li>\r\n	</ul>\r\n</div>");
-$templateCache.put("app/homepage/views/sub-header.tpl.html","<div class=\"col-xs-12 col-sm-5 col-md-5 col-lg-8\" data-sparkline-container>\r\n    <ul id=\"sparks\" class=\"\">\r\n        <li class=\"sparks-info\">\r\n            <h5> {{getWord(\'TaskCount\')}} <span class=\"txt-color-blue\">1,271</span></h5>\r\n            <div class=\"sparkline txt-color-blue hidden-mobile hidden-md hidden-sm\">\r\n                130, 187, 250, 257, 200, 210, 300, 270, 363, 247, 270, 363, 247\r\n            </div>\r\n        </li>\r\n        <li class=\"sparks-info\">\r\n            <h5> {{getWord(\"Efficiency\")}} <span class=\"txt-color-purple\"><i class=\"fa fa-arrow-circle-up\"></i>&nbsp;25%</span></h5>\r\n            <div class=\"sparkline txt-color-purple hidden-mobile hidden-md hidden-sm\">\r\n                110,150,300,130,400,240,220,310,220,300, 270, 210\r\n            </div>\r\n        </li>\r\n        <li class=\"sparks-info\">\r\n            <h5> {{getWord(\"CompletedTasks\")}} <span class=\"txt-color-greenDark\"><i class=\"fa fa-check-circle\"></i>&nbsp;879</span></h5>\r\n            <div class=\"sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm\">\r\n                110,150,300,130,400,240,220,310,220,300, 270, 210\r\n            </div>\r\n        </li>\r\n    </ul>\r\n</div>\r\n			");
 $templateCache.put("app/mldashboard/views/model-dashboard.tpl.html","<div jarvis-widget id=\"live-feeds-widget\" data-widget-togglebutton=\"false\" data-widget-editbutton=\"false\"\r\n     data-widget-fullscreenbutton=\"false\" data-widget-colorbutton=\"false\" data-widget-deletebutton=\"false\">\r\n    <header>\r\n        <span class=\"widget-icon\"> <i class=\"glyphicon glyphicon-stats txt-color-darken\"></i> </span>\r\n\r\n        <h2>{{project}}=>{{model}}</h2>\r\n\r\n        <ul class=\"nav nav-tabs pull-right in\" id=\"myTab\">\r\n            <li class=\"active\">\r\n                <a data-toggle=\"tab\" href=\"#s1\"><i class=\"fa fa-clock-o\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"Single Record\")}}</span></a>\r\n            </li>\r\n\r\n            <li>\r\n                <a data-toggle=\"tab\" href=\"#s2\"><i class=\"fa fa-cog\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"Batch Records\")}}</span></a>\r\n            </li>\r\n        </ul>\r\n\r\n    </header>\r\n\r\n    <!-- widget div-->\r\n    <div class=\"no-padding\">\r\n\r\n        <div class=\"widget-body\">\r\n            <!-- content -->\r\n            <div id=\"myTabContent\" class=\"tab-content\">\r\n                <div class=\"tab-pane fade active in padding-10 no-padding-bottom\" id=\"s1\">\r\n                    <!-- widget grid -->\r\n                    <section id=\"widget-grid\" class=\"\">\r\n\r\n                        <!-- START ROW -->\r\n                        <div class=\"row\">\r\n\r\n                            <!-- NEW COL START -->\r\n                            <article class=\"col-sm-12 col-md-12 col-lg-12\">\r\n\r\n                                <!-- Widget ID (each widget will need unique ID)-->\r\n                                <div class=\"jarviswidget\" id=\"wid-id-0\" data-widget-colorbutton=\"false\" data-widget-editbutton=\"false\" data-widget-custombutton=\"false\">\r\n                                                <!-- widget options:\r\n                                    usage: <div class=\"jarviswidget\" id=\"wid-id-0\" data-widget-editbutton=\"false\">\r\n\r\n                                    data-widget-colorbutton=\"false\"\r\n                                    data-widget-editbutton=\"false\"\r\n                                    data-widget-togglebutton=\"false\"\r\n                                    data-widget-deletebutton=\"false\"\r\n                                    data-widget-fullscreenbutton=\"false\"\r\n                                    data-widget-custombutton=\"false\"\r\n                                    data-widget-collapsed=\"true\"\r\n                                    data-widget-sortable=\"false\"\r\n\r\n                                    -->\r\n                                    <header>\r\n                                        <span class=\"widget-icon\"> <i class=\"fa fa-edit\"></i> </span>\r\n                                        <h2>{{getWord(\"ML Model Form\")}}</h2>\r\n\r\n                                    </header>\r\n\r\n                                    <!-- widget div-->\r\n                                    <div>\r\n                                        <!-- widget content -->\r\n                                        <div class=\"widget-body no-padding\">\r\n\r\n                                            <form class=\"smart-form\" ng-submit=\"submitModelForm()\">\r\n                                                <header>\r\n                                                    {{getWord(\"ML Model Inputs\")}}\r\n                                                </header>\r\n\r\n                                                <fieldset>\r\n                                                    <div class=\"row\">\r\n                                                        <section class=\"col col-3\" ng-repeat=\"inputField in inputFields\">\r\n                                                            <label class=\"label\">{{inputField.Label}}</label>\r\n                                                            <label class=\"input\">\r\n                                                                <input type=\"text\" id=\"{{inputField.Label}}\" required ng-model=\"inputField.Value\">\r\n                                                            </label>\r\n                                                        </section>\r\n                                                    </div>\r\n                                                </fieldset>\r\n\r\n                                                <header>\r\n                                                    {{getWord(\"ML Model Outputs\")}}\r\n                                                </header>\r\n\r\n                                                <fieldset>\r\n                                                    <div class=\"row\">\r\n                                                        <section class=\"col col-3\" ng-repeat=\"outputField in outputFields\">\r\n                                                            <label class=\"label\">{{outputField.Label}}</label>\r\n                                                            <label class=\"input\">\r\n                                                                <input type=\"text\" id=\"{{outputField.Label}}\" disabled=\"disabled\" ng-model=\"outputField.Value\">\r\n                                                            </label>\r\n                                                        </section>\r\n                                                    </div>\r\n\r\n                                                </fieldset>\r\n\r\n                                                <footer>\r\n                                                    <button type=\"submit\" class=\"btn btn-primary\" button-spinner=\"loading\">\r\n                                                        {{getWord(\"Evaluate\")}}\r\n                                                    </button>\r\n                                                </footer>\r\n                                            </form>\r\n\r\n                                        </div>\r\n                                        <!-- end widget content -->\r\n\r\n                                    </div>\r\n                                    <!-- end widget div -->\r\n\r\n                                </div>\r\n                                <!-- end widget -->\r\n\r\n                            </article>\r\n                            <!-- END COL -->\r\n\r\n                        </div>\r\n\r\n                        <!-- END ROW -->\r\n                    </section>\r\n                    <!-- end widget grid -->\r\n                </div>\r\n                <!-- end s1 tab pane -->\r\n\r\n                <div class=\"tab-pane fade\" id=\"s2\">\r\n                    <div class=\"padding-10\">\r\n                   \r\n                    </div>\r\n                </div>\r\n                <!-- end s2 tab pane -->\r\n            </div>\r\n            <!-- end content -->\r\n        </div>\r\n    </div>\r\n    <!-- end widget div -->\r\n</div>\r\n");
 $templateCache.put("app/stations/views/live-feeds.tpl.html","<div jarvis-widget id=\"live-feeds-widget\" data-widget-togglebutton=\"false\" data-widget-editbutton=\"false\"\r\n     data-widget-fullscreenbutton=\"false\" data-widget-colorbutton=\"false\" data-widget-deletebutton=\"false\">\r\n<!-- widget options:\r\nusage: <div class=\"jarviswidget\" id=\"wid-id-0\" data-widget-editbutton=\"false\">\r\n\r\ndata-widget-colorbutton=\"false\"\r\ndata-widget-editbutton=\"false\"\r\ndata-widget-togglebutton=\"false\"\r\ndata-widget-deletebutton=\"false\"\r\ndata-widget-fullscreenbutton=\"false\"\r\ndata-widget-custombutton=\"false\"\r\ndata-widget-collapsed=\"true\"\r\ndata-widget-sortable=\"false\"\r\n\r\n-->\r\n<header>\r\n    <span class=\"widget-icon\"> <i class=\"glyphicon glyphicon-stats txt-color-darken\"></i> </span>\r\n\r\n    <h2>{{CurrentStationName}}</h2>\r\n\r\n    <ul class=\"nav nav-tabs pull-right in\" id=\"myTab\">\r\n        <li ng-class=\"showMonitor? \'active\' : null\" ng-show=\"showMonitor\">\r\n            <a data-toggle=\"tab\" href=\"#s1\"><i class=\"fa fa-clock-o\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"LiveData\")}}</span></a>\r\n        </li>\r\n\r\n        <li ng-class=\"!showMonitor? \'active\' : null\">\r\n            <a data-toggle=\"tab\" href=\"#s2\"><i class=\"fa fa-cog\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"StationConfig\")}}</span></a>\r\n        </li>\r\n\r\n        <li>\r\n            <a data-toggle=\"tab\" href=\"#s3\"><i class=\"fa fa-calendar\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"Scheduler\")}}</span></a>\r\n        </li>\r\n    </ul>\r\n\r\n</header>\r\n\r\n<!-- widget div-->\r\n<div class=\"no-padding\">\r\n\r\n    <div class=\"widget-body\">\r\n        <!-- content -->\r\n        <div id=\"myTabContent\" class=\"tab-content\">\r\n            <div ng-class=\"showMonitor? \'tab-pane fade active in padding-10 no-padding-bottom\' : \'tab-pane fade\'\" id=\"s1\" ng-show=\"showMonitor\">\r\n                <div class=\"row no-space\">\r\n                    <div class=\"col-xs-12 col-sm-12 col-md-8 col-lg-8\">\r\n						<span class=\"demo-liveupdate-1\"> <span\r\n                                class=\"onoffswitch-title\">{{getWord(\"LiveSwitch\")}}</span> <span\r\n                                class=\"onoffswitch\">\r\n								<input type=\"checkbox\" name=\"start_interval\" ng-model=\"autoUpdate\"\r\n                                        class=\"onoffswitch-checkbox\" id=\"start_interval\">\r\n								<label class=\"onoffswitch-label\" for=\"start_interval\">\r\n                                    <span class=\"onoffswitch-inner\"\r\n                                            data-swchon-text=\"{{getWord(\'SwitchOn\')}}\"\r\n                                            data-swchoff-text=\"{{getWord(\'SwitchOff\')}}\"></span>\r\n                                    <span class=\"onoffswitch-switch\"></span>\r\n                                </label> </span> </span>\r\n\r\n                        <div id=\"updating-chart\" class=\"chart-large txt-color-blue\" flot-basic flot-data=\"liveStats\" flot-options=\"liveStatsOptions\"></div>\r\n\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-12 col-md-4 col-lg-4 show-stats\">\r\n\r\n                        <div class=\"row\">\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> {{settings.ProgressName1}} :<span\r\n                                    >{{settings.ProgressValue1}} {{settings.ProgressUnit1}}</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blueDark\" data-smart-progressbar aria-valuenow=\"{{ settings.ProgressPercent1 }}\"  ng-style=\"{width : ( settings.ProgressPercent1 + \'%\' ) }\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> {{settings.ProgressName2}} : <span\r\n                                    >{{settings.ProgressValue2}} {{settings.ProgressUnit2}}</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blue\" data-smart-progressbar aria-valuenow=\"{{ settings.ProgressPercent2 }}\" ng-style=\"{width : ( settings.ProgressPercent2 + \'%\' ) }\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> {{settings.ProgressName3}} : <span\r\n                                    >{{settings.ProgressValue3}} {{settings.ProgressUnit3}}</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blue\" data-smart-progressbar aria-valuenow=\"{{ settings.ProgressPercent3 }}\" ng-style=\"{width : ( settings.ProgressPercent3 + \'%\' ) }\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> {{settings.ProgressName4}} : <span\r\n                                    >{{settings.ProgressValue4}} {{settings.ProgressUnit4}}</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-greenLight\" data-smart-progressbar ng-style=\"{width : ( settings.ProgressPercent4 + \'%\' ) }\">></div>\r\n                                </div>\r\n                            </div>\r\n\r\n                        </div>\r\n\r\n                    </div>\r\n                </div>\r\n\r\n                <div class=\"show-stat-microcharts\" data-sparkline-container data-easy-pie-chart-container>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n\r\n                        <div class=\"easy-pie-chart txt-color-orangeDark\" data-percent=\"0\" data-pie-size=\"50\" data-ng-model=\"PiePercent1\">\r\n                            <span class=\"percent percent-sign\">{{settings.PieValue1}}</span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> {{settings.PieName1}} <i class=\"fa fa-caret-up icon-color-bad\"></i> </span>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-greenLight\" data-percent=\"0\" data-pie-size=\"50\" data-ng-model=\"PiePercent2\">\r\n                            <span class=\"percent percent-sign\">{{settings.PieValue2}} </span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> {{settings.PieName2}} <i class=\"fa fa-caret-down icon-color-good\"></i></span>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-blue\" data-percent=\"0\" data-pie-size=\"50\" data-ng-model=\"PiePercent3\">\r\n                            <span class=\"percent percent-sign\">{{settings.PieValue3}} </span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> {{settings.PieName3}} <i class=\"fa fa-caret-up icon-color-good\"></i></span>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-darken\" data-percent=\"0\" data-pie-size=\"50\" data-ng-model=\"PiePercent4\">\r\n                            <span class=\"percent degree-sign\">{{settings.PieValue4}} <i class=\"fa fa-caret-up\"></i></span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> {{settings.PieName4}} <i\r\n                                class=\"fa fa-caret-down icon-color-good\"></i></span>\r\n                    </div>\r\n                </div>\r\n\r\n            </div>\r\n            <!-- end s1 tab pane -->\r\n\r\n            <div ng-class=\"!showMonitor? \'tab-pane fade active in padding-10 no-padding-bottom\' : \'tab-pane fade\'\" id=\"s2\">\r\n                <div class=\"padding-10\">\r\n                    <form name=\"ebaasform\" novalidate\">\r\n                        <ebaas-form-template dbschema=\"dbschema\" dbclass=\"dbclass\" oid=\"oid\" template=\"template\" formattribute=\"formAttribute\" readonly=\"true\"></ebaas-form-template>\r\n                    </form>\r\n                </div>\r\n            </div>\r\n            <!-- end s2 tab pane -->\r\n\r\n            <div ng-class=\"\'tab-pane fade\'\" id=\"s3\">\r\n                <div class=\"padding-10\">\r\n                    <div dx-scheduler=\"schedulerOptions\"></div>\r\n                </div>\r\n            </div>\r\n            <!-- end s3 tab pane -->\r\n        </div>\r\n\r\n        <!-- end content -->\r\n    </div>\r\n\r\n</div>\r\n<!-- end widget div -->\r\n</div>\r\n");
 $templateCache.put("app/dashboard/chat/directives/aside-chat-widget.tpl.html","<ul>\r\n    <li>\r\n        <div class=\"display-users\">\r\n            <input class=\"form-control chat-user-filter\" placeholder=\"Filter\" type=\"text\">\r\n            <dl>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr\"\r\n                       data-chat-id=\"cha1\"\r\n                       data-chat-fname=\"Sadi\"\r\n                       data-chat-lname=\"Orlaf\"\r\n                       data-chat-status=\"busy\"\r\n                       data-chat-alertmsg=\"Sadi Orlaf is in a meeting. Please do not disturb!\"\r\n                       data-chat-alertshow=\"true\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/5.png\' alt=\'Sadi Orlaf\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Sadi Orlaf</h3>\r\n												<p>Marketing Executive</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Sadi Orlaf\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr\"\r\n                       data-chat-id=\"cha2\"\r\n                       data-chat-fname=\"Jessica\"\r\n                       data-chat-lname=\"Dolof\"\r\n                       data-chat-status=\"online\"\r\n                       data-chat-alertmsg=\"\"\r\n                       data-chat-alertshow=\"false\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/1.png\' alt=\'Jessica Dolof\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Jessica Dolof</h3>\r\n												<p>Sales Administrator</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Jessica Dolof\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr\"\r\n                       data-chat-id=\"cha3\"\r\n                       data-chat-fname=\"Zekarburg\"\r\n                       data-chat-lname=\"Almandalie\"\r\n                       data-chat-status=\"online\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/3.png\' alt=\'Zekarburg Almandalie\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Zekarburg Almandalie</h3>\r\n												<p>Sales Admin</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Zekarburg Almandalie\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr\"\r\n                       data-chat-id=\"cha4\"\r\n                       data-chat-fname=\"Barley\"\r\n                       data-chat-lname=\"Krazurkth\"\r\n                       data-chat-status=\"away\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/4.png\' alt=\'Barley Krazurkth\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Barley Krazurkth</h3>\r\n												<p>Sales Director</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Barley Krazurkth\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr offline\"\r\n                       data-chat-id=\"cha5\"\r\n                       data-chat-fname=\"Farhana\"\r\n                       data-chat-lname=\"Amrin\"\r\n                       data-chat-status=\"incognito\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/female.png\' alt=\'Farhana Amrin\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Farhana Amrin</h3>\r\n												<p>Support Admin <small><i class=\'fa fa-music\'></i> Playing Beethoven Classics</small></p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Farhana Amrin (offline)\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr offline\"\r\n                       data-chat-id=\"cha6\"\r\n                       data-chat-fname=\"Lezley\"\r\n                       data-chat-lname=\"Jacob\"\r\n                       data-chat-status=\"incognito\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/male.png\' alt=\'Lezley Jacob\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Lezley Jacob</h3>\r\n												<p>Sales Director</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Lezley Jacob (offline)\r\n                    </a>\r\n                </dt>\r\n            </dl>\r\n\r\n\r\n            <!--<a href=\"chat.html\" class=\"btn btn-xs btn-default btn-block sa-chat-learnmore-btn\">About the API</a>-->\r\n        </div>\r\n    </li>\r\n</ul>");
@@ -34687,14 +34687,6 @@ angular.module("app.userdirectory").config(function ($stateProvider, modalStateP
             size: 'md'
         });
     });
-(function(){
-    "use strict";
-
-    angular.module('SmartAdmin', [
-        "SmartAdmin.Forms",
-        "SmartAdmin.Layout"
-    ]);
-})();
 "use strict";
 
 angular.module("app.wizards", ["ui.router", "ui.bootstrap"]);
@@ -34950,6 +34942,14 @@ angular.module("app.wizards").config(function ($stateProvider, modalStateProvide
         size: 'lg'
     });
 });
+(function(){
+    "use strict";
+
+    angular.module('SmartAdmin', [
+        "SmartAdmin.Forms",
+        "SmartAdmin.Layout"
+    ]);
+})();
     "use strict";
 
 
@@ -35591,6 +35591,341 @@ angular.module('app.forms').value('formsCommon', {
             }
         }
     });
+"use strict";
+
+angular.module('app.auth').directive('loginInfo', function(User){
+
+    return {
+        restrict: 'A',
+        templateUrl: 'app/auth/directives/login-info.tpl.html',
+        link: function(scope, element){
+            User.initialized.then(function () {
+                scope.user = User
+            });
+        }
+    }
+})
+
+
+
+'use strict';
+
+angular.module('app.auth').factory('User', function ($http, $q, APP_CONFIG, authService) {
+    var dfd = $q.defer();
+
+    function imageExists(image_url) {
+
+        var http = new XMLHttpRequest();
+
+        http.open('HEAD', image_url, false);
+        http.send();
+
+        return http.status != 404;
+    }
+
+    var UserModel = {
+        initialized: dfd.promise,
+        userName: undefined,
+        picture: undefined,
+        email: undefined,
+        phoneNumber : undefined,
+        password: undefined,
+        confirmPassword: undefined,
+        firstName: undefined,
+        lastName: undefined,
+        displayName : undefined,
+        division: undefined,
+        address: undefined,
+        imageUrl: undefined,
+        pictureChangeTime: undefined,
+        userImageUrls: undefined,
+        load: function(callback)
+        {
+            $http.get(APP_CONFIG.ebaasRootUrl + '/api/accounts/user/' + authService.authentication.userName).then(function (response) {
+                UserModel.userName = response.data.userName;
+                UserModel.email = response.data.email;
+                UserModel.password = response.data.password;
+                UserModel.firstName = response.data.firstName;
+                UserModel.lastName = response.data.lastName;
+                UserModel.displayName = response.data.displayName;
+                UserModel.phoneNumber = response.data.phoneNumber;
+                UserModel.division = response.data.division;
+                UserModel.address = response.data.address;
+                UserModel.imageUrl = undefined;
+                UserModel.userImageUrls = {};
+
+                UserModel.picture = UserModel.userName + ".png";
+
+                dfd.resolve(UserModel);
+
+                if (callback) {
+                    callback();
+                }
+            });
+        },
+        save : function (callback) {
+            var model = {};
+            model.userName = UserModel.userName;
+            model.email = UserModel.email;
+            model.phoneNumber = UserModel.phoneNumber;
+            model.firstName = UserModel.firstName;
+            model.lastName = UserModel.lastName;
+            model.picture = UserModel.picture;
+           
+            $http.post(APP_CONFIG.ebaasRootUrl + '/api/accounts/update', model).success(function (data) {
+                if (callback) {
+                    callback();
+                }
+            });
+        },
+        image : function()
+        {
+            if (!UserModel.imageUrl) {
+                var imageUrl = APP_CONFIG.avatarsUrl + UserModel.picture;
+                if (!imageExists(imageUrl)) {
+                    UserModel.imageUrl = APP_CONFIG.avatarsUrl + "male.png";
+                }
+                else {
+                    UserModel.imageUrl = imageUrl + '?' + UserModel.pictureChangeTime;
+                }
+            }
+            //console.debug(UserModel.imageUrl);
+            return UserModel.imageUrl;
+        },
+        getUserImage: function (userId) {
+            if (UserModel.userImageUrls) {
+                var imageUrl = UserModel.userImageUrls[userId];
+                if (!imageUrl) {
+                    imageUrl = APP_CONFIG.avatarsUrl + userId + ".png";
+                    if (!imageExists(imageUrl)) {
+                        imageUrl = APP_CONFIG.avatarsUrl + "male.png";
+                        UserModel.userImageUrls[userId] = imageUrl;
+                    }
+                    else {
+                        UserModel.userImageUrls[userId] = imageUrl;
+                    }
+                }
+            }
+            else
+            {
+                return APP_CONFIG.avatarsUrl + "male.png";
+            }
+     
+            return imageUrl;
+        }
+    };
+
+    return UserModel;
+});
+
+"use strict";
+
+angular.module('app.auth').controller('LoginCtrl', function ($scope, $state, GooglePlus, User, ezfb) {
+
+    $scope.$on('event:google-plus-signin-success', function (event, authResult) {
+        if (authResult.status.method == 'PROMPT') {
+            GooglePlus.getUser().then(function (user) {
+                User.userName = user.name;
+                User.picture = user.picture;
+                $state.go('app.dashboard');
+            });
+        }
+    });
+
+    $scope.$on('event:facebook-signin-success', function (event, authResult) {
+        ezfb.api('/me', function (res) {
+            User.userName = res.name;
+            User.picture = 'https://graph.facebook.com/' + res.id + '/picture';
+            $state.go('app.dashboard');
+        });
+    });
+})
+
+"use strict";
+
+angular.module("app.auth").factory("authService", function($rootScope, $http, $q, localStorageService, APP_CONFIG) {
+
+    var authServiceFactory = {};
+
+    var _authentication = {
+        isAuth: false,
+        userName: ""
+    };
+
+    var _saveRegistration = function(registration) {
+
+        _logOut();
+
+        return $http.post(APP_CONFIG.ebaasRootUrl + '/api/accounts/create', registration).then(function(response) {
+            return response;
+        });
+    };
+
+    var _login = function(loginData) {
+
+        var data = "grant_type=password&username=" + loginData.userName + "&password=" + loginData.password;
+
+        var deferred = $q.defer();
+
+        var url = APP_CONFIG.ebaasRootUrl + '/oauth/token';
+
+        $http.post(url, data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).success(function(response) {
+
+            localStorageService.set('authorizationData', { token: response.access_token, userName: loginData.userName });
+
+            _authentication.isAuth = true;
+            _authentication.userName = loginData.userName;
+
+            deferred.resolve(response);
+
+        }).error(function (err, status) {
+            if (err.error === "invalid_grant")
+            {
+                err.error_description = $rootScope.getWord("Invalid user name or password");
+            }
+            _logOut();
+            deferred.reject(err);
+        });
+
+        return deferred.promise;
+
+    };
+
+    var _logOut = function() {
+
+        localStorageService.remove('authorizationData');
+
+        _authentication.isAuth = false;
+        _authentication.userName = "";
+
+    };
+
+    var _fillAuthData = function() {
+
+        var authData = localStorageService.get('authorizationData');
+        if (authData) {
+            _authentication.isAuth = true;
+            _authentication.userName = authData.userName;
+        }
+
+    }
+
+    authServiceFactory.saveRegistration = _saveRegistration;
+    authServiceFactory.login = _login;
+    authServiceFactory.logOut = _logOut;
+    authServiceFactory.fillAuthData = _fillAuthData;
+    authServiceFactory.authentication = _authentication;
+
+    return authServiceFactory;
+});
+(function (app) {
+    var LoginController = function ($rootScope, $scope, $http, $state, $location, authService, APP_CONFIG, User, TasksInfo, myActivityService, hubService) {
+
+        $scope.loginData = {
+            userName: "",
+            password: ""
+        };
+
+        $scope.message = "";
+
+        $scope.login = function () {
+            authService.login($scope.loginData).then(function (response) {
+
+                if ($rootScope.returnToState) {
+                    $location.path($rootScope.returnToState);
+                } else {
+                    $location.path('/');
+                }
+
+                // load user's info
+                User.load(function () {
+                    hubService.connect(APP_CONFIG.dbschema, function (type, message) {
+                        myActivityService.add(type, message);
+                    }); // connect to server hub to receive messages
+                }); // load user info
+
+                //get user's task count to display at header
+                $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/" + encodeURIComponent(APP_CONFIG.dbschema) + "/count")
+                    .success(function (data) {
+                        TasksInfo.count = data;
+                    });
+
+                //get user's message count to display at header
+                $http.get(APP_CONFIG.ebaasRootUrl + "/api/messages/count")
+                    .success(function (data) {
+                        myActivityService.MessageModel.count = data;
+                    });
+            },
+            function (err) {
+                $scope.message = err.error_description;
+            });
+        };
+
+        if (!String.format) {
+            String.format = function (format) {
+                var args = Array.prototype.slice.call(arguments, 1);
+                return format.replace(/{(\d+)}/g, function (match, number) {
+                    return typeof args[number] != 'undefined'
+                      ? args[number]
+                      : match
+                    ;
+                });
+            };
+        }
+  
+    }
+
+    app.controller("LoginController", LoginController);
+
+}(angular.module("app.auth")));
+"use strict";
+
+angular.module('app.auth').controller('LogoutController', function ($scope, authService, hubService) {
+    hubService.disconnect();
+    authService.logOut();
+})
+"use strict";
+
+angular.module('app.auth').controller('RegisterController', function ($scope, $location, $timeout, authService) {
+        $scope.savedSuccessfully = false;
+        $scope.message = "";
+
+        $scope.registration = {
+            userName: "",
+            lastName: "",
+            firstName: "",
+            email: "",
+            password: "",
+            confirmPassword: ""
+        };
+
+        $scope.signUp = function () {
+            authService.saveRegistration($scope.registration).then(function (response) {
+
+                $scope.savedSuccessfully = true;
+                $scope.message = "User has been registered successfully, you will be redicted to login page in 2 seconds.";
+                startTimer();
+
+            },
+             function (response) {
+                 var errors = [];
+                 for (var key in response.data.modelState) {
+                     for (var i = 0; i < response.data.modelState[key].length; i++) {
+                         errors.push(response.data.modelState[key][i]);
+                     }
+                 }
+                 $scope.message = "Failed to register user due to:" + errors.join(' ');
+             });
+        };
+
+        var startTimer = function () {
+            var timer = $timeout(function () {
+                $timeout.cancel(timer);
+                $location.path('/login');
+            }, 2000);
+        }
+
+    });
 'use strict';
 
 angular.module('app.appViews').controller('ProjectsDemoCtrl', function ($scope, projects) {
@@ -35618,617 +35953,6 @@ angular.module('app.appViews').controller('ProjectsDemoCtrl', function ($scope, 
             { "data": "tracker" }
         ],
         "order": [[1, 'asc']]
-    }
-});
-'use strict';
-
-angular.module('app.blog').controller('blogGeneralCtrl', function ($scope, $rootScope, $http, $state, $stateParams, APP_CONFIG, User, blogService) {
-    $scope.dbschema = "COMMON";
-    $scope.dbclass = "BlogGroup";
-    $scope.groupName = $stateParams.groupName;
-    $scope.groupId = $stateParams.groupId;
-    $scope.blogClass = "Blog";
-
-    $scope.keywords = "";
-    if ($stateParams.keywords)
-    {
-        $scope.keywords = $stateParams.keywords;
-    }
-
-    if ($stateParams.pageIndex) {
-        $scope.pageIndex = parseInt($stateParams.pageIndex);
-    }
-    else {
-        $scope.pageIndex = 0;
-    }
-
-    // Getting blog groups
-    blogService.getGroups($scope.dbschema, $scope.dbclass, 0, function (data) {
-        $scope.groups = data;
-    });
-
-    // Getting blogs
-    blogService.getBlogs($scope.dbschema, $scope.dbclass, $scope.groupId, $scope.blogClass, 0, function (result) {
-        $scope.blogs = result.data;
-        $scope.numOfPages = result.numOfPages;
-        $scope.range = CreateRange($scope.numOfPages);
-    });
-
-    // Getting popular blogs
-    blogService.getPopularBlogs($scope.dbschema, $scope.blogClass, function (data) {
-        $scope.popularblogs = data;
-
-    });
-
-    $scope.reload = function (pageIndex) {
-
-        $scope.pageIndex = pageIndex;
-
-        blogService.getBlogs($scope.dbschema, $scope.dbclass, $scope.groupId, $scope.blogClass, pageIndex, function (result) {
-            $scope.blogs = result.data;
-            $scope.numOfPages = result.numOfPages;
-            $scope.range = CreateRange($scope.numOfPages);
-        });
-    }
-
-    $scope.prev = function () {
-        if ($scope.pageIndex > 0) {
-            var pageIndex = $scope.pageIndex - 1;
-            $scope.pageIndex = pageIndex;
-
-            blogService.getBlogs($scope.dbschema, $scope.dbclass, $scope.groupId, $scope.blogClass, pageIndex, function (result) {
-                $scope.blogs = result.data;
-                $scope.numOfPages = result.numOfPages;
-                $scope.range = CreateRange($scope.numOfPages);
-            });
-        }
-    }
-
-    $scope.next = function () {
-        var pageIndex = $scope.pageIndex + 1;
-        $scope.pageIndex = pageIndex;
-
-        blogService.getBlogs($scope.dbschema, $scope.dbclass, $scope.groupId, $scope.blogClass, pageIndex, function (result) {
-            $scope.blogs = result.data;
-            $scope.numOfPages = result.numOfPages;
-            $scope.range = CreateRange($scope.numOfPages);
-        });
-    }
-
-    $scope.getContentId = function (blog) {
-        return "blog-" + blog.id;
-    }
-
-    $scope.isOwner = function (poster) {
-        if (poster === User.userName) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    $scope.searchBlogs = function () {
-        blogService.searchBlogs($scope.dbschema, $scope.blogClass, $scope.keywords, 0, function (result) {
-            $scope.blogs = result.data;
-            $scope.numOfPages = result.numOfPages;
-            $scope.range = CreateRange($scope.numOfPages);
-        });
-    }
-
-    function CreateRange(numOfPages)
-    {
-        var range = [];
-
-        for (var i = 0; i < numOfPages; i++) {
-            range.push(i);
-        }
-
-        return range;
-    }
-});
-'use strict';
-
-angular.module('app.blog').controller('blogPostCtrl', function ($scope, $rootScope, $http, $state, $stateParams, APP_CONFIG, User, blogService, promisedGroups, promisedImages) {
-
-    $scope.dbschema = "COMMON";
-    $scope.groupClass = "BlogGroup";
-    $scope.dbclass = "Blog";
-    $scope.oid = $stateParams.oid;
-
-    $scope.loading = false;
-
-    $scope.groupList = promisedGroups.data;
-
-    $scope.images = promisedImages.data;
-
-    $scope.showImages = false;
-
-    if ($scope.oid) {
-        // Getting the blog to edit
-        blogService.getBlog($scope.dbschema, $scope.dbclass, $scope.oid, function (data) {
- 
-            $scope.blog = data;
-        });
-    }
-    else
-    {
-        $scope.blog = {};
-
-        var defaultImage = "superbox-full-5.jpg";
-        if ($scope.images.length > 0) {
-            defaultImage = $scope.images[0].name;
-        }
-        $scope.blog.image = "styles/custom/blogs/" + defaultImage; // default image
-    }
-
-    $scope.options = {
-        height: 500,
-        focus: true,
-        toolbar: [
-                ['edit', ['undo', 'redo']],
-                ['headline', ['style']],
-                ['style', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'strikethrough', 'clear']],
-                ['fontface', ['fontname']],
-                ['textsize', ['fontsize']],
-                ['fontclr', ['color']],
-                ['alignment', ['ul', 'ol', 'paragraph', 'lineheight']],
-                ['table', ['table']],
-                ['insert', ['link', 'picture', 'video', 'hr']],
-                ['view', ['fullscreen', 'codeview']]
-        ]
-    };
-
-    $scope.setShowImages = function (status) {
-        $scope.showImages = status;
-    }
-
-    $scope.getPosterImage = function (posterId) {
-        return User.getUserImage(posterId);
-    }
-
-    $scope.getMyImage = function () {
-        return User.image();
-    }
-
-    $scope.getCurrentTime = function () {
-        return new Date().toLocaleString();
-    }
-
-    $scope.getContentId = function (blog) {
-        return "blog-" + blog.id;
-    }
-
-    $scope.Save = function (isPublic) {
-        var model = new Object();
-        model.Poster = User.userName;
-        model.PostTime = new Date();
-        model.IsPublic = isPublic;
-        model.Abstract = $scope.blog.abstract;
-        model.Content = $scope.blog.content;
-        model.Name = $scope.blog.name;
-        model.Image = $scope.blog.image;
-        model.toGroup = $scope.blog.toGroup;
-
-        // add data for a default form
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass;
-        if ($scope.oid) {
-            url += "/" + $scope.oid;
-        }
-
-        $scope.loading = true;
-        $http.post(url, model)
-            .success(function (data) {
-                $scope.loading = false;
-
-                // clear the content
-                //angular.element(document.getElementById("newPost")).summernote('code', "");
-            })
-            .error(function (err) {
-                console.debug("error=" + JSON.stringify(err));
-                $scope.loading = false;
-            });
-
-        if (isPublic)
-        {
-            if ($scope.groupClass) {
-                $state.go('app.blog', { schema: $scope.dbschema, class: $scope.groupClass, groupId: $stateParams.groupId, pageIndex: $stateParams.pageIndex });
-            }
-            else
-            {
-                $state.go('app.myspace', { schema: $scope.dbschema });
-            }
-        }
-    }
-
-    $scope.selectImage = function(imageUrl)
-    {
-        $scope.blog.image = imageUrl;
-    }
-});
-"use strict";
-
-angular.module('app.blog').factory('blogService', function ($http, APP_CONFIG) {
-
-    var convertGroups = function(groupCollection) {
-
-        var id = "ID";
-        var name = "Name";
-        var desc = "Desc";
-        var blogQty = "BlogQty";
-        var icon = "Icon";
-
-        var groups = new Array();
-
-        if (groupCollection) {
-
-            for (var i = 0; i < groupCollection.length; i++) {
-                var group = groupCollection[i];
-
-                var groupItem = new Object();
-
-                groupItem.obj_id = group["obj_id"];
-                groupItem.id = group[id];
-                groupItem.name = group[name];
-                groupItem.desc = group[desc];
-                groupItem.blogQty = group[blogQty];
-                groupItem.icon = group[icon];
-
-                groups.push(groupItem);
-            }
-        }
-
-        return groups;
-    }
-
-    var convertBlogs = function (blogCollection) {
-
-        var id = "ID";
-        var name = "Name";
-        var abstract = "Abstract";
-        var content = "Content";
-        var image = "Image";
-        var poster = "Poster";
-        var posterName = "PosterName";
-        var postTime = "PostTime";
-        var commentQty = "CommentQty";
-        var toGroup = "toGroup";
-
-        var blogs = new Array();
-
-        if (blogCollection) {
-
-            for (var i = 0; i < blogCollection.length; i++) {
-                var blog = blogCollection[i];
-
-                var blogItem = new Object();
-
-                blogItem.obj_id = blog["obj_id"];
-                blogItem.id = blog[id];
-                blogItem.name = blog[name];
-                blogItem.abstract = blog[abstract];
-                blogItem.content = blog[content];
-                if (blog[image])
-                {
-                    blogItem.image = blog[image];
-                }
-                else
-                {
-                    blogItem.image = "styles/custom/blogs/superbox-full-5.jpg";
-                }
-                blogItem.toGroup = blog[toGroup];
-                blogItem.poster = blog[poster];
-                blogItem.posterName = blog[posterName];
-                blogItem.postTime = blog[postTime].substring(0, 10);
-
-                if (blog[commentQty])
-                {
-                    blogItem.commentQty = blog[commentQty];
-                }
-                else
-                {
-                    blogItem.commentQty = 0;
-                }
-
-                blogs.push(blogItem);
-            }
-        }
-
-        return blogs;
-    }
-
-    var convertComments = function (commentCollection) {
-
-        var id = "ID";
-        var content = "Content";
-        var poster = "Poster";
-        var posterName = "PosterName";
-        var postTime = "PostTime";
-
-        var comments = new Array();
-
-        if (commentCollection) {
-
-            for (var i = 0; i < commentCollection.length; i++) {
-                var comment = commentCollection[i];
-
-                var commentItem = new Object();
-
-                commentItem.obj_id = comment["obj_id"];
-                commentItem.id = comment[id];
-                commentItem.content = comment[content];
-                commentItem.poster = comment[poster];
-                commentItem.posterName = comment[posterName];
-                commentItem.postTime = comment[postTime];
-
-                comments.push(commentItem);
-            }
-        }
-
-        return comments;
-    }
-
-    function getBlogGroups(dbschema, groupclass, pageIndex, callback) {
-	    
-	    var pageSize = 10;
-	    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + groupclass + "?view=full&size=" + pageSize;
-	    if (pageIndex) {
-	        var from = pageIndex * pageSize;
-	        url += "&from=" + from;
-	    }
-
-	    $http.get(url).success(function (data) {
-	        callback(convertGroups(data));
-				
-		}).error(function(){
-		    callback([]);
-
-		});
-    }
-
-    function getPopularBlogs(dbschema, blogclass, callback) {
-
-        var pageSize = 10;
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + blogclass + "?size=" + pageSize + "&sortfield=CommentQty&sortreverse=true";
-
-        $http.get(url).success(function (data) {
-            callback(convertBlogs(data));
-
-        }).error(function () {
-            callback([]);
-
-        });
-    }
-
-    function getMyBlogs(dbschema, blogclass, username, callback) {
-
-        var pageSize = 30;
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + blogclass + "?size=" + pageSize + "&filter=['Poster', '=', '" + username + "']";
-
-        $http.get(url).success(function (data) {
-            var result = {};
-            result.data = convertBlogs(data);
-            // get blog count
-            url = APP_CONFIG.ebaasRootUrl + "/api/count/" + encodeURIComponent(dbschema) + "/" + blogclass + "?filter=['Poster', '=', '" + username + "']";
-
-            $http.get(url).success(function (data) {
-                result.numOfPages = Math.ceil(data / pageSize);
-                callback(result);
-            })
-
-        }).error(function () {
-            callback({});
-        });
-    }
-
-    function getBlogByID(dbschema, blogclass, oid, callback) {
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + blogclass + "/" + oid;
-
-        $http.get(url).success(function (data) {
-            if (data) {
-                var array = new Array();
-                array.push(data)
-                array = convertBlogs(array);
-                callback(array[0]);
-            }
-            else
-            {
-                callback(data);
-            }
-
-        }).error(function () {
-            callback([]);
-
-        });
-    }
-
-    function getGroupBlogs(dbschema, groupclass, groupId, blogClass, pageIndex, callback) {
-        var pageSize = 10;
-        var url;
-        if (groupId) {
-            url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + groupclass + "/" + groupId + "/" + blogClass + "?size=" + pageSize;
-        }
-        else
-        {
-            // get blogs withput group id
-            url = APP_CONFIG.ebaasRootUrl + "/api/data/" + dbschema + "/" + blogClass + "?size=" + pageSize;
-        }
-        if (pageIndex) {
-            var from = pageIndex * pageSize;
-            url += "&from=" + from;
-        }
-
-        $http.get(url).success(function (data) {
-            var result = {};
-            result.data = convertBlogs(data);
-            // get blog count
-            if (groupId) {
-                url = APP_CONFIG.ebaasRootUrl + "/api/count/" + encodeURIComponent(dbschema) + "/" + groupclass + "/" + groupId + "/" + blogClass;
-            }
-            else {
-                // get blogs withput group id
-                url = APP_CONFIG.ebaasRootUrl + "/api/count/" + dbschema + "/" + blogClass;
-            }
-
-            $http.get(url).success(function (data) {
-                result.numOfPages = Math.ceil(data / pageSize);
-                callback(result);
-            })
-        }).error(function () {
-            callback({});
-
-        });
-    }
-
-    function searchBlogsWithKeywords(dbschema, blogclass, keywords, pageIndex, callback) {
-        var pageSize = 10;
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + blogclass + "?size=" + pageSize + "&filter=[\"Abstract\", \"contains\",\"" + encodeURIComponent(keywords) + "\"]";
-        if (pageIndex) {
-            var from = pageIndex * pageSize;
-            url += "&from=" + from;
-        }
-
-        $http.get(url).success(function (data) {
-            var result = {};
-            result.data = convertBlogs(data);
-            // get blog count
-            url = APP_CONFIG.ebaasRootUrl + "/api/count/" + encodeURIComponent(dbschema) + "/" + blogclass + "?filter=[\"Abstract\", \"contains\",\"" + encodeURIComponent(keywords) + "\"]";
-
-            $http.get(url).success(function (data) {
-                result.numOfPages = Math.ceil(data / pageSize);
-                callback(result);
-            })
-        }).error(function () {
-            callback({});
-        });
-    }
-
-    function getBlogComments(dbschema, blogclass, blogId, commentClass, pageIndex, callback) {
-        var pageSize = 50;
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + blogclass + "/" + blogId + "/" + commentClass + "?view=full&size=" + pageSize;
-        if (pageIndex) {
-            var from = pageIndex * pageSize;
-            url += "&from=" + from;
-        }
-
-        $http.get(url).success(function (data) {
-            callback(convertComments(data));
-
-        }).error(function () {
-            callback([]);
-
-        });
-    }
-
-    function postBlogComment(dbschema, commentclass, blogPK, comment, callback) {
-        var model = new Object();
-        model.Poster = comment.poster;
-        model.PostTime = comment.postTime;
-        model.Content = comment.content;
-        model.toBlog = blogPK;
-
-        // add data for a default form
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + commentclass;
-
-        $http.post(url, model)
-            .success(function (data) {
-                callback(data);
-            })
-            .error(function (err) {
-            });
-    }
-	
-	return {
-	    getGroups: function (dbschema, groupclass, pageIndex, callback) {
-	        getBlogGroups(dbschema, groupclass, pageIndex, callback);
-	    },
-	    getPopularBlogs: function (dbschema, blogclass, callback) {
-	        getPopularBlogs(dbschema, blogclass, callback);
-	    },
-	    getMyBlogs: function (dbschema, blogclass, username, callback) {
-	        getMyBlogs(dbschema, blogclass, username, callback);
-	    },
-	    searchBlogs: function (dbschema, blogclass, keywords, pageIndex, callback) {
-	        searchBlogsWithKeywords(dbschema, blogclass, keywords, pageIndex, callback);
-	    },
-	    getBlog: function (dbschema, blogclass, oid, callback) {
-	        getBlogByID(dbschema, blogclass, oid, callback);
-	    },
-	    getBlogs: function (dbschema, groupclass, groupId, blogClass, pageIndex, callback) {
-	        getGroupBlogs(dbschema, groupclass, groupId, blogClass, pageIndex, callback);
-	    },
-	    getComments: function (dbschema, blogclass, blogId, commentClass, pageIndex, callback) {
-	        getBlogComments(dbschema, blogclass, blogId, commentClass, pageIndex, callback);
-	    },
-	    postComment: function (dbschema, commentclass, blogPK, comment, callback) {
-	        postBlogComment(dbschema, commentclass, blogPK, comment, callback);
-	    }
-	}
-});
-'use strict';
-
-angular.module('app.blog').controller('blogViewCtrl', function ($scope, $state, $stateParams, APP_CONFIG, User, blogService) {
-    $scope.dbschema = "COMMON";
-    $scope.groupClass = "BlogGroup";
-    $scope.blogClass = "Blog";
-    $scope.oid = $stateParams.oid;
-    $scope.commentClass = "Comment";
-
-    $scope.hideComments = false;
-    $scope.comment = "";
-
-    $scope.keywords = "";
-
-    // Getting popular blogs
-    blogService.getPopularBlogs($stateParams.schema, $scope.blogClass, function (data) {
-        $scope.popularblogs = data;
-
-    });
-
-    if ($scope.oid) {
-        // Getting the blog to edit
-        blogService.getBlog($scope.dbschema, $scope.blogClass, $scope.oid, function (data) {
- 
-            $scope.blog = data;
-
-            blogService.getComments($scope.dbschema, $scope.blogClass, $scope.oid, $scope.commentClass, 0, function (data) {
-
-                $scope.blog.comments = data;
-            });
-        });
-    }
-    else
-    {
-        $scope.blog = new Object();
-    }
-
-    $scope.getPosterImage = function (posterId) {
-        return User.getUserImage(posterId);
-    }
-
-    $scope.setHideComments = function (status) {
-        $scope.hideComments = status;
-    }
-
-    $scope.submitComment = function () {
-        var comment = new Object();
-
-        comment.poster = User.userName;
-        comment.postTime = new Date();
-        comment.content = $scope.comment;
-
-        blogService.postComment($scope.dbschema, $scope.commentClass, $scope.blog.id, comment, function (data) {
-            console.debug("post comment completed");
-            $scope.blog.comments.push(comment);
-            $scope.blog.commentQty++;
-
-            $scope.comment = "";
-        });
-    }
-
-    $scope.searchBlogs = function () {
-        $state.go('app.blog', { keywords: $scope.keywords });
     }
 });
 'use strict';
@@ -36871,6 +36595,617 @@ angular.module('app.attachments').factory('loadingInfo', function () {
         }
     }
 });
+'use strict';
+
+angular.module('app.blog').controller('blogGeneralCtrl', function ($scope, $rootScope, $http, $state, $stateParams, APP_CONFIG, User, blogService) {
+    $scope.dbschema = "COMMON";
+    $scope.dbclass = "BlogGroup";
+    $scope.groupName = $stateParams.groupName;
+    $scope.groupId = $stateParams.groupId;
+    $scope.blogClass = "Blog";
+
+    $scope.keywords = "";
+    if ($stateParams.keywords)
+    {
+        $scope.keywords = $stateParams.keywords;
+    }
+
+    if ($stateParams.pageIndex) {
+        $scope.pageIndex = parseInt($stateParams.pageIndex);
+    }
+    else {
+        $scope.pageIndex = 0;
+    }
+
+    // Getting blog groups
+    blogService.getGroups($scope.dbschema, $scope.dbclass, 0, function (data) {
+        $scope.groups = data;
+    });
+
+    // Getting blogs
+    blogService.getBlogs($scope.dbschema, $scope.dbclass, $scope.groupId, $scope.blogClass, 0, function (result) {
+        $scope.blogs = result.data;
+        $scope.numOfPages = result.numOfPages;
+        $scope.range = CreateRange($scope.numOfPages);
+    });
+
+    // Getting popular blogs
+    blogService.getPopularBlogs($scope.dbschema, $scope.blogClass, function (data) {
+        $scope.popularblogs = data;
+
+    });
+
+    $scope.reload = function (pageIndex) {
+
+        $scope.pageIndex = pageIndex;
+
+        blogService.getBlogs($scope.dbschema, $scope.dbclass, $scope.groupId, $scope.blogClass, pageIndex, function (result) {
+            $scope.blogs = result.data;
+            $scope.numOfPages = result.numOfPages;
+            $scope.range = CreateRange($scope.numOfPages);
+        });
+    }
+
+    $scope.prev = function () {
+        if ($scope.pageIndex > 0) {
+            var pageIndex = $scope.pageIndex - 1;
+            $scope.pageIndex = pageIndex;
+
+            blogService.getBlogs($scope.dbschema, $scope.dbclass, $scope.groupId, $scope.blogClass, pageIndex, function (result) {
+                $scope.blogs = result.data;
+                $scope.numOfPages = result.numOfPages;
+                $scope.range = CreateRange($scope.numOfPages);
+            });
+        }
+    }
+
+    $scope.next = function () {
+        var pageIndex = $scope.pageIndex + 1;
+        $scope.pageIndex = pageIndex;
+
+        blogService.getBlogs($scope.dbschema, $scope.dbclass, $scope.groupId, $scope.blogClass, pageIndex, function (result) {
+            $scope.blogs = result.data;
+            $scope.numOfPages = result.numOfPages;
+            $scope.range = CreateRange($scope.numOfPages);
+        });
+    }
+
+    $scope.getContentId = function (blog) {
+        return "blog-" + blog.id;
+    }
+
+    $scope.isOwner = function (poster) {
+        if (poster === User.userName) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    $scope.searchBlogs = function () {
+        blogService.searchBlogs($scope.dbschema, $scope.blogClass, $scope.keywords, 0, function (result) {
+            $scope.blogs = result.data;
+            $scope.numOfPages = result.numOfPages;
+            $scope.range = CreateRange($scope.numOfPages);
+        });
+    }
+
+    function CreateRange(numOfPages)
+    {
+        var range = [];
+
+        for (var i = 0; i < numOfPages; i++) {
+            range.push(i);
+        }
+
+        return range;
+    }
+});
+'use strict';
+
+angular.module('app.blog').controller('blogPostCtrl', function ($scope, $rootScope, $http, $state, $stateParams, APP_CONFIG, User, blogService, promisedGroups, promisedImages) {
+
+    $scope.dbschema = "COMMON";
+    $scope.groupClass = "BlogGroup";
+    $scope.dbclass = "Blog";
+    $scope.oid = $stateParams.oid;
+
+    $scope.loading = false;
+
+    $scope.groupList = promisedGroups.data;
+
+    $scope.images = promisedImages.data;
+
+    $scope.showImages = false;
+
+    if ($scope.oid) {
+        // Getting the blog to edit
+        blogService.getBlog($scope.dbschema, $scope.dbclass, $scope.oid, function (data) {
+ 
+            $scope.blog = data;
+        });
+    }
+    else
+    {
+        $scope.blog = {};
+
+        var defaultImage = "superbox-full-5.jpg";
+        if ($scope.images.length > 0) {
+            defaultImage = $scope.images[0].name;
+        }
+        $scope.blog.image = "styles/custom/blogs/" + defaultImage; // default image
+    }
+
+    $scope.options = {
+        height: 500,
+        focus: true,
+        toolbar: [
+                ['edit', ['undo', 'redo']],
+                ['headline', ['style']],
+                ['style', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'strikethrough', 'clear']],
+                ['fontface', ['fontname']],
+                ['textsize', ['fontsize']],
+                ['fontclr', ['color']],
+                ['alignment', ['ul', 'ol', 'paragraph', 'lineheight']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video', 'hr']],
+                ['view', ['fullscreen', 'codeview']]
+        ]
+    };
+
+    $scope.setShowImages = function (status) {
+        $scope.showImages = status;
+    }
+
+    $scope.getPosterImage = function (posterId) {
+        return User.getUserImage(posterId);
+    }
+
+    $scope.getMyImage = function () {
+        return User.image();
+    }
+
+    $scope.getCurrentTime = function () {
+        return new Date().toLocaleString();
+    }
+
+    $scope.getContentId = function (blog) {
+        return "blog-" + blog.id;
+    }
+
+    $scope.Save = function (isPublic) {
+        var model = new Object();
+        model.Poster = User.userName;
+        model.PostTime = new Date();
+        model.IsPublic = isPublic;
+        model.Abstract = $scope.blog.abstract;
+        model.Content = $scope.blog.content;
+        model.Name = $scope.blog.name;
+        model.Image = $scope.blog.image;
+        model.toGroup = $scope.blog.toGroup;
+
+        // add data for a default form
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass;
+        if ($scope.oid) {
+            url += "/" + $scope.oid;
+        }
+
+        $scope.loading = true;
+        $http.post(url, model)
+            .success(function (data) {
+                $scope.loading = false;
+
+                // clear the content
+                //angular.element(document.getElementById("newPost")).summernote('code', "");
+            })
+            .error(function (err) {
+                console.debug("error=" + JSON.stringify(err));
+                $scope.loading = false;
+            });
+
+        if (isPublic)
+        {
+            if ($scope.groupClass) {
+                $state.go('app.blog', { schema: $scope.dbschema, class: $scope.groupClass, groupId: $stateParams.groupId, pageIndex: $stateParams.pageIndex });
+            }
+            else
+            {
+                $state.go('app.myspace', { schema: $scope.dbschema });
+            }
+        }
+    }
+
+    $scope.selectImage = function(imageUrl)
+    {
+        $scope.blog.image = imageUrl;
+    }
+});
+"use strict";
+
+angular.module('app.blog').factory('blogService', function ($http, APP_CONFIG) {
+
+    var convertGroups = function(groupCollection) {
+
+        var id = "ID";
+        var name = "Name";
+        var desc = "Desc";
+        var blogQty = "BlogQty";
+        var icon = "Icon";
+
+        var groups = new Array();
+
+        if (groupCollection) {
+
+            for (var i = 0; i < groupCollection.length; i++) {
+                var group = groupCollection[i];
+
+                var groupItem = new Object();
+
+                groupItem.obj_id = group["obj_id"];
+                groupItem.id = group[id];
+                groupItem.name = group[name];
+                groupItem.desc = group[desc];
+                groupItem.blogQty = group[blogQty];
+                groupItem.icon = group[icon];
+
+                groups.push(groupItem);
+            }
+        }
+
+        return groups;
+    }
+
+    var convertBlogs = function (blogCollection) {
+
+        var id = "ID";
+        var name = "Name";
+        var abstract = "Abstract";
+        var content = "Content";
+        var image = "Image";
+        var poster = "Poster";
+        var posterName = "PosterName";
+        var postTime = "PostTime";
+        var commentQty = "CommentQty";
+        var toGroup = "toGroup";
+
+        var blogs = new Array();
+
+        if (blogCollection) {
+
+            for (var i = 0; i < blogCollection.length; i++) {
+                var blog = blogCollection[i];
+
+                var blogItem = new Object();
+
+                blogItem.obj_id = blog["obj_id"];
+                blogItem.id = blog[id];
+                blogItem.name = blog[name];
+                blogItem.abstract = blog[abstract];
+                blogItem.content = blog[content];
+                if (blog[image])
+                {
+                    blogItem.image = blog[image];
+                }
+                else
+                {
+                    blogItem.image = "styles/custom/blogs/superbox-full-5.jpg";
+                }
+                blogItem.toGroup = blog[toGroup];
+                blogItem.poster = blog[poster];
+                blogItem.posterName = blog[posterName];
+                blogItem.postTime = blog[postTime].substring(0, 10);
+
+                if (blog[commentQty])
+                {
+                    blogItem.commentQty = blog[commentQty];
+                }
+                else
+                {
+                    blogItem.commentQty = 0;
+                }
+
+                blogs.push(blogItem);
+            }
+        }
+
+        return blogs;
+    }
+
+    var convertComments = function (commentCollection) {
+
+        var id = "ID";
+        var content = "Content";
+        var poster = "Poster";
+        var posterName = "PosterName";
+        var postTime = "PostTime";
+
+        var comments = new Array();
+
+        if (commentCollection) {
+
+            for (var i = 0; i < commentCollection.length; i++) {
+                var comment = commentCollection[i];
+
+                var commentItem = new Object();
+
+                commentItem.obj_id = comment["obj_id"];
+                commentItem.id = comment[id];
+                commentItem.content = comment[content];
+                commentItem.poster = comment[poster];
+                commentItem.posterName = comment[posterName];
+                commentItem.postTime = comment[postTime];
+
+                comments.push(commentItem);
+            }
+        }
+
+        return comments;
+    }
+
+    function getBlogGroups(dbschema, groupclass, pageIndex, callback) {
+	    
+	    var pageSize = 10;
+	    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + groupclass + "?view=full&size=" + pageSize;
+	    if (pageIndex) {
+	        var from = pageIndex * pageSize;
+	        url += "&from=" + from;
+	    }
+
+	    $http.get(url).success(function (data) {
+	        callback(convertGroups(data));
+				
+		}).error(function(){
+		    callback([]);
+
+		});
+    }
+
+    function getPopularBlogs(dbschema, blogclass, callback) {
+
+        var pageSize = 10;
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + blogclass + "?size=" + pageSize + "&sortfield=CommentQty&sortreverse=true";
+
+        $http.get(url).success(function (data) {
+            callback(convertBlogs(data));
+
+        }).error(function () {
+            callback([]);
+
+        });
+    }
+
+    function getMyBlogs(dbschema, blogclass, username, callback) {
+
+        var pageSize = 30;
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + blogclass + "?size=" + pageSize + "&filter=['Poster', '=', '" + username + "']";
+
+        $http.get(url).success(function (data) {
+            var result = {};
+            result.data = convertBlogs(data);
+            // get blog count
+            url = APP_CONFIG.ebaasRootUrl + "/api/count/" + encodeURIComponent(dbschema) + "/" + blogclass + "?filter=['Poster', '=', '" + username + "']";
+
+            $http.get(url).success(function (data) {
+                result.numOfPages = Math.ceil(data / pageSize);
+                callback(result);
+            })
+
+        }).error(function () {
+            callback({});
+        });
+    }
+
+    function getBlogByID(dbschema, blogclass, oid, callback) {
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + blogclass + "/" + oid;
+
+        $http.get(url).success(function (data) {
+            if (data) {
+                var array = new Array();
+                array.push(data)
+                array = convertBlogs(array);
+                callback(array[0]);
+            }
+            else
+            {
+                callback(data);
+            }
+
+        }).error(function () {
+            callback([]);
+
+        });
+    }
+
+    function getGroupBlogs(dbschema, groupclass, groupId, blogClass, pageIndex, callback) {
+        var pageSize = 10;
+        var url;
+        if (groupId) {
+            url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + groupclass + "/" + groupId + "/" + blogClass + "?size=" + pageSize;
+        }
+        else
+        {
+            // get blogs withput group id
+            url = APP_CONFIG.ebaasRootUrl + "/api/data/" + dbschema + "/" + blogClass + "?size=" + pageSize;
+        }
+        if (pageIndex) {
+            var from = pageIndex * pageSize;
+            url += "&from=" + from;
+        }
+
+        $http.get(url).success(function (data) {
+            var result = {};
+            result.data = convertBlogs(data);
+            // get blog count
+            if (groupId) {
+                url = APP_CONFIG.ebaasRootUrl + "/api/count/" + encodeURIComponent(dbschema) + "/" + groupclass + "/" + groupId + "/" + blogClass;
+            }
+            else {
+                // get blogs withput group id
+                url = APP_CONFIG.ebaasRootUrl + "/api/count/" + dbschema + "/" + blogClass;
+            }
+
+            $http.get(url).success(function (data) {
+                result.numOfPages = Math.ceil(data / pageSize);
+                callback(result);
+            })
+        }).error(function () {
+            callback({});
+
+        });
+    }
+
+    function searchBlogsWithKeywords(dbschema, blogclass, keywords, pageIndex, callback) {
+        var pageSize = 10;
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + blogclass + "?size=" + pageSize + "&filter=[\"Abstract\", \"contains\",\"" + encodeURIComponent(keywords) + "\"]";
+        if (pageIndex) {
+            var from = pageIndex * pageSize;
+            url += "&from=" + from;
+        }
+
+        $http.get(url).success(function (data) {
+            var result = {};
+            result.data = convertBlogs(data);
+            // get blog count
+            url = APP_CONFIG.ebaasRootUrl + "/api/count/" + encodeURIComponent(dbschema) + "/" + blogclass + "?filter=[\"Abstract\", \"contains\",\"" + encodeURIComponent(keywords) + "\"]";
+
+            $http.get(url).success(function (data) {
+                result.numOfPages = Math.ceil(data / pageSize);
+                callback(result);
+            })
+        }).error(function () {
+            callback({});
+        });
+    }
+
+    function getBlogComments(dbschema, blogclass, blogId, commentClass, pageIndex, callback) {
+        var pageSize = 50;
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + blogclass + "/" + blogId + "/" + commentClass + "?view=full&size=" + pageSize;
+        if (pageIndex) {
+            var from = pageIndex * pageSize;
+            url += "&from=" + from;
+        }
+
+        $http.get(url).success(function (data) {
+            callback(convertComments(data));
+
+        }).error(function () {
+            callback([]);
+
+        });
+    }
+
+    function postBlogComment(dbschema, commentclass, blogPK, comment, callback) {
+        var model = new Object();
+        model.Poster = comment.poster;
+        model.PostTime = comment.postTime;
+        model.Content = comment.content;
+        model.toBlog = blogPK;
+
+        // add data for a default form
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + commentclass;
+
+        $http.post(url, model)
+            .success(function (data) {
+                callback(data);
+            })
+            .error(function (err) {
+            });
+    }
+	
+	return {
+	    getGroups: function (dbschema, groupclass, pageIndex, callback) {
+	        getBlogGroups(dbschema, groupclass, pageIndex, callback);
+	    },
+	    getPopularBlogs: function (dbschema, blogclass, callback) {
+	        getPopularBlogs(dbschema, blogclass, callback);
+	    },
+	    getMyBlogs: function (dbschema, blogclass, username, callback) {
+	        getMyBlogs(dbschema, blogclass, username, callback);
+	    },
+	    searchBlogs: function (dbschema, blogclass, keywords, pageIndex, callback) {
+	        searchBlogsWithKeywords(dbschema, blogclass, keywords, pageIndex, callback);
+	    },
+	    getBlog: function (dbschema, blogclass, oid, callback) {
+	        getBlogByID(dbschema, blogclass, oid, callback);
+	    },
+	    getBlogs: function (dbschema, groupclass, groupId, blogClass, pageIndex, callback) {
+	        getGroupBlogs(dbschema, groupclass, groupId, blogClass, pageIndex, callback);
+	    },
+	    getComments: function (dbschema, blogclass, blogId, commentClass, pageIndex, callback) {
+	        getBlogComments(dbschema, blogclass, blogId, commentClass, pageIndex, callback);
+	    },
+	    postComment: function (dbschema, commentclass, blogPK, comment, callback) {
+	        postBlogComment(dbschema, commentclass, blogPK, comment, callback);
+	    }
+	}
+});
+'use strict';
+
+angular.module('app.blog').controller('blogViewCtrl', function ($scope, $state, $stateParams, APP_CONFIG, User, blogService) {
+    $scope.dbschema = "COMMON";
+    $scope.groupClass = "BlogGroup";
+    $scope.blogClass = "Blog";
+    $scope.oid = $stateParams.oid;
+    $scope.commentClass = "Comment";
+
+    $scope.hideComments = false;
+    $scope.comment = "";
+
+    $scope.keywords = "";
+
+    // Getting popular blogs
+    blogService.getPopularBlogs($stateParams.schema, $scope.blogClass, function (data) {
+        $scope.popularblogs = data;
+
+    });
+
+    if ($scope.oid) {
+        // Getting the blog to edit
+        blogService.getBlog($scope.dbschema, $scope.blogClass, $scope.oid, function (data) {
+ 
+            $scope.blog = data;
+
+            blogService.getComments($scope.dbschema, $scope.blogClass, $scope.oid, $scope.commentClass, 0, function (data) {
+
+                $scope.blog.comments = data;
+            });
+        });
+    }
+    else
+    {
+        $scope.blog = new Object();
+    }
+
+    $scope.getPosterImage = function (posterId) {
+        return User.getUserImage(posterId);
+    }
+
+    $scope.setHideComments = function (status) {
+        $scope.hideComments = status;
+    }
+
+    $scope.submitComment = function () {
+        var comment = new Object();
+
+        comment.poster = User.userName;
+        comment.postTime = new Date();
+        comment.content = $scope.comment;
+
+        blogService.postComment($scope.dbschema, $scope.commentClass, $scope.blog.id, comment, function (data) {
+            console.debug("post comment completed");
+            $scope.blog.comments.push(comment);
+            $scope.blog.commentQty++;
+
+            $scope.comment = "";
+        });
+    }
+
+    $scope.searchBlogs = function () {
+        $state.go('app.blog', { keywords: $scope.keywords });
+    }
+});
 "use strict";
 
 angular.module('app.bulletinboard').controller('bulletinBoardCtrl', function ($scope, $http, $state, $stateParams, APP_CONFIG, bulletinService) {
@@ -37147,340 +37482,581 @@ angular.module('app.bulletinboard').controller('bulletinViewCtrl', function ($sc
         $scope.post = {};
     }
 });
-"use strict";
+"use strict";	
 
-angular.module("app.auth").factory("authService", function($rootScope, $http, $q, localStorageService, APP_CONFIG) {
+angular.module('app').controller("ActivitiesCtrl", function ActivitiesCtrl($scope, $log, activityService){
 
-    var authServiceFactory = {};
+	$scope.activeTab = 'default';
+	$scope.currentActivityItems = [];
+	
+	// Getting different type of activites
+	activityService.get(function(data){
 
-    var _authentication = {
-        isAuth: false,
-        userName: ""
-    };
+		$scope.activities = data.activities;
+		
+	});
 
-    var _saveRegistration = function(registration) {
 
-        _logOut();
+	$scope.isActive = function(tab){
+		return $scope.activeTab === tab;
+	};
 
-        return $http.post(APP_CONFIG.ebaasRootUrl + '/api/accounts/create', registration).then(function(response) {
-            return response;
-        });
-    };
+	$scope.setTab = function(activityType){
+		$scope.activeTab = activityType;
 
-    var _login = function(loginData) {
+		activityService.getbytype(activityType, function(data) {
 
-        var data = "grant_type=password&username=" + loginData.userName + "&password=" + loginData.password;
+			$scope.currentActivityItems = data.data;
 
-        var deferred = $q.defer();
+		});
 
-        var url = APP_CONFIG.ebaasRootUrl + '/oauth/token';
+	};
 
-        $http.post(url, data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).success(function(response) {
-
-            localStorageService.set('authorizationData', { token: response.access_token, userName: loginData.userName });
-
-            _authentication.isAuth = true;
-            _authentication.userName = loginData.userName;
-
-            deferred.resolve(response);
-
-        }).error(function (err, status) {
-            if (err.error === "invalid_grant")
-            {
-                err.error_description = $rootScope.getWord("Invalid user name or password");
-            }
-            _logOut();
-            deferred.reject(err);
-        });
-
-        return deferred.promise;
-
-    };
-
-    var _logOut = function() {
-
-        localStorageService.remove('authorizationData');
-
-        _authentication.isAuth = false;
-        _authentication.userName = "";
-
-    };
-
-    var _fillAuthData = function() {
-
-        var authData = localStorageService.get('authorizationData');
-        if (authData) {
-            _authentication.isAuth = true;
-            _authentication.userName = authData.userName;
-        }
-
-    }
-
-    authServiceFactory.saveRegistration = _saveRegistration;
-    authServiceFactory.login = _login;
-    authServiceFactory.logOut = _logOut;
-    authServiceFactory.fillAuthData = _fillAuthData;
-    authServiceFactory.authentication = _authentication;
-
-    return authServiceFactory;
 });
-(function (app) {
-    var LoginController = function ($rootScope, $scope, $http, $state, $location, authService, APP_CONFIG, User, TasksInfo, myActivityService, hubService) {
+"use strict";
 
-        $scope.loginData = {
-            userName: "",
-            password: ""
-        };
+// Speed up calls to hasOwnProperty
+var hasOwnProperty = Object.prototype.hasOwnProperty;
 
-        $scope.message = "";
+function isEmpty(obj) {
 
-        $scope.login = function () {
-            authService.login($scope.loginData).then(function (response) {
+    // null and undefined are "empty"
+    if (obj == null) return true;
 
-                if ($rootScope.returnToState) {
-                    $location.path($rootScope.returnToState);
-                } else {
-                    $location.path('/');
-                }
+    // Assume if it has a length property with a non-zero value
+    // that that property is correct.
+    if (obj.length > 0) return false;
+    if (obj.length === 0) return true;
 
-                // load user's info
-                User.load(function () {
-                    hubService.connect(APP_CONFIG.dbschema, function (type, message) {
-                        myActivityService.add(type, message);
-                    }); // connect to server hub to receive messages
-                }); // load user info
-
-                //get user's task count to display at header
-                $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/" + encodeURIComponent(APP_CONFIG.dbschema) + "/count")
-                    .success(function (data) {
-                        TasksInfo.count = data;
-                    });
-
-                //get user's message count to display at header
-                $http.get(APP_CONFIG.ebaasRootUrl + "/api/messages/count")
-                    .success(function (data) {
-                        myActivityService.MessageModel.count = data;
-                    });
-            },
-            function (err) {
-                $scope.message = err.error_description;
-            });
-        };
-
-        if (!String.format) {
-            String.format = function (format) {
-                var args = Array.prototype.slice.call(arguments, 1);
-                return format.replace(/{(\d+)}/g, function (match, number) {
-                    return typeof args[number] != 'undefined'
-                      ? args[number]
-                      : match
-                    ;
-                });
-            };
-        }
-  
+    // Otherwise, does it have any properties of its own?
+    // Note that this doesn't handle
+    // toString and valueOf enumeration bugs in IE < 9
+    for (var key in obj) {
+        if (hasOwnProperty.call(obj, key)) return false;
     }
 
-    app.controller("LoginController", LoginController);
+    return true;
+}
 
-}(angular.module("app.auth")));
+angular.module('app').directive('activitiesDropdownToggle', function($log) {
+
+	var link = function($scope,$element, attrs){
+		var ajax_dropdown = null;
+
+		$element.on('click', function () {
+			var badge = $(this).find('.badge');
+
+            /*
+			if (badge.hasClass('bg-color-red')) {
+
+				badge.removeClass('bg-color-red').text(0);
+
+			}
+            */
+
+			ajax_dropdown = $(this).next('.ajax-dropdown');
+
+			if (!ajax_dropdown.is(':visible')) {
+
+				ajax_dropdown.fadeIn(150);
+
+				$(this).addClass('active');
+
+			}
+			 else {
+				
+				ajax_dropdown.fadeOut(150);
+				
+				$(this).removeClass('active');
+
+			}
+
+		})
+
+		$(document).mouseup(function (e) {
+		    if (ajax_dropdown && !ajax_dropdown.is(e.target) && (ajax_dropdown.has(e.target).length === 0 || isEmpty(e.target))) {
+				ajax_dropdown.fadeOut(150);
+				$element.removeClass('active');
+			}
+		});
+	}
+	
+	return{
+		restrict:'EA',
+		link:link
+	}
+});
 "use strict";
 
-angular.module('app.auth').controller('LogoutController', function ($scope, authService, hubService) {
-    hubService.disconnect();
-    authService.logOut();
-})
+angular.module('app').factory('activityService', function($http, $log, APP_CONFIG) {
+
+	function getActivities(callback){
+
+		$http.get(APP_CONFIG.apiRootUrl + '/activities/activity.json').success(function(data){
+
+			callback(data);
+				
+		}).error(function(){
+
+			$log.log('Error');
+			callback([]);
+
+		});
+
+	}
+
+	function getActivitiesByType(type, callback){
+
+		$http.get(APP_CONFIG.apiRootUrl + '/activities/activity-' + type + '.json').success(function(data){
+
+			callback(data);
+				
+		}).error(function(){
+
+			$log.log('Error');
+			callback([]);
+
+		});
+
+	}
+	
+	return{
+		get:function(callback){
+			getActivities(callback);
+		},
+		getbytype:function(type,callback){
+			getActivitiesByType(type, callback);
+		}
+	}
+});
 "use strict";
 
-angular.module('app.auth').controller('RegisterController', function ($scope, $location, $timeout, authService) {
-        $scope.savedSuccessfully = false;
-        $scope.message = "";
+angular.module('app').factory('Project', function($http, APP_CONFIG){
+    return {
+        list: $http.get(APP_CONFIG.apiRootUrl + '/projects.json')
+    }
+});
+"use strict";
 
-        $scope.registration = {
-            userName: "",
-            lastName: "",
-            firstName: "",
-            email: "",
-            password: "",
-            confirmPassword: ""
-        };
+angular.module('app').directive('recentProjects', function(Project){
+    return {
+        restrict: "EA",
+        replace: true,
+        templateUrl: "app/dashboard/projects/recent-projects.tpl.html",
+        scope: true,
+        link: function(scope, element){
 
-        $scope.signUp = function () {
-            authService.saveRegistration($scope.registration).then(function (response) {
+            Project.list.then(function(response){
+                scope.projects = response.data;
+            });
+            scope.clearProjects = function(){
+                scope.projects = [];
+            }
+        }
+    }
+});
+"use strict";
 
-                $scope.savedSuccessfully = true;
-                $scope.message = "User has been registered successfully, you will be redicted to login page in 2 seconds.";
-                startTimer();
+angular.module('app').controller('TodoCtrl', function ($scope, $timeout, Todo) {
+    $scope.newTodo = undefined;
 
-            },
-             function (response) {
-                 var errors = [];
-                 for (var key in response.data.modelState) {
-                     for (var i = 0; i < response.data.modelState[key].length; i++) {
-                         errors.push(response.data.modelState[key][i]);
-                     }
-                 }
-                 $scope.message = "Failed to register user due to:" + errors.join(' ');
-             });
-        };
+    $scope.states = ['Critical', 'Important', 'Completed'];
 
-        var startTimer = function () {
-            var timer = $timeout(function () {
-                $timeout.cancel(timer);
-                $location.path('/login');
-            }, 2000);
+    $scope.todos = Todo.getList().$object;
+
+    // $scope.$watch('todos', function(){ }, true)
+
+    $scope.toggleAdd = function () {
+        if (!$scope.newTodo) {
+            $scope.newTodo = {
+                state: 'Important'
+            };
+        } else {
+            $scope.newTodo = undefined;
+        }
+    };
+
+    $scope.createTodo = function () {
+        $scope.todos.push($scope.newTodo);
+        $scope.newTodo = undefined;
+        // $scope.newTodo.$save(function (respoonse) {
+        //     $scope.todos.push(respoonse);
+        //     $scope.newTodo = undefined;
+        // });
+    };
+
+    $scope.deleteTodo = function (todo) {
+        todo.remove().then(function () {
+            $scope.todos.splice($scope.todos.indexOf(todo), 1);
+        });
+
+    };
+
+});
+"use strict";
+
+angular.module('app.datacart').controller('addToDataCartCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, CartInfo, dataCartService) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+    $scope.oid = $stateParams.oid;
+
+    $scope.addToCart = function () {
+        var exist = false;
+        var cart = CartInfo.getCart($scope.dbschema, $scope.dbclass);
+        var arrayLength = cart.items.length;
+        for (var i = 0; i < arrayLength; i++) {
+            if (cart.items[i].obj_id === $scope.oid) {
+                exist = true;
+                break;
+            }
         }
 
-    });
+        if (!exist)
+        {
+            dataCartService.getCartItem($stateParams.schema, $stateParams.class, cart.dataViewName, $stateParams.oid, function (data) {
+
+                CartInfo.addToCart($scope.dbschema, $scope.dbclass, data);
+            });
+        }
+ 
+        $modalInstance.dismiss("dismiss");
+    };
+
+    $scope.closeModal = function () {
+        $modalInstance.dismiss("dismiss");
+    };
+});
 "use strict";
 
-angular.module('app.auth').directive('loginInfo', function(User){
+angular.module('app.datacart').controller('dataCartCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, CartInfo, dataCartService, fileManager) {
+
+    $scope.isEmpty = true;
+
+    $scope.selectedTemplate = "0";
+
+    $scope.loading = false;
+
+    var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
+
+    dataCartService.getColumns($stateParams.schema, $stateParams.class, cart.dataViewName, function (data) {
+        
+        $scope.columns = data;
+
+        $scope.rowCollection = cart.items;
+
+        if ($scope.rowCollection.length > 0)
+        {
+            $scope.isEmpty = false;
+        }
+    });
+
+    dataCartService.getReportTemplates($stateParams.schema, $stateParams.class, function (data) {
+        $scope.templates = data;
+    });
+
+    $scope.clearCartItems = function()
+    {
+        CartInfo.clearCart($stateParams.schema, $stateParams.class);
+        $scope.rowCollection = [];
+        $scope.isEmpty = true;
+    }
+
+    $scope.deleteItem = function(oid)
+    {
+        CartInfo.removeFromCart($stateParams.schema, $stateParams.class, oid);
+        var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
+        $scope.rowCollection = cart.items;
+        if (cart.count === 0) {
+            $scope.isEmpty = true;
+        }
+    }
+
+    $scope.compareItems = function()
+    {
+        var objIds = "";
+        var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
+        for (var i = 0; i < cart.items.length; i++)
+        {
+            if (objIds != "")
+            {
+                objIds += ",";
+            }
+
+            objIds += cart.items[i].obj_id;
+        }
+
+        $scope.loading = true;
+        var getFileUrl = APP_CONFIG.apiRootUrl + "/report/" + encodeURIComponent($stateParams.schema) + "/" + $stateParams.class + "?template=" + encodeURIComponent($scope.selectedTemplate) + "&oids=" + objIds;
+
+        fileManager.performDownload(getFileUrl, function () {
+            $scope.loading = false;
+        });
+    }
+
+    $scope.downloadDataPackage = function()
+    {
+        var objIds = "";
+        var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
+        for (var i = 0; i < cart.items.length; i++) {
+            if (objIds != "") {
+                objIds += ",";
+            }
+
+            objIds += cart.items[i].obj_id;
+        }
+
+        $scope.loading = true;
+        var getDataPackageUrl = APP_CONFIG.apiRootUrl + "/export/datapackage/" + encodeURIComponent($stateParams.schema) + "/" + $stateParams.class + "?oids=" + objIds;
+
+        fileManager.performDownload(getDataPackageUrl, function () {
+            $scope.loading = false;
+        });
+    }
+
+    $scope.closeModal = function () {
+        $modalInstance.dismiss("dismiss");
+    };
+});
+"use strict";
+
+angular.module('app.datacart').factory('dataCartService', function ($http, APP_CONFIG) {
+
+    function getColumns(dbschema, dbclass, dbview, callback) {
+        var url;
+        if (dbview) {
+            url = APP_CONFIG.ebaasRootUrl + "/api/metadata/view/" + encodeURIComponent(dbschema) + "/" + dbclass + "?view=" + dbview;
+        }
+        else
+        {
+            url = APP_CONFIG.ebaasRootUrl + "/api/metadata/view/" + encodeURIComponent(dbschema) + "/" + dbclass;
+        }
+
+        $http.get(url).success(function (data) {
+
+            var column;
+            var columns = new Array();
+
+            // data is a JSON Schema for the class
+            var properties = data.properties; // data.properies contains infos of each property of the schema
+
+            var propertyInfo;
+            for (var property in properties) {
+                if (properties.hasOwnProperty(property)) {
+                    propertyInfo = properties[property];
+                    column = new Object();
+                    column.name = property;
+                    column.title = propertyInfo["title"];
+
+                    columns.push(column);
+                }
+            }
+            callback(columns);
+        }).error(function () {
+            callback([]);
+
+        });
+    }
+
+    function getCartItem(dbschema, dbclass, dbview, oid, callback) {
+
+        var url;
+
+        // get data for the items saved in the cart
+        if (dbview) {
+            url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + dbclass + "/" + oid + "?view=" + dbview;
+        }
+        else
+        {
+            url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + dbclass + "/" + oid;
+        }
+        $http.get(url).success(function (data) {
+            callback(data);
+        }).error(function () {
+            callback([]);
+        });
+    }
+
+    function getReportTemplates(dbschema, dbclass, callback) {
+
+        // get data for the items saved in the cart
+        var url = APP_CONFIG.ebaasRootUrl + "/api/report/templates/" + encodeURIComponent(dbschema) + "/" + dbclass;
+
+        $http.get(url).success(function (data) {
+            callback(data);
+        }).error(function () {
+            callback([]);
+        });
+    }
 
     return {
-        restrict: 'A',
-        templateUrl: 'app/auth/directives/login-info.tpl.html',
-        link: function(scope, element){
-            User.initialized.then(function () {
-                scope.user = User
+        getColumns: function (dbschema, dbclass, dbview, callback) {
+            getColumns(dbschema, dbclass, dbview, callback);
+        },
+        getCartItem: function (dbschema, dbclass, dbview, oid, callback) {
+            getCartItem(dbschema, dbclass, dbview, oid, callback);
+        },
+        getReportTemplates: function (dbschema, dbclass, callback) {
+            getReportTemplates(dbschema, dbclass, callback);
+        }
+	}
+});
+"use strict";
+
+angular.module('app.datacart').controller('downloadReportsCtrl', function ($scope, $rootScope, $http, $stateParams, $modalInstance, APP_CONFIG, dataCartService, fileManager, MetaDataCache) {
+
+    $scope.loading = false;
+    $scope.schema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+
+    var key = $scope.schema + $scope.dbclass + "TotalCount";
+    $scope.totalCount = MetaDataCache.getNamedData(key);
+
+    $scope.selectedTemplate = "0";
+
+    dataCartService.getReportTemplates($stateParams.schema, $stateParams.class, function (data) {
+        $scope.templates = data;
+    });
+
+    $scope.generate = function ()
+    {
+        $scope.loading = true;
+        var MaxSize = 10000
+ 
+        if ($scope.totalCount > MaxSize) {
+            BootstrapDialog.show({
+                title: $rootScope.getWord("Info Dialog"),
+                type: BootstrapDialog.TYPE_WARNING,
+                message: $rootScope.getWord("Too Many Rows"),
+                buttons: [{
+                    label: $rootScope.getWord("Cancel"),
+                    action: function (dialog) {
+                        dialog.close();
+                    }
+                }]
+            });
+        }
+        else {
+            var key = $scope.schema + $scope.dbclass + "Filter";
+            var filter = MetaDataCache.getNamedData(key);
+
+            key = $scope.schema + $scope.dbclass + "View";
+
+            var view = MetaDataCache.getNamedData(key);
+
+            var getFileUrl = APP_CONFIG.apiRootUrl + "/report/" + encodeURIComponent($scope.schema) + "/" + $scope.dbclass + "?template=" + encodeURIComponent($scope.selectedTemplate);
+
+            if (view)
+            {
+                getFileUrl += "&view=" + view;
+            }
+            if (filter)
+            {
+                getFileUrl += "&" + filter;
+            }
+
+            fileManager.performDownload(getFileUrl, function () {
+                $scope.loading = false;
             });
         }
     }
-})
 
+    $scope.closeModal = function () {
+        $modalInstance.dismiss("dismiss");
+    };
+});
 
 
 'use strict';
 
-angular.module('app.auth').factory('User', function ($http, $q, APP_CONFIG, authService) {
-    var dfd = $q.defer();
+angular.module('app.datacart').factory('CartInfo', function () {
 
-    function imageExists(image_url) {
+    var CartModels = {};
 
-        var http = new XMLHttpRequest();
+    function _createCartModel()
+    {
+        var cart = new Object();
+        cart.count = 0;
+        cart.items = [];
+        cart.showDataCart = false;
+        cart.dataViewName = undefined;
 
-        http.open('HEAD', image_url, false);
-        http.send();
-
-        return http.status != 404;
+        return cart;
     }
 
-    var UserModel = {
-        initialized: dfd.promise,
-        userName: undefined,
-        picture: undefined,
-        email: undefined,
-        phoneNumber : undefined,
-        password: undefined,
-        confirmPassword: undefined,
-        firstName: undefined,
-        lastName: undefined,
-        displayName : undefined,
-        division: undefined,
-        address: undefined,
-        imageUrl: undefined,
-        pictureChangeTime: undefined,
-        userImageUrls: undefined,
-        load: function(callback)
-        {
-            $http.get(APP_CONFIG.ebaasRootUrl + '/api/accounts/user/' + authService.authentication.userName).then(function (response) {
-                UserModel.userName = response.data.userName;
-                UserModel.email = response.data.email;
-                UserModel.password = response.data.password;
-                UserModel.firstName = response.data.firstName;
-                UserModel.lastName = response.data.lastName;
-                UserModel.displayName = response.data.displayName;
-                UserModel.phoneNumber = response.data.phoneNumber;
-                UserModel.division = response.data.division;
-                UserModel.address = response.data.address;
-                UserModel.imageUrl = undefined;
-                UserModel.userImageUrls = {};
-
-                UserModel.picture = UserModel.userName + ".png";
-
-                dfd.resolve(UserModel);
-
-                if (callback) {
-                    callback();
-                }
-            });
-        },
-        save : function (callback) {
-            var model = {};
-            model.userName = UserModel.userName;
-            model.email = UserModel.email;
-            model.phoneNumber = UserModel.phoneNumber;
-            model.firstName = UserModel.firstName;
-            model.lastName = UserModel.lastName;
-            model.picture = UserModel.picture;
-           
-            $http.post(APP_CONFIG.ebaasRootUrl + '/api/accounts/update', model).success(function (data) {
-                if (callback) {
-                    callback();
-                }
-            });
-        },
-        image : function()
-        {
-            if (!UserModel.imageUrl) {
-                var imageUrl = APP_CONFIG.avatarsUrl + UserModel.picture;
-                if (!imageExists(imageUrl)) {
-                    UserModel.imageUrl = APP_CONFIG.avatarsUrl + "male.png";
-                }
-                else {
-                    UserModel.imageUrl = imageUrl + '?' + UserModel.pictureChangeTime;
-                }
-            }
-            //console.debug(UserModel.imageUrl);
-            return UserModel.imageUrl;
-        },
-        getUserImage: function (userId) {
-            if (UserModel.userImageUrls) {
-                var imageUrl = UserModel.userImageUrls[userId];
-                if (!imageUrl) {
-                    imageUrl = APP_CONFIG.avatarsUrl + userId + ".png";
-                    if (!imageExists(imageUrl)) {
-                        imageUrl = APP_CONFIG.avatarsUrl + "male.png";
-                        UserModel.userImageUrls[userId] = imageUrl;
-                    }
-                    else {
-                        UserModel.userImageUrls[userId] = imageUrl;
-                    }
-                }
-            }
-            else
-            {
-                return APP_CONFIG.avatarsUrl + "male.png";
-            }
-     
-            return imageUrl;
+    function _getCart(dbschema, dbclass) {
+        var cart = CartModels[dbschema + dbclass];
+        if (!cart) {
+            // first time, create a model for the cart
+            cart = _createCartModel();
+            CartModels[dbschema + dbclass] = cart;
         }
-    };
 
-    return UserModel;
+        return cart;
+    }
+
+    function _addToCart(dbschema, dbclass, item) {
+        var cart = CartModels[dbschema + dbclass];
+        if (!cart)
+        {
+            // first time, create a model for the cart
+            cart = _createCartModel();
+            CartModels[dbschema + dbclass] = cart;
+        }
+
+        var arrayLength = cart.items.length;
+        var exist = false;
+        for (var i = 0; i < arrayLength; i++) {
+            if (cart.items[i].obj_id === item.obj_id) {
+                exist = true;
+                break;
+            }
+        }
+
+        if (!exist) {
+            cart.count++;
+
+            cart.items.push(item);
+        }
+    }
+
+    function _removeFromCart(dbschema, dbclass, oid) {
+        var cart = CartModels[dbschema + dbclass];
+        if (cart) {
+            var found = false;
+            var index;
+            if (cart.items.length > 0) {
+                for (var i = 0; i < cart.items.length; i++) {
+                    if (cart.items[i].obj_id === oid) {
+                        found = true;
+                        index = i;
+                        break;
+                    }
+                }
+
+                if (found) {
+                    cart.count--;
+                    cart.items.splice(index, 1);
+                }
+            }
+        }
+    }
+
+    function _clearCart(dbschema, dbclass) {
+        var cart = CartModels[dbschema + dbclass];
+        if (cart) {
+            cart.count = 0;
+            cart.items = [];
+        }
+    }
+
+    return {
+        getCart : _getCart,
+        addToCart: _addToCart,
+        removeFromCart: _removeFromCart,
+        clearCart: _clearCart
+    }
 });
-
-"use strict";
-
-angular.module('app.auth').controller('LoginCtrl', function ($scope, $state, GooglePlus, User, ezfb) {
-
-    $scope.$on('event:google-plus-signin-success', function (event, authResult) {
-        if (authResult.status.method == 'PROMPT') {
-            GooglePlus.getUser().then(function (user) {
-                User.userName = user.name;
-                User.picture = user.picture;
-                $state.go('app.dashboard');
-            });
-        }
-    });
-
-    $scope.$on('event:facebook-signin-success', function (event, authResult) {
-        ezfb.api('/me', function (res) {
-            User.userName = res.name;
-            User.picture = 'https://graph.facebook.com/' + res.id + '/picture';
-            $state.go('app.dashboard');
-        });
-    });
-})
 
 'use strict';
 
@@ -37897,582 +38473,6 @@ angular.module('app.datacatalog').controller('DataTableViewCtrl', function ($con
         return found;
     }
 });
-"use strict";
-
-angular.module('app.datacart').controller('addToDataCartCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, CartInfo, dataCartService) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
-    $scope.oid = $stateParams.oid;
-
-    $scope.addToCart = function () {
-        var exist = false;
-        var cart = CartInfo.getCart($scope.dbschema, $scope.dbclass);
-        var arrayLength = cart.items.length;
-        for (var i = 0; i < arrayLength; i++) {
-            if (cart.items[i].obj_id === $scope.oid) {
-                exist = true;
-                break;
-            }
-        }
-
-        if (!exist)
-        {
-            dataCartService.getCartItem($stateParams.schema, $stateParams.class, cart.dataViewName, $stateParams.oid, function (data) {
-
-                CartInfo.addToCart($scope.dbschema, $scope.dbclass, data);
-            });
-        }
- 
-        $modalInstance.dismiss("dismiss");
-    };
-
-    $scope.closeModal = function () {
-        $modalInstance.dismiss("dismiss");
-    };
-});
-"use strict";
-
-angular.module('app.datacart').controller('dataCartCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, CartInfo, dataCartService, fileManager) {
-
-    $scope.isEmpty = true;
-
-    $scope.selectedTemplate = "0";
-
-    $scope.loading = false;
-
-    var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
-
-    dataCartService.getColumns($stateParams.schema, $stateParams.class, cart.dataViewName, function (data) {
-        
-        $scope.columns = data;
-
-        $scope.rowCollection = cart.items;
-
-        if ($scope.rowCollection.length > 0)
-        {
-            $scope.isEmpty = false;
-        }
-    });
-
-    dataCartService.getReportTemplates($stateParams.schema, $stateParams.class, function (data) {
-        $scope.templates = data;
-    });
-
-    $scope.clearCartItems = function()
-    {
-        CartInfo.clearCart($stateParams.schema, $stateParams.class);
-        $scope.rowCollection = [];
-        $scope.isEmpty = true;
-    }
-
-    $scope.deleteItem = function(oid)
-    {
-        CartInfo.removeFromCart($stateParams.schema, $stateParams.class, oid);
-        var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
-        $scope.rowCollection = cart.items;
-        if (cart.count === 0) {
-            $scope.isEmpty = true;
-        }
-    }
-
-    $scope.compareItems = function()
-    {
-        var objIds = "";
-        var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
-        for (var i = 0; i < cart.items.length; i++)
-        {
-            if (objIds != "")
-            {
-                objIds += ",";
-            }
-
-            objIds += cart.items[i].obj_id;
-        }
-
-        $scope.loading = true;
-        var getFileUrl = APP_CONFIG.apiRootUrl + "/report/" + encodeURIComponent($stateParams.schema) + "/" + $stateParams.class + "?template=" + encodeURIComponent($scope.selectedTemplate) + "&oids=" + objIds;
-
-        fileManager.performDownload(getFileUrl, function () {
-            $scope.loading = false;
-        });
-    }
-
-    $scope.downloadDataPackage = function()
-    {
-        var objIds = "";
-        var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
-        for (var i = 0; i < cart.items.length; i++) {
-            if (objIds != "") {
-                objIds += ",";
-            }
-
-            objIds += cart.items[i].obj_id;
-        }
-
-        $scope.loading = true;
-        var getDataPackageUrl = APP_CONFIG.apiRootUrl + "/export/datapackage/" + encodeURIComponent($stateParams.schema) + "/" + $stateParams.class + "?oids=" + objIds;
-
-        fileManager.performDownload(getDataPackageUrl, function () {
-            $scope.loading = false;
-        });
-    }
-
-    $scope.closeModal = function () {
-        $modalInstance.dismiss("dismiss");
-    };
-});
-"use strict";
-
-angular.module('app.datacart').factory('dataCartService', function ($http, APP_CONFIG) {
-
-    function getColumns(dbschema, dbclass, dbview, callback) {
-        var url;
-        if (dbview) {
-            url = APP_CONFIG.ebaasRootUrl + "/api/metadata/view/" + encodeURIComponent(dbschema) + "/" + dbclass + "?view=" + dbview;
-        }
-        else
-        {
-            url = APP_CONFIG.ebaasRootUrl + "/api/metadata/view/" + encodeURIComponent(dbschema) + "/" + dbclass;
-        }
-
-        $http.get(url).success(function (data) {
-
-            var column;
-            var columns = new Array();
-
-            // data is a JSON Schema for the class
-            var properties = data.properties; // data.properies contains infos of each property of the schema
-
-            var propertyInfo;
-            for (var property in properties) {
-                if (properties.hasOwnProperty(property)) {
-                    propertyInfo = properties[property];
-                    column = new Object();
-                    column.name = property;
-                    column.title = propertyInfo["title"];
-
-                    columns.push(column);
-                }
-            }
-            callback(columns);
-        }).error(function () {
-            callback([]);
-
-        });
-    }
-
-    function getCartItem(dbschema, dbclass, dbview, oid, callback) {
-
-        var url;
-
-        // get data for the items saved in the cart
-        if (dbview) {
-            url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + dbclass + "/" + oid + "?view=" + dbview;
-        }
-        else
-        {
-            url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + dbclass + "/" + oid;
-        }
-        $http.get(url).success(function (data) {
-            callback(data);
-        }).error(function () {
-            callback([]);
-        });
-    }
-
-    function getReportTemplates(dbschema, dbclass, callback) {
-
-        // get data for the items saved in the cart
-        var url = APP_CONFIG.ebaasRootUrl + "/api/report/templates/" + encodeURIComponent(dbschema) + "/" + dbclass;
-
-        $http.get(url).success(function (data) {
-            callback(data);
-        }).error(function () {
-            callback([]);
-        });
-    }
-
-    return {
-        getColumns: function (dbschema, dbclass, dbview, callback) {
-            getColumns(dbschema, dbclass, dbview, callback);
-        },
-        getCartItem: function (dbschema, dbclass, dbview, oid, callback) {
-            getCartItem(dbschema, dbclass, dbview, oid, callback);
-        },
-        getReportTemplates: function (dbschema, dbclass, callback) {
-            getReportTemplates(dbschema, dbclass, callback);
-        }
-	}
-});
-"use strict";
-
-angular.module('app.datacart').controller('downloadReportsCtrl', function ($scope, $rootScope, $http, $stateParams, $modalInstance, APP_CONFIG, dataCartService, fileManager, MetaDataCache) {
-
-    $scope.loading = false;
-    $scope.schema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
-
-    var key = $scope.schema + $scope.dbclass + "TotalCount";
-    $scope.totalCount = MetaDataCache.getNamedData(key);
-
-    $scope.selectedTemplate = "0";
-
-    dataCartService.getReportTemplates($stateParams.schema, $stateParams.class, function (data) {
-        $scope.templates = data;
-    });
-
-    $scope.generate = function ()
-    {
-        $scope.loading = true;
-        var MaxSize = 10000
- 
-        if ($scope.totalCount > MaxSize) {
-            BootstrapDialog.show({
-                title: $rootScope.getWord("Info Dialog"),
-                type: BootstrapDialog.TYPE_WARNING,
-                message: $rootScope.getWord("Too Many Rows"),
-                buttons: [{
-                    label: $rootScope.getWord("Cancel"),
-                    action: function (dialog) {
-                        dialog.close();
-                    }
-                }]
-            });
-        }
-        else {
-            var key = $scope.schema + $scope.dbclass + "Filter";
-            var filter = MetaDataCache.getNamedData(key);
-
-            key = $scope.schema + $scope.dbclass + "View";
-
-            var view = MetaDataCache.getNamedData(key);
-
-            var getFileUrl = APP_CONFIG.apiRootUrl + "/report/" + encodeURIComponent($scope.schema) + "/" + $scope.dbclass + "?template=" + encodeURIComponent($scope.selectedTemplate);
-
-            if (view)
-            {
-                getFileUrl += "&view=" + view;
-            }
-            if (filter)
-            {
-                getFileUrl += "&" + filter;
-            }
-
-            fileManager.performDownload(getFileUrl, function () {
-                $scope.loading = false;
-            });
-        }
-    }
-
-    $scope.closeModal = function () {
-        $modalInstance.dismiss("dismiss");
-    };
-});
-
-
-'use strict';
-
-angular.module('app.datacart').factory('CartInfo', function () {
-
-    var CartModels = {};
-
-    function _createCartModel()
-    {
-        var cart = new Object();
-        cart.count = 0;
-        cart.items = [];
-        cart.showDataCart = false;
-        cart.dataViewName = undefined;
-
-        return cart;
-    }
-
-    function _getCart(dbschema, dbclass) {
-        var cart = CartModels[dbschema + dbclass];
-        if (!cart) {
-            // first time, create a model for the cart
-            cart = _createCartModel();
-            CartModels[dbschema + dbclass] = cart;
-        }
-
-        return cart;
-    }
-
-    function _addToCart(dbschema, dbclass, item) {
-        var cart = CartModels[dbschema + dbclass];
-        if (!cart)
-        {
-            // first time, create a model for the cart
-            cart = _createCartModel();
-            CartModels[dbschema + dbclass] = cart;
-        }
-
-        var arrayLength = cart.items.length;
-        var exist = false;
-        for (var i = 0; i < arrayLength; i++) {
-            if (cart.items[i].obj_id === item.obj_id) {
-                exist = true;
-                break;
-            }
-        }
-
-        if (!exist) {
-            cart.count++;
-
-            cart.items.push(item);
-        }
-    }
-
-    function _removeFromCart(dbschema, dbclass, oid) {
-        var cart = CartModels[dbschema + dbclass];
-        if (cart) {
-            var found = false;
-            var index;
-            if (cart.items.length > 0) {
-                for (var i = 0; i < cart.items.length; i++) {
-                    if (cart.items[i].obj_id === oid) {
-                        found = true;
-                        index = i;
-                        break;
-                    }
-                }
-
-                if (found) {
-                    cart.count--;
-                    cart.items.splice(index, 1);
-                }
-            }
-        }
-    }
-
-    function _clearCart(dbschema, dbclass) {
-        var cart = CartModels[dbschema + dbclass];
-        if (cart) {
-            cart.count = 0;
-            cart.items = [];
-        }
-    }
-
-    return {
-        getCart : _getCart,
-        addToCart: _addToCart,
-        removeFromCart: _removeFromCart,
-        clearCart: _clearCart
-    }
-});
-
-"use strict";	
-
-angular.module('app').controller("ActivitiesCtrl", function ActivitiesCtrl($scope, $log, activityService){
-
-	$scope.activeTab = 'default';
-	$scope.currentActivityItems = [];
-	
-	// Getting different type of activites
-	activityService.get(function(data){
-
-		$scope.activities = data.activities;
-		
-	});
-
-
-	$scope.isActive = function(tab){
-		return $scope.activeTab === tab;
-	};
-
-	$scope.setTab = function(activityType){
-		$scope.activeTab = activityType;
-
-		activityService.getbytype(activityType, function(data) {
-
-			$scope.currentActivityItems = data.data;
-
-		});
-
-	};
-
-});
-"use strict";
-
-// Speed up calls to hasOwnProperty
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-
-function isEmpty(obj) {
-
-    // null and undefined are "empty"
-    if (obj == null) return true;
-
-    // Assume if it has a length property with a non-zero value
-    // that that property is correct.
-    if (obj.length > 0) return false;
-    if (obj.length === 0) return true;
-
-    // Otherwise, does it have any properties of its own?
-    // Note that this doesn't handle
-    // toString and valueOf enumeration bugs in IE < 9
-    for (var key in obj) {
-        if (hasOwnProperty.call(obj, key)) return false;
-    }
-
-    return true;
-}
-
-angular.module('app').directive('activitiesDropdownToggle', function($log) {
-
-	var link = function($scope,$element, attrs){
-		var ajax_dropdown = null;
-
-		$element.on('click', function () {
-			var badge = $(this).find('.badge');
-
-            /*
-			if (badge.hasClass('bg-color-red')) {
-
-				badge.removeClass('bg-color-red').text(0);
-
-			}
-            */
-
-			ajax_dropdown = $(this).next('.ajax-dropdown');
-
-			if (!ajax_dropdown.is(':visible')) {
-
-				ajax_dropdown.fadeIn(150);
-
-				$(this).addClass('active');
-
-			}
-			 else {
-				
-				ajax_dropdown.fadeOut(150);
-				
-				$(this).removeClass('active');
-
-			}
-
-		})
-
-		$(document).mouseup(function (e) {
-		    if (ajax_dropdown && !ajax_dropdown.is(e.target) && (ajax_dropdown.has(e.target).length === 0 || isEmpty(e.target))) {
-				ajax_dropdown.fadeOut(150);
-				$element.removeClass('active');
-			}
-		});
-	}
-	
-	return{
-		restrict:'EA',
-		link:link
-	}
-});
-"use strict";
-
-angular.module('app').factory('activityService', function($http, $log, APP_CONFIG) {
-
-	function getActivities(callback){
-
-		$http.get(APP_CONFIG.apiRootUrl + '/activities/activity.json').success(function(data){
-
-			callback(data);
-				
-		}).error(function(){
-
-			$log.log('Error');
-			callback([]);
-
-		});
-
-	}
-
-	function getActivitiesByType(type, callback){
-
-		$http.get(APP_CONFIG.apiRootUrl + '/activities/activity-' + type + '.json').success(function(data){
-
-			callback(data);
-				
-		}).error(function(){
-
-			$log.log('Error');
-			callback([]);
-
-		});
-
-	}
-	
-	return{
-		get:function(callback){
-			getActivities(callback);
-		},
-		getbytype:function(type,callback){
-			getActivitiesByType(type, callback);
-		}
-	}
-});
-"use strict";
-
-angular.module('app').factory('Project', function($http, APP_CONFIG){
-    return {
-        list: $http.get(APP_CONFIG.apiRootUrl + '/projects.json')
-    }
-});
-"use strict";
-
-angular.module('app').directive('recentProjects', function(Project){
-    return {
-        restrict: "EA",
-        replace: true,
-        templateUrl: "app/dashboard/projects/recent-projects.tpl.html",
-        scope: true,
-        link: function(scope, element){
-
-            Project.list.then(function(response){
-                scope.projects = response.data;
-            });
-            scope.clearProjects = function(){
-                scope.projects = [];
-            }
-        }
-    }
-});
-"use strict";
-
-angular.module('app').controller('TodoCtrl', function ($scope, $timeout, Todo) {
-    $scope.newTodo = undefined;
-
-    $scope.states = ['Critical', 'Important', 'Completed'];
-
-    $scope.todos = Todo.getList().$object;
-
-    // $scope.$watch('todos', function(){ }, true)
-
-    $scope.toggleAdd = function () {
-        if (!$scope.newTodo) {
-            $scope.newTodo = {
-                state: 'Important'
-            };
-        } else {
-            $scope.newTodo = undefined;
-        }
-    };
-
-    $scope.createTodo = function () {
-        $scope.todos.push($scope.newTodo);
-        $scope.newTodo = undefined;
-        // $scope.newTodo.$save(function (respoonse) {
-        //     $scope.todos.push(respoonse);
-        //     $scope.newTodo = undefined;
-        // });
-    };
-
-    $scope.deleteTodo = function (todo) {
-        todo.remove().then(function () {
-            $scope.todos.splice($scope.todos.indexOf(todo), 1);
-        });
-
-    };
-
-});
 'use strict';
 
 angular.module('app.dataImporter').controller('dataImportCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, Upload) {
@@ -38593,6 +38593,206 @@ angular.module('app.dataImporter').controller('dataImportCtrl', function ($scope
             $modalInstance.close("update");
         else
             $modalInstance.dismiss("dismiss");
+    }
+});
+'use strict';
+
+angular.module('app.filemanager').controller('fileManagerCtrl', function ($scope, $rootScope, fileManager, APP_CONFIG, $stateParams) {
+
+    /* jshint validthis:true */
+    var vm = this;
+    vm.title = 'File Manager';
+    vm.files = fileManager.files;
+    vm.uploading = false;
+    vm.previewFile;
+    vm.remove = fileManager.remove;
+    vm.download = fileManager.download;
+    vm.setPreviewFile = setPreviewFile;
+    vm.getWord = getWord;
+
+    $scope.showUpload = false;
+   
+    if (!$stateParams.readonly)
+    {
+        vm.readonly = false;
+    }
+    else
+    {
+        vm.readonly = $stateParams.readonly;
+    }
+
+    fileManager.params.schema = this.dbschema;
+    if (!fileManager.params.schema)
+    {
+        fileManager.params.schema = $stateParams.schema;
+    }
+   
+    fileManager.params.cls = this.dbclass;
+    if (!fileManager.params.cls) {
+        fileManager.params.cls = $stateParams.class;
+    }
+
+    fileManager.params.oid = this.oid;
+    if (!fileManager.params.oid) {
+        fileManager.params.oid = $stateParams.oid;
+    }
+
+    $scope.baseUrl = APP_CONFIG.ebaasRootUrl;
+    if (APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash]) {
+        $scope.baseUrl = APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash];
+    }
+
+    fileManager.params.path = "";
+
+    fileManager.params.api = "api/file"; // Indicating the filemanager is for regular files
+
+    fileManager.params.serviceBase = $scope.baseUrl;
+
+    activate();
+
+    function activate() {
+        fileManager.load();
+    }
+
+    function setPreviewFile(file) {
+        vm.previewFile = file
+    }
+
+    function remove(file) {
+        fileManager.remove(file).then(function () {
+            setPreviewFile();
+        });
+    }
+
+    function getWord(key)
+    {
+        return $rootScope.getWord(key);
+    }
+
+    $scope.uploadFile = function () {
+        $scope.processDropzone();
+    }
+
+    $scope.reset = function () {
+        $scope.resetDropzone();
+    }
+
+    $scope.$on('directory.changedNode', function (event, args) {
+        var path = getPath(args.newNode);
+        path = encodeURIComponent(path);
+       
+        fileManager.params.path = path;
+        fileManager.load();
+    });
+
+    $scope.setShowUpload = function (status) {
+        $scope.showUpload = status;
+    }
+
+    function getPath(node) {
+        var path = "";
+
+        if (node.parent)
+        {
+            var parentPath = getPath(node.parent);
+            if (parentPath)
+            {
+                path = parentPath + "\\" + node.name;
+            }
+            else
+            {
+                path = node.name;
+            }
+        }
+
+        return path;
+    }
+});
+
+'use strict';
+
+angular.module('app.filemanager').controller('fileManagerViewerCtrl', function ($scope, $rootScope, $http, APP_CONFIG, $stateParams) {
+
+    // url to get a directory tree
+    $scope.baseUrl = APP_CONFIG.ebaasRootUrl;
+    if (APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash]) {
+        $scope.baseUrl = APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash];
+    }
+
+    var url = $scope.baseUrl + "/api/file/directory/" + $stateParams.schema + "/" + $stateParams.class + "/" + $stateParams.oid;
+    $http.get(url).then(function (res) {
+
+        var tree = createDirectoryTree(res.data);
+
+        $scope.directoryTree = tree;
+    });
+
+    var createDirectoryTree = function (rootDir) {
+        var roots = [];
+        
+        var root = {};
+        root.name = rootDir.name;
+        root.title = rootDir.name;
+        root.children = [];
+        root.expanded = true;
+        root.parent = undefined;
+        roots.push(root);
+
+        addSubDirs(root, rootDir.subdirs);
+
+        return roots;
+    };
+
+    var addSubDirs = function (parent, subDirs) {
+        var subDir, node;
+
+        for (var i = 0; i < subDirs.length; i += 1) {
+            subDir = subDirs[i];
+            node = {};
+            node.children = [];
+
+            node.name = subDir.name;
+            node.title = subDir.name;
+            node.children = [];
+            node.expanded = true;
+            node.parent = parent;
+
+            parent.children.push(node);
+
+            addSubDirs(node, subDir.subdirs);
+        }
+    };
+
+    $scope.$watch('directory.currentNode', function (newObj, oldObj) {
+        if ($scope.directory && angular.isObject($scope.directory.currentNode)) {
+
+            $rootScope.$broadcast('directory.changedNode', {newNode : newObj});
+        }
+    }, false);
+
+    $scope.createDir = function()
+    {
+
+    }
+});
+
+'use strict';
+
+angular.module('app.filemanager').directive('ebaasFileManager', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/filemanager/views/file-manager.html',
+        replace: true,
+        scope: {},
+        bindToController: {
+            dbschema: '=',
+            dbclass: '=',
+            oid: '='
+        },
+        controllerAs: 'vm',
+        controller: 'fileManagerCtrl',
+        link: function (scope, element, attributes) {
+        }
     }
 });
 'use strict';
@@ -40305,206 +40505,6 @@ angular
   .directive('rowSelect', rowSelect)
 'use strict';
 
-angular.module('app.filemanager').controller('fileManagerCtrl', function ($scope, $rootScope, fileManager, APP_CONFIG, $stateParams) {
-
-    /* jshint validthis:true */
-    var vm = this;
-    vm.title = 'File Manager';
-    vm.files = fileManager.files;
-    vm.uploading = false;
-    vm.previewFile;
-    vm.remove = fileManager.remove;
-    vm.download = fileManager.download;
-    vm.setPreviewFile = setPreviewFile;
-    vm.getWord = getWord;
-
-    $scope.showUpload = false;
-   
-    if (!$stateParams.readonly)
-    {
-        vm.readonly = false;
-    }
-    else
-    {
-        vm.readonly = $stateParams.readonly;
-    }
-
-    fileManager.params.schema = this.dbschema;
-    if (!fileManager.params.schema)
-    {
-        fileManager.params.schema = $stateParams.schema;
-    }
-   
-    fileManager.params.cls = this.dbclass;
-    if (!fileManager.params.cls) {
-        fileManager.params.cls = $stateParams.class;
-    }
-
-    fileManager.params.oid = this.oid;
-    if (!fileManager.params.oid) {
-        fileManager.params.oid = $stateParams.oid;
-    }
-
-    $scope.baseUrl = APP_CONFIG.ebaasRootUrl;
-    if (APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash]) {
-        $scope.baseUrl = APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash];
-    }
-
-    fileManager.params.path = "";
-
-    fileManager.params.api = "api/file"; // Indicating the filemanager is for regular files
-
-    fileManager.params.serviceBase = $scope.baseUrl;
-
-    activate();
-
-    function activate() {
-        fileManager.load();
-    }
-
-    function setPreviewFile(file) {
-        vm.previewFile = file
-    }
-
-    function remove(file) {
-        fileManager.remove(file).then(function () {
-            setPreviewFile();
-        });
-    }
-
-    function getWord(key)
-    {
-        return $rootScope.getWord(key);
-    }
-
-    $scope.uploadFile = function () {
-        $scope.processDropzone();
-    }
-
-    $scope.reset = function () {
-        $scope.resetDropzone();
-    }
-
-    $scope.$on('directory.changedNode', function (event, args) {
-        var path = getPath(args.newNode);
-        path = encodeURIComponent(path);
-       
-        fileManager.params.path = path;
-        fileManager.load();
-    });
-
-    $scope.setShowUpload = function (status) {
-        $scope.showUpload = status;
-    }
-
-    function getPath(node) {
-        var path = "";
-
-        if (node.parent)
-        {
-            var parentPath = getPath(node.parent);
-            if (parentPath)
-            {
-                path = parentPath + "\\" + node.name;
-            }
-            else
-            {
-                path = node.name;
-            }
-        }
-
-        return path;
-    }
-});
-
-'use strict';
-
-angular.module('app.filemanager').controller('fileManagerViewerCtrl', function ($scope, $rootScope, $http, APP_CONFIG, $stateParams) {
-
-    // url to get a directory tree
-    $scope.baseUrl = APP_CONFIG.ebaasRootUrl;
-    if (APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash]) {
-        $scope.baseUrl = APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash];
-    }
-
-    var url = $scope.baseUrl + "/api/file/directory/" + $stateParams.schema + "/" + $stateParams.class + "/" + $stateParams.oid;
-    $http.get(url).then(function (res) {
-
-        var tree = createDirectoryTree(res.data);
-
-        $scope.directoryTree = tree;
-    });
-
-    var createDirectoryTree = function (rootDir) {
-        var roots = [];
-        
-        var root = {};
-        root.name = rootDir.name;
-        root.title = rootDir.name;
-        root.children = [];
-        root.expanded = true;
-        root.parent = undefined;
-        roots.push(root);
-
-        addSubDirs(root, rootDir.subdirs);
-
-        return roots;
-    };
-
-    var addSubDirs = function (parent, subDirs) {
-        var subDir, node;
-
-        for (var i = 0; i < subDirs.length; i += 1) {
-            subDir = subDirs[i];
-            node = {};
-            node.children = [];
-
-            node.name = subDir.name;
-            node.title = subDir.name;
-            node.children = [];
-            node.expanded = true;
-            node.parent = parent;
-
-            parent.children.push(node);
-
-            addSubDirs(node, subDir.subdirs);
-        }
-    };
-
-    $scope.$watch('directory.currentNode', function (newObj, oldObj) {
-        if ($scope.directory && angular.isObject($scope.directory.currentNode)) {
-
-            $rootScope.$broadcast('directory.changedNode', {newNode : newObj});
-        }
-    }, false);
-
-    $scope.createDir = function()
-    {
-
-    }
-});
-
-'use strict';
-
-angular.module('app.filemanager').directive('ebaasFileManager', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/filemanager/views/file-manager.html',
-        replace: true,
-        scope: {},
-        bindToController: {
-            dbschema: '=',
-            dbclass: '=',
-            oid: '='
-        },
-        controllerAs: 'vm',
-        controller: 'fileManagerCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
-'use strict';
-
 angular.module('app.formeditor').controller('formEditorCtrl', function ($scope, $rootScope, $state, APP_CONFIG, $stateParams, formEditorService, $templateCache) {
 
     $scope.dbschema = $stateParams.schema;
@@ -40937,6 +40937,307 @@ angular.module('app.formeditor').controller('openFileCtrl', function ($scope, $r
     }
 });
 
+
+"use strict";
+
+angular.module('app.forms').controller('FormLayoutsCtrl', function($scope, $modal, $log){
+
+    $scope.openModal = function () {
+        var modalInstance = $modal.open({
+            templateUrl: 'app/forms/views/form-layout-modal.html',
+            controller: 'ModalDemoCtrl' 
+        });
+
+        modalInstance.result.then(function () {
+            $log.info('Modal closed at: ' + new Date());
+
+        }, function () {
+            $log.info('Modal dismissed at: ' + new Date());
+        });
+
+
+    };
+
+    $scope.registration = {};
+
+    $scope.$watch('registration.date', function(changed){
+        console.log('registration model changed', $scope.registration)
+    })
+
+
+});
+
+"use strict";
+
+angular.module('app.forms').controller('FormPluginsCtrl', function($scope, $log){
+
+	$scope.editableOptions =  {
+		mode: 'popup',
+		disabled: false
+	};
+
+	$scope.toggleInline = function() {
+		if($scope.editableOptions.mode == 'popup') {
+			$scope.editableOptions.mode = 'inline';
+		}
+		else {
+			$scope.editableOptions.mode = 'popup'
+		}
+	};
+
+	$scope.toggleDisabled = function() {
+		$scope.editableOptions.disabled = !$scope.editableOptions.disabled;
+	};
+
+});
+"use strict";
+
+
+angular.module('app.forms').controller('FormWizardCtrl', function($scope){
+
+    $scope.wizard1CompleteCallback = function(wizardData){
+        console.log('wizard1CompleteCallback', wizardData);
+        $.smallBox({
+            title: "Congratulations! Smart wizard finished",
+            content: "<i class='fa fa-clock-o'></i> <i>1 seconds ago...</i>",
+            color: "#5F895F",
+            iconSmall: "fa fa-check bounce animated",
+            timeout: 4000
+        });
+    };
+
+    $scope.wizard2CompleteCallback = function(wizardData){
+        console.log('wizard2CompleteCallback', wizardData);
+        $.smallBox({
+            title: "Congratulations! Smart fuekux wizard finished",
+            content: "<i class='fa fa-clock-o'></i> <i>1 seconds ago...</i>",
+            color: "#5F895F",
+            iconSmall: "fa fa-check bounce animated",
+            timeout: 4000
+        });
+
+    };
+
+});
+"use strict";
+
+angular.module('app.forms').controller('FormXeditableCtrl', function($scope, $log){
+
+    $scope.username = 'superuser';
+    $scope.firstname = null;
+    $scope.sex = 'not selected';
+    $scope.group = "Admin";
+    $scope.vacation = "25.02.2013";
+    $scope.combodate = "15/05/1984";
+    $scope.event = null;
+    $scope.comments = 'awesome user!';
+    $scope.state2 = 'California';
+    $scope.fruits = 'peach<br/>apple';
+    
+
+    $scope.fruits_data = [
+        {value: 'banana', text: 'banana'},
+        {value: 'peach', text: 'peach'},
+        {value: 'apple', text: 'apple'},
+        {value: 'watermelon', text: 'watermelon'},
+        {value: 'orange', text: 'orange'}]
+    ;
+
+
+    $scope.genders =  [
+        {value: 'not selected', text: 'not selected'},
+        {value: 'Male', text: 'Male'},
+        {value: 'Female', text: 'Female'}
+    ];
+
+    $scope.groups =  [
+        {value: 'Guest', text: 'Guest'},
+        {value: 'Service', text: 'Service'},
+        {value: 'Customer', text: 'Customer'},
+        {value: 'Operator', text: 'Operator'},
+        {value: 'Support', text: 'Support'},
+        {value: 'Admin', text: 'Admin'}
+    ]; 
+
+});
+"use strict";
+
+
+angular.module('app.forms').controller('ImageEditorCtrl', function ($scope) {
+
+    // api tab
+    $scope.apiDemoSelection = [100, 100, 400, 300];
+
+    $scope.apiDemoOptions = {
+        allowSelect: true,
+        allowResize: true,
+        allowMove: true,
+        animate: false
+    };
+
+    $scope.apiRandomSelection = function () {
+        $scope.apiDemoOptions.animate = false;
+        $scope.apiDemoSelection = [
+            Math.round(Math.random() * 600),
+            Math.round(Math.random() * 400),
+            Math.round(Math.random() * 600),
+            Math.round(Math.random() * 400)
+        ]
+    };
+
+    $scope.apiRandomAnimation = function () {
+        $scope.apiDemoOptions.animate = true;
+        $scope.apiDemoSelection = [
+            Math.round(Math.random() * 600),
+            Math.round(Math.random() * 400),
+            Math.round(Math.random() * 600),
+            Math.round(Math.random() * 400)
+        ]
+    };
+
+    $scope.apiReleaseSelection = function () {
+        $scope.apiDemoOptions.animate = true;
+        $scope.apiDemoSelection = 'release';
+    };
+
+
+    $scope.apiToggleDisable = function () {
+        $scope.apiDemoOptions.disabled = !$scope.apiDemoOptions.disabled;
+    };
+
+    $scope.apiToggleDestroy = function () {
+        $scope.apiDemoOptions.destroyed = !$scope.apiDemoOptions.destroyed;
+    };
+
+    $scope.apiDemoShowAspect = false;
+    $scope.apiDemoToggleAspect = function () {
+        $scope.apiDemoShowAspect = !$scope.apiDemoShowAspect;
+        if ($scope.apiDemoShowAspect)
+            $scope.apiDemoOptions.aspectRatio = 4 / 3;
+        else
+            $scope.apiDemoOptions.aspectRatio = 0;
+    };
+
+    $scope.apiDemoShowSizeRestrict = false;
+    $scope.apiDemoToggleSizeRestrict = function () {
+        $scope.apiDemoShowSizeRestrict = !$scope.apiDemoShowSizeRestrict;
+        if ($scope.apiDemoShowSizeRestrict) {
+            $scope.apiDemoOptions.minSizeWidth = 80;
+            $scope.apiDemoOptions.minSizeHeight = 80;
+            $scope.apiDemoOptions.maxSizeWidth = 350;
+            $scope.apiDemoOptions.maxSizeHeight = 350;
+        } else {
+            $scope.apiDemoOptions.minSizeWidth = 0;
+            $scope.apiDemoOptions.minSizeHeight = 0;
+            $scope.apiDemoOptions.maxSizeWidth = 0;
+            $scope.apiDemoOptions.maxSizeHeight = 0;
+        }
+
+    };
+
+
+    $scope.setApiDemoImage = function (image) {
+        $scope.apiDemoImage = image;
+        $scope.apiDemoOptions.src = image.src;
+        $scope.apiDemoOptions.bgOpacity = image.bgOpacity;
+        $scope.apiDemoOptions.outerImage = image.outerImage;
+        $scope.apiRandomAnimation();
+    };
+
+    $scope.apiDemoImages = [
+        {
+            name: 'Lego',
+            src: 'styles/img/superbox/superbox-full-24.jpg',
+            bgOpacity: .6
+        },
+        {
+            name: 'Breakdance',
+            src: 'styles/img/superbox/superbox-full-7.jpg',
+            bgOpacity: .6
+        },
+        {
+            name: 'Dragon Fly',
+            src: 'styles/img/superbox/superbox-full-20.jpg',
+            bgOpacity: 1,
+            outerImage: 'styles/img/superbox/superbox-full-20-bw.jpg'
+        }
+    ];
+
+    $scope.apiDemoImage = $scope.apiDemoImages[1];
+
+    // animations tab
+    $scope.animationsDemoOptions = {
+        bgOpacity: undefined,
+        bgColor: undefined,
+        bgFade: true,
+        shade: false,
+        animate: true
+    };
+    $scope.animationsDemoSelection = undefined;
+    $scope.selections = {
+        1: [217, 122, 382, 284],
+        2: [20, 20, 580, 380],
+        3: [24, 24, 176, 376],
+        4: [347, 165, 550, 355],
+        5: [136, 55, 472, 183],
+        Release: 'release'
+    };
+
+    $scope.opacities = {
+        Low: .2,
+        Mid: .5,
+        High: .8,
+        Full: 1
+    };
+
+    $scope.colors = {
+        R: '#900',
+        B: '#4BB6F0',
+        Y: '#F0B207',
+        G: '#46B81C',
+        W: 'white',
+        K: 'black'
+    };
+
+
+    // styling tab
+
+    $scope.styles = [
+        {
+            name: 'jcrop-light',
+            bgFade: true,
+            animate: true,
+            selection: [130, 65, 130 + 350, 65 + 285],
+            bgColor: 'white',
+            bgOpacity: 0.5
+        },
+        {
+            name: 'jcrop-dark',
+            bgFade: true,
+            animate: true,
+            selection: [130, 65, 130 + 350, 65 + 285],
+            bgColor: 'black',
+            bgOpacity: 0.4
+        },
+        {
+            name: 'jcrop-normal',
+            bgFade: true,
+            animate: true,
+            selection: [130, 65, 130 + 350, 65 + 285],
+            bgColor: 'black',
+            bgOpacity: 0.6
+        }
+    ];
+
+    $scope.demoStyle = $scope.styles[0]
+});
+'use strict'
+
+angular.module('app.forms').controller('ModalDemoCtrl', function($scope, $modalInstance){
+    $scope.closeModal = function(){
+        $modalInstance.dismiss('cancel');
+    }
+});
 'use strict';
 
 angular.module('app.smartforms').directive('ckEditor', function (APP_CONFIG, $stateParams, $compile) {
@@ -40971,63 +41272,6 @@ angular.module('app.smartforms').directive('ckEditor', function (APP_CONFIG, $st
             };
         }
     };
-});
-
-"use strict";
-
-
-angular.module('app.fulltextsearch').controller('searchResultCtrl', function ($scope, $http, $state, $stateParams, APP_CONFIG, searchContext, searchService) {
-
-    $scope.searchCounts = [];
-    $scope.loading = true;
-    searchService.getSearchResultCounts(APP_CONFIG.dbschema, searchContext.searchText, function (counts) {
-
-        $scope.searchCounts = counts;
-        $scope.loading = false;
-
-        if (counts.length == 1) {
-            // show the matched items if there is only one class contains them
-            $state.go('app.smarttables.datagrid', { schema: APP_CONFIG.dbschema, class: counts[0].className, search: 'fulltext' });
-        }
-    });
-
-    $scope.showClassData = function (className) {
-        $state.go('app.smarttables.datagrid', { schema: APP_CONFIG.dbschema, class: className, search: 'fulltext' });
-    }
-});
-"use strict";
-
-angular.module('app.fulltextsearch').factory('searchService', function ($http, APP_CONFIG) {
-
-    function getResultCounts(dbschema, searchtext, callback) {
-      
-        var url = APP_CONFIG.ebaasRootUrl + "/api/search/" + encodeURIComponent(dbschema) + "/counts?searchtext=" + encodeURIComponent(searchtext);
-
-	    $http.get(url).success(function (data) {
-	        callback(data);
-				
-		}).error(function(){
-		    callback([]);
-		});
-    }
-	
-	return {
-	    getSearchResultCounts: function (dbschema, searchtext, callback) {
-	        getResultCounts(dbschema, searchtext, callback);
-	    }
-	}
-});
-
-
-'use strict';
-
-angular.module('app.fulltextsearch').factory('searchContext', function () {
-
-    var SearchContextModel = {
-            searchText: undefined
-        };
-
-    return SearchContextModel;
 });
 
 'use strict';
@@ -41912,543 +42156,311 @@ angular.module('app.galleryview').controller('galleryViewCtrl', function ($scope
         $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
     }
 });
-
 "use strict";
 
-angular.module('app.forms').controller('FormLayoutsCtrl', function($scope, $modal, $log){
+angular.module('app.graphs').controller('FlotCtrl', function ($scope) {
 
-    $scope.openModal = function () {
-        var modalInstance = $modal.open({
-            templateUrl: 'app/forms/views/form-layout-modal.html',
-            controller: 'ModalDemoCtrl' 
+
+    $scope.salesChartData = [
+        [1196463600000, 0],
+        [1196550000000, 0],
+        [1196636400000, 0],
+        [1196722800000, 77],
+        [1196809200000, 3636],
+        [1196895600000, 3575],
+        [1196982000000, 2736],
+        [1197068400000, 1086],
+        [1197154800000, 676],
+        [1197241200000, 1205],
+        [1197327600000, 906],
+        [1197414000000, 710],
+        [1197500400000, 639],
+        [1197586800000, 540],
+        [1197673200000, 435],
+        [1197759600000, 301],
+        [1197846000000, 575],
+        [1197932400000, 481],
+        [1198018800000, 591],
+        [1198105200000, 608],
+        [1198191600000, 459],
+        [1198278000000, 234],
+        [1198364400000, 1352],
+        [1198450800000, 686],
+        [1198537200000, 279],
+        [1198623600000, 449],
+        [1198710000000, 468],
+        [1198796400000, 392],
+        [1198882800000, 282],
+        [1198969200000, 208],
+        [1199055600000, 229],
+        [1199142000000, 177],
+        [1199228400000, 374],
+        [1199314800000, 436],
+        [1199401200000, 404],
+        [1199487600000, 253],
+        [1199574000000, 218],
+        [1199660400000, 476],
+        [1199746800000, 462],
+        [1199833200000, 500],
+        [1199919600000, 700],
+        [1200006000000, 750],
+        [1200092400000, 600],
+        [1200178800000, 500],
+        [1200265200000, 900],
+        [1200351600000, 930],
+        [1200438000000, 1200],
+        [1200524400000, 980],
+        [1200610800000, 950],
+        [1200697200000, 900],
+        [1200783600000, 1000],
+        [1200870000000, 1050],
+        [1200956400000, 1150],
+        [1201042800000, 1100],
+        [1201129200000, 1200],
+        [1201215600000, 1300],
+        [1201302000000, 1700],
+        [1201388400000, 1450],
+        [1201474800000, 1500],
+        [1201561200000, 546],
+        [1201647600000, 614],
+        [1201734000000, 954],
+        [1201820400000, 1700],
+        [1201906800000, 1800],
+        [1201993200000, 1900],
+        [1202079600000, 2000],
+        [1202166000000, 2100],
+        [1202252400000, 2200],
+        [1202338800000, 2300],
+        [1202425200000, 2400],
+        [1202511600000, 2550],
+        [1202598000000, 2600],
+        [1202684400000, 2500],
+        [1202770800000, 2700],
+        [1202857200000, 2750],
+        [1202943600000, 2800],
+        [1203030000000, 3245],
+        [1203116400000, 3345],
+        [1203202800000, 3000],
+        [1203289200000, 3200],
+        [1203375600000, 3300],
+        [1203462000000, 3400],
+        [1203548400000, 3600],
+        [1203634800000, 3700],
+        [1203721200000, 3800],
+        [1203807600000, 4000],
+        [1203894000000, 4500]
+    ]
+        .map(function (item) {
+            return [
+                item[0] + 60 * 60 * 1000,
+                item[1]
+            ]
         });
 
-        modalInstance.result.then(function () {
-            $log.info('Modal closed at: ' + new Date());
-
-        }, function () {
-            $log.info('Modal dismissed at: ' + new Date());
-        });
-
-
-    };
-
-    $scope.registration = {};
-
-    $scope.$watch('registration.date', function(changed){
-        console.log('registration model changed', $scope.registration)
-    })
-
-
-});
-
-"use strict";
-
-angular.module('app.forms').controller('FormPluginsCtrl', function($scope, $log){
-
-	$scope.editableOptions =  {
-		mode: 'popup',
-		disabled: false
-	};
-
-	$scope.toggleInline = function() {
-		if($scope.editableOptions.mode == 'popup') {
-			$scope.editableOptions.mode = 'inline';
-		}
-		else {
-			$scope.editableOptions.mode = 'popup'
-		}
-	};
-
-	$scope.toggleDisabled = function() {
-		$scope.editableOptions.disabled = !$scope.editableOptions.disabled;
-	};
-
-});
-"use strict";
-
-
-angular.module('app.forms').controller('FormWizardCtrl', function($scope){
-
-    $scope.wizard1CompleteCallback = function(wizardData){
-        console.log('wizard1CompleteCallback', wizardData);
-        $.smallBox({
-            title: "Congratulations! Smart wizard finished",
-            content: "<i class='fa fa-clock-o'></i> <i>1 seconds ago...</i>",
-            color: "#5F895F",
-            iconSmall: "fa fa-check bounce animated",
-            timeout: 4000
-        });
-    };
-
-    $scope.wizard2CompleteCallback = function(wizardData){
-        console.log('wizard2CompleteCallback', wizardData);
-        $.smallBox({
-            title: "Congratulations! Smart fuekux wizard finished",
-            content: "<i class='fa fa-clock-o'></i> <i>1 seconds ago...</i>",
-            color: "#5F895F",
-            iconSmall: "fa fa-check bounce animated",
-            timeout: 4000
-        });
-
-    };
-
-});
-"use strict";
-
-angular.module('app.forms').controller('FormXeditableCtrl', function($scope, $log){
-
-    $scope.username = 'superuser';
-    $scope.firstname = null;
-    $scope.sex = 'not selected';
-    $scope.group = "Admin";
-    $scope.vacation = "25.02.2013";
-    $scope.combodate = "15/05/1984";
-    $scope.event = null;
-    $scope.comments = 'awesome user!';
-    $scope.state2 = 'California';
-    $scope.fruits = 'peach<br/>apple';
-    
-
-    $scope.fruits_data = [
-        {value: 'banana', text: 'banana'},
-        {value: 'peach', text: 'peach'},
-        {value: 'apple', text: 'apple'},
-        {value: 'watermelon', text: 'watermelon'},
-        {value: 'orange', text: 'orange'}]
-    ;
-
-
-    $scope.genders =  [
-        {value: 'not selected', text: 'not selected'},
-        {value: 'Male', text: 'Male'},
-        {value: 'Female', text: 'Female'}
-    ];
-
-    $scope.groups =  [
-        {value: 'Guest', text: 'Guest'},
-        {value: 'Service', text: 'Service'},
-        {value: 'Customer', text: 'Customer'},
-        {value: 'Operator', text: 'Operator'},
-        {value: 'Support', text: 'Support'},
-        {value: 'Admin', text: 'Admin'}
-    ]; 
-
-});
-"use strict";
-
-
-angular.module('app.forms').controller('ImageEditorCtrl', function ($scope) {
-
-    // api tab
-    $scope.apiDemoSelection = [100, 100, 400, 300];
-
-    $scope.apiDemoOptions = {
-        allowSelect: true,
-        allowResize: true,
-        allowMove: true,
-        animate: false
-    };
-
-    $scope.apiRandomSelection = function () {
-        $scope.apiDemoOptions.animate = false;
-        $scope.apiDemoSelection = [
-            Math.round(Math.random() * 600),
-            Math.round(Math.random() * 400),
-            Math.round(Math.random() * 600),
-            Math.round(Math.random() * 400)
-        ]
-    };
-
-    $scope.apiRandomAnimation = function () {
-        $scope.apiDemoOptions.animate = true;
-        $scope.apiDemoSelection = [
-            Math.round(Math.random() * 600),
-            Math.round(Math.random() * 400),
-            Math.round(Math.random() * 600),
-            Math.round(Math.random() * 400)
-        ]
-    };
-
-    $scope.apiReleaseSelection = function () {
-        $scope.apiDemoOptions.animate = true;
-        $scope.apiDemoSelection = 'release';
-    };
-
-
-    $scope.apiToggleDisable = function () {
-        $scope.apiDemoOptions.disabled = !$scope.apiDemoOptions.disabled;
-    };
-
-    $scope.apiToggleDestroy = function () {
-        $scope.apiDemoOptions.destroyed = !$scope.apiDemoOptions.destroyed;
-    };
-
-    $scope.apiDemoShowAspect = false;
-    $scope.apiDemoToggleAspect = function () {
-        $scope.apiDemoShowAspect = !$scope.apiDemoShowAspect;
-        if ($scope.apiDemoShowAspect)
-            $scope.apiDemoOptions.aspectRatio = 4 / 3;
-        else
-            $scope.apiDemoOptions.aspectRatio = 0;
-    };
-
-    $scope.apiDemoShowSizeRestrict = false;
-    $scope.apiDemoToggleSizeRestrict = function () {
-        $scope.apiDemoShowSizeRestrict = !$scope.apiDemoShowSizeRestrict;
-        if ($scope.apiDemoShowSizeRestrict) {
-            $scope.apiDemoOptions.minSizeWidth = 80;
-            $scope.apiDemoOptions.minSizeHeight = 80;
-            $scope.apiDemoOptions.maxSizeWidth = 350;
-            $scope.apiDemoOptions.maxSizeHeight = 350;
-        } else {
-            $scope.apiDemoOptions.minSizeWidth = 0;
-            $scope.apiDemoOptions.minSizeHeight = 0;
-            $scope.apiDemoOptions.maxSizeWidth = 0;
-            $scope.apiDemoOptions.maxSizeHeight = 0;
-        }
-
-    };
-
-
-    $scope.setApiDemoImage = function (image) {
-        $scope.apiDemoImage = image;
-        $scope.apiDemoOptions.src = image.src;
-        $scope.apiDemoOptions.bgOpacity = image.bgOpacity;
-        $scope.apiDemoOptions.outerImage = image.outerImage;
-        $scope.apiRandomAnimation();
-    };
-
-    $scope.apiDemoImages = [
-        {
-            name: 'Lego',
-            src: 'styles/img/superbox/superbox-full-24.jpg',
-            bgOpacity: .6
-        },
-        {
-            name: 'Breakdance',
-            src: 'styles/img/superbox/superbox-full-7.jpg',
-            bgOpacity: .6
-        },
-        {
-            name: 'Dragon Fly',
-            src: 'styles/img/superbox/superbox-full-20.jpg',
-            bgOpacity: 1,
-            outerImage: 'styles/img/superbox/superbox-full-20-bw.jpg'
-        }
-    ];
-
-    $scope.apiDemoImage = $scope.apiDemoImages[1];
-
-    // animations tab
-    $scope.animationsDemoOptions = {
-        bgOpacity: undefined,
-        bgColor: undefined,
-        bgFade: true,
-        shade: false,
-        animate: true
-    };
-    $scope.animationsDemoSelection = undefined;
-    $scope.selections = {
-        1: [217, 122, 382, 284],
-        2: [20, 20, 580, 380],
-        3: [24, 24, 176, 376],
-        4: [347, 165, 550, 355],
-        5: [136, 55, 472, 183],
-        Release: 'release'
-    };
-
-    $scope.opacities = {
-        Low: .2,
-        Mid: .5,
-        High: .8,
-        Full: 1
-    };
-
-    $scope.colors = {
-        R: '#900',
-        B: '#4BB6F0',
-        Y: '#F0B207',
-        G: '#46B81C',
-        W: 'white',
-        K: 'black'
-    };
-
-
-    // styling tab
-
-    $scope.styles = [
-        {
-            name: 'jcrop-light',
-            bgFade: true,
-            animate: true,
-            selection: [130, 65, 130 + 350, 65 + 285],
-            bgColor: 'white',
-            bgOpacity: 0.5
-        },
-        {
-            name: 'jcrop-dark',
-            bgFade: true,
-            animate: true,
-            selection: [130, 65, 130 + 350, 65 + 285],
-            bgColor: 'black',
-            bgOpacity: 0.4
-        },
-        {
-            name: 'jcrop-normal',
-            bgFade: true,
-            animate: true,
-            selection: [130, 65, 130 + 350, 65 + 285],
-            bgColor: 'black',
-            bgOpacity: 0.6
-        }
-    ];
-
-    $scope.demoStyle = $scope.styles[0]
-});
-'use strict'
-
-angular.module('app.forms').controller('ModalDemoCtrl', function($scope, $modalInstance){
-    $scope.closeModal = function(){
-        $modalInstance.dismiss('cancel');
-    }
-});
-"use strict";
-
-angular.module('app.layout').controller('helpViewerCtlr', function ($rootScope, $scope, $stateParams, $http, APP_CONFIG) {
-
-    $scope.hash = undefined;
-    $scope.helpDoc = undefined;
-    if ($stateParams.hash) {
-        $scope.hash = $stateParams.hash;
-    }
-
-    if ($scope.hash) {
-        if (!$scope.helpDoc) {
-            $http.get(APP_CONFIG.ebaasRootUrl + "/api/sitemap/help/" + $scope.hash)
-             .success(function (helpDoc) {
-                 $scope.helpDoc = helpDoc;
-
-                 $scope.pdfUrl = "helps/" + $scope.helpDoc;
-             });
-        }
-        else
-        {
-
-            $scope.pdfUrl = "helps/" + $scope.helpDoc;
-        }
-    }
-});
-
-"use strict";
-
-angular.module('app.layout').controller('layoutCtrl', function ($rootScope, $scope) {
-    $scope.IntroOptions = {
-        steps: [
-            {
-                element: '#logo',
-                intro: $rootScope.getWord("ReturnToHomeIntro"),
-                position: 'bottom'
-            },
-            {
-                element: '#activity',
-                intro: $rootScope.getWord("ViewActivitiesIntro"),
-                position: 'bottom'
-            },
-            {
-                element: '#fullscreen',
-                intro: $rootScope.getWord("FullScreenIntro"),
-                position: 'bottom'
-            },
-            {
-                element: '#logout',
-                intro: $rootScope.getWord("LogoutIntro"),
-                position: 'bottom'
-            },
-            {
-                element: '#hide-menu',
-                intro: $rootScope.getWord("HideMenuIntro"),
-                position: 'bottom'
-            },
-            {
-                element: '#my-login-info',
-                intro: $rootScope.getWord("MyLoginInfoIntro"),
-                position: 'bottom'
-            },
-            {
-                element: '#reset-settings',
-                intro: $rootScope.getWord("ResetSettingsIntro"),
-                position: 'bottom'
-            },
-            {
-                element: '#demo-setting',
-                intro: $rootScope.getWord("DemoSettingIntro"),
-                position: 'left'
-            },
-            {
-                element: '#sidemenu',
-                intro: $rootScope.getWord("SidemenuIntro"),
-                position: 'right'
-            },
-            {
-                element: '#minimize-sidemenu',
-                intro: $rootScope.getWord("MinimizeSidemenuIntro"),
-                position: 'right'
-            },
-            {
-                element: '#return-home',
-                intro: $rootScope.getWord("ReturnToHomeIntro"),
-                position: 'bottom'
-            },
-            {
-                element: '#content',
-                intro: $rootScope.getWord("ContentIntro"),
-                position: 'center'
+    $scope.barChartData = _.range(3).map(function (barNum) {
+        return {
+            data: _.range(12).map(function (i) {
+                return [i, parseInt(Math.random() * 30)]
+            }),
+            bars: {
+                show: true,
+                barWidth: 0.2,
+                order: barNum + 1
             }
-        ],
-        nextLabel: $rootScope.getWord("NextStep"),
-        prevLabel: $rootScope.getWord("PreviousStep"),
-        skipLabel: $rootScope.getWord("IntroSkip"),
-        doneLabel: $rootScope.getWord("IntroComplete"),
-    }
+        }
+    });
+
+    $scope.horizontalBarChartData = _.range(3).map(function (barNum) {
+        return {
+            data: _.range(4).map(function (i) {
+                return [i, parseInt(Math.random() * 30)]
+            }),
+            bars: {
+                horizontal: true,
+                show: true,
+                barWidth: 0.2,
+                order: barNum + 1
+            }
+        }
+    });
+
+    $scope.sinChartData = [
+        {
+            data: _.range(16).map(function (i) {
+                return [i, Math.sin(i)];
+            }),
+            label: "sin(x)"
+        },
+        {
+            data: _.range(16).map(function (i) {
+                return [i, Math.cos(i)];
+            }),
+            label: "cos(x)"
+        }
+    ];
+
+
+    // fill chart
+
+    var males = {
+        '15%' : [[2, 88.0], [3, 93.3], [4, 102.0], [5, 108.5], [6, 115.7], [7, 115.6], [8, 124.6], [9, 130.3], [10, 134.3], [11, 141.4], [12, 146.5], [13, 151.7], [14, 159.9], [15, 165.4], [16, 167.8], [17, 168.7], [18, 169.5], [19, 168.0]],
+        '90%' : [[2, 96.8], [3, 105.2], [4, 113.9], [5, 120.8], [6, 127.0], [7, 133.1], [8, 139.1], [9, 143.9], [10, 151.3], [11, 161.1], [12, 164.8], [13, 173.5], [14, 179.0], [15, 182.0], [16, 186.9], [17, 185.2], [18, 186.3], [19, 186.6]],
+        '25%' : [[2, 89.2], [3, 94.9], [4, 104.4], [5, 111.4], [6, 117.5], [7, 120.2], [8, 127.1], [9, 132.9], [10, 136.8], [11, 144.4], [12, 149.5], [13, 154.1], [14, 163.1], [15, 169.2], [16, 170.4], [17, 171.2], [18, 172.4], [19, 170.8]],
+        '10%' : [[2, 86.9], [3, 92.6], [4, 99.9], [5, 107.0], [6, 114.0], [7, 113.5], [8, 123.6], [9, 129.2], [10, 133.0], [11, 140.6], [12, 145.2], [13, 149.7], [14, 158.4], [15, 163.5], [16, 166.9], [17, 167.5], [18, 167.1], [19, 165.3]],
+        'mean' : [[2, 91.9], [3, 98.5], [4, 107.1], [5, 114.4], [6, 120.6], [7, 124.7], [8, 131.1], [9, 136.8], [10, 142.3], [11, 150.0], [12, 154.7], [13, 161.9], [14, 168.7], [15, 173.6], [16, 175.9], [17, 176.6], [18, 176.8], [19, 176.7]],
+        '75%' : [[2, 94.5], [3, 102.1], [4, 110.8], [5, 117.9], [6, 124.0], [7, 129.3], [8, 134.6], [9, 141.4], [10, 147.0], [11, 156.1], [12, 160.3], [13, 168.3], [14, 174.7], [15, 178.0], [16, 180.2], [17, 181.7], [18, 181.3], [19, 182.5]],
+        '85%' : [[2, 96.2], [3, 103.8], [4, 111.8], [5, 119.6], [6, 125.6], [7, 131.5], [8, 138.0], [9, 143.3], [10, 149.3], [11, 159.8], [12, 162.5], [13, 171.3], [14, 177.5], [15, 180.2], [16, 183.8], [17, 183.4], [18, 183.5], [19, 185.5]],
+        '50%' : [[2, 91.9], [3, 98.2], [4, 106.8], [5, 114.6], [6, 120.8], [7, 125.2], [8, 130.3], [9, 137.1], [10, 141.5], [11, 149.4], [12, 153.9], [13, 162.2], [14, 169.0], [15, 174.8], [16, 176.0], [17, 176.8], [18, 176.4], [19, 177.4]]
+    };
+
+    var females = {
+        '15%' : [[2, 84.8], [3, 93.7], [4, 100.6], [5, 105.8], [6, 113.3], [7, 119.3], [8, 124.3], [9, 131.4], [10, 136.9], [11, 143.8], [12, 149.4], [13, 151.2], [14, 152.3], [15, 155.9], [16, 154.7], [17, 157.0], [18, 156.1], [19, 155.4]],
+        '90%' : [[2, 95.6], [3, 104.1], [4, 111.9], [5, 119.6], [6, 127.6], [7, 133.1], [8, 138.7], [9, 147.1], [10, 152.8], [11, 161.3], [12, 166.6], [13, 167.9], [14, 169.3], [15, 170.1], [16, 172.4], [17, 169.2], [18, 171.1], [19, 172.4]],
+        '25%' : [[2, 87.2], [3, 95.9], [4, 101.9], [5, 107.4], [6, 114.8], [7, 121.4], [8, 126.8], [9, 133.4], [10, 138.6], [11, 146.2], [12, 152.0], [13, 153.8], [14, 155.7], [15, 158.4], [16, 157.0], [17, 158.5], [18, 158.4], [19, 158.1]],
+        '10%' : [[2, 84.0], [3, 91.9], [4, 99.2], [5, 105.2], [6, 112.7], [7, 118.0], [8, 123.3], [9, 130.2], [10, 135.0], [11, 141.1], [12, 148.3], [13, 150.0], [14, 150.7], [15, 154.3], [16, 153.6], [17, 155.6], [18, 154.7], [19, 153.1]],
+        'mean' : [[2, 90.2], [3, 98.3], [4, 105.2], [5, 112.2], [6, 119.0], [7, 125.8], [8, 131.3], [9, 138.6], [10, 144.2], [11, 151.3], [12, 156.7], [13, 158.6], [14, 160.5], [15, 162.1], [16, 162.9], [17, 162.2], [18, 163.0], [19, 163.1]],
+        '75%' : [[2, 93.2], [3, 101.5], [4, 107.9], [5, 116.6], [6, 122.8], [7, 129.3], [8, 135.2], [9, 143.7], [10, 148.7], [11, 156.9], [12, 160.8], [13, 163.0], [14, 165.0], [15, 165.8], [16, 168.7], [17, 166.2], [18, 167.6], [19, 168.0]],
+        '85%' : [[2, 94.5], [3, 102.8], [4, 110.4], [5, 119.0], [6, 125.7], [7, 131.5], [8, 137.9], [9, 146.0], [10, 151.3], [11, 159.9], [12, 164.0], [13, 166.5], [14, 167.5], [15, 168.5], [16, 171.5], [17, 168.0], [18, 169.8], [19, 170.3]],
+        '50%' : [[2, 90.2], [3, 98.1], [4, 105.2], [5, 111.7], [6, 118.2], [7, 125.6], [8, 130.5], [9, 138.3], [10, 143.7], [11, 151.4], [12, 156.7], [13, 157.7], [14, 161.0], [15, 162.0], [16, 162.8], [17, 162.2], [18, 162.8], [19, 163.3]]
+    };
+
+    $scope.fillChartData = [{
+        label : 'female mean',
+        data : females['mean'],
+        lines : {
+            show : true
+        },
+        color : "rgb(255,50,50)"
+    }, {
+        id : 'f15%',
+        data : females['15%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : false
+        },
+        color : "rgb(255,50,50)"
+    }, {
+        id : 'f25%',
+        data : females['25%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : 0.2
+        },
+        color : "rgb(255,50,50)",
+        fillBetween : 'f15%'
+    }, {
+        id : 'f50%',
+        data : females['50%'],
+        lines : {
+            show : true,
+            lineWidth : 0.5,
+            fill : 0.4,
+            shadowSize : 0
+        },
+        color : "rgb(255,50,50)",
+        fillBetween : 'f25%'
+    }, {
+        id : 'f75%',
+        data : females['75%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : 0.4
+        },
+        color : "rgb(255,50,50)",
+        fillBetween : 'f50%'
+    }, {
+        id : 'f85%',
+        data : females['85%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : 0.2
+        },
+        color : "rgb(255,50,50)",
+        fillBetween : 'f75%'
+    }, {
+        label : 'male mean',
+        data : males['mean'],
+        lines : {
+            show : true
+        },
+        color : "rgb(50,50,255)"
+    }, {
+        id : 'm15%',
+        data : males['15%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : false
+        },
+        color : "rgb(50,50,255)"
+    }, {
+        id : 'm25%',
+        data : males['25%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : 0.2
+        },
+        color : "rgb(50,50,255)",
+        fillBetween : 'm15%'
+    }, {
+        id : 'm50%',
+        data : males['50%'],
+        lines : {
+            show : true,
+            lineWidth : 0.5,
+            fill : 0.4,
+            shadowSize : 0
+        },
+        color : "rgb(50,50,255)",
+        fillBetween : 'm25%'
+    }, {
+        id : 'm75%',
+        data : males['75%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : 0.4
+        },
+        color : "rgb(50,50,255)",
+        fillBetween : 'm50%'
+    }, {
+        id : 'm85%',
+        data : males['85%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : 0.2
+        },
+        color : "rgb(50,50,255)",
+        fillBetween : 'm75%'
+    }];
+
+
+
+    //
+    $scope.pieChartData = _.range(Math.floor(Math.random() * 10) + 1).map(function(i){
+        return {
+            label : "Series" + (i + 1),
+            data : Math.floor(Math.random() * 100) + 1
+        }
+    });
+
+    var pageviews = [[1, 75], [3, 87], [4, 93], [5, 127], [6, 116], [7, 137], [8, 135], [9, 130], [10, 167], [11, 169], [12, 179], [13, 185], [14, 176], [15, 180], [16, 174], [17, 193], [18, 186], [19, 177], [20, 153], [21, 149], [22, 130], [23, 100], [24, 50]];
+    var visitors = [[1, 65], [3, 50], [4, 73], [5, 100], [6, 95], [7, 103], [8, 111], [9, 97], [10, 125], [11, 100], [12, 95], [13, 141], [14, 126], [15, 131], [16, 146], [17, 158], [18, 160], [19, 151], [20, 125], [21, 110], [22, 100], [23, 85], [24, 37]];
+
+    $scope.siteStatsData = [{
+        data : pageviews,
+        label : "Your pageviews"
+    }, {
+        data : visitors,
+        label : "Site visitors"
+    }];
 });
-
-"use strict";
-
-angular.module('app').controller("LanguagesCtrl",  function LanguagesCtrl($scope, $rootScope, $log, Language){
-
-
-
-
-    $scope.selectLanguage = function(language){
-        $rootScope.currentLanguage = language;
-        
-        Language.getLang(language.key,function(data){
-
-            $rootScope.lang = data;
-            
-        });
-    }
-
- 
-
-});
-"use strict";
-
-angular.module('app').factory('Language', function($http, APP_CONFIG){
-
-	function getLanguage(key, callback) {
-
-		$http.get(APP_CONFIG.apiRootUrl + '/langs/' + key + '.json').success(function(data){
-
-			callback(data);
-			
-		}).error(function(){
-
-			$log.log('Error');
-			callback([]);
-
-		});
-
-	}
-
-	function getLanguages(callback) {
-
-		$http.get(APP_CONFIG.apiRootUrl + '/languages.json').success(function(data){
-
-			callback(data);
-			
-		}).error(function(){
-
-			$log.log('Error');
-			callback([]);
-
-		});
-
-	}
-
-	return {
-		getLang: function(type, callback) {
-			getLanguage(type, callback);
-		},
-		getLanguages:function(callback){
-			getLanguages(callback);
-		}
-	}
-
-});
-"use strict";
-
-angular.module('app').directive('languageSelector', function(Language){
-    return {
-        restrict: "EA",
-        replace: true,
-        templateUrl: "app/layout/language/language-selector.tpl.html",
-        scope: true
-    }
-});
-"use strict";
-
-angular.module('app').directive('toggleShortcut', function($log,$timeout) {
-
-	var initDomEvents = function($element){
-
-		var shortcut_dropdown = $('#shortcut');
-
-		$element.on('click',function(){
-		
-			if (shortcut_dropdown.is(":visible")) {
-				shortcut_buttons_hide();
-			} else {
-				shortcut_buttons_show();
-			}
-
-		})
-
-		shortcut_dropdown.find('a').click(function(e) {
-			e.preventDefault();
-			window.location = $(this).attr('href');
-			setTimeout(shortcut_buttons_hide, 300);
-		});
-
-		
-
-		// SHORTCUT buttons goes away if mouse is clicked outside of the area
-		$(document).mouseup(function(e) {
-			if (shortcut_dropdown && !shortcut_dropdown.is(e.target) && shortcut_dropdown.has(e.target).length === 0) {
-				shortcut_buttons_hide();
-			}
-		});
-
-		// SHORTCUT ANIMATE HIDE
-		function shortcut_buttons_hide() {
-			shortcut_dropdown.animate({
-				height : "hide"
-			}, 300, "easeOutCirc");
-			$('body').removeClass('shortcut-on');
-
-		}
-
-		// SHORTCUT ANIMATE SHOW
-		function shortcut_buttons_show() {
-			shortcut_dropdown.animate({
-				height : "show"
-			}, 200, "easeOutCirc");
-			$('body').addClass('shortcut-on');
-		}
-	}
-
-	var link = function($scope,$element){
-		$timeout(function(){
-			initDomEvents($element);
-		});
-	}
-
-	return{
-		restrict:'EA',
-		link:link
-	}
-})
 "use strict";	
 
 angular.module('app.homepage').controller("myActivitiesCtrl", function ActivitiesCtrl($scope, $log, $state, APP_CONFIG, User, myActivityService) {
@@ -42872,435 +42884,299 @@ angular.module('app.homepage').controller("myTasksController", function Activiti
 	    return APP_CONFIG.dbschema;
 	}
 });
-'use strict';
-
-angular.module('app.logs').controller('changeLogCtrl', function ($scope, $rootScope, APP_CONFIG, logManager, $stateParams) {
-
-    var vm = this;
-    vm.title = 'Log Viewer';
-
-    vm.getWord = getWord;
-
-    logManager.params.dbschema = $stateParams.logschema;
-    logManager.params.dbclass = $stateParams.logclass;
-    logManager.params.oid = $stateParams.logoid;
-    logManager.params.property = $stateParams.logproperty;
-
-    activate();
-
-    function activate() {
-        logManager.load(function (logs) {
-            console.log(logs);
-            vm.logs = logs;
-        });
-    }
-
-    function getWord(key) {
-        return $rootScope.getWord(key);
-    }
-});
-
-'use strict';
-
-angular.module('app.logs').controller('changeLogViewerCtrl', function ($scope, $rootScope, APP_CONFIG, $stateParams, $modalInstance) {
-
-    $scope.dbschema = $stateParams.logschema;
-    $scope.dbclass = $stateParams.logclass;
-    $scope.oid = $stateParams.logoid;
-    $scope.property = $stateParams.logproperty;
+"use strict";
 
 
-    $scope.closeModal = function () {
-        $modalInstance.dismiss("dismiss");
-    };
-});
+angular.module('app.fulltextsearch').controller('searchResultCtrl', function ($scope, $http, $state, $stateParams, APP_CONFIG, searchContext, searchService) {
 
-'use strict';
+    $scope.searchCounts = [];
+    $scope.loading = true;
+    searchService.getSearchResultCounts(APP_CONFIG.dbschema, searchContext.searchText, function (counts) {
 
-angular.module('app.logs').directive('changelog', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/logs/views/change-log.html',
-        replace: true,
-        scope: {},
-        controllerAs: 'vm',
-        controller: 'changeLogCtrl',
-        link: function (scope, element, attributes) {
+        $scope.searchCounts = counts;
+        $scope.loading = false;
+
+        if (counts.length == 1) {
+            // show the matched items if there is only one class contains them
+            $state.go('app.smarttables.datagrid', { schema: APP_CONFIG.dbschema, class: counts[0].className, search: 'fulltext' });
         }
-    }
-});
-'use strict';
+    });
 
-angular.module('app.logs').factory('logManager', function ($q, $http, APP_CONFIG) {
-
-    var service = {
-        logs: [],
-        load: load,
-        status: {
-            uploading: false
-        },
-        params: {
-            dbschema: "",
-            dbclass: "",
-            oid: "",
-            property: ""
-        }
-    };
-
-    return service;
-
-    function load(callback) {
-        service.logs.length = 0;
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/log/" + encodeURIComponent(service.params.dbschema) + "/" + service.params.dbclass + "/" + service.params.oid + "/" + service.params.property;
-
-        $http.get(url).success(function (data) {
-
-            callback(convertLogs(data));
-
-        }).error(function () {
-
-        });
-    }
-
-    function convertLogs(logRecordCollection) {
-
-        var logs = [];
-
-        if (logRecordCollection) {
-
-            for (var i = 0; i < logRecordCollection.length; i++) {
-                var logRecord = logRecordCollection[i];
-
-                var log = {};
-
-                switch (logRecord.actionType)
-                {
-                    case 1:
-                        log.type = "Create";
-                        break;
-
-                    case 2:
-                        log.type = "Modify";
-                        break
-                }
-                
-                log.user = logRecord.userDisplayText;
-                log.time = logRecord.actionTime;
-                log.content = logRecord.actionData;
-
-                logs.push(log);
-            }
-        }
-
-        return logs;
+    $scope.showClassData = function (className) {
+        $state.go('app.smarttables.datagrid', { schema: APP_CONFIG.dbschema, class: className, search: 'fulltext' });
     }
 });
 "use strict";
 
-angular.module('app.graphs').controller('FlotCtrl', function ($scope) {
+angular.module('app.fulltextsearch').factory('searchService', function ($http, APP_CONFIG) {
 
+    function getResultCounts(dbschema, searchtext, callback) {
+      
+        var url = APP_CONFIG.ebaasRootUrl + "/api/search/" + encodeURIComponent(dbschema) + "/counts?searchtext=" + encodeURIComponent(searchtext);
 
-    $scope.salesChartData = [
-        [1196463600000, 0],
-        [1196550000000, 0],
-        [1196636400000, 0],
-        [1196722800000, 77],
-        [1196809200000, 3636],
-        [1196895600000, 3575],
-        [1196982000000, 2736],
-        [1197068400000, 1086],
-        [1197154800000, 676],
-        [1197241200000, 1205],
-        [1197327600000, 906],
-        [1197414000000, 710],
-        [1197500400000, 639],
-        [1197586800000, 540],
-        [1197673200000, 435],
-        [1197759600000, 301],
-        [1197846000000, 575],
-        [1197932400000, 481],
-        [1198018800000, 591],
-        [1198105200000, 608],
-        [1198191600000, 459],
-        [1198278000000, 234],
-        [1198364400000, 1352],
-        [1198450800000, 686],
-        [1198537200000, 279],
-        [1198623600000, 449],
-        [1198710000000, 468],
-        [1198796400000, 392],
-        [1198882800000, 282],
-        [1198969200000, 208],
-        [1199055600000, 229],
-        [1199142000000, 177],
-        [1199228400000, 374],
-        [1199314800000, 436],
-        [1199401200000, 404],
-        [1199487600000, 253],
-        [1199574000000, 218],
-        [1199660400000, 476],
-        [1199746800000, 462],
-        [1199833200000, 500],
-        [1199919600000, 700],
-        [1200006000000, 750],
-        [1200092400000, 600],
-        [1200178800000, 500],
-        [1200265200000, 900],
-        [1200351600000, 930],
-        [1200438000000, 1200],
-        [1200524400000, 980],
-        [1200610800000, 950],
-        [1200697200000, 900],
-        [1200783600000, 1000],
-        [1200870000000, 1050],
-        [1200956400000, 1150],
-        [1201042800000, 1100],
-        [1201129200000, 1200],
-        [1201215600000, 1300],
-        [1201302000000, 1700],
-        [1201388400000, 1450],
-        [1201474800000, 1500],
-        [1201561200000, 546],
-        [1201647600000, 614],
-        [1201734000000, 954],
-        [1201820400000, 1700],
-        [1201906800000, 1800],
-        [1201993200000, 1900],
-        [1202079600000, 2000],
-        [1202166000000, 2100],
-        [1202252400000, 2200],
-        [1202338800000, 2300],
-        [1202425200000, 2400],
-        [1202511600000, 2550],
-        [1202598000000, 2600],
-        [1202684400000, 2500],
-        [1202770800000, 2700],
-        [1202857200000, 2750],
-        [1202943600000, 2800],
-        [1203030000000, 3245],
-        [1203116400000, 3345],
-        [1203202800000, 3000],
-        [1203289200000, 3200],
-        [1203375600000, 3300],
-        [1203462000000, 3400],
-        [1203548400000, 3600],
-        [1203634800000, 3700],
-        [1203721200000, 3800],
-        [1203807600000, 4000],
-        [1203894000000, 4500]
-    ]
-        .map(function (item) {
-            return [
-                item[0] + 60 * 60 * 1000,
-                item[1]
-            ]
-        });
-
-    $scope.barChartData = _.range(3).map(function (barNum) {
-        return {
-            data: _.range(12).map(function (i) {
-                return [i, parseInt(Math.random() * 30)]
-            }),
-            bars: {
-                show: true,
-                barWidth: 0.2,
-                order: barNum + 1
-            }
-        }
-    });
-
-    $scope.horizontalBarChartData = _.range(3).map(function (barNum) {
-        return {
-            data: _.range(4).map(function (i) {
-                return [i, parseInt(Math.random() * 30)]
-            }),
-            bars: {
-                horizontal: true,
-                show: true,
-                barWidth: 0.2,
-                order: barNum + 1
-            }
-        }
-    });
-
-    $scope.sinChartData = [
-        {
-            data: _.range(16).map(function (i) {
-                return [i, Math.sin(i)];
-            }),
-            label: "sin(x)"
-        },
-        {
-            data: _.range(16).map(function (i) {
-                return [i, Math.cos(i)];
-            }),
-            label: "cos(x)"
-        }
-    ];
-
-
-    // fill chart
-
-    var males = {
-        '15%' : [[2, 88.0], [3, 93.3], [4, 102.0], [5, 108.5], [6, 115.7], [7, 115.6], [8, 124.6], [9, 130.3], [10, 134.3], [11, 141.4], [12, 146.5], [13, 151.7], [14, 159.9], [15, 165.4], [16, 167.8], [17, 168.7], [18, 169.5], [19, 168.0]],
-        '90%' : [[2, 96.8], [3, 105.2], [4, 113.9], [5, 120.8], [6, 127.0], [7, 133.1], [8, 139.1], [9, 143.9], [10, 151.3], [11, 161.1], [12, 164.8], [13, 173.5], [14, 179.0], [15, 182.0], [16, 186.9], [17, 185.2], [18, 186.3], [19, 186.6]],
-        '25%' : [[2, 89.2], [3, 94.9], [4, 104.4], [5, 111.4], [6, 117.5], [7, 120.2], [8, 127.1], [9, 132.9], [10, 136.8], [11, 144.4], [12, 149.5], [13, 154.1], [14, 163.1], [15, 169.2], [16, 170.4], [17, 171.2], [18, 172.4], [19, 170.8]],
-        '10%' : [[2, 86.9], [3, 92.6], [4, 99.9], [5, 107.0], [6, 114.0], [7, 113.5], [8, 123.6], [9, 129.2], [10, 133.0], [11, 140.6], [12, 145.2], [13, 149.7], [14, 158.4], [15, 163.5], [16, 166.9], [17, 167.5], [18, 167.1], [19, 165.3]],
-        'mean' : [[2, 91.9], [3, 98.5], [4, 107.1], [5, 114.4], [6, 120.6], [7, 124.7], [8, 131.1], [9, 136.8], [10, 142.3], [11, 150.0], [12, 154.7], [13, 161.9], [14, 168.7], [15, 173.6], [16, 175.9], [17, 176.6], [18, 176.8], [19, 176.7]],
-        '75%' : [[2, 94.5], [3, 102.1], [4, 110.8], [5, 117.9], [6, 124.0], [7, 129.3], [8, 134.6], [9, 141.4], [10, 147.0], [11, 156.1], [12, 160.3], [13, 168.3], [14, 174.7], [15, 178.0], [16, 180.2], [17, 181.7], [18, 181.3], [19, 182.5]],
-        '85%' : [[2, 96.2], [3, 103.8], [4, 111.8], [5, 119.6], [6, 125.6], [7, 131.5], [8, 138.0], [9, 143.3], [10, 149.3], [11, 159.8], [12, 162.5], [13, 171.3], [14, 177.5], [15, 180.2], [16, 183.8], [17, 183.4], [18, 183.5], [19, 185.5]],
-        '50%' : [[2, 91.9], [3, 98.2], [4, 106.8], [5, 114.6], [6, 120.8], [7, 125.2], [8, 130.3], [9, 137.1], [10, 141.5], [11, 149.4], [12, 153.9], [13, 162.2], [14, 169.0], [15, 174.8], [16, 176.0], [17, 176.8], [18, 176.4], [19, 177.4]]
-    };
-
-    var females = {
-        '15%' : [[2, 84.8], [3, 93.7], [4, 100.6], [5, 105.8], [6, 113.3], [7, 119.3], [8, 124.3], [9, 131.4], [10, 136.9], [11, 143.8], [12, 149.4], [13, 151.2], [14, 152.3], [15, 155.9], [16, 154.7], [17, 157.0], [18, 156.1], [19, 155.4]],
-        '90%' : [[2, 95.6], [3, 104.1], [4, 111.9], [5, 119.6], [6, 127.6], [7, 133.1], [8, 138.7], [9, 147.1], [10, 152.8], [11, 161.3], [12, 166.6], [13, 167.9], [14, 169.3], [15, 170.1], [16, 172.4], [17, 169.2], [18, 171.1], [19, 172.4]],
-        '25%' : [[2, 87.2], [3, 95.9], [4, 101.9], [5, 107.4], [6, 114.8], [7, 121.4], [8, 126.8], [9, 133.4], [10, 138.6], [11, 146.2], [12, 152.0], [13, 153.8], [14, 155.7], [15, 158.4], [16, 157.0], [17, 158.5], [18, 158.4], [19, 158.1]],
-        '10%' : [[2, 84.0], [3, 91.9], [4, 99.2], [5, 105.2], [6, 112.7], [7, 118.0], [8, 123.3], [9, 130.2], [10, 135.0], [11, 141.1], [12, 148.3], [13, 150.0], [14, 150.7], [15, 154.3], [16, 153.6], [17, 155.6], [18, 154.7], [19, 153.1]],
-        'mean' : [[2, 90.2], [3, 98.3], [4, 105.2], [5, 112.2], [6, 119.0], [7, 125.8], [8, 131.3], [9, 138.6], [10, 144.2], [11, 151.3], [12, 156.7], [13, 158.6], [14, 160.5], [15, 162.1], [16, 162.9], [17, 162.2], [18, 163.0], [19, 163.1]],
-        '75%' : [[2, 93.2], [3, 101.5], [4, 107.9], [5, 116.6], [6, 122.8], [7, 129.3], [8, 135.2], [9, 143.7], [10, 148.7], [11, 156.9], [12, 160.8], [13, 163.0], [14, 165.0], [15, 165.8], [16, 168.7], [17, 166.2], [18, 167.6], [19, 168.0]],
-        '85%' : [[2, 94.5], [3, 102.8], [4, 110.4], [5, 119.0], [6, 125.7], [7, 131.5], [8, 137.9], [9, 146.0], [10, 151.3], [11, 159.9], [12, 164.0], [13, 166.5], [14, 167.5], [15, 168.5], [16, 171.5], [17, 168.0], [18, 169.8], [19, 170.3]],
-        '50%' : [[2, 90.2], [3, 98.1], [4, 105.2], [5, 111.7], [6, 118.2], [7, 125.6], [8, 130.5], [9, 138.3], [10, 143.7], [11, 151.4], [12, 156.7], [13, 157.7], [14, 161.0], [15, 162.0], [16, 162.8], [17, 162.2], [18, 162.8], [19, 163.3]]
-    };
-
-    $scope.fillChartData = [{
-        label : 'female mean',
-        data : females['mean'],
-        lines : {
-            show : true
-        },
-        color : "rgb(255,50,50)"
-    }, {
-        id : 'f15%',
-        data : females['15%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : false
-        },
-        color : "rgb(255,50,50)"
-    }, {
-        id : 'f25%',
-        data : females['25%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : 0.2
-        },
-        color : "rgb(255,50,50)",
-        fillBetween : 'f15%'
-    }, {
-        id : 'f50%',
-        data : females['50%'],
-        lines : {
-            show : true,
-            lineWidth : 0.5,
-            fill : 0.4,
-            shadowSize : 0
-        },
-        color : "rgb(255,50,50)",
-        fillBetween : 'f25%'
-    }, {
-        id : 'f75%',
-        data : females['75%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : 0.4
-        },
-        color : "rgb(255,50,50)",
-        fillBetween : 'f50%'
-    }, {
-        id : 'f85%',
-        data : females['85%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : 0.2
-        },
-        color : "rgb(255,50,50)",
-        fillBetween : 'f75%'
-    }, {
-        label : 'male mean',
-        data : males['mean'],
-        lines : {
-            show : true
-        },
-        color : "rgb(50,50,255)"
-    }, {
-        id : 'm15%',
-        data : males['15%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : false
-        },
-        color : "rgb(50,50,255)"
-    }, {
-        id : 'm25%',
-        data : males['25%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : 0.2
-        },
-        color : "rgb(50,50,255)",
-        fillBetween : 'm15%'
-    }, {
-        id : 'm50%',
-        data : males['50%'],
-        lines : {
-            show : true,
-            lineWidth : 0.5,
-            fill : 0.4,
-            shadowSize : 0
-        },
-        color : "rgb(50,50,255)",
-        fillBetween : 'm25%'
-    }, {
-        id : 'm75%',
-        data : males['75%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : 0.4
-        },
-        color : "rgb(50,50,255)",
-        fillBetween : 'm50%'
-    }, {
-        id : 'm85%',
-        data : males['85%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : 0.2
-        },
-        color : "rgb(50,50,255)",
-        fillBetween : 'm75%'
-    }];
-
-
-
-    //
-    $scope.pieChartData = _.range(Math.floor(Math.random() * 10) + 1).map(function(i){
-        return {
-            label : "Series" + (i + 1),
-            data : Math.floor(Math.random() * 100) + 1
-        }
-    });
-
-    var pageviews = [[1, 75], [3, 87], [4, 93], [5, 127], [6, 116], [7, 137], [8, 135], [9, 130], [10, 167], [11, 169], [12, 179], [13, 185], [14, 176], [15, 180], [16, 174], [17, 193], [18, 186], [19, 177], [20, 153], [21, 149], [22, 130], [23, 100], [24, 50]];
-    var visitors = [[1, 65], [3, 50], [4, 73], [5, 100], [6, 95], [7, 103], [8, 111], [9, 97], [10, 125], [11, 100], [12, 95], [13, 141], [14, 126], [15, 131], [16, 146], [17, 158], [18, 160], [19, 151], [20, 125], [21, 110], [22, 100], [23, 85], [24, 37]];
-
-    $scope.siteStatsData = [{
-        data : pageviews,
-        label : "Your pageviews"
-    }, {
-        data : visitors,
-        label : "Site visitors"
-    }];
+	    $http.get(url).success(function (data) {
+	        callback(data);
+				
+		}).error(function(){
+		    callback([]);
+		});
+    }
+	
+	return {
+	    getSearchResultCounts: function (dbschema, searchtext, callback) {
+	        getResultCounts(dbschema, searchtext, callback);
+	    }
+	}
 });
+
+
+'use strict';
+
+angular.module('app.fulltextsearch').factory('searchContext', function () {
+
+    var SearchContextModel = {
+            searchText: undefined
+        };
+
+    return SearchContextModel;
+});
+
+"use strict";
+
+angular.module('app.layout').controller('helpViewerCtlr', function ($rootScope, $scope, $stateParams, $http, APP_CONFIG) {
+
+    $scope.hash = undefined;
+    $scope.helpDoc = undefined;
+    if ($stateParams.hash) {
+        $scope.hash = $stateParams.hash;
+    }
+
+    if ($scope.hash) {
+        if (!$scope.helpDoc) {
+            $http.get(APP_CONFIG.ebaasRootUrl + "/api/sitemap/help/" + $scope.hash)
+             .success(function (helpDoc) {
+                 $scope.helpDoc = helpDoc;
+
+                 $scope.pdfUrl = "helps/" + $scope.helpDoc;
+             });
+        }
+        else
+        {
+
+            $scope.pdfUrl = "helps/" + $scope.helpDoc;
+        }
+    }
+});
+
+"use strict";
+
+angular.module('app.layout').controller('layoutCtrl', function ($rootScope, $scope) {
+    $scope.IntroOptions = {
+        steps: [
+            {
+                element: '#logo',
+                intro: $rootScope.getWord("ReturnToHomeIntro"),
+                position: 'bottom'
+            },
+            {
+                element: '#activity',
+                intro: $rootScope.getWord("ViewActivitiesIntro"),
+                position: 'bottom'
+            },
+            {
+                element: '#fullscreen',
+                intro: $rootScope.getWord("FullScreenIntro"),
+                position: 'bottom'
+            },
+            {
+                element: '#logout',
+                intro: $rootScope.getWord("LogoutIntro"),
+                position: 'bottom'
+            },
+            {
+                element: '#hide-menu',
+                intro: $rootScope.getWord("HideMenuIntro"),
+                position: 'bottom'
+            },
+            {
+                element: '#my-login-info',
+                intro: $rootScope.getWord("MyLoginInfoIntro"),
+                position: 'bottom'
+            },
+            {
+                element: '#reset-settings',
+                intro: $rootScope.getWord("ResetSettingsIntro"),
+                position: 'bottom'
+            },
+            {
+                element: '#demo-setting',
+                intro: $rootScope.getWord("DemoSettingIntro"),
+                position: 'left'
+            },
+            {
+                element: '#sidemenu',
+                intro: $rootScope.getWord("SidemenuIntro"),
+                position: 'right'
+            },
+            {
+                element: '#minimize-sidemenu',
+                intro: $rootScope.getWord("MinimizeSidemenuIntro"),
+                position: 'right'
+            },
+            {
+                element: '#return-home',
+                intro: $rootScope.getWord("ReturnToHomeIntro"),
+                position: 'bottom'
+            },
+            {
+                element: '#content',
+                intro: $rootScope.getWord("ContentIntro"),
+                position: 'center'
+            }
+        ],
+        nextLabel: $rootScope.getWord("NextStep"),
+        prevLabel: $rootScope.getWord("PreviousStep"),
+        skipLabel: $rootScope.getWord("IntroSkip"),
+        doneLabel: $rootScope.getWord("IntroComplete"),
+    }
+});
+
+"use strict";
+
+angular.module('app').controller("LanguagesCtrl",  function LanguagesCtrl($scope, $rootScope, $log, Language){
+
+
+
+
+    $scope.selectLanguage = function(language){
+        $rootScope.currentLanguage = language;
+        
+        Language.getLang(language.key,function(data){
+
+            $rootScope.lang = data;
+            
+        });
+    }
+
+ 
+
+});
+"use strict";
+
+angular.module('app').factory('Language', function($http, APP_CONFIG){
+
+	function getLanguage(key, callback) {
+
+		$http.get(APP_CONFIG.apiRootUrl + '/langs/' + key + '.json').success(function(data){
+
+			callback(data);
+			
+		}).error(function(){
+
+			$log.log('Error');
+			callback([]);
+
+		});
+
+	}
+
+	function getLanguages(callback) {
+
+		$http.get(APP_CONFIG.apiRootUrl + '/languages.json').success(function(data){
+
+			callback(data);
+			
+		}).error(function(){
+
+			$log.log('Error');
+			callback([]);
+
+		});
+
+	}
+
+	return {
+		getLang: function(type, callback) {
+			getLanguage(type, callback);
+		},
+		getLanguages:function(callback){
+			getLanguages(callback);
+		}
+	}
+
+});
+"use strict";
+
+angular.module('app').directive('languageSelector', function(Language){
+    return {
+        restrict: "EA",
+        replace: true,
+        templateUrl: "app/layout/language/language-selector.tpl.html",
+        scope: true
+    }
+});
+"use strict";
+
+angular.module('app').directive('toggleShortcut', function($log,$timeout) {
+
+	var initDomEvents = function($element){
+
+		var shortcut_dropdown = $('#shortcut');
+
+		$element.on('click',function(){
+		
+			if (shortcut_dropdown.is(":visible")) {
+				shortcut_buttons_hide();
+			} else {
+				shortcut_buttons_show();
+			}
+
+		})
+
+		shortcut_dropdown.find('a').click(function(e) {
+			e.preventDefault();
+			window.location = $(this).attr('href');
+			setTimeout(shortcut_buttons_hide, 300);
+		});
+
+		
+
+		// SHORTCUT buttons goes away if mouse is clicked outside of the area
+		$(document).mouseup(function(e) {
+			if (shortcut_dropdown && !shortcut_dropdown.is(e.target) && shortcut_dropdown.has(e.target).length === 0) {
+				shortcut_buttons_hide();
+			}
+		});
+
+		// SHORTCUT ANIMATE HIDE
+		function shortcut_buttons_hide() {
+			shortcut_dropdown.animate({
+				height : "hide"
+			}, 300, "easeOutCirc");
+			$('body').removeClass('shortcut-on');
+
+		}
+
+		// SHORTCUT ANIMATE SHOW
+		function shortcut_buttons_show() {
+			shortcut_dropdown.animate({
+				height : "show"
+			}, 200, "easeOutCirc");
+			$('body').addClass('shortcut-on');
+		}
+	}
+
+	var link = function($scope,$element){
+		$timeout(function(){
+			initDomEvents($element);
+		});
+	}
+
+	return{
+		restrict:'EA',
+		link:link
+	}
+})
 "use strict";
 
 angular.module("app.hub").factory("hubService", function($http, $q, localStorageService, APP_CONFIG, User) {
@@ -43379,6 +43255,130 @@ angular.module("app.hub").factory("hubService", function($http, $q, localStorage
     hubServiceFactory.isUserInGroup = _isUserInGroup;
 
     return hubServiceFactory;
+});
+'use strict';
+
+angular.module('app.logs').directive('changelog', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/logs/views/change-log.html',
+        replace: true,
+        scope: {},
+        controllerAs: 'vm',
+        controller: 'changeLogCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
+'use strict';
+
+angular.module('app.logs').controller('changeLogCtrl', function ($scope, $rootScope, APP_CONFIG, logManager, $stateParams) {
+
+    var vm = this;
+    vm.title = 'Log Viewer';
+
+    vm.getWord = getWord;
+
+    logManager.params.dbschema = $stateParams.logschema;
+    logManager.params.dbclass = $stateParams.logclass;
+    logManager.params.oid = $stateParams.logoid;
+    logManager.params.property = $stateParams.logproperty;
+
+    activate();
+
+    function activate() {
+        logManager.load(function (logs) {
+            console.log(logs);
+            vm.logs = logs;
+        });
+    }
+
+    function getWord(key) {
+        return $rootScope.getWord(key);
+    }
+});
+
+'use strict';
+
+angular.module('app.logs').controller('changeLogViewerCtrl', function ($scope, $rootScope, APP_CONFIG, $stateParams, $modalInstance) {
+
+    $scope.dbschema = $stateParams.logschema;
+    $scope.dbclass = $stateParams.logclass;
+    $scope.oid = $stateParams.logoid;
+    $scope.property = $stateParams.logproperty;
+
+
+    $scope.closeModal = function () {
+        $modalInstance.dismiss("dismiss");
+    };
+});
+
+'use strict';
+
+angular.module('app.logs').factory('logManager', function ($q, $http, APP_CONFIG) {
+
+    var service = {
+        logs: [],
+        load: load,
+        status: {
+            uploading: false
+        },
+        params: {
+            dbschema: "",
+            dbclass: "",
+            oid: "",
+            property: ""
+        }
+    };
+
+    return service;
+
+    function load(callback) {
+        service.logs.length = 0;
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/log/" + encodeURIComponent(service.params.dbschema) + "/" + service.params.dbclass + "/" + service.params.oid + "/" + service.params.property;
+
+        $http.get(url).success(function (data) {
+
+            callback(convertLogs(data));
+
+        }).error(function () {
+
+        });
+    }
+
+    function convertLogs(logRecordCollection) {
+
+        var logs = [];
+
+        if (logRecordCollection) {
+
+            for (var i = 0; i < logRecordCollection.length; i++) {
+                var logRecord = logRecordCollection[i];
+
+                var log = {};
+
+                switch (logRecord.actionType)
+                {
+                    case 1:
+                        log.type = "Create";
+                        break;
+
+                    case 2:
+                        log.type = "Modify";
+                        break
+                }
+                
+                log.user = logRecord.userDisplayText;
+                log.time = logRecord.actionTime;
+                log.content = logRecord.actionData;
+
+                logs.push(log);
+            }
+        }
+
+        return logs;
+    }
 });
 'use strict';
 
@@ -43573,6 +43573,325 @@ angular.module('app.mldashboard').controller('MLModelDashboardCtrl', function ($
 
         return labels;
     }
+});
+'use strict';
+
+angular.module('app.smartreports').controller('downloadReportCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $stateParams, $modalInstance, fileManager) {
+ 
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+    $scope.oid = $stateParams.oid;
+    $scope.template = $stateParams.template;
+    $scope.templateAttribute = $stateParams.templateAttribute;
+
+    $scope.baseUrl = APP_CONFIG.ebaasRootUrl;
+    if (APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash])
+    {
+        $scope.baseUrl = APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash];
+    }
+   
+    $scope.loading = false;
+
+    $scope.closeModal = function () {
+        $modalInstance.dismiss("dismiss");
+    };
+
+    $scope.download = function() {
+
+        var getFileUrl = undefined;
+ 
+        if ($scope.templateAttribute)
+        {
+            getFileUrl = $scope.baseUrl + "/api/report/" + $scope.dbschema + "/" + $scope.dbclass + "/" + $scope.oid + "?templateSource=property&property=" + $scope.templateAttribute;
+
+        }
+        else if ($scope.template) {
+            getFileUrl = $scope.baseUrl + "/api/report/" + $scope.dbschema + "/" + $scope.dbclass + "/" + $scope.oid + "?templateSource=file&template=" + encodeURIComponent($scope.template);
+        }
+
+        if (getFileUrl) {
+            $scope.loading = true;
+
+            fileManager.performDownload(getFileUrl, function () {
+                $scope.loading = false;
+            });
+        }
+        else
+        {
+            BootstrapDialog.show({
+                title: $rootScope.getWord("Info Dialog"),
+                type: BootstrapDialog.TYPE_DANGER,
+                message: "template or property parameter not defined",
+                buttons: [{
+                    label: $rootScope.getWord("Cancel"),
+                    action: function (dialog) {
+                        dialog.close();
+                    }
+                }]
+            });
+            
+        }
+    }
+});
+
+"use strict";
+
+angular.module('app.myspace').controller('finishedTaskFormCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $stateParams, $state, promiseFinishedTaskInfo) {
+
+    if (!promiseFinishedTaskInfo.data) {
+
+        BootstrapDialog.show({
+            title: $rootScope.getWord("Info Dialog"),
+            type: BootstrapDialog.TYPE_INFO,
+            message: $rootScope.getWord("Non-exist task"),
+            buttons: [{
+                label: $rootScope.getWord("Cancel"),
+                action: function (dialog) {
+                    dialog.close();
+                }
+            }]
+        });
+
+        return;
+    }
+    if (promiseFinishedTaskInfo.data.formUrl)
+    {
+        if (promiseFinishedTaskInfo.data.formParams) {
+            // task with custom module, goto the custom module
+            var params = JSON.parse(promiseFinishedTaskInfo.data.formParams);
+            params["schema"] = $stateParams.schema;
+            params["class"] = promiseFinishedTaskInfo.data.bindingClassName;
+            params["oid"] = promiseFinishedTaskInfo.data.bindingInstanceId;
+            params["taskid"] = $stateParams.taskid;
+
+            $state.go(promiseFinishedTaskInfo.data.formUrl, params);
+        }
+    }
+
+    $scope.taskId = $stateParams.taskid;
+
+    $scope.dbschema = $stateParams.schema;
+
+    $scope.dbclass = promiseFinishedTaskInfo.data.bindingClassName;
+
+    $scope.oid = promiseFinishedTaskInfo.data.bindingInstanceId; // id of the instance bound to the task
+
+    $scope.loading = false;
+
+    $scope.showCommands = false;
+
+    $scope.ToolTip = "command";
+
+    if (promiseFinishedTaskInfo.data.formParams) {
+        var params = JSON.parse(promiseFinishedTaskInfo.data.formParams);
+
+        $scope.template = params["template"];
+        $scope.formAttribute = params["formAttribute"];
+        if (params["showCommands"]) {
+            $scope.showCommands = params["showCommands"];
+        }
+    }
+    else {
+        $scope.template = undefined;
+        $scope.formAttribute = undefined;
+    }
+
+    angular.extend(this, $controller('ebaasFormBaseCtrl', { $rootScope: $rootScope, $scope: $scope, $http: $http, APP_CONFIG: APP_CONFIG }));
+
+    $scope.goBack = function()
+    {
+        history.back(1);
+    }
+});
+
+'use strict';
+
+angular.module('app.myspace').controller('mySpaceCtrl', function ($scope, $rootScope, $http, $state, $stateParams, APP_CONFIG, User, TasksInfo, myActivityService, blogService, promiseTasks) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.blogClass = "Blog";
+
+    $scope.user = User;
+
+    $scope.itemsByPage = 15;
+
+    $scope.rowCollection = promiseTasks.data;
+
+    $scope.numOfPages = Math.ceil(promiseTasks.data.length / $scope.itemsByPage);
+
+    TasksInfo.tasks = promiseTasks.data;
+    TasksInfo.count = promiseTasks.data.length; // other components are watching task number changes through this service
+    $scope.taskCount = TasksInfo.count;
+
+    myActivityService.getbytype("msgs", function (data) {
+        myActivityService.MessageModel.items = data;
+
+    });
+
+    // Getting my blogs
+    blogService.getMyBlogs("COMMON", $scope.blogClass, User.userName, function (result) {
+        $scope.blogs = result.data;
+
+    });
+
+    $scope.getPosterImage = function(posterId)
+    {
+        return User.getUserImage(posterId);
+    }
+
+    $scope.getMsgItems = function () {
+        return myActivityService.MessageModel.items;
+    }
+
+    $scope.getMsgCount = function () {
+        return myActivityService.MessageModel.items.length;
+    }
+
+    $scope.readMsg = function (msg) {
+        var url = msg.url;
+        var urlparams = msg.urlparams;
+
+        urlparams = urlparams.replace(/msg.dbschema/, "\"" + msg.dbschema + "\""); // replace msg.dbschema
+        urlparams = urlparams.replace(/msg.dbclass/, "\"" + msg.dbclass + "\""); // replace msg.dbclass
+        urlparams = urlparams.replace(/msg.oid/, "\"" + msg.oid + "\""); // replace msg.dbclass
+
+        var params = JSON.parse(urlparams);
+
+        if (url) {
+            $state.go(url, params);
+        }
+    }
+
+    $scope.deleteMsg = function (msg) {
+        var found = false;
+        var index = undefined;
+
+        for (var i = 0; i < myActivityService.MessageModel.items.length; i++) {
+            var activity = myActivityService.MessageModel.items[i];
+            if (activity.objId === msg.objId) {
+                index = i;
+                found = true;
+                break;
+            }
+        }
+
+        if (found) {
+            myActivityService.MessageModel.items.splice(index, 1);
+        }
+
+        myActivityService.remove("msgs", msg.objId, function (data) {
+            myActivityService.MessageModel.count = myActivityService.MessageModel.items.length;
+        });
+    }
+
+    $scope.RefreshTasks = function()
+    {
+        $state.reload();
+    }
+
+    $scope.OpenSetSubstitute = function () {
+        $state.go(".substitute", { schema: $scope.dbschema });
+    }
+
+    $rootScope.$on('modalClosed', function (event, data) {
+        if (data === "update")
+            $scope.RefreshTasks();
+    });
+
+    $scope.finishedTasks = [];
+    $scope.tableState;
+    $scope.pageSize = 15;
+
+    $scope.isLoading = true;
+
+    $scope.callServer = function (tableState) {
+
+        $scope.isLoading = true;
+
+        $scope.tableState = tableState;
+
+        var pagination = tableState.pagination;
+
+        var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
+        var number = pagination.number || $scope.pageSize;  // Number of entries showed per page.
+
+        $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/user/" + encodeURIComponent($scope.dbschema) + "?from=" + start + "&size=" + number).success(function (data) {
+            // then get total count
+            $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/user/" + encodeURIComponent($scope.dbschema) + "/count").success(function (count) {
+                $scope.finishedTasks = data;
+
+                tableState.pagination.numberOfPages = Math.ceil(count / $scope.pageSize);//set the number of pages so the pagination can update
+                
+                $scope.isLoading = false;
+            });
+        })
+    };
+
+    $scope.refreshFinishedTasks = function () {
+        $scope.callServer($scope.tableState);
+    }
+
+    $scope.clearFinishedTasks = function()
+    {
+        $scope.isLoading = true;
+
+        $http.delete(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/" + encodeURIComponent($scope.dbschema)).success(function () {
+
+            $scope.isLoading = false;
+
+            $scope.callServer($scope.tableState);
+        })
+    }
+
+    $scope.hasFinishedTasks = function () {
+        if ($scope.finishedTasks && $scope.finishedTasks.length > 0)
+            return true;
+        else
+            return false;
+    }
+});
+"use strict";
+
+angular.module('app.myspace').controller('uploadPictureCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, User, Upload, $timeout) {
+
+
+    $scope.upload = function (dataUrl, name) {
+
+        var fileName = User.userName + ".png";
+
+        var uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/images/avatars";
+
+        Upload.upload({
+            url: uploadUrl,
+            data: {
+                file: Upload.dataUrltoBlob(dataUrl, fileName)
+            },
+        }).then(function (response) {
+            $timeout(function () {
+                $scope.result = response.data;
+                User.imageUrl = undefined;
+                User.pictureChangeTime = new Date().getTime();
+
+                if (!User.picture) {
+                    User.picture = fileName;
+    
+                    User.save();
+                }
+            });
+        }, function (response) {
+            $scope.loading = false;
+            if (response.status > 0) $scope.errorMsg = response.status
+                + ': ' + response.data;
+        }, function (evt) {
+
+            $scope.progress = parseInt(100.0 * evt.loaded / evt.total);
+        });
+    };
+
+    $scope.closeModal = function () {
+        $modalInstance.dismiss("dismiss");
+
+    };
 });
 'use strict';
 
@@ -44824,325 +45143,6 @@ angular.module('app.smartforms').directive('compile', function ($compile) {
           }
       );
     };
-});
-
-"use strict";
-
-angular.module('app.myspace').controller('finishedTaskFormCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $stateParams, $state, promiseFinishedTaskInfo) {
-
-    if (!promiseFinishedTaskInfo.data) {
-
-        BootstrapDialog.show({
-            title: $rootScope.getWord("Info Dialog"),
-            type: BootstrapDialog.TYPE_INFO,
-            message: $rootScope.getWord("Non-exist task"),
-            buttons: [{
-                label: $rootScope.getWord("Cancel"),
-                action: function (dialog) {
-                    dialog.close();
-                }
-            }]
-        });
-
-        return;
-    }
-    if (promiseFinishedTaskInfo.data.formUrl)
-    {
-        if (promiseFinishedTaskInfo.data.formParams) {
-            // task with custom module, goto the custom module
-            var params = JSON.parse(promiseFinishedTaskInfo.data.formParams);
-            params["schema"] = $stateParams.schema;
-            params["class"] = promiseFinishedTaskInfo.data.bindingClassName;
-            params["oid"] = promiseFinishedTaskInfo.data.bindingInstanceId;
-            params["taskid"] = $stateParams.taskid;
-
-            $state.go(promiseFinishedTaskInfo.data.formUrl, params);
-        }
-    }
-
-    $scope.taskId = $stateParams.taskid;
-
-    $scope.dbschema = $stateParams.schema;
-
-    $scope.dbclass = promiseFinishedTaskInfo.data.bindingClassName;
-
-    $scope.oid = promiseFinishedTaskInfo.data.bindingInstanceId; // id of the instance bound to the task
-
-    $scope.loading = false;
-
-    $scope.showCommands = false;
-
-    $scope.ToolTip = "command";
-
-    if (promiseFinishedTaskInfo.data.formParams) {
-        var params = JSON.parse(promiseFinishedTaskInfo.data.formParams);
-
-        $scope.template = params["template"];
-        $scope.formAttribute = params["formAttribute"];
-        if (params["showCommands"]) {
-            $scope.showCommands = params["showCommands"];
-        }
-    }
-    else {
-        $scope.template = undefined;
-        $scope.formAttribute = undefined;
-    }
-
-    angular.extend(this, $controller('ebaasFormBaseCtrl', { $rootScope: $rootScope, $scope: $scope, $http: $http, APP_CONFIG: APP_CONFIG }));
-
-    $scope.goBack = function()
-    {
-        history.back(1);
-    }
-});
-
-'use strict';
-
-angular.module('app.myspace').controller('mySpaceCtrl', function ($scope, $rootScope, $http, $state, $stateParams, APP_CONFIG, User, TasksInfo, myActivityService, blogService, promiseTasks) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.blogClass = "Blog";
-
-    $scope.user = User;
-
-    $scope.itemsByPage = 15;
-
-    $scope.rowCollection = promiseTasks.data;
-
-    $scope.numOfPages = Math.ceil(promiseTasks.data.length / $scope.itemsByPage);
-
-    TasksInfo.tasks = promiseTasks.data;
-    TasksInfo.count = promiseTasks.data.length; // other components are watching task number changes through this service
-    $scope.taskCount = TasksInfo.count;
-
-    myActivityService.getbytype("msgs", function (data) {
-        myActivityService.MessageModel.items = data;
-
-    });
-
-    // Getting my blogs
-    blogService.getMyBlogs("COMMON", $scope.blogClass, User.userName, function (result) {
-        $scope.blogs = result.data;
-
-    });
-
-    $scope.getPosterImage = function(posterId)
-    {
-        return User.getUserImage(posterId);
-    }
-
-    $scope.getMsgItems = function () {
-        return myActivityService.MessageModel.items;
-    }
-
-    $scope.getMsgCount = function () {
-        return myActivityService.MessageModel.items.length;
-    }
-
-    $scope.readMsg = function (msg) {
-        var url = msg.url;
-        var urlparams = msg.urlparams;
-
-        urlparams = urlparams.replace(/msg.dbschema/, "\"" + msg.dbschema + "\""); // replace msg.dbschema
-        urlparams = urlparams.replace(/msg.dbclass/, "\"" + msg.dbclass + "\""); // replace msg.dbclass
-        urlparams = urlparams.replace(/msg.oid/, "\"" + msg.oid + "\""); // replace msg.dbclass
-
-        var params = JSON.parse(urlparams);
-
-        if (url) {
-            $state.go(url, params);
-        }
-    }
-
-    $scope.deleteMsg = function (msg) {
-        var found = false;
-        var index = undefined;
-
-        for (var i = 0; i < myActivityService.MessageModel.items.length; i++) {
-            var activity = myActivityService.MessageModel.items[i];
-            if (activity.objId === msg.objId) {
-                index = i;
-                found = true;
-                break;
-            }
-        }
-
-        if (found) {
-            myActivityService.MessageModel.items.splice(index, 1);
-        }
-
-        myActivityService.remove("msgs", msg.objId, function (data) {
-            myActivityService.MessageModel.count = myActivityService.MessageModel.items.length;
-        });
-    }
-
-    $scope.RefreshTasks = function()
-    {
-        $state.reload();
-    }
-
-    $scope.OpenSetSubstitute = function () {
-        $state.go(".substitute", { schema: $scope.dbschema });
-    }
-
-    $rootScope.$on('modalClosed', function (event, data) {
-        if (data === "update")
-            $scope.RefreshTasks();
-    });
-
-    $scope.finishedTasks = [];
-    $scope.tableState;
-    $scope.pageSize = 15;
-
-    $scope.isLoading = true;
-
-    $scope.callServer = function (tableState) {
-
-        $scope.isLoading = true;
-
-        $scope.tableState = tableState;
-
-        var pagination = tableState.pagination;
-
-        var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
-        var number = pagination.number || $scope.pageSize;  // Number of entries showed per page.
-
-        $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/user/" + encodeURIComponent($scope.dbschema) + "?from=" + start + "&size=" + number).success(function (data) {
-            // then get total count
-            $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/user/" + encodeURIComponent($scope.dbschema) + "/count").success(function (count) {
-                $scope.finishedTasks = data;
-
-                tableState.pagination.numberOfPages = Math.ceil(count / $scope.pageSize);//set the number of pages so the pagination can update
-                
-                $scope.isLoading = false;
-            });
-        })
-    };
-
-    $scope.refreshFinishedTasks = function () {
-        $scope.callServer($scope.tableState);
-    }
-
-    $scope.clearFinishedTasks = function()
-    {
-        $scope.isLoading = true;
-
-        $http.delete(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/" + encodeURIComponent($scope.dbschema)).success(function () {
-
-            $scope.isLoading = false;
-
-            $scope.callServer($scope.tableState);
-        })
-    }
-
-    $scope.hasFinishedTasks = function () {
-        if ($scope.finishedTasks && $scope.finishedTasks.length > 0)
-            return true;
-        else
-            return false;
-    }
-});
-"use strict";
-
-angular.module('app.myspace').controller('uploadPictureCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, User, Upload, $timeout) {
-
-
-    $scope.upload = function (dataUrl, name) {
-
-        var fileName = User.userName + ".png";
-
-        var uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/images/avatars";
-
-        Upload.upload({
-            url: uploadUrl,
-            data: {
-                file: Upload.dataUrltoBlob(dataUrl, fileName)
-            },
-        }).then(function (response) {
-            $timeout(function () {
-                $scope.result = response.data;
-                User.imageUrl = undefined;
-                User.pictureChangeTime = new Date().getTime();
-
-                if (!User.picture) {
-                    User.picture = fileName;
-    
-                    User.save();
-                }
-            });
-        }, function (response) {
-            $scope.loading = false;
-            if (response.status > 0) $scope.errorMsg = response.status
-                + ': ' + response.data;
-        }, function (evt) {
-
-            $scope.progress = parseInt(100.0 * evt.loaded / evt.total);
-        });
-    };
-
-    $scope.closeModal = function () {
-        $modalInstance.dismiss("dismiss");
-
-    };
-});
-'use strict';
-
-angular.module('app.smartreports').controller('downloadReportCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $stateParams, $modalInstance, fileManager) {
- 
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
-    $scope.oid = $stateParams.oid;
-    $scope.template = $stateParams.template;
-    $scope.templateAttribute = $stateParams.templateAttribute;
-
-    $scope.baseUrl = APP_CONFIG.ebaasRootUrl;
-    if (APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash])
-    {
-        $scope.baseUrl = APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash];
-    }
-   
-    $scope.loading = false;
-
-    $scope.closeModal = function () {
-        $modalInstance.dismiss("dismiss");
-    };
-
-    $scope.download = function() {
-
-        var getFileUrl = undefined;
- 
-        if ($scope.templateAttribute)
-        {
-            getFileUrl = $scope.baseUrl + "/api/report/" + $scope.dbschema + "/" + $scope.dbclass + "/" + $scope.oid + "?templateSource=property&property=" + $scope.templateAttribute;
-
-        }
-        else if ($scope.template) {
-            getFileUrl = $scope.baseUrl + "/api/report/" + $scope.dbschema + "/" + $scope.dbclass + "/" + $scope.oid + "?templateSource=file&template=" + encodeURIComponent($scope.template);
-        }
-
-        if (getFileUrl) {
-            $scope.loading = true;
-
-            fileManager.performDownload(getFileUrl, function () {
-                $scope.loading = false;
-            });
-        }
-        else
-        {
-            BootstrapDialog.show({
-                title: $rootScope.getWord("Info Dialog"),
-                type: BootstrapDialog.TYPE_DANGER,
-                message: "template or property parameter not defined",
-                buttons: [{
-                    label: $rootScope.getWord("Cancel"),
-                    action: function (dialog) {
-                        dialog.close();
-                    }
-                }]
-            });
-            
-        }
-    }
 });
 
 'use strict';
@@ -48832,521 +48832,6 @@ angular.module('app.tasktrack').factory('taskTrackService', function ($http, APP
 });
 'use strict';
 
-angular.module('app.taskviewer').controller('ItemFormCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, MetaDataCache) {
-
-    // override the dbclass and oid with test item class and test item oid
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.itemClass;
-    $scope.oid = $stateParams.itemOid;
-
-    angular.extend(this, $controller('ebaasFormBaseCtrl', { $rootScope: $rootScope, $scope: $scope, $http: $http, APP_CONFIG: APP_CONFIG }));
-});
-'use strict';
-
-angular.module('app.taskviewer').controller('PacketFormCtrl', function ($stateParams, $scope) {
-    // override the dbclass and oid with packet class and packet oid
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.packetClass;
-    $scope.oid = $stateParams.packetOid;
-});
-'use strict';
-
-angular.module('app.taskviewer').controller('TaskFormCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, MetaDataCache) {
-    angular.extend(this, $controller('ebaasFormBaseCtrl', { $rootScope: $rootScope, $scope: $scope, $http: $http, APP_CONFIG: APP_CONFIG }));
-});
-"use strict";
-
-angular.module('app.taskviewer').factory('taskService', function ($http, $q, APP_CONFIG) {
-
-    var createTaskTree = function (treeData) {
-        var node, rootMenuItem, roots = [];
-        node = treeData;
-
-        var rootMenuItem = {};
-        //rootMenuItem.content = "<span><i class=\"fa fa-lg fa-plus-circle\"></i> " + node.title + "</span>";
-        rootMenuItem.content = "<span class='label label-info'><i class=\"fa fa-lg fa-plus-circle\"></i>&nbsp;&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('taskDataTree')).scope().GoToTaskInfoView('" + node.ClassName + "', '" + node.ID + "');\">" + node.Name + "</a></span>";
-        rootMenuItem.children = [];
-        rootMenuItem.expanded = true;
-        roots.push(rootMenuItem);
-
-        addChildMenuItems(rootMenuItem, treeData.Children);
-
-        return roots;
-    };
-
-    var addChildMenuItems = function (parentItem, nodes) {
-        var node, menuItem;
-
-        if (nodes != null) {
-            for (var i = 0; i < nodes.length; i += 1) {
-                node = nodes[i];
-
-                menuItem = {};
-                menuItem.children = [];
-
-                if (node.Children.length > 0) {
-                    menuItem.expanded = true;
-                    menuItem.content = "<span class='label label-info'><i class=\"fa fa-lg fa-plus-circle\"></i>&nbsp;&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('taskDataTree')).scope().GoToTaskInfoView('" + node.ClassName + "', '" + node.ID + "');\">" + node.Name + "</a></span>";
-                } else {
-                    menuItem.content = "<span class='label label-info'><a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('taskDataTree')).scope().GoToTaskInfoView('" + node.ClassName + "', '" + node.ID + "');\">" + node.Name + "</a></span>";
-                }
-
-                parentItem.children.push(menuItem);
-
-                addChildMenuItems(menuItem, node.Children);
-            }
-        }
-    }
-
-    function getTaskTree(parameters, callback) {
-
-        // url to get task instance
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(parameters.schema) + "/" + parameters.taskClass + "/" + parameters.taskOid + "/custom/GetTaskTree";
-        var urlWithParams = url + "?itemClass=" + parameters.itemClass;
-        urlWithParams += "&packetClass=" + parameters.packetClass;
-        urlWithParams += "&taskNodeAttribute=" + parameters.taskNodeAttribute;
-        urlWithParams += "&itemNodeAttribute=" + parameters.itemNodeAttribute;
-        urlWithParams += "&packetNodeAttribute=" + parameters.packetNodeAttribute;
-        $http.get(urlWithParams).success(function (data) {
-            var treeData = data;
-            if (callback != null) {
-                callback(createTaskTree(treeData));
-            }
-        }).error(function () {
-            callback(undefined);
-        });
-    }
-
-    function hasValue(val) {
-        if (val == null || val == nil || val == undefined || val == "") {
-            return true;
-        }
-        else {
-            return true;
-        }
-    }
-	
-	return {
-        getTaskTree: function (parameters, callback) {
-            return getTaskTree(parameters, callback);
-        },
-        hasValue: function (val) {
-            return hasValue(val);
-        }
-	}
-});
-'use strict';
-
-angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($scope, $state, $stateParams, taskService) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
-    $scope.oid = $stateParams.oid;
-    $scope.formAttribute = undefined;
-    $scope.itemClass = $stateParams.itemClass;
-    $scope.itemOid = $stateParams.itemOid;
-    $scope.packetClass = $stateParams.packetClass;
-    $scope.packetOid = $stateParams.packetOid;
-    $scope.taskNodeAttribute = $stateParams.taskNodeAttribute;
-    $scope.itemNodeAttribute = $stateParams.itemNodeAttribute;
-    $scope.packetNodeAttribute = $stateParams.packetNodeAttribute;
-    $scope.hasItemOid = taskService.hasValue($scope.itemOid);
-    $scope.hasPacketOid = taskService.hasValue($scope.packetOid);
-
-    var parameters = {};
-    parameters.schema = $stateParams.schema;
-    parameters.class = $stateParams.class;
-    parameters.oid = $stateParams.oid;
-    parameters.taskClass = $stateParams.class;
-    parameters.taskOid = $stateParams.oid;
-    parameters.taskNodeAttribute = $stateParams.taskNodeAttribute;
-    parameters.itemClass = $stateParams.itemClass;
-    parameters.itemNodeAttribute = $stateParams.itemNodeAttribute;
-    parameters.packetClass = $stateParams.packetClass;
-    parameters.packetNodeAttribute = $stateParams.packetNodeAttribute;
-
-    taskService.getTaskTree(parameters, function (treeData) {
-        $scope.taskDataTree = treeData;
-    });
-
-    $state.go("app.taskviewer.details", parameters);
-
-    $scope.GoToTaskInfoView = function GoToTaskInfoView(nodeClass, nodeOid) {
-        var params = new Object();
-        params.schema = $scope.dbschema;
-        params.class = $scope.dbclass;
-        params.oid = $scope.oid;
-        params.itemClass = $scope.itemClass;
-        params.packetClass = $scope.packetClass;
-        params.taskNodeAttribute = $scope.taskNodeAttribute;
-        params.itemNodeAttribute = $scope.itemNodeAttribute;
-        params.packetNodeAttribute = $scope.packetNodeAttribute;
-
-        if (nodeClass == $scope.itemClass) {
-            params.itemOid = nodeOid;
-            $scope.itemOid = nodeOid;
-            $state.go("app.taskviewer.details", params, { reload: true });
-        }
-        else if (nodeClass == $scope.packetClass) {
-            params.packetOid = nodeOid;
-            $scope.packetOid = nodeOid;
-            $state.go("app.taskviewer.details", params, { reload: true });
-        }
-        else {
-            params.itemOid = "";
-            params.packetOid = "";
-            $scope.itemOid = "";
-            $scope.packetOid = "";
-            $state.go("app.taskviewer.details", params, { reload: true });
-        }
-    }
-});
-"use strict";
-
-angular.module('app.ui').controller('GeneralElementsCtrl', function ($scope) {
-    /*
-     * Smart Notifications
-     */
-    $scope.eg1 = function () {
-
-        $.bigBox({
-            title: "Big Information box",
-            content: "This message will dissapear in 6 seconds!",
-            color: "#C46A69",
-            //timeout: 6000,
-            icon: "fa fa-warning shake animated",
-            number: "1",
-            timeout: 6000
-        });
-    };
-
-    $scope.eg2 = function () {
-
-        $.bigBox({
-            title: "Big Information box",
-            content: "Lorem ipsum dolor sit amet, test consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
-            color: "#3276B1",
-            //timeout: 8000,
-            icon: "fa fa-bell swing animated",
-            number: "2"
-        });
-
-    };
-
-    $scope.eg3 = function () {
-
-        $.bigBox({
-            title: "Shield is up and running!",
-            content: "Lorem ipsum dolor sit amet, test consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
-            color: "#C79121",
-            //timeout: 8000,
-            icon: "fa fa-shield fadeInLeft animated",
-            number: "3"
-        });
-
-    };
-
-    $scope.eg4 = function () {
-
-        $.bigBox({
-            title: "Success Message Example",
-            content: "Lorem ipsum dolor sit amet, test consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
-            color: "#739E73",
-            //timeout: 8000,
-            icon: "fa fa-check",
-            number: "4"
-        }, function () {
-            $scope.closedthis();
-        });
-
-    };
-
-
-    $scope.eg5 = function() {
-
-        $.smallBox({
-            title: "Ding Dong!",
-            content: "Someone's at the door...shall one get it sir? <p class='text-align-right'><a href-void class='btn btn-primary btn-sm'>Yes</a> <a href-void class='btn btn-danger btn-sm'>No</a></p>",
-            color: "#296191",
-            //timeout: 8000,
-            icon: "fa fa-bell swing animated"
-        });
-    };
-
-
-    $scope.eg6 = function() {
-
-        $.smallBox({
-            title: "Big Information box",
-            content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
-            color: "#5384AF",
-            //timeout: 8000,
-            icon: "fa fa-bell"
-        });
-
-    };
-
-    $scope.eg7 = function() {
-
-        $.smallBox({
-            title: "James Simmons liked your comment",
-            content: "<i class='fa fa-clock-o'></i> <i>2 seconds ago...</i>",
-            color: "#296191",
-            iconSmall: "fa fa-thumbs-up bounce animated",
-            timeout: 4000
-        });
-
-    };
-
-    $scope.closedthis = function() {
-        $.smallBox({
-            title: "Great! You just closed that last alert!",
-            content: "This message will be gone in 5 seconds!",
-            color: "#739E73",
-            iconSmall: "fa fa-cloud",
-            timeout: 5000
-        });
-    };
-
-    /*
-     * SmartAlerts
-     */
-    // With Callback
-    $scope.smartModEg1 =  function () {
-        $.SmartMessageBox({
-            title: "Smart Alert!",
-            content: "This is a confirmation box. Can be programmed for button callback",
-            buttons: '[No][Yes]'
-        }, function (ButtonPressed) {
-            if (ButtonPressed === "Yes") {
-
-                $.smallBox({
-                    title: "Callback function",
-                    content: "<i class='fa fa-clock-o'></i> <i>You pressed Yes...</i>",
-                    color: "#659265",
-                    iconSmall: "fa fa-check fa-2x fadeInRight animated",
-                    timeout: 4000
-                });
-            }
-            if (ButtonPressed === "No") {
-                $.smallBox({
-                    title: "Callback function",
-                    content: "<i class='fa fa-clock-o'></i> <i>You pressed No...</i>",
-                    color: "#C46A69",
-                    iconSmall: "fa fa-times fa-2x fadeInRight animated",
-                    timeout: 4000
-                });
-            }
-
-        });
-    };
-
-    // With Input
-    $scope.smartModEg2 =  function () {
-        $.SmartMessageBox({
-            title: "Smart Alert: Input",
-            content: "Please enter your user name",
-            buttons: "[Accept]",
-            input: "text",
-            placeholder: "Enter your user name"
-        }, function (ButtonPress, Value) {
-            alert(ButtonPress + " " + Value);
-        });
-    };
-
-    // With Buttons
-    $scope.smartModEg3 =  function () {
-        $.SmartMessageBox({
-            title: "Smart Notification: Buttons",
-            content: "Lots of buttons to go...",
-            buttons: '[Need?][You][Do][Buttons][Many][How]'
-        });
-
-    }
-    // With Select
-    $scope.smartModEg4 =  function () {
-        $.SmartMessageBox({
-            title: "Smart Alert: Select",
-            content: "You can even create a group of options.",
-            buttons: "[Done]",
-            input: "select",
-            options: "[Costa Rica][United States][Autralia][Spain]"
-        }, function (ButtonPress, Value) {
-            alert(ButtonPress + " " + Value);
-        });
-
-    };
-
-    // With Login
-    $scope.smartModEg5 =  function () {
-
-        $.SmartMessageBox({
-            title: "Login form",
-            content: "Please enter your user name",
-            buttons: "[Cancel][Accept]",
-            input: "text",
-            placeholder: "Enter your user name"
-        }, function (ButtonPress, Value) {
-            if (ButtonPress == "Cancel") {
-                alert("Why did you cancel that? :(");
-                return 0;
-            }
-
-            var Value1 = Value.toUpperCase();
-            var ValueOriginal = Value;
-            $.SmartMessageBox({
-                title: "Hey! <strong>" + Value1 + ",</strong>",
-                content: "And now please provide your password:",
-                buttons: "[Login]",
-                input: "password",
-                placeholder: "Password"
-            }, function (ButtonPress, Value) {
-                alert("Username: " + ValueOriginal + " and your password is: " + Value);
-            });
-        });
-
-    };
-});
-
-"use strict";
-
-
-angular.module('app.ui').controller('JquiCtrl', function ($scope) {
-    $scope.demoAutocompleteWords = [
-        "ActionScript",
-        "AppleScript",
-        "Asp",
-        "BASIC",
-        "C",
-        "C++",
-        "Clojure",
-        "COBOL",
-        "ColdFusion",
-        "Erlang",
-        "Fortran",
-        "Groovy",
-        "Haskell",
-        "Java",
-        "JavaScript",
-        "Lisp",
-        "Perl",
-        "PHP",
-        "Python",
-        "Ruby",
-        "Scala",
-        "Scheme"];
-
-
-    $scope.demoAjaxAutocomplete = '';
-
-
-    $scope.modalDemo1 = function(){
-        console.log('modalDemo1');
-    }
-
-    $scope.modalDemo2 = function(){
-        console.log('modalDemo2');
-    }
-
-
-});
-"use strict";
-
-
-angular.module('app.ui').controller('TreeviewCtrl', function ($scope) {
-    $scope.demoTree1 = [
-        {"content": "<span><i class=\"fa fa-lg fa-calendar\"></i> 2013, Week 2</span>", "expanded": true, "children": [
-            {"content": "<span class=\"label label-success\"><i class=\"fa fa-lg fa-plus-circle\"></i> Monday, January 7: 8.00 hours</span>", "expanded": true, "children": [
-                {"content": "<span><i class=\"fa fa-clock-o\"></i> 8.00</span> &ndash; <a> Changed CSS to accomodate...</a>"}
-            ]},
-            {"content": "<span><i class=\"fa fa-clock-o\"></i> 8.00</span> &ndash; <a> Changed CSS to accomodate...</a>"},
-            {"content": "<span class=\"label label-success\"><i class=\"fa fa-lg fa-minus-circle\"></i> Tuesday, January 8: 8.00 hours</span>", "expanded": true, "children": [
-                {"content": "<span><i class=\"fa fa-clock-o\"></i> 6.00</span> &ndash; <a> Altered code...</a>"},
-                {"content": "<span><i class=\"fa fa-clock-o\"></i> 2.00</span> &ndash; <a> Simplified our approach to...</a>"}
-            ]},
-            {"content": "<span><i class=\"fa fa-clock-o\"></i> 6.00</span> &ndash; <a> Altered code...</a>"},
-            {"content": "<span><i class=\"fa fa-clock-o\"></i> 2.00</span> &ndash; <a> Simplified our approach to...</a>"},
-            {"content": "<span class=\"label label-warning\"><i class=\"fa fa-lg fa-minus-circle\"></i> Wednesday, January 9: 6.00 hours</span>", "children": [
-                {"content": "<span><i class=\"fa fa-clock-o\"></i> 3.00</span> &ndash; <a> Fixed bug caused by...</a>"},
-                {"content": "<span><i class=\"fa fa-clock-o\"></i> 3.00</span> &ndash; <a> Comitting latest code to Git...</a>"}
-            ]},
-            {"content": "<span><i class=\"fa fa-clock-o\"></i> 3.00</span> &ndash; <a> Fixed bug caused by...</a>"},
-            {"content": "<span><i class=\"fa fa-clock-o\"></i> 3.00</span> &ndash; <a> Comitting latest code to Git...</a>"},
-            {"content": "<span class=\"label label-danger\"><i class=\"fa fa-lg fa-minus-circle\"></i> Wednesday, January 9: 4.00 hours</span>", "children": [
-                {"content": "<span><i class=\"fa fa-clock-o\"></i> 2.00</span> &ndash; <a> Create component that...</a>"}
-            ]},
-            {"content": "<span><i class=\"fa fa-clock-o\"></i> 2.00</span> &ndash; <a> Create component that...</a>"}
-        ]},
-        {"content": "<span><i class=\"fa fa-lg fa-calendar\"></i> 2013, Week 3</span>", "children": [
-            {"content": "<span class=\"label label-success\"><i class=\"fa fa-lg fa-minus-circle\"></i> Monday, January 14: 8.00 hours</span>", "children": [
-                {"content": "<span><i class=\"fa fa-clock-o\"></i> 7.75</span> &ndash; <a> Writing documentation...</a>"},
-                {"content": "<span><i class=\"fa fa-clock-o\"></i> 0.25</span> &ndash; <a> Reverting code back to...</a>"}
-            ]},
-            {"content": "<span><i class=\"fa fa-clock-o\"></i> 7.75</span> &ndash; <a> Writing documentation...</a>"},
-            {"content": "<span><i class=\"fa fa-clock-o\"></i> 0.25</span> &ndash; <a> Reverting code back to...</a>"}
-        ]}
-    ]
-
-    $scope.demoTree2 = [
-        {"content": "<span><i class=\"fa fa-lg fa-folder-open\"></i> Parent</span>", "expanded": true, "children": [
-            {"content": "<span><i class=\"fa fa-lg fa-plus-circle\"></i> Administrators</span>", "expanded": true, "children": [
-                {"content": "<span> <label class=\"checkbox inline-block\"><input type=\"checkbox\" name=\"checkbox-inline\"><i></i>Michael.Jackson</label> </span>"},
-                {"content": "<span> <label class=\"checkbox inline-block\"><input type=\"checkbox\" checked=\"checked\" name=\"checkbox-inline\"><i></i>Sunny.Ahmed</label> </span>"},
-                {"content": "<span> <label class=\"checkbox inline-block\"><input type=\"checkbox\" checked=\"checked\" name=\"checkbox-inline\"><i></i>Jackie.Chan</label> </span>"}
-            ]},
-            {"content": "<span> <label class=\"checkbox inline-block\"><input type=\"checkbox\" name=\"checkbox-inline\"><i></i>Michael.Jackson</label> </span>"},
-            {"content": "<span> <label class=\"checkbox inline-block\"><input type=\"checkbox\" checked=\"checked\" name=\"checkbox-inline\"><i></i>Sunny.Ahmed</label> </span>"},
-            {"content": "<span> <label class=\"checkbox inline-block\"><input type=\"checkbox\" checked=\"checked\" name=\"checkbox-inline\"><i></i>Jackie.Chan</label> </span>"},
-            {"content": "<span><i class=\"fa fa-lg fa-minus-circle\"></i> Child</span>", "expanded": true, "children": [
-                {"content": "<span><i class=\"icon-leaf\"></i> Grand Child</span>"},
-                {"content": "<span><i class=\"icon-leaf\"></i> Grand Child</span>"},
-                {"content": "<span><i class=\"fa fa-lg fa-plus-circle\"></i> Grand Child</span>",  "children": [
-                    {"content": "<span><i class=\"fa fa-lg fa-plus-circle\"></i> Great Grand Child</span>", "children": [
-                        {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"},
-                        {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"}
-                    ]},
-                    {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"},
-                    {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"},
-                    {"content": "<span><i class=\"icon-leaf\"></i> Great Grand Child</span>"},
-                    {"content": "<span><i class=\"icon-leaf\"></i> Great Grand Child</span>"}
-                ]},
-                {"content": "<span><i class=\"fa fa-lg fa-plus-circle\"></i> Great Grand Child</span>", "children": [
-                    {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"},
-                    {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"}
-                ]},
-                {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"},
-                {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"},
-                {"content": "<span><i class=\"icon-leaf\"></i> Great Grand Child</span>"},
-                {"content": "<span><i class=\"icon-leaf\"></i> Great Grand Child</span>"}
-            ]},
-            {"content": "<span><i class=\"icon-leaf\"></i> Grand Child</span>"},
-            {"content": "<span><i class=\"icon-leaf\"></i> Grand Child</span>"},
-            {"content": "<span><i class=\"fa fa-lg fa-plus-circle\"></i> Grand Child</span>", "children": [
-                {"content": "<span><i class=\"fa fa-lg fa-plus-circle\"></i> Great Grand Child</span>", "children": [
-                    {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"},
-                    {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"}
-                ]},
-                {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"},
-                {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"},
-                {"content": "<span><i class=\"icon-leaf\"></i> Great Grand Child</span>"},
-                {"content": "<span><i class=\"icon-leaf\"></i> Great Grand Child</span>"}
-            ]},
-            {"content": "<span><i class=\"fa fa-lg fa-plus-circle\"></i> Great Grand Child</span>", "children": [
-                {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"},
-                {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"}
-            ]},
-            {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"},
-            {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"},
-            {"content": "<span><i class=\"icon-leaf\"></i> Great Grand Child</span>"},
-            {"content": "<span><i class=\"icon-leaf\"></i> Great Grand Child</span>"}
-        ]},
-        {"content": "<span><i class=\"fa fa-lg fa-folder-open\"></i> Parent2</span>", "children": [
-            {"content": "<span><i class=\"icon-leaf\"></i> Child</span>"}
-        ]}
-    ]
-});
-'use strict';
-
 angular.module('app.ui').directive('smartClassFilter', function () {
     return {
         restrict: 'A',
@@ -49819,6 +49304,350 @@ angular.module('app.ui').directive('smartTreeview', function ($compile, $sce) {
             };
         }
     };
+});
+"use strict";
+
+angular.module('app.ui').controller('GeneralElementsCtrl', function ($scope) {
+    /*
+     * Smart Notifications
+     */
+    $scope.eg1 = function () {
+
+        $.bigBox({
+            title: "Big Information box",
+            content: "This message will dissapear in 6 seconds!",
+            color: "#C46A69",
+            //timeout: 6000,
+            icon: "fa fa-warning shake animated",
+            number: "1",
+            timeout: 6000
+        });
+    };
+
+    $scope.eg2 = function () {
+
+        $.bigBox({
+            title: "Big Information box",
+            content: "Lorem ipsum dolor sit amet, test consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
+            color: "#3276B1",
+            //timeout: 8000,
+            icon: "fa fa-bell swing animated",
+            number: "2"
+        });
+
+    };
+
+    $scope.eg3 = function () {
+
+        $.bigBox({
+            title: "Shield is up and running!",
+            content: "Lorem ipsum dolor sit amet, test consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
+            color: "#C79121",
+            //timeout: 8000,
+            icon: "fa fa-shield fadeInLeft animated",
+            number: "3"
+        });
+
+    };
+
+    $scope.eg4 = function () {
+
+        $.bigBox({
+            title: "Success Message Example",
+            content: "Lorem ipsum dolor sit amet, test consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
+            color: "#739E73",
+            //timeout: 8000,
+            icon: "fa fa-check",
+            number: "4"
+        }, function () {
+            $scope.closedthis();
+        });
+
+    };
+
+
+    $scope.eg5 = function() {
+
+        $.smallBox({
+            title: "Ding Dong!",
+            content: "Someone's at the door...shall one get it sir? <p class='text-align-right'><a href-void class='btn btn-primary btn-sm'>Yes</a> <a href-void class='btn btn-danger btn-sm'>No</a></p>",
+            color: "#296191",
+            //timeout: 8000,
+            icon: "fa fa-bell swing animated"
+        });
+    };
+
+
+    $scope.eg6 = function() {
+
+        $.smallBox({
+            title: "Big Information box",
+            content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
+            color: "#5384AF",
+            //timeout: 8000,
+            icon: "fa fa-bell"
+        });
+
+    };
+
+    $scope.eg7 = function() {
+
+        $.smallBox({
+            title: "James Simmons liked your comment",
+            content: "<i class='fa fa-clock-o'></i> <i>2 seconds ago...</i>",
+            color: "#296191",
+            iconSmall: "fa fa-thumbs-up bounce animated",
+            timeout: 4000
+        });
+
+    };
+
+    $scope.closedthis = function() {
+        $.smallBox({
+            title: "Great! You just closed that last alert!",
+            content: "This message will be gone in 5 seconds!",
+            color: "#739E73",
+            iconSmall: "fa fa-cloud",
+            timeout: 5000
+        });
+    };
+
+    /*
+     * SmartAlerts
+     */
+    // With Callback
+    $scope.smartModEg1 =  function () {
+        $.SmartMessageBox({
+            title: "Smart Alert!",
+            content: "This is a confirmation box. Can be programmed for button callback",
+            buttons: '[No][Yes]'
+        }, function (ButtonPressed) {
+            if (ButtonPressed === "Yes") {
+
+                $.smallBox({
+                    title: "Callback function",
+                    content: "<i class='fa fa-clock-o'></i> <i>You pressed Yes...</i>",
+                    color: "#659265",
+                    iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                    timeout: 4000
+                });
+            }
+            if (ButtonPressed === "No") {
+                $.smallBox({
+                    title: "Callback function",
+                    content: "<i class='fa fa-clock-o'></i> <i>You pressed No...</i>",
+                    color: "#C46A69",
+                    iconSmall: "fa fa-times fa-2x fadeInRight animated",
+                    timeout: 4000
+                });
+            }
+
+        });
+    };
+
+    // With Input
+    $scope.smartModEg2 =  function () {
+        $.SmartMessageBox({
+            title: "Smart Alert: Input",
+            content: "Please enter your user name",
+            buttons: "[Accept]",
+            input: "text",
+            placeholder: "Enter your user name"
+        }, function (ButtonPress, Value) {
+            alert(ButtonPress + " " + Value);
+        });
+    };
+
+    // With Buttons
+    $scope.smartModEg3 =  function () {
+        $.SmartMessageBox({
+            title: "Smart Notification: Buttons",
+            content: "Lots of buttons to go...",
+            buttons: '[Need?][You][Do][Buttons][Many][How]'
+        });
+
+    }
+    // With Select
+    $scope.smartModEg4 =  function () {
+        $.SmartMessageBox({
+            title: "Smart Alert: Select",
+            content: "You can even create a group of options.",
+            buttons: "[Done]",
+            input: "select",
+            options: "[Costa Rica][United States][Autralia][Spain]"
+        }, function (ButtonPress, Value) {
+            alert(ButtonPress + " " + Value);
+        });
+
+    };
+
+    // With Login
+    $scope.smartModEg5 =  function () {
+
+        $.SmartMessageBox({
+            title: "Login form",
+            content: "Please enter your user name",
+            buttons: "[Cancel][Accept]",
+            input: "text",
+            placeholder: "Enter your user name"
+        }, function (ButtonPress, Value) {
+            if (ButtonPress == "Cancel") {
+                alert("Why did you cancel that? :(");
+                return 0;
+            }
+
+            var Value1 = Value.toUpperCase();
+            var ValueOriginal = Value;
+            $.SmartMessageBox({
+                title: "Hey! <strong>" + Value1 + ",</strong>",
+                content: "And now please provide your password:",
+                buttons: "[Login]",
+                input: "password",
+                placeholder: "Password"
+            }, function (ButtonPress, Value) {
+                alert("Username: " + ValueOriginal + " and your password is: " + Value);
+            });
+        });
+
+    };
+});
+
+"use strict";
+
+
+angular.module('app.ui').controller('JquiCtrl', function ($scope) {
+    $scope.demoAutocompleteWords = [
+        "ActionScript",
+        "AppleScript",
+        "Asp",
+        "BASIC",
+        "C",
+        "C++",
+        "Clojure",
+        "COBOL",
+        "ColdFusion",
+        "Erlang",
+        "Fortran",
+        "Groovy",
+        "Haskell",
+        "Java",
+        "JavaScript",
+        "Lisp",
+        "Perl",
+        "PHP",
+        "Python",
+        "Ruby",
+        "Scala",
+        "Scheme"];
+
+
+    $scope.demoAjaxAutocomplete = '';
+
+
+    $scope.modalDemo1 = function(){
+        console.log('modalDemo1');
+    }
+
+    $scope.modalDemo2 = function(){
+        console.log('modalDemo2');
+    }
+
+
+});
+"use strict";
+
+
+angular.module('app.ui').controller('TreeviewCtrl', function ($scope) {
+    $scope.demoTree1 = [
+        {"content": "<span><i class=\"fa fa-lg fa-calendar\"></i> 2013, Week 2</span>", "expanded": true, "children": [
+            {"content": "<span class=\"label label-success\"><i class=\"fa fa-lg fa-plus-circle\"></i> Monday, January 7: 8.00 hours</span>", "expanded": true, "children": [
+                {"content": "<span><i class=\"fa fa-clock-o\"></i> 8.00</span> &ndash; <a> Changed CSS to accomodate...</a>"}
+            ]},
+            {"content": "<span><i class=\"fa fa-clock-o\"></i> 8.00</span> &ndash; <a> Changed CSS to accomodate...</a>"},
+            {"content": "<span class=\"label label-success\"><i class=\"fa fa-lg fa-minus-circle\"></i> Tuesday, January 8: 8.00 hours</span>", "expanded": true, "children": [
+                {"content": "<span><i class=\"fa fa-clock-o\"></i> 6.00</span> &ndash; <a> Altered code...</a>"},
+                {"content": "<span><i class=\"fa fa-clock-o\"></i> 2.00</span> &ndash; <a> Simplified our approach to...</a>"}
+            ]},
+            {"content": "<span><i class=\"fa fa-clock-o\"></i> 6.00</span> &ndash; <a> Altered code...</a>"},
+            {"content": "<span><i class=\"fa fa-clock-o\"></i> 2.00</span> &ndash; <a> Simplified our approach to...</a>"},
+            {"content": "<span class=\"label label-warning\"><i class=\"fa fa-lg fa-minus-circle\"></i> Wednesday, January 9: 6.00 hours</span>", "children": [
+                {"content": "<span><i class=\"fa fa-clock-o\"></i> 3.00</span> &ndash; <a> Fixed bug caused by...</a>"},
+                {"content": "<span><i class=\"fa fa-clock-o\"></i> 3.00</span> &ndash; <a> Comitting latest code to Git...</a>"}
+            ]},
+            {"content": "<span><i class=\"fa fa-clock-o\"></i> 3.00</span> &ndash; <a> Fixed bug caused by...</a>"},
+            {"content": "<span><i class=\"fa fa-clock-o\"></i> 3.00</span> &ndash; <a> Comitting latest code to Git...</a>"},
+            {"content": "<span class=\"label label-danger\"><i class=\"fa fa-lg fa-minus-circle\"></i> Wednesday, January 9: 4.00 hours</span>", "children": [
+                {"content": "<span><i class=\"fa fa-clock-o\"></i> 2.00</span> &ndash; <a> Create component that...</a>"}
+            ]},
+            {"content": "<span><i class=\"fa fa-clock-o\"></i> 2.00</span> &ndash; <a> Create component that...</a>"}
+        ]},
+        {"content": "<span><i class=\"fa fa-lg fa-calendar\"></i> 2013, Week 3</span>", "children": [
+            {"content": "<span class=\"label label-success\"><i class=\"fa fa-lg fa-minus-circle\"></i> Monday, January 14: 8.00 hours</span>", "children": [
+                {"content": "<span><i class=\"fa fa-clock-o\"></i> 7.75</span> &ndash; <a> Writing documentation...</a>"},
+                {"content": "<span><i class=\"fa fa-clock-o\"></i> 0.25</span> &ndash; <a> Reverting code back to...</a>"}
+            ]},
+            {"content": "<span><i class=\"fa fa-clock-o\"></i> 7.75</span> &ndash; <a> Writing documentation...</a>"},
+            {"content": "<span><i class=\"fa fa-clock-o\"></i> 0.25</span> &ndash; <a> Reverting code back to...</a>"}
+        ]}
+    ]
+
+    $scope.demoTree2 = [
+        {"content": "<span><i class=\"fa fa-lg fa-folder-open\"></i> Parent</span>", "expanded": true, "children": [
+            {"content": "<span><i class=\"fa fa-lg fa-plus-circle\"></i> Administrators</span>", "expanded": true, "children": [
+                {"content": "<span> <label class=\"checkbox inline-block\"><input type=\"checkbox\" name=\"checkbox-inline\"><i></i>Michael.Jackson</label> </span>"},
+                {"content": "<span> <label class=\"checkbox inline-block\"><input type=\"checkbox\" checked=\"checked\" name=\"checkbox-inline\"><i></i>Sunny.Ahmed</label> </span>"},
+                {"content": "<span> <label class=\"checkbox inline-block\"><input type=\"checkbox\" checked=\"checked\" name=\"checkbox-inline\"><i></i>Jackie.Chan</label> </span>"}
+            ]},
+            {"content": "<span> <label class=\"checkbox inline-block\"><input type=\"checkbox\" name=\"checkbox-inline\"><i></i>Michael.Jackson</label> </span>"},
+            {"content": "<span> <label class=\"checkbox inline-block\"><input type=\"checkbox\" checked=\"checked\" name=\"checkbox-inline\"><i></i>Sunny.Ahmed</label> </span>"},
+            {"content": "<span> <label class=\"checkbox inline-block\"><input type=\"checkbox\" checked=\"checked\" name=\"checkbox-inline\"><i></i>Jackie.Chan</label> </span>"},
+            {"content": "<span><i class=\"fa fa-lg fa-minus-circle\"></i> Child</span>", "expanded": true, "children": [
+                {"content": "<span><i class=\"icon-leaf\"></i> Grand Child</span>"},
+                {"content": "<span><i class=\"icon-leaf\"></i> Grand Child</span>"},
+                {"content": "<span><i class=\"fa fa-lg fa-plus-circle\"></i> Grand Child</span>",  "children": [
+                    {"content": "<span><i class=\"fa fa-lg fa-plus-circle\"></i> Great Grand Child</span>", "children": [
+                        {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"},
+                        {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"}
+                    ]},
+                    {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"},
+                    {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"},
+                    {"content": "<span><i class=\"icon-leaf\"></i> Great Grand Child</span>"},
+                    {"content": "<span><i class=\"icon-leaf\"></i> Great Grand Child</span>"}
+                ]},
+                {"content": "<span><i class=\"fa fa-lg fa-plus-circle\"></i> Great Grand Child</span>", "children": [
+                    {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"},
+                    {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"}
+                ]},
+                {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"},
+                {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"},
+                {"content": "<span><i class=\"icon-leaf\"></i> Great Grand Child</span>"},
+                {"content": "<span><i class=\"icon-leaf\"></i> Great Grand Child</span>"}
+            ]},
+            {"content": "<span><i class=\"icon-leaf\"></i> Grand Child</span>"},
+            {"content": "<span><i class=\"icon-leaf\"></i> Grand Child</span>"},
+            {"content": "<span><i class=\"fa fa-lg fa-plus-circle\"></i> Grand Child</span>", "children": [
+                {"content": "<span><i class=\"fa fa-lg fa-plus-circle\"></i> Great Grand Child</span>", "children": [
+                    {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"},
+                    {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"}
+                ]},
+                {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"},
+                {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"},
+                {"content": "<span><i class=\"icon-leaf\"></i> Great Grand Child</span>"},
+                {"content": "<span><i class=\"icon-leaf\"></i> Great Grand Child</span>"}
+            ]},
+            {"content": "<span><i class=\"fa fa-lg fa-plus-circle\"></i> Great Grand Child</span>", "children": [
+                {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"},
+                {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"}
+            ]},
+            {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"},
+            {"content": "<span><i class=\"icon-leaf\"></i> Great great Grand Child</span>"},
+            {"content": "<span><i class=\"icon-leaf\"></i> Great Grand Child</span>"},
+            {"content": "<span><i class=\"icon-leaf\"></i> Great Grand Child</span>"}
+        ]},
+        {"content": "<span><i class=\"fa fa-lg fa-folder-open\"></i> Parent2</span>", "children": [
+            {"content": "<span><i class=\"icon-leaf\"></i> Child</span>"}
+        ]}
+    ]
 });
 "use strict";
 
@@ -50931,88 +50760,6 @@ angular.module('app.userdirectory').factory('userService', function ($http, APP_
 	    }
 	}
 });
-
-
-'use strict';
-
-angular.module('app.wizards').factory('RequestInfo', function () {
-
-    var RequestModel = {
-        params: undefined,
-        instance: undefined,
-        metadata: undefined,
-        sampleGridInstance: undefined,
-        itemGridInstance: undefined,
-        selectedItemIds: undefined,
-        selectedItemOwners: undefined,
-        selectdSampleKey : undefined,
-        sampleItemMap : undefined,
-        error: "",
-        init: function()
-        {
-            this.params = undefined;
-            this.instance = undefined;
-            this.metadata = undefined;
-            this.sampleGridInstance = undefined;
-            this.itemGridInstance = undefined;
-            this.selectdSampleKey = undefined;
-            this.selectedItemIds = undefined;
-            this.selectedItemOwners = undefined;
-            this.sampleItemsMap = new Object();
-            this.error = "";
-        },
-        requestId: function()
-        {
-            if (this.instance)
-            {
-                return this.instance.obj_id;
-            }
-            else
-            {
-                return undefined;
-            }
-        },
-        requestPk: function()
-        {
-            if (this.instance) {
-                return this.instance.obj_pk;
-            }
-            else {
-                return undefined;
-            }
-        },
-        getPropertyValue : function(property)
-        {
-            if (this.instance && this.metadata)
-            {
-                var propertyValue = this.instance[property];
-
-                if (propertyValue) {
-                    if (this.metadata.properties[property].enum) {
-                        if (propertyValue > 0) {
-                            // convert property value from index to enum name
-                            propertyValue = this.metadata.properties[property].enum[propertyValue];
-                        }
-                        else
-                        {
-                            // 0 is for unknown, convert it to empty string
-                            propertyValue = "";
-                        }
-                    }
-                }
-
-                return propertyValue
-            }
-            else
-            {
-                return undefined;
-            }
-        }
-    };
-
-    return RequestModel;
-});
-
 "use strict";
 
 angular.module('app.wizards').controller('createRequestCtrl', function ($scope, $state, $http, $stateParams, $modalInstance, APP_CONFIG, CartInfo, dataCartService) {
@@ -52515,46 +52262,262 @@ angular.module('app.wizards').directive('sampleItemStep', function () {
         }
     }
 });
+
+
+'use strict';
+
+angular.module('app.wizards').factory('RequestInfo', function () {
+
+    var RequestModel = {
+        params: undefined,
+        instance: undefined,
+        metadata: undefined,
+        sampleGridInstance: undefined,
+        itemGridInstance: undefined,
+        selectedItemIds: undefined,
+        selectedItemOwners: undefined,
+        selectdSampleKey : undefined,
+        sampleItemMap : undefined,
+        error: "",
+        init: function()
+        {
+            this.params = undefined;
+            this.instance = undefined;
+            this.metadata = undefined;
+            this.sampleGridInstance = undefined;
+            this.itemGridInstance = undefined;
+            this.selectdSampleKey = undefined;
+            this.selectedItemIds = undefined;
+            this.selectedItemOwners = undefined;
+            this.sampleItemsMap = new Object();
+            this.error = "";
+        },
+        requestId: function()
+        {
+            if (this.instance)
+            {
+                return this.instance.obj_id;
+            }
+            else
+            {
+                return undefined;
+            }
+        },
+        requestPk: function()
+        {
+            if (this.instance) {
+                return this.instance.obj_pk;
+            }
+            else {
+                return undefined;
+            }
+        },
+        getPropertyValue : function(property)
+        {
+            if (this.instance && this.metadata)
+            {
+                var propertyValue = this.instance[property];
+
+                if (propertyValue) {
+                    if (this.metadata.properties[property].enum) {
+                        if (propertyValue > 0) {
+                            // convert property value from index to enum name
+                            propertyValue = this.metadata.properties[property].enum[propertyValue];
+                        }
+                        else
+                        {
+                            // 0 is for unknown, convert it to empty string
+                            propertyValue = "";
+                        }
+                    }
+                }
+
+                return propertyValue
+            }
+            else
+            {
+                return undefined;
+            }
+        }
+    };
+
+    return RequestModel;
+});
+
+'use strict';
+
+angular.module('app.taskviewer').controller('ItemFormCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, taskService) {
+
+    // override the dbclass and oid with test item class and test item oid
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.itemClass;
+    $scope.oid = $stateParams.itemOid;
+    $rootScope.hasItemOid = taskService.hasValue($stateParams.itemOid);
+
+    angular.extend(this, $controller('ebaasFormBaseCtrl', { $rootScope: $rootScope, $scope: $scope, $http: $http, APP_CONFIG: APP_CONFIG }));
+});
+'use strict';
+
+angular.module('app.taskviewer').controller('PacketFormCtrl', function ($stateParams, $rootScope, $scope, taskService) {
+    // override the dbclass and oid with packet class and packet oid
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.packetClass;
+    $scope.oid = $stateParams.packetOid;
+
+    $rootScope.hasPacketOid = taskService.hasValue($stateParams.packetOid);
+});
+'use strict';
+
+angular.module('app.taskviewer').controller('TaskFormCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, MetaDataCache) {
+    angular.extend(this, $controller('ebaasFormBaseCtrl', { $rootScope: $rootScope, $scope: $scope, $http: $http, APP_CONFIG: APP_CONFIG }));
+});
 "use strict";
 
-angular.module('app.auth').directive('facebookSignin', function ($rootScope, ezfb) {
-    return {
-        replace: true,
-        restrict: 'E',
-        template: '<a class="btn btn-block btn-social btn-facebook"><i class="fa fa-facebook"></i> Sign in with Facebook</a>',
-        link: function(scope, element){
-            element.on('click', function(){
-                ezfb.login(function (res) {
-                    if (res.authResponse) {
-                        $rootScope.$broadcast('event:facebook-signin-success', res.authResponse);
-                    }
-                }, {scope: 'public_profile'});
-            })
+angular.module('app.taskviewer').factory('taskService', function ($http, $q, APP_CONFIG) {
 
+    var createTaskTree = function (treeData) {
+        var node, rootMenuItem, roots = [];
+        node = treeData;
+
+        var rootMenuItem = {};
+        //rootMenuItem.content = "<span><i class=\"fa fa-lg fa-plus-circle\"></i> " + node.title + "</span>";
+        rootMenuItem.content = "<span class='label label-info'><i class=\"fa fa-lg fa-plus-circle\"></i>&nbsp;&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('taskDataTree')).scope().GoToTaskInfoView('" + node.ClassName + "', '" + node.ID + "');\">" + node.Name + "</a></span>";
+        rootMenuItem.children = [];
+        rootMenuItem.expanded = true;
+        roots.push(rootMenuItem);
+
+        addChildMenuItems(rootMenuItem, treeData.Children);
+
+        return roots;
+    };
+
+    var addChildMenuItems = function (parentItem, nodes) {
+        var node, menuItem;
+
+        if (nodes != null) {
+            for (var i = 0; i < nodes.length; i += 1) {
+                node = nodes[i];
+
+                menuItem = {};
+                menuItem.children = [];
+
+                if (node.Children.length > 0) {
+                    menuItem.expanded = true;
+                    menuItem.content = "<span class='label label-info'><i class=\"fa fa-lg fa-plus-circle\"></i>&nbsp;&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('taskDataTree')).scope().GoToTaskInfoView('" + node.ClassName + "', '" + node.ID + "');\">" + node.Name + "</a></span>";
+                } else {
+                    menuItem.content = "<span class='label label-info'><a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('taskDataTree')).scope().GoToTaskInfoView('" + node.ClassName + "', '" + node.ID + "');\">" + node.Name + "</a></span>";
+                }
+
+                parentItem.children.push(menuItem);
+
+                addChildMenuItems(menuItem, node.Children);
+            }
+        }
+    }
+
+    function getTaskTree(parameters, callback) {
+
+        // url to get task instance
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(parameters.schema) + "/" + parameters.taskClass + "/" + parameters.taskOid + "/custom/GetTaskTree";
+        var urlWithParams = url + "?itemClass=" + parameters.itemClass;
+        urlWithParams += "&packetClass=" + parameters.packetClass;
+        urlWithParams += "&taskNodeAttribute=" + parameters.taskNodeAttribute;
+        urlWithParams += "&itemNodeAttribute=" + parameters.itemNodeAttribute;
+        urlWithParams += "&packetNodeAttribute=" + parameters.packetNodeAttribute;
+        $http.get(urlWithParams).success(function (data) {
+            var treeData = data;
+            if (callback != null) {
+                callback(createTaskTree(treeData));
+            }
+        }).error(function () {
+            callback(undefined);
+        });
+    }
+
+    function hasValue(val) {
+        if (val == null || val == undefined || val == "") {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+	
+	return {
+        getTaskTree: function (parameters, callback) {
+            return getTaskTree(parameters, callback);
+        },
+        hasValue: function (val) {
+            return hasValue(val);
+        }
+	}
+});
+'use strict';
+
+angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($rootScope, $scope, $state, $stateParams, taskService) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+    $scope.oid = $stateParams.oid;
+    $scope.formAttribute = undefined;
+    $scope.itemClass = $stateParams.itemClass;
+    $scope.itemOid = $stateParams.itemOid;
+    $scope.packetClass = $stateParams.packetClass;
+    $scope.packetOid = $stateParams.packetOid;
+    $scope.taskNodeAttribute = $stateParams.taskNodeAttribute;
+    $scope.itemNodeAttribute = $stateParams.itemNodeAttribute;
+    $scope.packetNodeAttribute = $stateParams.packetNodeAttribute;
+
+    var parameters = {};
+    parameters.schema = $stateParams.schema;
+    parameters.class = $stateParams.class;
+    parameters.oid = $stateParams.oid;
+    parameters.taskClass = $stateParams.class;
+    parameters.taskOid = $stateParams.oid;
+    parameters.taskNodeAttribute = $stateParams.taskNodeAttribute;
+    parameters.itemClass = $stateParams.itemClass;
+    parameters.itemNodeAttribute = $stateParams.itemNodeAttribute;
+    parameters.packetClass = $stateParams.packetClass;
+    parameters.packetNodeAttribute = $stateParams.packetNodeAttribute;
+
+    taskService.getTaskTree(parameters, function (treeData) {
+        $scope.taskDataTree = treeData;
+    });
+
+    $state.go("app.taskviewer.details", parameters);
+
+    $scope.GoToTaskInfoView = function GoToTaskInfoView(nodeClass, nodeOid) {
+        var params = new Object();
+        params.schema = $scope.dbschema;
+        params.class = $scope.dbclass;
+        params.oid = $scope.oid;
+        params.itemClass = $scope.itemClass;
+        params.packetClass = $scope.packetClass;
+        params.taskNodeAttribute = $scope.taskNodeAttribute;
+        params.itemNodeAttribute = $scope.itemNodeAttribute;
+        params.packetNodeAttribute = $scope.packetNodeAttribute;
+
+        if (nodeClass == $scope.itemClass) {
+            params.itemOid = nodeOid;
+            params.packetOid = null;
+            $scope.itemOid = nodeOid;
+            $scope.packetOid = null;
+            $state.go("app.taskviewer.details", params, { reload: true });
+        }
+        else if (nodeClass == $scope.packetClass) {
+            params.packetOid = nodeOid;
+            $scope.packetOid = nodeOid;
+            $state.go("app.taskviewer.details", params, { reload: true });
+        }
+        else {
+            params.itemOid = "";
+            params.packetOid = "";
+            $scope.itemOid = "";
+            $scope.packetOid = "";
+            $state.go("app.taskviewer.details", params, { reload: true });
         }
     }
 });
-"use strict";
-
-angular.module('app.auth').directive('googleSignin', function ($rootScope, GooglePlus) {
-    return {
-        restrict: 'E',
-        template: '<a class="g-signin btn btn-block btn-social btn-google-plus"><i class="fa fa-google-plus"></i> Sign in with Google</a>',
-        replace: true,
-        link: function (scope, element) {
-            element.on('click', function(){
-                GooglePlus.login().then(function (authResult) {
-                    $rootScope.$broadcast('event:google-plus-signin-success', authResult);
-
-                }, function (err) {
-                    $rootScope.$broadcast('event:google-plus-signin-failure', err);
-
-                });
-            })
-        }
-    };
-});
-
 'use strict';
 
 angular.module('app.chat').factory('ChatApi', function ($q, $rootScope, User, $http, APP_CONFIG) {
@@ -52616,6 +52579,46 @@ angular.module('app.chat').factory('ChatApi', function ($q, $rootScope, User, $h
     return ChatSrv;
 
 });
+"use strict";
+
+angular.module('app.auth').directive('facebookSignin', function ($rootScope, ezfb) {
+    return {
+        replace: true,
+        restrict: 'E',
+        template: '<a class="btn btn-block btn-social btn-facebook"><i class="fa fa-facebook"></i> Sign in with Facebook</a>',
+        link: function(scope, element){
+            element.on('click', function(){
+                ezfb.login(function (res) {
+                    if (res.authResponse) {
+                        $rootScope.$broadcast('event:facebook-signin-success', res.authResponse);
+                    }
+                }, {scope: 'public_profile'});
+            })
+
+        }
+    }
+});
+"use strict";
+
+angular.module('app.auth').directive('googleSignin', function ($rootScope, GooglePlus) {
+    return {
+        restrict: 'E',
+        template: '<a class="g-signin btn btn-block btn-social btn-google-plus"><i class="fa fa-google-plus"></i> Sign in with Google</a>',
+        replace: true,
+        link: function (scope, element) {
+            element.on('click', function(){
+                GooglePlus.login().then(function (authResult) {
+                    $rootScope.$broadcast('event:google-plus-signin-success', authResult);
+
+                }, function (err) {
+                    $rootScope.$broadcast('event:google-plus-signin-failure', err);
+
+                });
+            })
+        }
+    };
+});
+
 (function() {
         
    'use strict';
@@ -53297,300 +53300,6 @@ angular.module('app').factory('Todo', function (Restangular, APP_CONFIG) {
       });
 
     return Restangular.all(APP_CONFIG.apiRootUrl + '/todos.json')
-});
-'use strict';
-
-angular.module('app.homepage').directive('demoBarChart', function ($http, APP_CONFIG) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attributes) {
-
-            var barOptions = {
-                //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-                scaleBeginAtZero : true,
-                //Boolean - Whether grid lines are shown across the chart
-                scaleShowGridLines : true,
-                //String - Colour of the grid lines
-                scaleGridLineColor : "rgba(0,0,0,.05)",
-                //Number - Width of the grid lines
-                scaleGridLineWidth : 1,
-                //Boolean - If there is a stroke on each bar
-                barShowStroke : true,
-                //Number - Pixel width of the bar stroke
-                barStrokeWidth : 1,
-                //Number - Spacing between each of the X value sets
-                barValueSpacing : 5,
-                //Number - Spacing between data sets within X values
-                barDatasetSpacing : 1,
-                //Boolean - Re-draw chart on page resize
-                responsive: true,
-                //String - A legend template
-                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
-            }
-
-            var barChartUrl = scope.pageparams["barChart"];
-
-            if (barChartUrl) {
-                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(barChartUrl))
-                    .success(function (res) {
-                        scope.barChartTitle = res.title;
-                        var ctx = element[0].getContext("2d");
-                        new Chart(ctx).Bar(res.chart, barOptions);
-                    })
-            }
-
-        }
-    }
-});
-'use strict';
-
-angular.module('app.homepage').directive('demoDoughnutChart', function ($http, APP_CONFIG) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attributes) {
-            var doughnutOptions = {
-                //Boolean - Whether we should show a stroke on each segment
-                segmentShowStroke : true,
-                //String - The colour of each segment stroke
-                segmentStrokeColor : "#fff",
-                //Number - The width of each segment stroke
-                segmentStrokeWidth : 2,
-                //Number - The percentage of the chart that we cut out of the middle
-                percentageInnerCutout : 50, // This is 0 for Pie charts
-                //Number - Amount of animation steps
-                animationSteps : 100,
-                //String - Animation easing effect
-                animationEasing : "easeOutBounce",
-                //Boolean - Whether we animate the rotation of the Doughnut
-                animateRotate : true,
-                //Boolean - Whether we animate scaling the Doughnut from the centre
-                animateScale : false,
-                //Boolean - Re-draw chart on page resize
-                responsive: true,
-                //String - A legend template
-                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
-            };
-
-
-            var doughnutChartUrl = scope.pageparams["doughnutChart"];
-
-            if (doughnutChartUrl) {
-                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(doughnutChartUrl))
-                    .success(function (res) {
-                        scope.doughnutChartTitle = res.title;
-                        // render chart
-                        var ctx = element[0].getContext("2d");
-                        new Chart(ctx).Doughnut(res.chart, doughnutOptions);
-                    })
-            }
-        }}
-});
-'use strict';
-
-angular.module('app.homepage').directive('demoLineChart', function ($http, APP_CONFIG) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attributes) {
-
-            // LINE CHART
-            // ref: http://www.chartjs.org/docs/#line-chart-introduction
-            var lineOptions = {
-                ///Boolean - Whether grid lines are shown across the chart
-                scaleShowGridLines : true,
-                //String - Colour of the grid lines
-                scaleGridLineColor : "rgba(0,0,0,.05)",
-                //Number - Width of the grid lines
-                scaleGridLineWidth : 1,
-                //Boolean - Whether the line is curved between points
-                bezierCurve : true,
-                //Number - Tension of the bezier curve between points
-                bezierCurveTension : 0.4,
-                //Boolean - Whether to show a dot for each point
-                pointDot : true,
-                //Number - Radius of each point dot in pixels
-                pointDotRadius : 4,
-                //Number - Pixel width of point dot stroke
-                pointDotStrokeWidth : 1,
-                //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-                pointHitDetectionRadius : 20,
-                //Boolean - Whether to show a stroke for datasets
-                datasetStroke : true,
-                //Number - Pixel width of dataset stroke
-                datasetStrokeWidth : 2,
-                //Boolean - Whether to fill the dataset with a colour
-                datasetFill : true,
-                //Boolean - Re-draw chart on page resize
-                responsive: true,
-                //String - A legend template
-                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
-            };
-
-            var lineChartUrl = scope.pageparams["lineChart"];
-            
-            if (lineChartUrl) {
-                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(lineChartUrl))
-                    .success(function (res) {
-                        scope.lineChartTitle = res.title;
-                        var ctx = element[0].getContext("2d");
-                        var myNewChart = new Chart(ctx).Line(res.chart, lineOptions);
-                    })
-            }
-        }
-    }
-});
-'use strict';
-
-angular.module('app.homepage').directive('demoPieChart', function ($http, APP_CONFIG) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attributes) {
-            var pieOptions = {
-                //Boolean - Whether we should show a stroke on each segment
-                segmentShowStroke: true,
-                //String - The colour of each segment stroke
-                segmentStrokeColor: "#fff",
-                //Number - The width of each segment stroke
-                segmentStrokeWidth: 2,
-                //Number - Amount of animation steps
-                animationSteps: 100,
-                //String - types of animation
-                animationEasing: "easeOutBounce",
-                //Boolean - Whether we animate the rotation of the Doughnut
-                animateRotate: true,
-                //Boolean - Whether we animate scaling the Doughnut from the centre
-                animateScale: false,
-                //Boolean - Re-draw chart on page resize
-                responsive: true,
-                //String - A legend template
-                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
-            };
-
-
-            var pieChartUrl = scope.pageparams["pieChart"];
-
-            if (pieChartUrl) {
-                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(pieChartUrl))
-                    .success(function (res) {
-                        scope.pieChartTitle = res.title;
-                        // render chart
-                        var ctx = element[0].getContext("2d");
-                        var myNewChart = new Chart(ctx).Pie(res.chart, pieOptions);
-                    })
-            }
-        }}
-});
-'use strict';
-
-angular.module('app.homepage').directive('demoPolarChart', function ($http, APP_CONFIG) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attributes) {
-            var polarOptions = {
-                //Boolean - Show a backdrop to the scale label
-                scaleShowLabelBackdrop : true,
-                //String - The colour of the label backdrop
-                scaleBackdropColor : "rgba(255,255,255,0.75)",
-                // Boolean - Whether the scale should begin at zero
-                scaleBeginAtZero : true,
-                //Number - The backdrop padding above & below the label in pixels
-                scaleBackdropPaddingY : 2,
-                //Number - The backdrop padding to the side of the label in pixels
-                scaleBackdropPaddingX : 2,
-                //Boolean - Show line for each value in the scale
-                scaleShowLine : true,
-                //Boolean - Stroke a line around each segment in the chart
-                segmentShowStroke : true,
-                //String - The colour of the stroke on each segement.
-                segmentStrokeColor : "#fff",
-                //Number - The width of the stroke value in pixels
-                segmentStrokeWidth : 2,
-                //Number - Amount of animation steps
-                animationSteps : 100,
-                //String - Animation easing effect.
-                animationEasing : "easeOutBounce",
-                //Boolean - Whether to animate the rotation of the chart
-                animateRotate : true,
-                //Boolean - Whether to animate scaling the chart from the centre
-                animateScale : false,
-                //Boolean - Re-draw chart on page resize
-                responsive: true,
-                //String - A legend template
-                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
-            };
-
-            var polarChartUrl = scope.pageparams["polarChart"];
-
-            if (polarChartUrl) {
-                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(polarChartUrl))
-                    .success(function (res) {
-                        scope.polarChartTitle = res.title;
-                        // render chart
-                        var ctx = element[0].getContext("2d");
-                        new Chart(ctx).PolarArea(res.chart, polarOptions);
-                    })
-            }
-        }}
-});
-'use strict';
-
-angular.module('app.homepage').directive('demoRadarChart', function ($http, APP_CONFIG) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attributes) {
-
-            var radarOptions = {
-                //Boolean - Whether to show lines for each scale point
-                scaleShowLine : true,
-                //Boolean - Whether we show the angle lines out of the radar
-                angleShowLineOut : true,
-                //Boolean - Whether to show labels on the scale
-                scaleShowLabels : false,
-                // Boolean - Whether the scale should begin at zero
-                scaleBeginAtZero : true,
-                //String - Colour of the angle line
-                angleLineColor : "rgba(0,0,0,.1)",
-                //Number - Pixel width of the angle line
-                angleLineWidth : 1,
-                //String - Point label font declaration
-                pointLabelFontFamily : "'Arial'",
-                //String - Point label font weight
-                pointLabelFontStyle : "normal",
-                //Number - Point label font size in pixels
-                pointLabelFontSize : 10,
-                //String - Point label font colour
-                pointLabelFontColor : "#666",
-                //Boolean - Whether to show a dot for each point
-                pointDot : true,
-                //Number - Radius of each point dot in pixels
-                pointDotRadius : 3,
-                //Number - Pixel width of point dot stroke
-                pointDotStrokeWidth : 1,
-                //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-                pointHitDetectionRadius : 20,
-                //Boolean - Whether to show a stroke for datasets
-                datasetStroke : true,
-                //Number - Pixel width of dataset stroke
-                datasetStrokeWidth : 2,
-                //Boolean - Whether to fill the dataset with a colour
-                datasetFill : true,
-                //Boolean - Re-draw chart on page resize
-                responsive: true,
-                //String - A legend template
-                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
-            }
-
-            var radarChartUrl = scope.pageparams["radarChart"];
-
-            if (radarChartUrl) {
-                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(radarChartUrl))
-                    .success(function (res) {
-                        scope.radarChartTitle = res.title;
-                        // render chart
-                        var ctx = element[0].getContext("2d");
-                        var myNewChart = new Chart(ctx).Radar(res.chart, radarOptions);
-                    })
-            }
-        }}
 });
 'use strict';
 
@@ -55755,6 +55464,300 @@ angular.module('app.graphs').directive('vectorMap', function () {
 });
 'use strict';
 
+angular.module('app.homepage').directive('demoBarChart', function ($http, APP_CONFIG) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attributes) {
+
+            var barOptions = {
+                //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+                scaleBeginAtZero : true,
+                //Boolean - Whether grid lines are shown across the chart
+                scaleShowGridLines : true,
+                //String - Colour of the grid lines
+                scaleGridLineColor : "rgba(0,0,0,.05)",
+                //Number - Width of the grid lines
+                scaleGridLineWidth : 1,
+                //Boolean - If there is a stroke on each bar
+                barShowStroke : true,
+                //Number - Pixel width of the bar stroke
+                barStrokeWidth : 1,
+                //Number - Spacing between each of the X value sets
+                barValueSpacing : 5,
+                //Number - Spacing between data sets within X values
+                barDatasetSpacing : 1,
+                //Boolean - Re-draw chart on page resize
+                responsive: true,
+                //String - A legend template
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+            }
+
+            var barChartUrl = scope.pageparams["barChart"];
+
+            if (barChartUrl) {
+                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(barChartUrl))
+                    .success(function (res) {
+                        scope.barChartTitle = res.title;
+                        var ctx = element[0].getContext("2d");
+                        new Chart(ctx).Bar(res.chart, barOptions);
+                    })
+            }
+
+        }
+    }
+});
+'use strict';
+
+angular.module('app.homepage').directive('demoDoughnutChart', function ($http, APP_CONFIG) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attributes) {
+            var doughnutOptions = {
+                //Boolean - Whether we should show a stroke on each segment
+                segmentShowStroke : true,
+                //String - The colour of each segment stroke
+                segmentStrokeColor : "#fff",
+                //Number - The width of each segment stroke
+                segmentStrokeWidth : 2,
+                //Number - The percentage of the chart that we cut out of the middle
+                percentageInnerCutout : 50, // This is 0 for Pie charts
+                //Number - Amount of animation steps
+                animationSteps : 100,
+                //String - Animation easing effect
+                animationEasing : "easeOutBounce",
+                //Boolean - Whether we animate the rotation of the Doughnut
+                animateRotate : true,
+                //Boolean - Whether we animate scaling the Doughnut from the centre
+                animateScale : false,
+                //Boolean - Re-draw chart on page resize
+                responsive: true,
+                //String - A legend template
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+            };
+
+
+            var doughnutChartUrl = scope.pageparams["doughnutChart"];
+
+            if (doughnutChartUrl) {
+                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(doughnutChartUrl))
+                    .success(function (res) {
+                        scope.doughnutChartTitle = res.title;
+                        // render chart
+                        var ctx = element[0].getContext("2d");
+                        new Chart(ctx).Doughnut(res.chart, doughnutOptions);
+                    })
+            }
+        }}
+});
+'use strict';
+
+angular.module('app.homepage').directive('demoLineChart', function ($http, APP_CONFIG) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attributes) {
+
+            // LINE CHART
+            // ref: http://www.chartjs.org/docs/#line-chart-introduction
+            var lineOptions = {
+                ///Boolean - Whether grid lines are shown across the chart
+                scaleShowGridLines : true,
+                //String - Colour of the grid lines
+                scaleGridLineColor : "rgba(0,0,0,.05)",
+                //Number - Width of the grid lines
+                scaleGridLineWidth : 1,
+                //Boolean - Whether the line is curved between points
+                bezierCurve : true,
+                //Number - Tension of the bezier curve between points
+                bezierCurveTension : 0.4,
+                //Boolean - Whether to show a dot for each point
+                pointDot : true,
+                //Number - Radius of each point dot in pixels
+                pointDotRadius : 4,
+                //Number - Pixel width of point dot stroke
+                pointDotStrokeWidth : 1,
+                //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+                pointHitDetectionRadius : 20,
+                //Boolean - Whether to show a stroke for datasets
+                datasetStroke : true,
+                //Number - Pixel width of dataset stroke
+                datasetStrokeWidth : 2,
+                //Boolean - Whether to fill the dataset with a colour
+                datasetFill : true,
+                //Boolean - Re-draw chart on page resize
+                responsive: true,
+                //String - A legend template
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+            };
+
+            var lineChartUrl = scope.pageparams["lineChart"];
+            
+            if (lineChartUrl) {
+                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(lineChartUrl))
+                    .success(function (res) {
+                        scope.lineChartTitle = res.title;
+                        var ctx = element[0].getContext("2d");
+                        var myNewChart = new Chart(ctx).Line(res.chart, lineOptions);
+                    })
+            }
+        }
+    }
+});
+'use strict';
+
+angular.module('app.homepage').directive('demoPieChart', function ($http, APP_CONFIG) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attributes) {
+            var pieOptions = {
+                //Boolean - Whether we should show a stroke on each segment
+                segmentShowStroke: true,
+                //String - The colour of each segment stroke
+                segmentStrokeColor: "#fff",
+                //Number - The width of each segment stroke
+                segmentStrokeWidth: 2,
+                //Number - Amount of animation steps
+                animationSteps: 100,
+                //String - types of animation
+                animationEasing: "easeOutBounce",
+                //Boolean - Whether we animate the rotation of the Doughnut
+                animateRotate: true,
+                //Boolean - Whether we animate scaling the Doughnut from the centre
+                animateScale: false,
+                //Boolean - Re-draw chart on page resize
+                responsive: true,
+                //String - A legend template
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+            };
+
+
+            var pieChartUrl = scope.pageparams["pieChart"];
+
+            if (pieChartUrl) {
+                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(pieChartUrl))
+                    .success(function (res) {
+                        scope.pieChartTitle = res.title;
+                        // render chart
+                        var ctx = element[0].getContext("2d");
+                        var myNewChart = new Chart(ctx).Pie(res.chart, pieOptions);
+                    })
+            }
+        }}
+});
+'use strict';
+
+angular.module('app.homepage').directive('demoPolarChart', function ($http, APP_CONFIG) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attributes) {
+            var polarOptions = {
+                //Boolean - Show a backdrop to the scale label
+                scaleShowLabelBackdrop : true,
+                //String - The colour of the label backdrop
+                scaleBackdropColor : "rgba(255,255,255,0.75)",
+                // Boolean - Whether the scale should begin at zero
+                scaleBeginAtZero : true,
+                //Number - The backdrop padding above & below the label in pixels
+                scaleBackdropPaddingY : 2,
+                //Number - The backdrop padding to the side of the label in pixels
+                scaleBackdropPaddingX : 2,
+                //Boolean - Show line for each value in the scale
+                scaleShowLine : true,
+                //Boolean - Stroke a line around each segment in the chart
+                segmentShowStroke : true,
+                //String - The colour of the stroke on each segement.
+                segmentStrokeColor : "#fff",
+                //Number - The width of the stroke value in pixels
+                segmentStrokeWidth : 2,
+                //Number - Amount of animation steps
+                animationSteps : 100,
+                //String - Animation easing effect.
+                animationEasing : "easeOutBounce",
+                //Boolean - Whether to animate the rotation of the chart
+                animateRotate : true,
+                //Boolean - Whether to animate scaling the chart from the centre
+                animateScale : false,
+                //Boolean - Re-draw chart on page resize
+                responsive: true,
+                //String - A legend template
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+            };
+
+            var polarChartUrl = scope.pageparams["polarChart"];
+
+            if (polarChartUrl) {
+                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(polarChartUrl))
+                    .success(function (res) {
+                        scope.polarChartTitle = res.title;
+                        // render chart
+                        var ctx = element[0].getContext("2d");
+                        new Chart(ctx).PolarArea(res.chart, polarOptions);
+                    })
+            }
+        }}
+});
+'use strict';
+
+angular.module('app.homepage').directive('demoRadarChart', function ($http, APP_CONFIG) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attributes) {
+
+            var radarOptions = {
+                //Boolean - Whether to show lines for each scale point
+                scaleShowLine : true,
+                //Boolean - Whether we show the angle lines out of the radar
+                angleShowLineOut : true,
+                //Boolean - Whether to show labels on the scale
+                scaleShowLabels : false,
+                // Boolean - Whether the scale should begin at zero
+                scaleBeginAtZero : true,
+                //String - Colour of the angle line
+                angleLineColor : "rgba(0,0,0,.1)",
+                //Number - Pixel width of the angle line
+                angleLineWidth : 1,
+                //String - Point label font declaration
+                pointLabelFontFamily : "'Arial'",
+                //String - Point label font weight
+                pointLabelFontStyle : "normal",
+                //Number - Point label font size in pixels
+                pointLabelFontSize : 10,
+                //String - Point label font colour
+                pointLabelFontColor : "#666",
+                //Boolean - Whether to show a dot for each point
+                pointDot : true,
+                //Number - Radius of each point dot in pixels
+                pointDotRadius : 3,
+                //Number - Pixel width of point dot stroke
+                pointDotStrokeWidth : 1,
+                //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+                pointHitDetectionRadius : 20,
+                //Boolean - Whether to show a stroke for datasets
+                datasetStroke : true,
+                //Number - Pixel width of dataset stroke
+                datasetStrokeWidth : 2,
+                //Boolean - Whether to fill the dataset with a colour
+                datasetFill : true,
+                //Boolean - Re-draw chart on page resize
+                responsive: true,
+                //String - A legend template
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+            }
+
+            var radarChartUrl = scope.pageparams["radarChart"];
+
+            if (radarChartUrl) {
+                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(radarChartUrl))
+                    .success(function (res) {
+                        scope.radarChartTitle = res.title;
+                        // render chart
+                        var ctx = element[0].getContext("2d");
+                        var myNewChart = new Chart(ctx).Radar(res.chart, radarOptions);
+                    })
+            }
+        }}
+});
+'use strict';
+
 angular.module('app.tables').directive('datatableBasic', function ($compile) {
     return {
         restrict: 'A',
@@ -56157,6 +56160,153 @@ angular.module('app.tables').directive('jqGrid', function ($compile) {
 
 
             $compile(element.contents())(scope);
+        }
+    }
+});
+"use strict";
+
+angular.module('SmartAdmin.Layout').directive('fullScreen', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element){
+            var $body = $('body');
+            var toggleFullSceen = function(e){
+                if (!$body.hasClass("full-screen")) {
+                    $body.addClass("full-screen");
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen();
+                    } else if (document.documentElement.mozRequestFullScreen) {
+                        document.documentElement.mozRequestFullScreen();
+                    } else if (document.documentElement.webkitRequestFullscreen) {
+                        document.documentElement.webkitRequestFullscreen();
+                    } else if (document.documentElement.msRequestFullscreen) {
+                        document.documentElement.msRequestFullscreen();
+                    }
+                } else {
+                    $body.removeClass("full-screen");
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.mozCancelFullScreen) {
+                        document.mozCancelFullScreen();
+                    } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    }
+                }
+            };
+
+            element.on('click', toggleFullSceen);
+
+        }
+    }
+});
+"use strict";
+
+angular.module('SmartAdmin.Layout').directive('minifyMenu', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element){
+                var $body = $('body');
+            var minifyMenu = function() {
+                if (!$body.hasClass("menu-on-top")) {
+                    $body.toggleClass("minified");
+                    $body.removeClass("hidden-menu");
+                    $('html').removeClass("hidden-menu-mobile-lock");
+                }
+            };
+
+            element.on('click', minifyMenu);
+        }
+    }
+})
+'use strict';
+
+angular.module('SmartAdmin.Layout').directive('reloadState', function ($rootScope) {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttributes) {
+            tElement.removeAttr('reload-state data-reload-state');
+            tElement.on('click', function (e) {
+                $rootScope.$state.transitionTo($rootScope.$state.current, $rootScope.$stateParams, {
+                    reload: true,
+                    inherit: false,
+                    notify: true
+                });
+                e.preventDefault();
+            })
+        }
+    }
+});
+
+"use strict";
+
+angular.module('SmartAdmin.Layout').directive('resetWidgets', function($state){
+
+    return {
+        restrict: 'A',
+        link: function(scope, element){
+            element.on('click', function(){
+                $.SmartMessageBox({
+                    title : "<i class='fa fa-refresh' style='color:green'></i> Clear Local Storage",
+                    content : "Would you like to RESET all your saved widgets and clear LocalStorage?1",
+                    buttons : '[No][Yes]'
+                }, function(ButtonPressed) {
+                    if (ButtonPressed == "Yes" && localStorage) {
+                        localStorage.clear();
+                        location.reload()
+                    }
+                });
+
+            });
+        }
+    }
+
+});
+
+'use strict';
+
+angular.module('SmartAdmin.Layout').directive('searchMobile', function () {
+    return {
+        restrict: 'A',
+        compile: function (element, attributes) {
+            element.removeAttr('search-mobile data-search-mobile');
+
+            element.on('click', function (e) {
+                $('body').addClass('search-mobile');
+                e.preventDefault();
+            });
+
+            $('#cancel-search-js').on('click', function (e) {
+                $('body').removeClass('search-mobile');
+                e.preventDefault();
+            });
+        }
+    }
+});
+"use strict";
+
+angular.module('SmartAdmin.Layout').directive('toggleMenu', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element){
+            var $body = $('body');
+
+            var toggleMenu = function(){
+                if (!$body.hasClass("menu-on-top")){
+                    $('html').toggleClass("hidden-menu-mobile-lock");
+                    $body.toggleClass("hidden-menu");
+                    $body.removeClass("minified");
+                } else if ( $body.hasClass("menu-on-top") && $body.hasClass("mobile-view-activated") ) {
+                    $('html').toggleClass("hidden-menu-mobile-lock");
+                    $body.toggleClass("hidden-menu");
+                    $body.removeClass("minified");
+                }
+            };
+
+            element.on('click', toggleMenu);
+
+            scope.$on('requestToggleMenu', function(){
+                toggleMenu();
+            });
         }
     }
 });
@@ -57424,153 +57574,6 @@ angular.module('SmartAdmin.Layout').directive('stateBreadcrumbs', function ($roo
 });
 "use strict";
 
-angular.module('SmartAdmin.Layout').directive('fullScreen', function(){
-    return {
-        restrict: 'A',
-        link: function(scope, element){
-            var $body = $('body');
-            var toggleFullSceen = function(e){
-                if (!$body.hasClass("full-screen")) {
-                    $body.addClass("full-screen");
-                    if (document.documentElement.requestFullscreen) {
-                        document.documentElement.requestFullscreen();
-                    } else if (document.documentElement.mozRequestFullScreen) {
-                        document.documentElement.mozRequestFullScreen();
-                    } else if (document.documentElement.webkitRequestFullscreen) {
-                        document.documentElement.webkitRequestFullscreen();
-                    } else if (document.documentElement.msRequestFullscreen) {
-                        document.documentElement.msRequestFullscreen();
-                    }
-                } else {
-                    $body.removeClass("full-screen");
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
-                    } else if (document.mozCancelFullScreen) {
-                        document.mozCancelFullScreen();
-                    } else if (document.webkitExitFullscreen) {
-                        document.webkitExitFullscreen();
-                    }
-                }
-            };
-
-            element.on('click', toggleFullSceen);
-
-        }
-    }
-});
-"use strict";
-
-angular.module('SmartAdmin.Layout').directive('minifyMenu', function(){
-    return {
-        restrict: 'A',
-        link: function(scope, element){
-                var $body = $('body');
-            var minifyMenu = function() {
-                if (!$body.hasClass("menu-on-top")) {
-                    $body.toggleClass("minified");
-                    $body.removeClass("hidden-menu");
-                    $('html').removeClass("hidden-menu-mobile-lock");
-                }
-            };
-
-            element.on('click', minifyMenu);
-        }
-    }
-})
-'use strict';
-
-angular.module('SmartAdmin.Layout').directive('reloadState', function ($rootScope) {
-    return {
-        restrict: 'A',
-        compile: function (tElement, tAttributes) {
-            tElement.removeAttr('reload-state data-reload-state');
-            tElement.on('click', function (e) {
-                $rootScope.$state.transitionTo($rootScope.$state.current, $rootScope.$stateParams, {
-                    reload: true,
-                    inherit: false,
-                    notify: true
-                });
-                e.preventDefault();
-            })
-        }
-    }
-});
-
-"use strict";
-
-angular.module('SmartAdmin.Layout').directive('resetWidgets', function($state){
-
-    return {
-        restrict: 'A',
-        link: function(scope, element){
-            element.on('click', function(){
-                $.SmartMessageBox({
-                    title : "<i class='fa fa-refresh' style='color:green'></i> Clear Local Storage",
-                    content : "Would you like to RESET all your saved widgets and clear LocalStorage?1",
-                    buttons : '[No][Yes]'
-                }, function(ButtonPressed) {
-                    if (ButtonPressed == "Yes" && localStorage) {
-                        localStorage.clear();
-                        location.reload()
-                    }
-                });
-
-            });
-        }
-    }
-
-});
-
-'use strict';
-
-angular.module('SmartAdmin.Layout').directive('searchMobile', function () {
-    return {
-        restrict: 'A',
-        compile: function (element, attributes) {
-            element.removeAttr('search-mobile data-search-mobile');
-
-            element.on('click', function (e) {
-                $('body').addClass('search-mobile');
-                e.preventDefault();
-            });
-
-            $('#cancel-search-js').on('click', function (e) {
-                $('body').removeClass('search-mobile');
-                e.preventDefault();
-            });
-        }
-    }
-});
-"use strict";
-
-angular.module('SmartAdmin.Layout').directive('toggleMenu', function(){
-    return {
-        restrict: 'A',
-        link: function(scope, element){
-            var $body = $('body');
-
-            var toggleMenu = function(){
-                if (!$body.hasClass("menu-on-top")){
-                    $('html').toggleClass("hidden-menu-mobile-lock");
-                    $body.toggleClass("hidden-menu");
-                    $body.removeClass("minified");
-                } else if ( $body.hasClass("menu-on-top") && $body.hasClass("mobile-view-activated") ) {
-                    $('html').toggleClass("hidden-menu-mobile-lock");
-                    $body.toggleClass("hidden-menu");
-                    $body.removeClass("minified");
-                }
-            };
-
-            element.on('click', toggleMenu);
-
-            scope.$on('requestToggleMenu', function(){
-                toggleMenu();
-            });
-        }
-    }
-});
-"use strict";
-
 
 angular.module('SmartAdmin.Forms').directive('bootstrapAttributeForm', function(){
 
@@ -58099,667 +58102,6 @@ angular.module('SmartAdmin.Forms').directive('smartSummernoteEditor', function (
 });
 'use strict';
 
-angular.module('SmartAdmin.Forms').directive('smartJcrop', function ($q) {
-    return {
-        restrict: 'A',
-        scope: {
-            coords: '=',
-            options: '=',
-            selection: '='
-        },
-        link: function (scope, element, attributes) {
-            var jcropApi, imageWidth, imageHeight, imageLoaded = $q.defer();
-
-            var listeners = {
-                onSelectHandlers: [],
-                onChangeHandlers: [],
-                onSelect: function (c) {
-                    angular.forEach(listeners.onSelectHandlers, function (handler) {
-                        handler.call(jcropApi, c)
-                    })
-                },
-                onChange: function (c) {
-                    angular.forEach(listeners.onChangeHandlers, function (handler) {
-                        handler.call(jcropApi, c)
-                    })
-                }
-            };
-
-            if (attributes.coords) {
-                var coordsUpdate = function (c) {
-                    scope.$apply(function () {
-                        scope.coords = c;
-                    });
-                };
-                listeners.onSelectHandlers.push(coordsUpdate);
-                listeners.onChangeHandlers.push(coordsUpdate);
-            }
-
-            var $previewPane = $(attributes.smartJcropPreview),
-                $previewContainer = $previewPane.find('.preview-container'),
-                $previewImg = $previewPane.find('img');
-
-            if ($previewPane.length && $previewImg.length) {
-                var previewUpdate = function (coords) {
-                    if (parseInt(coords.w) > 0) {
-                        var rx = $previewContainer.width() / coords.w;
-                        var ry = $previewContainer.height() / coords.h;
-
-                        $previewImg.css({
-                            width: Math.round(rx * imageWidth) + 'px',
-                            height: Math.round(ry * imageHeight) + 'px',
-                            marginLeft: '-' + Math.round(rx * coords.x) + 'px',
-                            marginTop: '-' + Math.round(ry * coords.y) + 'px'
-                        });
-                    }
-                };
-                listeners.onSelectHandlers.push(previewUpdate);
-                listeners.onChangeHandlers.push(previewUpdate);
-            }
-
-
-            var options = {
-                onSelect: listeners.onSelect,
-                onChange: listeners.onChange
-            };
-
-            if ($previewContainer.length) {
-                options.aspectRatio = $previewContainer.width() / $previewContainer.height()
-            }
-
-            if (attributes.selection) {
-                scope.$watch('selection', function (newVal, oldVal) {
-                    if (newVal != oldVal) {
-                        var rectangle = newVal == 'release' ? [imageWidth / 2, imageHeight / 2, imageWidth / 2, imageHeight / 2] : newVal;
-
-                        var callback = newVal == 'release' ? function () {
-                            jcropApi.release();
-                        } : angular.noop;
-
-                        imageLoaded.promise.then(function () {
-                            if (scope.options && scope.options.animate) {
-                                jcropApi.animateTo(rectangle, callback);
-                            } else {
-                                jcropApi.setSelect(rectangle);
-                            }
-                        });
-                    }
-                });
-            }
-
-            if (attributes.options) {
-
-                var optionNames = [
-                    'bgOpacity', 'bgColor', 'bgFade', 'shade', 'outerImage',
-                    'allowSelect', 'allowMove', 'allowResize',
-                    'aspectRatio'
-                ];
-
-                angular.forEach(optionNames, function (name) {
-                    if (scope.options[name])
-                        options[name] = scope.options[name]
-
-                    scope.$watch('options.' + name, function (newVal, oldVal) {
-                        if (newVal != oldVal) {
-                            imageLoaded.promise.then(function () {
-                                var update = {};
-                                update[name] = newVal;
-                                jcropApi.setOptions(update);
-                            });
-                        }
-                    });
-
-                });
-
-
-                scope.$watch('options.disabled', function (newVal, oldVal) {
-                    if (newVal != oldVal) {
-                        if (newVal) {
-                            jcropApi.disable();
-                        } else {
-                            jcropApi.enable();
-                        }
-                    }
-                });
-
-                scope.$watch('options.destroyed', function (newVal, oldVal) {
-                    if (newVal != oldVal) {
-                        if (newVal) {
-                            jcropApi.destroy();
-                        } else {
-                            _init();
-                        }
-                    }
-                });
-
-                scope.$watch('options.src', function (newVal, oldVal) {
-                    imageLoaded = $q.defer();
-                    if (newVal != oldVal) {
-                        jcropApi.setImage(scope.options.src, function () {
-                            imageLoaded.resolve();
-                        });
-                    }
-                });
-
-                var updateSize = function(){
-                    jcropApi.setOptions({
-                        minSize: [scope.options.minSizeWidth, scope.options.minSizeHeight],
-                        maxSize: [scope.options.maxSizeWidth, scope.options.maxSizeHeight]
-                    });
-                };
-
-                scope.$watch('options.minSizeWidth', function (newVal, oldVal) {
-                    if (newVal != oldVal) updateSize();
-                });
-                scope.$watch('options.minSizeHeight', function (newVal, oldVal) {
-                    if (newVal != oldVal) updateSize();
-                });
-                scope.$watch('options.maxSizeWidth', function (newVal, oldVal) {
-                    if (newVal != oldVal) updateSize();
-                });
-                scope.$watch('options.maxSizeHeight', function (newVal, oldVal) {
-                    if (newVal != oldVal) updateSize();
-                });
-            }
-
-            var _init = function () {
-                element.Jcrop(options, function () {
-                    jcropApi = this;
-                    // Use the API to get the real image size
-                    var bounds = this.getBounds();
-                    imageWidth = bounds[0];
-                    imageHeight = bounds[1];
-
-                    if (attributes.selection && angular.isArray(scope.selection)) {
-                        if (scope.options && scope.options.animate) {
-                            jcropApi.animateTo(scope.selection);
-                        } else {
-                            jcropApi.setSelect(scope.selection);
-                        }
-                    }
-                    imageLoaded.resolve();
-                });
-            };
-
-            _init()
-
-
-        }
-    }
-});
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartClockpicker', function () {
-    return {
-        restrict: 'A',
-        compile: function (tElement, tAttributes) {
-            tElement.removeAttr('smart-clockpicker data-smart-clockpicker');
-
-            var options = {
-                placement: 'top',
-                donetext: 'Done'
-            }
-
-            tElement.clockpicker(options);
-        }
-    }
-});
-
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartColorpicker', function () {
-    return {
-        restrict: 'A',
-        compile: function (tElement, tAttributes) {
-            tElement.removeAttr('smart-colorpicker data-smart-colorpicker');
-
-
-            var aOptions = _.pick(tAttributes, ['']);
-
-            var options = _.extend(aOptions, {});
-
-            tElement.colorpicker(options);
-        }
-    }
-});
-"use strict";
-
-angular.module('SmartAdmin.Forms').directive('smartDatepicker', function () {
-    return {
-        restrict: 'A',
-        compile: function (element, attributes) {
-            element.removeAttr('smartDatepicker');
-
-            var onSelectCallbacks = [];
-            if (attributes.minRestrict) {
-                onSelectCallbacks.push(function (selectedDate) {
-                    $(attributes.minRestrict).datepicker('option', 'minDate', selectedDate);
-                });
-            }
-            if (attributes.maxRestrict) {
-                onSelectCallbacks.push(function (selectedDate) {
-                    $(attributes.maxRestrict).datepicker('option', 'maxDate', selectedDate);
-                });
-            }
-
-            //Let others know about changes to the data field
-            onSelectCallbacks.push(function (selectedDate) {
-                //CVB - 07/14/2015 - Update the scope with the selected value
-                element.triggerHandler("change");
-
-                //CVB - 07/17/2015 - Update Bootstrap Validator
-                var form = element.closest('form');
-
-                if(typeof form.bootstrapValidator == 'function')
-                    form.bootstrapValidator('revalidateField', element.attr('name'));
-            });
-
-            var options = {
-                prevText: '<i class="fa fa-chevron-left"></i>',
-                nextText: '<i class="fa fa-chevron-right"></i>',
-                onSelect: function (selectedDate) {
-                    angular.forEach(onSelectCallbacks, function (callback) {
-                        callback.call(this, selectedDate)
-                    })
-                }
-            };
-
-
-            if (attributes.numberOfMonths) options.numberOfMonths = parseInt(attributes.numberOfMonths);
-
-            if (attributes.dateFormat) options.dateFormat = attributes.dateFormat;
-
-            if (attributes.defaultDate) options.defaultDate = attributes.defaultDate;
-
-            if (attributes.changeMonth) options.changeMonth = attributes.changeMonth == "true";
-
-
-            element.datepicker(options)
-        }
-    }
-});
-'use strict';
-
-angular
-  .module('SmartAdmin.Forms', [])
-
-  .provider('datetimepicker', function () {
-      var default_options = {};
-
-      this.setOptions = function (options) {
-          default_options = options;
-      };
-
-      this.$get = function () {
-          return {
-              getOptions: function () {
-                  return default_options;
-              }
-          };
-      };
-  })
-
-  .directive('datetimepicker', [
-    '$timeout',
-    'datetimepicker',
-    function ($timeout,
-              datetimepicker) {
-        var default_options = datetimepicker.getOptions();
-
-        return {
-            require: '?ngModel',
-            restrict: 'AE',
-            scope: {
-                datetimepickerOptions: '@'
-            },
-            link: function ($scope, $element, $attrs, controller) {
-                var passed_in_options = $scope.$eval($attrs.datetimepickerOptions);
-                var options = jQuery.extend({}, default_options, passed_in_options);
-
-                $element.on('dp.change', function (ev) {
-                    $timeout(function () {
-                        var dtp = $element.data("DateTimePicker");
-                        controller.$setViewValue(ev.target.value);
-                    });
-                });
-
-                function setPickerValue() {
-                    var result = null;
-                    if (!!controller && !!controller.$viewValue) {
-                        result = controller.$viewValue;
-                    }
-                    var dtp = $element.data("DateTimePicker");
-                    dtp.date(result);
-                }
-
-                controller.$render = function (value) {
-                    setPickerValue();
-                };
-
-                $element.datetimepicker(options);
-
-                setPickerValue();
-            }
-        };
-    }
-  ]);
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartDuallistbox', function () {
-    return {
-        restrict: 'A',
-        compile: function (tElement, tAttributes) {
-            tElement.removeAttr('smart-duallistbox data-smart-duallistbox');
-
-
-            var aOptions = _.pick(tAttributes, ['nonSelectedFilter']);
-
-            var options = _.extend(aOptions, {
-                nonSelectedListLabel: 'Non-selected',
-                selectedListLabel: 'Selected',
-                preserveSelectionOnMove: 'moved',
-                moveOnSelect: false
-            });
-
-            tElement.bootstrapDualListbox(options);
-        }
-    }
-});
-
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartIonslider', function (lazyScript) {
-    return {
-        restrict: 'A',
-        compile: function (element, attributes) {
-            element.removeAttr('smart-ionslider data-smart-ionslider');
-
-        	lazyScript.register('ionslider').then(function(){
-            	element.ionRangeSlider();
-        	});
-        }
-    }
-});
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartKnob', function () {
-    return {
-        restrict: 'A',
-        compile: function (tElement, tAttributes) {
-            tElement.removeAttr('smart-knob data-smart-knob');
-
-            tElement.knob();
-        }
-    }
-});
-"use strict";
-
-angular.module('SmartAdmin.Forms').directive('smartMaskedInput', function(lazyScript){
-    return {
-        restrict: 'A',
-        compile: function(tElement, tAttributes){
-            tElement.removeAttr('smart-masked-input data-smart-masked-input');
-
-        	lazyScript.register('jquery-maskedinput').then(function(){
-
-	            var options = {};
-	            if(tAttributes.maskPlaceholder) options.placeholder =  tAttributes.maskPlaceholder;
-	            tElement.mask(tAttributes.smartMaskedInput, options);
-        	})	            
-        }
-    }
-});
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartNouislider', function ($parse, lazyScript) {
-    return {
-        restrict: 'A',
-        compile: function (tElement, tAttributes) {
-            lazyScript.register('nouislider').then(function(){
-                tElement.removeAttr('smart-nouislider data-smart-nouislider');
-
-                tElement.addClass('noUiSlider');
-
-                var options = {
-                    range: {
-                        min: tAttributes.rangeMin ? parseInt(tAttributes.rangeMin) : 0,
-                        max: tAttributes.rangeMax ? parseInt(tAttributes.rangeMax) : 1000
-                    },
-                    start: $parse(tAttributes.start)()
-                };
-
-                if (tAttributes.step) options.step =  parseInt(tAttributes.step);
-
-                if(tAttributes.connect) options.connect = tAttributes.connect == 'true' ? true : tAttributes.connect;
-
-                tElement.noUiSlider(options);
-
-                if(tAttributes.update) tElement.on('slide', function(){
-                    $(tAttributes.update).text(JSON.stringify(tElement.val()));
-                });                
-            })
-        }
-    }
-});
-'use strict'
-
-angular.module('SmartAdmin.Forms').directive('smartSelect2', function (lazyScript) {
-    return {
-        restrict: 'A',
-        compile: function (element, attributes) {
-            element.hide().removeAttr('smart-select2 data-smart-select2');
-        	lazyScript.register('select2').then(function(){
-	            element.show().select2();
-        	})
-        }
-    }
-});
-'use strict'
-
-angular.module('SmartAdmin.Forms').directive('smartSpinner', function () {
-    return {
-        restrict: 'A',
-        compile: function (tElement, tAttributes) {
-            tElement.removeAttr('smart-spinner');
-
-            var options = {};
-            if(tAttributes.smartSpinner == 'deicimal'){
-                options = {
-                    step: 0.01,
-                    numberFormat: "n"
-                };
-            }else if(tAttributes.smartSpinner == 'currency'){
-                options = {
-                    min: 5,
-                    max: 2500,
-                    step: 25,
-                    start: 1000,
-                    numberFormat: "C"
-                };
-            }
-
-            tElement.spinner(options);
-        }
-    }
-});
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartTagsinput', function () {
-    return {
-        restrict: 'A',
-        compile: function (tElement, tAttributes) {
-            tElement.removeAttr('smart-tagsinput data-smart-tagsinput');
-            tElement.tagsinput();
-        }
-    }
-});
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartTimepicker', function () {
-    return {
-        restrict: 'A',
-        compile: function (tElement, tAttributes) {
-            tElement.removeAttr('smart-timepicker data-smart-timepicker');
-            tElement.timepicker();
-        }
-    }
-});
-
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartUislider', function ($parse, lazyScript) {
-    return {
-        restrict: 'A',
-        compile: function (tElement, tAttributes) {
-
-            tElement.removeAttr('smart-uislider data-smart-uislider');
-
-            lazyScript.register('bootstrap-slider').then(function(){
-			    tElement.bootstrapSlider();
-
-			    $(tElement.data('bootstrapSlider').sliderElem).prepend(tElement);      	
-            })
-
-        }
-    }
-});
-"use strict";
-
-angular.module('SmartAdmin.Forms').directive('smartXeditable', function($timeout, $log){
-
-	function link (scope, element, attrs, ngModel) {
-
-        var defaults = {
-            // display: function(value, srcData) {
-            //     ngModel.$setViewValue(value);
-            //     // scope.$apply();
-            // }
-        };
-
-        var inited = false;
-
-        var initXeditable = function() {
-
-            var options = scope.options || {};
-    		var initOptions = angular.extend(defaults, options);
-
-            // $log.log(initOptions);
-            element.editable('destroy');
-            element.editable(initOptions);
-        }
-
-        scope.$watch("options", function(newValue) {
-
-            if(!newValue) {
-                return false;
-            }
-
-            initXeditable();
-
-            // $log.log("Options changed...");
-
-        }, true);
-
-    }
-
-    return {
-    	restrict: 'A',
-    	require: "ngModel",
-        scope: {
-            options: "="
-        },
-    	link: link 
-
-    }
-});
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartDropzone', function () {
-    return {
-        restrict: 'A',
-        compile: function (tElement, tAttributes) {
-            tElement.removeAttr('file-dropzone data-file-dropzone');
-
-            tElement.dropzone({
-                addRemoveLinks : true,
-                maxFilesize: 0.5,
-                dictDefaultMessage: '<span class="text-center"><span class="font-lg visible-xs-block visible-sm-block visible-lg-block"><span class="font-lg"><i class="fa fa-caret-right text-danger"></i> Drop files <span class="font-xs">to upload</span></span><span>&nbsp&nbsp<h4 class="display-inline"> (Or Click)</h4></span>',
-                dictResponseError: 'Error uploading file!'
-            });
-        }
-    }
-});
-
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartValidateForm', function (formsCommon) {
-    return {
-        restrict: 'A',
-        link: function (scope, form, attributes) {
-
-            var validateOptions = {
-                rules: {},
-                messages: {},
-                highlight: function (element) {
-                    $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-                },
-                unhighlight: function (element) {
-                    $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
-                },
-                errorElement: 'span',
-                errorClass: 'help-block',
-                errorPlacement: function (error, element) {
-                    if (element.parent('.input-group').length) {
-                        error.insertAfter(element.parent());
-                    } else {
-                        error.insertAfter(element);
-                    }
-                }
-            };
-            form.find('[data-smart-validate-input], [smart-validate-input]').each(function () {
-                var $input = $(this), fieldName = $input.attr('name');
-
-                validateOptions.rules[fieldName] = {};
-
-                if ($input.data('required') != undefined) {
-                    validateOptions.rules[fieldName].required = true;
-                }
-                if ($input.data('email') != undefined) {
-                    validateOptions.rules[fieldName].email = true;
-                }
-
-                if ($input.data('maxlength') != undefined) {
-                    validateOptions.rules[fieldName].maxlength = $input.data('maxlength');
-                }
-
-                if ($input.data('minlength') != undefined) {
-                    validateOptions.rules[fieldName].minlength = $input.data('minlength');
-                }
-
-                if($input.data('message')){
-                    validateOptions.messages[fieldName] = $input.data('message');
-                } else {
-                    angular.forEach($input.data(), function(value, key){
-                        if(key.search(/message/)== 0){
-                            if(!validateOptions.messages[fieldName])
-                                validateOptions.messages[fieldName] = {};
-
-                            var messageKey = key.toLowerCase().replace(/^message/,'')
-                            validateOptions.messages[fieldName][messageKey] = value;
-                        }
-                    });
-                }
-            });
-
-
-            form.validate(validateOptions);
-
-        }
-    }
-});
-
-'use strict';
-
 angular.module('SmartAdmin.Forms').directive('smartCheckoutForm', function (formsCommon, lazyScript) {
     return {
         restrict: 'A',
@@ -59171,6 +58513,282 @@ angular.module('SmartAdmin.Forms').directive('smartReviewForm', function (formsC
 });
 'use strict';
 
+angular.module('SmartAdmin.Forms').directive('smartJcrop', function ($q) {
+    return {
+        restrict: 'A',
+        scope: {
+            coords: '=',
+            options: '=',
+            selection: '='
+        },
+        link: function (scope, element, attributes) {
+            var jcropApi, imageWidth, imageHeight, imageLoaded = $q.defer();
+
+            var listeners = {
+                onSelectHandlers: [],
+                onChangeHandlers: [],
+                onSelect: function (c) {
+                    angular.forEach(listeners.onSelectHandlers, function (handler) {
+                        handler.call(jcropApi, c)
+                    })
+                },
+                onChange: function (c) {
+                    angular.forEach(listeners.onChangeHandlers, function (handler) {
+                        handler.call(jcropApi, c)
+                    })
+                }
+            };
+
+            if (attributes.coords) {
+                var coordsUpdate = function (c) {
+                    scope.$apply(function () {
+                        scope.coords = c;
+                    });
+                };
+                listeners.onSelectHandlers.push(coordsUpdate);
+                listeners.onChangeHandlers.push(coordsUpdate);
+            }
+
+            var $previewPane = $(attributes.smartJcropPreview),
+                $previewContainer = $previewPane.find('.preview-container'),
+                $previewImg = $previewPane.find('img');
+
+            if ($previewPane.length && $previewImg.length) {
+                var previewUpdate = function (coords) {
+                    if (parseInt(coords.w) > 0) {
+                        var rx = $previewContainer.width() / coords.w;
+                        var ry = $previewContainer.height() / coords.h;
+
+                        $previewImg.css({
+                            width: Math.round(rx * imageWidth) + 'px',
+                            height: Math.round(ry * imageHeight) + 'px',
+                            marginLeft: '-' + Math.round(rx * coords.x) + 'px',
+                            marginTop: '-' + Math.round(ry * coords.y) + 'px'
+                        });
+                    }
+                };
+                listeners.onSelectHandlers.push(previewUpdate);
+                listeners.onChangeHandlers.push(previewUpdate);
+            }
+
+
+            var options = {
+                onSelect: listeners.onSelect,
+                onChange: listeners.onChange
+            };
+
+            if ($previewContainer.length) {
+                options.aspectRatio = $previewContainer.width() / $previewContainer.height()
+            }
+
+            if (attributes.selection) {
+                scope.$watch('selection', function (newVal, oldVal) {
+                    if (newVal != oldVal) {
+                        var rectangle = newVal == 'release' ? [imageWidth / 2, imageHeight / 2, imageWidth / 2, imageHeight / 2] : newVal;
+
+                        var callback = newVal == 'release' ? function () {
+                            jcropApi.release();
+                        } : angular.noop;
+
+                        imageLoaded.promise.then(function () {
+                            if (scope.options && scope.options.animate) {
+                                jcropApi.animateTo(rectangle, callback);
+                            } else {
+                                jcropApi.setSelect(rectangle);
+                            }
+                        });
+                    }
+                });
+            }
+
+            if (attributes.options) {
+
+                var optionNames = [
+                    'bgOpacity', 'bgColor', 'bgFade', 'shade', 'outerImage',
+                    'allowSelect', 'allowMove', 'allowResize',
+                    'aspectRatio'
+                ];
+
+                angular.forEach(optionNames, function (name) {
+                    if (scope.options[name])
+                        options[name] = scope.options[name]
+
+                    scope.$watch('options.' + name, function (newVal, oldVal) {
+                        if (newVal != oldVal) {
+                            imageLoaded.promise.then(function () {
+                                var update = {};
+                                update[name] = newVal;
+                                jcropApi.setOptions(update);
+                            });
+                        }
+                    });
+
+                });
+
+
+                scope.$watch('options.disabled', function (newVal, oldVal) {
+                    if (newVal != oldVal) {
+                        if (newVal) {
+                            jcropApi.disable();
+                        } else {
+                            jcropApi.enable();
+                        }
+                    }
+                });
+
+                scope.$watch('options.destroyed', function (newVal, oldVal) {
+                    if (newVal != oldVal) {
+                        if (newVal) {
+                            jcropApi.destroy();
+                        } else {
+                            _init();
+                        }
+                    }
+                });
+
+                scope.$watch('options.src', function (newVal, oldVal) {
+                    imageLoaded = $q.defer();
+                    if (newVal != oldVal) {
+                        jcropApi.setImage(scope.options.src, function () {
+                            imageLoaded.resolve();
+                        });
+                    }
+                });
+
+                var updateSize = function(){
+                    jcropApi.setOptions({
+                        minSize: [scope.options.minSizeWidth, scope.options.minSizeHeight],
+                        maxSize: [scope.options.maxSizeWidth, scope.options.maxSizeHeight]
+                    });
+                };
+
+                scope.$watch('options.minSizeWidth', function (newVal, oldVal) {
+                    if (newVal != oldVal) updateSize();
+                });
+                scope.$watch('options.minSizeHeight', function (newVal, oldVal) {
+                    if (newVal != oldVal) updateSize();
+                });
+                scope.$watch('options.maxSizeWidth', function (newVal, oldVal) {
+                    if (newVal != oldVal) updateSize();
+                });
+                scope.$watch('options.maxSizeHeight', function (newVal, oldVal) {
+                    if (newVal != oldVal) updateSize();
+                });
+            }
+
+            var _init = function () {
+                element.Jcrop(options, function () {
+                    jcropApi = this;
+                    // Use the API to get the real image size
+                    var bounds = this.getBounds();
+                    imageWidth = bounds[0];
+                    imageHeight = bounds[1];
+
+                    if (attributes.selection && angular.isArray(scope.selection)) {
+                        if (scope.options && scope.options.animate) {
+                            jcropApi.animateTo(scope.selection);
+                        } else {
+                            jcropApi.setSelect(scope.selection);
+                        }
+                    }
+                    imageLoaded.resolve();
+                });
+            };
+
+            _init()
+
+
+        }
+    }
+});
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartDropzone', function () {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttributes) {
+            tElement.removeAttr('file-dropzone data-file-dropzone');
+
+            tElement.dropzone({
+                addRemoveLinks : true,
+                maxFilesize: 0.5,
+                dictDefaultMessage: '<span class="text-center"><span class="font-lg visible-xs-block visible-sm-block visible-lg-block"><span class="font-lg"><i class="fa fa-caret-right text-danger"></i> Drop files <span class="font-xs">to upload</span></span><span>&nbsp&nbsp<h4 class="display-inline"> (Or Click)</h4></span>',
+                dictResponseError: 'Error uploading file!'
+            });
+        }
+    }
+});
+
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartValidateForm', function (formsCommon) {
+    return {
+        restrict: 'A',
+        link: function (scope, form, attributes) {
+
+            var validateOptions = {
+                rules: {},
+                messages: {},
+                highlight: function (element) {
+                    $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+                },
+                unhighlight: function (element) {
+                    $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+                },
+                errorElement: 'span',
+                errorClass: 'help-block',
+                errorPlacement: function (error, element) {
+                    if (element.parent('.input-group').length) {
+                        error.insertAfter(element.parent());
+                    } else {
+                        error.insertAfter(element);
+                    }
+                }
+            };
+            form.find('[data-smart-validate-input], [smart-validate-input]').each(function () {
+                var $input = $(this), fieldName = $input.attr('name');
+
+                validateOptions.rules[fieldName] = {};
+
+                if ($input.data('required') != undefined) {
+                    validateOptions.rules[fieldName].required = true;
+                }
+                if ($input.data('email') != undefined) {
+                    validateOptions.rules[fieldName].email = true;
+                }
+
+                if ($input.data('maxlength') != undefined) {
+                    validateOptions.rules[fieldName].maxlength = $input.data('maxlength');
+                }
+
+                if ($input.data('minlength') != undefined) {
+                    validateOptions.rules[fieldName].minlength = $input.data('minlength');
+                }
+
+                if($input.data('message')){
+                    validateOptions.messages[fieldName] = $input.data('message');
+                } else {
+                    angular.forEach($input.data(), function(value, key){
+                        if(key.search(/message/)== 0){
+                            if(!validateOptions.messages[fieldName])
+                                validateOptions.messages[fieldName] = {};
+
+                            var messageKey = key.toLowerCase().replace(/^message/,'')
+                            validateOptions.messages[fieldName][messageKey] = value;
+                        }
+                    });
+                }
+            });
+
+
+            form.validate(validateOptions);
+
+        }
+    }
+});
+
+'use strict';
+
 angular.module('SmartAdmin.Forms').directive('smartFueluxWizard', function () {
     return {
         restrict: 'A',
@@ -59293,6 +58911,391 @@ angular.module('SmartAdmin.Forms').directive('smartWizard', function () {
             setStep(currentStep);
 
         }
+    }
+});
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartClockpicker', function () {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttributes) {
+            tElement.removeAttr('smart-clockpicker data-smart-clockpicker');
+
+            var options = {
+                placement: 'top',
+                donetext: 'Done'
+            }
+
+            tElement.clockpicker(options);
+        }
+    }
+});
+
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartColorpicker', function () {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttributes) {
+            tElement.removeAttr('smart-colorpicker data-smart-colorpicker');
+
+
+            var aOptions = _.pick(tAttributes, ['']);
+
+            var options = _.extend(aOptions, {});
+
+            tElement.colorpicker(options);
+        }
+    }
+});
+"use strict";
+
+angular.module('SmartAdmin.Forms').directive('smartDatepicker', function () {
+    return {
+        restrict: 'A',
+        compile: function (element, attributes) {
+            element.removeAttr('smartDatepicker');
+
+            var onSelectCallbacks = [];
+            if (attributes.minRestrict) {
+                onSelectCallbacks.push(function (selectedDate) {
+                    $(attributes.minRestrict).datepicker('option', 'minDate', selectedDate);
+                });
+            }
+            if (attributes.maxRestrict) {
+                onSelectCallbacks.push(function (selectedDate) {
+                    $(attributes.maxRestrict).datepicker('option', 'maxDate', selectedDate);
+                });
+            }
+
+            //Let others know about changes to the data field
+            onSelectCallbacks.push(function (selectedDate) {
+                //CVB - 07/14/2015 - Update the scope with the selected value
+                element.triggerHandler("change");
+
+                //CVB - 07/17/2015 - Update Bootstrap Validator
+                var form = element.closest('form');
+
+                if(typeof form.bootstrapValidator == 'function')
+                    form.bootstrapValidator('revalidateField', element.attr('name'));
+            });
+
+            var options = {
+                prevText: '<i class="fa fa-chevron-left"></i>',
+                nextText: '<i class="fa fa-chevron-right"></i>',
+                onSelect: function (selectedDate) {
+                    angular.forEach(onSelectCallbacks, function (callback) {
+                        callback.call(this, selectedDate)
+                    })
+                }
+            };
+
+
+            if (attributes.numberOfMonths) options.numberOfMonths = parseInt(attributes.numberOfMonths);
+
+            if (attributes.dateFormat) options.dateFormat = attributes.dateFormat;
+
+            if (attributes.defaultDate) options.defaultDate = attributes.defaultDate;
+
+            if (attributes.changeMonth) options.changeMonth = attributes.changeMonth == "true";
+
+
+            element.datepicker(options)
+        }
+    }
+});
+'use strict';
+
+angular
+  .module('SmartAdmin.Forms', [])
+
+  .provider('datetimepicker', function () {
+      var default_options = {};
+
+      this.setOptions = function (options) {
+          default_options = options;
+      };
+
+      this.$get = function () {
+          return {
+              getOptions: function () {
+                  return default_options;
+              }
+          };
+      };
+  })
+
+  .directive('datetimepicker', [
+    '$timeout',
+    'datetimepicker',
+    function ($timeout,
+              datetimepicker) {
+        var default_options = datetimepicker.getOptions();
+
+        return {
+            require: '?ngModel',
+            restrict: 'AE',
+            scope: {
+                datetimepickerOptions: '@'
+            },
+            link: function ($scope, $element, $attrs, controller) {
+                var passed_in_options = $scope.$eval($attrs.datetimepickerOptions);
+                var options = jQuery.extend({}, default_options, passed_in_options);
+
+                $element.on('dp.change', function (ev) {
+                    $timeout(function () {
+                        var dtp = $element.data("DateTimePicker");
+                        controller.$setViewValue(ev.target.value);
+                    });
+                });
+
+                function setPickerValue() {
+                    var result = null;
+                    if (!!controller && !!controller.$viewValue) {
+                        result = controller.$viewValue;
+                    }
+                    var dtp = $element.data("DateTimePicker");
+                    dtp.date(result);
+                }
+
+                controller.$render = function (value) {
+                    setPickerValue();
+                };
+
+                $element.datetimepicker(options);
+
+                setPickerValue();
+            }
+        };
+    }
+  ]);
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartDuallistbox', function () {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttributes) {
+            tElement.removeAttr('smart-duallistbox data-smart-duallistbox');
+
+
+            var aOptions = _.pick(tAttributes, ['nonSelectedFilter']);
+
+            var options = _.extend(aOptions, {
+                nonSelectedListLabel: 'Non-selected',
+                selectedListLabel: 'Selected',
+                preserveSelectionOnMove: 'moved',
+                moveOnSelect: false
+            });
+
+            tElement.bootstrapDualListbox(options);
+        }
+    }
+});
+
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartIonslider', function (lazyScript) {
+    return {
+        restrict: 'A',
+        compile: function (element, attributes) {
+            element.removeAttr('smart-ionslider data-smart-ionslider');
+
+        	lazyScript.register('ionslider').then(function(){
+            	element.ionRangeSlider();
+        	});
+        }
+    }
+});
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartKnob', function () {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttributes) {
+            tElement.removeAttr('smart-knob data-smart-knob');
+
+            tElement.knob();
+        }
+    }
+});
+"use strict";
+
+angular.module('SmartAdmin.Forms').directive('smartMaskedInput', function(lazyScript){
+    return {
+        restrict: 'A',
+        compile: function(tElement, tAttributes){
+            tElement.removeAttr('smart-masked-input data-smart-masked-input');
+
+        	lazyScript.register('jquery-maskedinput').then(function(){
+
+	            var options = {};
+	            if(tAttributes.maskPlaceholder) options.placeholder =  tAttributes.maskPlaceholder;
+	            tElement.mask(tAttributes.smartMaskedInput, options);
+        	})	            
+        }
+    }
+});
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartNouislider', function ($parse, lazyScript) {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttributes) {
+            lazyScript.register('nouislider').then(function(){
+                tElement.removeAttr('smart-nouislider data-smart-nouislider');
+
+                tElement.addClass('noUiSlider');
+
+                var options = {
+                    range: {
+                        min: tAttributes.rangeMin ? parseInt(tAttributes.rangeMin) : 0,
+                        max: tAttributes.rangeMax ? parseInt(tAttributes.rangeMax) : 1000
+                    },
+                    start: $parse(tAttributes.start)()
+                };
+
+                if (tAttributes.step) options.step =  parseInt(tAttributes.step);
+
+                if(tAttributes.connect) options.connect = tAttributes.connect == 'true' ? true : tAttributes.connect;
+
+                tElement.noUiSlider(options);
+
+                if(tAttributes.update) tElement.on('slide', function(){
+                    $(tAttributes.update).text(JSON.stringify(tElement.val()));
+                });                
+            })
+        }
+    }
+});
+'use strict'
+
+angular.module('SmartAdmin.Forms').directive('smartSelect2', function (lazyScript) {
+    return {
+        restrict: 'A',
+        compile: function (element, attributes) {
+            element.hide().removeAttr('smart-select2 data-smart-select2');
+        	lazyScript.register('select2').then(function(){
+	            element.show().select2();
+        	})
+        }
+    }
+});
+'use strict'
+
+angular.module('SmartAdmin.Forms').directive('smartSpinner', function () {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttributes) {
+            tElement.removeAttr('smart-spinner');
+
+            var options = {};
+            if(tAttributes.smartSpinner == 'deicimal'){
+                options = {
+                    step: 0.01,
+                    numberFormat: "n"
+                };
+            }else if(tAttributes.smartSpinner == 'currency'){
+                options = {
+                    min: 5,
+                    max: 2500,
+                    step: 25,
+                    start: 1000,
+                    numberFormat: "C"
+                };
+            }
+
+            tElement.spinner(options);
+        }
+    }
+});
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartTagsinput', function () {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttributes) {
+            tElement.removeAttr('smart-tagsinput data-smart-tagsinput');
+            tElement.tagsinput();
+        }
+    }
+});
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartTimepicker', function () {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttributes) {
+            tElement.removeAttr('smart-timepicker data-smart-timepicker');
+            tElement.timepicker();
+        }
+    }
+});
+
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartUislider', function ($parse, lazyScript) {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttributes) {
+
+            tElement.removeAttr('smart-uislider data-smart-uislider');
+
+            lazyScript.register('bootstrap-slider').then(function(){
+			    tElement.bootstrapSlider();
+
+			    $(tElement.data('bootstrapSlider').sliderElem).prepend(tElement);      	
+            })
+
+        }
+    }
+});
+"use strict";
+
+angular.module('SmartAdmin.Forms').directive('smartXeditable', function($timeout, $log){
+
+	function link (scope, element, attrs, ngModel) {
+
+        var defaults = {
+            // display: function(value, srcData) {
+            //     ngModel.$setViewValue(value);
+            //     // scope.$apply();
+            // }
+        };
+
+        var inited = false;
+
+        var initXeditable = function() {
+
+            var options = scope.options || {};
+    		var initOptions = angular.extend(defaults, options);
+
+            // $log.log(initOptions);
+            element.editable('destroy');
+            element.editable(initOptions);
+        }
+
+        scope.$watch("options", function(newValue) {
+
+            if(!newValue) {
+                return false;
+            }
+
+            initXeditable();
+
+            // $log.log("Options changed...");
+
+        }, true);
+
+    }
+
+    return {
+    	restrict: 'A',
+    	require: "ngModel",
+        scope: {
+            options: "="
+        },
+    	link: link 
+
     }
 });
 'use strict';
