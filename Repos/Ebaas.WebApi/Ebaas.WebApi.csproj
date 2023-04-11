@@ -252,6 +252,7 @@
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\BaseAPIController.cs" />
     <Compile Include="Controllers\ClaimsController.cs" />
+    <Compile Include="Controllers\BlobController.cs" />
     <Compile Include="Controllers\FullTextSearchController.cs" />
     <Compile Include="Controllers\DataController.cs" />
     <Compile Include="Controllers\ImportExportController.cs" />

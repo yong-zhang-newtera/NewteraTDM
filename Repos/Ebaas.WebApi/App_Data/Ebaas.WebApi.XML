@@ -1156,6 +1156,81 @@
             <param name="rolesToAssign">An array of role's names</param>
             <returns></returns>
         </member>
+        <member name="T:Ebaas.WebApi.Controllers.BlobController">
+            <summary>
+            The Blob Service stores a blob to varouse object storage storages based on the configuration,
+            including local file directory, MinIO storage, or cloud storage. 
+            It has set of operations for uploading, downloading, and deleting blob associated with a data instance.
+            </summary>
+        </member>
+        <member name="M:Ebaas.WebApi.Controllers.BlobController.GetFiles(System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
+            <summary>
+            Get files associated with a data instance
+            </summary>
+            <param name="schemaName">A database schema name such as DEMO</param>
+            <param name="className">A data class name such as ATestItemInstance</param>
+            <param name="oid">The obj_id of an data instance such as 377382882</param>
+            <param name="from">Return attachment infos from the row index such as 0. Default to 0.</param>
+            <param name="size">Return attachment infos with a page size such as 20. Default to 20.</param>
+            <param name="dirPath">Indicate the sub directory path (such as dir1%5Cdir2) where the files are located. If null, get files from the base directory</param>
+            <remarks>Files associated with a data instance are stored in a specified directory by application</remarks>
+        </member>
+        <member name="M:Ebaas.WebApi.Controllers.BlobController.FileCount(System.String,System.String,System.String,System.String)">
+            <summary>
+            Get count of files associated with a data instance
+            </summary>
+            <param name="schemaName">A database schema name such as DEMO</param>
+            <param name="className">A data class name such as ATestItemInstance</param>
+            <param name="oid">The obj_id of an data instance such as 377382882</param>
+            <param name="dirPath">Indicate the sub directory path (such as dir1%5Cdir2) where the files are located. If null, get files from the base directory</param>
+        </member>
+        <member name="M:Ebaas.WebApi.Controllers.BlobController.PostFile(System.String,System.String,System.String,System.String)">
+            <summary>
+            Upload files associated with a data instance
+            </summary>
+            <param name="schemaName">A database schema name such as DEMO</param>
+            <param name="className">A data class name such as ATestItemInstance</param>
+            <param name="oid">The obj_id of an data instance such as 377382882</param>
+            <param name="dirPath">The subdirectory path such as dir1%5Cdir2</param>
+            <remarks>The posted files are part of formdata</remarks>
+        </member>
+        <member name="M:Ebaas.WebApi.Controllers.BlobController.DeleteFile(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Delete a blob associated with a data instance
+            </summary>
+            <param name="schemaName">A database schema name such as DEMO</param>
+            <param name="className">A data class name such as ATestItemInstance</param>
+            <param name="oid">The obj_id of an data instance such as 377382882</param>
+            <param name="blobName">The name of a blob to download</param>
+            <param name="dirPath">The subdirectory path such as dir1%5Cdir2</param>
+        </member>
+        <member name="M:Ebaas.WebApi.Controllers.BlobController.GetFile(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Download a blob associated with a data instance
+            </summary>
+            <param name="schemaName">A database schema name such as DEMO</param>
+            <param name="className">A data class name such as ATestItemInstance</param>
+            <param name="oid">The obj_id of an data instance such as 377382882</param>
+            <param name="blobName">The name of a blob to download</param>
+            <param name="dirPath">The subdirectory path such as dir1%5Cdir2</param>
+        </member>
+        <member name="M:Ebaas.WebApi.Controllers.BlobController.GetJSONDataFromFile(System.String,System.String,System.String)">
+            <summary>
+            Get a blob content in json format from a blob under UserFiles\\{schemaName} directory
+            </summary>
+            <param name="schemaName">A database schema name such as DEMO</param>
+            <param name="blob">The name of a blob such as lineChart.json</param>
+            <param name="dirPath">The subdirectory path such as dir1%5Cdir2</param>
+        </member>
+        <member name="M:Ebaas.WebApi.Controllers.BlobController.GetFileDirectory(System.String,System.String,System.String)">
+            <summary>
+            Get the roots of class trees
+            </summary>
+            <param name="schemaName">A database schema name such as DEMO</param>
+            <param name="className">A data class name such as ATestItemInstance</param>
+            <param name="oid">The obj_id of an data instance such as 377382882</param>
+            <returns>A Tree of json object with a tree root</returns>
+        </member>
         <member name="T:Ebaas.WebApi.Controllers.FullTextSearchController">
             <summary>
             The Full-text search Service is Elasticsearch to perform full-text search and return the search result in JSON

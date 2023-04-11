@@ -32,6 +32,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ebaas.Tests", "..\Ebaas.Tests\Ebaas.Tests.csproj", "{A0FD8B6C-A6BF-45EF-9371-095B148A9FB5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ebaas.WebApi", "..\Ebaas.WebApi\Ebaas.WebApi.csproj", "{39A51F07-4200-4770-A756-1DA9AF579C7F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2E835210-D889-4CA7-8C2C-CFB0D6442446} = {2E835210-D889-4CA7-8C2C-CFB0D6442446}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EbaasServer", "..\EbaasServer\EbaasServer.csproj", "{EA15DFEC-00C0-4C2F-837A-BF69BF14DBC7}"
 EndProject
@@ -76,6 +79,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartApp", "..\SmartApp\SmartApp.csproj", "{843ED736-BA41-4EA5-91D7-249D2C73564A}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "EbaasCNStandardSetup", "..\EbaasStandardSetup\EbaasStandardSetup.vdproj", "{0E3E843E-0F3A-43D6-B1B5-21B51B0BE313}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlobStorage", "..\BlobStorage\BlobStorage.csproj", "{2E835210-D889-4CA7-8C2C-CFB0D6442446}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -525,6 +530,18 @@ Global
 		{0E3E843E-0F3A-43D6-B1B5-21B51B0BE313}.Release|x64.Build.0 = Release
 		{0E3E843E-0F3A-43D6-B1B5-21B51B0BE313}.Release|x86.ActiveCfg = Release
 		{0E3E843E-0F3A-43D6-B1B5-21B51B0BE313}.Release|x86.Build.0 = Release
+		{2E835210-D889-4CA7-8C2C-CFB0D6442446}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E835210-D889-4CA7-8C2C-CFB0D6442446}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E835210-D889-4CA7-8C2C-CFB0D6442446}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2E835210-D889-4CA7-8C2C-CFB0D6442446}.Debug|x64.Build.0 = Debug|Any CPU
+		{2E835210-D889-4CA7-8C2C-CFB0D6442446}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2E835210-D889-4CA7-8C2C-CFB0D6442446}.Debug|x86.Build.0 = Debug|Any CPU
+		{2E835210-D889-4CA7-8C2C-CFB0D6442446}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E835210-D889-4CA7-8C2C-CFB0D6442446}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E835210-D889-4CA7-8C2C-CFB0D6442446}.Release|x64.ActiveCfg = Release|Any CPU
+		{2E835210-D889-4CA7-8C2C-CFB0D6442446}.Release|x64.Build.0 = Release|Any CPU
+		{2E835210-D889-4CA7-8C2C-CFB0D6442446}.Release|x86.ActiveCfg = Release|Any CPU
+		{2E835210-D889-4CA7-8C2C-CFB0D6442446}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
