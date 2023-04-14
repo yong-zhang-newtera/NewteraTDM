@@ -278,6 +278,7 @@
     <Compile Include="Infrastructure\AttachmentManager.cs" />
     <Compile Include="Infrastructure\AttachmentMultipartFormDataStreamProvider.cs" />
     <Compile Include="Infrastructure\GetAccessibleClassesVisitor.cs" />
+    <Compile Include="Infrastructure\BlobStorageUtil.cs" />
     <Compile Include="Infrastructure\ModelFileMultipartFormDataStreamProvider.cs" />
     <Compile Include="Infrastructure\ImportExportManager.cs" />
     <Compile Include="Infrastructure\IImportExportManager.cs" />
@@ -341,6 +342,10 @@
     <Compile Include="AdminServices\UserInfoService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BlobStorage\BlobStorage.csproj">
+      <Project>{2e835210-d889-4ca7-8c2c-cfb0d6442446}</Project>
+      <Name>BlobStorage</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ChartServer\ChartServer.csproj">
       <Project>{dd1b3df3-f861-4c6e-9f67-7167d4181ded}</Project>
       <Name>ChartServer</Name>

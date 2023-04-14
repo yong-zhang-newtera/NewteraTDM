@@ -10,7 +10,7 @@ using Amazon.Runtime.CredentialManagement;
 using Amazon.S3;
 using Amazon.S3.Model;
 
-namespace BlobStorage.S3Storage
+namespace Newtera.BlobStorage.S3Storage
 {
     // NOTE: S3 doesn't support getting the MD5 hash of objects
     //          It unreliably returns the MD5 in the ETAG header

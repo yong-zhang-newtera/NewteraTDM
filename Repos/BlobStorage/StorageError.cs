@@ -1,5 +1,5 @@
 ﻿
-namespace BlobStorage
+namespace Newtera.BlobStorage
 {
     public class StorageError
     {

@@ -5,7 +5,7 @@ using System.Text;
 using Amazon.S3;
 using Amazon.S3.Model;
 
-namespace BlobStorage.S3Storage
+namespace Newtera.BlobStorage.S3Storage
 {
     public static class S3StorageExtensions
     {

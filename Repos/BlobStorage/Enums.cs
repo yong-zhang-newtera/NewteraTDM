@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BlobStorage
+namespace Newtera.BlobStorage
 {
     public enum BlobSecurity
     {

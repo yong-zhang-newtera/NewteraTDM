@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<AlgorithmTypes>
-	<AlgorithmType name="Max" algorithm="Newtera.Algorithm.Value, Newtera.Algorithm" class="" url=""/>
-	<AlgorithmType name="Min" algorithm="Newtera.Algorithm.MinValue, Newtera.Algorithm" class="" url=""/>
-	<AlgorithmType name="Avg" algorithm="Newtera.Algorithm.AvgValue, Newtera.Algorithm" class="" url=""/>
-</AlgorithmTypes>

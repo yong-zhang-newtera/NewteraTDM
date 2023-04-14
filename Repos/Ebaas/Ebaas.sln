@@ -81,6 +81,9 @@ EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "EbaasCNStandardSetup", "..\EbaasStandardSetup\EbaasStandardSetup.vdproj", "{0E3E843E-0F3A-43D6-B1B5-21B51B0BE313}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlobStorage", "..\BlobStorage\BlobStorage.csproj", "{2E835210-D889-4CA7-8C2C-CFB0D6442446}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CF010325-1364-4754-9192-CF7873C35F90} = {CF010325-1364-4754-9192-CF7873C35F90}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

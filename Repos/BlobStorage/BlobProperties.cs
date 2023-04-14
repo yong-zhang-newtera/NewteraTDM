@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BlobStorage
+namespace Newtera.BlobStorage
 {
     public class BlobProperties
     {

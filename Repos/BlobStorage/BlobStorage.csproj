@@ -77,6 +77,7 @@
   <ItemGroup>
     <Compile Include="BlobDescriptor.cs" />
     <Compile Include="BlobProperties.cs" />
+    <Compile Include="StorageProviderFactory.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Extentions.cs" />
     <Compile Include="IStorageProvider.cs" />
@@ -97,6 +98,12 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{cf010325-1364-4754-9192-cf7873c35f90}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
