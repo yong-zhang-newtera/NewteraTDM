@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BlobStorage.LocalStorage
+namespace Newtera.BlobStorage.LocalStorage
 {
     public static class MimeInfo
     {

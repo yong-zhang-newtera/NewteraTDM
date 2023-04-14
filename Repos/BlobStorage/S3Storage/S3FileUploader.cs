@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Amazon.S3;
 using Amazon.S3.Model;
 
-namespace BlobStorage.S3Storage
+namespace Newtera.BlobStorage.S3Storage
 {
     public class S3FileUploader
     {

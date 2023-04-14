@@ -1,5 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<ExportTypes>
-	<ExportType name="Microsoft Excel 工作簿 (*.xls)" suffix="xls" exporter="Newtera.Export.ExcelExporter, Newtera.Export"/>
-	<ExportType name="文本文件 (制表符分隔) (*.txt)" suffix="txt" exporter="Newtera.Export.TabDelimitedTextExporter, Newtera.Export"/>
-</ExportTypes>

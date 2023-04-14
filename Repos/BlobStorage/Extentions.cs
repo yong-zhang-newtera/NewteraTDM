@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BlobStorage
+namespace Newtera.BlobStorage
 {
     public static class Extentions
     {

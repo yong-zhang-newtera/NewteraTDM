@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<AlgorithmTypes>
-	<AlgorithmType name="Max" algorithm="Newtera.Function.MaxFunction, Newtera.Function" format="Max={0}" class=""/>
-	<AlgorithmType name="Min" algorithm="Newtera.Function.MinFunction, Newtera.Function" format="Min={0}" class="" />
-	<AlgorithmType name="Avg" algorithm="Newtera.Function.AvgFunction, Newtera.Function" format="Avg={0}" class="" />
-	<AlgorithmType name="Sum" algorithm="Newtera.Function.SumFunction, Newtera.Function" format="Sum={0}" class="" />
-</AlgorithmTypes>

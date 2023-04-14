@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace BlobStorage.LocalStorage
+namespace Newtera.BlobStorage.LocalStorage
 {
     public static class Extensions
     {

@@ -5,7 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace BlobStorage.LocalStorage
+namespace Newtera.BlobStorage.LocalStorage
 {
     public class LocalStorageProvider : IStorageProvider
     {
