@@ -6,7 +6,7 @@ angular.module("app.filemanager").config(function ($stateProvider, modalStatePro
 
     $stateProvider
         .state('app.filemanager', {
-            url: '/filemanager/:schema/:class/:oid/:cmdHash',
+            url: '/filemanager/:schema/:class/:oid/:prefix/:cmdHash',
             data: {
                 title: 'Filemanager Viewer'
             },

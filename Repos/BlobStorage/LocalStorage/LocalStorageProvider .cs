@@ -193,6 +193,11 @@ namespace Newtera.BlobStorage.LocalStorage
             try
             {
                 var dir = Path.Combine(_basePath, containerName);
+                if (!Directory.Exists(dir))
+                {
+                    return localFilesInfo;
+                }
+
                 var dirInfo = new DirectoryInfo(dir);
                 var fileInfo = dirInfo.GetFiles("*", SearchOption.AllDirectories);
 

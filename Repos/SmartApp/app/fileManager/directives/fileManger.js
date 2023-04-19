@@ -9,7 +9,8 @@ angular.module('app.filemanager').directive('ebaasFileManager', function () {
         bindToController: {
             dbschema: '=',
             dbclass: '=',
-            oid: '='
+            oid: '=',
+            prefix: '='
         },
         controllerAs: 'vm',
         controller: 'fileManagerCtrl',

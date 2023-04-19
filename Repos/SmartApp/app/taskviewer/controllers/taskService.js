@@ -7,8 +7,7 @@ angular.module('app.taskviewer').factory('taskService', function ($http, $q, APP
         node = treeData;
 
         var rootMenuItem = {};
-        //rootMenuItem.content = "<span><i class=\"fa fa-lg fa-plus-circle\"></i> " + node.title + "</span>";
-        rootMenuItem.content = "<span class='label label-info'><i class=\"fa fa-lg fa-plus-circle\"></i>&nbsp;&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('taskDataTree')).scope().GoToTaskInfoView('" + node.ClassName + "', '" + node.ID + "');\">" + node.Name + "</a></span>";
+        rootMenuItem.content = "<span class='label label-info'><i class=\"fa fa-lg fa-plus-circle\"></i>&nbsp;&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('taskDataTree')).scope().GoToTaskInfoView('" + node.ClassName + "', '" + node.ID + "', '" + escapePath(node.Prefix) + "');\">" + node.Name + "</a></span>";
         rootMenuItem.children = [];
         rootMenuItem.expanded = true;
         roots.push(rootMenuItem);
@@ -30,9 +29,9 @@ angular.module('app.taskviewer').factory('taskService', function ($http, $q, APP
 
                 if (node.Children.length > 0) {
                     menuItem.expanded = true;
-                    menuItem.content = "<span class='label label-info'><i class=\"fa fa-lg fa-plus-circle\"></i>&nbsp;&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('taskDataTree')).scope().GoToTaskInfoView('" + node.ClassName + "', '" + node.ID + "');\">" + node.Name + "</a></span>";
+                    menuItem.content = "<span class='label label-info'><i class=\"fa fa-lg fa-plus-circle\"></i>&nbsp;&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('taskDataTree')).scope().GoToTaskInfoView('" + node.ClassName + "', '" + node.ID + "', '" + escapePath(node.Prefix) + "');\">" + node.Name + "</a></span>";
                 } else {
-                    menuItem.content = "<span class='label label-info'><a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('taskDataTree')).scope().GoToTaskInfoView('" + node.ClassName + "', '" + node.ID + "');\">" + node.Name + "</a></span>";
+                    menuItem.content = "<span class='label label-info'><a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('taskDataTree')).scope().GoToTaskInfoView('" + node.ClassName + "', '" + node.ID + "', '" + escapePath(node.Prefix) + "');\">" + node.Name + "</a></span>";
                 }
 
                 parentItem.children.push(menuItem);
@@ -40,6 +39,14 @@ angular.module('app.taskviewer').factory('taskService', function ($http, $q, APP
                 addChildMenuItems(menuItem, node.Children);
             }
         }
+    }
+
+    var escapePath = function (path) {
+        if (path) {
+            path = path.replaceAll("\\", "\\\\");
+        }
+
+        return path;
     }
 
     function getTaskTree(parameters, callback) {

@@ -102,7 +102,7 @@ namespace Ebaas.WebApi.Infrastructure
                     Name = info.Name,
                     Created = info.CreateTime,
                     Modified = info.ModifiedTime,
-                    Size = info.Size,
+                    Size = info.Size.ToString(),
                     Suffix = info.Suffix,
                     Description = info.Description,
                     Type = info.Type,
@@ -141,7 +141,7 @@ namespace Ebaas.WebApi.Infrastructure
                     fileView.ID = info.ID;
                     fileView.Name = info.Name;
                     fileView.Description = fileTypeInfo.Description;
-                    fileView.Size = info.Size;
+                    fileView.Size = info.Size.ToString();
                     fileView.Created = info.CreateTime;
                     fileView.Modified = info.ModifiedTime;
                     fileView.Type = info.Type;
@@ -182,7 +182,7 @@ namespace Ebaas.WebApi.Infrastructure
                 fileView.ID = info.ID;
                 fileView.Name = info.Name;
                 fileView.Description = fileTypeInfo.Description;
-                fileView.Size = info.Size;
+                fileView.Size = info.Size.ToString();
                 fileView.Created = info.CreateTime;
                 fileView.Modified = info.ModifiedTime;
                 fileView.Type = info.Type;

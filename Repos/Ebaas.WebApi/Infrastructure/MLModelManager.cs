@@ -83,7 +83,7 @@ namespace Ebaas.WebApi.Infrastructure
                 fileView.ID = info.Name;
                 fileView.Name = info.Name;
                 fileView.Description = fileTypeInfo.Description;
-                fileView.Size = info.Length / 1024;
+                fileView.Size = (info.Length / 1024).ToString();
                 fileView.Created = info.CreationTime;
                 fileView.Type = info.Extension;
                 if (fileTypeInfo.Suffixes.Count > 0)
@@ -127,7 +127,7 @@ namespace Ebaas.WebApi.Infrastructure
                 fileView.Name = info.Name;
                 programFile = info.Name;
                 fileView.Description = fileTypeInfo.Description;
-                fileView.Size = info.Length / 1024;
+                fileView.Size = (info.Length / 1024).ToString();
                 fileView.Created = info.CreationTime;
                 fileView.Type = info.Extension;
                 if (fileTypeInfo.Suffixes.Count > 0)
@@ -176,7 +176,7 @@ namespace Ebaas.WebApi.Infrastructure
                 fileView.Name = info.Name;
                 programFile = info.Name;
                 fileView.Description = fileTypeInfo.Description;
-                fileView.Size = info.Length / 1024;
+                fileView.Size = (info.Length / 1024).ToString();
                 fileView.Created = info.CreationTime;
                 fileView.Type = info.Extension;
                 if (fileTypeInfo.Suffixes.Count > 0)

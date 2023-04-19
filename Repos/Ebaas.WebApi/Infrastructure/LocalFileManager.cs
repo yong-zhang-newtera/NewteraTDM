@@ -207,7 +207,7 @@ namespace Ebaas.WebApi.Infrastructure
 
                 if (!string.IsNullOrEmpty(fileDir))
                 {
-                    var provider = new FileMultipartFormDataStreamProvider(connection, className, oid, fileDir);
+                    var provider = new FileMultipartFormDataStreamProvider(fileDir);
 
                     // create file infos in db and save files in a local disk
                     await request.Content.ReadAsMultipartAsync(provider);
@@ -225,7 +225,7 @@ namespace Ebaas.WebApi.Infrastructure
                         fileView.ID = info.Name;
                         fileView.Name = info.Name;
                         fileView.Description = fileTypeInfo.Description;
-                        fileView.Size = info.Length / 1024;
+                        fileView.Size = (info.Length / 1024).ToString();
                         fileView.Created = info.CreationTime;
                         fileView.Modified = info.LastWriteTime;
                         fileView.Type = info.Extension;
@@ -351,7 +351,7 @@ namespace Ebaas.WebApi.Infrastructure
                     fileView.ID = info.Name;
                     fileView.Name = info.Name;
                     fileView.Description = fileTypeInfo.Description;
-                    fileView.Size = info.Length / 1024;
+                    fileView.Size = (info.Length / 1024).ToString();
                     fileView.Created = info.CreationTime;
                     fileView.Modified = info.LastWriteTime;
                     fileView.Type = info.Extension;
