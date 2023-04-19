@@ -1,17 +1,19 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
+using System.Threading;
 
 using Swashbuckle.Swagger.Annotations;
 
 using Newtera.Common.Core;
 using Newtera.BlobStorage;
+using Newtera.Common.MetaData.Principal;
+
 using Ebaas.WebApi.Models;
 using Ebaas.WebApi.Infrastructure;
 
@@ -61,8 +63,10 @@ namespace Ebaas.WebApi.Controllers
                 IStorageProvider storageProvider = StorageProviderFactory.Instance.Create(schemaName, className);
 
                 var results = await storageProvider.ListBlobsAsync(containerName);
-                
-                return Ok(new { blobs = results });
+
+                BlobStorageUtil util = new BlobStorageUtil();
+                var fileViewModels = util.ConvertToFileViewModels(results);
+                return Ok(new { files = fileViewModels });
             }
             catch (Exception ex)
             {
@@ -75,7 +79,6 @@ namespace Ebaas.WebApi.Controllers
         /// <summary>
         /// Upload files associated with a data instance
         /// </summary>
-        /// <param name="postedFile">The posted file object</param>
         /// <param name="schemaName">A database schema name such as DEMO</param>
         /// <param name="className">A data class name such as ATestItemInstance</param>
         /// <param name="oid">The obj_id of an data instance such as 377382882</param>
@@ -85,23 +88,42 @@ namespace Ebaas.WebApi.Controllers
         [Route("api/blob/{schemaName}/{className}/{oid:long}")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(UploadFileResultModel), Description = "Result of uploading files")]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = typeof(string), Description = "An error occured, see error message in data.message")]
-        public async Task<IHttpActionResult> PostBlob(System.Web.HttpPostedFileBase postedFile,
-            string schemaName, string className, string oid)
+        public async Task<IHttpActionResult> PostBlob(string schemaName, string className, string oid)
         {
+            // Check if the request contains multipart/form-data.
+            if (!Request.Content.IsMimeMultipartContent("form-data"))
+            {
+                return BadRequest("Unsupported media type");
+            }
+
+            IEnumerable<MultipartFileData> multipartFileData = null;
             try
             {
-                if (postedFile.ContentLength > 0)
+                NameValueCollection parameters = Request.RequestUri.ParseQueryString();
+                string containerName = GetContainerName(parameters, schemaName, className, oid);
+
+                string userName = GetParamValue(parameters, "user", null);
+                IStorageProvider storageProvider = StorageProviderFactory.Instance.Create(schemaName, className);
+
+                BlobStorageUtil util = new BlobStorageUtil();
+                multipartFileData = await util.GetMultipartFileData(Request, containerName);
+                var blobProperties = new BlobProperties()
                 {
-                    NameValueCollection parameters = Request.RequestUri.ParseQueryString();
-                    string containerName = GetContainerName(parameters, schemaName, className, oid);
+                    Metadata = new Dictionary<string, string>() { { "creator", userName ?? "Unknown" } }
+                };
 
-                    IStorageProvider storageProvider = StorageProviderFactory.Instance.Create(schemaName, className);
-
+                int index = 0;
+                foreach (var fileData in multipartFileData)
+                {
+                    var filename = fileData.Headers?.ContentDisposition?.FileName ?? $"File-{index++}";
+                    filename = filename.Trim(new char[] { '"' }).Replace("&", "and");
                     await storageProvider.SaveBlobStreamAsync(containerName,
-                        postedFile.FileName,
-                        postedFile.InputStream);
+                         filename,
+                         File.OpenRead(fileData.LocalFileName),
+                         blobProperties,
+                         true);
                 }
-  
+
                 return Ok();
             }
             catch (Exception ex)
@@ -110,7 +132,20 @@ namespace Ebaas.WebApi.Controllers
 
                 return BadRequest(ex.GetBaseException().Message);
             }
-
+            finally
+            {
+                // cleanup temp files
+                if (multipartFileData != null)
+                {
+                    foreach (var fileData in multipartFileData)
+                    {
+                        if (File.Exists(fileData.LocalFileName))
+                        {
+                            File.Delete(fileData.LocalFileName);
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -166,6 +201,7 @@ namespace Ebaas.WebApi.Controllers
 
             IStorageProvider storageProvider = StorageProviderFactory.Instance.Create(schemaName, className);
             var stream = await storageProvider.GetBlobStreamAsync(containerName, blobName);
+            
             BlobStorageUtil util = new BlobStorageUtil();
             return await util.CreateHttpResponse(blobName, stream);
         }

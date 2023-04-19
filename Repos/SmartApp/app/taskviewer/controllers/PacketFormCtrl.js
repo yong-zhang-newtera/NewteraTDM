@@ -5,6 +5,7 @@ angular.module('app.taskviewer').controller('PacketFormCtrl', function ($statePa
     $scope.dbschema = $stateParams.schema;
     $scope.dbclass = $stateParams.packetClass;
     $scope.oid = $stateParams.packetOid;
+    $scope.prefix = $stateParams.packetPrefix;
 
     $rootScope.hasPacketOid = taskService.hasValue($stateParams.packetOid);
 });

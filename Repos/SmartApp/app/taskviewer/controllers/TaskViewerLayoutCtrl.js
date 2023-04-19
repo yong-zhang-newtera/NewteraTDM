@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($rootScope, $scope, $state, $stateParams, taskService) {
+angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($rootScope, $scope, $state, $stateParams, taskService, MetaDataCache) {
 
     $scope.dbschema = $stateParams.schema;
     $scope.dbclass = $stateParams.class;
@@ -10,9 +10,11 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($r
     $scope.itemOid = $stateParams.itemOid;
     $scope.packetClass = $stateParams.packetClass;
     $scope.packetOid = $stateParams.packetOid;
+    $scope.packetPrefix = $stateParams.packetPrefix;
     $scope.taskNodeAttribute = $stateParams.taskNodeAttribute;
     $scope.itemNodeAttribute = $stateParams.itemNodeAttribute;
     $scope.packetNodeAttribute = $stateParams.packetNodeAttribute;
+    $scope.packetPrefixAttribute = $stateParams.packetPrefixAttribute;
 
     var parameters = {};
     parameters.schema = $stateParams.schema;
@@ -25,14 +27,22 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($r
     parameters.itemNodeAttribute = $stateParams.itemNodeAttribute;
     parameters.packetClass = $stateParams.packetClass;
     parameters.packetNodeAttribute = $stateParams.packetNodeAttribute;
+    parameters.packetPrefixAttribute = $stateParams.packetPrefixAttribute;
 
-    taskService.getTaskTree(parameters, function (treeData) {
-        $scope.taskDataTree = treeData;
-    });
+    var treeName = $stateParams.schema + $stateParams.class + $stateParams.oid;
+    if (MetaDataCache.getNamedData(treeName)) {
+        $scope.taskDataTree = MetaDataCache.getNamedData(treeName);
+    }
+    else {
+        taskService.getTaskTree(parameters, function (treeData) {
+            $scope.taskDataTree = treeData;
+            MetaDataCache.setNamedData(treeName, treeData);
+        });
+    }
 
     $state.go("app.taskviewer.details", parameters);
 
-    $scope.GoToTaskInfoView = function GoToTaskInfoView(nodeClass, nodeOid) {
+    $scope.GoToTaskInfoView = function GoToTaskInfoView(nodeClass, nodeOid, nodePrefix) {
         var params = new Object();
         params.schema = $scope.dbschema;
         params.class = $scope.dbclass;
@@ -42,6 +52,7 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($r
         params.taskNodeAttribute = $scope.taskNodeAttribute;
         params.itemNodeAttribute = $scope.itemNodeAttribute;
         params.packetNodeAttribute = $scope.packetNodeAttribute;
+        params.packetPrefixAttribute = $scope.packetPrefixAttribute;
 
         if (nodeClass == $scope.itemClass) {
             params.itemOid = nodeOid;
@@ -53,6 +64,8 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($r
         else if (nodeClass == $scope.packetClass) {
             params.packetOid = nodeOid;
             $scope.packetOid = nodeOid;
+            $scope.packetPrefix = nodePrefix;
+            params.packetPrefix = nodePrefix;
             $state.go("app.taskviewer.details", params, { reload: true });
         }
         else {

@@ -6,16 +6,16 @@
                     <div ng-if="!vm.readonly" class="row">
                         <div class="col-lg-4 col-md-4 col-sm-10 col-xs-8">{{vm.getWord("Name")}}</div>
                         <div class="col-lg-2 col-md-2 hidden-sm hidden-xs">{{vm.getWord("Size")}}</div>
-                        <div class="col-lg-2 col-md-2 hidden-sm hidden-xs">{{vm.getWord("CreatedOn")}}</div>
-                        <div class="col-lg-2 col-md-2 hidden-sm hidden-xs">{{vm.getWord("ModifiedOn")}}</div>
+                        <div class="col-lg-2 col-md-2 hidden-sm hidden-xs">{{vm.getWord("UploadBy")}}</div>
+                        <div class="col-lg-2 col-md-2 hidden-sm hidden-xs">{{vm.getWord("UploadAt")}}</div>
                         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">{{vm.getWord("Download")}}</div>
                         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">{{vm.getWord("Delete")}}</div>
                     </div>
                     <div ng-if="vm.readonly" class="row">
                         <div class="col-lg-5 col-md-5 col-sm-11 col-xs-10">{{vm.getWord("Name")}}</div>
                         <div class="col-lg-2 col-md-2 hidden-sm hidden-xs">{{vm.getWord("Size")}}</div>
-                        <div class="col-lg-2 col-md-2 hidden-sm hidden-xs">{{vm.getWord("CreatedOn")}}</div>
-                        <div class="col-lg-2 col-md-2 hidden-sm hidden-xs">{{vm.getWord("ModifiedOn")}}</div>
+                        <div class="col-lg-2 col-md-2 hidden-sm hidden-xs">{{vm.getWord("UploadBy")}}</div>
+                        <div class="col-lg-2 col-md-2 hidden-sm hidden-xs">{{vm.getWord("UploadAt")}}</div>
                         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">{{vm.getWord("Download")}}</div>
                     </div>
                 </li>
@@ -24,8 +24,8 @@
                     <div ng-if="!vm.readonly" class="row">
                         <div class="col-lg-4 col-md-4 col-sm-10 col-xs-8 wraptext">{{file.name}}</div>
                         <div class="col-lg-2 col-md-2 hidden-sm hidden-xs">{{file.size}}</div>
-                        <div class="col-lg-2 col-md-2 hidden-sm hidden-xs">{{file.created | date: short}}</div>
-                        <div class="col-lg-2 col-md-2 hidden-sm hidden-xs">{{file.modified | date: short}}</div>
+                        <div class="col-lg-2 col-md-2 hidden-sm hidden-xs">{{file.creator}}</div>
+                        <div class="col-lg-2 col-md-2 hidden-sm hidden-xs">{{file.modified | date: "yyyy-MM-dd hh:mm:ss"}}</div>
                         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
                             <button type="button" class="btn btn-xs btn-info" ng-click="vm.download(file)">
                                 <span class="fa fa-download"></span>

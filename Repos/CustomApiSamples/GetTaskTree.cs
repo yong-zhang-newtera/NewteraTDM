@@ -34,6 +34,7 @@ namespace CustomApiSamples
             string taskNodeAttribute = context?.Parameters?["taskNodeAttribute"];
             string itemNodeAttribute = context?.Parameters?["itemNodeAttribute"];
             string packetNodeAttribute = context?.Parameters?["packetNodeAttribute"];
+            string packetPrefixAttribute = context?.Parameters?["packetPrefixAttribute"];
             string itemClass = context?.Parameters?["itemClass"];
             string packetClass = context?.Parameters?["packetClass"];
 
@@ -61,6 +62,14 @@ namespace CustomApiSamples
                     var packetNode = new TaskTreeNode();
                     packetNode.ID = packetInstanceView.InstanceData.ObjId;
                     packetNode.Name = packetInstanceView.InstanceData.GetAttributeStringValue(packetNodeAttribute);
+                    if (!string.IsNullOrEmpty(packetPrefixAttribute))
+                    {
+                        packetNode.Prefix = packetInstanceView.InstanceData.GetAttributeStringValue(packetPrefixAttribute);
+                    }
+                    else
+                    {
+                        packetNode.Prefix = $@"{root.Name}\{itemNode.Name}\{packetNode.Name}";
+                    }
                     packetNode.ClassName = packetInstanceView.DataView.BaseClass.ClassName;
                     itemNode.Children.Add(packetNode);
                 }
@@ -99,7 +108,7 @@ namespace CustomApiSamples
         private InstanceView GetRelatedInstances(ApiExecutionContext context, InstanceView masterInstanceView, string relatedClass)
         { 
             CMConnection con = context.Connection;
-            var dataView = con.MetaDataModel.GetRelatedDefaultDataView(masterInstanceView, relatedClass);
+            var dataView = con.MetaDataModel.GetRelatedDetailedDataView(masterInstanceView, relatedClass);
             dataView.PageSize = 200;
 
             string query = dataView.SearchQueryWithPKValues;
@@ -127,6 +136,7 @@ namespace CustomApiSamples
         public string ID { get; set; }
         public string Name { get; set; }
         public string ClassName { get; set; }
+        public string Prefix { get; set; } // the prefix used to filter the list of blobs for the node
         public List<TaskTreeNode> Children { get; }
 
         public TaskTreeNode()

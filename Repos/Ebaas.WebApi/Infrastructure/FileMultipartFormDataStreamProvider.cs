@@ -17,22 +17,8 @@ namespace Ebaas.WebApi.Infrastructure
     /// </summary>
     public class FileMultipartFormDataStreamProvider : MultipartFormDataStreamProvider
     {
-        private CMConnection _connection;
-        private string _className;
-        private string _oid;
-
         public FileMultipartFormDataStreamProvider(string path) : base(path)
         {
-            _connection = null;
-            _className = null;
-            _oid = null;
-        }
-
-        public FileMultipartFormDataStreamProvider(CMConnection connection, string className, string oid, string path) : base(path)   
-        {
-            _connection = connection;
-            _className = className;
-            _oid = oid;
         }
  
         /// <summary>

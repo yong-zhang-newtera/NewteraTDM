@@ -7,7 +7,7 @@ angular.module("app.taskviewer").config(function ($stateProvider, modalStateProv
     $stateProvider
         .state('app.taskviewer', {
             abstract: true,
-            url: '/taskviewer/:schema/:class/:oid/:taskNodeAttribute/:itemClass/:itemNodeAttribute/:packetClass/:packetNodeAttribute/:hash',
+            url: '/taskviewer/:schema/:class/:oid/:taskNodeAttribute/:itemClass/:itemNodeAttribute/:packetClass/:packetNodeAttribute/:packetPrefix/:packetPrefixAttribute/:hash',
             data: {
                 title: 'Task Viewer'
             },
@@ -20,7 +20,7 @@ angular.module("app.taskviewer").config(function ($stateProvider, modalStateProv
             }
         })
         .state('app.taskviewer.details', {
-            url: '/details/:schema/:class/:oid/:taskNodeAttribute/:itemClass/:itemOid/:itemNodeAttribute/:packetClass/:packetOid/:packetNodeAttribute',
+            url: '/details/:schema/:class/:oid/:taskNodeAttribute/:itemClass/:itemOid/:itemNodeAttribute/:packetClass/:packetOid/:packetNodeAttribute/:packetPrefix/:packetPrefixAttribute',
             views: {
                 "taskform@app.taskviewer": {
                     controller: 'TaskFormCtrl',

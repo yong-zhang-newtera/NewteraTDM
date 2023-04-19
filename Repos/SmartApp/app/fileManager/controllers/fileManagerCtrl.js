@@ -40,14 +40,17 @@ angular.module('app.filemanager').controller('fileManagerCtrl', function ($scope
         fileManager.params.oid = $stateParams.oid;
     }
 
+    fileManager.params.prefix = this.prefix;
+    if (!fileManager.params.prefix) {
+        fileManager.params.prefix = $stateParams.prefix;
+    }
+
     $scope.baseUrl = APP_CONFIG.ebaasRootUrl;
     if (APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash]) {
         $scope.baseUrl = APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash];
     }
 
-    fileManager.params.path = "";
-
-    fileManager.params.api = "api/file"; // Indicating the filemanager is for regular files
+    fileManager.params.api = "api/blob"; // Indicating the filemanager is for blob
 
     fileManager.params.serviceBase = $scope.baseUrl;
 
@@ -84,7 +87,7 @@ angular.module('app.filemanager').controller('fileManagerCtrl', function ($scope
         var path = getPath(args.newNode);
         path = encodeURIComponent(path);
        
-        fileManager.params.path = path;
+        fileManager.params.prefix = path;
         fileManager.load();
     });
 

@@ -12,11 +12,12 @@ namespace Ebaas.WebApi.Models
         public string Description { get; set; }
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
-        public long Size { get; set; }
+        public string Size { get; set; }
         public string Type { get; set; }
         public string Suffix { get; set; }
         public string InstanceId { get; set; }
         public string ClassName { get; set; }
+        public string Creator { get; set; }
 
     }
 
