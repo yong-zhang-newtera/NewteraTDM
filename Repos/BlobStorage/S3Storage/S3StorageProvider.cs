@@ -25,6 +25,8 @@ namespace Newtera.BlobStorage.S3Storage
         private readonly string _serviceUrl;
         private readonly long _chunkedThreshold;
 
+        public static object HttpUtility { get; private set; }
+
         public S3StorageProvider(S3ProviderOptions options)
         {
             _serviceUrl = string.IsNullOrEmpty(options.ServiceUrl) ? DefaultServiceUrl : options.ServiceUrl;
@@ -36,6 +38,7 @@ namespace Newtera.BlobStorage.S3Storage
             {
                 ServiceURL = _serviceUrl,
                 Timeout = options.Timeout ?? ClientConfig.MaxTimeout,
+                ForcePathStyle = true // MUST be true to work correctly with MinIO server
             };
 
             _s3Client = new AmazonS3Client(ReadAwsCredentials(options), S3Config);
@@ -342,7 +345,7 @@ namespace Newtera.BlobStorage.S3Storage
         public async Task<IList<BlobDescriptor>> ListBlobsAsync(string containerName)
         {
             var descriptors = new List<BlobDescriptor>();
-
+            containerName = WebUtility.UrlEncode(containerName);
             var objectsRequest = new ListObjectsRequest
             {
                 BucketName = _bucket,
@@ -503,7 +506,7 @@ namespace Newtera.BlobStorage.S3Storage
             => properties?.Security == BlobSecurity.Public ? S3CannedACL.PublicRead : S3CannedACL.Private;
 
         private static string GenerateKeyName(string containerName, string blobName)
-            => string.IsNullOrWhiteSpace(containerName) ? blobName : $"{containerName}/{blobName}";
+            => string.IsNullOrWhiteSpace(containerName) ? blobName : $"{WebUtility.UrlEncode(containerName)}/{blobName}";
 
         private CopyObjectRequest CreateUpdateRequest(string containerName, string blobName, BlobProperties properties)
         {
