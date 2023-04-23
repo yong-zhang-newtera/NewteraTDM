@@ -9,13 +9,13 @@
 
             <ul class="nav nav-tabs pull-right in" id="myTab">
                 <li class="active">
-                    <a data-toggle="tab" href="#s1"><i class="fa fa-folder-open-o"></i> <span class="hidden-mobile hidden-tablet">{{getWord("Task Form")}}</span></a>
+                    <a id="tasktab" data-toggle="tab" href="#s1"><i class="fa fa-folder-open-o"></i> <span class="hidden-mobile hidden-tablet">{{getWord("Task Form")}}</span></a>
                 </li>
                 <li ng-show="hasItemOid">
-                    <a data-toggle="tab" href="#s2"><i class="fa fa-table"></i> <span class="hidden-mobile hidden-tablet">{{getWord("Item Form")}}</span></a>
+                    <a id="itemtab" data-toggle="tab" href="#s2"><i class="fa fa-table"></i> <span class="hidden-mobile hidden-tablet">{{getWord("Item Form")}}</span></a>
                 </li>
                 <li ng-show="hasPacketOid">
-                    <a data-toggle="tab" href="#s3"><i class="fa fa-bar-chart-o"></i> <span class="hidden-mobile hidden-tablet">{{getWord("Test Data Packet")}}</span></a>
+                    <a id="packettab" data-toggle="tab" href="#s3"><i class="fa fa-bar-chart-o"></i> <span class="hidden-mobile hidden-tablet">{{getWord("Test Data Packet")}}</span></a>
                 </li>
             </ul>
         </header>

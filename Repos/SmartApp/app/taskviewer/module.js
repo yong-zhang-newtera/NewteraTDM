@@ -20,7 +20,7 @@ angular.module("app.taskviewer").config(function ($stateProvider, modalStateProv
             }
         })
         .state('app.taskviewer.details', {
-            url: '/details/:schema/:class/:oid/:taskNodeAttribute/:itemClass/:itemOid/:itemNodeAttribute/:packetClass/:packetOid/:packetNodeAttribute/:packetPrefix/:packetPrefixAttribute',
+            url: '/details/:schema/:class/:oid/:taskNodeAttribute/:itemClass/:itemOid/:itemNodeAttribute/:packetClass/:packetOid/:packetNodeAttribute/:packetPrefix/:packetPrefixAttribute/:activeTabId',
             views: {
                 "taskform@app.taskviewer": {
                     controller: 'TaskFormCtrl',
@@ -36,4 +36,24 @@ angular.module("app.taskviewer").config(function ($stateProvider, modalStateProv
                 }
             },
         });
+
+    modalStateProvider.state('app.taskviewer.details.modalform', {
+        url: '^/detailsmodalform/:schema/:class/:readonly/:oid/:template/:formAttribute/:duplicate/:cmd/:sref',
+        templateUrl: "app/smartforms/views/ebaas-form-modal.html",
+        controller: 'ebaasFormModalCtrl',
+        backdrop: 'static', /*  this prevent user interaction with the background  */
+        keyboard: false,
+        animation: false,
+        size: 'lg'
+    });
+
+    modalStateProvider.state('app.taskviewer.details.relatedform', {
+        url: '^/detailsmodalform/:rclass/:roid/:rtemplate/:rformAttribute/:readonly',
+        templateUrl: "app/smartforms/views/related-form-modal.html",
+        controller: 'relatedFormModalCtrl',
+        backdrop: 'static', /*  this prevent user interaction with the background  */
+        keyboard: false,
+        animation: false,
+        size: 'lg'
+    });
 });

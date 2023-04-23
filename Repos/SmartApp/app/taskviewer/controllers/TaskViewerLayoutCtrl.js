@@ -57,6 +57,7 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($r
         if (nodeClass == $scope.itemClass) {
             params.itemOid = nodeOid;
             params.packetOid = null;
+            params.activeTabId = "itemtab";
             $scope.itemOid = nodeOid;
             $scope.packetOid = null;
             $state.go("app.taskviewer.details", params, { reload: true });
@@ -66,6 +67,7 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($r
             $scope.packetOid = nodeOid;
             $scope.packetPrefix = nodePrefix;
             params.packetPrefix = nodePrefix;
+            params.activeTabId = "packettab";
             $state.go("app.taskviewer.details", params, { reload: true });
         }
         else {
@@ -73,7 +75,38 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($r
             params.packetOid = "";
             $scope.itemOid = "";
             $scope.packetOid = "";
+            params.activeTabId = "tasktab";
             $state.go("app.taskviewer.details", params, { reload: true });
         }
     }
+
+    const contextMenuItems = [
+        {
+            text: 'Share',
+            items: [
+                { text: 'Facebook' },
+                { text: 'Twitter' }],
+        },
+        { text: 'Download' },
+        { text: 'Comment' },
+        { text: 'Favorite' },
+    ];
+
+    $scope.contextMenuOptions = {
+        dataSource: "",
+        width: 200,
+        target: "#contextMenuImage",
+        onItemClick(e) {
+            if (!e.itemData.items) {
+                DevExpress.ui.notify(`The "${e.itemData.text}" item was clicked`, 'success', 1500);
+            }
+        },
+    };
+
+    $rootScope.$on('modalClosed', function (event, args) {
+        if (args === "update") {
+            $state.reload();
+        }
+    });
+
 });

@@ -25,8 +25,6 @@ namespace Newtera.BlobStorage.S3Storage
         private readonly string _serviceUrl;
         private readonly long _chunkedThreshold;
 
-        public static object HttpUtility { get; private set; }
-
         public S3StorageProvider(S3ProviderOptions options)
         {
             _serviceUrl = string.IsNullOrEmpty(options.ServiceUrl) ? DefaultServiceUrl : options.ServiceUrl;
