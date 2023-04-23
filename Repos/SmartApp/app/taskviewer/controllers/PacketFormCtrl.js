@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app.taskviewer').controller('PacketFormCtrl', function ($stateParams, $rootScope, $scope, taskService) {
+angular.module('app.taskviewer').controller('PacketFormCtrl', function ($stateParams, $rootScope, $scope, taskService, $document) {
     // override the dbclass and oid with packet class and packet oid
     $scope.dbschema = $stateParams.schema;
     $scope.dbclass = $stateParams.packetClass;
@@ -8,4 +8,11 @@ angular.module('app.taskviewer').controller('PacketFormCtrl', function ($statePa
     $scope.prefix = $stateParams.packetPrefix;
 
     $rootScope.hasPacketOid = taskService.hasValue($stateParams.packetOid);
+
+    if ($stateParams.activeTabId == "packettab") {
+        var itemTabElement = $document[0].getElementById('packettab');
+        if (itemTabElement) {
+            itemTabElement.click();
+        }
+    }
 });

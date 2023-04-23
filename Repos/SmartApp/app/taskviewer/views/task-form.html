@@ -1,4 +1,9 @@
 ﻿<!-- MAIN CONTENT -->
 <form name="ebaasform" novalidate">
     <ebaas-form-template dbschema="dbschema" dbclass="dbclass" oid="oid" formattribute="formAttribute" readonly="true"></ebaas-form-template>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary" ng-click="openModal()">
+            {{getWord('Edit')}}
+        </button>
+    </div>
 </form>
