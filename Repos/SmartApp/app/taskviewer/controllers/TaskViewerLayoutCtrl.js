@@ -32,11 +32,14 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($r
     var treeName = $stateParams.schema + $stateParams.class + $stateParams.oid;
     if (MetaDataCache.getNamedData(treeName)) {
         $scope.taskDataTree = MetaDataCache.getNamedData(treeName);
+        $scope.nodes = MetaDataCache.getNamedData(treeName + "-nodes");
     }
     else {
-        taskService.getTaskTree(parameters, function (treeData) {
-            $scope.taskDataTree = treeData;
-            MetaDataCache.setNamedData(treeName, treeData);
+        taskService.getTaskTree(parameters, function (taskTree, flatternNodes) {
+            $scope.taskDataTree = taskTree;
+            $scope.nodes = flatternNodes;
+            MetaDataCache.setNamedData(treeName, taskTree);
+            MetaDataCache.setNamedData(treeName + "-nodes", $scope.nodes);
         });
     }
 
@@ -80,33 +83,17 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($r
         }
     }
 
-    const contextMenuItems = [
-        {
-            text: 'Share',
-            items: [
-                { text: 'Facebook' },
-                { text: 'Twitter' }],
-        },
-        { text: 'Download' },
-        { text: 'Comment' },
-        { text: 'Favorite' },
-    ];
-
-    $scope.contextMenuOptions = {
-        dataSource: "",
-        width: 200,
-        target: "#contextMenuImage",
-        onItemClick(e) {
-            if (!e.itemData.items) {
-                DevExpress.ui.notify(`The "${e.itemData.text}" item was clicked`, 'success', 1500);
-            }
-        },
-    };
-
     $rootScope.$on('modalClosed', function (event, args) {
         if (args === "update") {
             $state.reload();
         }
     });
 
+    $scope.addNode = function (nodeClass, nodeObjId) {
+        console.info("add node class=" + nodeClass + ", objId=" + nodeObjId);
+    };
+
+    $scope.editNode = function (nodeClass, nodeObjId) {
+        console.info("edit node class=" + nodeClass + ", objId=" + nodeObjId);
+    };
 });

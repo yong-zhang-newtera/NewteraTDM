@@ -42,6 +42,7 @@ namespace CustomApiSamples
             root.ID = taskInstance.InstanceData?.ObjId;
             root.Name = taskInstance.InstanceData?.GetAttributeStringValue(taskNodeAttribute);
             root.ClassName = taskInstance.DataView.BaseClass.ClassName;
+            root.Type = "TestTask";
 
             var itemInstanceView = GetRelatedInstances(context, taskInstance, itemClass);
             int itemCount = itemInstanceView.InstanceCount;
@@ -52,6 +53,7 @@ namespace CustomApiSamples
                 itemNode.ID = itemInstanceView.InstanceData.ObjId;
                 itemNode.Name = itemInstanceView.InstanceData.GetAttributeStringValue(itemNodeAttribute);
                 itemNode.ClassName = itemInstanceView.DataView.BaseClass.ClassName;
+                itemNode.Type = "TestItem";
                 root.Children.Add(itemNode);
 
                 var packetInstanceView = GetRelatedInstances(context, itemInstanceView, packetClass);
@@ -71,6 +73,7 @@ namespace CustomApiSamples
                         packetNode.Prefix = $@"{root.Name}\{itemNode.Name}\{packetNode.Name}";
                     }
                     packetNode.ClassName = packetInstanceView.DataView.BaseClass.ClassName;
+                    packetNode.Type = "TestPacket";
                     itemNode.Children.Add(packetNode);
                 }
             }
@@ -137,6 +140,7 @@ namespace CustomApiSamples
         public string Name { get; set; }
         public string ClassName { get; set; }
         public string Prefix { get; set; } // the prefix used to filter the list of blobs for the node
+        public string Type { get; set; }
         public List<TaskTreeNode> Children { get; }
 
         public TaskTreeNode()

@@ -19,6 +19,10 @@
  */
 
 /***** DASHBOARD: QUICK PAGE ACCESS *****/
+.position-fixed {
+    position: fixed;
+    z-index: 1000;
+}
 .panel-quick-page {
   margin: 0 0 20px;
 }

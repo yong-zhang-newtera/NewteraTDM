@@ -383,7 +383,12 @@
   "Task Info": "Test Task Details",
   "Test Data Packet": "Data Packets",
   "Add Data Packet": "Add Data Packet",
-  "Task Data Structure": "Task Data Structure",
+  "Task Data Structure": "Task Tree (Right click node for menu)",
   "Task Form": "Task Form",
-  "Item Form": "Test Item Form"
+  "Item Form": "Test Item Form",
+  "Add Test Item": "Add Test Item",
+  "Edit Task Info": "Edit Task Info",
+  "Add Test Packet": "Add Test Data Packet",
+  "Edit Item Info": "Edit Item Info",
+  "Edit Packet Info": "Edit Packet Info"
 }
