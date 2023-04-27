@@ -4,28 +4,31 @@ angular.module('app.taskviewer').factory('taskService', function ($http, $q, APP
 
     var createTaskTree = function (treeData) {
         var node, rootMenuItem, roots = [];
+        var params = {};
+        params.index = 0;
         node = treeData;
 
         var rootMenuItem = {};
         rootMenuItem.content = "<span class='label label-info'><i class=\"fa fa-lg fa-plus-circle\"></i>&nbsp;&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('taskDataTree')).scope().GoToTaskInfoView('" + node.ClassName + "', '" + node.ID + "', '" + escapePath(node.Prefix) + "');\">" + node.Name + "</a></span>";
+        rootMenuItem.index = params.index;
         rootMenuItem.children = [];
         rootMenuItem.expanded = true;
         roots.push(rootMenuItem);
 
-        addChildMenuItems(rootMenuItem, treeData.Children);
+        addChildMenuItems(rootMenuItem, treeData.Children, params);
 
         return roots;
     };
 
-    var addChildMenuItems = function (parentItem, nodes) {
+    var addChildMenuItems = function (parentItem, nodes, params) {
         var node, menuItem;
-
         if (nodes != null) {
             for (var i = 0; i < nodes.length; i += 1) {
                 node = nodes[i];
-
+                params.index++;
                 menuItem = {};
                 menuItem.children = [];
+                menuItem.index = params.index;
 
                 if (node.Children.length > 0) {
                     menuItem.expanded = true;
@@ -36,7 +39,7 @@ angular.module('app.taskviewer').factory('taskService', function ($http, $q, APP
 
                 parentItem.children.push(menuItem);
 
-                addChildMenuItems(menuItem, node.Children);
+                addChildMenuItems(menuItem, node.Children, params);
             }
         }
     }
@@ -47,6 +50,46 @@ angular.module('app.taskviewer').factory('taskService', function ($http, $q, APP
         }
 
         return path;
+    }
+
+    var flattenTreeNodes = function (treeNode) {
+        var nodes = [];
+        var params = {};
+        params.index = 0;
+        var node = {};
+        node.index = params.index;
+        node.isTaskNode = true;
+        node.className = treeNode.ClassName;
+        node.objId = treeNode.ID;
+        nodes.push(node);
+
+        flatternChildNodes(nodes, treeNode.Children, params);
+
+        return nodes;
+    }
+
+    var flatternChildNodes = function (nodes, childTreeNodes, params) {
+        var childTreeNode, node;
+        if (childTreeNodes != null) {
+            for (var i = 0; i < childTreeNodes.length; i += 1) {
+                childTreeNode = childTreeNodes[i];
+                params.index++;
+                node = {};
+                node.index = params.index;
+                if (childTreeNode.Type === "TestItem") {
+                    node.isItemNode = true;
+                }
+                else if (childTreeNode.Type === "TestPacket") {
+                    node.isPacketNode = true;
+                }
+                node.className = childTreeNode.ClassName;
+                node.objId = childTreeNode.ID;
+
+                nodes.push(node);
+
+                flatternChildNodes(nodes, childTreeNode.Children, params);
+            }
+        }
     }
 
     function getTaskTree(parameters, callback) {
@@ -61,7 +104,9 @@ angular.module('app.taskviewer').factory('taskService', function ($http, $q, APP
         $http.get(urlWithParams).success(function (data) {
             var treeData = data;
             if (callback != null) {
-                callback(createTaskTree(treeData));
+                callback(createTaskTree(treeData),
+                    flattenTreeNodes(treeData),
+                );
             }
         }).error(function () {
             callback(undefined);

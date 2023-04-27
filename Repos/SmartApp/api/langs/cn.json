@@ -385,7 +385,12 @@
   "Task Info": "试验任务详情",
   "Test Data Packet": "试验数据包",
   "Add Data Packet": "创建试验数据包",
-  "Task Data Structure": "试验任务数据结构",
+  "Task Data Structure": "试验任务树（右键点击树节点弹出菜单）",
   "Task Form": "任务表单",
-  "Item Form": "试验项目表单"
+  "Item Form": "试验项目表单",
+  "Add Test Item": "添加试验项目",
+  "Edit Task Info": "编辑试验任务信息",
+  "Add Test Packet": "添加试验数据包",
+  "Edit Item Info": "编辑试验项目信息",
+  "Edit Packet Info": "编辑数据包信息"
 }
