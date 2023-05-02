@@ -7,11 +7,11 @@ angular.module('app.smartforms').controller('relatedFormModalCtrl', function ($c
     $scope.oid = $stateParams.roid;
     $scope.template = $stateParams.rtemplate;
     $scope.formAttribute = $stateParams.rformAttribute;
-    $scope.masterClass = $stateParams.class;
+    $scope.masterClass = ($stateParams.masterclass) ? $stateParams.masterclass : $stateParams.class;
     $scope.readonly = false;
 
-    if ($stateParams.oid)
-        $scope.masterOid = $stateParams.oid;
+    if ($stateParams.oid || $stateParams.masteroid)
+        $scope.masterOid = ($stateParams.masteroid) ? $stateParams.masteroid : $stateParams.oid;
     else if (TasksInfo.currentTask) {
         // when the related form is launched from a WF task form, oid is missing from state params
         // it can be obtained from the current task info

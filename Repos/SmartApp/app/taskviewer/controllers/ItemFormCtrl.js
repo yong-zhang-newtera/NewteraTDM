@@ -17,11 +17,36 @@ angular.module('app.taskviewer').controller('ItemFormCtrl', function ($controlle
 
     angular.extend(this, $controller('ebaasFormBaseCtrl', { $rootScope: $rootScope, $scope: $scope, $http: $http, APP_CONFIG: APP_CONFIG }));
 
-    $scope.openModal = function () {
-        $state.go('.relatedform', { schema: $scope.dbschema, rclass: $scope.dbclass, roid: $scope.oid, rtemplate: $scope.formTemplate }, { location: false, notify: false });
+    $scope.editForm = function () {
+        $scope.$broadcast('editParentNodeEvent', {
+            parentClass: $scope.dbclass,
+            parentObjId: $scope.oid,
+            childNodeType: "ItemNode"
+        });
     };
 
     $rootScope.$on('relatedModalFormClosed', function (event, args) {
         $state.reload();
+    });
+
+    $scope.$on('addChildNodeEvent', function (e, args) {
+        if (args.childNodeType === "ItemNode") {
+            $state.go('.relatedform', { schema: $scope.dbschema, masterclass: args.parentClass, masteroid: args.parentObjId, rclass: args.childClass, rtemplate: $scope.formTemplate }, { location: false, notify: false });
+        }
+    });
+
+    $scope.$on('editParentNodeEvent', function (e, args) {
+        if (args.childNodeType === "ItemNode") {
+            $state.go('.relatedform', { schema: $scope.dbschema, rclass: args.parentClass, roid: args.parentObjId, rtemplate: $scope.formTemplate }, { location: false, notify: false });
+        }
+    });
+
+    $scope.$on('deleteParentNodeEvent', function (e, args) {
+        if (args.childNodeType === "ItemNode") {
+            var result = confirm($rootScope.getWord("Confirm Delete Test Item"));
+            if (result) {
+                
+            }
+        }
     });
 });

@@ -18,39 +18,54 @@
 
                         <!-- widget div-->
                         <div id="taskDataTree" class="tree smart-form">
+                            <a hidden id="reloadTaskViewer" ui-sref="app.taskviewer.details" ui-sref-opts="{reload: true}">Reload</a>
                             <div class="dropdown position-fixed" ng-repeat="node in nodes" id="menu-{{node.index}}">
                                 <ul class="dropdown-menu" role="menu">
                                     <li ng-if="node.isTaskNode">
                                         <a class="pointer" role="menuitem" tabindex="1"
-                                            ng-click="addNode(node.className, node.objId)">
+                                           ng-click="addNode(node.className, node.objId, node.childClass, 'ItemNode')">
                                             {{getWord("Add Test Item")}}
                                         </a>
                                     </li>
                                     <li ng-if="node.isTaskNode">
                                         <a role="menuitem"
-                                            tabindex="-1"
-                                            ng-click="editNode(node.className, node.objId)">
+                                           tabindex="-1"
+                                           ng-click="editNode(node.className, node.objId, node.className, node.objId, 'TaskNode')">
                                             {{getWord("Edit Task Info")}}
                                         </a>
                                     </li>
                                     <li ng-if="node.isItemNode">
                                         <a class="pointer" role="menuitem" tabindex="1"
-                                            ng-click="addNode(node.className, node.objId)">
+                                           ng-click="addNode(node.className, node.objId, node.childClass, 'PacketNode')">
                                             {{getWord("Add Test Packet")}}
                                         </a>
                                     </li>
                                     <li ng-if="node.isItemNode">
                                         <a role="menuitem"
-                                            tabindex="-1"
-                                            ng-click="editNode(node.className, node.objId)">
+                                           tabindex="-1"
+                                           ng-click="editNode(node.className, node.objId, node.childClass, node.childObjId, 'ItemNode')">
                                             {{getWord("Edit Item Info")}}
+                                        </a>
+                                    </li>
+                                    <li ng-if="node.isItemNode">
+                                        <a role="menuitem"
+                                           tabindex="-1"
+                                           ng-click="deleteNode(node.className, node.objId, node.childClass, node.childObjId, 'ItemNode')">
+                                            {{getWord("Delete Item Info")}}
                                         </a>
                                     </li>
                                     <li ng-if="node.isPacketNode">
                                         <a role="menuitem"
-                                            tabindex="-1"
-                                            ng-click="editNode(node.className, node.objId)">
+                                           tabindex="-1"
+                                           ng-click="editNode(node.className, node.objId, node.childClass, node.childObjId, 'PacketNode')">
                                             {{getWord("Edit Packet Info")}}
+                                        </a>
+                                    </li>
+                                    <li ng-if="node.isPacketNode">
+                                        <a role="menuitem"
+                                           tabindex="-1"
+                                           ng-click="deleteNode(node.className, node.objId, node.childClass, node.childObjId, 'PacketNode')">
+                                            {{getWord("Delete Packet Info")}}
                                         </a>
                                     </li>
                                 </ul>

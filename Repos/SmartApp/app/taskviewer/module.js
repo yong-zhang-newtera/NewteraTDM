@@ -48,7 +48,7 @@ angular.module("app.taskviewer").config(function ($stateProvider, modalStateProv
     });
 
     modalStateProvider.state('app.taskviewer.details.relatedform', {
-        url: '^/detailsmodalform/:rclass/:roid/:rtemplate/:rformAttribute/:readonly',
+        url: '^/detailsmodalform/:masterclass/:masteroid/:rclass/:roid/:rtemplate/:rformAttribute/:readonly',
         templateUrl: "app/smartforms/views/related-form-modal.html",
         controller: 'relatedFormModalCtrl',
         backdrop: 'static', /*  this prevent user interaction with the background  */
