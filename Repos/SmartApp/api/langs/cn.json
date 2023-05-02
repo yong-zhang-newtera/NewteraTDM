@@ -392,5 +392,9 @@
   "Edit Task Info": "编辑试验任务信息",
   "Add Test Packet": "添加试验数据包",
   "Edit Item Info": "编辑试验项目信息",
-  "Edit Packet Info": "编辑数据包信息"
+  "Edit Packet Info": "编辑数据包信息",
+  "Delete Item Info": "删除试验项目信息",
+  "Delete Packet Info": "删除数据包信息",
+  "Confirm Delete Test Item": "该操作不可复原，您确定要删除试验项目信息吗？",
+  "Confirm Delete Test Data Packet": "该操作不可复原，您确定要删除试验数据包吗？"
 }

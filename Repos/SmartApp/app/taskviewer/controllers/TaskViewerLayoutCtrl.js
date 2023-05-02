@@ -16,6 +16,8 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($r
     $scope.packetNodeAttribute = $stateParams.packetNodeAttribute;
     $scope.packetPrefixAttribute = $stateParams.packetPrefixAttribute;
 
+    $rootScope.IsReloaded = false;
+
     var parameters = {};
     parameters.schema = $stateParams.schema;
     parameters.class = $stateParams.class;
@@ -83,17 +85,61 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($r
         }
     }
 
-    $rootScope.$on('modalClosed', function (event, args) {
-        if (args === "update") {
-            $state.reload();
+    $scope.Refresh = function (reloadTree) {
+        if ($rootScope.RefreshTaskTree) {
+            var treeName = $stateParams.schema + $stateParams.class + $stateParams.oid;
+            MetaDataCache.setNamedData(treeName, null);
+            MetaDataCache.setNamedData(treeName + "-nodes", null);
+            $rootScope.RefreshTaskTree = false;
+        }
+
+        // Hack as workaround to the issue with $state.reload() not working
+        $scope.$$postDigest(function () {
+            angular.element('#reloadTaskViewer').trigger('click');
+        });
+    };
+
+    $scope.addNode = function (parentClass, parentObjId, childClass, childNodeType) {
+        $scope.$broadcast('addChildNodeEvent', {
+            parentClass: parentClass,
+            parentObjId: parentObjId,
+            childClass: childClass,
+            childNodeType: childNodeType
+        });
+
+        $rootScope.RefreshTaskTree = true;
+    };
+
+    $scope.editNode = function (parentClass, parentObjId, childClass, childObjId, childNodeType) {
+        $scope.$broadcast('editParentNodeEvent', {
+            parentClass: parentClass,
+            parentObjId: parentObjId,
+            childClass: childClass,
+            childObjId: childObjId,
+            childNodeType: childNodeType
+        });
+    };
+
+    $scope.deleteNode = function (parentClass, parentObjId, childClass, childObjId, childNodeType) {
+        $scope.$broadcast('deleteParentNodeEvent', {
+            parentClass: parentClass,
+            parentObjId: parentObjId,
+            childClass: childClass,
+            childObjId: childObjId,
+            childNodeType: childNodeType
+        });
+    };
+
+    $rootScope.$on('modalClosed', function (event, data) {
+        if (data === "update" && !$rootScope.IsReloaded) {
+            event.preventDefault();
+            event.stopPropagation();
+            $rootScope.IsReloaded = true;
+            $scope.Refresh();
         }
     });
 
-    $scope.addNode = function (nodeClass, nodeObjId) {
-        console.info("add node class=" + nodeClass + ", objId=" + nodeObjId);
-    };
-
-    $scope.editNode = function (nodeClass, nodeObjId) {
-        console.info("edit node class=" + nodeClass + ", objId=" + nodeObjId);
-    };
+    $rootScope.$on('relatedModalFormClosed', function (event, args) {
+        $state.reload();
+    });
 });

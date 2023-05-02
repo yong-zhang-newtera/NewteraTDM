@@ -387,8 +387,12 @@
   "Task Form": "Task Form",
   "Item Form": "Test Item Form",
   "Add Test Item": "Add Test Item",
-  "Edit Task Info": "Edit Task Info",
+  "Edit Task Info": "Edit Test Task",
   "Add Test Packet": "Add Test Data Packet",
-  "Edit Item Info": "Edit Item Info",
-  "Edit Packet Info": "Edit Packet Info"
+  "Edit Item Info": "Edit Test Item",
+  "Edit Packet Info": "Edit Test Data Packet",
+  "Delete Item Info": "Delete Test Item",
+  "Delete Packet Info": "Delete Test Data Packet",
+  "Confirm Delete Test Item": "Are you sure you want to delete the test item?",
+  "Confirm Delete Test Data Packet": "Are you sure you want to delete the test data packet?"
 }

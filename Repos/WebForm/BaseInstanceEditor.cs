@@ -73,6 +73,15 @@ namespace Newtera.WebForm
 
         protected Hashtable _propertyReadOnlyStatusTable = null;
 
+        public BaseInstanceEditor()
+        {
+            EditorId = Convert.ToBase64String(Guid.NewGuid().ToByteArray())
+                .Substring(0, 22)
+                .Replace("/", "_")
+                .Replace("+", "-");
+        }
+
+        public string EditorId { get; }
 
         /// <summary>
         /// Get the html document for the editor
@@ -1595,7 +1604,7 @@ namespace Newtera.WebForm
 
             // set the angularjs  model binding
             fTextControl.SetAttributeValue("name", PropertyControlName);
-            fTextControl.SetAttributeValue("id", this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName + "-" + PropertyControlName);
+            fTextControl.SetAttributeValue("id", $"{this.fOwnerEditor.EditorId}-{this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName}-{PropertyControlName}");
             fTextControl.SetAttributeValue("readonly", "readonly");
             fTextControl.SetAttributeValue("style", "background-color:#f7f9f9;");
             fTextControl.SetAttributeValue("ng-model", this.fOwnerEditor.ViewModelPath + fPropertyInfo.Name);
@@ -1900,7 +1909,7 @@ namespace Newtera.WebForm
                 }
 
                 fTextControl.SetAttributeValue("name", PropertyControlName);
-                fTextControl.SetAttributeValue("id", this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName + "-" + PropertyControlName);
+                fTextControl.SetAttributeValue("id", $"{this.fOwnerEditor.EditorId}-{this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName}-{PropertyControlName}");
                 fTextControl.SetAttributeValue("ng-model", this.fOwnerEditor.ViewModelPath + fPropertyInfo.Name);
                 if (fPropertyInfo.InvokeCallback)
                 {
@@ -1986,7 +1995,7 @@ namespace Newtera.WebForm
                 }
 
                 propertyNode.SetAttributeValue("name", PropertyControlName);
-                propertyNode.SetAttributeValue("id", this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName + "-" + PropertyControlName);
+                propertyNode.SetAttributeValue("id", $"{this.fOwnerEditor.EditorId}-{this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName}-{PropertyControlName}");
                 propertyNode.SetAttributeValue("ng-model", this.fOwnerEditor.ViewModelPath + fPropertyInfo.Name);
 
                 container.AppendChild(propertyNode);
@@ -2140,7 +2149,7 @@ namespace Newtera.WebForm
 
                 // set the angularjs  model binding
                 fTextControl.SetAttributeValue("name", PropertyControlName);
-                fTextControl.SetAttributeValue("id", this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName + "-" + PropertyControlName);
+                fTextControl.SetAttributeValue("id", $"{this.fOwnerEditor.EditorId}-{this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName}-{PropertyControlName}");
                 //fTextControl.SetAttributeValue("string-to-number", "");
                 fTextControl.SetAttributeValue("ng-model", this.fOwnerEditor.ViewModelPath + fPropertyInfo.Name);
                 if (fPropertyInfo.InvokeCallback)
@@ -2342,7 +2351,7 @@ namespace Newtera.WebForm
                 }
 
                 fTextControl.SetAttributeValue("name", PropertyControlName);
-                fTextControl.SetAttributeValue("id", this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName + "-" + PropertyControlName);
+                fTextControl.SetAttributeValue("id", $"{this.fOwnerEditor.EditorId}-{this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName}-{PropertyControlName}");
                 fTextControl.SetAttributeValue("ng-model", this.fOwnerEditor.ViewModelPath + fPropertyInfo.Name);
                 if (fPropertyInfo.InvokeCallback)
                 {
@@ -2509,7 +2518,7 @@ namespace Newtera.WebForm
                 }
 
                 fTextControl.SetAttributeValue("name", PropertyControlName);
-                fTextControl.SetAttributeValue("id", this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName + "-" + PropertyControlName);
+                fTextControl.SetAttributeValue("id", $"{this.fOwnerEditor.EditorId}-{this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName}-{PropertyControlName}");
                 fTextControl.SetAttributeValue("ng-model", this.fOwnerEditor.ViewModelPath + fPropertyInfo.Name);
                 if (fPropertyInfo.InvokeCallback)
                 {
@@ -2752,7 +2761,7 @@ namespace Newtera.WebForm
                 }
 
                 fTextControl.SetAttributeValue("name", PropertyControlName);
-                fTextControl.SetAttributeValue("id", this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName + "-" + PropertyControlName);
+                fTextControl.SetAttributeValue("id", $"{this.fOwnerEditor.EditorId}-{this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName}-{PropertyControlName}");
                 fTextControl.SetAttributeValue("ng-model", this.fOwnerEditor.ViewModelPath + fPropertyInfo.Name);
                 if (fPropertyInfo.InvokeCallback)
                 {
@@ -3056,7 +3065,7 @@ namespace Newtera.WebForm
             imgNode.SetAttributeValue("width", fPropertyInfo.ImageMaximumWidth.ToString());
             imgNode.SetAttributeValue("height", fPropertyInfo.ImageMaximumHeight.ToString());
             imgNode.SetAttributeValue("ng-src", "{{getImageUrl('" + fPropertyInfo.Name + "')}}");
-            imgNode.SetAttributeValue("id", "Image_" + this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName + "-" + fPropertyInfo.Name);
+            imgNode.SetAttributeValue("id", $"Image_{this.fOwnerEditor.EditorId}-{this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName}-{PropertyControlName}");
             tdNode.AppendChild(imgNode);
 
             if (!this.IsReadOnly)
@@ -3470,7 +3479,7 @@ namespace Newtera.WebForm
         {
             HtmlNode vEnumControl = doc.CreateElement("select");
             vEnumControl.SetAttributeValue("name", PropertyControlName);
-            vEnumControl.SetAttributeValue("id", this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName + "-" + PropertyControlName);
+            vEnumControl.SetAttributeValue("id", $"{this.fOwnerEditor.EditorId}-{this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName}-{PropertyControlName}");
             vEnumControl.SetAttributeValue("class", "form-control");
             if (IsReadOnly)
             {
@@ -3660,7 +3669,7 @@ namespace Newtera.WebForm
             HtmlNode vSelectControl = doc.CreateElement("select");
             vSelectControl.SetAttributeValue("class", "form-control");
             vSelectControl.SetAttributeValue("name", PropertyControlName);
-            vSelectControl.SetAttributeValue("id", this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName + "-" + PropertyControlName);
+            vSelectControl.SetAttributeValue("id", $"{this.fOwnerEditor.EditorId}-{this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName}-{PropertyControlName}");
 
             // set the angularjs  model binding
             if (fPropertyInfo.IsRequired)
@@ -3708,7 +3717,7 @@ namespace Newtera.WebForm
                     }
                 }
 
-                javascriptFunc.Append("], ").Append("getSelectedText('" + this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName + "-" + PropertyControlName + "'))");
+                javascriptFunc.Append("], ").Append($"getSelectedText('{this.fOwnerEditor.EditorId}-{this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName}-{PropertyControlName}'))");
 
                 AddResetScripts(cascadedAttributeNames, javascriptFunc);
 
@@ -4124,7 +4133,7 @@ namespace Newtera.WebForm
                 // set the angularjs  model binding
                 fTextControl.SetAttributeValue("name", PropertyControlName);
                 fTextControl.SetAttributeValue("placeholder", WebControlsResourceManager.GetString("PropertyEditor.InputComment"));
-                fTextControl.SetAttributeValue("id", this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName + "-" + PropertyControlName);
+                fTextControl.SetAttributeValue("id", $"{this.fOwnerEditor.EditorId}-{this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName}-{PropertyControlName}");
                 // set the angularjs  model binding
                 fTextControl.SetAttributeValue("ng-model", this.fOwnerEditor.ViewModelPath + fPropertyInfo.Name + ".text");
             }
@@ -4679,7 +4688,7 @@ namespace Newtera.WebForm
             fTextControl.SetAttributeValue("readonly", "");
             fTextControl.SetAttributeValue("style", "background-color:#f7f9f9;");
             fTextControl.SetAttributeValue("name", PropertyControlName);
-            fTextControl.SetAttributeValue("id", this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName + "-" + PropertyControlName);
+            fTextControl.SetAttributeValue("id", $"{this.fOwnerEditor.EditorId}-{this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName}-{PropertyControlName}");
             groupNode.AppendChild(fTextControl);
 
             HtmlNode addonNode = this.fOwnerEditor.Document.CreateElement("span");
@@ -4732,6 +4741,11 @@ namespace Newtera.WebForm
 
     public interface IInstanceEditor
     {
+        /// <summary>
+        /// An unique id for this editor instance
+        /// </summary>
+        string EditorId { get; }
+
         /// <summary>
         /// Get the html document for the editor
         /// </summary>

@@ -202,8 +202,6 @@ angular.module('app.smartforms').controller('ebaasFormBaseCtrl', function ($root
 
         $scope.submitted = true;
 
-        //console.debug("submite form called with valid form =" + $scope.ebaasform.$valid);
-
         //if ($scope.ebaasform.$valid && $scope.ebaasform.$dirty) {
         if (isValid) {
             if ($scope.ebaasform.$valid) { // we don't check dirty since nested form may have row deleted which doesn't flag as dirty
@@ -233,7 +231,6 @@ angular.module('app.smartforms').controller('ebaasFormBaseCtrl', function ($root
                 }
 
                 $scope.loading = true;
-                //console.log($scope.model);
                 $http.post(url, $scope.model, {
                     headers: {
                         'formId': $scope.formId,
@@ -265,7 +262,6 @@ angular.module('app.smartforms').controller('ebaasFormBaseCtrl', function ($root
                 });
             }
             else {
-                //console.debug("invalid error");
                 $scope.message = $rootScope.getWord('ValidationError');
             }
         }
@@ -401,7 +397,6 @@ angular.module('app.smartforms').controller('ebaasFormBaseCtrl', function ($root
     $scope.getSelectedText = function getSelectedText(elementId) {
         var elt = document.getElementById(elementId);
 
-        console.log(elt);
         if (elt.selectedIndex == -1)
             return null;
 

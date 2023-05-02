@@ -60,6 +60,7 @@ angular.module('app.taskviewer').factory('taskService', function ($http, $q, APP
         node.index = params.index;
         node.isTaskNode = true;
         node.className = treeNode.ClassName;
+        node.childClass = treeNode.ChildClass;
         node.objId = treeNode.ID;
         nodes.push(node);
 
@@ -83,6 +84,7 @@ angular.module('app.taskviewer').factory('taskService', function ($http, $q, APP
                     node.isPacketNode = true;
                 }
                 node.className = childTreeNode.ClassName;
+                node.childClass = childTreeNode.ChildClass;
                 node.objId = childTreeNode.ID;
 
                 nodes.push(node);
