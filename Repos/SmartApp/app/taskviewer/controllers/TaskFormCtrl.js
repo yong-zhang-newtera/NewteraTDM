@@ -8,6 +8,8 @@ angular.module('app.taskviewer').controller('TaskFormCtrl', function ($statePara
         }
     }
 
+    $scope.template = $stateParams.taskTemplate;
+
     angular.extend(this, $controller('ebaasFormBaseCtrl', { $rootScope: $rootScope, $scope: $scope, $http: $http, APP_CONFIG: APP_CONFIG }));
 
     $scope.editForm = function () {
@@ -20,13 +22,7 @@ angular.module('app.taskviewer').controller('TaskFormCtrl', function ($statePara
 
     $scope.$on('editParentNodeEvent', function (e, args) {
         if (args.childNodeType === "TaskNode") {
-            $state.go('.modalform', { schema: $scope.dbschema, class: args.parentClass, oid: args.parentObjId }, { location: false, notify: false });
-        }
-    });
-
-    $scope.$on('deleteParentNodeEvent', function (e, args) {
-        if (args.childNodeType === "TaskNode") {
-
+            $state.go('.modalform', { schema: $scope.dbschema, class: args.parentClass, oid: args.parentObjId, template: $scope.template }, { location: false, notify: false });
         }
     });
 });

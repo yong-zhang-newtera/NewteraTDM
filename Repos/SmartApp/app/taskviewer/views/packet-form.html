@@ -1,1 +1,15 @@
-﻿<ebaas-file-manager dbschema="dbschema" dbclass="dbclass" oid="oid" prefix="prefix"></ebaas-file-manager>
+﻿<div class="row">
+    <div class="col-xs-12 col-sm-11 col-md-11 col-lg-11">
+        <form name="ebaasform" novalidate">
+            <ebaas-form-template dbschema="dbschema" dbclass="dbclass" oid="oid" template="template" readonly="true"></ebaas-form-template>
+        </form>
+    </div>
+    <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1">
+        <button type="submit" ng-show="allowSubmit()" class="btn btn-primary" ng-click="editForm()">
+            {{getWord('Edit')}}
+        </button>
+    </div>
+</div>
+<div class="row">
+    <ebaas-file-manager dbschema="dbschema" dbclass="dbclass" oid="oid" prefix="prefix"></ebaas-file-manager>
+</div>
