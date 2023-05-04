@@ -44,6 +44,9 @@ namespace CustomApiSamples
             root.ClassName = taskInstance.DataView.BaseClass.ClassName;
             root.ChildClass = itemClass;
             root.Type = "TestTask";
+            root.AllowCreate = taskInstance.InstanceData?.HasPermission(Newtera.Common.MetaData.XaclModel.XaclActionType.Create) ?? false;
+            root.AllowWrite = taskInstance.InstanceData?.HasPermission(Newtera.Common.MetaData.XaclModel.XaclActionType.Write) ?? false;
+            root.AllowDelete = taskInstance.InstanceData?.HasPermission(Newtera.Common.MetaData.XaclModel.XaclActionType.Delete) ?? false;
 
             var itemInstanceView = GetRelatedInstances(context, taskInstance, itemClass);
             int itemCount = itemInstanceView.InstanceCount;
@@ -56,6 +59,10 @@ namespace CustomApiSamples
                 itemNode.ClassName = itemInstanceView.DataView.BaseClass.ClassName;
                 itemNode.Type = "TestItem";
                 itemNode.ChildClass = packetClass;
+                itemNode.AllowCreate = itemInstanceView.InstanceData?.HasPermission(Newtera.Common.MetaData.XaclModel.XaclActionType.Create) ?? false;
+                itemNode.AllowWrite = itemInstanceView.InstanceData?.HasPermission(Newtera.Common.MetaData.XaclModel.XaclActionType.Write) ?? false;
+                itemNode.AllowDelete = itemInstanceView.InstanceData?.HasPermission(Newtera.Common.MetaData.XaclModel.XaclActionType.Delete) ?? false;
+
                 root.Children.Add(itemNode);
 
                 var packetInstanceView = GetRelatedInstances(context, itemInstanceView, packetClass);
@@ -76,6 +83,10 @@ namespace CustomApiSamples
                     }
                     packetNode.ClassName = packetInstanceView.DataView.BaseClass.ClassName;
                     packetNode.Type = "TestPacket";
+                    packetNode.AllowCreate = packetInstanceView.InstanceData?.HasPermission(Newtera.Common.MetaData.XaclModel.XaclActionType.Create) ?? false;
+                    packetNode.AllowWrite = packetInstanceView.InstanceData?.HasPermission(Newtera.Common.MetaData.XaclModel.XaclActionType.Write) ?? false;
+                    packetNode.AllowDelete = packetInstanceView.InstanceData?.HasPermission(Newtera.Common.MetaData.XaclModel.XaclActionType.Delete) ?? false;
+
                     itemNode.Children.Add(packetNode);
                 }
             }
@@ -145,6 +156,9 @@ namespace CustomApiSamples
         public string Type { get; set; }
         public string ChildClass { get; set; }
         public List<TaskTreeNode> Children { get; }
+        public bool AllowCreate { get; set; }
+        public bool AllowWrite { get; set; }
+        public bool AllowDelete { get; set; }
 
         public TaskTreeNode()
         {

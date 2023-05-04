@@ -7,11 +7,14 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($r
     $scope.oid = $stateParams.oid;
     $scope.formAttribute = undefined;
     $scope.itemClass = $stateParams.itemClass;
+    $scope.itemTemplate = $stateParams.itemTemplate;
     $scope.itemOid = $stateParams.itemOid;
     $scope.packetClass = $stateParams.packetClass;
     $scope.packetOid = $stateParams.packetOid;
+    $scope.packetTemplate = $stateParams.packetTemplate;
     $scope.packetPrefix = $stateParams.packetPrefix;
     $scope.taskNodeAttribute = $stateParams.taskNodeAttribute;
+    $scope.taskTemplate = $stateParams.taskTemplate;
     $scope.itemNodeAttribute = $stateParams.itemNodeAttribute;
     $scope.packetNodeAttribute = $stateParams.packetNodeAttribute;
     $scope.packetPrefixAttribute = $stateParams.packetPrefixAttribute;
@@ -24,11 +27,14 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($r
     parameters.oid = $stateParams.oid;
     parameters.taskClass = $stateParams.class;
     parameters.taskOid = $stateParams.oid;
+    parameters.taskTemplate = $stateParams.taskTemplate;
     parameters.taskNodeAttribute = $stateParams.taskNodeAttribute;
     parameters.itemClass = $stateParams.itemClass;
+    parameters.itemTemplate = $stateParams.itemTemplate;
     parameters.itemNodeAttribute = $stateParams.itemNodeAttribute;
     parameters.packetClass = $stateParams.packetClass;
     parameters.packetNodeAttribute = $stateParams.packetNodeAttribute;
+    parameters.packetTemplate = $stateParams.packetTemplate;
     parameters.packetPrefixAttribute = $stateParams.packetPrefixAttribute;
 
     var treeName = $stateParams.schema + $stateParams.class + $stateParams.oid;
@@ -58,6 +64,9 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($r
         params.itemNodeAttribute = $scope.itemNodeAttribute;
         params.packetNodeAttribute = $scope.packetNodeAttribute;
         params.packetPrefixAttribute = $scope.packetPrefixAttribute;
+        params.taskTemplate = $scope.taskTemplate;
+        params.itemTemplate = $scope.itemTemplate;
+        params.packetTemplate = $scope.packetTemplate;
 
         if (nodeClass == $scope.itemClass) {
             params.itemOid = nodeOid;
@@ -139,7 +148,17 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($r
         }
     });
 
-    $rootScope.$on('relatedModalFormClosed', function (event, args) {
-        $state.reload();
+    $scope.$on('deleteParentNodeEvent', function (event, args) {
+        var result = confirm($rootScope.getWord("Confirm Delete Test Item"));
+        if (result) {
+            var params = new Object();
+            params.schema = $scope.dbschema;
+            params.class = args.parentClass;
+            params.oid = args.parentObjId;
+            taskService.deleteTreeNode(params, function (result) {
+                $rootScope.RefreshTaskTree = true;
+                $scope.Refresh();
+            });
+        }
     });
 });

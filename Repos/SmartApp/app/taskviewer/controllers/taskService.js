@@ -62,6 +62,9 @@ angular.module('app.taskviewer').factory('taskService', function ($http, $q, APP
         node.className = treeNode.ClassName;
         node.childClass = treeNode.ChildClass;
         node.objId = treeNode.ID;
+        node.allowCreate = (treeNode.Children == undefined || treeNode.Children.length == 0) ? false : treeNode.Children[0].AllowCreate;
+        node.allowEdit = treeNode.AllowWrite;
+        node.allowDelete = treeNode.AllowDelete;
         nodes.push(node);
 
         flatternChildNodes(nodes, treeNode.Children, params);
@@ -86,6 +89,9 @@ angular.module('app.taskviewer').factory('taskService', function ($http, $q, APP
                 node.className = childTreeNode.ClassName;
                 node.childClass = childTreeNode.ChildClass;
                 node.objId = childTreeNode.ID;
+                node.allowCreate = (childTreeNode.Children == undefined || childTreeNode.Children.length == 0) ? false : childTreeNode.Children[0].AllowCreate;
+                node.allowEdit = childTreeNode.AllowWrite;
+                node.allowDelete = childTreeNode.AllowDelete;
 
                 nodes.push(node);
 
@@ -115,6 +121,18 @@ angular.module('app.taskviewer').factory('taskService', function ($http, $q, APP
         });
     }
 
+    function deleteTreeNode(parameters, callback) {
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(parameters.schema) + "/" + parameters.class + "/" + parameters.oid;
+
+        $http.delete(url)
+            .success(function (data) {
+                callback(parameters.nodeObjId);
+            })
+            .error(function () {
+                callback(undefined);
+            });
+    }
+
     function hasValue(val) {
         if (val == null || val == undefined || val == "") {
             return false;
@@ -127,6 +145,9 @@ angular.module('app.taskviewer').factory('taskService', function ($http, $q, APP
 	return {
         getTaskTree: function (parameters, callback) {
             return getTaskTree(parameters, callback);
+        },
+        deleteTreeNode: function (parameters, callback) {
+            return deleteTreeNode(parameters, callback);
         },
         hasValue: function (val) {
             return hasValue(val);

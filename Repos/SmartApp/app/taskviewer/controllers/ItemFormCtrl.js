@@ -6,6 +6,7 @@ angular.module('app.taskviewer').controller('ItemFormCtrl', function ($controlle
     $scope.dbschema = $stateParams.schema;
     $scope.dbclass = $stateParams.itemClass;
     $scope.oid = $stateParams.itemOid;
+    $scope.template = $stateParams.itemTemplate;
     $rootScope.hasItemOid = taskService.hasValue($stateParams.itemOid);
 
     if ($stateParams.activeTabId == "itemtab") {
@@ -31,22 +32,13 @@ angular.module('app.taskviewer').controller('ItemFormCtrl', function ($controlle
 
     $scope.$on('addChildNodeEvent', function (e, args) {
         if (args.childNodeType === "ItemNode") {
-            $state.go('.relatedform', { schema: $scope.dbschema, masterclass: args.parentClass, masteroid: args.parentObjId, rclass: args.childClass, rtemplate: $scope.formTemplate }, { location: false, notify: false });
+            $state.go('.relatedform', { schema: $scope.dbschema, masterclass: args.parentClass, masteroid: args.parentObjId, rclass: args.childClass, rtemplate: $scope.template }, { location: false, notify: false });
         }
     });
 
     $scope.$on('editParentNodeEvent', function (e, args) {
         if (args.childNodeType === "ItemNode") {
-            $state.go('.relatedform', { schema: $scope.dbschema, rclass: args.parentClass, roid: args.parentObjId, rtemplate: $scope.formTemplate }, { location: false, notify: false });
-        }
-    });
-
-    $scope.$on('deleteParentNodeEvent', function (e, args) {
-        if (args.childNodeType === "ItemNode") {
-            var result = confirm($rootScope.getWord("Confirm Delete Test Item"));
-            if (result) {
-                
-            }
+            $state.go('.relatedform', { schema: $scope.dbschema, rclass: args.parentClass, roid: args.parentObjId, rtemplate: $scope.template }, { location: false, notify: false });
         }
     });
 });
