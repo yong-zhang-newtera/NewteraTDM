@@ -11,6 +11,6 @@ namespace Ebaas.WebApi.Models
         public string schemaName { get; set; }
         public string className{ get; set; }
         public string classDisplayName { get; set; }
-        public int count{ get; set; }
+        public long count{ get; set; }
     }
 }

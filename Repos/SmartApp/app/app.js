@@ -550,7 +550,7 @@ angular.module('app', [
     $rootScope.getSuggestions = function (typedText) {
         if (typedText && typedText.length > 1) {
             // get suggestions for the type text in search text box
-            var url = APP_CONFIG.ebaasRootUrl + "/api/search/" + encodeURIComponent(APP_CONFIG.dbschema) + "/suggestions?searchtext=" + typedText + "&size=15";
+            var url = APP_CONFIG.ebaasRootUrl + "/api/search/" + encodeURIComponent(APP_CONFIG.dbschema) + "/LabATestOrders?searchtext=" + typedText + "&size=15";
 
             var promise = $http.get(url).then(function (response) {
                 // The return value gets picked up by the then in the controller.

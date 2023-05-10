@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-using Newtera.Common.Core;
+using Nest;
+using Nest.JsonNetSerializer;
+
 using Newtera.Common.Config;
+using Newtera.Common.Core;
+using Elasticsearch.Net;
 
 namespace Newtera.ElasticSearchIndexer
 {
@@ -22,124 +21,40 @@ namespace Newtera.ElasticSearchIndexer
         private const string INDEX_PREFIX = "ebass";
         private const string OBJ_ID = "obj_id";
 
-        // port 9200
+        static private ElasticClient _client;
+        static private object _lock = new object();
 
-        static private JObject PostAPICall(string apiUrl, JObject body)
+        static private ElasticClient GetClient()
         {
-            JObject apiResult = null;
-
-            string baseUri =  ElasticsearchConfig.Instance.ElasticsearchURL;
-
-            using (var client = new HttpClient())
+            lock (_lock)
             {
-                client.BaseAddress = new Uri(baseUri);
-                client.Timeout = new TimeSpan(TimeSpan.TicksPerHour);
-                client.MaxResponseContentBufferSize = 556000;
-
-                StringContent postContent = null;
-
-                if (body != null)
+                if (_client == null)
                 {
-                    var jsonString = JsonConvert.SerializeObject(body, Newtonsoft.Json.Formatting.Indented);
-                    //ErrorLog.Instance.WriteLine(jsonString);
-                    postContent = new StringContent(jsonString, Encoding.UTF8);
-
-                    postContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    var pool = new SingleNodeConnectionPool(new Uri(ElasticsearchConfig.Instance.ElasticsearchURL));
+                    var connectionSettings = new ConnectionSettings(pool, JsonNetSerializer.Default)
+                        .BasicAuthentication(ElasticsearchConfig.Instance.User, ElasticsearchConfig.Instance.Password)
+                        .RequestTimeout(TimeSpan.FromMinutes(2));
+                    _client = new ElasticClient(connectionSettings);
                 }
 
-                var response = client.PostAsync(apiUrl, postContent).Result;
-
-                if (response.IsSuccessStatusCode)
-                {
-                    // by calling .Result you are performing a synchronous call
-                    var responseContent = response.Content;
-
-                    // by calling .Result you are synchronously reading the result
-                    string json = responseContent.ReadAsStringAsync().Result;
-
-                    apiResult = JsonConvert.DeserializeObject<JObject>(json);
-                }
-                else
-                {
-                    throw new Exception(response.Content.ReadAsStringAsync().Result);
-                }
+                return _client;
             }
-
-            return apiResult;
         }
 
-        static private string PutAPICall(string apiUrl, JObject document)
+        private static SearchRequest BuildSearchRequest(string indexName, string searchText, int? startRow = null, int? pageSize = null)
         {
-            string apiResult = null;
-
-            string baseUri = ElasticsearchConfig.Instance.ElasticsearchURL;
-
-            using (var client = new HttpClient())
+            var request = new SearchRequest(indexName)
             {
-                client.BaseAddress = new Uri(baseUri);
-                client.Timeout = new TimeSpan(TimeSpan.TicksPerHour);
-                client.MaxResponseContentBufferSize = 556000;
+                //Query = new TermQuery("catch_all") { Value = searchText }
+            };
 
-                StringContent postContent = null;
-
-                if (document != null)
-                {
-                    var jsonString = JsonConvert.SerializeObject(document, Newtonsoft.Json.Formatting.Indented);
-                    //ErrorLog.Instance.WriteLine(jsonString);
-                    postContent = new StringContent(jsonString, Encoding.UTF8);
-                    
-                    postContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                }
-
-                var response = client.PutAsync(apiUrl, postContent).Result;
-
-                if (response.IsSuccessStatusCode)
-                {
-                    // by calling .Result you are performing a synchronous call
-                    var responseContent = response.Content;
-
-                    // by calling .Result you are synchronously reading the result
-                    apiResult = responseContent.ReadAsStringAsync().Result;
-                }
-                else
-                {
-                    throw new Exception(response.Content.ReadAsStringAsync().Result);
-                }
+            if (startRow != null)
+            {
+                request.From = startRow;
+                request.Size = pageSize ?? 100;
             }
 
-            return apiResult;
-        }
-
-  
-        static private string DeleteAPICall(string apiUrl)
-        {
-            string apiResult = null;
-
-            string baseUri = ElasticsearchConfig.Instance.ElasticsearchURL;
-
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(baseUri);
-                client.Timeout = new TimeSpan(TimeSpan.TicksPerHour);
-                client.MaxResponseContentBufferSize = 556000;
-
-                var response = client.DeleteAsync(apiUrl).Result;
-
-                if (response.IsSuccessStatusCode)
-                {
-                    // by calling .Result you are performing a synchronous call
-                    var responseContent = response.Content;
-
-                    // by calling .Result you are synchronously reading the result
-                    apiResult = responseContent.ReadAsStringAsync().Result;
-                }
-                else
-                {
-                    throw new Exception(response.Content.ReadAsStringAsync().Result);
-                }
-            }
-
-            return apiResult;
+            return request;
         }
 
         static private string GetIndexName(string schemaName, string className)
@@ -149,163 +64,136 @@ namespace Newtera.ElasticSearchIndexer
 
         public static bool IsIndexExist(string schemaName, string className)
         {
-            try
+            var client = GetClient();
+            string indexName = GetIndexName(schemaName, className);
+            return client.Indices.Exists(indexName).Exists;
+        }
+
+        public static async Task DeleteIndex(string schemaName, string className)
+        {
+            var client = GetClient();
+
+            string indexName = GetIndexName(schemaName, className);
+
+            var response = await client.Indices.DeleteAsync(indexName);
+
+            if (!response.IsValid)
             {
-                string indexName = GetIndexName(schemaName, className);
-
-                string baseUri = ElasticsearchConfig.Instance.ElasticsearchURL;
-
-                using (var client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri(baseUri);
-                    client.Timeout = new TimeSpan(TimeSpan.TicksPerHour);
-                    client.MaxResponseContentBufferSize = 556000;
-
-                    var response = client.GetAsync(indexName).Result;
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                return false;
+                ErrorLog.Instance.WriteLine($"Delete Index {indexName} failed with error {response.ServerError}.");
             }
         }
 
-        public static void DeleteIndex(string schemaName, string className)
+        public static async Task CreateDocumentIndexes(string schemaName, string className, List<JObject> documents)
         {
-            // DELETE /twitter
-            string indexName = GetIndexName(schemaName, className);
-
-            DeleteAPICall(indexName);
-        }
-
-        public static void CreateDocumentMapping(string schemaName, string className, JObject documentMappping)
-        {
-            string indexName = GetIndexName(schemaName, className);
-
-            string apiUrl = indexName;
-
-            // call elastic search
-            string res = PutAPICall(apiUrl, documentMappping);
-        }
-
-        public static void CreateDocumentIndexes(string schemaName, string className, List<JObject> documents)
-        {
-            // POST /customer/_doc/_bulk?pretty
-            // { "index":{ "_id":"1"} }
-            // { "name": "John Doe" }
-            // { "index":{ "_id":"2"} }
-            // { "name": "Jane Doe" }
-
-            string documentId = null;
-
             foreach (JObject document in documents)
             {
-                documentId = document.GetValue(OBJ_ID).ToString();
-                CreateDocumentIndex(schemaName, className, documentId, document);
+                var documentId = document.GetValue(OBJ_ID).ToString();
+                await CreateDocumentIndex(schemaName, className, documentId, document);
             }
         }
 
-        public static void CreateDocumentIndex(string schemaName, string className,  string documentId, JObject document)
+        public static async Task CreateDocumentIndex(string schemaName, string className,  string documentId, JObject document)
         {
-            // PUT twitter/_doc/1
-            // {
-            //    "user" : "kimchy",
-            // "post_date" : "2009-11-15T14:12:12",
-            // "message" : "trying out Elasticsearch"
-            // }
+            var client = GetClient();
 
             string indexName = GetIndexName(schemaName, className);
 
-            string apiUrl = indexName + @"/_doc/" + documentId;
+            var indexRequest = new IndexRequest<JObject>(document, indexName, documentId);
 
-            // call elastic search
-            string res = PutAPICall(apiUrl, document);
+            var response = await client.IndexAsync(indexRequest);
+
+            if (!response.IsValid)
+            {
+                ErrorLog.Instance.WriteLine($"Index document with id {documentId} failed with error {response.ServerError}.");
+            }
         }
 
-        public static void UpdateDocumentIndex(string schemaName, string className, string documentId, JObject document)
+        public static async Task UpdateDocumentIndex(string schemaName, string className, string documentId, JObject document)
         {
-            // PUT /customer/doc/1?pretty
-            // {
-            //    "name": "Jane Doe"
-            // }
+            var client = GetClient();
 
             string indexName = GetIndexName(schemaName, className);
 
-            string apiUrl = indexName + @"/_doc/" + documentId;
+            var response = await client.UpdateAsync<JObject>(documentId, u => u
+                .Index(indexName)
+                .Doc(document));
 
-            // call elastic search
-            string res = PutAPICall(apiUrl, document);
+            if (!response.IsValid)
+            {
+                ErrorLog.Instance.WriteLine($"Update document with id {documentId} failed with error {response.ServerError}.");
+            }
         }
 
-        public static void DeleteDocumentIndex(string schemaName, string className, string documentId)
+        public static async Task DeleteDocumentIndex(string schemaName, string className, string documentId)
         {
-            // DELETE /twitter/_doc/1
+            var client = GetClient();
 
             string indexName = GetIndexName(schemaName, className);
 
-            string apiUrl = indexName + @"/_doc/" + documentId;
-
-            // call elastic search
-            string res = DeleteAPICall(apiUrl);
+            var response = await client.DeleteAsync<JObject>(documentId);
+ 
+            if (!response.IsValid)
+            {
+                ErrorLog.Instance.WriteLine($"Delete document with id {documentId} failed with error {response.ServerError}.");
+            }
         }
 
-        public static int GetSearchCount(string schemaName, string className, JObject queryBody)
+        public static async Task<long> GetSearchCount(string schemaName, string className, string searchText)
         {
-            int count = 0;
+            long count = 0;
 
             if (IsIndexExist(schemaName, className))
             {
+                var client = GetClient();
+
                 string indexName = GetIndexName(schemaName, className);
 
-                string apiUrl = indexName + @"/_doc/_count";
+                var request = BuildSearchRequest(indexName, searchText);
 
-                // call elastic search
-                JObject jsonObj = PostAPICall(apiUrl, queryBody);
+                var response = await client.SearchAsync<JObject>(request);
 
-                count = jsonObj["count"].Value<int>();
+                if (response.IsValid)
+                {
+                    count = response.Total;
+                }
+                else
+                {
+                    ErrorLog.Instance.WriteLine($"Search documents failed with error {response.ServerError}.");
+                }
             }
 
             return count;
         }
 
-        public static JObject GetSearchResult(string schemaName, string className, JObject queryBody)
+        public static async Task<IReadOnlyCollection<JObject>> GetSearchResult(string schemaName, string className, string searchText, int? startRow = null, int? pageSize = null)
         {
-            JObject result = new JObject();
+            IReadOnlyCollection<JObject> result = new List<JObject>();
 
             if (IsIndexExist(schemaName, className))
             {
+                var client = GetClient();
+
                 string indexName = GetIndexName(schemaName, className);
 
-                string apiUrl = indexName + @"/_doc/_search";
+                var request = BuildSearchRequest(indexName, searchText, startRow, pageSize);
 
-                // call elastic search
-                result = PostAPICall(apiUrl, queryBody);
-            }
+                try
+                {
+                    var response = await client.SearchAsync<object>(request);
 
-            return result;
-        }
-
-        public static JObject GetSuggestions(string schemaName, string className, JObject queryBody)
-        {
-            JObject result = new JObject();
-
-            if (IsIndexExist(schemaName, className))
-            {
-                string indexName = GetIndexName(schemaName, className);
-
-                string apiUrl = indexName + @"/_search";
-
-                // call elastic search
-                result = PostAPICall(apiUrl, queryBody);
+                    if (response.IsValid)
+                    {
+                        //result = response.Documents;
+                    }
+                    else
+                    {
+                        ErrorLog.Instance.WriteLine($"Search documents failed with error {response.ServerError}.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ErrorLog.Instance.WriteLine($"Search documents failed with error {ex.Message}.");
+                }
             }
 
             return result;

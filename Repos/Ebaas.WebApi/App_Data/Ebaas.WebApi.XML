@@ -1211,31 +1211,20 @@
             Get information indicating whether the server uses an external full text search engine (e.g. ElasticSearch) or not
             </summary>
         </member>
-        <member name="M:Ebaas.WebApi.Controllers.FullTextSearchController.getSuggestions(System.String,System.String,System.Nullable{System.Int32})">
-            <summary>
-            Get suggestions for a typed search text
-            </summary>
-            <param name="schemaName">A database schema name such as DEMO</param>
-            <param name="typedText">The text an user typed</param>
-            <param name="size">Size of the suggestions, default to 20</param>
-            <returns>A json array of suggestion strings</returns>
-        </member>
         <member name="M:Ebaas.WebApi.Controllers.FullTextSearchController.getSearchCounts(System.String,System.String)">
             <summary>
             Search the indexes of Elasticsearch created for the classes in a given schema and return a collection of
             json objects with hit count information.
             </summary>
             <param name="schemaName">A database schema name such as DEMO</param>
-            <param name="searchtext">The search text user entered</param>
             <returns>A collection of search count info objects in json</returns>
         </member>
-        <member name="M:Ebaas.WebApi.Controllers.FullTextSearchController.getSearchResult(System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String)">
+        <member name="M:Ebaas.WebApi.Controllers.FullTextSearchController.getSearchResult(System.String,System.String)">
             <summary>
             Search the index of Elasticsearch created for the given class and given schema and return the result in a json object
             </summary>
             <param name="schemaName">A database schema name such as DEMO</param>
             <param name="className" > A data class name such as Issues</param>
-            <param name="searchtext">The search text user entered</param>
             <returns>A json object representing the search result</returns>
         </member>
         <member name="M:Ebaas.WebApi.Controllers.FullTextSearchController.getSearchResultCount(System.String,System.String,System.String)">
@@ -1244,7 +1233,6 @@
             </summary>
             <param name="schemaName">A database schema name such as DEMO</param>
             <param name="className" > A data class name such as Issues</param>
-            <param name="searchtext">The search text user entered</param>
             <returns>A integer representing count of the hits</returns>
         </member>
         <member name="T:Ebaas.WebApi.Controllers.DataController">

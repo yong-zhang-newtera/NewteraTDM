@@ -7,17 +7,10 @@ using System.Text;
 using System.Data;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web;
-using System.Dynamic;
-using System.IO;
-using System.ComponentModel;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Xml.Linq;
 using System.Collections.Specialized;
 using System.Threading.Tasks;
-using System.Runtime.Remoting;
-using System.Web.Http.Description;
 
 using Swashbuckle.Swagger.Annotations;
 
@@ -27,7 +20,6 @@ using Newtera.Common.MetaData;
 using Newtera.Common.MetaData.DataView;
 using Newtera.Common.MetaData.Schema;
 using Ebaas.WebApi.Models;
-using Newtera.Common.MetaData.XaclModel;
 using Newtera.Data;
 using Newtera.ElasticSearchIndexer;
 using Newtera.WebForm;
@@ -41,11 +33,8 @@ namespace Ebaas.WebApi.Controllers
     {
         private const string CONNECTION_STRING = @"SCHEMA_NAME={schemaName};SCHEMA_VERSION=1.0";
         private const string SEARCH_TEXT = "searchtext";
-        private const string COPY_TO_PROPERTY = "catch_all";
-        private const string COMPLETION_PROPERTY = "completion_all";
         private const string START_ROW = "from";
         private const string PAGE_SIZE = "size";
-        private const string FILTER = "filter";
         private const string SORT_FIELD = "sortfield";
         private const string SORT_REVERSE = "sortreverse";
 
@@ -76,67 +65,10 @@ namespace Ebaas.WebApi.Controllers
         }
 
         /// <summary>
-        /// Get suggestions for a typed search text
-        /// </summary>
-        /// <param name="schemaName">A database schema name such as DEMO</param>
-        /// <param name="typedText">The text an user typed</param>
-        /// <param name="size">Size of the suggestions, default to 20</param>
-        /// <returns>A json array of suggestion strings</returns>
-        [HttpGet]
-        [AuthorizeByMetaDataAttribute]
-        [Route("api/search/{schemaName}/suggestions")]
-        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(List<Object>), Description = "A json array of suggestion strings")]
-        [SwaggerResponse(HttpStatusCode.BadRequest, Type = typeof(string), Description = "An error occured, see error message in data.message")]
-        public async Task<IHttpActionResult> getSuggestions(string schemaName, string typedText = null, int? size = null)
-        {
-            try
-            {
-                List<string> suggestions = new List<string>();
-                NameValueCollection parameters = Request.RequestUri.ParseQueryString();
-                string searchText = GetParamValue(parameters, SEARCH_TEXT, "");
-                int pageSize = int.Parse(GetParamValue(parameters, PAGE_SIZE, 20));
-                JObject queryBody = FullTextSearchHelper.BuildGetSuggestionsBody(searchText, 5);
-
-                await Task.Factory.StartNew(() =>
-                {
-                    SchemaModelElementCollection classElements = FullTextSearchHelper.GetAccessibleClasses(schemaName);
-
-                    foreach (SchemaModelElement classElement in classElements)
-                    {
-                        StringCollection tmpList = FullTextSearchHelper.GetCompletionSuggestionsSearchEngine(schemaName, classElement.Name, queryBody);
-
-                        if (tmpList.Count > 0)
-                        {
-                            foreach (string suggestion in tmpList)
-                            {
-                                if (!suggestions.Contains(suggestion) && suggestions.Count < pageSize)
-                                    suggestions.Add(suggestion);
-                            }
-
-                            if (suggestions.Count >= pageSize)
-                                break;
-                        }
-                    }
-                    
-                });
-
-                return Ok(suggestions);
-
-            }
-            catch (Exception ex)
-            {
-                ErrorLog.Instance.WriteLine(ex.Message + "\n" + ex.StackTrace);
-
-                return BadRequest(ex.GetBaseException().Message);
-            }
-        }
-
-        /// <summary>
         /// Search the indexes of Elasticsearch created for the classes in a given schema and return a collection of
         /// json objects with hit count information.
         /// </summary>
         /// <param name="schemaName">A database schema name such as DEMO</param>
-        /// <param name="searchtext">The search text user entered</param>
         /// <returns>A collection of search count info objects in json</returns>
         [HttpGet]
         [AuthorizeByMetaDataAttribute]
@@ -150,28 +82,24 @@ namespace Ebaas.WebApi.Controllers
                 List<SearchCountModel> countModels = new List<SearchCountModel>();
                 NameValueCollection parameters = Request.RequestUri.ParseQueryString();
                 string searchText = GetParamValue(parameters, SEARCH_TEXT, "");
-                JObject queryBody = FullTextSearchHelper.BuildQueryBody(searchText, -1, -1);
 
-                await Task.Factory.StartNew(() =>
+                SchemaModelElementCollection classElements = FullTextSearchHelper.GetAccessibleClasses(schemaName);
+
+                foreach (SchemaModelElement classElement in classElements)
                 {
-                    SchemaModelElementCollection classElements = FullTextSearchHelper.GetAccessibleClasses(schemaName);
+                    long count = await ElasticSearchWrapper.GetSearchCount(schemaName, classElement.Name, searchText);
 
-                    foreach (SchemaModelElement classElement in classElements)
+                    if (count > 0)
                     {
-                        int count = ElasticSearchWrapper.GetSearchCount(schemaName, classElement.Name, queryBody);
+                        SearchCountModel searchModel = new SearchCountModel();
+                        searchModel.schemaName = schemaName;
+                        searchModel.className = classElement.Name;
+                        searchModel.classDisplayName = classElement.Caption;
+                        searchModel.count = count;
 
-                        if (count > 0)
-                        {
-                            SearchCountModel searchModel = new SearchCountModel();
-                            searchModel.schemaName = schemaName;
-                            searchModel.className = classElement.Name;
-                            searchModel.classDisplayName = classElement.Caption;
-                            searchModel.count = count;
-
-                            countModels.Add(searchModel);
-                        }
+                        countModels.Add(searchModel);
                     }
-                });
+                }
 
                 return Ok(countModels);
                 
@@ -189,99 +117,89 @@ namespace Ebaas.WebApi.Controllers
         /// </summary>
         /// <param name="schemaName">A database schema name such as DEMO</param>
         /// <param name="className" > A data class name such as Issues</param>
-        /// <param name="searchtext">The search text user entered</param>
         /// <returns>A json object representing the search result</returns>
         [HttpGet]
         [AuthorizeByMetaDataAttribute]
         [Route("api/search/{schemaName}/{className}")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(List<Object>), Description = "A collection of data instances in json format")]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = typeof(string), Description = "An error occured, see error message in data.message")]
-        public async Task<IHttpActionResult> getSearchResult(string schemaName, string className, string view = null, int? from = null, int? size = null, string filter = null, string sortfield = null, string sortreverse = null)
+        public async Task<IHttpActionResult> getSearchResult(string schemaName, string className)
         {
             try
             {
-                List<JObject> instances = null;
+                List<JObject> instances = new List<JObject>();
                 int count = 0;
                 QueryHelper queryHelper = new QueryHelper();
 
-                await Task.Factory.StartNew(() =>
+                using (CMConnection con = new CMConnection(queryHelper.GetConnectionString(CONNECTION_STRING, schemaName)))
                 {
-                    using (CMConnection con = new CMConnection(queryHelper.GetConnectionString(CONNECTION_STRING, schemaName)))
+                    con.Open();
+
+                    NameValueCollection parameters = Request.RequestUri.ParseQueryString();
+
+                    DataViewModel dataView;
+
+                    dataView = con.MetaDataModel.GetDefaultDataView(className);
+
+                    if (dataView != null)
                     {
-                        con.Open();
+                        int pageSize = int.Parse(GetParamValue(parameters, PAGE_SIZE, 20));
+                        int startRow = int.Parse(GetParamValue(parameters, START_ROW, 0));
+                        int pageIndex = startRow / pageSize;
+                        string searchText = GetParamValue(parameters, SEARCH_TEXT, "");
+                        string sortField = GetParamValue(parameters, SORT_FIELD, "");
+                        bool sortReverse = bool.Parse(GetParamValue(parameters, SORT_REVERSE, "false"));
 
-                        NameValueCollection parameters = Request.RequestUri.ParseQueryString();
-
-                        DataViewModel dataView;
-
-                        dataView = con.MetaDataModel.GetDefaultDataView(className);
-
-                        if (dataView != null)
+                        StringCollection instanceIds = new StringCollection();
+                        if (!string.IsNullOrEmpty(searchText))
                         {
-                            int pageSize = int.Parse(GetParamValue(parameters, PAGE_SIZE, 20));
-                            int startRow = int.Parse(GetParamValue(parameters, START_ROW, 0));
-                            int pageIndex = startRow / pageSize;
-                            string filters = GetParamValue(parameters, FILTER, "");
-                            string sortField = GetParamValue(parameters, SORT_FIELD, "");
-                            bool sortReverse = bool.Parse(GetParamValue(parameters, SORT_REVERSE, "false"));
+                            IReadOnlyCollection<JObject> result = await ElasticSearchWrapper.GetSearchResult(schemaName, className, searchText, startRow, pageSize);
+                            instanceIds = FullTextSearchHelper.GetInstanceIdsFromQueryResult(result);
+                        }
 
-                            StringCollection instanceIds;
-                            if (!string.IsNullOrEmpty(filters))
+                        if (instanceIds.Count == 0)
+                        {
+                            return Ok(instances);
+                        }
+
+                        if (!string.IsNullOrEmpty(sortField))
+                        {
+                            queryHelper.SetSort(dataView, sortField, sortReverse);
+                        }
+
+                        string query = dataView.GetInstancesQuery(instanceIds);
+
+                        CMCommand cmd = con.CreateCommand();
+                        cmd.CommandText = query;
+
+                        XmlReader reader = cmd.ExecuteXMLReader();
+                        DataSet ds = new DataSet();
+                        ds.ReadXml(reader);
+
+                        if (!DataSetHelper.IsEmptyDataSet(ds, dataView.BaseClass.ClassName))
+                        {
+                            InstanceView instanceView = new InstanceView(dataView, ds);
+
+                            InstanceEditor instanceEditor = new InstanceEditor();
+                            instanceEditor.EditInstance = instanceView;
+
+                            count = DataSetHelper.GetRowCount(ds, dataView.BaseClass.ClassName);
+
+                            JObject instance;
+                            for (int row = 0; row < count; row++)
                             {
-                                string searchText = queryHelper.GetSearchText(filters);
-                                instanceIds = FullTextSearchHelper.GetInstanceIdsFromSearchEngine(schemaName, className, searchText, startRow, pageSize);
+                                instanceEditor.EditInstance.SelectedIndex = row; // set the cursor
 
-                                queryHelper.SetInstanceIds(dataView, instanceIds);
-                            }
-                            else
-                                instanceIds = new StringCollection();
+                                instance = instanceEditor.ConvertToViewModel(false); // returned instances will be displayed in grid, therefore, we want to get displayed values instead of internal value
 
-                            if (!string.IsNullOrEmpty(sortField))
-                            {
-                                queryHelper.SetSort(dataView, sortField, sortReverse);
-                            }
-
-                            string query = dataView.GetInstancesQuery(instanceIds);
-
-                            //System.Diagnostics.Stopwatch timer = new System.Diagnostics.Stopwatch();
-                            //timer.Start();
-
-                            CMCommand cmd = con.CreateCommand();
-                            cmd.CommandText = query;
-
-                            XmlReader reader = cmd.ExecuteXMLReader();
-                            DataSet ds = new DataSet();
-                            ds.ReadXml(reader);
-
-                            //timer.Stop();
-                            //ErrorLog.Instance.WriteLine("Query elapsed time is " + timer.Elapsed);
-
-                            if (!DataSetHelper.IsEmptyDataSet(ds, dataView.BaseClass.ClassName))
-                            {
-                                InstanceView instanceView = new InstanceView(dataView, ds);
-
-                                InstanceEditor instanceEditor = new InstanceEditor();
-                                instanceEditor.EditInstance = instanceView;
-
-                                count = DataSetHelper.GetRowCount(ds, dataView.BaseClass.ClassName);
-
-                                instances = new List<JObject>();
-                                JObject instance;
-                                for (int row = 0; row < count; row++)
+                                if (instance != null)
                                 {
-                                    instanceEditor.EditInstance.SelectedIndex = row; // set the cursor
-
-                                    instance = instanceEditor.ConvertToViewModel(false); // returned instances will be displayed in grid, therefore, we want to get displayed values instead of internal value
-
-                                    if (instance != null)
-                                    {
-                                        instances.Add(instance);
-                                    }
+                                    instances.Add(instance);
                                 }
                             }
                         }
                     }
-                });
+                }
 
                 return Ok(instances);
             }
@@ -298,7 +216,6 @@ namespace Ebaas.WebApi.Controllers
         /// </summary>
         /// <param name="schemaName">A database schema name such as DEMO</param>
         /// <param name="className" > A data class name such as Issues</param>
-        /// <param name="searchtext">The search text user entered</param>
         /// <returns>A integer representing count of the hits</returns>
         [HttpGet]
         [AuthorizeByMetaDataAttribute]
@@ -309,26 +226,20 @@ namespace Ebaas.WebApi.Controllers
         {
             try
             {
-                int count = 0;
+                long count = 0;
                 QueryHelper queryHelper = new QueryHelper();
 
-                await Task.Factory.StartNew(() =>
+                using (CMConnection con = new CMConnection(queryHelper.GetConnectionString(CONNECTION_STRING, schemaName)))
                 {
-                    using (CMConnection con = new CMConnection(queryHelper.GetConnectionString(CONNECTION_STRING, schemaName)))
-                    {
-                        con.Open();
+                    con.Open();
 
-                        NameValueCollection parameters = Request.RequestUri.ParseQueryString();
+                    NameValueCollection parameters = Request.RequestUri.ParseQueryString();
 
-                        string filters = GetParamValue(parameters, FILTER, "");
+                    string searchText = GetParamValue(parameters, SEARCH_TEXT, "");
 
-                        string searchText = queryHelper.GetSearchText(filters);
+                    count = await ElasticSearchWrapper.GetSearchCount(schemaName, className, searchText);
 
-                        JObject queryBody = FullTextSearchHelper.BuildQueryBody(searchText, -1, -1);
-
-                        count = ElasticSearchWrapper.GetSearchCount(schemaName, className, queryBody);
-                    }
-                });
+                }
 
                 return Ok(count.ToString());
             }
