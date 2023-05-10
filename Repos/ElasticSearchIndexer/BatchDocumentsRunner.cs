@@ -9,24 +9,19 @@ namespace Newtera.ElasticSearchIndexer
 	using System;
 	using System.Xml;
     using System.Data;
-    using System.IO;
-    using System.Threading;
-    using System.Security.Principal;
-	using System.Collections;
+    using System.Threading.Tasks;
     using System.Collections.Generic;
-    using System.Collections.Specialized;
-
-    using Newtonsoft.Json;
+ 
     using Newtonsoft.Json.Linq;
 
     using Newtera.Common.Core;
     using Newtera.Common.Config;
-	using Newtera.Common.MetaData;
 	using Newtera.Common.MetaData.Schema;
     using Newtera.Common.MetaData.DataView;
     using Newtera.Server.FullText;
     using Newtera.Data;
     using Newtera.WebForm;
+    using Newtonsoft.Json;
 
     /// <summary> 
     /// Create a batch document indexes
@@ -44,7 +39,7 @@ namespace Newtera.ElasticSearchIndexer
         /// <summary>
         /// Execute the runner
         /// </summary>
-        public void Execute(IndexingContext context)
+        public async Task Execute(IndexingContext context)
         {
             _context = context;
 
@@ -54,11 +49,9 @@ namespace Newtera.ElasticSearchIndexer
                 {
                     case Common.MetaData.Events.OperationType.Insert:
 
-                        DeleteIndex();
+                        await DeleteIndex();
 
-                        CreateIndex();
-
-                        CreateDocuments();
+                        await CreateDocuments ();
 
                         break;
 
@@ -74,149 +67,19 @@ namespace Newtera.ElasticSearchIndexer
             }
         }
 
-        private void DeleteIndex()
+        private async Task DeleteIndex()
         {
             string schemaName = _context.MetaData.SchemaInfo.Name;
             string className = _context.ClassElement.Name;
 
             if (ElasticSearchWrapper.IsIndexExist(schemaName, className))
             {
-                ElasticSearchWrapper.DeleteIndex(schemaName, className);
+                await ElasticSearchWrapper.DeleteIndex(schemaName, className);
             }
-        }
-
-        private void CreateIndex()
-        {
-            string schemaName = _context.MetaData.SchemaInfo.Name;
-            string className = _context.ClassElement.Name;
-
-            using (CMConnection con = new CMConnection(GetConnectionString(CONNECTION_STRING, schemaName)))
-            {
-                con.Open();
-
-                DataViewModel dataView = con.MetaDataModel.GetDetailedDataView(className);
-                InstanceView instanceView = new InstanceView(dataView);
-
-                JObject properties = new JObject();
-                JObject property;
-
-                foreach (InstanceAttributePropertyDescriptor pd in instanceView.GetProperties(null))
-                {
-                    // add a property to the properties
-                    property = new JObject();
-                    string dataType = getFieldType(pd);
-                    property.Add("type", dataType);
-                    if (dataType == "date")
-                    {
-                        property.Add("format", "yyyy-MM-dd HH:mm:ss || yyyy-MM-dd || yyyy/MM/dd || MM/dd/yyyy");
-                    }
-
-                    if (pd.IsGoodForFullTextSearch || pd.IsGoodForSearchSuggester)
-                    {
-                        // add the catch_all field for full-text search purpose
-                        property.Add("copy_to", COPY_TO_PROPERTY);
-                    }
-
-                    properties.Add(pd.Name, property);
-                }
-
-                // add full_text property
-                property = new JObject();
-                property.Add("type", "text");
-                string analyzer = ElasticsearchConfig.Instance.Analyzer;
-                if (!string.IsNullOrEmpty(analyzer))
-                    property.Add("analyzer", analyzer);
-                string searchAnalyzer = ElasticsearchConfig.Instance.SearchAnalyzer;
-                if (!string.IsNullOrEmpty(searchAnalyzer))
-                    property.Add("search_analyzer", searchAnalyzer);
-                properties.Add(COPY_TO_PROPERTY, property);
-
-                // add completion property
-                property = new JObject();
-                property.Add("type", "completion");
-                if (!string.IsNullOrEmpty(analyzer))
-                    property.Add("analyzer", analyzer);
-                if (!string.IsNullOrEmpty(searchAnalyzer))
-                    property.Add("search_analyzer", searchAnalyzer);
-                properties.Add(SUGGEST_PROPERTY, property);
-
-                JObject mappingObj = CreateMappingObj(properties);
-
-                var jsonString = JsonConvert.SerializeObject(mappingObj, Newtonsoft.Json.Formatting.Indented);
-                //ErrorLog.Instance.WriteLine("mapping=" + jsonString);
-
-                ElasticSearchWrapper.CreateDocumentMapping(schemaName, className, mappingObj);
-            }
-        }
-
-        private string getFieldType(InstanceAttributePropertyDescriptor pd)
-        {
-            string type = "text";
-
-            switch (pd.DataType)
-            {
-                case DataType.BigInteger:
-
-                    type = "long";
-                    break;
-
-                case DataType.Boolean:
-
-                    type = "boolean";
-                    break;
-
-                case DataType.Byte:
-
-                    type = "byte";
-                    break;
-
-                case DataType.Date:
-
-                    type = "date";
-                    break;
-
-                case DataType.DateTime:
-
-                    type = "date";
-                    break;
-
-                case DataType.Decimal:
-
-                    type = "float";
-                    break;
-
-                case DataType.Double:
-
-                    type = "double";
-                    break;
-
-                case DataType.Float:
-
-                    type = "float";
-                    break;
-
-                case DataType.Integer:
-
-                    type = "integer";
-                    break;
-
-                case DataType.String:
-
-                    type = "text";
-                    break;
-
-                case DataType.Text:
-
-                    type = "text";
-                    break;
-
-            }
-
-            return type;
         }
 
         // create a document
-        private void CreateDocuments()
+        private async Task CreateDocuments()
         {
             List<JObject> documents = null;
             string schemaName = _context.MetaData.SchemaInfo.Name;
@@ -272,13 +135,13 @@ namespace Newtera.ElasticSearchIndexer
 
                                 if (instance != null)
                                 {
-                                    //var jsonString = JsonConvert.SerializeObject(instance, Newtonsoft.Json.Formatting.Indented);
-                                    //ErrorLog.Instance.WriteLine("doc=" + jsonString);
+                                    var jsonString = JsonConvert.SerializeObject(instance, Newtonsoft.Json.Formatting.Indented);
+                                    ErrorLog.Instance.WriteLine("doc=" + jsonString);
                                     documents.Add(instance);
                                 }
                             }
 
-                            ElasticSearchWrapper.CreateDocumentIndexes(schemaName, className, documents);
+                            await ElasticSearchWrapper.CreateDocumentIndexes(schemaName, className, documents);
                         }
                         else
                         {
@@ -305,11 +168,7 @@ namespace Newtera.ElasticSearchIndexer
 
             mappingsObj.Add("mappings", mappings);
 
-            JObject docObj = new JObject();
-
-            mappings.Add("_doc", docObj);
-
-            docObj.Add("properties", properties);
+            mappings.Add("properties", properties);
 
             return mappingsObj;
         }

@@ -29,12 +29,16 @@ namespace Newtera.Common.Config
 		private const string VALUE_NAME = "value";
 		private const string ADD = "add";
         private const string SERVER_URL = "ElasticsearchURL";
+        private const string USER = "User";
+        private const string PASSWORD = "Password";
         private const string ANALYZER = "analyzer";
         private const string SEARCH_ANALYSER = "search_analyzer";
 
         private string _configFileName;
 		private XmlDocument _doc;
         private string _url;
+        private string _user;
+        private string _password;
         private string _analyzer;
         private string _searchAnalyzer;
 
@@ -113,6 +117,32 @@ namespace Newtera.Common.Config
                 }
 
                 return _url;
+            }
+        }
+
+        public string User
+        {
+            get
+            {
+                if (_doc != null && _user == null)
+                {
+                    _user = GetAppSetting(USER);
+                }
+
+                return _user;
+            }
+        }
+
+        public string Password
+        {
+            get
+            {
+                if (_doc != null && _password == null)
+                {
+                    _password = GetAppSetting(PASSWORD);
+                }
+
+                return _password;
             }
         }
 

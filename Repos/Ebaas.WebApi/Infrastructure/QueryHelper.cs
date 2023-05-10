@@ -41,11 +41,6 @@ namespace Ebaas.WebApi.Infrastructure
             SetFilters(dataView, filters, false);
         }
 
-        public void SetInstanceIds(DataViewModel dataView, StringCollection instanceId)
-        {
-
-        }
-
         /// <summary>
         /// Set the filter to the dataview
         /// </summary>

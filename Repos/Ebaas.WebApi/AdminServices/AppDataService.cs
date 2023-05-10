@@ -557,7 +557,7 @@ namespace Ebaas.WebApi.Controllers
         [HttpPost]
         [AdminAuthorizeAttribute]
         [Route("BuildFullTextIndex/{className}")]
-        public HttpResponseMessage BuildFullTextIndex(string className)
+        public async Task<HttpResponseMessage> BuildFullTextIndex(string className)
         {
             try
             {
@@ -594,7 +594,7 @@ namespace Ebaas.WebApi.Controllers
                             BatchDocumentsRunner runner = new BatchDocumentsRunner();
 
                             // create document indexes for the instances in the class
-                            runner.Execute(context);
+                            await runner.Execute(context);
                         }
                     }
 

@@ -9,18 +9,13 @@ namespace Newtera.ElasticSearchIndexer
 	using System;
 	using System.Xml;
     using System.Data;
-    using System.IO;
     using System.Threading;
     using System.Security.Principal;
-	using System.Collections;
-    using System.Collections.Generic;
-    using System.Collections.Specialized;
+    using System.Threading.Tasks;
 
     using Newtonsoft.Json.Linq;
 
 	using Newtera.Common.Core;
-	using Newtera.Common.MetaData;
-	using Newtera.Common.MetaData.Schema;
     using Newtera.Common.MetaData.DataView;
     using Newtera.Server.FullText;
     using Newtera.Data;
@@ -55,7 +50,7 @@ namespace Newtera.ElasticSearchIndexer
         /// <summary>
         /// Execute the runner
         /// </summary>
-        public void Execute(IndexingContext context)
+        public async Task Execute(IndexingContext context)
         {
             CMUserManager userMgr = new CMUserManager();
             IPrincipal superUser = userMgr.SuperUser;
@@ -74,19 +69,19 @@ namespace Newtera.ElasticSearchIndexer
                 {
                     case Common.MetaData.Events.OperationType.Insert:
 
-                        CreateDocument();
+                        await CreateDocument();
 
                         break;
 
                     case Common.MetaData.Events.OperationType.Update:
 
-                        UpdateDocument();
+                        await UpdateDocument();
 
                         break;
 
                     case Common.MetaData.Events.OperationType.Delete:
 
-                        DeleteDocument();
+                        await DeleteDocument ();
 
                         break;
 
@@ -110,7 +105,7 @@ namespace Newtera.ElasticSearchIndexer
         }
 
         // create a document in the index
-        private void CreateDocument()
+        private async Task CreateDocument()
         {
             string schemaName = _context.MetaData.SchemaInfo.Name;
             string className = _context.ClassElement.Name;
@@ -122,7 +117,7 @@ namespace Newtera.ElasticSearchIndexer
 
                 if (document != null)
                 {
-                    ElasticSearchWrapper.CreateDocumentIndex(schemaName, className, _context.ObjId, document);
+                    await ElasticSearchWrapper.CreateDocumentIndex(schemaName, className, _context.ObjId, document);
                 }
                 else
                 {
@@ -132,7 +127,7 @@ namespace Newtera.ElasticSearchIndexer
         }
 
         // update a document in the index
-        private void UpdateDocument()
+        private async Task UpdateDocument()
         {
             string schemaName = _context.MetaData.SchemaInfo.Name;
             string className = _context.ClassElement.Name;
@@ -144,7 +139,7 @@ namespace Newtera.ElasticSearchIndexer
 
                 if (document != null)
                 {
-                    ElasticSearchWrapper.UpdateDocumentIndex(schemaName, className, _context.ObjId, document);
+                    await ElasticSearchWrapper.UpdateDocumentIndex(schemaName, className, _context.ObjId, document);
                 }
                 else
                 {
@@ -153,14 +148,14 @@ namespace Newtera.ElasticSearchIndexer
             }
         }
 
-        private void DeleteDocument()
+        private async Task DeleteDocument()
         {
             string schemaName = _context.MetaData.SchemaInfo.Name;
             string className = _context.ClassElement.Name;
 
             if (ElasticSearchWrapper.IsIndexExist(schemaName, className))
             {
-                ElasticSearchWrapper.DeleteDocumentIndex(schemaName, className, _context.ObjId);
+                await ElasticSearchWrapper.DeleteDocumentIndex(schemaName, className, _context.ObjId);
             }
         }
 

@@ -395,8 +395,6 @@ namespace Newtera.WebForm
 
                 if (dt != null)
                 {
-                    JArray suggesters = new JArray();
-
                     foreach (DataColumn column in dt.Columns)
                     {
                         vPropertyInfo = (InstanceAttributePropertyDescriptor)properties[column.ColumnName];
@@ -432,10 +430,6 @@ namespace Newtera.WebForm
                                 if (!string.IsNullOrEmpty(val))
                                 {
                                     instance.Add(column.ColumnName, val);
-
-                                    // add to suggester array
-                                    if (vPropertyInfo.IsGoodForSearchSuggester)
-                                        suggesters.Add(val);
                                 }
                             }
                         }
@@ -444,9 +438,6 @@ namespace Newtera.WebForm
                             instance.Add(column.ColumnName, dt.Rows[EditInstance.SelectedIndex][column.ColumnName].ToString());
                         }
                     }
-
-                    if (suggesters.Count > 0)
-                        instance.Add(SUGGEST_PROPERTY, suggesters);
                 }
             }
 
