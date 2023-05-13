@@ -18,10 +18,17 @@ namespace Ebaas.WebApi.Infrastructure
     {
         private const string CONNECTION_STRING = @"SCHEMA_NAME={schemaName};SCHEMA_VERSION=1.0";
 
-        public static StringCollection GetInstanceIdsFromQueryResult(IReadOnlyCollection<JObject> result)
+        public static StringCollection GetInstanceIdsFromQueryResult(IReadOnlyCollection<JObject> results)
         {
             StringCollection instanceIds = new StringCollection();
 
+            foreach (JObject result in results)
+            {
+                if (result.ContainsKey("obj_id"))
+                {
+                    instanceIds.Add(result.GetValue("obj_id")?.ToString());
+                }
+            }
             return instanceIds;
         }
 
@@ -71,7 +78,7 @@ namespace Ebaas.WebApi.Infrastructure
         private static void AddFullTextSearchEnabledBottomClasses(MetaDataModel metaData, SchemaModelElementCollection classElements,
             ClassElement classElement, Hashtable accessibleClasses)
         {
-            // get the bottom classes and check each of them if it has an attribute with "IsGoodForFullTextSearch" enabled
+            // get the bottom classes and check each of them if it has an attribute with "IsFullTextSearchAttribute" enabled
             SchemaModelElementCollection bottomClasses;
 
             if (classElement.IsLeaf)
@@ -81,7 +88,7 @@ namespace Ebaas.WebApi.Infrastructure
             }
             else
             {
-                // get the bottom classes and check each of them if it has an attribute with "IsGoodForFullTextSearch" enabled
+                // get the bottom classes and check each of them if it has an attribute with "IsFullTextSearchAttribute" enabled
                 bottomClasses = metaData.GetBottomClasses(classElement.Name);
             }
 
@@ -97,7 +104,7 @@ namespace Ebaas.WebApi.Infrastructure
                     {
                         foreach (SimpleAttributeElement simpleAttribute in currentClass.SimpleAttributes)
                         {
-                            if (simpleAttribute.IsGoodForFullTextSearch)
+                            if (simpleAttribute.IsFullTextSearchAttribute)
                             {
                                 hasFullTextSearchableAttribute = true;
                                 break;

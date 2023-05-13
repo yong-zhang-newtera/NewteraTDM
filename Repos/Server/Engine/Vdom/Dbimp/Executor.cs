@@ -25,8 +25,8 @@ namespace Newtera.Server.Engine.Vdom.Dbimp
 	using Newtera.Server.Engine.Sqlbuilder.Sql;
 	using Newtera.Server.Engine.Interpreter;
     using Newtera.Server.Engine.Workflow;
-    using Newtera.Server.FullText;
 	using Newtera.Server.DB;
+    using Newtera.Server.FullText;
 
 	/// <summary> 
 	/// Provides common functions for all executor subclasses

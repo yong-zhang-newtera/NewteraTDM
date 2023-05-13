@@ -264,7 +264,6 @@
             <summary>
             Build full-text index for a given class.
             </summary>
-            <param name="className">The given class name.</param>
         </member>
         <member name="M:Ebaas.WebApi.Controllers.AppDataServiceController.BuildFullTextIndex(System.String)">
             <summary>
@@ -1035,17 +1034,6 @@
             <param name="modelName">The name of a sitemap model, null indicate the default sitemap</param>
             <param name="xmlString">An xml string representing side menu definition.</param>
         </member>
-        <member name="M:Ebaas.WebApi.Controllers.MetaDataServiceController.GetFullTextSettings">
-            <summary>
-            Gets the full-text settings in a xml string,return null if the settings doesn't exist
-            </summary>
-        </member>
-        <member name="M:Ebaas.WebApi.Controllers.MetaDataServiceController.SetFullTextSettings">
-            <summary>
-            Write full-text settings in xml string.
-            </summary>
-            <param name="xmlString">An xml string representing full-text settings.</param>
-        </member>
         <member name="M:Ebaas.WebApi.Controllers.MetaDataServiceController.GetFormTemplatesFileNames(System.String,System.String)">
             <summary>
             Gets the names of form templates.
@@ -1210,6 +1198,15 @@
             <summary>
             Get information indicating whether the server uses an external full text search engine (e.g. ElasticSearch) or not
             </summary>
+        </member>
+        <member name="M:Ebaas.WebApi.Controllers.FullTextSearchController.getRawSearchResult(System.String,System.String)">
+            <summary>
+            Search the Elastic index created for the given class and given schema and return results
+            from Elastic Index as suggestions
+            </summary>
+            <param name="schemaName">A database schema name such as DEMO</param>
+            <param name="className" > A data class name such as Issues</param>
+            <returns>A collection of JObject representing the search result</returns>
         </member>
         <member name="M:Ebaas.WebApi.Controllers.FullTextSearchController.getSearchCounts(System.String,System.String)">
             <summary>

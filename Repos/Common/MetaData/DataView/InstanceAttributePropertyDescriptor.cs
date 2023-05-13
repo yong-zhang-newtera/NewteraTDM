@@ -170,17 +170,10 @@ namespace Newtera.Common.MetaData.DataView
             {
                 bool status = false;
 
-                if (this.IsForFullTextSearch)
+                if (_instanceAttribute.ElementType == ElementType.RelationshipAttribute &&
+                    !((DataRelationshipAttribute) _instanceAttribute).ShowPrimaryKeys)
                 {
                     status = true;
-                }
-                else
-                {
-                    if (_instanceAttribute.ElementType == ElementType.RelationshipAttribute &&
-                        !((DataRelationshipAttribute) _instanceAttribute).ShowPrimaryKeys)
-                    {
-                        status = true;
-                    }
                 }
 
                 return status;
@@ -321,31 +314,6 @@ namespace Newtera.Common.MetaData.DataView
                 return usage;
             }
         }
-
-		/// <summary>
-		/// Gets the information indicating whether the property is for full-text search.
-		/// </summary>
-		/// <value>True if it is for full-text search, false otherwise</value>
-		/// <remarks>This is a InstanceAttributePropertyDescriptor specific method</remarks>
-		public bool IsForFullTextSearch
-		{
-			get
-			{
-				bool status = false;
-
-				if (_schemaModelElement != null)
-				{
-					SimpleAttributeElement simpleAttribute = _schemaModelElement as SimpleAttributeElement;
-
-					if (simpleAttribute != null)
-					{
-						status = simpleAttribute.IsFullTextSearchable;
-					}
-				}
-				
-				return status;
-			}
-		}
 
         /// <summary>
         /// Gets information indicating whether this attribute's value is rich text.
@@ -1014,13 +982,13 @@ namespace Newtera.Common.MetaData.DataView
         }
 
 		/// <summary>
-		/// Gets the information indicating whether the property's value is good
+		/// Gets the information indicating whether the property's value is used
 		/// for full-text search.
 		/// </summary>
-		/// <value>True if it is good for full-text search, false otherwise</value>
+		/// <value>True if it is used for full-text search, false otherwise</value>
 		/// <remarks>This is a InstanceAttributePropertyDescriptor specific method</remarks>
-		public bool IsGoodForFullTextSearch
-		{
+		public bool IsFullTextSearchAttribute
+        {
 			get
 			{
 				bool status = false;
@@ -1030,11 +998,11 @@ namespace Newtera.Common.MetaData.DataView
 					SimpleAttributeElement simpleAttribute = _schemaModelElement as SimpleAttributeElement;
                     ArrayAttributeElement arrayAttribute = _schemaModelElement as ArrayAttributeElement;
 
-					if (simpleAttribute != null && simpleAttribute.IsGoodForFullTextSearch)
+					if (simpleAttribute != null && simpleAttribute.IsFullTextSearchAttribute)
 					{
 						status = true;
 					}
-                    else if (arrayAttribute != null && arrayAttribute.IsGoodForFullTextSearch)
+                    else if (arrayAttribute != null && arrayAttribute.IsFullTextSearchAttribute)
                     {
                         status = true;
                     }
@@ -1043,62 +1011,6 @@ namespace Newtera.Common.MetaData.DataView
 				return status;
 			}
 		}
-
-        /// <summary>
-        /// Gets the information indicating whether the property's value is good
-        /// for search suggester.
-        /// </summary>
-        /// <value>True if it is good for search suggester, false otherwise</value>
-        /// <remarks>This is a InstanceAttributePropertyDescriptor specific method</remarks>
-        public bool IsGoodForSearchSuggester
-        {
-            get
-            {
-                bool status = false;
-
-                if (_schemaModelElement != null)
-                {
-                    SimpleAttributeElement simpleAttribute = _schemaModelElement as SimpleAttributeElement;
-
-                    if (simpleAttribute != null && simpleAttribute.IsGoodForSearchSuggester)
-                    {
-                        status = true;
-                    }
-                }
-
-                return status;
-            }
-        }
-
-        /// <summary>
-        /// Gets a string indicating a format of keyword value used in full-text string
-        /// </summary>
-        /// <value>A keyword fomat</value>
-        /// <remarks>This is a InstanceAttributePropertyDescriptor specific method</remarks>
-        public string KeywordFormat
-        {
-            get
-            {
-                string format = null;
-
-                if (_schemaModelElement != null)
-                {
-                    SimpleAttributeElement simpleAttribute = _schemaModelElement as SimpleAttributeElement;
-                    ArrayAttributeElement arrayAttribute = _schemaModelElement as ArrayAttributeElement;
-
-                    if (simpleAttribute != null && !string.IsNullOrEmpty(simpleAttribute.KeywordFormat))
-                    {
-                        format = simpleAttribute.KeywordFormat;
-                    }
-                    else if (arrayAttribute != null && !string.IsNullOrEmpty(arrayAttribute.KeywordFormat))
-                    {
-                        format = arrayAttribute.KeywordFormat;
-                    }
-                }
-
-                return format;
-            }
-        }
 
         /// <summary>
         /// Gets the information indicating the UI type for selecting a related instance,

@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="IsRequired" xml:space="preserve">
     <value>Is Required</value>
@@ -170,12 +170,6 @@
   </data>
   <data name="DefaultValueDescription" xml:space="preserve">
     <value>When specified, it is the default value of the attribute.</value>
-  </data>
-  <data name="IsFullTextSearchable" xml:space="preserve">
-    <value>Is FullText Searchable</value>
-  </data>
-  <data name="IsFullTextSearchableDescription" xml:space="preserve">
-    <value>Indicate whether the attribute value is indexed for full-text search?</value>
   </data>
   <data name="IsRichText" xml:space="preserve">
     <value>Is Rich Text</value>
@@ -234,17 +228,11 @@
   <data name="IndexCategory" xml:space="preserve">
     <value>Index</value>
   </data>
-  <data name="IsGoodForFullTextSearch" xml:space="preserve">
-    <value>Is Good for Full-text Search</value>
+  <data name="IsFullTextSearchAttribute" xml:space="preserve">
+    <value>Is Full-text Search Attribute</value>
   </data>
-  <data name="IsGoodForFullTextSearchDescription" xml:space="preserve">
-    <value>Indicate whether the content of the attribute is good for full-text search</value>
-  </data>
-  <data name="IsGoodForSearchSuggester" xml:space="preserve">
-    <value>Is Good For Search Suggester</value>
-  </data>
-  <data name="IsGoodForSearchSuggesterDescription" xml:space="preserve">
-    <value>Indicate whether the content of the attribute is good for search suggester</value>
+  <data name="IsFullTextSearchAttributeDescription" xml:space="preserve">
+    <value>Indicate whether the content of the attribute is used for full-text search</value>
   </data>
   <data name="Usage" xml:space="preserve">
     <value>Usage</value>
@@ -350,11 +338,5 @@
   </data>
   <data name="ConstraintUsageDescription" xml:space="preserve">
     <value>Indicate the use of the constraint as restriction or suggestion</value>
-  </data>
-  <data name="KeywordFormat" xml:space="preserve">
-    <value>Keyword Format</value>
-  </data>
-  <data name="KeywordFormatDescription" xml:space="preserve">
-    <value>Specify a string representing a keyword format for full-text search</value>
   </data>
 </root>

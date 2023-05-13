@@ -29,8 +29,8 @@ namespace Newtera.Server.Engine.Vdom.Dbimp
 	using Newtera.Common.MetaData.Principal;
     using Newtera.Common.MetaData.Events;
 	using Newtera.Server.DB;
-    using Newtera.Server.FullText;
     using Newtera.Server.Logging;
+	using Newtera.Server.FullText;
 
 	/// <summary>
 	/// This class perform insertion-related actions, such as, assign an unique object id to

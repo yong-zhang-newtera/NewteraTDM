@@ -400,32 +400,9 @@ namespace Newtera.WebForm
                         vPropertyInfo = (InstanceAttributePropertyDescriptor)properties[column.ColumnName];
                         if (vPropertyInfo != null)
                         {
-                            if (!vPropertyInfo.IsForFullTextSearch &&
-                                !vPropertyInfo.IsVirtual &&
-                                !vPropertyInfo.IsImage &&
-                                !vPropertyInfo.IsArray &&
-                                !vPropertyInfo.IsHistoryEdit &&
-                                !vPropertyInfo.IsRichText &&
-                                !vPropertyInfo.IsHidden)
+                            if (vPropertyInfo.IsFullTextSearchAttribute)
                             {
                                 string val = dt.Rows[EditInstance.SelectedIndex][column.ColumnName].ToString();
-                                if (vPropertyInfo.DataType == DataType.Date ||
-                                    vPropertyInfo.DataType == DataType.DateTime)
-                                {
-                                    if (string.IsNullOrEmpty(val))
-                                        val = null;
-                                    else if (vPropertyInfo.DataType == DataType.DateTime)
-                                        val = val.Replace("T", " ");
-                                }
-                                else if (vPropertyInfo.DataType == DataType.Boolean)
-                                {
-                                    if (LocaleInfo.Instance.IsTrue(val))
-                                        val = "true";
-                                    else if (LocaleInfo.Instance.IsFalse(val))
-                                        val = "false";
-                                    else
-                                        val = null;
-                                }
 
                                 if (!string.IsNullOrEmpty(val))
                                 {

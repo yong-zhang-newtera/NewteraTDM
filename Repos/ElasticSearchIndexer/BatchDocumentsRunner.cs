@@ -13,15 +13,15 @@ namespace Newtera.ElasticSearchIndexer
     using System.Collections.Generic;
  
     using Newtonsoft.Json.Linq;
+    using Newtonsoft.Json;
 
     using Newtera.Common.Core;
     using Newtera.Common.Config;
 	using Newtera.Common.MetaData.Schema;
     using Newtera.Common.MetaData.DataView;
-    using Newtera.Server.FullText;
     using Newtera.Data;
     using Newtera.WebForm;
-    using Newtonsoft.Json;
+    using Newtera.Server.FullText;
 
     /// <summary> 
     /// Create a batch document indexes
@@ -31,8 +31,6 @@ namespace Newtera.ElasticSearchIndexer
 	{
         private const int PAGE_SIZE = 100;
         private const string CONNECTION_STRING = @"SCHEMA_NAME={schemaName};SCHEMA_VERSION=1.0";
-        private const string COPY_TO_PROPERTY = "catch_all";
-        private const string SUGGEST_PROPERTY = "suggest";
         private IndexingContext _context;
 
 

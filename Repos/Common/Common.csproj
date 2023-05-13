@@ -166,7 +166,6 @@
     <Compile Include="Config\ClusterServerConfig.cs" />
     <Compile Include="Config\BlobStorageConfig.cs" />
     <Compile Include="Config\ElasticsearchConfig.cs" />
-    <Compile Include="Config\FullTextIndexConfig.cs" />
     <Compile Include="Core\ErrorLog.cs" />
     <Compile Include="Core\GetMachineInfo.cs" />
     <Compile Include="Core\LocaleInfo.cs">

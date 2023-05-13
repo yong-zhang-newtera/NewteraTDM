@@ -129,8 +129,6 @@ namespace Newtera.Server.DB.MetaData
 		DeleteSimpleAttributeAutoIncrement,
 		AddSimpleAttributeIndex,
 		DeleteSimpleAttributeIndex,
-		AddSimpleAttributeFullTextSearch,
-		DeleteSimpleAttributeFullTextSearch,
         AddSimpleAttributeHistoryEdit,
         DeleteSimpleAttributeHistoryEdit,
         AddSimpleAttributeRichText,

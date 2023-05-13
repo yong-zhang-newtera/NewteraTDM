@@ -479,32 +479,6 @@ namespace Newtera.Server.DB.MetaData
 		}
 
 		/// <summary>
-		/// Get the DDL for deleting a full text index.
-		/// </summary>
-		/// <param name="indexName">The index name</param>
-		/// <param name="tableName">The table name</param>
-		/// <param name="columnName">The column that is full-text indexed.</param>	
-		/// <returns>Deleting full text index DDL</returns>
-		public string[] GetDelFullTextIndexDDLs(string indexName, string tableName, string columnName)
-		{
-			string[] ddls = new string[3];
-
-			StringBuilder builder = new StringBuilder();
-			builder.Append("sp_fulltext_column '").Append(tableName).Append("','").Append(columnName).Append("','drop'");
-			ddls[0] = builder.ToString();
-
-			builder = new StringBuilder();
-			builder.Append("sp_fulltext_table '").Append(tableName).Append("','drop'");
-			ddls[1] = builder.ToString();
-
-			builder = new StringBuilder();
-			builder.Append("sp_fulltext_catalog '").Append(indexName).Append("','drop'");
-			ddls[2] = builder.ToString();
-
-			return ddls;
-		}
-
-		/// <summary>
 		/// Gets DDLs for deleting a sequnence for an auto-increment column
 		/// </summary>
 		/// <param name="sequenceName">The sequnence name</param>
@@ -515,84 +489,6 @@ namespace Newtera.Server.DB.MetaData
 			// SQL Server does not use a sequence and trigger to implement a
 			// an auto-increment column, like the Oracle does.
 			string[] ddls = new string[0];
-
-			return ddls;
-		}
-
-		/// <summary>
-		/// Get DDL of creating a full text index for a column
-		/// </summary>
-		/// <param name="indexName">The full text index name</param>
-		/// <param name="tableName">The table name</param>
-		/// <param name="columnName">The column name</param>
-		/// <param name="dataStore">The data store type</param>
-		/// <param name="isFilter">True if it has filter, false otherwise.</param>
-		/// <returns>An array of ddls</returns>
-		public string[] GetAddFullTextIndexDDLs(string indexName, string tableName, string columnName, string dataStore, bool isFilter)
-		{
-			string[] ddls = new string[3];
-
-			StringBuilder builder = new StringBuilder();
-
-			// create SQL Server full-text catalog
-			builder.Append("sp_fulltext_catalog  '").Append(indexName).Append("',   'create'");
-			ddls[0] = builder.ToString();
-
-			builder = new StringBuilder();
-
-			// identify the table for full-text search
-			builder.Append("declare @Key sysname ; select @Key=c.name from syscolumns a, sysconstraints b, sysobjects c ");
-			builder.Append("where a.id=object_id('").Append(tableName).Append("') and a.id=b.id and b.constid=c.id and c.name like 'PK_%'; ");
-			builder.Append("exec sp_fulltext_table '").Append(tableName).Append("','create', '").Append(indexName).Append("',@Key");
-			ddls[1] = builder.ToString();
-
-			// create full-text index on the column
-			builder = new StringBuilder();
-			builder.Append("sp_fulltext_column '").Append(tableName).Append("','").Append(columnName).Append("','add'");
-			ddls[2] = builder.ToString();
-
-			return ddls;
-		}
-
-		/// <summary>
-		/// Get DDL for crating a full-text search index
-		/// </summary>
-		/// <param name="indexName">The index name</param>
-		/// <param name="tableName">The name of table that owns the full-text search index</param>
-		/// <param name="columnName">The name of column that is used in full-text search.</param>
-		/// <returns></returns>
-		public string GetCreateFullTextIndexDDL(string indexName, string tableName, string columnName)
-		{
-			StringBuilder builder = new StringBuilder();
-
-			builder.Append("sp_fulltext_table '").Append(tableName).Append("','start_full'"); 
-
-			return builder.ToString();
-		}
-
-		/// <summary>
-		/// Gets the DDLs for clear up full text config
-		/// </summary>
-		/// <returns>The DDLs for clear full text config</returns>
-		public string[] GetClearFullTextDDLs()
-		{
-			string[] ddls = new string[0];
-
-			return ddls;
-		}
-
-		/// <summary>
-		/// Gets the DDLs for setting up full text config
-		/// </summary>
-		/// <returns>The DDLs for setting up full text config</returns>
-		public string[] GetFullTextSetupDDLs()
-		{
-			string[] ddls = new string[1];
-
-			StringBuilder builder = new StringBuilder();
-
-			builder.Append("sp_fulltext_database 'enable'");
-			ddls[0] = builder.ToString();
 
 			return ddls;
 		}

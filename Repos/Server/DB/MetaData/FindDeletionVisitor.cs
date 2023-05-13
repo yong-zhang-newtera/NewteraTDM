@@ -125,13 +125,6 @@ namespace Newtera.Server.DB.MetaData
 					_result.AddAlterRelationshipAttributeAction(action);
 				}
 
-				if (element.IsFullTextSearchable && element.DataType == DataType.Text)
-				{
-					// full text search works on the attribute of Text type
-					action = new DeleteSimpleAttributeFullTextSearchAction(_oldMetaDataModel, element, _dataProvider);
-					_result.AddDeleteSimpleAttributeAction(action); // delete full-text index before deleting the attribute
-				}
-
                 if (element.IsHistoryEdit && element.DataType == DataType.Text)
                 {
                     // history edit works on the attribute of Text type

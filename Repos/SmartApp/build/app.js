@@ -833,7 +833,7 @@ angular.module('app', [
     $rootScope.getSuggestions = function (typedText) {
         if (typedText && typedText.length > 1) {
             // get suggestions for the type text in search text box
-            var url = APP_CONFIG.ebaasRootUrl + "/api/search/" + encodeURIComponent(APP_CONFIG.dbschema) + "/LabATestOrders?searchtext=" + typedText + "&size=15";
+            var url = APP_CONFIG.ebaasRootUrl + "/api/search/raw/" + encodeURIComponent(APP_CONFIG.dbschema) + "/LabATestOrders?searchtext=" + typedText + "&size=15";
 
             var promise = $http.get(url).then(function (response) {
                 // The return value gets picked up by the then in the controller.
@@ -1346,6 +1346,26 @@ angular.module('app.dashboard', [
 
 "use strict";
 
+angular.module("app.datacart", ["ui.router", "ui.bootstrap"]);
+
+angular.module("app.datacart").config(function ($stateProvider) {
+
+    $stateProvider
+        .state('app.datacart', {
+            url: '/datacart/:schema/:class',
+            data: {
+                title: 'Data Cart'
+            },
+            views: {
+                "content@app": {
+                    controller: 'dataCartCtrl',
+                    templateUrl: "app/datacart/views/data-cart.html"
+                }
+            }
+        });
+    });
+"use strict";
+
 angular.module("app.datacatalog", ["ui.router", "ui.bootstrap"]);
 
 angular.module("app.datacatalog").config(function ($stateProvider, modalStateProvider) {
@@ -1637,26 +1657,6 @@ angular.module("app.datacatalog").config(function ($stateProvider, modalStatePro
     });
 "use strict";
 
-angular.module("app.datacart", ["ui.router", "ui.bootstrap"]);
-
-angular.module("app.datacart").config(function ($stateProvider) {
-
-    $stateProvider
-        .state('app.datacart', {
-            url: '/datacart/:schema/:class',
-            data: {
-                title: 'Data Cart'
-            },
-            views: {
-                "content@app": {
-                    controller: 'dataCartCtrl',
-                    templateUrl: "app/datacart/views/data-cart.html"
-                }
-            }
-        });
-    });
-"use strict";
-
 angular.module("app.dataImporter", ["ui.router", "ui.bootstrap", "ngFileUpload"]);
 
 angular.module("app.dataImporter").config(function ($stateProvider, modalStateProvider) {
@@ -1675,6 +1675,26 @@ angular.module("app.dataImporter").config(function ($stateProvider, modalStatePr
             }
         });
 });
+"use strict";
+
+angular.module("app.dataviewer", ["ui.router", "ui.bootstrap"]);
+
+angular.module("app.dataviewer").config(function ($stateProvider, modalStateProvider) {
+
+    $stateProvider
+        .state('app.dataviewer', {
+            url: '/dataviewer/:schema/:class/:oid/:xmlschema',
+            data: {
+                title: 'Data Viewer'
+            },
+            views: {
+                "content@app": {
+                    controller: 'DataViewerCtrl',
+                    templateUrl: "app/dataviewer/views/data-viewer.html"
+                }
+            }
+        });
+    });
 "use strict";
 
 angular.module("app.filemanager", ["ui.router", "ui.bootstrap"]);
@@ -1696,26 +1716,6 @@ angular.module("app.filemanager").config(function ($stateProvider, modalStatePro
             resolve: {
                 scripts: function(lazyScript){
                     return lazyScript.register('dropzone')
-                }
-            }
-        });
-    });
-"use strict";
-
-angular.module("app.dataviewer", ["ui.router", "ui.bootstrap"]);
-
-angular.module("app.dataviewer").config(function ($stateProvider, modalStateProvider) {
-
-    $stateProvider
-        .state('app.dataviewer', {
-            url: '/dataviewer/:schema/:class/:oid/:xmlschema',
-            data: {
-                title: 'Data Viewer'
-            },
-            views: {
-                "content@app": {
-                    controller: 'DataViewerCtrl',
-                    templateUrl: "app/dataviewer/views/data-viewer.html"
                 }
             }
         });
@@ -3611,244 +3611,6 @@ angular.module("app.taskforum").config(function ($stateProvider, modalStateProvi
 });
 "use strict";
 
-angular.module("app.tasks", ["ngResource", "ui.router", "ui.bootstrap", "ui.bootstrap.modal", 'ui.select', 'ngSanitize']);
-
-angular.module("app.tasks")
-    .config(function ($stateProvider, modalStateProvider) {
-
-        $stateProvider
-            .state('app.tasks', {
-                abstract: true,
-                data: {
-                    title: 'Tasks'
-                }
-            })
-            .state('app.tasks.list', {
-                url: '/tasks/list',
-                authenticate: true,
-                data: {
-                    title: 'Tasks',
-                    animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
-                },
-                views: {
-                    "content@app": {
-                        controller: 'taskListCtrl',
-                        templateUrl: "app/tasks/views/task-list.html"
-                    }
-                },
-                resolve: {
-                    promiseTasks: function ($http, APP_CONFIG) {
-                        return $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/" + encodeURIComponent(APP_CONFIG.dbschema));
-                    }
-                }
-            })
-            .state('app.tasks.form', {
-                url: '/tasks/form/:schema/:oid/:taskid',
-                authenticate: true,
-                data: {
-                    title: 'Task Form',
-                    animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
-                },
-                views: {
-                    "content@app": {
-                        controller: 'taskFormCtrl',
-                        templateUrl: "app/tasks/views/task-form.html"
-                    }
-                },
-                resolve: {
-                    promiseTaskInfo: function ($http, APP_CONFIG, $stateParams) {
-                        return $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/" + encodeURIComponent($stateParams.schema) + "/" + $stateParams.taskid);
-                    },
-                    srcipts: function (lazyScript) {
-                        return lazyScript.register(
-                           [
-                            'flot',
-                            'flot-resize',
-                            'flot-selection',
-                            'flot-fillbetween',
-                            'flot-orderBar',
-                            'flot-pie',
-                            'flot-time',
-                            'flot-tooltip',
-                            'dropzone'
-                            ]
-                            )
-                    }
-                }
-            })
-            .state('app.tasks.form.requestwizard', {
-                url: '/taskrequestwizard/:schema/:class/:template/:oid/:hash',
-                data: {
-                    title: 'Request Wizard',
-                    animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
-                },
-                authenticate: true,
-                views: {
-                    "content@app": {
-                        templateUrl: 'app/wizards/views/request-form-wizard.html',
-                        controller: 'requestFormWizardCtrl'
-                    }
-                },
-                resolve: {
-                    promiseParams: function ($http, APP_CONFIG, $stateParams) {
-                        return $http.get(APP_CONFIG.ebaasRootUrl + "/api/sitemap/parameters/" + $stateParams.hash)
-                    },
-                    srcipts: function (lazyScript) {
-                        return lazyScript.register([
-                            'jquery-maskedinput',
-                            'fuelux-wizard',
-                            'jquery-validation'
-                        ])
-
-                    }
-                }
-            })
-            .state('app.tasks.form.processdata', {
-                url: '/taskprocessdata/:schema/:class/:oid/:xmlschema/:formAttribute',
-                data: {
-                    title: 'Data Processing',
-                    animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
-                },
-                views: {
-                    "content@app": {
-                        controller: 'DataViewerCtrl',
-                        templateUrl: "app/dataviewer/views/data-viewer.html"
-                    }
-                }
-            });
-
-        modalStateProvider.state('app.tasks.form.modalform', {
-            url: '^/taskformrelated/:class/:oid/:readonly/:formAttribute',
-            templateUrl: "app/smartforms/views/ebaas-form-modal.html",
-            controller: 'ebaasFormModalCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.tasks.form.relatedform', {
-            url: '^/taskrelatedform/:rclass/:roid/:rtemplate/:rformAttribute/:readonly',
-            templateUrl: "app/smartforms/views/related-form-modal.html",
-            controller: 'relatedFormModalCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.tasks.form.relatedform.pickpk', {
-            url: '^/taskrelatedformpickpk/:pkclass/:property/:filter/:callback',
-            templateUrl: "app/smartforms/views/pick-primary-key.html",
-            controller: 'pickPrimaryKeyCtrl',
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.tasks.form.relatedform.viewmanytomany', {
-            url: '^/taskrelatedformviewmanytomany/:masterclass/:relatedclass/:masterid',
-            templateUrl: "app/smartforms/views/view-many-to-many.html",
-            controller: 'viewManyToManyCtrl',
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.tasks.form.relatedform.uploadimage', {
-            url: '^/taskrelatedformuploadimage/:property/:imageid',
-            templateUrl: "app/smartforms/views/upload-image.html",
-            controller: 'uploadImageCtrl',
-            animation: false,
-            size: 'md'
-        });
-
-        modalStateProvider.state('app.tasks.form.relatedform.viewlog', {
-            url: '^/taskrelatedformviewlog/:logschema/:logclass/:logoid/:logproperty',
-            templateUrl: "app/logs/views/change-log-viewer.html",
-            controller: 'changeLogViewerCtrl',
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.tasks.form.pickpk', {
-            url: '^/taskformpickpk/:pkclass/:property/:filter/:callback',
-            templateUrl: "app/smartforms/views/pick-primary-key.html",
-            controller: 'pickPrimaryKeyCtrl',
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.tasks.form.viewmanytomany', {
-            url: '^/taskformviewmanytomany/:masterclass/:relatedclass/:masterid',
-            templateUrl: "app/smartforms/views/view-many-to-many.html",
-            controller: 'viewManyToManyCtrl',
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.tasks.form.uploadimage', {
-            url: '^/taskformuploadimage/:property/:imageid',
-            templateUrl: "app/smartforms/views/upload-image.html",
-            controller: 'uploadImageCtrl',
-            animation: false,
-            size: 'md'
-        });
-
-        modalStateProvider.state('app.tasks.form.viewlog', {
-            url: '^/taskformviewlog/:logschema/:logclass/:logoid/:logproperty',
-            templateUrl: "app/logs/views/change-log-viewer.html",
-            controller: 'changeLogViewerCtrl',
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.tasks.form.dataviewer', {
-            url: '^/taskformdataviewer/:schema/:class/:oid/:xmlschema',
-            templateUrl: "app/dataviewer/views/data-viewer-modal.html",
-            controller: 'DataViewerModalCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.tasks.form.report', {
-            url: '^/taskformreport/:schema/:class/:oid/:template/:templateAttribute/:fileType/:cmdHash',
-            templateUrl: "app/smartreports/views/download-report.html",
-            controller: 'downloadReportCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'sm'
-        });
-
-        modalStateProvider.state('app.tasks.form.filemanager', {
-            url: '^/taskformfilemanager/:schema/:class/:oid/:cmdHash',
-            templateUrl: "app/fileManager/views/file-manager-viewer.html",
-            controller: 'fileManagerViewerCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.tasks.list.reassign', {
-            url: '^/reassigntask/:schema/:taskid',
-            templateUrl: "app/tasks/views/reassign-task.html",
-            controller: 'reassignTaskCtrl',
-            animation: false,
-            size: 'sm'
-        });
-
-        modalStateProvider.state('app.tasks.list.substitute', {
-            url: '^/tasksubstitute/:schema',
-            templateUrl: "app/tasks/views/task-substitute.html",
-            controller: 'taskSubstituteCtrl',
-            animation: false,
-            size: 'md'
-        });
-    });
-"use strict";
-
 angular.module("app.taskkanban", ["ui.router", "ui.bootstrap", "DlhSoft.Kanban.Angular.Components"]);
 
 angular.module("app.taskkanban").config(function ($stateProvider, modalStateProvider) {
@@ -4090,6 +3852,244 @@ angular.module("app.taskkanban").config(function ($stateProvider, modalStateProv
             keyboard: false,
             animation: false,
             size: 'lg'
+        });
+    });
+"use strict";
+
+angular.module("app.tasks", ["ngResource", "ui.router", "ui.bootstrap", "ui.bootstrap.modal", 'ui.select', 'ngSanitize']);
+
+angular.module("app.tasks")
+    .config(function ($stateProvider, modalStateProvider) {
+
+        $stateProvider
+            .state('app.tasks', {
+                abstract: true,
+                data: {
+                    title: 'Tasks'
+                }
+            })
+            .state('app.tasks.list', {
+                url: '/tasks/list',
+                authenticate: true,
+                data: {
+                    title: 'Tasks',
+                    animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
+                },
+                views: {
+                    "content@app": {
+                        controller: 'taskListCtrl',
+                        templateUrl: "app/tasks/views/task-list.html"
+                    }
+                },
+                resolve: {
+                    promiseTasks: function ($http, APP_CONFIG) {
+                        return $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/" + encodeURIComponent(APP_CONFIG.dbschema));
+                    }
+                }
+            })
+            .state('app.tasks.form', {
+                url: '/tasks/form/:schema/:oid/:taskid',
+                authenticate: true,
+                data: {
+                    title: 'Task Form',
+                    animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
+                },
+                views: {
+                    "content@app": {
+                        controller: 'taskFormCtrl',
+                        templateUrl: "app/tasks/views/task-form.html"
+                    }
+                },
+                resolve: {
+                    promiseTaskInfo: function ($http, APP_CONFIG, $stateParams) {
+                        return $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/" + encodeURIComponent($stateParams.schema) + "/" + $stateParams.taskid);
+                    },
+                    srcipts: function (lazyScript) {
+                        return lazyScript.register(
+                           [
+                            'flot',
+                            'flot-resize',
+                            'flot-selection',
+                            'flot-fillbetween',
+                            'flot-orderBar',
+                            'flot-pie',
+                            'flot-time',
+                            'flot-tooltip',
+                            'dropzone'
+                            ]
+                            )
+                    }
+                }
+            })
+            .state('app.tasks.form.requestwizard', {
+                url: '/taskrequestwizard/:schema/:class/:template/:oid/:hash',
+                data: {
+                    title: 'Request Wizard',
+                    animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
+                },
+                authenticate: true,
+                views: {
+                    "content@app": {
+                        templateUrl: 'app/wizards/views/request-form-wizard.html',
+                        controller: 'requestFormWizardCtrl'
+                    }
+                },
+                resolve: {
+                    promiseParams: function ($http, APP_CONFIG, $stateParams) {
+                        return $http.get(APP_CONFIG.ebaasRootUrl + "/api/sitemap/parameters/" + $stateParams.hash)
+                    },
+                    srcipts: function (lazyScript) {
+                        return lazyScript.register([
+                            'jquery-maskedinput',
+                            'fuelux-wizard',
+                            'jquery-validation'
+                        ])
+
+                    }
+                }
+            })
+            .state('app.tasks.form.processdata', {
+                url: '/taskprocessdata/:schema/:class/:oid/:xmlschema/:formAttribute',
+                data: {
+                    title: 'Data Processing',
+                    animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
+                },
+                views: {
+                    "content@app": {
+                        controller: 'DataViewerCtrl',
+                        templateUrl: "app/dataviewer/views/data-viewer.html"
+                    }
+                }
+            });
+
+        modalStateProvider.state('app.tasks.form.modalform', {
+            url: '^/taskformrelated/:class/:oid/:readonly/:formAttribute',
+            templateUrl: "app/smartforms/views/ebaas-form-modal.html",
+            controller: 'ebaasFormModalCtrl',
+            backdrop: 'static', /*  this prevent user interaction with the background  */
+            keyboard: false,
+            animation: false,
+            size: 'lg'
+        });
+
+        modalStateProvider.state('app.tasks.form.relatedform', {
+            url: '^/taskrelatedform/:rclass/:roid/:rtemplate/:rformAttribute/:readonly',
+            templateUrl: "app/smartforms/views/related-form-modal.html",
+            controller: 'relatedFormModalCtrl',
+            backdrop: 'static', /*  this prevent user interaction with the background  */
+            keyboard: false,
+            animation: false,
+            size: 'lg'
+        });
+
+        modalStateProvider.state('app.tasks.form.relatedform.pickpk', {
+            url: '^/taskrelatedformpickpk/:pkclass/:property/:filter/:callback',
+            templateUrl: "app/smartforms/views/pick-primary-key.html",
+            controller: 'pickPrimaryKeyCtrl',
+            animation: false,
+            size: 'lg'
+        });
+
+        modalStateProvider.state('app.tasks.form.relatedform.viewmanytomany', {
+            url: '^/taskrelatedformviewmanytomany/:masterclass/:relatedclass/:masterid',
+            templateUrl: "app/smartforms/views/view-many-to-many.html",
+            controller: 'viewManyToManyCtrl',
+            animation: false,
+            size: 'lg'
+        });
+
+        modalStateProvider.state('app.tasks.form.relatedform.uploadimage', {
+            url: '^/taskrelatedformuploadimage/:property/:imageid',
+            templateUrl: "app/smartforms/views/upload-image.html",
+            controller: 'uploadImageCtrl',
+            animation: false,
+            size: 'md'
+        });
+
+        modalStateProvider.state('app.tasks.form.relatedform.viewlog', {
+            url: '^/taskrelatedformviewlog/:logschema/:logclass/:logoid/:logproperty',
+            templateUrl: "app/logs/views/change-log-viewer.html",
+            controller: 'changeLogViewerCtrl',
+            animation: false,
+            size: 'lg'
+        });
+
+        modalStateProvider.state('app.tasks.form.pickpk', {
+            url: '^/taskformpickpk/:pkclass/:property/:filter/:callback',
+            templateUrl: "app/smartforms/views/pick-primary-key.html",
+            controller: 'pickPrimaryKeyCtrl',
+            animation: false,
+            size: 'lg'
+        });
+
+        modalStateProvider.state('app.tasks.form.viewmanytomany', {
+            url: '^/taskformviewmanytomany/:masterclass/:relatedclass/:masterid',
+            templateUrl: "app/smartforms/views/view-many-to-many.html",
+            controller: 'viewManyToManyCtrl',
+            animation: false,
+            size: 'lg'
+        });
+
+        modalStateProvider.state('app.tasks.form.uploadimage', {
+            url: '^/taskformuploadimage/:property/:imageid',
+            templateUrl: "app/smartforms/views/upload-image.html",
+            controller: 'uploadImageCtrl',
+            animation: false,
+            size: 'md'
+        });
+
+        modalStateProvider.state('app.tasks.form.viewlog', {
+            url: '^/taskformviewlog/:logschema/:logclass/:logoid/:logproperty',
+            templateUrl: "app/logs/views/change-log-viewer.html",
+            controller: 'changeLogViewerCtrl',
+            animation: false,
+            size: 'lg'
+        });
+
+        modalStateProvider.state('app.tasks.form.dataviewer', {
+            url: '^/taskformdataviewer/:schema/:class/:oid/:xmlschema',
+            templateUrl: "app/dataviewer/views/data-viewer-modal.html",
+            controller: 'DataViewerModalCtrl',
+            backdrop: 'static', /*  this prevent user interaction with the background  */
+            keyboard: false,
+            animation: false,
+            size: 'lg'
+        });
+
+        modalStateProvider.state('app.tasks.form.report', {
+            url: '^/taskformreport/:schema/:class/:oid/:template/:templateAttribute/:fileType/:cmdHash',
+            templateUrl: "app/smartreports/views/download-report.html",
+            controller: 'downloadReportCtrl',
+            backdrop: 'static', /*  this prevent user interaction with the background  */
+            keyboard: false,
+            animation: false,
+            size: 'sm'
+        });
+
+        modalStateProvider.state('app.tasks.form.filemanager', {
+            url: '^/taskformfilemanager/:schema/:class/:oid/:cmdHash',
+            templateUrl: "app/fileManager/views/file-manager-viewer.html",
+            controller: 'fileManagerViewerCtrl',
+            backdrop: 'static', /*  this prevent user interaction with the background  */
+            keyboard: false,
+            animation: false,
+            size: 'lg'
+        });
+
+        modalStateProvider.state('app.tasks.list.reassign', {
+            url: '^/reassigntask/:schema/:taskid',
+            templateUrl: "app/tasks/views/reassign-task.html",
+            controller: 'reassignTaskCtrl',
+            animation: false,
+            size: 'sm'
+        });
+
+        modalStateProvider.state('app.tasks.list.substitute', {
+            url: '^/tasksubstitute/:schema',
+            templateUrl: "app/tasks/views/task-substitute.html",
+            controller: 'taskSubstituteCtrl',
+            animation: false,
+            size: 'md'
         });
     });
 "use strict";
@@ -5606,6 +5606,222 @@ angular.module('app.attachments').controller('attachmentsModalCtrl', function ($
 
 'use strict';
 
+angular.module('app.attachments').directive('attachments', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/attachments/views/attachments.html',
+        replace: true,
+        scope: {},
+        bindToController: {
+            dbschema: '=',
+            dbclass: '=',
+            oid: '=',
+            read: '='
+        },
+        controllerAs: 'vm',
+        controller: 'attachmentsCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
+'use strict';
+
+angular.module('app.attachments').directive('dropzone', function ($rootScope, APP_CONFIG, fileManager, User) {
+    return {
+        restrict: 'C',
+        link: function (scope, element, attributes) {
+            
+            var config = {
+                url: APP_CONFIG.ebaasRootUrl + "/" + fileManager.params.api + "/" + encodeURIComponent(fileManager.params.schema) + "/" + fileManager.params.cls + "/" + fileManager.params.oid + "?prefix=" + encodeURIComponent(fileManager.params.prefix) + "&user=" + encodeURIComponent(User.userName),
+                maxFilesize: 100,
+                maxFiles: 20,
+                maxThumbnailFilesize: 10,
+                previewTemplate: '<div class="dz-preview dz-file-preview"><div><div class="dz-filename"><span data-dz-name></span></span></div><span class="fa fa-lg fa-file-text-o"></span></div><div><span class="dz-size" data-dz-size></div><div><span class="dz-upload" data-dz-uploadprogress></span></div><div class="dz-success-mark"><span class="fa fa-check"></span></div><div class="dz-error-mark"><span class="fa fa-exclamation-triangle"></span></div><div class="dz-error-message"><span data-dz-errormessage></span></div></div>',
+                addRemoveLinks: false,
+                paramName: "uploadFile",
+                parallelUploads: 20,
+                autoProcessQueue: false,
+                dictDefaultMessage: '<span class="text-center"><span class="font-md visible-lg-block"><span class="font-md"><i class="fa fa-caret-right text-danger"></i><span class="font-xs">' + $rootScope.getWord("DropZone") + '</span></span>',
+                dictResponseError: $rootScope.getWord("UploadError"),
+                dictCancelUpload: "Cancel Upload",
+                dictRemoveFile: "Remove File",
+
+            };
+
+            var eventHandlers = {
+                'addedFile': function (file) {
+                    scope.file = file;
+                    if (this.files[1] != null) {
+                        this.removeFile(this.files[0]);
+                    }
+                    scope.$apply(function () {
+                        scope.fileAdded = true;
+                    });
+                },
+
+                'success': function (file, response) {
+                },
+
+                'removedFile': function(file)
+                {
+                    console.debug("Removed file called");
+                },
+
+                'queuecomplete': function () {
+                    fileManager.load();
+
+                    setTimeout(function () {
+                        //scope.resetDropzone();
+                    }, 2000);
+                }
+            };
+
+            var dropzone = new Dropzone(element[0], config);
+
+            angular.forEach(eventHandlers, function (handler, event) {
+                dropzone.on(event, handler);
+            });
+
+            scope.processDropzone = function () {
+
+                var url = undefined;
+                if (fileManager.params.oid)
+                {
+                    url = APP_CONFIG.ebaasRootUrl + "/" + fileManager.params.api + "/" + encodeURIComponent(fileManager.params.schema) + "/" + fileManager.params.cls + "/" + fileManager.params.oid + "?prefix=" + encodeURIComponent(fileManager.params.prefix) + "&user=" + encodeURIComponent(User.userName);
+                }
+
+                dropzone.options.url = url;
+                dropzone.processQueue();
+            };
+
+            scope.resetDropzone = function () {
+                dropzone.removeAllFiles();
+            }
+        }
+    }
+});
+
+'use strict';
+
+angular.module('app.attachments').directive('egAppStatus', function (loadingInfo) {
+    var directive = {
+        link: link,
+        restrict: 'E',
+        templateUrl: 'app/attachments/views/egAppStatus.html'
+    };
+    return directive;
+
+    function link(scope, element, attrs) {
+        scope.status = loadingInfo.status;
+    }
+});
+'use strict';
+
+angular.module('app.attachments').directive('egFiles', function () {
+
+    var directive = {
+        link: link,
+        restrict: 'A',
+        scope: {
+            files: '=egFiles',
+            hasFiles: '='
+        }
+    };
+    return directive;
+
+    function link(scope, element, attrs) {
+        element.bind('change', function () {
+            scope.$apply(function () {
+                if (element[0].files) {
+                    scope.files.length = 0;
+
+                    angular.forEach(element[0].files, function (f) {
+                        scope.files.push(f);
+                    });
+
+                    scope.hasFiles = true;
+                }
+            });
+        });
+
+        if (element[0].form) {
+            angular.element(element[0].form)
+                    .bind('reset', function () {
+                        scope.$apply(function () {
+                            scope.files.length = 0;
+                            scope.hasFiles = false;
+                        });
+                    });
+        }
+    }
+});
+'use strict';
+
+angular.module('app.attachments').directive('egUpload', function ($timeout) {
+    var directive = {
+        link: link,
+        restrict: 'A',
+        scope: {
+            upload: '&egUpload'
+        }
+    };
+    return directive;
+
+    function link(scope, element, attrs) {
+        var parentForm = element[0].form;
+        if (parentForm) {
+            element.on('click', function (event) {
+                return scope.upload().then(function () {
+                    //see:https://docs.angularjs.org/error/$rootScope/inprog?p0=$digest for why there is a need to use timeout to avoid conflict
+                    $timeout(function () {
+                        parentForm.reset();
+                    });
+                });
+            });
+        }
+    }
+});
+'use strict';
+
+angular.module('app.attachments').directive('fileDropzone', function ($rootScope) {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttributes) {
+            tElement.removeAttr('smart-dropzone data-smart-dropzone');
+
+            tElement.dropzone({
+                addRemoveLinks : true,
+                maxFilesize: 0.5,
+                dictDefaultMessage: '<span class="text-center"><span class="font-lg visible-xs-block visible-sm-block visible-lg-block"><span class="font-lg"><i class="fa fa-caret-right text-danger"></i><span class="font-xs">' + $rootScope.getWord("DropZone") + '</span></span>',
+                dictResponseError: $rootScope.getWord("UploadError")
+            });
+        }
+    }
+});
+
+'use strict';
+
+angular.module('app.attachments').directive('egFileUploader', function (loadingInfo, fileManager) {
+
+    var directive = {
+        link: link,
+        restrict: 'E',
+        templateUrl: 'app/attachments/views/fileUploader.html',
+        scope: true
+    };
+    return directive;
+
+    function link(scope, element, attrs) {
+        scope.hasFiles = false;
+        scope.files = [];
+        scope.upload = fileManager.upload;
+        scope.appStatus = loadingInfo.status;
+        scope.fileManagerStatus = fileManager.status;
+    }
+
+});
+'use strict';
+
 angular.module('app.attachments').factory('fileManager', function ($q, fileManagerClient, $http, loadingInfo, User) {
 
     var service = {
@@ -5904,557 +6120,6 @@ angular.module('app.attachments').factory('loadingInfo', function () {
         }
     }
 });
-'use strict';
-
-angular.module('app.attachments').directive('attachments', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/attachments/views/attachments.html',
-        replace: true,
-        scope: {},
-        bindToController: {
-            dbschema: '=',
-            dbclass: '=',
-            oid: '=',
-            read: '='
-        },
-        controllerAs: 'vm',
-        controller: 'attachmentsCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
-'use strict';
-
-angular.module('app.attachments').directive('dropzone', function ($rootScope, APP_CONFIG, fileManager, User) {
-    return {
-        restrict: 'C',
-        link: function (scope, element, attributes) {
-            
-            var config = {
-                url: APP_CONFIG.ebaasRootUrl + "/" + fileManager.params.api + "/" + encodeURIComponent(fileManager.params.schema) + "/" + fileManager.params.cls + "/" + fileManager.params.oid + "?prefix=" + encodeURIComponent(fileManager.params.prefix) + "&user=" + encodeURIComponent(User.userName),
-                maxFilesize: 100,
-                maxFiles: 20,
-                maxThumbnailFilesize: 10,
-                previewTemplate: '<div class="dz-preview dz-file-preview"><div><div class="dz-filename"><span data-dz-name></span></span></div><span class="fa fa-lg fa-file-text-o"></span></div><div><span class="dz-size" data-dz-size></div><div><span class="dz-upload" data-dz-uploadprogress></span></div><div class="dz-success-mark"><span class="fa fa-check"></span></div><div class="dz-error-mark"><span class="fa fa-exclamation-triangle"></span></div><div class="dz-error-message"><span data-dz-errormessage></span></div></div>',
-                addRemoveLinks: false,
-                paramName: "uploadFile",
-                parallelUploads: 20,
-                autoProcessQueue: false,
-                dictDefaultMessage: '<span class="text-center"><span class="font-md visible-lg-block"><span class="font-md"><i class="fa fa-caret-right text-danger"></i><span class="font-xs">' + $rootScope.getWord("DropZone") + '</span></span>',
-                dictResponseError: $rootScope.getWord("UploadError"),
-                dictCancelUpload: "Cancel Upload",
-                dictRemoveFile: "Remove File",
-
-            };
-
-            var eventHandlers = {
-                'addedFile': function (file) {
-                    scope.file = file;
-                    if (this.files[1] != null) {
-                        this.removeFile(this.files[0]);
-                    }
-                    scope.$apply(function () {
-                        scope.fileAdded = true;
-                    });
-                },
-
-                'success': function (file, response) {
-                },
-
-                'removedFile': function(file)
-                {
-                    console.debug("Removed file called");
-                },
-
-                'queuecomplete': function () {
-                    fileManager.load();
-
-                    setTimeout(function () {
-                        //scope.resetDropzone();
-                    }, 2000);
-                }
-            };
-
-            var dropzone = new Dropzone(element[0], config);
-
-            angular.forEach(eventHandlers, function (handler, event) {
-                dropzone.on(event, handler);
-            });
-
-            scope.processDropzone = function () {
-
-                var url = undefined;
-                if (fileManager.params.oid)
-                {
-                    url = APP_CONFIG.ebaasRootUrl + "/" + fileManager.params.api + "/" + encodeURIComponent(fileManager.params.schema) + "/" + fileManager.params.cls + "/" + fileManager.params.oid + "?prefix=" + encodeURIComponent(fileManager.params.prefix) + "&user=" + encodeURIComponent(User.userName);
-                }
-
-                dropzone.options.url = url;
-                dropzone.processQueue();
-            };
-
-            scope.resetDropzone = function () {
-                dropzone.removeAllFiles();
-            }
-        }
-    }
-});
-
-'use strict';
-
-angular.module('app.attachments').directive('egAppStatus', function (loadingInfo) {
-    var directive = {
-        link: link,
-        restrict: 'E',
-        templateUrl: 'app/attachments/views/egAppStatus.html'
-    };
-    return directive;
-
-    function link(scope, element, attrs) {
-        scope.status = loadingInfo.status;
-    }
-});
-'use strict';
-
-angular.module('app.attachments').directive('egFiles', function () {
-
-    var directive = {
-        link: link,
-        restrict: 'A',
-        scope: {
-            files: '=egFiles',
-            hasFiles: '='
-        }
-    };
-    return directive;
-
-    function link(scope, element, attrs) {
-        element.bind('change', function () {
-            scope.$apply(function () {
-                if (element[0].files) {
-                    scope.files.length = 0;
-
-                    angular.forEach(element[0].files, function (f) {
-                        scope.files.push(f);
-                    });
-
-                    scope.hasFiles = true;
-                }
-            });
-        });
-
-        if (element[0].form) {
-            angular.element(element[0].form)
-                    .bind('reset', function () {
-                        scope.$apply(function () {
-                            scope.files.length = 0;
-                            scope.hasFiles = false;
-                        });
-                    });
-        }
-    }
-});
-'use strict';
-
-angular.module('app.attachments').directive('egUpload', function ($timeout) {
-    var directive = {
-        link: link,
-        restrict: 'A',
-        scope: {
-            upload: '&egUpload'
-        }
-    };
-    return directive;
-
-    function link(scope, element, attrs) {
-        var parentForm = element[0].form;
-        if (parentForm) {
-            element.on('click', function (event) {
-                return scope.upload().then(function () {
-                    //see:https://docs.angularjs.org/error/$rootScope/inprog?p0=$digest for why there is a need to use timeout to avoid conflict
-                    $timeout(function () {
-                        parentForm.reset();
-                    });
-                });
-            });
-        }
-    }
-});
-'use strict';
-
-angular.module('app.attachments').directive('fileDropzone', function ($rootScope) {
-    return {
-        restrict: 'A',
-        compile: function (tElement, tAttributes) {
-            tElement.removeAttr('smart-dropzone data-smart-dropzone');
-
-            tElement.dropzone({
-                addRemoveLinks : true,
-                maxFilesize: 0.5,
-                dictDefaultMessage: '<span class="text-center"><span class="font-lg visible-xs-block visible-sm-block visible-lg-block"><span class="font-lg"><i class="fa fa-caret-right text-danger"></i><span class="font-xs">' + $rootScope.getWord("DropZone") + '</span></span>',
-                dictResponseError: $rootScope.getWord("UploadError")
-            });
-        }
-    }
-});
-
-'use strict';
-
-angular.module('app.attachments').directive('egFileUploader', function (loadingInfo, fileManager) {
-
-    var directive = {
-        link: link,
-        restrict: 'E',
-        templateUrl: 'app/attachments/views/fileUploader.html',
-        scope: true
-    };
-    return directive;
-
-    function link(scope, element, attrs) {
-        scope.hasFiles = false;
-        scope.files = [];
-        scope.upload = fileManager.upload;
-        scope.appStatus = loadingInfo.status;
-        scope.fileManagerStatus = fileManager.status;
-    }
-
-});
-"use strict";
-
-angular.module('app.auth').directive('loginInfo', function(User){
-
-    return {
-        restrict: 'A',
-        templateUrl: 'app/auth/directives/login-info.tpl.html',
-        link: function(scope, element){
-            User.initialized.then(function () {
-                scope.user = User
-            });
-        }
-    }
-})
-
-"use strict";
-
-angular.module("app.auth").factory("authService", function($rootScope, $http, $q, localStorageService, APP_CONFIG) {
-
-    var authServiceFactory = {};
-
-    var _authentication = {
-        isAuth: false,
-        userName: ""
-    };
-
-    var _saveRegistration = function(registration) {
-
-        _logOut();
-
-        return $http.post(APP_CONFIG.ebaasRootUrl + '/api/accounts/create', registration).then(function(response) {
-            return response;
-        });
-    };
-
-    var _login = function(loginData) {
-
-        var data = "grant_type=password&username=" + loginData.userName + "&password=" + loginData.password;
-
-        var deferred = $q.defer();
-
-        var url = APP_CONFIG.ebaasRootUrl + '/oauth/token';
-
-        $http.post(url, data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).success(function(response) {
-
-            localStorageService.set('authorizationData', { token: response.access_token, userName: loginData.userName });
-
-            _authentication.isAuth = true;
-            _authentication.userName = loginData.userName;
-
-            deferred.resolve(response);
-
-        }).error(function (err, status) {
-            if (err.error === "invalid_grant")
-            {
-                err.error_description = $rootScope.getWord("Invalid user name or password");
-            }
-            _logOut();
-            deferred.reject(err);
-        });
-
-        return deferred.promise;
-
-    };
-
-    var _logOut = function() {
-
-        localStorageService.remove('authorizationData');
-
-        _authentication.isAuth = false;
-        _authentication.userName = "";
-
-    };
-
-    var _fillAuthData = function() {
-
-        var authData = localStorageService.get('authorizationData');
-        if (authData) {
-            _authentication.isAuth = true;
-            _authentication.userName = authData.userName;
-        }
-
-    }
-
-    authServiceFactory.saveRegistration = _saveRegistration;
-    authServiceFactory.login = _login;
-    authServiceFactory.logOut = _logOut;
-    authServiceFactory.fillAuthData = _fillAuthData;
-    authServiceFactory.authentication = _authentication;
-
-    return authServiceFactory;
-});
-(function (app) {
-    var LoginController = function ($rootScope, $scope, $http, $state, $location, authService, APP_CONFIG, User, TasksInfo, myActivityService, hubService) {
-
-        $scope.loginData = {
-            userName: "",
-            password: ""
-        };
-
-        $scope.message = "";
-
-        $scope.login = function () {
-            authService.login($scope.loginData).then(function (response) {
-
-                if ($rootScope.returnToState) {
-                    $location.path($rootScope.returnToState);
-                } else {
-                    $location.path('/');
-                }
-
-                // load user's info
-                User.load(function () {
-                    hubService.connect(APP_CONFIG.dbschema, function (type, message) {
-                        myActivityService.add(type, message);
-                    }); // connect to server hub to receive messages
-                }); // load user info
-
-                //get user's task count to display at header
-                $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/" + encodeURIComponent(APP_CONFIG.dbschema) + "/count")
-                    .success(function (data) {
-                        TasksInfo.count = data;
-                    });
-
-                //get user's message count to display at header
-                $http.get(APP_CONFIG.ebaasRootUrl + "/api/messages/count")
-                    .success(function (data) {
-                        myActivityService.MessageModel.count = data;
-                    });
-            },
-            function (err) {
-                $scope.message = err.error_description;
-            });
-        };
-
-        if (!String.format) {
-            String.format = function (format) {
-                var args = Array.prototype.slice.call(arguments, 1);
-                return format.replace(/{(\d+)}/g, function (match, number) {
-                    return typeof args[number] != 'undefined'
-                      ? args[number]
-                      : match
-                    ;
-                });
-            };
-        }
-  
-    }
-
-    app.controller("LoginController", LoginController);
-
-}(angular.module("app.auth")));
-"use strict";
-
-angular.module('app.auth').controller('LogoutController', function ($scope, authService, hubService) {
-    hubService.disconnect();
-    authService.logOut();
-})
-"use strict";
-
-angular.module('app.auth').controller('RegisterController', function ($scope, $location, $timeout, authService) {
-        $scope.savedSuccessfully = false;
-        $scope.message = "";
-
-        $scope.registration = {
-            userName: "",
-            lastName: "",
-            firstName: "",
-            email: "",
-            password: "",
-            confirmPassword: ""
-        };
-
-        $scope.signUp = function () {
-            authService.saveRegistration($scope.registration).then(function (response) {
-
-                $scope.savedSuccessfully = true;
-                $scope.message = "User has been registered successfully, you will be redicted to login page in 2 seconds.";
-                startTimer();
-
-            },
-             function (response) {
-                 var errors = [];
-                 for (var key in response.data.modelState) {
-                     for (var i = 0; i < response.data.modelState[key].length; i++) {
-                         errors.push(response.data.modelState[key][i]);
-                     }
-                 }
-                 $scope.message = "Failed to register user due to:" + errors.join(' ');
-             });
-        };
-
-        var startTimer = function () {
-            var timer = $timeout(function () {
-                $timeout.cancel(timer);
-                $location.path('/login');
-            }, 2000);
-        }
-
-    });
-
-
-'use strict';
-
-angular.module('app.auth').factory('User', function ($http, $q, APP_CONFIG, authService) {
-    var dfd = $q.defer();
-
-    function imageExists(image_url) {
-
-        var http = new XMLHttpRequest();
-
-        http.open('HEAD', image_url, false);
-        http.send();
-
-        return http.status != 404;
-    }
-
-    var UserModel = {
-        initialized: dfd.promise,
-        userName: undefined,
-        picture: undefined,
-        email: undefined,
-        phoneNumber : undefined,
-        password: undefined,
-        confirmPassword: undefined,
-        firstName: undefined,
-        lastName: undefined,
-        displayName : undefined,
-        division: undefined,
-        address: undefined,
-        imageUrl: undefined,
-        pictureChangeTime: undefined,
-        userImageUrls: undefined,
-        load: function(callback)
-        {
-            $http.get(APP_CONFIG.ebaasRootUrl + '/api/accounts/user/' + authService.authentication.userName).then(function (response) {
-                UserModel.userName = response.data.userName;
-                UserModel.email = response.data.email;
-                UserModel.password = response.data.password;
-                UserModel.firstName = response.data.firstName;
-                UserModel.lastName = response.data.lastName;
-                UserModel.displayName = response.data.displayName;
-                UserModel.phoneNumber = response.data.phoneNumber;
-                UserModel.division = response.data.division;
-                UserModel.address = response.data.address;
-                UserModel.imageUrl = undefined;
-                UserModel.userImageUrls = {};
-
-                UserModel.picture = UserModel.userName + ".png";
-
-                dfd.resolve(UserModel);
-
-                if (callback) {
-                    callback();
-                }
-            });
-        },
-        save : function (callback) {
-            var model = {};
-            model.userName = UserModel.userName;
-            model.email = UserModel.email;
-            model.phoneNumber = UserModel.phoneNumber;
-            model.firstName = UserModel.firstName;
-            model.lastName = UserModel.lastName;
-            model.picture = UserModel.picture;
-           
-            $http.post(APP_CONFIG.ebaasRootUrl + '/api/accounts/update', model).success(function (data) {
-                if (callback) {
-                    callback();
-                }
-            });
-        },
-        image : function()
-        {
-            if (!UserModel.imageUrl) {
-                var imageUrl = APP_CONFIG.avatarsUrl + UserModel.picture;
-                if (!imageExists(imageUrl)) {
-                    UserModel.imageUrl = APP_CONFIG.avatarsUrl + "male.png";
-                }
-                else {
-                    UserModel.imageUrl = imageUrl + '?' + UserModel.pictureChangeTime;
-                }
-            }
-            //console.debug(UserModel.imageUrl);
-            return UserModel.imageUrl;
-        },
-        getUserImage: function (userId) {
-            if (UserModel.userImageUrls) {
-                var imageUrl = UserModel.userImageUrls[userId];
-                if (!imageUrl) {
-                    imageUrl = APP_CONFIG.avatarsUrl + userId + ".png";
-                    if (!imageExists(imageUrl)) {
-                        imageUrl = APP_CONFIG.avatarsUrl + "male.png";
-                        UserModel.userImageUrls[userId] = imageUrl;
-                    }
-                    else {
-                        UserModel.userImageUrls[userId] = imageUrl;
-                    }
-                }
-            }
-            else
-            {
-                return APP_CONFIG.avatarsUrl + "male.png";
-            }
-     
-            return imageUrl;
-        }
-    };
-
-    return UserModel;
-});
-
-"use strict";
-
-angular.module('app.auth').controller('LoginCtrl', function ($scope, $state, GooglePlus, User, ezfb) {
-
-    $scope.$on('event:google-plus-signin-success', function (event, authResult) {
-        if (authResult.status.method == 'PROMPT') {
-            GooglePlus.getUser().then(function (user) {
-                User.userName = user.name;
-                User.picture = user.picture;
-                $state.go('app.dashboard');
-            });
-        }
-    });
-
-    $scope.$on('event:facebook-signin-success', function (event, authResult) {
-        ezfb.api('/me', function (res) {
-            User.userName = res.name;
-            User.picture = 'https://graph.facebook.com/' + res.id + '/picture';
-            $state.go('app.dashboard');
-        });
-    });
-})
-
 'use strict';
 
 angular.module('app.blog').controller('blogGeneralCtrl', function ($scope, $rootScope, $http, $state, $stateParams, APP_CONFIG, User, blogService) {
@@ -7342,99 +7007,552 @@ angular.module('app.bulletinboard').controller('bulletinViewCtrl', function ($sc
         $scope.post = {};
     }
 });
+"use strict";
+
+angular.module('app.auth').directive('loginInfo', function(User){
+
+    return {
+        restrict: 'A',
+        templateUrl: 'app/auth/directives/login-info.tpl.html',
+        link: function(scope, element){
+            User.initialized.then(function () {
+                scope.user = User
+            });
+        }
+    }
+})
+
+"use strict";
+
+angular.module("app.auth").factory("authService", function($rootScope, $http, $q, localStorageService, APP_CONFIG) {
+
+    var authServiceFactory = {};
+
+    var _authentication = {
+        isAuth: false,
+        userName: ""
+    };
+
+    var _saveRegistration = function(registration) {
+
+        _logOut();
+
+        return $http.post(APP_CONFIG.ebaasRootUrl + '/api/accounts/create', registration).then(function(response) {
+            return response;
+        });
+    };
+
+    var _login = function(loginData) {
+
+        var data = "grant_type=password&username=" + loginData.userName + "&password=" + loginData.password;
+
+        var deferred = $q.defer();
+
+        var url = APP_CONFIG.ebaasRootUrl + '/oauth/token';
+
+        $http.post(url, data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).success(function(response) {
+
+            localStorageService.set('authorizationData', { token: response.access_token, userName: loginData.userName });
+
+            _authentication.isAuth = true;
+            _authentication.userName = loginData.userName;
+
+            deferred.resolve(response);
+
+        }).error(function (err, status) {
+            if (err.error === "invalid_grant")
+            {
+                err.error_description = $rootScope.getWord("Invalid user name or password");
+            }
+            _logOut();
+            deferred.reject(err);
+        });
+
+        return deferred.promise;
+
+    };
+
+    var _logOut = function() {
+
+        localStorageService.remove('authorizationData');
+
+        _authentication.isAuth = false;
+        _authentication.userName = "";
+
+    };
+
+    var _fillAuthData = function() {
+
+        var authData = localStorageService.get('authorizationData');
+        if (authData) {
+            _authentication.isAuth = true;
+            _authentication.userName = authData.userName;
+        }
+
+    }
+
+    authServiceFactory.saveRegistration = _saveRegistration;
+    authServiceFactory.login = _login;
+    authServiceFactory.logOut = _logOut;
+    authServiceFactory.fillAuthData = _fillAuthData;
+    authServiceFactory.authentication = _authentication;
+
+    return authServiceFactory;
+});
+(function (app) {
+    var LoginController = function ($rootScope, $scope, $http, $state, $location, authService, APP_CONFIG, User, TasksInfo, myActivityService, hubService) {
+
+        $scope.loginData = {
+            userName: "",
+            password: ""
+        };
+
+        $scope.message = "";
+
+        $scope.login = function () {
+            authService.login($scope.loginData).then(function (response) {
+
+                if ($rootScope.returnToState) {
+                    $location.path($rootScope.returnToState);
+                } else {
+                    $location.path('/');
+                }
+
+                // load user's info
+                User.load(function () {
+                    hubService.connect(APP_CONFIG.dbschema, function (type, message) {
+                        myActivityService.add(type, message);
+                    }); // connect to server hub to receive messages
+                }); // load user info
+
+                //get user's task count to display at header
+                $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/" + encodeURIComponent(APP_CONFIG.dbschema) + "/count")
+                    .success(function (data) {
+                        TasksInfo.count = data;
+                    });
+
+                //get user's message count to display at header
+                $http.get(APP_CONFIG.ebaasRootUrl + "/api/messages/count")
+                    .success(function (data) {
+                        myActivityService.MessageModel.count = data;
+                    });
+            },
+            function (err) {
+                $scope.message = err.error_description;
+            });
+        };
+
+        if (!String.format) {
+            String.format = function (format) {
+                var args = Array.prototype.slice.call(arguments, 1);
+                return format.replace(/{(\d+)}/g, function (match, number) {
+                    return typeof args[number] != 'undefined'
+                      ? args[number]
+                      : match
+                    ;
+                });
+            };
+        }
+  
+    }
+
+    app.controller("LoginController", LoginController);
+
+}(angular.module("app.auth")));
+"use strict";
+
+angular.module('app.auth').controller('LogoutController', function ($scope, authService, hubService) {
+    hubService.disconnect();
+    authService.logOut();
+})
+"use strict";
+
+angular.module('app.auth').controller('RegisterController', function ($scope, $location, $timeout, authService) {
+        $scope.savedSuccessfully = false;
+        $scope.message = "";
+
+        $scope.registration = {
+            userName: "",
+            lastName: "",
+            firstName: "",
+            email: "",
+            password: "",
+            confirmPassword: ""
+        };
+
+        $scope.signUp = function () {
+            authService.saveRegistration($scope.registration).then(function (response) {
+
+                $scope.savedSuccessfully = true;
+                $scope.message = "User has been registered successfully, you will be redicted to login page in 2 seconds.";
+                startTimer();
+
+            },
+             function (response) {
+                 var errors = [];
+                 for (var key in response.data.modelState) {
+                     for (var i = 0; i < response.data.modelState[key].length; i++) {
+                         errors.push(response.data.modelState[key][i]);
+                     }
+                 }
+                 $scope.message = "Failed to register user due to:" + errors.join(' ');
+             });
+        };
+
+        var startTimer = function () {
+            var timer = $timeout(function () {
+                $timeout.cancel(timer);
+                $location.path('/login');
+            }, 2000);
+        }
+
+    });
+"use strict";
+
+angular.module('app.auth').controller('LoginCtrl', function ($scope, $state, GooglePlus, User, ezfb) {
+
+    $scope.$on('event:google-plus-signin-success', function (event, authResult) {
+        if (authResult.status.method == 'PROMPT') {
+            GooglePlus.getUser().then(function (user) {
+                User.userName = user.name;
+                User.picture = user.picture;
+                $state.go('app.dashboard');
+            });
+        }
+    });
+
+    $scope.$on('event:facebook-signin-success', function (event, authResult) {
+        ezfb.api('/me', function (res) {
+            User.userName = res.name;
+            User.picture = 'https://graph.facebook.com/' + res.id + '/picture';
+            $state.go('app.dashboard');
+        });
+    });
+})
+
 
 
 'use strict';
 
-angular.module('app.datacart').factory('CartInfo', function () {
+angular.module('app.auth').factory('User', function ($http, $q, APP_CONFIG, authService) {
+    var dfd = $q.defer();
 
-    var CartModels = {};
+    function imageExists(image_url) {
 
-    function _createCartModel()
-    {
-        var cart = new Object();
-        cart.count = 0;
-        cart.items = [];
-        cart.showDataCart = false;
-        cart.dataViewName = undefined;
+        var http = new XMLHttpRequest();
 
-        return cart;
+        http.open('HEAD', image_url, false);
+        http.send();
+
+        return http.status != 404;
     }
 
-    function _getCart(dbschema, dbclass) {
-        var cart = CartModels[dbschema + dbclass];
-        if (!cart) {
-            // first time, create a model for the cart
-            cart = _createCartModel();
-            CartModels[dbschema + dbclass] = cart;
-        }
-
-        return cart;
-    }
-
-    function _addToCart(dbschema, dbclass, item) {
-        var cart = CartModels[dbschema + dbclass];
-        if (!cart)
+    var UserModel = {
+        initialized: dfd.promise,
+        userName: undefined,
+        picture: undefined,
+        email: undefined,
+        phoneNumber : undefined,
+        password: undefined,
+        confirmPassword: undefined,
+        firstName: undefined,
+        lastName: undefined,
+        displayName : undefined,
+        division: undefined,
+        address: undefined,
+        imageUrl: undefined,
+        pictureChangeTime: undefined,
+        userImageUrls: undefined,
+        load: function(callback)
         {
-            // first time, create a model for the cart
-            cart = _createCartModel();
-            CartModels[dbschema + dbclass] = cart;
-        }
+            $http.get(APP_CONFIG.ebaasRootUrl + '/api/accounts/user/' + authService.authentication.userName).then(function (response) {
+                UserModel.userName = response.data.userName;
+                UserModel.email = response.data.email;
+                UserModel.password = response.data.password;
+                UserModel.firstName = response.data.firstName;
+                UserModel.lastName = response.data.lastName;
+                UserModel.displayName = response.data.displayName;
+                UserModel.phoneNumber = response.data.phoneNumber;
+                UserModel.division = response.data.division;
+                UserModel.address = response.data.address;
+                UserModel.imageUrl = undefined;
+                UserModel.userImageUrls = {};
 
-        var arrayLength = cart.items.length;
-        var exist = false;
-        for (var i = 0; i < arrayLength; i++) {
-            if (cart.items[i].obj_id === item.obj_id) {
-                exist = true;
-                break;
+                UserModel.picture = UserModel.userName + ".png";
+
+                dfd.resolve(UserModel);
+
+                if (callback) {
+                    callback();
+                }
+            });
+        },
+        save : function (callback) {
+            var model = {};
+            model.userName = UserModel.userName;
+            model.email = UserModel.email;
+            model.phoneNumber = UserModel.phoneNumber;
+            model.firstName = UserModel.firstName;
+            model.lastName = UserModel.lastName;
+            model.picture = UserModel.picture;
+           
+            $http.post(APP_CONFIG.ebaasRootUrl + '/api/accounts/update', model).success(function (data) {
+                if (callback) {
+                    callback();
+                }
+            });
+        },
+        image : function()
+        {
+            if (!UserModel.imageUrl) {
+                var imageUrl = APP_CONFIG.avatarsUrl + UserModel.picture;
+                if (!imageExists(imageUrl)) {
+                    UserModel.imageUrl = APP_CONFIG.avatarsUrl + "male.png";
+                }
+                else {
+                    UserModel.imageUrl = imageUrl + '?' + UserModel.pictureChangeTime;
+                }
             }
-        }
-
-        if (!exist) {
-            cart.count++;
-
-            cart.items.push(item);
-        }
-    }
-
-    function _removeFromCart(dbschema, dbclass, oid) {
-        var cart = CartModels[dbschema + dbclass];
-        if (cart) {
-            var found = false;
-            var index;
-            if (cart.items.length > 0) {
-                for (var i = 0; i < cart.items.length; i++) {
-                    if (cart.items[i].obj_id === oid) {
-                        found = true;
-                        index = i;
-                        break;
+            //console.debug(UserModel.imageUrl);
+            return UserModel.imageUrl;
+        },
+        getUserImage: function (userId) {
+            if (UserModel.userImageUrls) {
+                var imageUrl = UserModel.userImageUrls[userId];
+                if (!imageUrl) {
+                    imageUrl = APP_CONFIG.avatarsUrl + userId + ".png";
+                    if (!imageExists(imageUrl)) {
+                        imageUrl = APP_CONFIG.avatarsUrl + "male.png";
+                        UserModel.userImageUrls[userId] = imageUrl;
+                    }
+                    else {
+                        UserModel.userImageUrls[userId] = imageUrl;
                     }
                 }
+            }
+            else
+            {
+                return APP_CONFIG.avatarsUrl + "male.png";
+            }
+     
+            return imageUrl;
+        }
+    };
 
-                if (found) {
-                    cart.count--;
-                    cart.items.splice(index, 1);
-                }
+    return UserModel;
+});
+
+"use strict";	
+
+angular.module('app').controller("ActivitiesCtrl", function ActivitiesCtrl($scope, $log, activityService){
+
+	$scope.activeTab = 'default';
+	$scope.currentActivityItems = [];
+	
+	// Getting different type of activites
+	activityService.get(function(data){
+
+		$scope.activities = data.activities;
+		
+	});
+
+
+	$scope.isActive = function(tab){
+		return $scope.activeTab === tab;
+	};
+
+	$scope.setTab = function(activityType){
+		$scope.activeTab = activityType;
+
+		activityService.getbytype(activityType, function(data) {
+
+			$scope.currentActivityItems = data.data;
+
+		});
+
+	};
+
+});
+"use strict";
+
+// Speed up calls to hasOwnProperty
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+function isEmpty(obj) {
+
+    // null and undefined are "empty"
+    if (obj == null) return true;
+
+    // Assume if it has a length property with a non-zero value
+    // that that property is correct.
+    if (obj.length > 0) return false;
+    if (obj.length === 0) return true;
+
+    // Otherwise, does it have any properties of its own?
+    // Note that this doesn't handle
+    // toString and valueOf enumeration bugs in IE < 9
+    for (var key in obj) {
+        if (hasOwnProperty.call(obj, key)) return false;
+    }
+
+    return true;
+}
+
+angular.module('app').directive('activitiesDropdownToggle', function($log) {
+
+	var link = function($scope,$element, attrs){
+		var ajax_dropdown = null;
+
+		$element.on('click', function () {
+			var badge = $(this).find('.badge');
+
+            /*
+			if (badge.hasClass('bg-color-red')) {
+
+				badge.removeClass('bg-color-red').text(0);
+
+			}
+            */
+
+			ajax_dropdown = $(this).next('.ajax-dropdown');
+
+			if (!ajax_dropdown.is(':visible')) {
+
+				ajax_dropdown.fadeIn(150);
+
+				$(this).addClass('active');
+
+			}
+			 else {
+				
+				ajax_dropdown.fadeOut(150);
+				
+				$(this).removeClass('active');
+
+			}
+
+		})
+
+		$(document).mouseup(function (e) {
+		    if (ajax_dropdown && !ajax_dropdown.is(e.target) && (ajax_dropdown.has(e.target).length === 0 || isEmpty(e.target))) {
+				ajax_dropdown.fadeOut(150);
+				$element.removeClass('active');
+			}
+		});
+	}
+	
+	return{
+		restrict:'EA',
+		link:link
+	}
+});
+"use strict";
+
+angular.module('app').factory('activityService', function($http, $log, APP_CONFIG) {
+
+	function getActivities(callback){
+
+		$http.get(APP_CONFIG.apiRootUrl + '/activities/activity.json').success(function(data){
+
+			callback(data);
+				
+		}).error(function(){
+
+			$log.log('Error');
+			callback([]);
+
+		});
+
+	}
+
+	function getActivitiesByType(type, callback){
+
+		$http.get(APP_CONFIG.apiRootUrl + '/activities/activity-' + type + '.json').success(function(data){
+
+			callback(data);
+				
+		}).error(function(){
+
+			$log.log('Error');
+			callback([]);
+
+		});
+
+	}
+	
+	return{
+		get:function(callback){
+			getActivities(callback);
+		},
+		getbytype:function(type,callback){
+			getActivitiesByType(type, callback);
+		}
+	}
+});
+"use strict";
+
+angular.module('app').factory('Project', function($http, APP_CONFIG){
+    return {
+        list: $http.get(APP_CONFIG.apiRootUrl + '/projects.json')
+    }
+});
+"use strict";
+
+angular.module('app').directive('recentProjects', function(Project){
+    return {
+        restrict: "EA",
+        replace: true,
+        templateUrl: "app/dashboard/projects/recent-projects.tpl.html",
+        scope: true,
+        link: function(scope, element){
+
+            Project.list.then(function(response){
+                scope.projects = response.data;
+            });
+            scope.clearProjects = function(){
+                scope.projects = [];
             }
         }
     }
-
-    function _clearCart(dbschema, dbclass) {
-        var cart = CartModels[dbschema + dbclass];
-        if (cart) {
-            cart.count = 0;
-            cart.items = [];
-        }
-    }
-
-    return {
-        getCart : _getCart,
-        addToCart: _addToCart,
-        removeFromCart: _removeFromCart,
-        clearCart: _clearCart
-    }
 });
+"use strict";
 
+angular.module('app').controller('TodoCtrl', function ($scope, $timeout, Todo) {
+    $scope.newTodo = undefined;
+
+    $scope.states = ['Critical', 'Important', 'Completed'];
+
+    $scope.todos = Todo.getList().$object;
+
+    // $scope.$watch('todos', function(){ }, true)
+
+    $scope.toggleAdd = function () {
+        if (!$scope.newTodo) {
+            $scope.newTodo = {
+                state: 'Important'
+            };
+        } else {
+            $scope.newTodo = undefined;
+        }
+    };
+
+    $scope.createTodo = function () {
+        $scope.todos.push($scope.newTodo);
+        $scope.newTodo = undefined;
+        // $scope.newTodo.$save(function (respoonse) {
+        //     $scope.todos.push(respoonse);
+        //     $scope.newTodo = undefined;
+        // });
+    };
+
+    $scope.deleteTodo = function (todo) {
+        todo.remove().then(function () {
+            $scope.todos.splice($scope.todos.indexOf(todo), 1);
+        });
+
+    };
+
+});
 "use strict";
 
 angular.module('app.datacart').controller('addToDataCartCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, CartInfo, dataCartService) {
@@ -7707,339 +7825,99 @@ angular.module('app.datacart').controller('downloadReportsCtrl', function ($scop
         $modalInstance.dismiss("dismiss");
     };
 });
-"use strict";	
-
-angular.module('app').controller("ActivitiesCtrl", function ActivitiesCtrl($scope, $log, activityService){
-
-	$scope.activeTab = 'default';
-	$scope.currentActivityItems = [];
-	
-	// Getting different type of activites
-	activityService.get(function(data){
-
-		$scope.activities = data.activities;
-		
-	});
 
 
-	$scope.isActive = function(tab){
-		return $scope.activeTab === tab;
-	};
-
-	$scope.setTab = function(activityType){
-		$scope.activeTab = activityType;
-
-		activityService.getbytype(activityType, function(data) {
-
-			$scope.currentActivityItems = data.data;
-
-		});
-
-	};
-
-});
-"use strict";
-
-// Speed up calls to hasOwnProperty
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-
-function isEmpty(obj) {
-
-    // null and undefined are "empty"
-    if (obj == null) return true;
-
-    // Assume if it has a length property with a non-zero value
-    // that that property is correct.
-    if (obj.length > 0) return false;
-    if (obj.length === 0) return true;
-
-    // Otherwise, does it have any properties of its own?
-    // Note that this doesn't handle
-    // toString and valueOf enumeration bugs in IE < 9
-    for (var key in obj) {
-        if (hasOwnProperty.call(obj, key)) return false;
-    }
-
-    return true;
-}
-
-angular.module('app').directive('activitiesDropdownToggle', function($log) {
-
-	var link = function($scope,$element, attrs){
-		var ajax_dropdown = null;
-
-		$element.on('click', function () {
-			var badge = $(this).find('.badge');
-
-            /*
-			if (badge.hasClass('bg-color-red')) {
-
-				badge.removeClass('bg-color-red').text(0);
-
-			}
-            */
-
-			ajax_dropdown = $(this).next('.ajax-dropdown');
-
-			if (!ajax_dropdown.is(':visible')) {
-
-				ajax_dropdown.fadeIn(150);
-
-				$(this).addClass('active');
-
-			}
-			 else {
-				
-				ajax_dropdown.fadeOut(150);
-				
-				$(this).removeClass('active');
-
-			}
-
-		})
-
-		$(document).mouseup(function (e) {
-		    if (ajax_dropdown && !ajax_dropdown.is(e.target) && (ajax_dropdown.has(e.target).length === 0 || isEmpty(e.target))) {
-				ajax_dropdown.fadeOut(150);
-				$element.removeClass('active');
-			}
-		});
-	}
-	
-	return{
-		restrict:'EA',
-		link:link
-	}
-});
-"use strict";
-
-angular.module('app').factory('activityService', function($http, $log, APP_CONFIG) {
-
-	function getActivities(callback){
-
-		$http.get(APP_CONFIG.apiRootUrl + '/activities/activity.json').success(function(data){
-
-			callback(data);
-				
-		}).error(function(){
-
-			$log.log('Error');
-			callback([]);
-
-		});
-
-	}
-
-	function getActivitiesByType(type, callback){
-
-		$http.get(APP_CONFIG.apiRootUrl + '/activities/activity-' + type + '.json').success(function(data){
-
-			callback(data);
-				
-		}).error(function(){
-
-			$log.log('Error');
-			callback([]);
-
-		});
-
-	}
-	
-	return{
-		get:function(callback){
-			getActivities(callback);
-		},
-		getbytype:function(type,callback){
-			getActivitiesByType(type, callback);
-		}
-	}
-});
-"use strict";
-
-angular.module('app').factory('Project', function($http, APP_CONFIG){
-    return {
-        list: $http.get(APP_CONFIG.apiRootUrl + '/projects.json')
-    }
-});
-"use strict";
-
-angular.module('app').directive('recentProjects', function(Project){
-    return {
-        restrict: "EA",
-        replace: true,
-        templateUrl: "app/dashboard/projects/recent-projects.tpl.html",
-        scope: true,
-        link: function(scope, element){
-
-            Project.list.then(function(response){
-                scope.projects = response.data;
-            });
-            scope.clearProjects = function(){
-                scope.projects = [];
-            }
-        }
-    }
-});
-"use strict";
-
-angular.module('app').controller('TodoCtrl', function ($scope, $timeout, Todo) {
-    $scope.newTodo = undefined;
-
-    $scope.states = ['Critical', 'Important', 'Completed'];
-
-    $scope.todos = Todo.getList().$object;
-
-    // $scope.$watch('todos', function(){ }, true)
-
-    $scope.toggleAdd = function () {
-        if (!$scope.newTodo) {
-            $scope.newTodo = {
-                state: 'Important'
-            };
-        } else {
-            $scope.newTodo = undefined;
-        }
-    };
-
-    $scope.createTodo = function () {
-        $scope.todos.push($scope.newTodo);
-        $scope.newTodo = undefined;
-        // $scope.newTodo.$save(function (respoonse) {
-        //     $scope.todos.push(respoonse);
-        //     $scope.newTodo = undefined;
-        // });
-    };
-
-    $scope.deleteTodo = function (todo) {
-        todo.remove().then(function () {
-            $scope.todos.splice($scope.todos.indexOf(todo), 1);
-        });
-
-    };
-
-});
 'use strict';
 
-angular.module('app.dataImporter').controller('dataImportCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, Upload) {
+angular.module('app.datacart').factory('CartInfo', function () {
 
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
-    $scope.oid = $stateParams.oid;
-    $scope.relatedclass = $stateParams.relatedclass;
+    var CartModels = {};
 
-    $scope.selectedScript = undefined;
-    $scope.submitted = false;
-    $scope.loading = false;
-
-    var url;
-    if (!$scope.relatedclass) {
-        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/All";
-    }
-    else
+    function _createCartModel()
     {
-        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.relatedclass + "/All";
+        var cart = new Object();
+        cart.count = 0;
+        cart.items = [];
+        cart.showDataCart = false;
+        cart.dataViewName = undefined;
+
+        return cart;
     }
 
-    $http.get(url).success(function (data) {
-        $scope.scripts = data.scripts;
-    });
-
-    // upload on file select or drop
-    $scope.uploadFile = function (file) {
-        $scope.loading = true;
-        var uploadUrl;
-
-        if ($scope.selectedScript.name === "Data Package") {
-            uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/import/datapackage/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass;
+    function _getCart(dbschema, dbclass) {
+        var cart = CartModels[dbschema + dbclass];
+        if (!cart) {
+            // first time, create a model for the cart
+            cart = _createCartModel();
+            CartModels[dbschema + dbclass] = cart;
         }
-        else {
-            if (!$scope.relatedclass) {
-                uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/import/files/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + encodeURIComponent($scope.selectedScript.name);
+
+        return cart;
+    }
+
+    function _addToCart(dbschema, dbclass, item) {
+        var cart = CartModels[dbschema + dbclass];
+        if (!cart)
+        {
+            // first time, create a model for the cart
+            cart = _createCartModel();
+            CartModels[dbschema + dbclass] = cart;
+        }
+
+        var arrayLength = cart.items.length;
+        var exist = false;
+        for (var i = 0; i < arrayLength; i++) {
+            if (cart.items[i].obj_id === item.obj_id) {
+                exist = true;
+                break;
             }
-            else {
-                uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/import/files/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + $scope.oid + "/" + $scope.relatedclass + "/" + encodeURIComponent($scope.selectedScript.name);
-            }
         }
 
-        if ($scope.selectedScript) {
-            
-            Upload.upload({
-                url: uploadUrl,
-                data: { file: file }
-            }).then(function (resp) {
-                $scope.errorMsg = "";
-                file.result = resp.data;
-                $scope.loading = false;
-                $scope.submitted = true;
-                $scope.selectedScript = undefined;
-                //console.log(resp);
-            }, function (resp) {
-                if (resp.status > 0)
-                    $scope.errorMsg = resp.status + ': ' + resp.data.message;
-                $scope.loading = false;
-            }, function (evt) {
-                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                file.progress = progressPercentage;
-            });
+        if (!exist) {
+            cart.count++;
+
+            cart.items.push(item);
         }
-    };
+    }
 
-    $scope.selectFile = function()
-    {
-        var fileType = undefined
-        if ($scope.file && $scope.file.name) {
-            var extension = $scope.file.name.split('.').pop();
-            if (extension) {
-                switch (extension.toUpperCase()) {
-                    case "XLS":
-                    case "XLSX":
-                        fileType = "Excel";
+    function _removeFromCart(dbschema, dbclass, oid) {
+        var cart = CartModels[dbschema + dbclass];
+        if (cart) {
+            var found = false;
+            var index;
+            if (cart.items.length > 0) {
+                for (var i = 0; i < cart.items.length; i++) {
+                    if (cart.items[i].obj_id === oid) {
+                        found = true;
+                        index = i;
                         break;
-                    case "TXT":
-                    case "CSV":
-                    case "DAT":
-
-                        fileType = "Text";
-                        break;
-                    case "PAK":
-
-                        fileType = "DataPackage";
-                        break;
-                    default:
-                        fileType = "Other";
-                        break;
-                }
-
-                var url;
-                if (fileType != "DataPackage") {
-                    if (!$scope.relatedclass) {
-                        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + fileType;
                     }
-                    else {
-                        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.relatedclass + "/" + fileType;
-                    }
-
-                    $http.get(url).success(function (data) {
-                        $scope.scripts = data.scripts;
-                    });
                 }
-                else
-                {
-                    $scope.selectedScript = { name: "Data Package" };
-                    $scope.scripts = [{ name: "Data Package" }];
+
+                if (found) {
+                    cart.count--;
+                    cart.items.splice(index, 1);
                 }
             }
         }
     }
 
-    $scope.closeModal = function ()
-    {
-        if ($scope.submitted)
-            $modalInstance.close("update");
-        else
-            $modalInstance.dismiss("dismiss");
+    function _clearCart(dbschema, dbclass) {
+        var cart = CartModels[dbschema + dbclass];
+        if (cart) {
+            cart.count = 0;
+            cart.items = [];
+        }
+    }
+
+    return {
+        getCart : _getCart,
+        addToCart: _addToCart,
+        removeFromCart: _removeFromCart,
+        clearCart: _clearCart
     }
 });
+
 'use strict';
 
 angular.module('app.datacatalog').controller('DataCatalogLayoutCtrl', function ($http, APP_CONFIG, $scope, $state, $stateParams, propmisedParams, MetaDataCache, CartInfo) {
@@ -10165,6 +10043,26 @@ angular
   .directive('rowSelect', rowSelect)
 'use strict';
 
+angular.module('app.filemanager').directive('ebaasFileManager', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/filemanager/views/file-manager.html',
+        replace: true,
+        scope: {},
+        bindToController: {
+            dbschema: '=',
+            dbclass: '=',
+            oid: '=',
+            prefix: '='
+        },
+        controllerAs: 'vm',
+        controller: 'fileManagerCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
+'use strict';
+
 angular.module('app.filemanager').controller('fileManagerCtrl', function ($scope, $rootScope, fileManager, APP_CONFIG, $stateParams) {
 
     /* jshint validthis:true */
@@ -10349,22 +10247,124 @@ angular.module('app.filemanager').controller('fileManagerViewerCtrl', function (
 
 'use strict';
 
-angular.module('app.filemanager').directive('ebaasFileManager', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/filemanager/views/file-manager.html',
-        replace: true,
-        scope: {},
-        bindToController: {
-            dbschema: '=',
-            dbclass: '=',
-            oid: '=',
-            prefix: '='
-        },
-        controllerAs: 'vm',
-        controller: 'fileManagerCtrl',
-        link: function (scope, element, attributes) {
+angular.module('app.dataImporter').controller('dataImportCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, Upload) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+    $scope.oid = $stateParams.oid;
+    $scope.relatedclass = $stateParams.relatedclass;
+
+    $scope.selectedScript = undefined;
+    $scope.submitted = false;
+    $scope.loading = false;
+
+    var url;
+    if (!$scope.relatedclass) {
+        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/All";
+    }
+    else
+    {
+        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.relatedclass + "/All";
+    }
+
+    $http.get(url).success(function (data) {
+        $scope.scripts = data.scripts;
+    });
+
+    // upload on file select or drop
+    $scope.uploadFile = function (file) {
+        $scope.loading = true;
+        var uploadUrl;
+
+        if ($scope.selectedScript.name === "Data Package") {
+            uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/import/datapackage/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass;
         }
+        else {
+            if (!$scope.relatedclass) {
+                uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/import/files/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + encodeURIComponent($scope.selectedScript.name);
+            }
+            else {
+                uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/import/files/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + $scope.oid + "/" + $scope.relatedclass + "/" + encodeURIComponent($scope.selectedScript.name);
+            }
+        }
+
+        if ($scope.selectedScript) {
+            
+            Upload.upload({
+                url: uploadUrl,
+                data: { file: file }
+            }).then(function (resp) {
+                $scope.errorMsg = "";
+                file.result = resp.data;
+                $scope.loading = false;
+                $scope.submitted = true;
+                $scope.selectedScript = undefined;
+                //console.log(resp);
+            }, function (resp) {
+                if (resp.status > 0)
+                    $scope.errorMsg = resp.status + ': ' + resp.data.message;
+                $scope.loading = false;
+            }, function (evt) {
+                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                file.progress = progressPercentage;
+            });
+        }
+    };
+
+    $scope.selectFile = function()
+    {
+        var fileType = undefined
+        if ($scope.file && $scope.file.name) {
+            var extension = $scope.file.name.split('.').pop();
+            if (extension) {
+                switch (extension.toUpperCase()) {
+                    case "XLS":
+                    case "XLSX":
+                        fileType = "Excel";
+                        break;
+                    case "TXT":
+                    case "CSV":
+                    case "DAT":
+
+                        fileType = "Text";
+                        break;
+                    case "PAK":
+
+                        fileType = "DataPackage";
+                        break;
+                    default:
+                        fileType = "Other";
+                        break;
+                }
+
+                var url;
+                if (fileType != "DataPackage") {
+                    if (!$scope.relatedclass) {
+                        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + fileType;
+                    }
+                    else {
+                        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.relatedclass + "/" + fileType;
+                    }
+
+                    $http.get(url).success(function (data) {
+                        $scope.scripts = data.scripts;
+                    });
+                }
+                else
+                {
+                    $scope.selectedScript = { name: "Data Package" };
+                    $scope.scripts = [{ name: "Data Package" }];
+                }
+            }
+        }
+    }
+
+    $scope.closeModal = function ()
+    {
+        if ($scope.submitted)
+            $modalInstance.close("update");
+        else
+            $modalInstance.dismiss("dismiss");
     }
 });
 'use strict';
@@ -11138,63 +11138,6 @@ angular.module('app.forms').controller('ModalDemoCtrl', function($scope, $modalI
         $modalInstance.dismiss('cancel');
     }
 });
-"use strict";
-
-
-angular.module('app.fulltextsearch').controller('searchResultCtrl', function ($scope, $http, $state, $stateParams, APP_CONFIG, searchContext, searchService) {
-
-    $scope.searchCounts = [];
-    $scope.loading = true;
-    searchService.getSearchResultCounts(APP_CONFIG.dbschema, searchContext.searchText, function (counts) {
-
-        $scope.searchCounts = counts;
-        $scope.loading = false;
-
-        if (counts.length == 1) {
-            // show the matched items if there is only one class contains them
-            $state.go('app.smarttables.datagrid', { schema: APP_CONFIG.dbschema, class: counts[0].className, search: 'fulltext' });
-        }
-    });
-
-    $scope.showClassData = function (className) {
-        $state.go('app.smarttables.datagrid', { schema: APP_CONFIG.dbschema, class: className, search: 'fulltext' });
-    }
-});
-"use strict";
-
-angular.module('app.fulltextsearch').factory('searchService', function ($http, APP_CONFIG) {
-
-    function getResultCounts(dbschema, searchtext, callback) {
-      
-        var url = APP_CONFIG.ebaasRootUrl + "/api/search/" + encodeURIComponent(dbschema) + "/counts?searchtext=" + encodeURIComponent(searchtext);
-
-	    $http.get(url).success(function (data) {
-	        callback(data);
-				
-		}).error(function(){
-		    callback([]);
-		});
-    }
-	
-	return {
-	    getSearchResultCounts: function (dbschema, searchtext, callback) {
-	        getResultCounts(dbschema, searchtext, callback);
-	    }
-	}
-});
-
-
-'use strict';
-
-angular.module('app.fulltextsearch').factory('searchContext', function () {
-
-    var SearchContextModel = {
-            searchText: undefined
-        };
-
-    return SearchContextModel;
-});
-
 'use strict';
 
 angular.module('app.forum').controller('forumGeneralCtrl', function ($scope, $rootScope, $http, $state, $stateParams, APP_CONFIG, promisedGroups, forumService) {
@@ -11882,6 +11825,563 @@ angular.module('app.forum').controller('forumTopicsCtrl', function ($scope, $roo
         });
     }
 });
+'use strict';
+
+angular.module('app.galleryview').controller('galleryViewCtrl', function ($scope, $rootScope, $http, $state, $stateParams, APP_CONFIG, promiseParams, promiseClassInfo, promiseItems, promisedCommands) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+
+    if ($stateParams.pageIndex) {
+        $scope.pageIndex = parseInt($stateParams.pageIndex);
+    }
+    else {
+        $scope.pageIndex = 0;
+    }
+
+    var itemCollection = promiseItems.data;
+    var commands = promisedCommands.data;
+    $scope.commands = commands;
+ 
+    var params = promiseParams.data;
+    var title = params['title'];
+    var desc = params['desc'];
+    var smallImage = params['smallImage'];
+    var fullImage = params['fullImage'];
+
+    $scope.classInfo = promiseClassInfo.data;
+
+    $scope.items = new Array();
+
+    if (itemCollection) {
+        for (var i = 0; i < itemCollection.length; i++) {
+            var rawItem = itemCollection[i];
+
+            var item = new Object();
+            item.title = rawItem[title];
+            item.description = rawItem[desc];
+            item.alt = "Alt";
+            if (rawItem[smallImage]) {
+                item.img_thumb = "styles/custom/" + rawItem[smallImage];
+            }
+            else {
+                item.img_thumb = "styles/img/default-thumb.jpg";
+            }
+            if (rawItem[fullImage]) {
+                item.img_full = "styles/custom/" + rawItem[fullImage];
+            }
+            else {
+                item.img_full = "styles/img/default-full.jpg";
+            }
+            item.type = rawItem.type;
+            item.obj_id = rawItem.obj_id;
+
+            $scope.items.push(item);
+        }
+    }
+
+    var gotoState = function (title, dbschema, dbclass, oid) {
+  
+        var commands = $scope.commands;
+        var url = undefined;
+        var cmdUrl = undefined;
+        var params = undefined;
+        var cmdInfo;
+        for (var cmd in commands) {
+            if (commands.hasOwnProperty(cmd)) {
+                cmdInfo = commands[cmd];
+                if (cmdInfo.title === title) {
+                    url = cmdInfo.url;
+                    cmdUrl = cmdInfo.url;
+                    params = new Object();
+                    params.schema = dbschema;
+                    params.class = dbclass;
+                    params.oid = oid;
+                    params.cmdHash = cmdInfo.hash;
+                    // add command's parameters to the state parameters
+                    if (cmdInfo.parameters) {
+                        for (var key in cmdInfo.parameters) {
+                            if (cmdInfo.parameters.hasOwnProperty(key)) {
+                                params[key] = cmdInfo.parameters[key];
+                            }
+                        }
+                    };
+
+                    break;
+                }
+            }
+        }
+
+        if (url) {
+            if (cmdUrl === ".modalform") {
+                $state.go("app.smarttables.datagrid.modalform", params, { location: false, notify: false });
+            }
+            else {
+                $state.go(url, params);
+            }
+        }
+    }
+
+    var allowWrite = true;
+    var allowDelete = true;
+    
+    if (itemCollection &&
+        itemCollection.length > 0)
+    {
+        allowWrite = itemCollection[0].allowWrite;
+        allowDelete = itemCollection[0].allowDelete;
+    }
+
+    $scope.actions = new Array();
+    var cmdInfo;
+    var action;
+    for (var cmd in commands) {
+        if (commands.hasOwnProperty(cmd)) {
+            cmdInfo = commands[cmd];
+            if (cmdInfo.url === ".modalform") {
+                action = new Object();
+                action.label = cmdInfo.title;
+                action.cssclass = "btn btn-success btn-sm";
+
+                action.action = function (entry) {
+                    gotoState(cmdInfo.title, $scope.dbschema, entry.type, entry.obj_id);
+                }
+
+                $scope.actions.push(action);
+            }
+        }
+    }
+
+    // add standard commands
+    $scope.actions.push({
+        label: $rootScope.getWord('Attachments'),
+        cssclass: "btn btn-success btn-sm",
+        action: function (entry) {
+            $state.go('app.smarttables.datagrid.attachments', { schema: $scope.dbschema, class: entry.type, oid: entry.obj_id }, { location: false, notify: false });
+        }
+    });
+
+    if (allowWrite && $stateParams.edit !== "false") {
+        $scope.actions.push({
+            label: $rootScope.getWord('Edit'),
+            cssclass: "btn btn-success btn-sm",
+            action: function (entry) {
+                $state.go('app.smarttables.datagrid.modalform', { schema: $scope.dbschema, class: entry.type, oid: entry.obj_id }, { location: false, notify: false });
+            }
+        });
+    }
+
+    /*
+    if (allowDelete && $stateParams.delete !== "false") {
+        $scope.actions.push({
+            label: $rootScope.getWord('Delete'),
+            cssclass: "btn btn-danger btn-sm",
+            action: function () {
+                alert("Delete called");
+            }
+        });
+    }
+    */
+
+    $scope.getTitle = function()
+    {
+        // return class title
+        return $scope.classInfo.title;
+    }
+
+    $scope.reload = function (pageIndex) {
+        var params = new Object();
+
+        params.pageIndex = pageIndex;
+        $scope.pageIndex = pageIndex;
+
+        $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
+    }
+
+    $scope.prev = function () {
+        var params = new Object();
+
+        if ($scope.pageIndex > 0) {
+            var pageIndex = $scope.pageIndex - 1;
+            params.pageIndex = pageIndex;
+            $scope.pageIndex = pageIndex;
+
+            $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
+        }
+    }
+
+    $scope.next = function () {
+        var params = new Object();
+
+        var pageIndex = $scope.pageIndex + 1;
+        params.pageIndex = pageIndex;
+        $scope.pageIndex = pageIndex;
+
+        $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
+    }
+});
+"use strict";
+
+
+angular.module('app.fulltextsearch').controller('searchResultCtrl', function ($scope, $http, $state, $stateParams, APP_CONFIG, searchContext, searchService) {
+
+    $scope.searchCounts = [];
+    $scope.loading = true;
+    searchService.getSearchResultCounts(APP_CONFIG.dbschema, searchContext.searchText, function (counts) {
+
+        $scope.searchCounts = counts;
+        $scope.loading = false;
+
+        if (counts.length == 1) {
+            // show the matched items if there is only one class contains them
+            $state.go('app.smarttables.datagrid', { schema: APP_CONFIG.dbschema, class: counts[0].className, search: 'fulltext' });
+        }
+    });
+
+    $scope.showClassData = function (className) {
+        $state.go('app.smarttables.datagrid', { schema: APP_CONFIG.dbschema, class: className, search: 'fulltext' });
+    }
+});
+"use strict";
+
+angular.module('app.fulltextsearch').factory('searchService', function ($http, APP_CONFIG) {
+
+    function getResultCounts(dbschema, searchtext, callback) {
+      
+        var url = APP_CONFIG.ebaasRootUrl + "/api/search/" + encodeURIComponent(dbschema) + "/counts?searchtext=" + encodeURIComponent(searchtext);
+
+	    $http.get(url).success(function (data) {
+	        callback(data);
+				
+		}).error(function(){
+		    callback([]);
+		});
+    }
+	
+	return {
+	    getSearchResultCounts: function (dbschema, searchtext, callback) {
+	        getResultCounts(dbschema, searchtext, callback);
+	    }
+	}
+});
+
+
+'use strict';
+
+angular.module('app.fulltextsearch').factory('searchContext', function () {
+
+    var SearchContextModel = {
+            searchText: undefined
+        };
+
+    return SearchContextModel;
+});
+
+"use strict";
+
+angular.module('app.graphs').controller('FlotCtrl', function ($scope) {
+
+
+    $scope.salesChartData = [
+        [1196463600000, 0],
+        [1196550000000, 0],
+        [1196636400000, 0],
+        [1196722800000, 77],
+        [1196809200000, 3636],
+        [1196895600000, 3575],
+        [1196982000000, 2736],
+        [1197068400000, 1086],
+        [1197154800000, 676],
+        [1197241200000, 1205],
+        [1197327600000, 906],
+        [1197414000000, 710],
+        [1197500400000, 639],
+        [1197586800000, 540],
+        [1197673200000, 435],
+        [1197759600000, 301],
+        [1197846000000, 575],
+        [1197932400000, 481],
+        [1198018800000, 591],
+        [1198105200000, 608],
+        [1198191600000, 459],
+        [1198278000000, 234],
+        [1198364400000, 1352],
+        [1198450800000, 686],
+        [1198537200000, 279],
+        [1198623600000, 449],
+        [1198710000000, 468],
+        [1198796400000, 392],
+        [1198882800000, 282],
+        [1198969200000, 208],
+        [1199055600000, 229],
+        [1199142000000, 177],
+        [1199228400000, 374],
+        [1199314800000, 436],
+        [1199401200000, 404],
+        [1199487600000, 253],
+        [1199574000000, 218],
+        [1199660400000, 476],
+        [1199746800000, 462],
+        [1199833200000, 500],
+        [1199919600000, 700],
+        [1200006000000, 750],
+        [1200092400000, 600],
+        [1200178800000, 500],
+        [1200265200000, 900],
+        [1200351600000, 930],
+        [1200438000000, 1200],
+        [1200524400000, 980],
+        [1200610800000, 950],
+        [1200697200000, 900],
+        [1200783600000, 1000],
+        [1200870000000, 1050],
+        [1200956400000, 1150],
+        [1201042800000, 1100],
+        [1201129200000, 1200],
+        [1201215600000, 1300],
+        [1201302000000, 1700],
+        [1201388400000, 1450],
+        [1201474800000, 1500],
+        [1201561200000, 546],
+        [1201647600000, 614],
+        [1201734000000, 954],
+        [1201820400000, 1700],
+        [1201906800000, 1800],
+        [1201993200000, 1900],
+        [1202079600000, 2000],
+        [1202166000000, 2100],
+        [1202252400000, 2200],
+        [1202338800000, 2300],
+        [1202425200000, 2400],
+        [1202511600000, 2550],
+        [1202598000000, 2600],
+        [1202684400000, 2500],
+        [1202770800000, 2700],
+        [1202857200000, 2750],
+        [1202943600000, 2800],
+        [1203030000000, 3245],
+        [1203116400000, 3345],
+        [1203202800000, 3000],
+        [1203289200000, 3200],
+        [1203375600000, 3300],
+        [1203462000000, 3400],
+        [1203548400000, 3600],
+        [1203634800000, 3700],
+        [1203721200000, 3800],
+        [1203807600000, 4000],
+        [1203894000000, 4500]
+    ]
+        .map(function (item) {
+            return [
+                item[0] + 60 * 60 * 1000,
+                item[1]
+            ]
+        });
+
+    $scope.barChartData = _.range(3).map(function (barNum) {
+        return {
+            data: _.range(12).map(function (i) {
+                return [i, parseInt(Math.random() * 30)]
+            }),
+            bars: {
+                show: true,
+                barWidth: 0.2,
+                order: barNum + 1
+            }
+        }
+    });
+
+    $scope.horizontalBarChartData = _.range(3).map(function (barNum) {
+        return {
+            data: _.range(4).map(function (i) {
+                return [i, parseInt(Math.random() * 30)]
+            }),
+            bars: {
+                horizontal: true,
+                show: true,
+                barWidth: 0.2,
+                order: barNum + 1
+            }
+        }
+    });
+
+    $scope.sinChartData = [
+        {
+            data: _.range(16).map(function (i) {
+                return [i, Math.sin(i)];
+            }),
+            label: "sin(x)"
+        },
+        {
+            data: _.range(16).map(function (i) {
+                return [i, Math.cos(i)];
+            }),
+            label: "cos(x)"
+        }
+    ];
+
+
+    // fill chart
+
+    var males = {
+        '15%' : [[2, 88.0], [3, 93.3], [4, 102.0], [5, 108.5], [6, 115.7], [7, 115.6], [8, 124.6], [9, 130.3], [10, 134.3], [11, 141.4], [12, 146.5], [13, 151.7], [14, 159.9], [15, 165.4], [16, 167.8], [17, 168.7], [18, 169.5], [19, 168.0]],
+        '90%' : [[2, 96.8], [3, 105.2], [4, 113.9], [5, 120.8], [6, 127.0], [7, 133.1], [8, 139.1], [9, 143.9], [10, 151.3], [11, 161.1], [12, 164.8], [13, 173.5], [14, 179.0], [15, 182.0], [16, 186.9], [17, 185.2], [18, 186.3], [19, 186.6]],
+        '25%' : [[2, 89.2], [3, 94.9], [4, 104.4], [5, 111.4], [6, 117.5], [7, 120.2], [8, 127.1], [9, 132.9], [10, 136.8], [11, 144.4], [12, 149.5], [13, 154.1], [14, 163.1], [15, 169.2], [16, 170.4], [17, 171.2], [18, 172.4], [19, 170.8]],
+        '10%' : [[2, 86.9], [3, 92.6], [4, 99.9], [5, 107.0], [6, 114.0], [7, 113.5], [8, 123.6], [9, 129.2], [10, 133.0], [11, 140.6], [12, 145.2], [13, 149.7], [14, 158.4], [15, 163.5], [16, 166.9], [17, 167.5], [18, 167.1], [19, 165.3]],
+        'mean' : [[2, 91.9], [3, 98.5], [4, 107.1], [5, 114.4], [6, 120.6], [7, 124.7], [8, 131.1], [9, 136.8], [10, 142.3], [11, 150.0], [12, 154.7], [13, 161.9], [14, 168.7], [15, 173.6], [16, 175.9], [17, 176.6], [18, 176.8], [19, 176.7]],
+        '75%' : [[2, 94.5], [3, 102.1], [4, 110.8], [5, 117.9], [6, 124.0], [7, 129.3], [8, 134.6], [9, 141.4], [10, 147.0], [11, 156.1], [12, 160.3], [13, 168.3], [14, 174.7], [15, 178.0], [16, 180.2], [17, 181.7], [18, 181.3], [19, 182.5]],
+        '85%' : [[2, 96.2], [3, 103.8], [4, 111.8], [5, 119.6], [6, 125.6], [7, 131.5], [8, 138.0], [9, 143.3], [10, 149.3], [11, 159.8], [12, 162.5], [13, 171.3], [14, 177.5], [15, 180.2], [16, 183.8], [17, 183.4], [18, 183.5], [19, 185.5]],
+        '50%' : [[2, 91.9], [3, 98.2], [4, 106.8], [5, 114.6], [6, 120.8], [7, 125.2], [8, 130.3], [9, 137.1], [10, 141.5], [11, 149.4], [12, 153.9], [13, 162.2], [14, 169.0], [15, 174.8], [16, 176.0], [17, 176.8], [18, 176.4], [19, 177.4]]
+    };
+
+    var females = {
+        '15%' : [[2, 84.8], [3, 93.7], [4, 100.6], [5, 105.8], [6, 113.3], [7, 119.3], [8, 124.3], [9, 131.4], [10, 136.9], [11, 143.8], [12, 149.4], [13, 151.2], [14, 152.3], [15, 155.9], [16, 154.7], [17, 157.0], [18, 156.1], [19, 155.4]],
+        '90%' : [[2, 95.6], [3, 104.1], [4, 111.9], [5, 119.6], [6, 127.6], [7, 133.1], [8, 138.7], [9, 147.1], [10, 152.8], [11, 161.3], [12, 166.6], [13, 167.9], [14, 169.3], [15, 170.1], [16, 172.4], [17, 169.2], [18, 171.1], [19, 172.4]],
+        '25%' : [[2, 87.2], [3, 95.9], [4, 101.9], [5, 107.4], [6, 114.8], [7, 121.4], [8, 126.8], [9, 133.4], [10, 138.6], [11, 146.2], [12, 152.0], [13, 153.8], [14, 155.7], [15, 158.4], [16, 157.0], [17, 158.5], [18, 158.4], [19, 158.1]],
+        '10%' : [[2, 84.0], [3, 91.9], [4, 99.2], [5, 105.2], [6, 112.7], [7, 118.0], [8, 123.3], [9, 130.2], [10, 135.0], [11, 141.1], [12, 148.3], [13, 150.0], [14, 150.7], [15, 154.3], [16, 153.6], [17, 155.6], [18, 154.7], [19, 153.1]],
+        'mean' : [[2, 90.2], [3, 98.3], [4, 105.2], [5, 112.2], [6, 119.0], [7, 125.8], [8, 131.3], [9, 138.6], [10, 144.2], [11, 151.3], [12, 156.7], [13, 158.6], [14, 160.5], [15, 162.1], [16, 162.9], [17, 162.2], [18, 163.0], [19, 163.1]],
+        '75%' : [[2, 93.2], [3, 101.5], [4, 107.9], [5, 116.6], [6, 122.8], [7, 129.3], [8, 135.2], [9, 143.7], [10, 148.7], [11, 156.9], [12, 160.8], [13, 163.0], [14, 165.0], [15, 165.8], [16, 168.7], [17, 166.2], [18, 167.6], [19, 168.0]],
+        '85%' : [[2, 94.5], [3, 102.8], [4, 110.4], [5, 119.0], [6, 125.7], [7, 131.5], [8, 137.9], [9, 146.0], [10, 151.3], [11, 159.9], [12, 164.0], [13, 166.5], [14, 167.5], [15, 168.5], [16, 171.5], [17, 168.0], [18, 169.8], [19, 170.3]],
+        '50%' : [[2, 90.2], [3, 98.1], [4, 105.2], [5, 111.7], [6, 118.2], [7, 125.6], [8, 130.5], [9, 138.3], [10, 143.7], [11, 151.4], [12, 156.7], [13, 157.7], [14, 161.0], [15, 162.0], [16, 162.8], [17, 162.2], [18, 162.8], [19, 163.3]]
+    };
+
+    $scope.fillChartData = [{
+        label : 'female mean',
+        data : females['mean'],
+        lines : {
+            show : true
+        },
+        color : "rgb(255,50,50)"
+    }, {
+        id : 'f15%',
+        data : females['15%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : false
+        },
+        color : "rgb(255,50,50)"
+    }, {
+        id : 'f25%',
+        data : females['25%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : 0.2
+        },
+        color : "rgb(255,50,50)",
+        fillBetween : 'f15%'
+    }, {
+        id : 'f50%',
+        data : females['50%'],
+        lines : {
+            show : true,
+            lineWidth : 0.5,
+            fill : 0.4,
+            shadowSize : 0
+        },
+        color : "rgb(255,50,50)",
+        fillBetween : 'f25%'
+    }, {
+        id : 'f75%',
+        data : females['75%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : 0.4
+        },
+        color : "rgb(255,50,50)",
+        fillBetween : 'f50%'
+    }, {
+        id : 'f85%',
+        data : females['85%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : 0.2
+        },
+        color : "rgb(255,50,50)",
+        fillBetween : 'f75%'
+    }, {
+        label : 'male mean',
+        data : males['mean'],
+        lines : {
+            show : true
+        },
+        color : "rgb(50,50,255)"
+    }, {
+        id : 'm15%',
+        data : males['15%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : false
+        },
+        color : "rgb(50,50,255)"
+    }, {
+        id : 'm25%',
+        data : males['25%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : 0.2
+        },
+        color : "rgb(50,50,255)",
+        fillBetween : 'm15%'
+    }, {
+        id : 'm50%',
+        data : males['50%'],
+        lines : {
+            show : true,
+            lineWidth : 0.5,
+            fill : 0.4,
+            shadowSize : 0
+        },
+        color : "rgb(50,50,255)",
+        fillBetween : 'm25%'
+    }, {
+        id : 'm75%',
+        data : males['75%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : 0.4
+        },
+        color : "rgb(50,50,255)",
+        fillBetween : 'm50%'
+    }, {
+        id : 'm85%',
+        data : males['85%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : 0.2
+        },
+        color : "rgb(50,50,255)",
+        fillBetween : 'm75%'
+    }];
+
+
+
+    //
+    $scope.pieChartData = _.range(Math.floor(Math.random() * 10) + 1).map(function(i){
+        return {
+            label : "Series" + (i + 1),
+            data : Math.floor(Math.random() * 100) + 1
+        }
+    });
+
+    var pageviews = [[1, 75], [3, 87], [4, 93], [5, 127], [6, 116], [7, 137], [8, 135], [9, 130], [10, 167], [11, 169], [12, 179], [13, 185], [14, 176], [15, 180], [16, 174], [17, 193], [18, 186], [19, 177], [20, 153], [21, 149], [22, 130], [23, 100], [24, 50]];
+    var visitors = [[1, 65], [3, 50], [4, 73], [5, 100], [6, 95], [7, 103], [8, 111], [9, 97], [10, 125], [11, 100], [12, 95], [13, 141], [14, 126], [15, 131], [16, 146], [17, 158], [18, 160], [19, 151], [20, 125], [21, 110], [22, 100], [23, 85], [24, 37]];
+
+    $scope.siteStatsData = [{
+        data : pageviews,
+        label : "Your pageviews"
+    }, {
+        data : visitors,
+        label : "Site visitors"
+    }];
+});
 "use strict";	
 
 angular.module('app.homepage').controller("myActivitiesCtrl", function ActivitiesCtrl($scope, $log, $state, APP_CONFIG, User, myActivityService) {
@@ -12305,505 +12805,84 @@ angular.module('app.homepage').controller("myTasksController", function Activiti
 	    return APP_CONFIG.dbschema;
 	}
 });
-'use strict';
-
-angular.module('app.galleryview').controller('galleryViewCtrl', function ($scope, $rootScope, $http, $state, $stateParams, APP_CONFIG, promiseParams, promiseClassInfo, promiseItems, promisedCommands) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
-
-    if ($stateParams.pageIndex) {
-        $scope.pageIndex = parseInt($stateParams.pageIndex);
-    }
-    else {
-        $scope.pageIndex = 0;
-    }
-
-    var itemCollection = promiseItems.data;
-    var commands = promisedCommands.data;
-    $scope.commands = commands;
- 
-    var params = promiseParams.data;
-    var title = params['title'];
-    var desc = params['desc'];
-    var smallImage = params['smallImage'];
-    var fullImage = params['fullImage'];
-
-    $scope.classInfo = promiseClassInfo.data;
-
-    $scope.items = new Array();
-
-    if (itemCollection) {
-        for (var i = 0; i < itemCollection.length; i++) {
-            var rawItem = itemCollection[i];
-
-            var item = new Object();
-            item.title = rawItem[title];
-            item.description = rawItem[desc];
-            item.alt = "Alt";
-            if (rawItem[smallImage]) {
-                item.img_thumb = "styles/custom/" + rawItem[smallImage];
-            }
-            else {
-                item.img_thumb = "styles/img/default-thumb.jpg";
-            }
-            if (rawItem[fullImage]) {
-                item.img_full = "styles/custom/" + rawItem[fullImage];
-            }
-            else {
-                item.img_full = "styles/img/default-full.jpg";
-            }
-            item.type = rawItem.type;
-            item.obj_id = rawItem.obj_id;
-
-            $scope.items.push(item);
-        }
-    }
-
-    var gotoState = function (title, dbschema, dbclass, oid) {
-  
-        var commands = $scope.commands;
-        var url = undefined;
-        var cmdUrl = undefined;
-        var params = undefined;
-        var cmdInfo;
-        for (var cmd in commands) {
-            if (commands.hasOwnProperty(cmd)) {
-                cmdInfo = commands[cmd];
-                if (cmdInfo.title === title) {
-                    url = cmdInfo.url;
-                    cmdUrl = cmdInfo.url;
-                    params = new Object();
-                    params.schema = dbschema;
-                    params.class = dbclass;
-                    params.oid = oid;
-                    params.cmdHash = cmdInfo.hash;
-                    // add command's parameters to the state parameters
-                    if (cmdInfo.parameters) {
-                        for (var key in cmdInfo.parameters) {
-                            if (cmdInfo.parameters.hasOwnProperty(key)) {
-                                params[key] = cmdInfo.parameters[key];
-                            }
-                        }
-                    };
-
-                    break;
-                }
-            }
-        }
-
-        if (url) {
-            if (cmdUrl === ".modalform") {
-                $state.go("app.smarttables.datagrid.modalform", params, { location: false, notify: false });
-            }
-            else {
-                $state.go(url, params);
-            }
-        }
-    }
-
-    var allowWrite = true;
-    var allowDelete = true;
-    
-    if (itemCollection &&
-        itemCollection.length > 0)
-    {
-        allowWrite = itemCollection[0].allowWrite;
-        allowDelete = itemCollection[0].allowDelete;
-    }
-
-    $scope.actions = new Array();
-    var cmdInfo;
-    var action;
-    for (var cmd in commands) {
-        if (commands.hasOwnProperty(cmd)) {
-            cmdInfo = commands[cmd];
-            if (cmdInfo.url === ".modalform") {
-                action = new Object();
-                action.label = cmdInfo.title;
-                action.cssclass = "btn btn-success btn-sm";
-
-                action.action = function (entry) {
-                    gotoState(cmdInfo.title, $scope.dbschema, entry.type, entry.obj_id);
-                }
-
-                $scope.actions.push(action);
-            }
-        }
-    }
-
-    // add standard commands
-    $scope.actions.push({
-        label: $rootScope.getWord('Attachments'),
-        cssclass: "btn btn-success btn-sm",
-        action: function (entry) {
-            $state.go('app.smarttables.datagrid.attachments', { schema: $scope.dbschema, class: entry.type, oid: entry.obj_id }, { location: false, notify: false });
-        }
-    });
-
-    if (allowWrite && $stateParams.edit !== "false") {
-        $scope.actions.push({
-            label: $rootScope.getWord('Edit'),
-            cssclass: "btn btn-success btn-sm",
-            action: function (entry) {
-                $state.go('app.smarttables.datagrid.modalform', { schema: $scope.dbschema, class: entry.type, oid: entry.obj_id }, { location: false, notify: false });
-            }
-        });
-    }
-
-    /*
-    if (allowDelete && $stateParams.delete !== "false") {
-        $scope.actions.push({
-            label: $rootScope.getWord('Delete'),
-            cssclass: "btn btn-danger btn-sm",
-            action: function () {
-                alert("Delete called");
-            }
-        });
-    }
-    */
-
-    $scope.getTitle = function()
-    {
-        // return class title
-        return $scope.classInfo.title;
-    }
-
-    $scope.reload = function (pageIndex) {
-        var params = new Object();
-
-        params.pageIndex = pageIndex;
-        $scope.pageIndex = pageIndex;
-
-        $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
-    }
-
-    $scope.prev = function () {
-        var params = new Object();
-
-        if ($scope.pageIndex > 0) {
-            var pageIndex = $scope.pageIndex - 1;
-            params.pageIndex = pageIndex;
-            $scope.pageIndex = pageIndex;
-
-            $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
-        }
-    }
-
-    $scope.next = function () {
-        var params = new Object();
-
-        var pageIndex = $scope.pageIndex + 1;
-        params.pageIndex = pageIndex;
-        $scope.pageIndex = pageIndex;
-
-        $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
-    }
-});
 "use strict";
 
-angular.module('app.graphs').controller('FlotCtrl', function ($scope) {
+angular.module("app.hub").factory("hubService", function($http, $q, localStorageService, APP_CONFIG, User) {
 
+    var hubServiceFactory = {};
 
-    $scope.salesChartData = [
-        [1196463600000, 0],
-        [1196550000000, 0],
-        [1196636400000, 0],
-        [1196722800000, 77],
-        [1196809200000, 3636],
-        [1196895600000, 3575],
-        [1196982000000, 2736],
-        [1197068400000, 1086],
-        [1197154800000, 676],
-        [1197241200000, 1205],
-        [1197327600000, 906],
-        [1197414000000, 710],
-        [1197500400000, 639],
-        [1197586800000, 540],
-        [1197673200000, 435],
-        [1197759600000, 301],
-        [1197846000000, 575],
-        [1197932400000, 481],
-        [1198018800000, 591],
-        [1198105200000, 608],
-        [1198191600000, 459],
-        [1198278000000, 234],
-        [1198364400000, 1352],
-        [1198450800000, 686],
-        [1198537200000, 279],
-        [1198623600000, 449],
-        [1198710000000, 468],
-        [1198796400000, 392],
-        [1198882800000, 282],
-        [1198969200000, 208],
-        [1199055600000, 229],
-        [1199142000000, 177],
-        [1199228400000, 374],
-        [1199314800000, 436],
-        [1199401200000, 404],
-        [1199487600000, 253],
-        [1199574000000, 218],
-        [1199660400000, 476],
-        [1199746800000, 462],
-        [1199833200000, 500],
-        [1199919600000, 700],
-        [1200006000000, 750],
-        [1200092400000, 600],
-        [1200178800000, 500],
-        [1200265200000, 900],
-        [1200351600000, 930],
-        [1200438000000, 1200],
-        [1200524400000, 980],
-        [1200610800000, 950],
-        [1200697200000, 900],
-        [1200783600000, 1000],
-        [1200870000000, 1050],
-        [1200956400000, 1150],
-        [1201042800000, 1100],
-        [1201129200000, 1200],
-        [1201215600000, 1300],
-        [1201302000000, 1700],
-        [1201388400000, 1450],
-        [1201474800000, 1500],
-        [1201561200000, 546],
-        [1201647600000, 614],
-        [1201734000000, 954],
-        [1201820400000, 1700],
-        [1201906800000, 1800],
-        [1201993200000, 1900],
-        [1202079600000, 2000],
-        [1202166000000, 2100],
-        [1202252400000, 2200],
-        [1202338800000, 2300],
-        [1202425200000, 2400],
-        [1202511600000, 2550],
-        [1202598000000, 2600],
-        [1202684400000, 2500],
-        [1202770800000, 2700],
-        [1202857200000, 2750],
-        [1202943600000, 2800],
-        [1203030000000, 3245],
-        [1203116400000, 3345],
-        [1203202800000, 3000],
-        [1203289200000, 3200],
-        [1203375600000, 3300],
-        [1203462000000, 3400],
-        [1203548400000, 3600],
-        [1203634800000, 3700],
-        [1203721200000, 3800],
-        [1203807600000, 4000],
-        [1203894000000, 4500]
-    ]
-        .map(function (item) {
-            return [
-                item[0] + 60 * 60 * 1000,
-                item[1]
-            ]
+    var _connect = function(schema, callback) {
+        // establish signalr connection
+        var hub = $.connection.messageHub; // create a proxy to signalr hub on web server
+
+        // Create a function that the hub can call to broadcast messages.
+        hub.client.addMessage = function (type, message) {
+            if (callback)
+            {
+                callback(type, message);
+            }
+        };
+
+        $.connection.hub.stop();
+
+        $.connection.hub.qs = { 'user': User.userName, 'schema': schema }; // user name as part of query string of signalr connection
+ 
+        $.connection.hub.start(); // connect to signalr hub
+
+        $.connection.hub.error(function (error) {
+            console.log('SignalR error: ' + error)
         });
-
-    $scope.barChartData = _.range(3).map(function (barNum) {
-        return {
-            data: _.range(12).map(function (i) {
-                return [i, parseInt(Math.random() * 30)]
-            }),
-            bars: {
-                show: true,
-                barWidth: 0.2,
-                order: barNum + 1
-            }
-        }
-    });
-
-    $scope.horizontalBarChartData = _.range(3).map(function (barNum) {
-        return {
-            data: _.range(4).map(function (i) {
-                return [i, parseInt(Math.random() * 30)]
-            }),
-            bars: {
-                horizontal: true,
-                show: true,
-                barWidth: 0.2,
-                order: barNum + 1
-            }
-        }
-    });
-
-    $scope.sinChartData = [
-        {
-            data: _.range(16).map(function (i) {
-                return [i, Math.sin(i)];
-            }),
-            label: "sin(x)"
-        },
-        {
-            data: _.range(16).map(function (i) {
-                return [i, Math.cos(i)];
-            }),
-            label: "cos(x)"
-        }
-    ];
-
-
-    // fill chart
-
-    var males = {
-        '15%' : [[2, 88.0], [3, 93.3], [4, 102.0], [5, 108.5], [6, 115.7], [7, 115.6], [8, 124.6], [9, 130.3], [10, 134.3], [11, 141.4], [12, 146.5], [13, 151.7], [14, 159.9], [15, 165.4], [16, 167.8], [17, 168.7], [18, 169.5], [19, 168.0]],
-        '90%' : [[2, 96.8], [3, 105.2], [4, 113.9], [5, 120.8], [6, 127.0], [7, 133.1], [8, 139.1], [9, 143.9], [10, 151.3], [11, 161.1], [12, 164.8], [13, 173.5], [14, 179.0], [15, 182.0], [16, 186.9], [17, 185.2], [18, 186.3], [19, 186.6]],
-        '25%' : [[2, 89.2], [3, 94.9], [4, 104.4], [5, 111.4], [6, 117.5], [7, 120.2], [8, 127.1], [9, 132.9], [10, 136.8], [11, 144.4], [12, 149.5], [13, 154.1], [14, 163.1], [15, 169.2], [16, 170.4], [17, 171.2], [18, 172.4], [19, 170.8]],
-        '10%' : [[2, 86.9], [3, 92.6], [4, 99.9], [5, 107.0], [6, 114.0], [7, 113.5], [8, 123.6], [9, 129.2], [10, 133.0], [11, 140.6], [12, 145.2], [13, 149.7], [14, 158.4], [15, 163.5], [16, 166.9], [17, 167.5], [18, 167.1], [19, 165.3]],
-        'mean' : [[2, 91.9], [3, 98.5], [4, 107.1], [5, 114.4], [6, 120.6], [7, 124.7], [8, 131.1], [9, 136.8], [10, 142.3], [11, 150.0], [12, 154.7], [13, 161.9], [14, 168.7], [15, 173.6], [16, 175.9], [17, 176.6], [18, 176.8], [19, 176.7]],
-        '75%' : [[2, 94.5], [3, 102.1], [4, 110.8], [5, 117.9], [6, 124.0], [7, 129.3], [8, 134.6], [9, 141.4], [10, 147.0], [11, 156.1], [12, 160.3], [13, 168.3], [14, 174.7], [15, 178.0], [16, 180.2], [17, 181.7], [18, 181.3], [19, 182.5]],
-        '85%' : [[2, 96.2], [3, 103.8], [4, 111.8], [5, 119.6], [6, 125.6], [7, 131.5], [8, 138.0], [9, 143.3], [10, 149.3], [11, 159.8], [12, 162.5], [13, 171.3], [14, 177.5], [15, 180.2], [16, 183.8], [17, 183.4], [18, 183.5], [19, 185.5]],
-        '50%' : [[2, 91.9], [3, 98.2], [4, 106.8], [5, 114.6], [6, 120.8], [7, 125.2], [8, 130.3], [9, 137.1], [10, 141.5], [11, 149.4], [12, 153.9], [13, 162.2], [14, 169.0], [15, 174.8], [16, 176.0], [17, 176.8], [18, 176.4], [19, 177.4]]
     };
 
-    var females = {
-        '15%' : [[2, 84.8], [3, 93.7], [4, 100.6], [5, 105.8], [6, 113.3], [7, 119.3], [8, 124.3], [9, 131.4], [10, 136.9], [11, 143.8], [12, 149.4], [13, 151.2], [14, 152.3], [15, 155.9], [16, 154.7], [17, 157.0], [18, 156.1], [19, 155.4]],
-        '90%' : [[2, 95.6], [3, 104.1], [4, 111.9], [5, 119.6], [6, 127.6], [7, 133.1], [8, 138.7], [9, 147.1], [10, 152.8], [11, 161.3], [12, 166.6], [13, 167.9], [14, 169.3], [15, 170.1], [16, 172.4], [17, 169.2], [18, 171.1], [19, 172.4]],
-        '25%' : [[2, 87.2], [3, 95.9], [4, 101.9], [5, 107.4], [6, 114.8], [7, 121.4], [8, 126.8], [9, 133.4], [10, 138.6], [11, 146.2], [12, 152.0], [13, 153.8], [14, 155.7], [15, 158.4], [16, 157.0], [17, 158.5], [18, 158.4], [19, 158.1]],
-        '10%' : [[2, 84.0], [3, 91.9], [4, 99.2], [5, 105.2], [6, 112.7], [7, 118.0], [8, 123.3], [9, 130.2], [10, 135.0], [11, 141.1], [12, 148.3], [13, 150.0], [14, 150.7], [15, 154.3], [16, 153.6], [17, 155.6], [18, 154.7], [19, 153.1]],
-        'mean' : [[2, 90.2], [3, 98.3], [4, 105.2], [5, 112.2], [6, 119.0], [7, 125.8], [8, 131.3], [9, 138.6], [10, 144.2], [11, 151.3], [12, 156.7], [13, 158.6], [14, 160.5], [15, 162.1], [16, 162.9], [17, 162.2], [18, 163.0], [19, 163.1]],
-        '75%' : [[2, 93.2], [3, 101.5], [4, 107.9], [5, 116.6], [6, 122.8], [7, 129.3], [8, 135.2], [9, 143.7], [10, 148.7], [11, 156.9], [12, 160.8], [13, 163.0], [14, 165.0], [15, 165.8], [16, 168.7], [17, 166.2], [18, 167.6], [19, 168.0]],
-        '85%' : [[2, 94.5], [3, 102.8], [4, 110.4], [5, 119.0], [6, 125.7], [7, 131.5], [8, 137.9], [9, 146.0], [10, 151.3], [11, 159.9], [12, 164.0], [13, 166.5], [14, 167.5], [15, 168.5], [16, 171.5], [17, 168.0], [18, 169.8], [19, 170.3]],
-        '50%' : [[2, 90.2], [3, 98.1], [4, 105.2], [5, 111.7], [6, 118.2], [7, 125.6], [8, 130.5], [9, 138.3], [10, 143.7], [11, 151.4], [12, 156.7], [13, 157.7], [14, 161.0], [15, 162.0], [16, 162.8], [17, 162.2], [18, 162.8], [19, 163.3]]
+    var _dicconnect = function () {
+        $.connection.hub.stop();
     };
 
-    $scope.fillChartData = [{
-        label : 'female mean',
-        data : females['mean'],
-        lines : {
-            show : true
-        },
-        color : "rgb(255,50,50)"
-    }, {
-        id : 'f15%',
-        data : females['15%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : false
-        },
-        color : "rgb(255,50,50)"
-    }, {
-        id : 'f25%',
-        data : females['25%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : 0.2
-        },
-        color : "rgb(255,50,50)",
-        fillBetween : 'f15%'
-    }, {
-        id : 'f50%',
-        data : females['50%'],
-        lines : {
-            show : true,
-            lineWidth : 0.5,
-            fill : 0.4,
-            shadowSize : 0
-        },
-        color : "rgb(255,50,50)",
-        fillBetween : 'f25%'
-    }, {
-        id : 'f75%',
-        data : females['75%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : 0.4
-        },
-        color : "rgb(255,50,50)",
-        fillBetween : 'f50%'
-    }, {
-        id : 'f85%',
-        data : females['85%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : 0.2
-        },
-        color : "rgb(255,50,50)",
-        fillBetween : 'f75%'
-    }, {
-        label : 'male mean',
-        data : males['mean'],
-        lines : {
-            show : true
-        },
-        color : "rgb(50,50,255)"
-    }, {
-        id : 'm15%',
-        data : males['15%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : false
-        },
-        color : "rgb(50,50,255)"
-    }, {
-        id : 'm25%',
-        data : males['25%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : 0.2
-        },
-        color : "rgb(50,50,255)",
-        fillBetween : 'm15%'
-    }, {
-        id : 'm50%',
-        data : males['50%'],
-        lines : {
-            show : true,
-            lineWidth : 0.5,
-            fill : 0.4,
-            shadowSize : 0
-        },
-        color : "rgb(50,50,255)",
-        fillBetween : 'm25%'
-    }, {
-        id : 'm75%',
-        data : males['75%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : 0.4
-        },
-        color : "rgb(50,50,255)",
-        fillBetween : 'm50%'
-    }, {
-        id : 'm85%',
-        data : males['85%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : 0.2
-        },
-        color : "rgb(50,50,255)",
-        fillBetween : 'm75%'
-    }];
+    var _addToGroup = function (group) {
 
+        var hub = $.connection.messageHub; // create a proxy to signalr hub on web server
 
+        hub.server.addToGroup(group);
+    };
 
-    //
-    $scope.pieChartData = _.range(Math.floor(Math.random() * 10) + 1).map(function(i){
-        return {
-            label : "Series" + (i + 1),
-            data : Math.floor(Math.random() * 100) + 1
-        }
-    });
+    var _removeFromGroup = function (group, callback) {
 
-    var pageviews = [[1, 75], [3, 87], [4, 93], [5, 127], [6, 116], [7, 137], [8, 135], [9, 130], [10, 167], [11, 169], [12, 179], [13, 185], [14, 176], [15, 180], [16, 174], [17, 193], [18, 186], [19, 177], [20, 153], [21, 149], [22, 130], [23, 100], [24, 50]];
-    var visitors = [[1, 65], [3, 50], [4, 73], [5, 100], [6, 95], [7, 103], [8, 111], [9, 97], [10, 125], [11, 100], [12, 95], [13, 141], [14, 126], [15, 131], [16, 146], [17, 158], [18, 160], [19, 151], [20, 125], [21, 110], [22, 100], [23, 85], [24, 37]];
+        var hub = $.connection.messageHub; // create a proxy to signalr hub on web server
 
-    $scope.siteStatsData = [{
-        data : pageviews,
-        label : "Your pageviews"
-    }, {
-        data : visitors,
-        label : "Site visitors"
-    }];
+        hub.server.removeFromGroup(group).done(function () {
+            if (callback)
+            {
+                callback();
+            }
+        });
+    };
+
+    var _getUserGroups = function (callback) {
+
+        var hub = $.connection.messageHub; // create a proxy to signalr hub on web server
+
+        hub.server.getUserGroups().done(function (groups) {
+            callback(groups);
+        });
+    };
+
+    var _isUserInGroup = function (group, callback) {
+
+        var hub = $.connection.messageHub; // create a proxy to signalr hub on web server
+
+        hub.server.isUserInGroup(group).done(function (status) {
+            callback(status);
+        });
+    };
+
+    hubServiceFactory.connect = _connect;
+    hubServiceFactory.disconnect = _dicconnect;
+    hubServiceFactory.addToGroup = _addToGroup;
+    hubServiceFactory.removeFromGroup = _removeFromGroup;
+    hubServiceFactory.getUserGroups = _getUserGroups;
+    hubServiceFactory.isUserInGroup = _isUserInGroup;
+
+    return hubServiceFactory;
 });
 "use strict";
 
@@ -13041,85 +13120,6 @@ angular.module('app').directive('toggleShortcut', function($log,$timeout) {
 		link:link
 	}
 })
-"use strict";
-
-angular.module("app.hub").factory("hubService", function($http, $q, localStorageService, APP_CONFIG, User) {
-
-    var hubServiceFactory = {};
-
-    var _connect = function(schema, callback) {
-        // establish signalr connection
-        var hub = $.connection.messageHub; // create a proxy to signalr hub on web server
-
-        // Create a function that the hub can call to broadcast messages.
-        hub.client.addMessage = function (type, message) {
-            if (callback)
-            {
-                callback(type, message);
-            }
-        };
-
-        $.connection.hub.stop();
-
-        $.connection.hub.qs = { 'user': User.userName, 'schema': schema }; // user name as part of query string of signalr connection
- 
-        $.connection.hub.start(); // connect to signalr hub
-
-        $.connection.hub.error(function (error) {
-            console.log('SignalR error: ' + error)
-        });
-    };
-
-    var _dicconnect = function () {
-        $.connection.hub.stop();
-    };
-
-    var _addToGroup = function (group) {
-
-        var hub = $.connection.messageHub; // create a proxy to signalr hub on web server
-
-        hub.server.addToGroup(group);
-    };
-
-    var _removeFromGroup = function (group, callback) {
-
-        var hub = $.connection.messageHub; // create a proxy to signalr hub on web server
-
-        hub.server.removeFromGroup(group).done(function () {
-            if (callback)
-            {
-                callback();
-            }
-        });
-    };
-
-    var _getUserGroups = function (callback) {
-
-        var hub = $.connection.messageHub; // create a proxy to signalr hub on web server
-
-        hub.server.getUserGroups().done(function (groups) {
-            callback(groups);
-        });
-    };
-
-    var _isUserInGroup = function (group, callback) {
-
-        var hub = $.connection.messageHub; // create a proxy to signalr hub on web server
-
-        hub.server.isUserInGroup(group).done(function (status) {
-            callback(status);
-        });
-    };
-
-    hubServiceFactory.connect = _connect;
-    hubServiceFactory.disconnect = _dicconnect;
-    hubServiceFactory.addToGroup = _addToGroup;
-    hubServiceFactory.removeFromGroup = _removeFromGroup;
-    hubServiceFactory.getUserGroups = _getUserGroups;
-    hubServiceFactory.isUserInGroup = _isUserInGroup;
-
-    return hubServiceFactory;
-});
 'use strict';
 
 angular.module('app.mldashboard').controller('MLDashboardLayoutCtrl', function ($http, APP_CONFIG, $scope, $state, $stateParams, propmisedParams) {
@@ -13316,6 +13316,20 @@ angular.module('app.mldashboard').controller('MLModelDashboardCtrl', function ($
 });
 'use strict';
 
+angular.module('app.logs').directive('changelog', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/logs/views/change-log.html',
+        replace: true,
+        scope: {},
+        controllerAs: 'vm',
+        controller: 'changeLogCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
+'use strict';
+
 angular.module('app.logs').controller('changeLogCtrl', function ($scope, $rootScope, APP_CONFIG, logManager, $stateParams) {
 
     var vm = this;
@@ -13357,20 +13371,6 @@ angular.module('app.logs').controller('changeLogViewerCtrl', function ($scope, $
     };
 });
 
-'use strict';
-
-angular.module('app.logs').directive('changelog', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/logs/views/change-log.html',
-        replace: true,
-        scope: {},
-        controllerAs: 'vm',
-        controller: 'changeLogCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
 'use strict';
 
 angular.module('app.logs').factory('logManager', function ($q, $http, APP_CONFIG) {
@@ -13437,6 +13437,265 @@ angular.module('app.logs').factory('logManager', function ($q, $http, APP_CONFIG
 
         return logs;
     }
+});
+"use strict";
+
+angular.module('app.myspace').controller('finishedTaskFormCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $stateParams, $state, promiseFinishedTaskInfo) {
+
+    if (!promiseFinishedTaskInfo.data) {
+
+        BootstrapDialog.show({
+            title: $rootScope.getWord("Info Dialog"),
+            type: BootstrapDialog.TYPE_INFO,
+            message: $rootScope.getWord("Non-exist task"),
+            buttons: [{
+                label: $rootScope.getWord("Cancel"),
+                action: function (dialog) {
+                    dialog.close();
+                }
+            }]
+        });
+
+        return;
+    }
+    if (promiseFinishedTaskInfo.data.formUrl)
+    {
+        if (promiseFinishedTaskInfo.data.formParams) {
+            // task with custom module, goto the custom module
+            var params = JSON.parse(promiseFinishedTaskInfo.data.formParams);
+            params["schema"] = $stateParams.schema;
+            params["class"] = promiseFinishedTaskInfo.data.bindingClassName;
+            params["oid"] = promiseFinishedTaskInfo.data.bindingInstanceId;
+            params["taskid"] = $stateParams.taskid;
+
+            $state.go(promiseFinishedTaskInfo.data.formUrl, params);
+        }
+    }
+
+    $scope.taskId = $stateParams.taskid;
+
+    $scope.dbschema = $stateParams.schema;
+
+    $scope.dbclass = promiseFinishedTaskInfo.data.bindingClassName;
+
+    $scope.oid = promiseFinishedTaskInfo.data.bindingInstanceId; // id of the instance bound to the task
+
+    $scope.loading = false;
+
+    $scope.showCommands = false;
+
+    $scope.ToolTip = "command";
+
+    if (promiseFinishedTaskInfo.data.formParams) {
+        var params = JSON.parse(promiseFinishedTaskInfo.data.formParams);
+
+        $scope.template = params["template"];
+        $scope.formAttribute = params["formAttribute"];
+        if (params["showCommands"]) {
+            $scope.showCommands = params["showCommands"];
+        }
+    }
+    else {
+        $scope.template = undefined;
+        $scope.formAttribute = undefined;
+    }
+
+    angular.extend(this, $controller('ebaasFormBaseCtrl', { $rootScope: $rootScope, $scope: $scope, $http: $http, APP_CONFIG: APP_CONFIG }));
+
+    $scope.goBack = function()
+    {
+        history.back(1);
+    }
+});
+
+'use strict';
+
+angular.module('app.myspace').controller('mySpaceCtrl', function ($scope, $rootScope, $http, $state, $stateParams, APP_CONFIG, User, TasksInfo, myActivityService, blogService, promiseTasks) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.blogClass = "Blog";
+
+    $scope.user = User;
+
+    $scope.itemsByPage = 15;
+
+    $scope.rowCollection = promiseTasks.data;
+
+    $scope.numOfPages = Math.ceil(promiseTasks.data.length / $scope.itemsByPage);
+
+    TasksInfo.tasks = promiseTasks.data;
+    TasksInfo.count = promiseTasks.data.length; // other components are watching task number changes through this service
+    $scope.taskCount = TasksInfo.count;
+
+    myActivityService.getbytype("msgs", function (data) {
+        myActivityService.MessageModel.items = data;
+
+    });
+
+    // Getting my blogs
+    blogService.getMyBlogs("COMMON", $scope.blogClass, User.userName, function (result) {
+        $scope.blogs = result.data;
+
+    });
+
+    $scope.getPosterImage = function(posterId)
+    {
+        return User.getUserImage(posterId);
+    }
+
+    $scope.getMsgItems = function () {
+        return myActivityService.MessageModel.items;
+    }
+
+    $scope.getMsgCount = function () {
+        return myActivityService.MessageModel.items.length;
+    }
+
+    $scope.readMsg = function (msg) {
+        var url = msg.url;
+        var urlparams = msg.urlparams;
+
+        urlparams = urlparams.replace(/msg.dbschema/, "\"" + msg.dbschema + "\""); // replace msg.dbschema
+        urlparams = urlparams.replace(/msg.dbclass/, "\"" + msg.dbclass + "\""); // replace msg.dbclass
+        urlparams = urlparams.replace(/msg.oid/, "\"" + msg.oid + "\""); // replace msg.dbclass
+
+        var params = JSON.parse(urlparams);
+
+        if (url) {
+            $state.go(url, params);
+        }
+    }
+
+    $scope.deleteMsg = function (msg) {
+        var found = false;
+        var index = undefined;
+
+        for (var i = 0; i < myActivityService.MessageModel.items.length; i++) {
+            var activity = myActivityService.MessageModel.items[i];
+            if (activity.objId === msg.objId) {
+                index = i;
+                found = true;
+                break;
+            }
+        }
+
+        if (found) {
+            myActivityService.MessageModel.items.splice(index, 1);
+        }
+
+        myActivityService.remove("msgs", msg.objId, function (data) {
+            myActivityService.MessageModel.count = myActivityService.MessageModel.items.length;
+        });
+    }
+
+    $scope.RefreshTasks = function()
+    {
+        $state.reload();
+    }
+
+    $scope.OpenSetSubstitute = function () {
+        $state.go(".substitute", { schema: $scope.dbschema });
+    }
+
+    $rootScope.$on('modalClosed', function (event, data) {
+        if (data === "update")
+            $scope.RefreshTasks();
+    });
+
+    $scope.finishedTasks = [];
+    $scope.tableState;
+    $scope.pageSize = 15;
+
+    $scope.isLoading = true;
+
+    $scope.callServer = function (tableState) {
+
+        $scope.isLoading = true;
+
+        $scope.tableState = tableState;
+
+        var pagination = tableState.pagination;
+
+        var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
+        var number = pagination.number || $scope.pageSize;  // Number of entries showed per page.
+
+        $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/user/" + encodeURIComponent($scope.dbschema) + "?from=" + start + "&size=" + number).success(function (data) {
+            // then get total count
+            $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/user/" + encodeURIComponent($scope.dbschema) + "/count").success(function (count) {
+                $scope.finishedTasks = data;
+
+                tableState.pagination.numberOfPages = Math.ceil(count / $scope.pageSize);//set the number of pages so the pagination can update
+                
+                $scope.isLoading = false;
+            });
+        })
+    };
+
+    $scope.refreshFinishedTasks = function () {
+        $scope.callServer($scope.tableState);
+    }
+
+    $scope.clearFinishedTasks = function()
+    {
+        $scope.isLoading = true;
+
+        $http.delete(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/" + encodeURIComponent($scope.dbschema)).success(function () {
+
+            $scope.isLoading = false;
+
+            $scope.callServer($scope.tableState);
+        })
+    }
+
+    $scope.hasFinishedTasks = function () {
+        if ($scope.finishedTasks && $scope.finishedTasks.length > 0)
+            return true;
+        else
+            return false;
+    }
+});
+"use strict";
+
+angular.module('app.myspace').controller('uploadPictureCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, User, Upload, $timeout) {
+
+
+    $scope.upload = function (dataUrl, name) {
+
+        var fileName = User.userName + ".png";
+
+        var uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/images/avatars";
+
+        Upload.upload({
+            url: uploadUrl,
+            data: {
+                file: Upload.dataUrltoBlob(dataUrl, fileName)
+            },
+        }).then(function (response) {
+            $timeout(function () {
+                $scope.result = response.data;
+                User.imageUrl = undefined;
+                User.pictureChangeTime = new Date().getTime();
+
+                if (!User.picture) {
+                    User.picture = fileName;
+    
+                    User.save();
+                }
+            });
+        }, function (response) {
+            $scope.loading = false;
+            if (response.status > 0) $scope.errorMsg = response.status
+                + ': ' + response.data;
+        }, function (evt) {
+
+            $scope.progress = parseInt(100.0 * evt.loaded / evt.total);
+        });
+    };
+
+    $scope.closeModal = function () {
+        $modalInstance.dismiss("dismiss");
+
+    };
 });
 'use strict';
 
@@ -14685,265 +14944,6 @@ angular.module('app.smartforms').directive('compile', function ($compile) {
     };
 });
 
-"use strict";
-
-angular.module('app.myspace').controller('finishedTaskFormCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $stateParams, $state, promiseFinishedTaskInfo) {
-
-    if (!promiseFinishedTaskInfo.data) {
-
-        BootstrapDialog.show({
-            title: $rootScope.getWord("Info Dialog"),
-            type: BootstrapDialog.TYPE_INFO,
-            message: $rootScope.getWord("Non-exist task"),
-            buttons: [{
-                label: $rootScope.getWord("Cancel"),
-                action: function (dialog) {
-                    dialog.close();
-                }
-            }]
-        });
-
-        return;
-    }
-    if (promiseFinishedTaskInfo.data.formUrl)
-    {
-        if (promiseFinishedTaskInfo.data.formParams) {
-            // task with custom module, goto the custom module
-            var params = JSON.parse(promiseFinishedTaskInfo.data.formParams);
-            params["schema"] = $stateParams.schema;
-            params["class"] = promiseFinishedTaskInfo.data.bindingClassName;
-            params["oid"] = promiseFinishedTaskInfo.data.bindingInstanceId;
-            params["taskid"] = $stateParams.taskid;
-
-            $state.go(promiseFinishedTaskInfo.data.formUrl, params);
-        }
-    }
-
-    $scope.taskId = $stateParams.taskid;
-
-    $scope.dbschema = $stateParams.schema;
-
-    $scope.dbclass = promiseFinishedTaskInfo.data.bindingClassName;
-
-    $scope.oid = promiseFinishedTaskInfo.data.bindingInstanceId; // id of the instance bound to the task
-
-    $scope.loading = false;
-
-    $scope.showCommands = false;
-
-    $scope.ToolTip = "command";
-
-    if (promiseFinishedTaskInfo.data.formParams) {
-        var params = JSON.parse(promiseFinishedTaskInfo.data.formParams);
-
-        $scope.template = params["template"];
-        $scope.formAttribute = params["formAttribute"];
-        if (params["showCommands"]) {
-            $scope.showCommands = params["showCommands"];
-        }
-    }
-    else {
-        $scope.template = undefined;
-        $scope.formAttribute = undefined;
-    }
-
-    angular.extend(this, $controller('ebaasFormBaseCtrl', { $rootScope: $rootScope, $scope: $scope, $http: $http, APP_CONFIG: APP_CONFIG }));
-
-    $scope.goBack = function()
-    {
-        history.back(1);
-    }
-});
-
-'use strict';
-
-angular.module('app.myspace').controller('mySpaceCtrl', function ($scope, $rootScope, $http, $state, $stateParams, APP_CONFIG, User, TasksInfo, myActivityService, blogService, promiseTasks) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.blogClass = "Blog";
-
-    $scope.user = User;
-
-    $scope.itemsByPage = 15;
-
-    $scope.rowCollection = promiseTasks.data;
-
-    $scope.numOfPages = Math.ceil(promiseTasks.data.length / $scope.itemsByPage);
-
-    TasksInfo.tasks = promiseTasks.data;
-    TasksInfo.count = promiseTasks.data.length; // other components are watching task number changes through this service
-    $scope.taskCount = TasksInfo.count;
-
-    myActivityService.getbytype("msgs", function (data) {
-        myActivityService.MessageModel.items = data;
-
-    });
-
-    // Getting my blogs
-    blogService.getMyBlogs("COMMON", $scope.blogClass, User.userName, function (result) {
-        $scope.blogs = result.data;
-
-    });
-
-    $scope.getPosterImage = function(posterId)
-    {
-        return User.getUserImage(posterId);
-    }
-
-    $scope.getMsgItems = function () {
-        return myActivityService.MessageModel.items;
-    }
-
-    $scope.getMsgCount = function () {
-        return myActivityService.MessageModel.items.length;
-    }
-
-    $scope.readMsg = function (msg) {
-        var url = msg.url;
-        var urlparams = msg.urlparams;
-
-        urlparams = urlparams.replace(/msg.dbschema/, "\"" + msg.dbschema + "\""); // replace msg.dbschema
-        urlparams = urlparams.replace(/msg.dbclass/, "\"" + msg.dbclass + "\""); // replace msg.dbclass
-        urlparams = urlparams.replace(/msg.oid/, "\"" + msg.oid + "\""); // replace msg.dbclass
-
-        var params = JSON.parse(urlparams);
-
-        if (url) {
-            $state.go(url, params);
-        }
-    }
-
-    $scope.deleteMsg = function (msg) {
-        var found = false;
-        var index = undefined;
-
-        for (var i = 0; i < myActivityService.MessageModel.items.length; i++) {
-            var activity = myActivityService.MessageModel.items[i];
-            if (activity.objId === msg.objId) {
-                index = i;
-                found = true;
-                break;
-            }
-        }
-
-        if (found) {
-            myActivityService.MessageModel.items.splice(index, 1);
-        }
-
-        myActivityService.remove("msgs", msg.objId, function (data) {
-            myActivityService.MessageModel.count = myActivityService.MessageModel.items.length;
-        });
-    }
-
-    $scope.RefreshTasks = function()
-    {
-        $state.reload();
-    }
-
-    $scope.OpenSetSubstitute = function () {
-        $state.go(".substitute", { schema: $scope.dbschema });
-    }
-
-    $rootScope.$on('modalClosed', function (event, data) {
-        if (data === "update")
-            $scope.RefreshTasks();
-    });
-
-    $scope.finishedTasks = [];
-    $scope.tableState;
-    $scope.pageSize = 15;
-
-    $scope.isLoading = true;
-
-    $scope.callServer = function (tableState) {
-
-        $scope.isLoading = true;
-
-        $scope.tableState = tableState;
-
-        var pagination = tableState.pagination;
-
-        var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
-        var number = pagination.number || $scope.pageSize;  // Number of entries showed per page.
-
-        $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/user/" + encodeURIComponent($scope.dbschema) + "?from=" + start + "&size=" + number).success(function (data) {
-            // then get total count
-            $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/user/" + encodeURIComponent($scope.dbschema) + "/count").success(function (count) {
-                $scope.finishedTasks = data;
-
-                tableState.pagination.numberOfPages = Math.ceil(count / $scope.pageSize);//set the number of pages so the pagination can update
-                
-                $scope.isLoading = false;
-            });
-        })
-    };
-
-    $scope.refreshFinishedTasks = function () {
-        $scope.callServer($scope.tableState);
-    }
-
-    $scope.clearFinishedTasks = function()
-    {
-        $scope.isLoading = true;
-
-        $http.delete(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/" + encodeURIComponent($scope.dbschema)).success(function () {
-
-            $scope.isLoading = false;
-
-            $scope.callServer($scope.tableState);
-        })
-    }
-
-    $scope.hasFinishedTasks = function () {
-        if ($scope.finishedTasks && $scope.finishedTasks.length > 0)
-            return true;
-        else
-            return false;
-    }
-});
-"use strict";
-
-angular.module('app.myspace').controller('uploadPictureCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, User, Upload, $timeout) {
-
-
-    $scope.upload = function (dataUrl, name) {
-
-        var fileName = User.userName + ".png";
-
-        var uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/images/avatars";
-
-        Upload.upload({
-            url: uploadUrl,
-            data: {
-                file: Upload.dataUrltoBlob(dataUrl, fileName)
-            },
-        }).then(function (response) {
-            $timeout(function () {
-                $scope.result = response.data;
-                User.imageUrl = undefined;
-                User.pictureChangeTime = new Date().getTime();
-
-                if (!User.picture) {
-                    User.picture = fileName;
-    
-                    User.save();
-                }
-            });
-        }, function (response) {
-            $scope.loading = false;
-            if (response.status > 0) $scope.errorMsg = response.status
-                + ': ' + response.data;
-        }, function (evt) {
-
-            $scope.progress = parseInt(100.0 * evt.loaded / evt.total);
-        });
-    };
-
-    $scope.closeModal = function () {
-        $modalInstance.dismiss("dismiss");
-
-    };
-});
 'use strict';
 
 angular.module('app.smartreports').controller('downloadReportCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $stateParams, $modalInstance, fileManager) {
@@ -15002,1065 +15002,6 @@ angular.module('app.smartreports').controller('downloadReportCtrl', function ($c
             
         }
     }
-});
-
-'use strict';
-
-angular.module('app.tables').controller('JqGridCtrl', function ($scope) {
-    $scope.gridData = {
-        data: [
-            {
-                id: "1",
-                date: "2007-10-01",
-                name: "test",
-                note: "note",
-                amount: "200.00",
-                tax: "10.00",
-                total: "210.00"
-            },
-            {
-                id: "2",
-                date: "2007-10-02",
-                name: "test2",
-                note: "note2",
-                amount: "300.00",
-                tax: "20.00",
-                total: "320.00"
-            },
-            {
-                id: "3",
-                date: "2007-09-01",
-                name: "test3",
-                note: "note3",
-                amount: "400.00",
-                tax: "30.00",
-                total: "430.00"
-            },
-            {
-                id: "4",
-                date: "2007-10-04",
-                name: "test",
-                note: "note",
-                amount: "200.00",
-                tax: "10.00",
-                total: "210.00"
-            },
-            {
-                id: "5",
-                date: "2007-10-05",
-                name: "test2",
-                note: "note2",
-                amount: "300.00",
-                tax: "20.00",
-                total: "320.00"
-            },
-            {
-                id: "6",
-                date: "2007-09-06",
-                name: "test3",
-                note: "note3",
-                amount: "400.00",
-                tax: "30.00",
-                total: "430.00"
-            },
-            {
-                id: "7",
-                date: "2007-10-04",
-                name: "test",
-                note: "note",
-                amount: "200.00",
-                tax: "10.00",
-                total: "210.00"
-            },
-            {
-                id: "8",
-                date: "2007-10-03",
-                name: "test2",
-                note: "note2",
-                amount: "300.00",
-                tax: "20.00",
-                total: "320.00"
-            },
-            {
-                id: "9",
-                date: "2007-09-01",
-                name: "test3",
-                note: "note3",
-                amount: "400.00",
-                tax: "30.00",
-                total: "430.00"
-            },
-            {
-                id: "10",
-                date: "2007-10-01",
-                name: "test",
-                note: "note",
-                amount: "200.00",
-                tax: "10.00",
-                total: "210.00"
-            },
-            {
-                id: "11",
-                date: "2007-10-02",
-                name: "test2",
-                note: "note2",
-                amount: "300.00",
-                tax: "20.00",
-                total: "320.00"
-            },
-            {
-                id: "12",
-                date: "2007-09-01",
-                name: "test3",
-                note: "note3",
-                amount: "400.00",
-                tax: "30.00",
-                total: "430.00"
-            },
-            {
-                id: "13",
-                date: "2007-10-04",
-                name: "test",
-                note: "note",
-                amount: "200.00",
-                tax: "10.00",
-                total: "210.00"
-            },
-            {
-                id: "14",
-                date: "2007-10-05",
-                name: "test2",
-                note: "note2",
-                amount: "300.00",
-                tax: "20.00",
-                total: "320.00"
-            },
-            {
-                id: "15",
-                date: "2007-09-06",
-                name: "test3",
-                note: "note3",
-                amount: "400.00",
-                tax: "30.00",
-                total: "430.00"
-            },
-            {
-                id: "16",
-                date: "2007-10-04",
-                name: "test",
-                note: "note",
-                amount: "200.00",
-                tax: "10.00",
-                total: "210.00"
-            },
-            {
-                id: "17",
-                date: "2007-10-03",
-                name: "test2",
-                note: "note2",
-                amount: "300.00",
-                tax: "20.00",
-                total: "320.00"
-            },
-            {
-                id: "18",
-                date: "2007-09-01",
-                name: "test3",
-                note: "note3",
-                amount: "400.00",
-                tax: "30.00",
-                total: "430.00"
-            }
-        ],
-        colNames: ['Actions', 'Inv No', 'Date', 'Client', 'Amount', 'Tax', 'Total', 'Notes'],
-        colModel: [
-            {
-                name: 'act',
-                index: 'act',
-                sortable: false
-            },
-            {
-                name: 'id',
-                index: 'id'
-            },
-            {
-                name: 'date',
-                index: 'date',
-                editable: true
-            },
-            {
-                name: 'name',
-                index: 'name',
-                editable: true
-            },
-            {
-                name: 'amount',
-                index: 'amount',
-                align: "right",
-                editable: true
-            },
-            {
-                name: 'tax',
-                index: 'tax',
-                align: "right",
-                editable: true
-            },
-            {
-                name: 'total',
-                index: 'total',
-                align: "right",
-                editable: true
-            },
-            {
-                name: 'note',
-                index: 'note',
-                sortable: false,
-                editable: true
-            }
-        ]
-    }
-
-
-    $scope.getSelection = function(){
-        alert(jQuery('table').jqGrid('getGridParam', 'selarrrow'));
-    };
-
-    $scope.selectRow = function(row){
-       jQuery('table').jqGrid('setSelection', row);
-
-    }
-});
-'use strict';
-
-angular.module('app.stations').controller('StationDashboardCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, TestStations, promisedSettings, $interval) {
-
-    // Live Feeds Widget Data And Display Controls
-    // Live Stats Tab
-    var index = $stateParams.index;
-    var testStationName = TestStations.params['testStationName'];
-
-    $scope.CurrentStationName = TestStations.stations[index][testStationName];
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
-    $scope.template = TestStations.params['testStationForm'];
-    $scope.oid = $stateParams.oid;
-    $scope.showMonitor = true;
-  
-    if (TestStations.params['monitor'] && TestStations.params['monitor'] === "hidden")
-    {
-        $scope.showMonitor = false;
-    }
-
-    var defaultSettings = {
-        ID: "0",
-        LineXName1: "X",
-        LineXMin1: "0",
-        LineXMax1: "100",
-        LineXValue1: "0",
-        LineYName1: "Y",
-        LineYMin1: "0",
-        LineYMax1: "100",
-        LineYValue1: "0",
-        PieName1: "",
-        PieName2: "",
-        PieName3: "",
-        PieName4: "",
-        PieUnit1: "",
-        PieUnit2: "",
-        PieUnit3: "",
-        PieUnit4: "",
-        PieValue1: "",
-        PieValue2: "",
-        PieValue3: "",
-        PieValue4: "",
-        PiePercent1: "0",
-        PiePercent2: "0",
-        PiePercent3: "0",
-        PiePercent4: "0",
-        ProgressName1: "",
-        ProgressName2: "",
-        ProgressName3: "",
-        ProgressName4: "",
-        ProgressUnit1: "",
-        ProgressUnit2: "",
-        ProgressUnit3: "",
-        ProgressUnit4: "",
-        ProgressValue1: "",
-        ProgressValue2: "",
-        ProgressValue3: "",
-        ProgressValue4: "",
-        ProgressPercent1: "0",
-        ProgressPercent2: "0",
-        ProgressPercent3: "0",
-        ProgressPercent4: "0"
-    };
-
-    if ($scope.showMonitor && promisedSettings)
-    {
-        var settingsWrapper = promisedSettings.data
-        var settings = findObjectByName(settingsWrapper, "Settings")
-        if (settings)
-        {
-            $scope.settings = settings;
-        }
-        else
-        {
-            $scope.settings = defaultSettings;
-        }
-    }
-    else
-    {
-        $scope.settings = defaultSettings;
-    }
-
-    function findObjectByName(obj, name) {
-        for (var i in obj) {
-            if (obj.hasOwnProperty(i)) {
-                if (i === name)
-                {
-                    return obj[i];
-                }
-                else if (obj[i] instanceof Object)
-                {
-                    return findObjectByName(obj[i], name);
-                }
-            }
-        }
-        return null;
-    };
-
-    angular.extend(this, $controller('ebaasFormBaseCtrl', { $rootScope: $rootScope, $scope: $scope, $http: $http, APP_CONFIG: APP_CONFIG }));
-
-    $scope.autoUpdate = false;
-    var data = [];
-    var totalPoints = 100;
-    var timerInterval = 1000;
-    var currentTime = new Date().getTime();
-
-    var updateInterval = undefined;
-    $scope.$watch('autoUpdate', function (autoUpdate) {
-
-        if (autoUpdate) {
-            updateInterval = $interval(function () {
-
-                GetData(true);
-
-                $.plot($("#updating-chart"), [data], $scope.liveStatsOptions)
-            }, timerInterval)
-        } else {
-            $interval.cancel(updateInterval);
-        }
-    });
-
-    // cancel the auto updating when exiting
-    $scope.$on("$destroy", function (event) {
-        if (updateInterval) {
-            $interval.cancel(updateInterval);
-        }
-    });
-
-    if ($scope.showMonitor) {
-
-        GetData(false);
-
-        $scope.liveStats = [data];
-    }
-    else
-    {
-        $scope.liveStats = [];
-    }
-
-    function GetData(fromDB) {
-        data.shift(); //to remove first item of array
-      
-        var temp, y;
-        if (fromDB && $stateParams.xmlschema)
-        {
-            var url = APP_CONFIG.ebaasRootUrl + "/api/data/extract/" + encodeURIComponent($stateParams.schema) + "/" + $stateParams.class + "/" + $stateParams.oid + "/" + $stateParams.xmlschema;
-
-            $http.get(url).success(function (res) {
-                var settings = findObjectByName(res, "Settings")
-                if (settings) {
-                    y = settings.LineYValue1;
-                    $scope.settings = settings;
-                }
-                else
-                {
-                    y = 3.0; // fake data
-                }
-
-                temp = [currentTime += timerInterval, y]; //data format [x, y]
-
-                data.push(temp);
-            });
-        }
-        else
-        {
-            while (data.length < totalPoints) {
-                // fake data
-                 y = 2.0;
-                //y = Math.random() * 100;
-
-                temp = [currentTime += timerInterval, y]; //data format [x, y]
-
-                data.push(temp);
-            }
-        }
-    }
-
-    if ($scope.showMonitor) {
-        $scope.liveStatsOptions = {
-            yaxis: {
-                min: $scope.settings.LineYMin1,
-                max: $scope.settings.LineYMax1,
-                tickFormatter: function (v, axis) {
-                    if (v % 10 == 0) {
-                        return v;
-                    } else {
-                        return "";
-                    }
-                }
-            },
-            xaxis: {
-                mode: "time",
-                tickSize: [2, "second"],
-                tickFormatter: function (v, axis) {
-                    var date = new Date(v);
-
-                    if (date.getSeconds() % 20 == 0) {
-                        var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-                        var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-                        var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
-
-                        return hours + ":" + minutes + ":" + seconds;
-                    } else {
-                        return "";
-                    }
-                }
-            },
-            colors: ['rgb(87, 136, 156)'],
-            series: {
-                lines: {
-                    lineWidth: 1,
-                    fill: true,
-                    fillColor: {
-                        colors: [
-                            {
-                                opacity: 0.4
-                            },
-                            {
-                                opacity: 0
-                            }
-                        ]
-                    },
-                    steps: false
-                }
-            }
-        };
-    }
-
-    // station scheduler code
-    var appointmentClass = TestStations.params['appointmentClass'];
-    var appointmentToStation = TestStations.params['appointmentToStation'];
-    $scope.stationpk = TestStations.stations[index]["obj_pk"];
-
-    $scope.schedulerOptions = {
-        dataSource: new DevExpress.data.DataSource({
-            store: new DevExpress.data.CustomStore({
-                key: 'obj_id',
-                load: function (options) {
-                    var def = $.Deferred();
-
-                    var filter = createFilter(options);
-                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + $scope.oid + "/" + appointmentClass + "?from=0&size=500&filter=" + JSON.stringify(filter);
-                    $http.get(url).success(function (result) {
-                        def.resolve(result);
-                    }).error(function (err) {
-                        def.reject(err);
-                    });
-
-                    return def.promise();
-                },
-                byKey: function (key) {
-
-                    var def = $.Deferred();
-
-                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass + "/" + key;
-
-                    $http.get(url).success(function (result) {
-                        def.resolve(result);
-                    }).error(function (err) {
-                        def.reject(err);
-                    });
-
-                    return def.promise();
-                },
-                insert: function (data) {
-
-                    var def = $.Deferred();
-
-                    //scheduler.server.saveAppointment(data.text, data.startDate, data.endDate);
-                    var converted = convertModel(data)
-
-                    // associated new appointment with the station by primary key
-                    converted[appointmentToStation] = $scope.stationpk;
-
-                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass;
-
-                    $http.post(url, converted)
-                     .success(function (result) {
-                         def.resolve(result);
-                     }).error(function (err) {
-                         def.reject(err);
-                     });
-
-                    return def.promise();
-                },
-                remove: function (key) {
-                    var def = $.Deferred();
-
-                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass + "/" + key;
-
-                    $http.delete(url).success(function (result) {
-                        def.resolve(result);
-                    })
-                    .error(function (err) {
-                        def.reject(err);
-                    });
-
-                    return def.promise();
-                },
-                update: function (key, data) {
-                    var def = $.Deferred();
-
-                    var converted = convertModel(data);
-
-                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass + "/" + key;
-
-                    $http.post(url, converted)
-                     .success(function (result) {
-                         def.resolve(result);
-                     }).error(function (err) {
-                         def.reject(err);
-                     });
-
-                    return def.promise();
-                }
-            }),
-            map: function (item) {
-                var appointment = {
-                    text: item.Subject,
-                    description: item.Description,
-                    startDate: createDate(item.StartTime),
-                    endDate: createDate(item.EndTime),
-                    color: "#ff00aa",
-                    obj_id: item.obj_id
-                };
-
-                //console.debug("appointment=" + JSON.stringify(appointment));
-                return appointment;
-            }
-        }),
-        views: ["month", "week", "day"],
-        currentView: "month",
-        currentDate: new Date(),
-        firstDayOfWeek: 0,
-        startDayHour: 8,
-        endDayHour: 19,
-        width: "100%",
-        height: 600,
-        onInitialized: function (e) {
-            $scope.scheduleInstance = e.component;
-        }
-    };
-
-    function createDate(str1) {
-        // str1 format should be yyyy-mm-ddThh:mm:SS.
-        var dt1 = parseInt(str1.substring(8, 10));
-        var mon1 = parseInt(str1.substring(5, 7));
-        var yr1 = parseInt(str1.substring(0, 4));
-        var date1 = new Date(yr1, mon1 - 1, dt1);
-        return date1;
-    }
-
-    function createFilter(options) {
-        var filter = new Array();
-
-        var composite = new Array();
-
-        var expr = new Array();
-        // StartTime >= intervalStartDay
-        expr.push("StartTime");
-        expr.push(">=");
-        expr.push(options.dxScheduler.startDate);
-
-        composite.push(expr);
-
-        composite.push("and");
-
-        expr = new Array();
-        expr.push("StartTime");
-        expr.push("<");
-        expr.push(options.dxScheduler.endDate);
-
-        composite.push(expr);
-
-        filter.push(composite);
-
-        filter.push("or");
-
-        composite = new Array();
-        expr = new Array();
-        expr.push("EndTime");
-        expr.push(">=");
-        expr.push(options.dxScheduler.startDate);
-
-        composite.push(expr);
-
-        composite.push("and");
-
-        expr = new Array();
-        expr.push("EndTime");
-        expr.push("<");
-        expr.push(options.dxScheduler.endDate);
-
-        composite.push(expr);
-
-        filter.push(composite);
-
-        return filter;
-    }
-
-    function convertModel(data) {
-        var converted = new Object();
-
-        converted.StartTime = data.startDate;
-        converted.EndTime = data.endDate;
-        converted.Subject = data.text;
-        converted.Description = data.description;
-
-        return converted;
-    }
-
-    var timezoneParseNameResults = /\((.*)\)/.exec(new Date().toString());
-
-    if (timezoneParseNameResults && timezoneParseNameResults.length > 0) {
-        $scope.timezone = timezoneParseNameResults[1];
-    } else {
-        var timezoneOffset = new Date().getTimezoneOffset();
-        $scope.timezone = "UTC" + (timezoneOffset < 0 ? "+" : "") + timezoneOffset / (-60) + " time zone";
-    }
-});
-'use strict';
-
-angular.module('app.stations').controller('StationSchedulerCtrl', function ($scope, $http, $stateParams, APP_CONFIG, TestStations) {
-
-    var index = $stateParams.index;
-    var testStationName = TestStations.params['testStationName'];
-    var appointmentClass = TestStations.params['appointmentClass'];
-    var appointmentToStation = TestStations.params['appointmentToStation'];
-
-    $scope.CurrentStationName = TestStations.stations[index][testStationName];
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
-    $scope.oid = TestStations.stations[index]["obj_id"];
-    $scope.stationpk = TestStations.stations[index]["obj_pk"];
-
-    $scope.schedulerOptions = {
-        dataSource: new DevExpress.data.DataSource({
-            store: new DevExpress.data.CustomStore({
-                key: 'obj_id',
-                load: function (options) {
-                    var def = $.Deferred();
-
-                    var filter = createFilter(options);
-                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + $scope.oid + "/" + appointmentClass + "?from=0&size=500&filter=" + JSON.stringify(filter);
-
-                    $http.get(url).success(function (result) {
-                        def.resolve(result);
-                    }).error(function (err) {
-                        def.reject(err);
-                    });
-
-                    return def.promise();
-                },
-                byKey: function (key) {
-
-                    var def = $.Deferred();
-
-                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass + "/" + key;
-
-                    $http.get(url).success(function (result) {
-                        def.resolve(result);
-                    }).error(function (err) {
-                        def.reject(err);
-                    });
-
-                    return def.promise();
-                },
-                insert: function (data) {
-
-                    var def = $.Deferred();
-
-                    //scheduler.server.saveAppointment(data.text, data.startDate, data.endDate);
-                    var converted = convertModel(data)
-                    
-                    // associated new appointment with the station by primary key
-                    converted[appointmentToStation] = $scope.stationpk;
-
-                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass;
-
-                    $http.post(url, converted)
-                     .success(function (result) {
-                         def.resolve(result);
-                     }).error(function (err) {
-                         def.reject(err);
-                     });
-
-                    return def.promise();
-                },
-                remove: function (key) {
-                    var def = $.Deferred();
-
-                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass + "/" + key;
-
-                    $http.delete(url).success(function (result) {
-                        def.resolve(result);
-                    })
-                    .error(function (err) {
-                        def.reject(err);
-                    });
-
-                    return def.promise();
-                },
-                update: function (key, data) {
-                    var def = $.Deferred();
-
-                    var converted = convertModel(data);
-
-                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass + "/" + key;
-
-                    $http.post(url, converted)
-                     .success(function (result) {
-                         def.resolve(result);
-                     }).error(function (err) {
-                         def.reject(err);
-                     });
-
-                    return def.promise();
-                }
-            }),
-            map: function (item) {
-                var appointment = {
-                    text: item.Subject,
-                    description: item.Description,
-                    startDate: createDate(item.StartTime),
-                    endDate: createDate(item.EndTime),
-                    color: "#ff00aa",
-                    obj_id: item.obj_id
-                };
-
-                //console.debug("appointment=" + JSON.stringify(appointment));
-                return appointment;
-            }
-        }),
-        views: ["month", "week", "day"],
-        currentView: "month",
-        currentDate: new Date(2016, 3, 25),
-        firstDayOfWeek: 0,
-        startDayHour: 8,
-        endDayHour: 19,
-        width: "100%",
-        height: 600,
-        onInitialized: function (e) {
-            $scope.scheduleInstance = e.component;
-        }
-    };
-
-    function createDate(str1) {
-        // str1 format should be yyyy-mm-ddThh:mm:SS.
-        var dt1 = parseInt(str1.substring(8, 10));
-        var mon1 = parseInt(str1.substring(5, 7));
-        var yr1 = parseInt(str1.substring(0, 4));
-        var date1 = new Date(yr1, mon1 - 1, dt1);
-        return date1;
-    }
-
-    function createFilter(options) {
-        var filter = new Array();
-
-        var composite = new Array();
-
-        var expr = new Array();
-        // StartTime >= intervalStartDay
-        expr.push("StartTime");
-        expr.push(">=");
-        expr.push(options.dxScheduler.startDate);
-
-        composite.push(expr);
-
-        composite.push("and");
-
-        expr = new Array();
-        expr.push("StartTime");
-        expr.push("<");
-        expr.push(options.dxScheduler.endDate);
-
-        composite.push(expr);
-
-        filter.push(composite);
-
-        filter.push("or");
-
-        composite = new Array();
-        expr = new Array();
-        expr.push("EndTime");
-        expr.push(">=");
-        expr.push(options.dxScheduler.startDate);
-
-        composite.push(expr);
-
-        composite.push("and");
-
-        expr = new Array();
-        expr.push("EndTime");
-        expr.push("<");
-        expr.push(options.dxScheduler.endDate);
-
-        composite.push(expr);
-
-        filter.push(composite);
-
-        return filter;
-    }
-
-    function convertModel(data)
-    {
-        var converted = new Object();
-
-        converted.StartTime = data.startDate;
-        converted.EndTime = data.endDate;
-        converted.Subject = data.text;
-        converted.Description = data.description;
-        
-        return converted;
-    }
-
-    var timezoneParseNameResults = /\((.*)\)/.exec(new Date().toString());
-
-    if (timezoneParseNameResults && timezoneParseNameResults.length > 0) {
-        $scope.timezone = timezoneParseNameResults[1];
-    } else {
-        var timezoneOffset = new Date().getTimezoneOffset();
-        $scope.timezone = "UTC" + (timezoneOffset < 0 ? "+" : "") + timezoneOffset / (-60) + " time zone";
-    }
-});
-'use strict';
-
-angular.module('app.stations').controller('StationsLayoutCtrl', function ($http, APP_CONFIG, $scope, $rootScope, $state, $stateParams, stationParams, TestStations, MetaDataCache) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
- 
-    TestStations.params = stationParams.data;
-
-    var testStationGroup = TestStations.params['testStationGroup'];
-    var testStationName = TestStations.params['testStationName'];
-    var testStationStatus = TestStations.params['testStationStatus'];
-
-    if (MetaDataCache.getNamedData("stationTree")) {
-        $scope.stationTree = MetaDataCache.getNamedData("stationTree");
-
-        if (TestStations.stations.length > 0) {
-            // show the dashboard of the first station by default
-            var oid = TestStations.stations[0].obj_id;
-            $state.go('app.stations.dashboard', { schema: $stateParams.schema, class: $stateParams.class, oid: oid, xmlschema: TestStations.params['xmlSchemaName'], index: 0 });
-        }
-    }
-    else {
-        // url to get station tree model, assuming no more than 1000 stations
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "?view=full&from=0&size=1000";
-
-        $http.get(url).then(function (res) {
-
-            TestStations.stations = res.data;
-
-            $scope.stationTree = CreateTree(testStationGroup,
-                testStationName,
-                testStationStatus,
-                $scope.dbclass);
-
-            MetaDataCache.setNamedData("stationTree", $scope.stationTree);
-
-            if (TestStations.stations.length > 0) {
-                // show the dashboard of the first station by default
-                var oid = TestStations.stations[0].obj_id;
-                $state.go('app.stations.dashboard', { schema: $stateParams.schema, class: $stateParams.class, oid: oid, xmlschema: TestStations.params['xmlSchemaName'], index: 0 });
-            }
-        });
-    }
-
-    function GetNodeClass(status)
-    {
-        var nodeClass;
-      
-        switch (status)
-        {
-            case $rootScope.getWord("Available"):
-                nodeClass = "label label-primary";
-                break;
-
-            case $rootScope.getWord("Occupied"):
-                nodeClass = "label label-success";
-                break;
-
-            case $rootScope.getWord("Under Maintenance"):
-                nodeClass = "label label-warning";
-                break;
-
-            case $rootScope.getWord("Not In Service"):
-                nodeClass = "label label-danger";
-                break;
-
-            default:
-                nodeClass = "label label-info";
-
-                break;
-        }
-
-        return nodeClass;
-    }
-
-    function GetNodeIcon(status) {
-        var nodeIcon;
-        switch (status) {
-            case $rootScope.getWord("Available"):
-                nodeIcon = "fa fa-check-square-o";
-                break;
-
-            case $rootScope.getWord("Occupied"):
-                nodeIcon = "fa fa-spinner fa-spin";
-                break;
-
-            case $rootScope.getWord("Under Maintenance"):
-                nodeIcon = "fa fa-exclamation-circle";
-                break;
-
-            case $rootScope.getWord("Not In Service"):
-                nodeIcon = "fa fa-warning";
-                break;
-
-            default:
-                nodeIcon = "fa  fa-question-circle";
-
-                break;
-        }
-
-        return nodeIcon;
-    }
-
-    function CreateTree(groupName, testStationName, testStationStatus, testStationClass) {
-        var treeNodes = new Array();
-
-        var stations = TestStations.stations;
-
-        var groupNames = new Array();
-        var found;
-        var hasGroups = false;
-        var menuItem;
-        // create folder items
-        if (groupName) {
-            for (var i = 0; i < stations.length; i++) {
-                var gn = stations[i][groupName];
-
-                found = false;
-                for (var j = 0; j < groupNames.length; j++) {
-                    if (groupNames[j] === gn) {
-                        found = true;
-                        break;
-                    }
-                }
-
-                if (!found) {
-                    groupNames.push(gn);
-                }
-            }
-
-            if (groupNames.length > 0) {
-                hasGroups = true;
-
-                // add gorup names as first level menus, they are not clickable
-                for (var i = 0; i < groupNames.length; i++) {
-                    menuItem = new Object();
-                    menuItem.content = "<span><i class=\"fa fa-lg fa-plus-circle\"></i>" + groupNames[i] + "</span>";
-                    menuItem.name = groupNames[i];
-                    if (i === 0) {
-                        menuItem.expanded = true;
-                    }
-                    else {
-                        menuItem.expanded = true;
-                    }
-                    menuItem.children = new Array();
-
-                    treeNodes.push(menuItem);
-                }
-            }
-        }
-
-        // create item category menu items
-        for (var i = 0; i < stations.length; i++) {
-            stations[i].checked = false;
-            var status = stations[i][testStationStatus];
-            if (!status)
-            {
-                status = "Unknown";
-            }
-            if (hasGroups) {
-                for (var j = 0; j < treeNodes.length; j++) {
-                    if (treeNodes[j].name === stations[i][groupName]) {
-                        menuItem = new Object();
-       
-                        menuItem.content = "<span class=\"" + GetNodeClass(status) + "\"><i class=\"" + GetNodeIcon(stations[i][testStationStatus]) + "\" style=\"color:white\"></i>&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('StationsLayoutCtrl')).scope().OpenDashboard(" + i + ");\">" + stations[i][testStationName] + " (" + status + ")" + "</a></span>";
-                        treeNodes[j].children.push(menuItem);
-                        break;
-                    }
-                }
-            }
-            else {
-                menuItem = new Object();
-                menuItem.content = "<span class=\"" + GetNodeClass(status) + "\"><i class=\"" + GetNodeIcon(stations[i][testStationStatus]) + "\" style=\"color:white\"></i>&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('StationsLayoutCtrl')).scope().OpenDashboard(" + i + ");\">" + stations[i][testStationName] + " (" + status + ")" + "</a></span>";
-
-                treeNodes.push(menuItem);
-            }
-        }
-
-        return treeNodes;
-    };
-
-    $scope.OpenDashboard = function OpenDashboard(index) {
-        var oid = TestStations.stations[index].obj_id;
-        $state.go('app.stations.dashboard', { schema: $stateParams.schema, class: $stateParams.class, oid: oid, xmlschema: TestStations.params['xmlSchemaName'], index: index });
-    }
-});
-
-
-'use strict';
-
-angular.module('app.stations').factory('TestStations', function () {
-
-    var TestStationsModel = {
-        params: undefined,
-        stations: undefined,
-        error: "",
-        init: function()
-        {
-            this.params = undefined;
-            this.stations = undefined;
-            this.error = "";
-        }
-    };
-
-    return TestStationsModel;
 });
 
 'use strict';
@@ -17418,6 +16359,1065 @@ angular.module("app.smarttables").factory("MetaDataCache", function () {
         setNamedData : _setNamedData
     };
 });
+
+
+'use strict';
+
+angular.module('app.stations').factory('TestStations', function () {
+
+    var TestStationsModel = {
+        params: undefined,
+        stations: undefined,
+        error: "",
+        init: function()
+        {
+            this.params = undefined;
+            this.stations = undefined;
+            this.error = "";
+        }
+    };
+
+    return TestStationsModel;
+});
+
+'use strict';
+
+angular.module('app.stations').controller('StationDashboardCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, TestStations, promisedSettings, $interval) {
+
+    // Live Feeds Widget Data And Display Controls
+    // Live Stats Tab
+    var index = $stateParams.index;
+    var testStationName = TestStations.params['testStationName'];
+
+    $scope.CurrentStationName = TestStations.stations[index][testStationName];
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+    $scope.template = TestStations.params['testStationForm'];
+    $scope.oid = $stateParams.oid;
+    $scope.showMonitor = true;
+  
+    if (TestStations.params['monitor'] && TestStations.params['monitor'] === "hidden")
+    {
+        $scope.showMonitor = false;
+    }
+
+    var defaultSettings = {
+        ID: "0",
+        LineXName1: "X",
+        LineXMin1: "0",
+        LineXMax1: "100",
+        LineXValue1: "0",
+        LineYName1: "Y",
+        LineYMin1: "0",
+        LineYMax1: "100",
+        LineYValue1: "0",
+        PieName1: "",
+        PieName2: "",
+        PieName3: "",
+        PieName4: "",
+        PieUnit1: "",
+        PieUnit2: "",
+        PieUnit3: "",
+        PieUnit4: "",
+        PieValue1: "",
+        PieValue2: "",
+        PieValue3: "",
+        PieValue4: "",
+        PiePercent1: "0",
+        PiePercent2: "0",
+        PiePercent3: "0",
+        PiePercent4: "0",
+        ProgressName1: "",
+        ProgressName2: "",
+        ProgressName3: "",
+        ProgressName4: "",
+        ProgressUnit1: "",
+        ProgressUnit2: "",
+        ProgressUnit3: "",
+        ProgressUnit4: "",
+        ProgressValue1: "",
+        ProgressValue2: "",
+        ProgressValue3: "",
+        ProgressValue4: "",
+        ProgressPercent1: "0",
+        ProgressPercent2: "0",
+        ProgressPercent3: "0",
+        ProgressPercent4: "0"
+    };
+
+    if ($scope.showMonitor && promisedSettings)
+    {
+        var settingsWrapper = promisedSettings.data
+        var settings = findObjectByName(settingsWrapper, "Settings")
+        if (settings)
+        {
+            $scope.settings = settings;
+        }
+        else
+        {
+            $scope.settings = defaultSettings;
+        }
+    }
+    else
+    {
+        $scope.settings = defaultSettings;
+    }
+
+    function findObjectByName(obj, name) {
+        for (var i in obj) {
+            if (obj.hasOwnProperty(i)) {
+                if (i === name)
+                {
+                    return obj[i];
+                }
+                else if (obj[i] instanceof Object)
+                {
+                    return findObjectByName(obj[i], name);
+                }
+            }
+        }
+        return null;
+    };
+
+    angular.extend(this, $controller('ebaasFormBaseCtrl', { $rootScope: $rootScope, $scope: $scope, $http: $http, APP_CONFIG: APP_CONFIG }));
+
+    $scope.autoUpdate = false;
+    var data = [];
+    var totalPoints = 100;
+    var timerInterval = 1000;
+    var currentTime = new Date().getTime();
+
+    var updateInterval = undefined;
+    $scope.$watch('autoUpdate', function (autoUpdate) {
+
+        if (autoUpdate) {
+            updateInterval = $interval(function () {
+
+                GetData(true);
+
+                $.plot($("#updating-chart"), [data], $scope.liveStatsOptions)
+            }, timerInterval)
+        } else {
+            $interval.cancel(updateInterval);
+        }
+    });
+
+    // cancel the auto updating when exiting
+    $scope.$on("$destroy", function (event) {
+        if (updateInterval) {
+            $interval.cancel(updateInterval);
+        }
+    });
+
+    if ($scope.showMonitor) {
+
+        GetData(false);
+
+        $scope.liveStats = [data];
+    }
+    else
+    {
+        $scope.liveStats = [];
+    }
+
+    function GetData(fromDB) {
+        data.shift(); //to remove first item of array
+      
+        var temp, y;
+        if (fromDB && $stateParams.xmlschema)
+        {
+            var url = APP_CONFIG.ebaasRootUrl + "/api/data/extract/" + encodeURIComponent($stateParams.schema) + "/" + $stateParams.class + "/" + $stateParams.oid + "/" + $stateParams.xmlschema;
+
+            $http.get(url).success(function (res) {
+                var settings = findObjectByName(res, "Settings")
+                if (settings) {
+                    y = settings.LineYValue1;
+                    $scope.settings = settings;
+                }
+                else
+                {
+                    y = 3.0; // fake data
+                }
+
+                temp = [currentTime += timerInterval, y]; //data format [x, y]
+
+                data.push(temp);
+            });
+        }
+        else
+        {
+            while (data.length < totalPoints) {
+                // fake data
+                 y = 2.0;
+                //y = Math.random() * 100;
+
+                temp = [currentTime += timerInterval, y]; //data format [x, y]
+
+                data.push(temp);
+            }
+        }
+    }
+
+    if ($scope.showMonitor) {
+        $scope.liveStatsOptions = {
+            yaxis: {
+                min: $scope.settings.LineYMin1,
+                max: $scope.settings.LineYMax1,
+                tickFormatter: function (v, axis) {
+                    if (v % 10 == 0) {
+                        return v;
+                    } else {
+                        return "";
+                    }
+                }
+            },
+            xaxis: {
+                mode: "time",
+                tickSize: [2, "second"],
+                tickFormatter: function (v, axis) {
+                    var date = new Date(v);
+
+                    if (date.getSeconds() % 20 == 0) {
+                        var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+                        var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+                        var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+
+                        return hours + ":" + minutes + ":" + seconds;
+                    } else {
+                        return "";
+                    }
+                }
+            },
+            colors: ['rgb(87, 136, 156)'],
+            series: {
+                lines: {
+                    lineWidth: 1,
+                    fill: true,
+                    fillColor: {
+                        colors: [
+                            {
+                                opacity: 0.4
+                            },
+                            {
+                                opacity: 0
+                            }
+                        ]
+                    },
+                    steps: false
+                }
+            }
+        };
+    }
+
+    // station scheduler code
+    var appointmentClass = TestStations.params['appointmentClass'];
+    var appointmentToStation = TestStations.params['appointmentToStation'];
+    $scope.stationpk = TestStations.stations[index]["obj_pk"];
+
+    $scope.schedulerOptions = {
+        dataSource: new DevExpress.data.DataSource({
+            store: new DevExpress.data.CustomStore({
+                key: 'obj_id',
+                load: function (options) {
+                    var def = $.Deferred();
+
+                    var filter = createFilter(options);
+                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + $scope.oid + "/" + appointmentClass + "?from=0&size=500&filter=" + JSON.stringify(filter);
+                    $http.get(url).success(function (result) {
+                        def.resolve(result);
+                    }).error(function (err) {
+                        def.reject(err);
+                    });
+
+                    return def.promise();
+                },
+                byKey: function (key) {
+
+                    var def = $.Deferred();
+
+                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass + "/" + key;
+
+                    $http.get(url).success(function (result) {
+                        def.resolve(result);
+                    }).error(function (err) {
+                        def.reject(err);
+                    });
+
+                    return def.promise();
+                },
+                insert: function (data) {
+
+                    var def = $.Deferred();
+
+                    //scheduler.server.saveAppointment(data.text, data.startDate, data.endDate);
+                    var converted = convertModel(data)
+
+                    // associated new appointment with the station by primary key
+                    converted[appointmentToStation] = $scope.stationpk;
+
+                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass;
+
+                    $http.post(url, converted)
+                     .success(function (result) {
+                         def.resolve(result);
+                     }).error(function (err) {
+                         def.reject(err);
+                     });
+
+                    return def.promise();
+                },
+                remove: function (key) {
+                    var def = $.Deferred();
+
+                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass + "/" + key;
+
+                    $http.delete(url).success(function (result) {
+                        def.resolve(result);
+                    })
+                    .error(function (err) {
+                        def.reject(err);
+                    });
+
+                    return def.promise();
+                },
+                update: function (key, data) {
+                    var def = $.Deferred();
+
+                    var converted = convertModel(data);
+
+                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass + "/" + key;
+
+                    $http.post(url, converted)
+                     .success(function (result) {
+                         def.resolve(result);
+                     }).error(function (err) {
+                         def.reject(err);
+                     });
+
+                    return def.promise();
+                }
+            }),
+            map: function (item) {
+                var appointment = {
+                    text: item.Subject,
+                    description: item.Description,
+                    startDate: createDate(item.StartTime),
+                    endDate: createDate(item.EndTime),
+                    color: "#ff00aa",
+                    obj_id: item.obj_id
+                };
+
+                //console.debug("appointment=" + JSON.stringify(appointment));
+                return appointment;
+            }
+        }),
+        views: ["month", "week", "day"],
+        currentView: "month",
+        currentDate: new Date(),
+        firstDayOfWeek: 0,
+        startDayHour: 8,
+        endDayHour: 19,
+        width: "100%",
+        height: 600,
+        onInitialized: function (e) {
+            $scope.scheduleInstance = e.component;
+        }
+    };
+
+    function createDate(str1) {
+        // str1 format should be yyyy-mm-ddThh:mm:SS.
+        var dt1 = parseInt(str1.substring(8, 10));
+        var mon1 = parseInt(str1.substring(5, 7));
+        var yr1 = parseInt(str1.substring(0, 4));
+        var date1 = new Date(yr1, mon1 - 1, dt1);
+        return date1;
+    }
+
+    function createFilter(options) {
+        var filter = new Array();
+
+        var composite = new Array();
+
+        var expr = new Array();
+        // StartTime >= intervalStartDay
+        expr.push("StartTime");
+        expr.push(">=");
+        expr.push(options.dxScheduler.startDate);
+
+        composite.push(expr);
+
+        composite.push("and");
+
+        expr = new Array();
+        expr.push("StartTime");
+        expr.push("<");
+        expr.push(options.dxScheduler.endDate);
+
+        composite.push(expr);
+
+        filter.push(composite);
+
+        filter.push("or");
+
+        composite = new Array();
+        expr = new Array();
+        expr.push("EndTime");
+        expr.push(">=");
+        expr.push(options.dxScheduler.startDate);
+
+        composite.push(expr);
+
+        composite.push("and");
+
+        expr = new Array();
+        expr.push("EndTime");
+        expr.push("<");
+        expr.push(options.dxScheduler.endDate);
+
+        composite.push(expr);
+
+        filter.push(composite);
+
+        return filter;
+    }
+
+    function convertModel(data) {
+        var converted = new Object();
+
+        converted.StartTime = data.startDate;
+        converted.EndTime = data.endDate;
+        converted.Subject = data.text;
+        converted.Description = data.description;
+
+        return converted;
+    }
+
+    var timezoneParseNameResults = /\((.*)\)/.exec(new Date().toString());
+
+    if (timezoneParseNameResults && timezoneParseNameResults.length > 0) {
+        $scope.timezone = timezoneParseNameResults[1];
+    } else {
+        var timezoneOffset = new Date().getTimezoneOffset();
+        $scope.timezone = "UTC" + (timezoneOffset < 0 ? "+" : "") + timezoneOffset / (-60) + " time zone";
+    }
+});
+'use strict';
+
+angular.module('app.stations').controller('StationSchedulerCtrl', function ($scope, $http, $stateParams, APP_CONFIG, TestStations) {
+
+    var index = $stateParams.index;
+    var testStationName = TestStations.params['testStationName'];
+    var appointmentClass = TestStations.params['appointmentClass'];
+    var appointmentToStation = TestStations.params['appointmentToStation'];
+
+    $scope.CurrentStationName = TestStations.stations[index][testStationName];
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+    $scope.oid = TestStations.stations[index]["obj_id"];
+    $scope.stationpk = TestStations.stations[index]["obj_pk"];
+
+    $scope.schedulerOptions = {
+        dataSource: new DevExpress.data.DataSource({
+            store: new DevExpress.data.CustomStore({
+                key: 'obj_id',
+                load: function (options) {
+                    var def = $.Deferred();
+
+                    var filter = createFilter(options);
+                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + $scope.oid + "/" + appointmentClass + "?from=0&size=500&filter=" + JSON.stringify(filter);
+
+                    $http.get(url).success(function (result) {
+                        def.resolve(result);
+                    }).error(function (err) {
+                        def.reject(err);
+                    });
+
+                    return def.promise();
+                },
+                byKey: function (key) {
+
+                    var def = $.Deferred();
+
+                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass + "/" + key;
+
+                    $http.get(url).success(function (result) {
+                        def.resolve(result);
+                    }).error(function (err) {
+                        def.reject(err);
+                    });
+
+                    return def.promise();
+                },
+                insert: function (data) {
+
+                    var def = $.Deferred();
+
+                    //scheduler.server.saveAppointment(data.text, data.startDate, data.endDate);
+                    var converted = convertModel(data)
+                    
+                    // associated new appointment with the station by primary key
+                    converted[appointmentToStation] = $scope.stationpk;
+
+                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass;
+
+                    $http.post(url, converted)
+                     .success(function (result) {
+                         def.resolve(result);
+                     }).error(function (err) {
+                         def.reject(err);
+                     });
+
+                    return def.promise();
+                },
+                remove: function (key) {
+                    var def = $.Deferred();
+
+                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass + "/" + key;
+
+                    $http.delete(url).success(function (result) {
+                        def.resolve(result);
+                    })
+                    .error(function (err) {
+                        def.reject(err);
+                    });
+
+                    return def.promise();
+                },
+                update: function (key, data) {
+                    var def = $.Deferred();
+
+                    var converted = convertModel(data);
+
+                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass + "/" + key;
+
+                    $http.post(url, converted)
+                     .success(function (result) {
+                         def.resolve(result);
+                     }).error(function (err) {
+                         def.reject(err);
+                     });
+
+                    return def.promise();
+                }
+            }),
+            map: function (item) {
+                var appointment = {
+                    text: item.Subject,
+                    description: item.Description,
+                    startDate: createDate(item.StartTime),
+                    endDate: createDate(item.EndTime),
+                    color: "#ff00aa",
+                    obj_id: item.obj_id
+                };
+
+                //console.debug("appointment=" + JSON.stringify(appointment));
+                return appointment;
+            }
+        }),
+        views: ["month", "week", "day"],
+        currentView: "month",
+        currentDate: new Date(2016, 3, 25),
+        firstDayOfWeek: 0,
+        startDayHour: 8,
+        endDayHour: 19,
+        width: "100%",
+        height: 600,
+        onInitialized: function (e) {
+            $scope.scheduleInstance = e.component;
+        }
+    };
+
+    function createDate(str1) {
+        // str1 format should be yyyy-mm-ddThh:mm:SS.
+        var dt1 = parseInt(str1.substring(8, 10));
+        var mon1 = parseInt(str1.substring(5, 7));
+        var yr1 = parseInt(str1.substring(0, 4));
+        var date1 = new Date(yr1, mon1 - 1, dt1);
+        return date1;
+    }
+
+    function createFilter(options) {
+        var filter = new Array();
+
+        var composite = new Array();
+
+        var expr = new Array();
+        // StartTime >= intervalStartDay
+        expr.push("StartTime");
+        expr.push(">=");
+        expr.push(options.dxScheduler.startDate);
+
+        composite.push(expr);
+
+        composite.push("and");
+
+        expr = new Array();
+        expr.push("StartTime");
+        expr.push("<");
+        expr.push(options.dxScheduler.endDate);
+
+        composite.push(expr);
+
+        filter.push(composite);
+
+        filter.push("or");
+
+        composite = new Array();
+        expr = new Array();
+        expr.push("EndTime");
+        expr.push(">=");
+        expr.push(options.dxScheduler.startDate);
+
+        composite.push(expr);
+
+        composite.push("and");
+
+        expr = new Array();
+        expr.push("EndTime");
+        expr.push("<");
+        expr.push(options.dxScheduler.endDate);
+
+        composite.push(expr);
+
+        filter.push(composite);
+
+        return filter;
+    }
+
+    function convertModel(data)
+    {
+        var converted = new Object();
+
+        converted.StartTime = data.startDate;
+        converted.EndTime = data.endDate;
+        converted.Subject = data.text;
+        converted.Description = data.description;
+        
+        return converted;
+    }
+
+    var timezoneParseNameResults = /\((.*)\)/.exec(new Date().toString());
+
+    if (timezoneParseNameResults && timezoneParseNameResults.length > 0) {
+        $scope.timezone = timezoneParseNameResults[1];
+    } else {
+        var timezoneOffset = new Date().getTimezoneOffset();
+        $scope.timezone = "UTC" + (timezoneOffset < 0 ? "+" : "") + timezoneOffset / (-60) + " time zone";
+    }
+});
+'use strict';
+
+angular.module('app.stations').controller('StationsLayoutCtrl', function ($http, APP_CONFIG, $scope, $rootScope, $state, $stateParams, stationParams, TestStations, MetaDataCache) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+ 
+    TestStations.params = stationParams.data;
+
+    var testStationGroup = TestStations.params['testStationGroup'];
+    var testStationName = TestStations.params['testStationName'];
+    var testStationStatus = TestStations.params['testStationStatus'];
+
+    if (MetaDataCache.getNamedData("stationTree")) {
+        $scope.stationTree = MetaDataCache.getNamedData("stationTree");
+
+        if (TestStations.stations.length > 0) {
+            // show the dashboard of the first station by default
+            var oid = TestStations.stations[0].obj_id;
+            $state.go('app.stations.dashboard', { schema: $stateParams.schema, class: $stateParams.class, oid: oid, xmlschema: TestStations.params['xmlSchemaName'], index: 0 });
+        }
+    }
+    else {
+        // url to get station tree model, assuming no more than 1000 stations
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "?view=full&from=0&size=1000";
+
+        $http.get(url).then(function (res) {
+
+            TestStations.stations = res.data;
+
+            $scope.stationTree = CreateTree(testStationGroup,
+                testStationName,
+                testStationStatus,
+                $scope.dbclass);
+
+            MetaDataCache.setNamedData("stationTree", $scope.stationTree);
+
+            if (TestStations.stations.length > 0) {
+                // show the dashboard of the first station by default
+                var oid = TestStations.stations[0].obj_id;
+                $state.go('app.stations.dashboard', { schema: $stateParams.schema, class: $stateParams.class, oid: oid, xmlschema: TestStations.params['xmlSchemaName'], index: 0 });
+            }
+        });
+    }
+
+    function GetNodeClass(status)
+    {
+        var nodeClass;
+      
+        switch (status)
+        {
+            case $rootScope.getWord("Available"):
+                nodeClass = "label label-primary";
+                break;
+
+            case $rootScope.getWord("Occupied"):
+                nodeClass = "label label-success";
+                break;
+
+            case $rootScope.getWord("Under Maintenance"):
+                nodeClass = "label label-warning";
+                break;
+
+            case $rootScope.getWord("Not In Service"):
+                nodeClass = "label label-danger";
+                break;
+
+            default:
+                nodeClass = "label label-info";
+
+                break;
+        }
+
+        return nodeClass;
+    }
+
+    function GetNodeIcon(status) {
+        var nodeIcon;
+        switch (status) {
+            case $rootScope.getWord("Available"):
+                nodeIcon = "fa fa-check-square-o";
+                break;
+
+            case $rootScope.getWord("Occupied"):
+                nodeIcon = "fa fa-spinner fa-spin";
+                break;
+
+            case $rootScope.getWord("Under Maintenance"):
+                nodeIcon = "fa fa-exclamation-circle";
+                break;
+
+            case $rootScope.getWord("Not In Service"):
+                nodeIcon = "fa fa-warning";
+                break;
+
+            default:
+                nodeIcon = "fa  fa-question-circle";
+
+                break;
+        }
+
+        return nodeIcon;
+    }
+
+    function CreateTree(groupName, testStationName, testStationStatus, testStationClass) {
+        var treeNodes = new Array();
+
+        var stations = TestStations.stations;
+
+        var groupNames = new Array();
+        var found;
+        var hasGroups = false;
+        var menuItem;
+        // create folder items
+        if (groupName) {
+            for (var i = 0; i < stations.length; i++) {
+                var gn = stations[i][groupName];
+
+                found = false;
+                for (var j = 0; j < groupNames.length; j++) {
+                    if (groupNames[j] === gn) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    groupNames.push(gn);
+                }
+            }
+
+            if (groupNames.length > 0) {
+                hasGroups = true;
+
+                // add gorup names as first level menus, they are not clickable
+                for (var i = 0; i < groupNames.length; i++) {
+                    menuItem = new Object();
+                    menuItem.content = "<span><i class=\"fa fa-lg fa-plus-circle\"></i>" + groupNames[i] + "</span>";
+                    menuItem.name = groupNames[i];
+                    if (i === 0) {
+                        menuItem.expanded = true;
+                    }
+                    else {
+                        menuItem.expanded = true;
+                    }
+                    menuItem.children = new Array();
+
+                    treeNodes.push(menuItem);
+                }
+            }
+        }
+
+        // create item category menu items
+        for (var i = 0; i < stations.length; i++) {
+            stations[i].checked = false;
+            var status = stations[i][testStationStatus];
+            if (!status)
+            {
+                status = "Unknown";
+            }
+            if (hasGroups) {
+                for (var j = 0; j < treeNodes.length; j++) {
+                    if (treeNodes[j].name === stations[i][groupName]) {
+                        menuItem = new Object();
+       
+                        menuItem.content = "<span class=\"" + GetNodeClass(status) + "\"><i class=\"" + GetNodeIcon(stations[i][testStationStatus]) + "\" style=\"color:white\"></i>&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('StationsLayoutCtrl')).scope().OpenDashboard(" + i + ");\">" + stations[i][testStationName] + " (" + status + ")" + "</a></span>";
+                        treeNodes[j].children.push(menuItem);
+                        break;
+                    }
+                }
+            }
+            else {
+                menuItem = new Object();
+                menuItem.content = "<span class=\"" + GetNodeClass(status) + "\"><i class=\"" + GetNodeIcon(stations[i][testStationStatus]) + "\" style=\"color:white\"></i>&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('StationsLayoutCtrl')).scope().OpenDashboard(" + i + ");\">" + stations[i][testStationName] + " (" + status + ")" + "</a></span>";
+
+                treeNodes.push(menuItem);
+            }
+        }
+
+        return treeNodes;
+    };
+
+    $scope.OpenDashboard = function OpenDashboard(index) {
+        var oid = TestStations.stations[index].obj_id;
+        $state.go('app.stations.dashboard', { schema: $stateParams.schema, class: $stateParams.class, oid: oid, xmlschema: TestStations.params['xmlSchemaName'], index: index });
+    }
+});
+'use strict';
+
+angular.module('app.tables').controller('JqGridCtrl', function ($scope) {
+    $scope.gridData = {
+        data: [
+            {
+                id: "1",
+                date: "2007-10-01",
+                name: "test",
+                note: "note",
+                amount: "200.00",
+                tax: "10.00",
+                total: "210.00"
+            },
+            {
+                id: "2",
+                date: "2007-10-02",
+                name: "test2",
+                note: "note2",
+                amount: "300.00",
+                tax: "20.00",
+                total: "320.00"
+            },
+            {
+                id: "3",
+                date: "2007-09-01",
+                name: "test3",
+                note: "note3",
+                amount: "400.00",
+                tax: "30.00",
+                total: "430.00"
+            },
+            {
+                id: "4",
+                date: "2007-10-04",
+                name: "test",
+                note: "note",
+                amount: "200.00",
+                tax: "10.00",
+                total: "210.00"
+            },
+            {
+                id: "5",
+                date: "2007-10-05",
+                name: "test2",
+                note: "note2",
+                amount: "300.00",
+                tax: "20.00",
+                total: "320.00"
+            },
+            {
+                id: "6",
+                date: "2007-09-06",
+                name: "test3",
+                note: "note3",
+                amount: "400.00",
+                tax: "30.00",
+                total: "430.00"
+            },
+            {
+                id: "7",
+                date: "2007-10-04",
+                name: "test",
+                note: "note",
+                amount: "200.00",
+                tax: "10.00",
+                total: "210.00"
+            },
+            {
+                id: "8",
+                date: "2007-10-03",
+                name: "test2",
+                note: "note2",
+                amount: "300.00",
+                tax: "20.00",
+                total: "320.00"
+            },
+            {
+                id: "9",
+                date: "2007-09-01",
+                name: "test3",
+                note: "note3",
+                amount: "400.00",
+                tax: "30.00",
+                total: "430.00"
+            },
+            {
+                id: "10",
+                date: "2007-10-01",
+                name: "test",
+                note: "note",
+                amount: "200.00",
+                tax: "10.00",
+                total: "210.00"
+            },
+            {
+                id: "11",
+                date: "2007-10-02",
+                name: "test2",
+                note: "note2",
+                amount: "300.00",
+                tax: "20.00",
+                total: "320.00"
+            },
+            {
+                id: "12",
+                date: "2007-09-01",
+                name: "test3",
+                note: "note3",
+                amount: "400.00",
+                tax: "30.00",
+                total: "430.00"
+            },
+            {
+                id: "13",
+                date: "2007-10-04",
+                name: "test",
+                note: "note",
+                amount: "200.00",
+                tax: "10.00",
+                total: "210.00"
+            },
+            {
+                id: "14",
+                date: "2007-10-05",
+                name: "test2",
+                note: "note2",
+                amount: "300.00",
+                tax: "20.00",
+                total: "320.00"
+            },
+            {
+                id: "15",
+                date: "2007-09-06",
+                name: "test3",
+                note: "note3",
+                amount: "400.00",
+                tax: "30.00",
+                total: "430.00"
+            },
+            {
+                id: "16",
+                date: "2007-10-04",
+                name: "test",
+                note: "note",
+                amount: "200.00",
+                tax: "10.00",
+                total: "210.00"
+            },
+            {
+                id: "17",
+                date: "2007-10-03",
+                name: "test2",
+                note: "note2",
+                amount: "300.00",
+                tax: "20.00",
+                total: "320.00"
+            },
+            {
+                id: "18",
+                date: "2007-09-01",
+                name: "test3",
+                note: "note3",
+                amount: "400.00",
+                tax: "30.00",
+                total: "430.00"
+            }
+        ],
+        colNames: ['Actions', 'Inv No', 'Date', 'Client', 'Amount', 'Tax', 'Total', 'Notes'],
+        colModel: [
+            {
+                name: 'act',
+                index: 'act',
+                sortable: false
+            },
+            {
+                name: 'id',
+                index: 'id'
+            },
+            {
+                name: 'date',
+                index: 'date',
+                editable: true
+            },
+            {
+                name: 'name',
+                index: 'name',
+                editable: true
+            },
+            {
+                name: 'amount',
+                index: 'amount',
+                align: "right",
+                editable: true
+            },
+            {
+                name: 'tax',
+                index: 'tax',
+                align: "right",
+                editable: true
+            },
+            {
+                name: 'total',
+                index: 'total',
+                align: "right",
+                editable: true
+            },
+            {
+                name: 'note',
+                index: 'note',
+                sortable: false,
+                editable: true
+            }
+        ]
+    }
+
+
+    $scope.getSelection = function(){
+        alert(jQuery('table').jqGrid('getGridParam', 'selarrrow'));
+    };
+
+    $scope.selectRow = function(row){
+       jQuery('table').jqGrid('setSelection', row);
+
+    }
+});
 'use strict';
 
 angular.module('app.taskforum').controller('PostViewCtrl', function ($scope, $http, $state, $stateParams, APP_CONFIG, User, $modalInstance, myActivityService) {
@@ -17662,6 +17662,34 @@ angular.module('app.taskforum').controller('PostViewCtrl', function ($scope, $ht
         $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
     }
 });
+angular.module('app.tasks').directive('convertToNumber', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, element, attrs, ngModel) {
+            ngModel.$parsers.push(function (val) {
+                return val != null ? parseInt(val, 10) : null;
+            });
+            ngModel.$formatters.push(function (val) {
+                return val != null ? '' + val : null;
+            });
+        }
+    };
+});
+
+
+'use strict';
+
+angular.module('app.tasks').factory('TasksInfo', function () {
+
+    var TaskModel = {
+            count: 0,
+            tasks: [],
+            currentTask: undefined
+        };
+
+    return TaskModel;
+});
+
 /// <reference path='./DlhSoft.Kanban.Angular.Components.ts'/>
 var KanbanBoard = DlhSoft.Controls.KanbanBoard;
 
@@ -18143,50 +18171,6 @@ angular.module('app.taskkanban').factory('KanbanService', function ($http, APP_C
 		}
 	}
 });
-'use strict';
-
-angular.module('app.taskkanban').directive('ngEnter', function () {
-    return function (scope, element, attrs) {
-        element.bind("keydown keypress", function (event) {
-            if (event.which === 13) {
-                scope.$apply(function () {
-                    scope.$eval(attrs.ngEnter, { 'event': event });
-                });
-
-                event.preventDefault();
-            }
-        });
-    };
-});
-
-
-
-'use strict';
-
-angular.module('app.tasks').factory('TasksInfo', function () {
-
-    var TaskModel = {
-            count: 0,
-            tasks: [],
-            currentTask: undefined
-        };
-
-    return TaskModel;
-});
-
-angular.module('app.tasks').directive('convertToNumber', function () {
-    return {
-        require: 'ngModel',
-        link: function (scope, element, attrs, ngModel) {
-            ngModel.$parsers.push(function (val) {
-                return val != null ? parseInt(val, 10) : null;
-            });
-            ngModel.$formatters.push(function (val) {
-                return val != null ? '' + val : null;
-            });
-        }
-    };
-});
 "use strict";
 
 angular.module('app.tasks').controller('reassignTaskCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, User) {
@@ -18488,268 +18472,20 @@ angular.module('app.tasks').controller('taskSubstituteCtrl', function ($scope, $
 });
 'use strict';
 
-angular.module('app.tasktrack').controller('TaskListCtrl', function ($scope, $state, $rootScope, $stateParams, taskTrackService, hubService) {
+angular.module('app.taskkanban').directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if (event.which === 13) {
+                scope.$apply(function () {
+                    scope.$eval(attrs.ngEnter, { 'event': event });
+                });
 
-    $scope.dbschema = $stateParams.schema;
-    $scope.taskclass = $stateParams.class;
-    $scope.pickoid = $stateParams.pickoid;
-    $scope.template = "IssueForm.htm";
-
-    $scope.displayed = [];
-
-    $scope.isLoading = true;
-
-    $scope.tableState;
-
-    $scope.callServer = function callServer(tableState) {
-
-        $scope.isLoading = true;
-
-        $scope.tableState = tableState;
-
-        if (!$scope.pickoid) {
-            var pagination = tableState.pagination;
-
-            var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
-            var number = pagination.number || 10;  // Number of entries showed per page.
-
-            taskTrackService.getTaskResult($scope.dbschema, $scope.taskclass, start, number, tableState, function (result) {
-                $scope.displayed = result.data;
-         
-                tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
-                $scope.isLoading = false;
-            });
-        }
-        else
-        {
-            taskTrackService.getOneTask($scope.dbschema, $scope.taskclass, $scope.pickoid, function (result) {
-                $scope.displayed = result.data;
-                tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
-                $scope.isLoading = false;
-            });
-         }
+                event.preventDefault();
+            }
+        });
     };
-
-    $scope.searchIssues = function () {
-
-    }
-
-    $scope.switchTrackStatus = function (row) {
-        var groupName = $scope.dbschema + "-" + row.type + "-" + row.obj_id;
-
-        if (row.TrackStatus)
-        {
-            hubService.addToGroup(groupName); // hubService adds the current user to the group
-        }
-        else
-        {
-            hubService.removeFromGroup(groupName); // hubService removes the current user from the group
-        }
-    }
-
-    $rootScope.$on('modalClosed', function (event, data) {
-        if (data === "update") {
-            $scope.callServer($scope.tableState);
-        }
-    });
 });
-"use strict";
 
-angular.module('app.tasktrack').factory('taskTrackService', function ($http, APP_CONFIG, hubService) {
-
-    function getTaskResult(dbschema, taskclass, start, pageSize, params, callback) {
-	    
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + taskclass + "?view=full&from=" + start + "&size=" + pageSize;
-	
-        var filters = params.search.predicateObject;
-        var count = 0;
-        var expre = [];
-        if (filters)
-        {
-            var filter;
-            for (var property in filters) {
-                if (filters.hasOwnProperty(property)) {
-                    filter = [];
-                    filter.push(property);
-                    if (property === "Subject") {
-                        filter.push("contains");
-                    }
-                    else {
-                        filter.push("=");
-                    }
-                    filter.push(filters[property]);
-                }
-
-                count++;
-
-                if (count === 1) {
-                    expre.push(filter);
-                }
-                else
-                {
-                    expre.push("and");
-                    expre.push(filter);
-                }
-            }
-
-            if (count > 0) {
-                if (count === 1) {
-                    url += "&filter=" + JSON.stringify(expre[0]); // single filter
-                }
-                else {
-                    url += "&filter=" + JSON.stringify(expre); // compound filter
-                }
-            }
-        }
-
-        var sortField = params.sort.predicate;
-        var sortReverse = params.sort.reverse;
-        if (sortField)
-        {
-            url += "&sortfield=" + sortField + "&sortreverse=" + sortReverse;
-        }
-
-        hubService.getUserGroups(function (groups) {
-
-            $http.get(url).success(function (data) {
-                var result = new Object();
-                addTrackStatus(dbschema, data, groups);
-                result.data = data;
-
-                url = APP_CONFIG.ebaasRootUrl + "/api/count/" + encodeURIComponent(dbschema) + "/" + taskclass;
-                if (count > 0) {
-                    if (count === 1) {
-                        url += "?filter=" + JSON.stringify(expre[0]); // single filter
-                    }
-                    else {
-                        url += "?filter=" + JSON.stringify(expre); // compound filter
-                    }
-                }
-                $http.get(url).success(function (data) {
-                    var numberOfPages = Math.ceil(data / pageSize);
-                    result.numberOfPages = numberOfPages;
-                    callback(result);
-                }).error(function () {
-                    callback(undefined);
-
-                });
-            }).error(function () {
-                callback(undefined);
-            });
-        });
-    }
-
-    function getOneTask(dbschema, taskclass, oid, callback) {
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + taskclass + "/" + oid
-
-        hubService.getUserGroups(function (groups) {
-
-            $http.get(url).success(function (data) {
-                var array = [];
-                array.push(data);
-                var result = new Object();
-                addTrackStatus(dbschema, array, groups);
-                result.data = array;
-                result.numberOfPages = 1;
-                callback(result);
-
-            }).error(function () {
-                callback(undefined);
-            });
-        });
-    }
-
-    function addTrackStatus(dbschema, data, userGroups)
-    {
-        if (data && data.length > 0)
-        {
-            for (var i = 0; i < data.length; i++)
-            {
-                data[i].TrackStatus = false;
-                var groupName = dbschema + "-" + data[i].type + "-" + data[i].obj_id;
-                for (var j = 0; j < userGroups.length; j++)
-                {
-                    if (userGroups[j] === groupName)
-                    {
-                        data[i].TrackStatus = true;
-                        break;
-                    }
-                }
-            }
-        }
-    }
-	
-	return {
-	    getTaskResult: function (dbschema, taskclass, start, pagesize, tableState, callback) {
-	        getTaskResult(dbschema, taskclass, start, pagesize, tableState, callback);
-	    },
-	    getOneTask: function (dbschema, taskclass, oid, callback) {
-	        getOneTask(dbschema, taskclass, oid, callback);
-	    }
-	}
-});
-"use strict";
-
-angular.module('app.user').controller('ChangePasswordController', function ($http, $scope, $rootScope, User, APP_CONFIG) {
-        $scope.savedSuccessfully = false;
-        $scope.message = "";
-
-        $scope.registration = {
-            userName: User.userName,
-            password: "",
-            newPassword: "",
-            confirmNewPassword: ""
-        };
-
-        $scope.save = function () {
- 
-            if ($scope.registration.newPassword != $scope.registration.confirmNewPassword)
-            {
-                $scope.savedSuccessfully = false;
-                $scope.message = $rootScope.getWord("ConfirmPasswordIncorrect");
-            }
-            else if ($scope.registration.newPassword.length < 3)
-            {
-                $scope.savedSuccessfully = false;
-                $scope.message = $rootScope.getWord("NewPasswordInvalid");
-            }
-            else
-            {
-                var model = {};
-                model.oldPassword = $scope.registration.password;
-                model.newPassword = $scope.registration.newPassword;
-                model.confirmPassword = $scope.registration.confirmNewPassword;
-                $http.post(APP_CONFIG.ebaasRootUrl + '/api/accounts/ChangePassword', model).success(function (data) {
-                    $scope.message = $rootScope.getWord("PasswordUpdated");
-                    $scope.savedSuccessfully = true;
-                })
-                .error(function (err) {
-                    console.log(err);
-                    $scope.message = err.message;
-                    $scope.savedSuccessfully = false;
-                });
-            }
-        };
-
-    });
-"use strict";
-
-angular.module('app.user').controller('EditProfileController', function ($http, $scope, $rootScope, User, APP_CONFIG) {
-        $scope.savedSuccessfully = false;
-        $scope.message = "";
-
-        $scope.profile = User;
-
-        $scope.save = function () {
-
-            User.save(function () {
-                $scope.message = $rootScope.getWord("ProfileUpdated");
-                $scope.savedSuccessfully = true;
-            })
-        }
-
-    });
 'use strict';
 
 angular.module('app.taskviewer').controller('ItemFormCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, taskService, $document, $window) {
@@ -19183,6 +18919,409 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($r
         }
     });
 });
+'use strict';
+
+angular.module('app.taskviewer')
+    .factory('ContextMenuService', function () {
+        return {
+            element: null,
+            menuElement: null
+        };
+    })
+    .directive('contextMenu', [
+        '$document',
+        'ContextMenuService',
+        function ($document, ContextMenuService) {
+            return {
+                restrict: 'A',
+                scope: {
+                    'callback': '&contextMenu',
+                    'disabled': '&contextMenuDisabled',
+                    'closeCallback': '&contextMenuClose',
+                    'marginBottom': '@contextMenuMarginBottom'
+                },
+                link: function ($scope, $element, $attrs) {
+                    var opened = false;
+
+                    function open(event, menuElement) {
+                        menuElement.addClass('open');
+
+                        var doc = $document[0].documentElement;
+                        var docLeft = (window.pageXOffset || doc.scrollLeft) -
+                            (doc.clientLeft || 0),
+                            docTop = (window.pageYOffset || doc.scrollTop) -
+                                (doc.clientTop || 0),
+                            elementWidth = menuElement[0].scrollWidth,
+                            elementHeight = menuElement[0].scrollHeight;
+                        var pageX;
+                        var pageY;
+                        // browser compatibility fix for the click location
+                        if (event.pageX || event.pageY) {
+                            // use pageX and pageY when available (modern browsers)
+                            pageX = event.pageX;
+                            pageY = event.pageY;
+                        } else {
+                            // calculate pageX and pageY when they do not exist
+                            // (IE8 and generated events in later versions of IE)
+                            var docBody = $document[0].body;
+                            pageX = event.clientX + docBody.scrollLeft + doc.scrollLeft;
+                            pageY = event.clientY + docBody.scrollTop + doc.scrollTop;
+                        }
+                        var docWidth = doc.clientWidth + docLeft,
+                            docHeight = doc.clientHeight + docTop,
+                            totalWidth = elementWidth + pageX,
+                            totalHeight = elementHeight + pageY,
+                            left = Math.max(pageX - docLeft, 0),
+                            top = Math.max(pageY - docTop, 0);
+
+                        if (totalWidth > docWidth) {
+                            left = left - (totalWidth - docWidth);
+                        }
+
+                        if (totalHeight > docHeight) {
+                            var marginBottom = $scope.marginBottom || 0;
+                            top = top - (totalHeight - docHeight) - marginBottom;
+                        }
+
+                        menuElement.css('top', top + 'px');
+                        menuElement.css('left', left + 'px');
+                        opened = true;
+                    }
+
+                    function close(menuElement) {
+                        menuElement.removeClass('open');
+
+                        if (opened) {
+                            $scope.closeCallback();
+                        }
+
+                        opened = false;
+                    }
+
+                    $element.bind('contextmenu', function (event) {
+                        if (!$scope.disabled()) {
+                            if (ContextMenuService.menuElement !== null) {
+                                close(ContextMenuService.menuElement);
+                            }
+                            ContextMenuService.menuElement = angular.element(
+                                document.getElementById($attrs.target)
+                            );
+                            ContextMenuService.element = event.target;
+
+                            event.preventDefault();
+                            event.stopPropagation();
+                            $scope.$apply(function () {
+                                $scope.callback({ $event: event });
+                            });
+                            $scope.$apply(function () {
+                                open(event, ContextMenuService.menuElement);
+                            });
+                        }
+                    });
+
+                    function handleKeyUpEvent(event) {
+                        if (opened && event.keyCode === 27) {
+                            $scope.$apply(function () {
+                                close(ContextMenuService.menuElement);
+                            });
+                        }
+                    }
+
+                    function handleClickEvent(event) {
+                        if (opened &&
+                            (event.button !== 2 ||
+                                event.target !== ContextMenuService.element)) {
+                            $scope.$apply(function () {
+                                close(ContextMenuService.menuElement);
+                            });
+                        }
+                    }
+
+                    $document.bind('keyup', handleKeyUpEvent);
+                    // Firefox treats a right-click as a click and a contextmenu event
+                    // while other browsers just treat it as a contextmenu event
+                    $document.bind('click', handleClickEvent);
+                    $document.bind('contextmenu', handleClickEvent);
+
+                    $scope.$on('$destroy', function () {
+                        $document.unbind('keyup', handleKeyUpEvent);
+                        $document.unbind('click', handleClickEvent);
+                        $document.unbind('contextmenu', handleClickEvent);
+                    });
+                }
+            };
+        }
+    ]);
+
+'use strict';
+
+angular.module('app.taskviewer').directive('taskTreeviewContent', function ($compile) {
+    return {
+        restrict: 'E',
+        link: function (scope, element) {
+            var $content = $(scope.item.content);
+
+            function handleExpanded(){
+                $content.find('>i')
+                    .toggleClass('fa-plus-circle', !scope.item.expanded)
+                    .toggleClass('fa-minus-circle', !!scope.item.expanded)
+
+            }
+
+
+            if (scope.item.children && scope.item.children.length) {
+                $content.on('click', function(){
+                    scope.$apply(function(){
+                        scope.item.expanded = !scope.item.expanded;
+                        handleExpanded();
+                    });
+
+
+                });
+                handleExpanded();
+            }
+
+            element.replaceWith($content);
+
+
+        }
+    }
+});
+
+angular.module('app.taskviewer').directive('taskTreeview', function ($compile, $sce) {
+    return {
+        restrict: 'A',
+        scope: {
+            'items': '='
+        },
+        template: '<li ng-class="{parent_li: item.children.length}" ng-repeat="item in items" role="treeitem">' +
+            '<div context-menu data-target="menu-{{ item.index }}">' +
+            '<task-treeview-content></task-treeview-content>' +
+            '</div>' +
+            '<ul ng-if="item.children.length" task-treeview ng-show="item.expanded"  items="item.children" role="group" class="smart-treeview-group" ></ul>' +
+            '</li>',
+        compile: function (element) {
+            // Break the recursion loop by removing the contents
+            var contents = element.contents().remove();
+            var compiledContents;
+            return {
+                post: function (scope, element) {
+                    // Compile the contents
+                    if (!compiledContents) {
+                        compiledContents = $compile(contents);
+                    }
+                    // Re-add the compiled contents to the element
+                    compiledContents(scope, function (clone) {
+                        element.append(clone);
+                    });
+                }
+            };
+        }
+    };
+});
+'use strict';
+
+angular.module('app.tasktrack').controller('TaskListCtrl', function ($scope, $state, $rootScope, $stateParams, taskTrackService, hubService) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.taskclass = $stateParams.class;
+    $scope.pickoid = $stateParams.pickoid;
+    $scope.template = "IssueForm.htm";
+
+    $scope.displayed = [];
+
+    $scope.isLoading = true;
+
+    $scope.tableState;
+
+    $scope.callServer = function callServer(tableState) {
+
+        $scope.isLoading = true;
+
+        $scope.tableState = tableState;
+
+        if (!$scope.pickoid) {
+            var pagination = tableState.pagination;
+
+            var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
+            var number = pagination.number || 10;  // Number of entries showed per page.
+
+            taskTrackService.getTaskResult($scope.dbschema, $scope.taskclass, start, number, tableState, function (result) {
+                $scope.displayed = result.data;
+         
+                tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
+                $scope.isLoading = false;
+            });
+        }
+        else
+        {
+            taskTrackService.getOneTask($scope.dbschema, $scope.taskclass, $scope.pickoid, function (result) {
+                $scope.displayed = result.data;
+                tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
+                $scope.isLoading = false;
+            });
+         }
+    };
+
+    $scope.searchIssues = function () {
+
+    }
+
+    $scope.switchTrackStatus = function (row) {
+        var groupName = $scope.dbschema + "-" + row.type + "-" + row.obj_id;
+
+        if (row.TrackStatus)
+        {
+            hubService.addToGroup(groupName); // hubService adds the current user to the group
+        }
+        else
+        {
+            hubService.removeFromGroup(groupName); // hubService removes the current user from the group
+        }
+    }
+
+    $rootScope.$on('modalClosed', function (event, data) {
+        if (data === "update") {
+            $scope.callServer($scope.tableState);
+        }
+    });
+});
+"use strict";
+
+angular.module('app.tasktrack').factory('taskTrackService', function ($http, APP_CONFIG, hubService) {
+
+    function getTaskResult(dbschema, taskclass, start, pageSize, params, callback) {
+	    
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + taskclass + "?view=full&from=" + start + "&size=" + pageSize;
+	
+        var filters = params.search.predicateObject;
+        var count = 0;
+        var expre = [];
+        if (filters)
+        {
+            var filter;
+            for (var property in filters) {
+                if (filters.hasOwnProperty(property)) {
+                    filter = [];
+                    filter.push(property);
+                    if (property === "Subject") {
+                        filter.push("contains");
+                    }
+                    else {
+                        filter.push("=");
+                    }
+                    filter.push(filters[property]);
+                }
+
+                count++;
+
+                if (count === 1) {
+                    expre.push(filter);
+                }
+                else
+                {
+                    expre.push("and");
+                    expre.push(filter);
+                }
+            }
+
+            if (count > 0) {
+                if (count === 1) {
+                    url += "&filter=" + JSON.stringify(expre[0]); // single filter
+                }
+                else {
+                    url += "&filter=" + JSON.stringify(expre); // compound filter
+                }
+            }
+        }
+
+        var sortField = params.sort.predicate;
+        var sortReverse = params.sort.reverse;
+        if (sortField)
+        {
+            url += "&sortfield=" + sortField + "&sortreverse=" + sortReverse;
+        }
+
+        hubService.getUserGroups(function (groups) {
+
+            $http.get(url).success(function (data) {
+                var result = new Object();
+                addTrackStatus(dbschema, data, groups);
+                result.data = data;
+
+                url = APP_CONFIG.ebaasRootUrl + "/api/count/" + encodeURIComponent(dbschema) + "/" + taskclass;
+                if (count > 0) {
+                    if (count === 1) {
+                        url += "?filter=" + JSON.stringify(expre[0]); // single filter
+                    }
+                    else {
+                        url += "?filter=" + JSON.stringify(expre); // compound filter
+                    }
+                }
+                $http.get(url).success(function (data) {
+                    var numberOfPages = Math.ceil(data / pageSize);
+                    result.numberOfPages = numberOfPages;
+                    callback(result);
+                }).error(function () {
+                    callback(undefined);
+
+                });
+            }).error(function () {
+                callback(undefined);
+            });
+        });
+    }
+
+    function getOneTask(dbschema, taskclass, oid, callback) {
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + taskclass + "/" + oid
+
+        hubService.getUserGroups(function (groups) {
+
+            $http.get(url).success(function (data) {
+                var array = [];
+                array.push(data);
+                var result = new Object();
+                addTrackStatus(dbschema, array, groups);
+                result.data = array;
+                result.numberOfPages = 1;
+                callback(result);
+
+            }).error(function () {
+                callback(undefined);
+            });
+        });
+    }
+
+    function addTrackStatus(dbschema, data, userGroups)
+    {
+        if (data && data.length > 0)
+        {
+            for (var i = 0; i < data.length; i++)
+            {
+                data[i].TrackStatus = false;
+                var groupName = dbschema + "-" + data[i].type + "-" + data[i].obj_id;
+                for (var j = 0; j < userGroups.length; j++)
+                {
+                    if (userGroups[j] === groupName)
+                    {
+                        data[i].TrackStatus = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+	
+	return {
+	    getTaskResult: function (dbschema, taskclass, start, pagesize, tableState, callback) {
+	        getTaskResult(dbschema, taskclass, start, pagesize, tableState, callback);
+	    },
+	    getOneTask: function (dbschema, taskclass, oid, callback) {
+	        getOneTask(dbschema, taskclass, oid, callback);
+	    }
+	}
+});
 "use strict";
 
 angular.module('app.ui').controller('GeneralElementsCtrl', function ($scope) {
@@ -19527,6 +19666,67 @@ angular.module('app.ui').controller('TreeviewCtrl', function ($scope) {
         ]}
     ]
 });
+"use strict";
+
+angular.module('app.user').controller('ChangePasswordController', function ($http, $scope, $rootScope, User, APP_CONFIG) {
+        $scope.savedSuccessfully = false;
+        $scope.message = "";
+
+        $scope.registration = {
+            userName: User.userName,
+            password: "",
+            newPassword: "",
+            confirmNewPassword: ""
+        };
+
+        $scope.save = function () {
+ 
+            if ($scope.registration.newPassword != $scope.registration.confirmNewPassword)
+            {
+                $scope.savedSuccessfully = false;
+                $scope.message = $rootScope.getWord("ConfirmPasswordIncorrect");
+            }
+            else if ($scope.registration.newPassword.length < 3)
+            {
+                $scope.savedSuccessfully = false;
+                $scope.message = $rootScope.getWord("NewPasswordInvalid");
+            }
+            else
+            {
+                var model = {};
+                model.oldPassword = $scope.registration.password;
+                model.newPassword = $scope.registration.newPassword;
+                model.confirmPassword = $scope.registration.confirmNewPassword;
+                $http.post(APP_CONFIG.ebaasRootUrl + '/api/accounts/ChangePassword', model).success(function (data) {
+                    $scope.message = $rootScope.getWord("PasswordUpdated");
+                    $scope.savedSuccessfully = true;
+                })
+                .error(function (err) {
+                    console.log(err);
+                    $scope.message = err.message;
+                    $scope.savedSuccessfully = false;
+                });
+            }
+        };
+
+    });
+"use strict";
+
+angular.module('app.user').controller('EditProfileController', function ($http, $scope, $rootScope, User, APP_CONFIG) {
+        $scope.savedSuccessfully = false;
+        $scope.message = "";
+
+        $scope.profile = User;
+
+        $scope.save = function () {
+
+            User.save(function () {
+                $scope.message = $rootScope.getWord("ProfileUpdated");
+                $scope.savedSuccessfully = true;
+            })
+        }
+
+    });
 'use strict';
 
 angular.module('app.ui').directive('smartClassFilter', function () {
@@ -19982,206 +20182,6 @@ angular.module('app.ui').directive('smartTreeview', function ($compile, $sce) {
         template: '<li ng-class="{parent_li: item.children.length}" ng-repeat="item in items" role="treeitem">' +
             '<smart-treeview-content></smart-treeview-content>' +
             '<ul ng-if="item.children.length" smart-treeview ng-show="item.expanded"  items="item.children" role="group" class="smart-treeview-group" ></ul>' +
-            '</li>',
-        compile: function (element) {
-            // Break the recursion loop by removing the contents
-            var contents = element.contents().remove();
-            var compiledContents;
-            return {
-                post: function (scope, element) {
-                    // Compile the contents
-                    if (!compiledContents) {
-                        compiledContents = $compile(contents);
-                    }
-                    // Re-add the compiled contents to the element
-                    compiledContents(scope, function (clone) {
-                        element.append(clone);
-                    });
-                }
-            };
-        }
-    };
-});
-'use strict';
-
-angular.module('app.taskviewer')
-    .factory('ContextMenuService', function () {
-        return {
-            element: null,
-            menuElement: null
-        };
-    })
-    .directive('contextMenu', [
-        '$document',
-        'ContextMenuService',
-        function ($document, ContextMenuService) {
-            return {
-                restrict: 'A',
-                scope: {
-                    'callback': '&contextMenu',
-                    'disabled': '&contextMenuDisabled',
-                    'closeCallback': '&contextMenuClose',
-                    'marginBottom': '@contextMenuMarginBottom'
-                },
-                link: function ($scope, $element, $attrs) {
-                    var opened = false;
-
-                    function open(event, menuElement) {
-                        menuElement.addClass('open');
-
-                        var doc = $document[0].documentElement;
-                        var docLeft = (window.pageXOffset || doc.scrollLeft) -
-                            (doc.clientLeft || 0),
-                            docTop = (window.pageYOffset || doc.scrollTop) -
-                                (doc.clientTop || 0),
-                            elementWidth = menuElement[0].scrollWidth,
-                            elementHeight = menuElement[0].scrollHeight;
-                        var pageX;
-                        var pageY;
-                        // browser compatibility fix for the click location
-                        if (event.pageX || event.pageY) {
-                            // use pageX and pageY when available (modern browsers)
-                            pageX = event.pageX;
-                            pageY = event.pageY;
-                        } else {
-                            // calculate pageX and pageY when they do not exist
-                            // (IE8 and generated events in later versions of IE)
-                            var docBody = $document[0].body;
-                            pageX = event.clientX + docBody.scrollLeft + doc.scrollLeft;
-                            pageY = event.clientY + docBody.scrollTop + doc.scrollTop;
-                        }
-                        var docWidth = doc.clientWidth + docLeft,
-                            docHeight = doc.clientHeight + docTop,
-                            totalWidth = elementWidth + pageX,
-                            totalHeight = elementHeight + pageY,
-                            left = Math.max(pageX - docLeft, 0),
-                            top = Math.max(pageY - docTop, 0);
-
-                        if (totalWidth > docWidth) {
-                            left = left - (totalWidth - docWidth);
-                        }
-
-                        if (totalHeight > docHeight) {
-                            var marginBottom = $scope.marginBottom || 0;
-                            top = top - (totalHeight - docHeight) - marginBottom;
-                        }
-
-                        menuElement.css('top', top + 'px');
-                        menuElement.css('left', left + 'px');
-                        opened = true;
-                    }
-
-                    function close(menuElement) {
-                        menuElement.removeClass('open');
-
-                        if (opened) {
-                            $scope.closeCallback();
-                        }
-
-                        opened = false;
-                    }
-
-                    $element.bind('contextmenu', function (event) {
-                        if (!$scope.disabled()) {
-                            if (ContextMenuService.menuElement !== null) {
-                                close(ContextMenuService.menuElement);
-                            }
-                            ContextMenuService.menuElement = angular.element(
-                                document.getElementById($attrs.target)
-                            );
-                            ContextMenuService.element = event.target;
-
-                            event.preventDefault();
-                            event.stopPropagation();
-                            $scope.$apply(function () {
-                                $scope.callback({ $event: event });
-                            });
-                            $scope.$apply(function () {
-                                open(event, ContextMenuService.menuElement);
-                            });
-                        }
-                    });
-
-                    function handleKeyUpEvent(event) {
-                        if (opened && event.keyCode === 27) {
-                            $scope.$apply(function () {
-                                close(ContextMenuService.menuElement);
-                            });
-                        }
-                    }
-
-                    function handleClickEvent(event) {
-                        if (opened &&
-                            (event.button !== 2 ||
-                                event.target !== ContextMenuService.element)) {
-                            $scope.$apply(function () {
-                                close(ContextMenuService.menuElement);
-                            });
-                        }
-                    }
-
-                    $document.bind('keyup', handleKeyUpEvent);
-                    // Firefox treats a right-click as a click and a contextmenu event
-                    // while other browsers just treat it as a contextmenu event
-                    $document.bind('click', handleClickEvent);
-                    $document.bind('contextmenu', handleClickEvent);
-
-                    $scope.$on('$destroy', function () {
-                        $document.unbind('keyup', handleKeyUpEvent);
-                        $document.unbind('click', handleClickEvent);
-                        $document.unbind('contextmenu', handleClickEvent);
-                    });
-                }
-            };
-        }
-    ]);
-
-'use strict';
-
-angular.module('app.taskviewer').directive('taskTreeviewContent', function ($compile) {
-    return {
-        restrict: 'E',
-        link: function (scope, element) {
-            var $content = $(scope.item.content);
-
-            function handleExpanded(){
-                $content.find('>i')
-                    .toggleClass('fa-plus-circle', !scope.item.expanded)
-                    .toggleClass('fa-minus-circle', !!scope.item.expanded)
-
-            }
-
-
-            if (scope.item.children && scope.item.children.length) {
-                $content.on('click', function(){
-                    scope.$apply(function(){
-                        scope.item.expanded = !scope.item.expanded;
-                        handleExpanded();
-                    });
-
-
-                });
-                handleExpanded();
-            }
-
-            element.replaceWith($content);
-
-
-        }
-    }
-});
-
-angular.module('app.taskviewer').directive('taskTreeview', function ($compile, $sce) {
-    return {
-        restrict: 'A',
-        scope: {
-            'items': '='
-        },
-        template: '<li ng-class="{parent_li: item.children.length}" ng-repeat="item in items" role="treeitem">' +
-            '<div context-menu data-target="menu-{{ item.index }}">' +
-            '<task-treeview-content></task-treeview-content>' +
-            '</div>' +
-            '<ul ng-if="item.children.length" task-treeview ng-show="item.expanded"  items="item.children" role="group" class="smart-treeview-group" ></ul>' +
             '</li>',
         compile: function (element) {
             // Break the recursion loop by removing the contents
@@ -21252,88 +21252,148 @@ angular.module('app.userdirectory').factory('userService', function ($http, APP_
 	    }
 	}
 });
-
-
 'use strict';
 
-angular.module('app.wizards').factory('RequestInfo', function () {
+angular.module('app.wizards').directive('ebaasFormWizard', function () {
+    return {
+        restrict: 'A',
+        scope: {
+            ebaasWizard : '=',
+            ebaasWizardCallback: '&',
+            ebaasWizardStepEntered: '&',
+            ebaasWizardStepChanged: '&'
+        },
+        link: function (scope, element, attributes) {
 
-    var RequestModel = {
-        params: undefined,
-        instance: undefined,
-        metadata: undefined,
-        sampleGridInstance: undefined,
-        itemGridInstance: undefined,
-        selectedItemIds: undefined,
-        selectedItemOwners: undefined,
-        selectdSampleKey : undefined,
-        sampleItemMap : undefined,
-        error: "",
-        init: function()
-        {
-            this.params = undefined;
-            this.instance = undefined;
-            this.metadata = undefined;
-            this.sampleGridInstance = undefined;
-            this.itemGridInstance = undefined;
-            this.selectdSampleKey = undefined;
-            this.selectedItemIds = undefined;
-            this.selectedItemOwners = undefined;
-            this.sampleItemsMap = new Object();
-            this.error = "";
-        },
-        requestId: function()
-        {
-            if (this.instance)
-            {
-                return this.instance.obj_id;
-            }
-            else
-            {
-                return undefined;
-            }
-        },
-        requestPk: function()
-        {
-            if (this.instance) {
-                return this.instance.obj_pk;
-            }
-            else {
-                return undefined;
-            }
-        },
-        getPropertyValue : function(property)
-        {
-            if (this.instance && this.metadata)
-            {
-                var propertyValue = this.instance[property];
+            var wizard = element.wizard();
 
-                if (propertyValue) {
-                    if (this.metadata.properties[property].enum) {
-                        if (propertyValue > 0) {
-                            // convert property value from index to enum name
-                            propertyValue = this.metadata.properties[property].enum[propertyValue];
-                        }
-                        else
-                        {
-                            // 0 is for unknown, convert it to empty string
-                            propertyValue = "";
-                        }
-                    }
+            scope.ebaasWizard = wizard;
+
+            var $form = element.find('form');
+
+            wizard.on('actionclicked.fu.wizard', function (e, data) {
+                if (typeof scope.ebaasWizardStepChanged() === 'function') {
+                    scope.ebaasWizardStepChanged()(e, data)
                 }
+            });
 
-                return propertyValue
-            }
-            else
-            {
-                return undefined;
-            }
+            wizard.on('changed.fu.wizard', function (e, data) {
+                if (typeof scope.ebaasWizardStepEntered() === 'function') {
+                    scope.ebaasWizardStepEntered()(e, data)
+                }
+            });
+
+            wizard.on('finished.fu.wizard', function (e, data) {
+                var formData = {};
+                _.each($form.serializeArray(), function(field){
+                    formData[field.name] = field.value
+                });
+                if(typeof scope.ebaasWizardCallback() === 'function'){
+                    scope.ebaasWizardCallback()(formData)
+                }
+            });
         }
-    };
-
-    return RequestModel;
+    }
 });
+'use strict';
 
+angular.module('app.wizards').directive('previewSubmitStep', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/wizards/views/preview-submit-step.html',
+        replace: true,
+        scope: {},
+        bindToController: {
+            dbschema: '=',
+            dbclass: '=',
+            template: '=',
+            taskId: '=',
+            control: '=',
+            callbackMethod: '&stepCallback'
+        },
+        controllerAs: 'ctrl',
+        controller: 'previewSubmitStepCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
+'use strict';
+
+angular.module('app.wizards').directive('requestInfoStep', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/wizards/views/request-info-step.html',
+        replace: true,
+        scope: {},
+        bindToController: {
+            dbschema: '=',
+            dbclass: '=',
+            template: '=',
+            control: '=',
+            callbackMethod: '&stepCallback'
+        },
+        controllerAs: 'ctrl',
+        controller: 'requestInfoStepCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
+'use strict';
+
+angular.module('app.wizards').directive('requestItems', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/wizards/views/request-items.html',
+        replace: true,
+        scope: {},
+        bindToController: {
+            dbschema: '=',
+            dbclass: '='
+        },
+        controllerAs: 'ctrl',
+        controller: 'requestItemsCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
+'use strict';
+
+angular.module('app.wizards').directive('requestSamples', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/wizards/views/request-samples.html',
+        replace: true,
+        scope: {},
+        bindToController: {
+            dbschema: '=',
+            dbclass: '='
+        },
+        controllerAs: 'ctrl',
+        controller: 'requestSamplesCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
+'use strict';
+
+angular.module('app.wizards').directive('sampleItemStep', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/wizards/views/sample-item-step.html',
+        replace: true,
+        scope: {},
+        bindToController: {
+            dbschema: '=',
+            dbclass: '=',
+            control: '=',
+            callbackMethod: '&stepCallback'
+        },
+        controllerAs: 'ctrl',
+        controller: 'sampleItemStepCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
 "use strict";
 
 angular.module('app.wizards').controller('createRequestCtrl', function ($scope, $state, $http, $stateParams, $modalInstance, APP_CONFIG, CartInfo, dataCartService) {
@@ -22694,148 +22754,88 @@ angular.module('app.wizards').controller('sampleTreeModalCtrl', function ($rootS
     }
 });
 
+
+
 'use strict';
 
-angular.module('app.wizards').directive('ebaasFormWizard', function () {
-    return {
-        restrict: 'A',
-        scope: {
-            ebaasWizard : '=',
-            ebaasWizardCallback: '&',
-            ebaasWizardStepEntered: '&',
-            ebaasWizardStepChanged: '&'
+angular.module('app.wizards').factory('RequestInfo', function () {
+
+    var RequestModel = {
+        params: undefined,
+        instance: undefined,
+        metadata: undefined,
+        sampleGridInstance: undefined,
+        itemGridInstance: undefined,
+        selectedItemIds: undefined,
+        selectedItemOwners: undefined,
+        selectdSampleKey : undefined,
+        sampleItemMap : undefined,
+        error: "",
+        init: function()
+        {
+            this.params = undefined;
+            this.instance = undefined;
+            this.metadata = undefined;
+            this.sampleGridInstance = undefined;
+            this.itemGridInstance = undefined;
+            this.selectdSampleKey = undefined;
+            this.selectedItemIds = undefined;
+            this.selectedItemOwners = undefined;
+            this.sampleItemsMap = new Object();
+            this.error = "";
         },
-        link: function (scope, element, attributes) {
+        requestId: function()
+        {
+            if (this.instance)
+            {
+                return this.instance.obj_id;
+            }
+            else
+            {
+                return undefined;
+            }
+        },
+        requestPk: function()
+        {
+            if (this.instance) {
+                return this.instance.obj_pk;
+            }
+            else {
+                return undefined;
+            }
+        },
+        getPropertyValue : function(property)
+        {
+            if (this.instance && this.metadata)
+            {
+                var propertyValue = this.instance[property];
 
-            var wizard = element.wizard();
-
-            scope.ebaasWizard = wizard;
-
-            var $form = element.find('form');
-
-            wizard.on('actionclicked.fu.wizard', function (e, data) {
-                if (typeof scope.ebaasWizardStepChanged() === 'function') {
-                    scope.ebaasWizardStepChanged()(e, data)
+                if (propertyValue) {
+                    if (this.metadata.properties[property].enum) {
+                        if (propertyValue > 0) {
+                            // convert property value from index to enum name
+                            propertyValue = this.metadata.properties[property].enum[propertyValue];
+                        }
+                        else
+                        {
+                            // 0 is for unknown, convert it to empty string
+                            propertyValue = "";
+                        }
+                    }
                 }
-            });
 
-            wizard.on('changed.fu.wizard', function (e, data) {
-                if (typeof scope.ebaasWizardStepEntered() === 'function') {
-                    scope.ebaasWizardStepEntered()(e, data)
-                }
-            });
-
-            wizard.on('finished.fu.wizard', function (e, data) {
-                var formData = {};
-                _.each($form.serializeArray(), function(field){
-                    formData[field.name] = field.value
-                });
-                if(typeof scope.ebaasWizardCallback() === 'function'){
-                    scope.ebaasWizardCallback()(formData)
-                }
-            });
+                return propertyValue
+            }
+            else
+            {
+                return undefined;
+            }
         }
-    }
-});
-'use strict';
+    };
 
-angular.module('app.wizards').directive('previewSubmitStep', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/wizards/views/preview-submit-step.html',
-        replace: true,
-        scope: {},
-        bindToController: {
-            dbschema: '=',
-            dbclass: '=',
-            template: '=',
-            taskId: '=',
-            control: '=',
-            callbackMethod: '&stepCallback'
-        },
-        controllerAs: 'ctrl',
-        controller: 'previewSubmitStepCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
+    return RequestModel;
 });
-'use strict';
 
-angular.module('app.wizards').directive('requestInfoStep', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/wizards/views/request-info-step.html',
-        replace: true,
-        scope: {},
-        bindToController: {
-            dbschema: '=',
-            dbclass: '=',
-            template: '=',
-            control: '=',
-            callbackMethod: '&stepCallback'
-        },
-        controllerAs: 'ctrl',
-        controller: 'requestInfoStepCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
-'use strict';
-
-angular.module('app.wizards').directive('requestItems', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/wizards/views/request-items.html',
-        replace: true,
-        scope: {},
-        bindToController: {
-            dbschema: '=',
-            dbclass: '='
-        },
-        controllerAs: 'ctrl',
-        controller: 'requestItemsCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
-'use strict';
-
-angular.module('app.wizards').directive('requestSamples', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/wizards/views/request-samples.html',
-        replace: true,
-        scope: {},
-        bindToController: {
-            dbschema: '=',
-            dbclass: '='
-        },
-        controllerAs: 'ctrl',
-        controller: 'requestSamplesCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
-'use strict';
-
-angular.module('app.wizards').directive('sampleItemStep', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/wizards/views/sample-item-step.html',
-        replace: true,
-        scope: {},
-        bindToController: {
-            dbschema: '=',
-            dbclass: '=',
-            control: '=',
-            callbackMethod: '&stepCallback'
-        },
-        controllerAs: 'ctrl',
-        controller: 'sampleItemStepCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
 "use strict";
 
 angular.module('app.auth').directive('facebookSignin', function ($rootScope, ezfb) {
@@ -22876,67 +22876,6 @@ angular.module('app.auth').directive('googleSignin', function ($rootScope, Googl
     };
 });
 
-'use strict';
-
-angular.module('app.chat').factory('ChatApi', function ($q, $rootScope, User, $http, APP_CONFIG) {
-    var dfd = $q.defer();
-    var _user;
-    var ChatSrv = {
-        initialized: dfd.promise,
-        users: [],
-        messages: [],
-        statuses: ['Online', 'Busy', 'Away', 'Log Off'],
-        status: 'Online',
-        setUser: function (user) {
-            if (ChatSrv.users.indexOf(_user) != -1)
-                ChatSrv.users.splice(ChatSrv.users.indexOf(_user), 1);
-            _user = user;
-            ChatSrv.users.push(_user);
-        },
-        sendMessage: function (text) {
-            var message = {
-                user: _user,
-                body: text,
-                date: new Date()
-            };
-            this.messages.push(message);
-        }
-    };
-
-
-    $http.get(APP_CONFIG.apiRootUrl + '/chat.json').then(function(res){
-        ChatSrv.messages = res.data.messages;
-        ChatSrv.users = res.data.users;
-        dfd.resolve();
-    });
-
-    ChatSrv.initialized.then(function () {
-
-        User.initialized.then(function () {
-            ChatSrv.setUser({
-                username: User.userName,
-                picture: User.picture,
-                status: ChatSrv.status
-            });
-        });
-
-        $rootScope.$watch(function () {
-            return User.userName
-        }, function (name, oldName) {
-            if (name != oldName) {
-                ChatSrv.setUser({
-                    username: User.username,
-                    picture: User.picture,
-                    status: ChatSrv.status
-                });
-            }
-        });
-    });
-
-
-    return ChatSrv;
-
-});
 (function() {
         
    'use strict';
@@ -23544,37 +23483,66 @@ angular.module('app.chat').directive('chatWidget', function (ChatApi) {
         }
     }
 });
-"use strict";
+'use strict';
 
-angular.module('app').factory('Todo', function (Restangular, APP_CONFIG) {
+angular.module('app.chat').factory('ChatApi', function ($q, $rootScope, User, $http, APP_CONFIG) {
+    var dfd = $q.defer();
+    var _user;
+    var ChatSrv = {
+        initialized: dfd.promise,
+        users: [],
+        messages: [],
+        statuses: ['Online', 'Busy', 'Away', 'Log Off'],
+        status: 'Online',
+        setUser: function (user) {
+            if (ChatSrv.users.indexOf(_user) != -1)
+                ChatSrv.users.splice(ChatSrv.users.indexOf(_user), 1);
+            _user = user;
+            ChatSrv.users.push(_user);
+        },
+        sendMessage: function (text) {
+            var message = {
+                user: _user,
+                body: text,
+                date: new Date()
+            };
+            this.messages.push(message);
+        }
+    };
 
 
-    Restangular.extendModel(APP_CONFIG.apiRootUrl + '/todos.json', function(todo) {
-        todo.toggle = function(){
-            if (!todo.completedAt) {
-                todo.state = 'Completed';
-                todo.completedAt = JSON.stringify(new Date());
-            } else {
-                todo.state = 'Critical';
-                todo.completedAt = null;
+    $http.get(APP_CONFIG.apiRootUrl + '/chat.json').then(function(res){
+        ChatSrv.messages = res.data.messages;
+        ChatSrv.users = res.data.users;
+        dfd.resolve();
+    });
+
+    ChatSrv.initialized.then(function () {
+
+        User.initialized.then(function () {
+            ChatSrv.setUser({
+                username: User.userName,
+                picture: User.picture,
+                status: ChatSrv.status
+            });
+        });
+
+        $rootScope.$watch(function () {
+            return User.userName
+        }, function (name, oldName) {
+            if (name != oldName) {
+                ChatSrv.setUser({
+                    username: User.username,
+                    picture: User.picture,
+                    status: ChatSrv.status
+                });
             }
-            // return this.$update();
-        };
+        });
+    });
 
-        todo.setState = function(state){
-            todo.state = state;
-            if (state == 'Completed') {
-                todo.completedAt = JSON.stringify(new Date());
-            } else {
-                todo.completedAt = null;
-            }
-            // return this.$update();
-        };
 
-        return todo;
-      });
+    return ChatSrv;
 
-    return Restangular.all(APP_CONFIG.apiRootUrl + '/todos.json')
 });
 "use strict";
 
@@ -23618,300 +23586,6 @@ angular.module('app').factory('Todo', function (Restangular, APP_CONFIG) {
 
         }
     }
-});
-'use strict';
-
-angular.module('app.homepage').directive('demoBarChart', function ($http, APP_CONFIG) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attributes) {
-
-            var barOptions = {
-                //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-                scaleBeginAtZero : true,
-                //Boolean - Whether grid lines are shown across the chart
-                scaleShowGridLines : true,
-                //String - Colour of the grid lines
-                scaleGridLineColor : "rgba(0,0,0,.05)",
-                //Number - Width of the grid lines
-                scaleGridLineWidth : 1,
-                //Boolean - If there is a stroke on each bar
-                barShowStroke : true,
-                //Number - Pixel width of the bar stroke
-                barStrokeWidth : 1,
-                //Number - Spacing between each of the X value sets
-                barValueSpacing : 5,
-                //Number - Spacing between data sets within X values
-                barDatasetSpacing : 1,
-                //Boolean - Re-draw chart on page resize
-                responsive: true,
-                //String - A legend template
-                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
-            }
-
-            var barChartUrl = scope.pageparams["barChart"];
-
-            if (barChartUrl) {
-                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(barChartUrl))
-                    .success(function (res) {
-                        scope.barChartTitle = res.title;
-                        var ctx = element[0].getContext("2d");
-                        new Chart(ctx).Bar(res.chart, barOptions);
-                    })
-            }
-
-        }
-    }
-});
-'use strict';
-
-angular.module('app.homepage').directive('demoDoughnutChart', function ($http, APP_CONFIG) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attributes) {
-            var doughnutOptions = {
-                //Boolean - Whether we should show a stroke on each segment
-                segmentShowStroke : true,
-                //String - The colour of each segment stroke
-                segmentStrokeColor : "#fff",
-                //Number - The width of each segment stroke
-                segmentStrokeWidth : 2,
-                //Number - The percentage of the chart that we cut out of the middle
-                percentageInnerCutout : 50, // This is 0 for Pie charts
-                //Number - Amount of animation steps
-                animationSteps : 100,
-                //String - Animation easing effect
-                animationEasing : "easeOutBounce",
-                //Boolean - Whether we animate the rotation of the Doughnut
-                animateRotate : true,
-                //Boolean - Whether we animate scaling the Doughnut from the centre
-                animateScale : false,
-                //Boolean - Re-draw chart on page resize
-                responsive: true,
-                //String - A legend template
-                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
-            };
-
-
-            var doughnutChartUrl = scope.pageparams["doughnutChart"];
-
-            if (doughnutChartUrl) {
-                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(doughnutChartUrl))
-                    .success(function (res) {
-                        scope.doughnutChartTitle = res.title;
-                        // render chart
-                        var ctx = element[0].getContext("2d");
-                        new Chart(ctx).Doughnut(res.chart, doughnutOptions);
-                    })
-            }
-        }}
-});
-'use strict';
-
-angular.module('app.homepage').directive('demoLineChart', function ($http, APP_CONFIG) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attributes) {
-
-            // LINE CHART
-            // ref: http://www.chartjs.org/docs/#line-chart-introduction
-            var lineOptions = {
-                ///Boolean - Whether grid lines are shown across the chart
-                scaleShowGridLines : true,
-                //String - Colour of the grid lines
-                scaleGridLineColor : "rgba(0,0,0,.05)",
-                //Number - Width of the grid lines
-                scaleGridLineWidth : 1,
-                //Boolean - Whether the line is curved between points
-                bezierCurve : true,
-                //Number - Tension of the bezier curve between points
-                bezierCurveTension : 0.4,
-                //Boolean - Whether to show a dot for each point
-                pointDot : true,
-                //Number - Radius of each point dot in pixels
-                pointDotRadius : 4,
-                //Number - Pixel width of point dot stroke
-                pointDotStrokeWidth : 1,
-                //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-                pointHitDetectionRadius : 20,
-                //Boolean - Whether to show a stroke for datasets
-                datasetStroke : true,
-                //Number - Pixel width of dataset stroke
-                datasetStrokeWidth : 2,
-                //Boolean - Whether to fill the dataset with a colour
-                datasetFill : true,
-                //Boolean - Re-draw chart on page resize
-                responsive: true,
-                //String - A legend template
-                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
-            };
-
-            var lineChartUrl = scope.pageparams["lineChart"];
-            
-            if (lineChartUrl) {
-                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(lineChartUrl))
-                    .success(function (res) {
-                        scope.lineChartTitle = res.title;
-                        var ctx = element[0].getContext("2d");
-                        var myNewChart = new Chart(ctx).Line(res.chart, lineOptions);
-                    })
-            }
-        }
-    }
-});
-'use strict';
-
-angular.module('app.homepage').directive('demoPieChart', function ($http, APP_CONFIG) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attributes) {
-            var pieOptions = {
-                //Boolean - Whether we should show a stroke on each segment
-                segmentShowStroke: true,
-                //String - The colour of each segment stroke
-                segmentStrokeColor: "#fff",
-                //Number - The width of each segment stroke
-                segmentStrokeWidth: 2,
-                //Number - Amount of animation steps
-                animationSteps: 100,
-                //String - types of animation
-                animationEasing: "easeOutBounce",
-                //Boolean - Whether we animate the rotation of the Doughnut
-                animateRotate: true,
-                //Boolean - Whether we animate scaling the Doughnut from the centre
-                animateScale: false,
-                //Boolean - Re-draw chart on page resize
-                responsive: true,
-                //String - A legend template
-                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
-            };
-
-
-            var pieChartUrl = scope.pageparams["pieChart"];
-
-            if (pieChartUrl) {
-                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(pieChartUrl))
-                    .success(function (res) {
-                        scope.pieChartTitle = res.title;
-                        // render chart
-                        var ctx = element[0].getContext("2d");
-                        var myNewChart = new Chart(ctx).Pie(res.chart, pieOptions);
-                    })
-            }
-        }}
-});
-'use strict';
-
-angular.module('app.homepage').directive('demoPolarChart', function ($http, APP_CONFIG) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attributes) {
-            var polarOptions = {
-                //Boolean - Show a backdrop to the scale label
-                scaleShowLabelBackdrop : true,
-                //String - The colour of the label backdrop
-                scaleBackdropColor : "rgba(255,255,255,0.75)",
-                // Boolean - Whether the scale should begin at zero
-                scaleBeginAtZero : true,
-                //Number - The backdrop padding above & below the label in pixels
-                scaleBackdropPaddingY : 2,
-                //Number - The backdrop padding to the side of the label in pixels
-                scaleBackdropPaddingX : 2,
-                //Boolean - Show line for each value in the scale
-                scaleShowLine : true,
-                //Boolean - Stroke a line around each segment in the chart
-                segmentShowStroke : true,
-                //String - The colour of the stroke on each segement.
-                segmentStrokeColor : "#fff",
-                //Number - The width of the stroke value in pixels
-                segmentStrokeWidth : 2,
-                //Number - Amount of animation steps
-                animationSteps : 100,
-                //String - Animation easing effect.
-                animationEasing : "easeOutBounce",
-                //Boolean - Whether to animate the rotation of the chart
-                animateRotate : true,
-                //Boolean - Whether to animate scaling the chart from the centre
-                animateScale : false,
-                //Boolean - Re-draw chart on page resize
-                responsive: true,
-                //String - A legend template
-                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
-            };
-
-            var polarChartUrl = scope.pageparams["polarChart"];
-
-            if (polarChartUrl) {
-                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(polarChartUrl))
-                    .success(function (res) {
-                        scope.polarChartTitle = res.title;
-                        // render chart
-                        var ctx = element[0].getContext("2d");
-                        new Chart(ctx).PolarArea(res.chart, polarOptions);
-                    })
-            }
-        }}
-});
-'use strict';
-
-angular.module('app.homepage').directive('demoRadarChart', function ($http, APP_CONFIG) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attributes) {
-
-            var radarOptions = {
-                //Boolean - Whether to show lines for each scale point
-                scaleShowLine : true,
-                //Boolean - Whether we show the angle lines out of the radar
-                angleShowLineOut : true,
-                //Boolean - Whether to show labels on the scale
-                scaleShowLabels : false,
-                // Boolean - Whether the scale should begin at zero
-                scaleBeginAtZero : true,
-                //String - Colour of the angle line
-                angleLineColor : "rgba(0,0,0,.1)",
-                //Number - Pixel width of the angle line
-                angleLineWidth : 1,
-                //String - Point label font declaration
-                pointLabelFontFamily : "'Arial'",
-                //String - Point label font weight
-                pointLabelFontStyle : "normal",
-                //Number - Point label font size in pixels
-                pointLabelFontSize : 10,
-                //String - Point label font colour
-                pointLabelFontColor : "#666",
-                //Boolean - Whether to show a dot for each point
-                pointDot : true,
-                //Number - Radius of each point dot in pixels
-                pointDotRadius : 3,
-                //Number - Pixel width of point dot stroke
-                pointDotStrokeWidth : 1,
-                //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-                pointHitDetectionRadius : 20,
-                //Boolean - Whether to show a stroke for datasets
-                datasetStroke : true,
-                //Number - Pixel width of dataset stroke
-                datasetStrokeWidth : 2,
-                //Boolean - Whether to fill the dataset with a colour
-                datasetFill : true,
-                //Boolean - Re-draw chart on page resize
-                responsive: true,
-                //String - A legend template
-                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
-            }
-
-            var radarChartUrl = scope.pageparams["radarChart"];
-
-            if (radarChartUrl) {
-                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(radarChartUrl))
-                    .success(function (res) {
-                        scope.radarChartTitle = res.title;
-                        // render chart
-                        var ctx = element[0].getContext("2d");
-                        var myNewChart = new Chart(ctx).Radar(res.chart, radarOptions);
-                    })
-            }
-        }}
 });
 'use strict';
 
@@ -24306,6 +23980,38 @@ angular.module('app.graphs').directive('chartjsRadarChart', function () {
             var ctx = element[0].getContext("2d");
             var myNewChart = new Chart(ctx).Radar(radarData, radarOptions);
         }}
+});
+"use strict";
+
+angular.module('app').factory('Todo', function (Restangular, APP_CONFIG) {
+
+
+    Restangular.extendModel(APP_CONFIG.apiRootUrl + '/todos.json', function(todo) {
+        todo.toggle = function(){
+            if (!todo.completedAt) {
+                todo.state = 'Completed';
+                todo.completedAt = JSON.stringify(new Date());
+            } else {
+                todo.state = 'Critical';
+                todo.completedAt = null;
+            }
+            // return this.$update();
+        };
+
+        todo.setState = function(state){
+            todo.state = state;
+            if (state == 'Completed') {
+                todo.completedAt = JSON.stringify(new Date());
+            } else {
+                todo.completedAt = null;
+            }
+            // return this.$update();
+        };
+
+        return todo;
+      });
+
+    return Restangular.all(APP_CONFIG.apiRootUrl + '/todos.json')
 });
 'use strict'
 
@@ -24832,6 +24538,505 @@ angular.module('app.graphs').directive('flotSiteStatsChart', function(FlotConfig
                     tickDecimals : 0
                 }
             });
+
+        }
+    }
+});
+'use strict';
+
+angular.module('app.graphs').directive('easyPieChartContainer', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, element) {
+            /*
+             * EASY PIE CHARTS
+             * DEPENDENCY: js/plugins/easy-pie-chart/jquery.easy-pie-chart.min.js
+             * Usage: <div class="easy-pie-chart txt-color-orangeDark" data-pie-percent="33" data-pie-size="72" data-size="72">
+             *			<span class="percent percent-sign">35</span>
+             * 	  	  </div>
+             */
+
+            if ($.fn.easyPieChart) {
+
+                $('.easy-pie-chart').each(function() {
+                    var $this = $(this),
+                        barColor = $this.css('color') || $this.data('pie-color'),
+                        trackColor = $this.data('pie-track-color') || 'rgba(0,0,0,0.04)',
+                        size = parseInt($this.data('pie-size')) || 25;
+
+                    var pieChart = $this.easyPieChart({
+
+                        barColor : barColor,
+                        trackColor : trackColor,
+                        scaleColor : false,
+                        lineCap : 'butt',
+                        lineWidth : parseInt(size / 8.5),
+                        animate : 1500,
+                        rotate : -90,
+                        size : size,
+                        onStep: function(from, to, percent) {
+                            $(this.el).find('.percent').text(Math.round(percent)).data('easyPieChart');
+                        }
+
+                    });
+
+                    var model = $this.data('ng-model');
+                    scope.$watch("settings." + model, function (n, o) {
+                        pieChart.data('easyPieChart').update(scope.settings[model]);
+                    });
+
+                    $this = null;
+                });
+
+            } // end if
+        }
+    }
+});
+"use strict";
+
+angular.module('app.graphs').directive('sparklineContainer', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, element) {
+            /*
+             * SPARKLINES
+             * DEPENDENCY: js/plugins/sparkline/jquery.sparkline.min.js
+             * See usage example below...
+             */
+
+            /* Usage:
+             * 		<div class="sparkline-line txt-color-blue" data-fill-color="transparent" data-sparkline-height="26px">
+             *			5,6,7,9,9,5,9,6,5,6,6,7,7,6,7,8,9,7
+             *		</div>
+             */
+            // variable declearations:
+
+            var barColor,
+                sparklineHeight,
+                sparklineBarWidth,
+                sparklineBarSpacing,
+                sparklineNegBarColor,
+                sparklineStackedColor,
+                thisLineColor,
+                thisLineWidth,
+                thisFill,
+                thisSpotColor,
+                thisMinSpotColor,
+                thisMaxSpotColor,
+                thishighlightSpotColor,
+                thisHighlightLineColor,
+                thisSpotRadius,
+                pieColors,
+                pieWidthHeight,
+                pieBorderColor,
+                pieOffset,
+                thisBoxWidth,
+                thisBoxHeight,
+                thisBoxRaw,
+                thisBoxTarget,
+                thisBoxMin,
+                thisBoxMax,
+                thisShowOutlier,
+                thisIQR,
+                thisBoxSpotRadius,
+                thisBoxLineColor,
+                thisBoxFillColor,
+                thisBoxWhisColor,
+                thisBoxOutlineColor,
+                thisBoxOutlineFill,
+                thisBoxMedianColor,
+                thisBoxTargetColor,
+                thisBulletHeight,
+                thisBulletWidth,
+                thisBulletColor,
+                thisBulletPerformanceColor,
+                thisBulletRangeColors,
+                thisDiscreteHeight,
+                thisDiscreteWidth,
+                thisDiscreteLineColor,
+                thisDiscreteLineHeight,
+                thisDiscreteThrushold,
+                thisDiscreteThrusholdColor,
+                thisTristateHeight,
+                thisTristatePosBarColor,
+                thisTristateNegBarColor,
+                thisTristateZeroBarColor,
+                thisTristateBarWidth,
+                thisTristateBarSpacing,
+                thisZeroAxis,
+                thisBarColor,
+                sparklineWidth,
+                sparklineValue,
+                sparklineValueSpots1,
+                sparklineValueSpots2,
+                thisLineWidth1,
+                thisLineWidth2,
+                thisLineColor1,
+                thisLineColor2,
+                thisSpotRadius1,
+                thisSpotRadius2,
+                thisMinSpotColor1,
+                thisMaxSpotColor1,
+                thisMinSpotColor2,
+                thisMaxSpotColor2,
+                thishighlightSpotColor1,
+                thisHighlightLineColor1,
+                thishighlightSpotColor2,
+                thisHighlightLineColor2,
+                thisFillColor1,
+                thisFillColor2,
+                thisChartMinYRange ,
+                thisChartMaxYRange ,
+                thisChartMinXRange ,
+                thisChartMaxXRange ,
+                thisMinNormValue ,
+                thisMaxNormValue ,
+                thisNormColor ,
+                thisDrawNormalOnTop;
+
+            function drawSparklines() {
+                $('.sparkline:not(:has(>canvas))', element).each(function () {
+                    var $this = $(this),
+                        sparklineType = $this.data('sparkline-type') || 'bar';
+
+                    // BAR CHART
+                    if (sparklineType == 'bar') {
+
+                        barColor = $this.data('sparkline-bar-color') || $this.css('color') || '#0000f0';
+                        sparklineHeight = $this.data('sparkline-height') || '26px';
+                        sparklineBarWidth = $this.data('sparkline-barwidth') || 5;
+                        sparklineBarSpacing = $this.data('sparkline-barspacing') || 2;
+                        sparklineNegBarColor = $this.data('sparkline-negbar-color') || '#A90329';
+                        sparklineStackedColor = $this.data('sparkline-barstacked-color') || ["#A90329", "#0099c6", "#98AA56", "#da532c", "#4490B1", "#6E9461", "#990099", "#B4CAD3"];
+
+                        $this.sparkline('html', {
+                            barColor: barColor,
+                            type: sparklineType,
+                            height: sparklineHeight,
+                            barWidth: sparklineBarWidth,
+                            barSpacing: sparklineBarSpacing,
+                            stackedBarColor: sparklineStackedColor,
+                            negBarColor: sparklineNegBarColor,
+                            zeroAxis: 'false'
+                        });
+
+                        $this = null;
+
+                    }
+
+                    // LINE CHART
+                    if (sparklineType == 'line') {
+
+                        sparklineHeight = $this.data('sparkline-height') || '20px';
+                        sparklineWidth = $this.data('sparkline-width') || '90px';
+                        thisLineColor = $this.data('sparkline-line-color') || $this.css('color') || '#0000f0';
+                        thisLineWidth = $this.data('sparkline-line-width') || 1;
+                        thisFill = $this.data('fill-color') || '#c0d0f0';
+                        thisSpotColor = $this.data('sparkline-spot-color') || '#f08000';
+                        thisMinSpotColor = $this.data('sparkline-minspot-color') || '#ed1c24';
+                        thisMaxSpotColor = $this.data('sparkline-maxspot-color') || '#f08000';
+                        thishighlightSpotColor = $this.data('sparkline-highlightspot-color') || '#50f050';
+                        thisHighlightLineColor = $this.data('sparkline-highlightline-color') || 'f02020';
+                        thisSpotRadius = $this.data('sparkline-spotradius') || 1.5;
+                        thisChartMinYRange = $this.data('sparkline-min-y') || 'undefined';
+                        thisChartMaxYRange = $this.data('sparkline-max-y') || 'undefined';
+                        thisChartMinXRange = $this.data('sparkline-min-x') || 'undefined';
+                        thisChartMaxXRange = $this.data('sparkline-max-x') || 'undefined';
+                        thisMinNormValue = $this.data('min-val') || 'undefined';
+                        thisMaxNormValue = $this.data('max-val') || 'undefined';
+                        thisNormColor = $this.data('norm-color') || '#c0c0c0';
+                        thisDrawNormalOnTop = $this.data('draw-normal') || false;
+
+                        $this.sparkline('html', {
+                            type: 'line',
+                            width: sparklineWidth,
+                            height: sparklineHeight,
+                            lineWidth: thisLineWidth,
+                            lineColor: thisLineColor,
+                            fillColor: thisFill,
+                            spotColor: thisSpotColor,
+                            minSpotColor: thisMinSpotColor,
+                            maxSpotColor: thisMaxSpotColor,
+                            highlightSpotColor: thishighlightSpotColor,
+                            highlightLineColor: thisHighlightLineColor,
+                            spotRadius: thisSpotRadius,
+                            chartRangeMin: thisChartMinYRange,
+                            chartRangeMax: thisChartMaxYRange,
+                            chartRangeMinX: thisChartMinXRange,
+                            chartRangeMaxX: thisChartMaxXRange,
+                            normalRangeMin: thisMinNormValue,
+                            normalRangeMax: thisMaxNormValue,
+                            normalRangeColor: thisNormColor,
+                            drawNormalOnTop: thisDrawNormalOnTop
+
+                        });
+
+                        $this = null;
+
+                    }
+
+                    // PIE CHART
+                    if (sparklineType == 'pie') {
+
+                        pieColors = $this.data('sparkline-piecolor') || ["#B4CAD3", "#4490B1", "#98AA56", "#da532c", "#6E9461", "#0099c6", "#990099", "#717D8A"];
+                        pieWidthHeight = $this.data('sparkline-piesize') || 90;
+                        pieBorderColor = $this.data('border-color') || '#45494C';
+                        pieOffset = $this.data('sparkline-offset') || 0;
+
+                        $this.sparkline('html', {
+                            type: 'pie',
+                            width: pieWidthHeight,
+                            height: pieWidthHeight,
+                            tooltipFormat: '<span style="color: {{color}}">&#9679;</span> ({{percent.1}}%)',
+                            sliceColors: pieColors,
+                            borderWidth: 1,
+                            offset: pieOffset,
+                            borderColor: pieBorderColor
+                        });
+
+                        $this = null;
+
+                    }
+
+                    // BOX PLOT
+                    if (sparklineType == 'box') {
+
+                        thisBoxWidth = $this.data('sparkline-width') || 'auto';
+                        thisBoxHeight = $this.data('sparkline-height') || 'auto';
+                        thisBoxRaw = $this.data('sparkline-boxraw') || false;
+                        thisBoxTarget = $this.data('sparkline-targetval') || 'undefined';
+                        thisBoxMin = $this.data('sparkline-min') || 'undefined';
+                        thisBoxMax = $this.data('sparkline-max') || 'undefined';
+                        thisShowOutlier = $this.data('sparkline-showoutlier') || true;
+                        thisIQR = $this.data('sparkline-outlier-iqr') || 1.5;
+                        thisBoxSpotRadius = $this.data('sparkline-spotradius') || 1.5;
+                        thisBoxLineColor = $this.css('color') || '#000000';
+                        thisBoxFillColor = $this.data('fill-color') || '#c0d0f0';
+                        thisBoxWhisColor = $this.data('sparkline-whis-color') || '#000000';
+                        thisBoxOutlineColor = $this.data('sparkline-outline-color') || '#303030';
+                        thisBoxOutlineFill = $this.data('sparkline-outlinefill-color') || '#f0f0f0';
+                        thisBoxMedianColor = $this.data('sparkline-outlinemedian-color') || '#f00000';
+                        thisBoxTargetColor = $this.data('sparkline-outlinetarget-color') || '#40a020';
+
+                        $this.sparkline('html', {
+                            type: 'box',
+                            width: thisBoxWidth,
+                            height: thisBoxHeight,
+                            raw: thisBoxRaw,
+                            target: thisBoxTarget,
+                            minValue: thisBoxMin,
+                            maxValue: thisBoxMax,
+                            showOutliers: thisShowOutlier,
+                            outlierIQR: thisIQR,
+                            spotRadius: thisBoxSpotRadius,
+                            boxLineColor: thisBoxLineColor,
+                            boxFillColor: thisBoxFillColor,
+                            whiskerColor: thisBoxWhisColor,
+                            outlierLineColor: thisBoxOutlineColor,
+                            outlierFillColor: thisBoxOutlineFill,
+                            medianColor: thisBoxMedianColor,
+                            targetColor: thisBoxTargetColor
+
+                        });
+
+                        $this = null;
+
+                    }
+
+                    // BULLET
+                    if (sparklineType == 'bullet') {
+
+                        var thisBulletHeight = $this.data('sparkline-height') || 'auto';
+                        thisBulletWidth = $this.data('sparkline-width') || 2;
+                        thisBulletColor = $this.data('sparkline-bullet-color') || '#ed1c24';
+                        thisBulletPerformanceColor = $this.data('sparkline-performance-color') || '#3030f0';
+                        thisBulletRangeColors = $this.data('sparkline-bulletrange-color') || ["#d3dafe", "#a8b6ff", "#7f94ff"];
+
+                        $this.sparkline('html', {
+
+                            type: 'bullet',
+                            height: thisBulletHeight,
+                            targetWidth: thisBulletWidth,
+                            targetColor: thisBulletColor,
+                            performanceColor: thisBulletPerformanceColor,
+                            rangeColors: thisBulletRangeColors
+
+                        });
+
+                        $this = null;
+
+                    }
+
+                    // DISCRETE
+                    if (sparklineType == 'discrete') {
+
+                        thisDiscreteHeight = $this.data('sparkline-height') || 26;
+                        thisDiscreteWidth = $this.data('sparkline-width') || 50;
+                        thisDiscreteLineColor = $this.css('color');
+                        thisDiscreteLineHeight = $this.data('sparkline-line-height') || 5;
+                        thisDiscreteThrushold = $this.data('sparkline-threshold') || 'undefined';
+                        thisDiscreteThrusholdColor = $this.data('sparkline-threshold-color') || '#ed1c24';
+
+                        $this.sparkline('html', {
+
+                            type: 'discrete',
+                            width: thisDiscreteWidth,
+                            height: thisDiscreteHeight,
+                            lineColor: thisDiscreteLineColor,
+                            lineHeight: thisDiscreteLineHeight,
+                            thresholdValue: thisDiscreteThrushold,
+                            thresholdColor: thisDiscreteThrusholdColor
+
+                        });
+
+                        $this = null;
+
+                    }
+
+                    // TRISTATE
+                    if (sparklineType == 'tristate') {
+
+                        thisTristateHeight = $this.data('sparkline-height') || 26;
+                        thisTristatePosBarColor = $this.data('sparkline-posbar-color') || '#60f060';
+                        thisTristateNegBarColor = $this.data('sparkline-negbar-color') || '#f04040';
+                        thisTristateZeroBarColor = $this.data('sparkline-zerobar-color') || '#909090';
+                        thisTristateBarWidth = $this.data('sparkline-barwidth') || 5;
+                        thisTristateBarSpacing = $this.data('sparkline-barspacing') || 2;
+                        thisZeroAxis = $this.data('sparkline-zeroaxis') || false;
+
+                        $this.sparkline('html', {
+
+                            type: 'tristate',
+                            height: thisTristateHeight,
+                            posBarColor: thisBarColor,
+                            negBarColor: thisTristateNegBarColor,
+                            zeroBarColor: thisTristateZeroBarColor,
+                            barWidth: thisTristateBarWidth,
+                            barSpacing: thisTristateBarSpacing,
+                            zeroAxis: thisZeroAxis
+
+                        });
+
+                        $this = null;
+
+                    }
+
+                    //COMPOSITE: BAR
+                    if (sparklineType == 'compositebar') {
+
+                        sparklineHeight = $this.data('sparkline-height') || '20px';
+                        sparklineWidth = $this.data('sparkline-width') || '100%';
+                        sparklineBarWidth = $this.data('sparkline-barwidth') || 3;
+                        thisLineWidth = $this.data('sparkline-line-width') || 1;
+                        thisLineColor = $this.data('sparkline-color-top') || '#ed1c24';
+                        thisBarColor = $this.data('sparkline-color-bottom') || '#333333';
+
+                        $this.sparkline($this.data('sparkline-bar-val'), {
+
+                            type: 'bar',
+                            width: sparklineWidth,
+                            height: sparklineHeight,
+                            barColor: thisBarColor,
+                            barWidth: sparklineBarWidth
+                            //barSpacing: 5
+
+                        });
+
+                        $this.sparkline($this.data('sparkline-line-val'), {
+
+                            width: sparklineWidth,
+                            height: sparklineHeight,
+                            lineColor: thisLineColor,
+                            lineWidth: thisLineWidth,
+                            composite: true,
+                            fillColor: false
+
+                        });
+
+                        $this = null;
+
+                    }
+
+                    //COMPOSITE: LINE
+                    if (sparklineType == 'compositeline') {
+
+                        sparklineHeight = $this.data('sparkline-height') || '20px';
+                        sparklineWidth = $this.data('sparkline-width') || '90px';
+                        sparklineValue = $this.data('sparkline-bar-val');
+                        sparklineValueSpots1 = $this.data('sparkline-bar-val-spots-top') || null;
+                        sparklineValueSpots2 = $this.data('sparkline-bar-val-spots-bottom') || null;
+                        thisLineWidth1 = $this.data('sparkline-line-width-top') || 1;
+                        thisLineWidth2 = $this.data('sparkline-line-width-bottom') || 1;
+                        thisLineColor1 = $this.data('sparkline-color-top') || '#333333';
+                        thisLineColor2 = $this.data('sparkline-color-bottom') || '#ed1c24';
+                        thisSpotRadius1 = $this.data('sparkline-spotradius-top') || 1.5;
+                        thisSpotRadius2 = $this.data('sparkline-spotradius-bottom') || thisSpotRadius1;
+                        thisSpotColor = $this.data('sparkline-spot-color') || '#f08000';
+                        thisMinSpotColor1 = $this.data('sparkline-minspot-color-top') || '#ed1c24';
+                        thisMaxSpotColor1 = $this.data('sparkline-maxspot-color-top') || '#f08000';
+                        thisMinSpotColor2 = $this.data('sparkline-minspot-color-bottom') || thisMinSpotColor1;
+                        thisMaxSpotColor2 = $this.data('sparkline-maxspot-color-bottom') || thisMaxSpotColor1;
+                        thishighlightSpotColor1 = $this.data('sparkline-highlightspot-color-top') || '#50f050';
+                        thisHighlightLineColor1 = $this.data('sparkline-highlightline-color-top') || '#f02020';
+                        thishighlightSpotColor2 = $this.data('sparkline-highlightspot-color-bottom') ||
+                            thishighlightSpotColor1;
+                        thisHighlightLineColor2 = $this.data('sparkline-highlightline-color-bottom') ||
+                            thisHighlightLineColor1;
+                        thisFillColor1 = $this.data('sparkline-fillcolor-top') || 'transparent';
+                        thisFillColor2 = $this.data('sparkline-fillcolor-bottom') || 'transparent';
+
+                        $this.sparkline(sparklineValue, {
+
+                            type: 'line',
+                            spotRadius: thisSpotRadius1,
+
+                            spotColor: thisSpotColor,
+                            minSpotColor: thisMinSpotColor1,
+                            maxSpotColor: thisMaxSpotColor1,
+                            highlightSpotColor: thishighlightSpotColor1,
+                            highlightLineColor: thisHighlightLineColor1,
+
+                            valueSpots: sparklineValueSpots1,
+
+                            lineWidth: thisLineWidth1,
+                            width: sparklineWidth,
+                            height: sparklineHeight,
+                            lineColor: thisLineColor1,
+                            fillColor: thisFillColor1
+
+                        });
+
+                        $this.sparkline($this.data('sparkline-line-val'), {
+
+                            type: 'line',
+                            spotRadius: thisSpotRadius2,
+
+                            spotColor: thisSpotColor,
+                            minSpotColor: thisMinSpotColor2,
+                            maxSpotColor: thisMaxSpotColor2,
+                            highlightSpotColor: thishighlightSpotColor2,
+                            highlightLineColor: thisHighlightLineColor2,
+
+                            valueSpots: sparklineValueSpots2,
+
+                            lineWidth: thisLineWidth2,
+                            width: sparklineWidth,
+                            height: sparklineHeight,
+                            lineColor: thisLineColor2,
+                            composite: true,
+                            fillColor: thisFillColor2
+
+                        });
+
+                        $this = null;
+
+                    }
+
+                });
+            }
+
+
+            drawSparklines();
 
         }
     }
@@ -25530,505 +25735,6 @@ angular.module('app.graphs').directive('morrisYearGraph', function(){
 });
 'use strict';
 
-angular.module('app.graphs').directive('easyPieChartContainer', function () {
-    return {
-        restrict: 'A',
-        link: function (scope, element) {
-            /*
-             * EASY PIE CHARTS
-             * DEPENDENCY: js/plugins/easy-pie-chart/jquery.easy-pie-chart.min.js
-             * Usage: <div class="easy-pie-chart txt-color-orangeDark" data-pie-percent="33" data-pie-size="72" data-size="72">
-             *			<span class="percent percent-sign">35</span>
-             * 	  	  </div>
-             */
-
-            if ($.fn.easyPieChart) {
-
-                $('.easy-pie-chart').each(function() {
-                    var $this = $(this),
-                        barColor = $this.css('color') || $this.data('pie-color'),
-                        trackColor = $this.data('pie-track-color') || 'rgba(0,0,0,0.04)',
-                        size = parseInt($this.data('pie-size')) || 25;
-
-                    var pieChart = $this.easyPieChart({
-
-                        barColor : barColor,
-                        trackColor : trackColor,
-                        scaleColor : false,
-                        lineCap : 'butt',
-                        lineWidth : parseInt(size / 8.5),
-                        animate : 1500,
-                        rotate : -90,
-                        size : size,
-                        onStep: function(from, to, percent) {
-                            $(this.el).find('.percent').text(Math.round(percent)).data('easyPieChart');
-                        }
-
-                    });
-
-                    var model = $this.data('ng-model');
-                    scope.$watch("settings." + model, function (n, o) {
-                        pieChart.data('easyPieChart').update(scope.settings[model]);
-                    });
-
-                    $this = null;
-                });
-
-            } // end if
-        }
-    }
-});
-"use strict";
-
-angular.module('app.graphs').directive('sparklineContainer', function () {
-    return {
-        restrict: 'A',
-        link: function (scope, element) {
-            /*
-             * SPARKLINES
-             * DEPENDENCY: js/plugins/sparkline/jquery.sparkline.min.js
-             * See usage example below...
-             */
-
-            /* Usage:
-             * 		<div class="sparkline-line txt-color-blue" data-fill-color="transparent" data-sparkline-height="26px">
-             *			5,6,7,9,9,5,9,6,5,6,6,7,7,6,7,8,9,7
-             *		</div>
-             */
-            // variable declearations:
-
-            var barColor,
-                sparklineHeight,
-                sparklineBarWidth,
-                sparklineBarSpacing,
-                sparklineNegBarColor,
-                sparklineStackedColor,
-                thisLineColor,
-                thisLineWidth,
-                thisFill,
-                thisSpotColor,
-                thisMinSpotColor,
-                thisMaxSpotColor,
-                thishighlightSpotColor,
-                thisHighlightLineColor,
-                thisSpotRadius,
-                pieColors,
-                pieWidthHeight,
-                pieBorderColor,
-                pieOffset,
-                thisBoxWidth,
-                thisBoxHeight,
-                thisBoxRaw,
-                thisBoxTarget,
-                thisBoxMin,
-                thisBoxMax,
-                thisShowOutlier,
-                thisIQR,
-                thisBoxSpotRadius,
-                thisBoxLineColor,
-                thisBoxFillColor,
-                thisBoxWhisColor,
-                thisBoxOutlineColor,
-                thisBoxOutlineFill,
-                thisBoxMedianColor,
-                thisBoxTargetColor,
-                thisBulletHeight,
-                thisBulletWidth,
-                thisBulletColor,
-                thisBulletPerformanceColor,
-                thisBulletRangeColors,
-                thisDiscreteHeight,
-                thisDiscreteWidth,
-                thisDiscreteLineColor,
-                thisDiscreteLineHeight,
-                thisDiscreteThrushold,
-                thisDiscreteThrusholdColor,
-                thisTristateHeight,
-                thisTristatePosBarColor,
-                thisTristateNegBarColor,
-                thisTristateZeroBarColor,
-                thisTristateBarWidth,
-                thisTristateBarSpacing,
-                thisZeroAxis,
-                thisBarColor,
-                sparklineWidth,
-                sparklineValue,
-                sparklineValueSpots1,
-                sparklineValueSpots2,
-                thisLineWidth1,
-                thisLineWidth2,
-                thisLineColor1,
-                thisLineColor2,
-                thisSpotRadius1,
-                thisSpotRadius2,
-                thisMinSpotColor1,
-                thisMaxSpotColor1,
-                thisMinSpotColor2,
-                thisMaxSpotColor2,
-                thishighlightSpotColor1,
-                thisHighlightLineColor1,
-                thishighlightSpotColor2,
-                thisHighlightLineColor2,
-                thisFillColor1,
-                thisFillColor2,
-                thisChartMinYRange ,
-                thisChartMaxYRange ,
-                thisChartMinXRange ,
-                thisChartMaxXRange ,
-                thisMinNormValue ,
-                thisMaxNormValue ,
-                thisNormColor ,
-                thisDrawNormalOnTop;
-
-            function drawSparklines() {
-                $('.sparkline:not(:has(>canvas))', element).each(function () {
-                    var $this = $(this),
-                        sparklineType = $this.data('sparkline-type') || 'bar';
-
-                    // BAR CHART
-                    if (sparklineType == 'bar') {
-
-                        barColor = $this.data('sparkline-bar-color') || $this.css('color') || '#0000f0';
-                        sparklineHeight = $this.data('sparkline-height') || '26px';
-                        sparklineBarWidth = $this.data('sparkline-barwidth') || 5;
-                        sparklineBarSpacing = $this.data('sparkline-barspacing') || 2;
-                        sparklineNegBarColor = $this.data('sparkline-negbar-color') || '#A90329';
-                        sparklineStackedColor = $this.data('sparkline-barstacked-color') || ["#A90329", "#0099c6", "#98AA56", "#da532c", "#4490B1", "#6E9461", "#990099", "#B4CAD3"];
-
-                        $this.sparkline('html', {
-                            barColor: barColor,
-                            type: sparklineType,
-                            height: sparklineHeight,
-                            barWidth: sparklineBarWidth,
-                            barSpacing: sparklineBarSpacing,
-                            stackedBarColor: sparklineStackedColor,
-                            negBarColor: sparklineNegBarColor,
-                            zeroAxis: 'false'
-                        });
-
-                        $this = null;
-
-                    }
-
-                    // LINE CHART
-                    if (sparklineType == 'line') {
-
-                        sparklineHeight = $this.data('sparkline-height') || '20px';
-                        sparklineWidth = $this.data('sparkline-width') || '90px';
-                        thisLineColor = $this.data('sparkline-line-color') || $this.css('color') || '#0000f0';
-                        thisLineWidth = $this.data('sparkline-line-width') || 1;
-                        thisFill = $this.data('fill-color') || '#c0d0f0';
-                        thisSpotColor = $this.data('sparkline-spot-color') || '#f08000';
-                        thisMinSpotColor = $this.data('sparkline-minspot-color') || '#ed1c24';
-                        thisMaxSpotColor = $this.data('sparkline-maxspot-color') || '#f08000';
-                        thishighlightSpotColor = $this.data('sparkline-highlightspot-color') || '#50f050';
-                        thisHighlightLineColor = $this.data('sparkline-highlightline-color') || 'f02020';
-                        thisSpotRadius = $this.data('sparkline-spotradius') || 1.5;
-                        thisChartMinYRange = $this.data('sparkline-min-y') || 'undefined';
-                        thisChartMaxYRange = $this.data('sparkline-max-y') || 'undefined';
-                        thisChartMinXRange = $this.data('sparkline-min-x') || 'undefined';
-                        thisChartMaxXRange = $this.data('sparkline-max-x') || 'undefined';
-                        thisMinNormValue = $this.data('min-val') || 'undefined';
-                        thisMaxNormValue = $this.data('max-val') || 'undefined';
-                        thisNormColor = $this.data('norm-color') || '#c0c0c0';
-                        thisDrawNormalOnTop = $this.data('draw-normal') || false;
-
-                        $this.sparkline('html', {
-                            type: 'line',
-                            width: sparklineWidth,
-                            height: sparklineHeight,
-                            lineWidth: thisLineWidth,
-                            lineColor: thisLineColor,
-                            fillColor: thisFill,
-                            spotColor: thisSpotColor,
-                            minSpotColor: thisMinSpotColor,
-                            maxSpotColor: thisMaxSpotColor,
-                            highlightSpotColor: thishighlightSpotColor,
-                            highlightLineColor: thisHighlightLineColor,
-                            spotRadius: thisSpotRadius,
-                            chartRangeMin: thisChartMinYRange,
-                            chartRangeMax: thisChartMaxYRange,
-                            chartRangeMinX: thisChartMinXRange,
-                            chartRangeMaxX: thisChartMaxXRange,
-                            normalRangeMin: thisMinNormValue,
-                            normalRangeMax: thisMaxNormValue,
-                            normalRangeColor: thisNormColor,
-                            drawNormalOnTop: thisDrawNormalOnTop
-
-                        });
-
-                        $this = null;
-
-                    }
-
-                    // PIE CHART
-                    if (sparklineType == 'pie') {
-
-                        pieColors = $this.data('sparkline-piecolor') || ["#B4CAD3", "#4490B1", "#98AA56", "#da532c", "#6E9461", "#0099c6", "#990099", "#717D8A"];
-                        pieWidthHeight = $this.data('sparkline-piesize') || 90;
-                        pieBorderColor = $this.data('border-color') || '#45494C';
-                        pieOffset = $this.data('sparkline-offset') || 0;
-
-                        $this.sparkline('html', {
-                            type: 'pie',
-                            width: pieWidthHeight,
-                            height: pieWidthHeight,
-                            tooltipFormat: '<span style="color: {{color}}">&#9679;</span> ({{percent.1}}%)',
-                            sliceColors: pieColors,
-                            borderWidth: 1,
-                            offset: pieOffset,
-                            borderColor: pieBorderColor
-                        });
-
-                        $this = null;
-
-                    }
-
-                    // BOX PLOT
-                    if (sparklineType == 'box') {
-
-                        thisBoxWidth = $this.data('sparkline-width') || 'auto';
-                        thisBoxHeight = $this.data('sparkline-height') || 'auto';
-                        thisBoxRaw = $this.data('sparkline-boxraw') || false;
-                        thisBoxTarget = $this.data('sparkline-targetval') || 'undefined';
-                        thisBoxMin = $this.data('sparkline-min') || 'undefined';
-                        thisBoxMax = $this.data('sparkline-max') || 'undefined';
-                        thisShowOutlier = $this.data('sparkline-showoutlier') || true;
-                        thisIQR = $this.data('sparkline-outlier-iqr') || 1.5;
-                        thisBoxSpotRadius = $this.data('sparkline-spotradius') || 1.5;
-                        thisBoxLineColor = $this.css('color') || '#000000';
-                        thisBoxFillColor = $this.data('fill-color') || '#c0d0f0';
-                        thisBoxWhisColor = $this.data('sparkline-whis-color') || '#000000';
-                        thisBoxOutlineColor = $this.data('sparkline-outline-color') || '#303030';
-                        thisBoxOutlineFill = $this.data('sparkline-outlinefill-color') || '#f0f0f0';
-                        thisBoxMedianColor = $this.data('sparkline-outlinemedian-color') || '#f00000';
-                        thisBoxTargetColor = $this.data('sparkline-outlinetarget-color') || '#40a020';
-
-                        $this.sparkline('html', {
-                            type: 'box',
-                            width: thisBoxWidth,
-                            height: thisBoxHeight,
-                            raw: thisBoxRaw,
-                            target: thisBoxTarget,
-                            minValue: thisBoxMin,
-                            maxValue: thisBoxMax,
-                            showOutliers: thisShowOutlier,
-                            outlierIQR: thisIQR,
-                            spotRadius: thisBoxSpotRadius,
-                            boxLineColor: thisBoxLineColor,
-                            boxFillColor: thisBoxFillColor,
-                            whiskerColor: thisBoxWhisColor,
-                            outlierLineColor: thisBoxOutlineColor,
-                            outlierFillColor: thisBoxOutlineFill,
-                            medianColor: thisBoxMedianColor,
-                            targetColor: thisBoxTargetColor
-
-                        });
-
-                        $this = null;
-
-                    }
-
-                    // BULLET
-                    if (sparklineType == 'bullet') {
-
-                        var thisBulletHeight = $this.data('sparkline-height') || 'auto';
-                        thisBulletWidth = $this.data('sparkline-width') || 2;
-                        thisBulletColor = $this.data('sparkline-bullet-color') || '#ed1c24';
-                        thisBulletPerformanceColor = $this.data('sparkline-performance-color') || '#3030f0';
-                        thisBulletRangeColors = $this.data('sparkline-bulletrange-color') || ["#d3dafe", "#a8b6ff", "#7f94ff"];
-
-                        $this.sparkline('html', {
-
-                            type: 'bullet',
-                            height: thisBulletHeight,
-                            targetWidth: thisBulletWidth,
-                            targetColor: thisBulletColor,
-                            performanceColor: thisBulletPerformanceColor,
-                            rangeColors: thisBulletRangeColors
-
-                        });
-
-                        $this = null;
-
-                    }
-
-                    // DISCRETE
-                    if (sparklineType == 'discrete') {
-
-                        thisDiscreteHeight = $this.data('sparkline-height') || 26;
-                        thisDiscreteWidth = $this.data('sparkline-width') || 50;
-                        thisDiscreteLineColor = $this.css('color');
-                        thisDiscreteLineHeight = $this.data('sparkline-line-height') || 5;
-                        thisDiscreteThrushold = $this.data('sparkline-threshold') || 'undefined';
-                        thisDiscreteThrusholdColor = $this.data('sparkline-threshold-color') || '#ed1c24';
-
-                        $this.sparkline('html', {
-
-                            type: 'discrete',
-                            width: thisDiscreteWidth,
-                            height: thisDiscreteHeight,
-                            lineColor: thisDiscreteLineColor,
-                            lineHeight: thisDiscreteLineHeight,
-                            thresholdValue: thisDiscreteThrushold,
-                            thresholdColor: thisDiscreteThrusholdColor
-
-                        });
-
-                        $this = null;
-
-                    }
-
-                    // TRISTATE
-                    if (sparklineType == 'tristate') {
-
-                        thisTristateHeight = $this.data('sparkline-height') || 26;
-                        thisTristatePosBarColor = $this.data('sparkline-posbar-color') || '#60f060';
-                        thisTristateNegBarColor = $this.data('sparkline-negbar-color') || '#f04040';
-                        thisTristateZeroBarColor = $this.data('sparkline-zerobar-color') || '#909090';
-                        thisTristateBarWidth = $this.data('sparkline-barwidth') || 5;
-                        thisTristateBarSpacing = $this.data('sparkline-barspacing') || 2;
-                        thisZeroAxis = $this.data('sparkline-zeroaxis') || false;
-
-                        $this.sparkline('html', {
-
-                            type: 'tristate',
-                            height: thisTristateHeight,
-                            posBarColor: thisBarColor,
-                            negBarColor: thisTristateNegBarColor,
-                            zeroBarColor: thisTristateZeroBarColor,
-                            barWidth: thisTristateBarWidth,
-                            barSpacing: thisTristateBarSpacing,
-                            zeroAxis: thisZeroAxis
-
-                        });
-
-                        $this = null;
-
-                    }
-
-                    //COMPOSITE: BAR
-                    if (sparklineType == 'compositebar') {
-
-                        sparklineHeight = $this.data('sparkline-height') || '20px';
-                        sparklineWidth = $this.data('sparkline-width') || '100%';
-                        sparklineBarWidth = $this.data('sparkline-barwidth') || 3;
-                        thisLineWidth = $this.data('sparkline-line-width') || 1;
-                        thisLineColor = $this.data('sparkline-color-top') || '#ed1c24';
-                        thisBarColor = $this.data('sparkline-color-bottom') || '#333333';
-
-                        $this.sparkline($this.data('sparkline-bar-val'), {
-
-                            type: 'bar',
-                            width: sparklineWidth,
-                            height: sparklineHeight,
-                            barColor: thisBarColor,
-                            barWidth: sparklineBarWidth
-                            //barSpacing: 5
-
-                        });
-
-                        $this.sparkline($this.data('sparkline-line-val'), {
-
-                            width: sparklineWidth,
-                            height: sparklineHeight,
-                            lineColor: thisLineColor,
-                            lineWidth: thisLineWidth,
-                            composite: true,
-                            fillColor: false
-
-                        });
-
-                        $this = null;
-
-                    }
-
-                    //COMPOSITE: LINE
-                    if (sparklineType == 'compositeline') {
-
-                        sparklineHeight = $this.data('sparkline-height') || '20px';
-                        sparklineWidth = $this.data('sparkline-width') || '90px';
-                        sparklineValue = $this.data('sparkline-bar-val');
-                        sparklineValueSpots1 = $this.data('sparkline-bar-val-spots-top') || null;
-                        sparklineValueSpots2 = $this.data('sparkline-bar-val-spots-bottom') || null;
-                        thisLineWidth1 = $this.data('sparkline-line-width-top') || 1;
-                        thisLineWidth2 = $this.data('sparkline-line-width-bottom') || 1;
-                        thisLineColor1 = $this.data('sparkline-color-top') || '#333333';
-                        thisLineColor2 = $this.data('sparkline-color-bottom') || '#ed1c24';
-                        thisSpotRadius1 = $this.data('sparkline-spotradius-top') || 1.5;
-                        thisSpotRadius2 = $this.data('sparkline-spotradius-bottom') || thisSpotRadius1;
-                        thisSpotColor = $this.data('sparkline-spot-color') || '#f08000';
-                        thisMinSpotColor1 = $this.data('sparkline-minspot-color-top') || '#ed1c24';
-                        thisMaxSpotColor1 = $this.data('sparkline-maxspot-color-top') || '#f08000';
-                        thisMinSpotColor2 = $this.data('sparkline-minspot-color-bottom') || thisMinSpotColor1;
-                        thisMaxSpotColor2 = $this.data('sparkline-maxspot-color-bottom') || thisMaxSpotColor1;
-                        thishighlightSpotColor1 = $this.data('sparkline-highlightspot-color-top') || '#50f050';
-                        thisHighlightLineColor1 = $this.data('sparkline-highlightline-color-top') || '#f02020';
-                        thishighlightSpotColor2 = $this.data('sparkline-highlightspot-color-bottom') ||
-                            thishighlightSpotColor1;
-                        thisHighlightLineColor2 = $this.data('sparkline-highlightline-color-bottom') ||
-                            thisHighlightLineColor1;
-                        thisFillColor1 = $this.data('sparkline-fillcolor-top') || 'transparent';
-                        thisFillColor2 = $this.data('sparkline-fillcolor-bottom') || 'transparent';
-
-                        $this.sparkline(sparklineValue, {
-
-                            type: 'line',
-                            spotRadius: thisSpotRadius1,
-
-                            spotColor: thisSpotColor,
-                            minSpotColor: thisMinSpotColor1,
-                            maxSpotColor: thisMaxSpotColor1,
-                            highlightSpotColor: thishighlightSpotColor1,
-                            highlightLineColor: thisHighlightLineColor1,
-
-                            valueSpots: sparklineValueSpots1,
-
-                            lineWidth: thisLineWidth1,
-                            width: sparklineWidth,
-                            height: sparklineHeight,
-                            lineColor: thisLineColor1,
-                            fillColor: thisFillColor1
-
-                        });
-
-                        $this.sparkline($this.data('sparkline-line-val'), {
-
-                            type: 'line',
-                            spotRadius: thisSpotRadius2,
-
-                            spotColor: thisSpotColor,
-                            minSpotColor: thisMinSpotColor2,
-                            maxSpotColor: thisMaxSpotColor2,
-                            highlightSpotColor: thishighlightSpotColor2,
-                            highlightLineColor: thisHighlightLineColor2,
-
-                            valueSpots: sparklineValueSpots2,
-
-                            lineWidth: thisLineWidth2,
-                            width: sparklineWidth,
-                            height: sparklineHeight,
-                            lineColor: thisLineColor2,
-                            composite: true,
-                            fillColor: thisFillColor2
-
-                        });
-
-                        $this = null;
-
-                    }
-
-                });
-            }
-
-
-            drawSparklines();
-
-        }
-    }
-});
-'use strict';
-
 angular.module('app.graphs').directive('vectorMap', function () {
     return {
         restrict: 'EA',
@@ -26073,6 +25779,300 @@ angular.module('app.graphs').directive('vectorMap', function () {
             })
         }
     }
+});
+'use strict';
+
+angular.module('app.homepage').directive('demoBarChart', function ($http, APP_CONFIG) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attributes) {
+
+            var barOptions = {
+                //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+                scaleBeginAtZero : true,
+                //Boolean - Whether grid lines are shown across the chart
+                scaleShowGridLines : true,
+                //String - Colour of the grid lines
+                scaleGridLineColor : "rgba(0,0,0,.05)",
+                //Number - Width of the grid lines
+                scaleGridLineWidth : 1,
+                //Boolean - If there is a stroke on each bar
+                barShowStroke : true,
+                //Number - Pixel width of the bar stroke
+                barStrokeWidth : 1,
+                //Number - Spacing between each of the X value sets
+                barValueSpacing : 5,
+                //Number - Spacing between data sets within X values
+                barDatasetSpacing : 1,
+                //Boolean - Re-draw chart on page resize
+                responsive: true,
+                //String - A legend template
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+            }
+
+            var barChartUrl = scope.pageparams["barChart"];
+
+            if (barChartUrl) {
+                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(barChartUrl))
+                    .success(function (res) {
+                        scope.barChartTitle = res.title;
+                        var ctx = element[0].getContext("2d");
+                        new Chart(ctx).Bar(res.chart, barOptions);
+                    })
+            }
+
+        }
+    }
+});
+'use strict';
+
+angular.module('app.homepage').directive('demoDoughnutChart', function ($http, APP_CONFIG) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attributes) {
+            var doughnutOptions = {
+                //Boolean - Whether we should show a stroke on each segment
+                segmentShowStroke : true,
+                //String - The colour of each segment stroke
+                segmentStrokeColor : "#fff",
+                //Number - The width of each segment stroke
+                segmentStrokeWidth : 2,
+                //Number - The percentage of the chart that we cut out of the middle
+                percentageInnerCutout : 50, // This is 0 for Pie charts
+                //Number - Amount of animation steps
+                animationSteps : 100,
+                //String - Animation easing effect
+                animationEasing : "easeOutBounce",
+                //Boolean - Whether we animate the rotation of the Doughnut
+                animateRotate : true,
+                //Boolean - Whether we animate scaling the Doughnut from the centre
+                animateScale : false,
+                //Boolean - Re-draw chart on page resize
+                responsive: true,
+                //String - A legend template
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+            };
+
+
+            var doughnutChartUrl = scope.pageparams["doughnutChart"];
+
+            if (doughnutChartUrl) {
+                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(doughnutChartUrl))
+                    .success(function (res) {
+                        scope.doughnutChartTitle = res.title;
+                        // render chart
+                        var ctx = element[0].getContext("2d");
+                        new Chart(ctx).Doughnut(res.chart, doughnutOptions);
+                    })
+            }
+        }}
+});
+'use strict';
+
+angular.module('app.homepage').directive('demoLineChart', function ($http, APP_CONFIG) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attributes) {
+
+            // LINE CHART
+            // ref: http://www.chartjs.org/docs/#line-chart-introduction
+            var lineOptions = {
+                ///Boolean - Whether grid lines are shown across the chart
+                scaleShowGridLines : true,
+                //String - Colour of the grid lines
+                scaleGridLineColor : "rgba(0,0,0,.05)",
+                //Number - Width of the grid lines
+                scaleGridLineWidth : 1,
+                //Boolean - Whether the line is curved between points
+                bezierCurve : true,
+                //Number - Tension of the bezier curve between points
+                bezierCurveTension : 0.4,
+                //Boolean - Whether to show a dot for each point
+                pointDot : true,
+                //Number - Radius of each point dot in pixels
+                pointDotRadius : 4,
+                //Number - Pixel width of point dot stroke
+                pointDotStrokeWidth : 1,
+                //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+                pointHitDetectionRadius : 20,
+                //Boolean - Whether to show a stroke for datasets
+                datasetStroke : true,
+                //Number - Pixel width of dataset stroke
+                datasetStrokeWidth : 2,
+                //Boolean - Whether to fill the dataset with a colour
+                datasetFill : true,
+                //Boolean - Re-draw chart on page resize
+                responsive: true,
+                //String - A legend template
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+            };
+
+            var lineChartUrl = scope.pageparams["lineChart"];
+            
+            if (lineChartUrl) {
+                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(lineChartUrl))
+                    .success(function (res) {
+                        scope.lineChartTitle = res.title;
+                        var ctx = element[0].getContext("2d");
+                        var myNewChart = new Chart(ctx).Line(res.chart, lineOptions);
+                    })
+            }
+        }
+    }
+});
+'use strict';
+
+angular.module('app.homepage').directive('demoPieChart', function ($http, APP_CONFIG) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attributes) {
+            var pieOptions = {
+                //Boolean - Whether we should show a stroke on each segment
+                segmentShowStroke: true,
+                //String - The colour of each segment stroke
+                segmentStrokeColor: "#fff",
+                //Number - The width of each segment stroke
+                segmentStrokeWidth: 2,
+                //Number - Amount of animation steps
+                animationSteps: 100,
+                //String - types of animation
+                animationEasing: "easeOutBounce",
+                //Boolean - Whether we animate the rotation of the Doughnut
+                animateRotate: true,
+                //Boolean - Whether we animate scaling the Doughnut from the centre
+                animateScale: false,
+                //Boolean - Re-draw chart on page resize
+                responsive: true,
+                //String - A legend template
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+            };
+
+
+            var pieChartUrl = scope.pageparams["pieChart"];
+
+            if (pieChartUrl) {
+                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(pieChartUrl))
+                    .success(function (res) {
+                        scope.pieChartTitle = res.title;
+                        // render chart
+                        var ctx = element[0].getContext("2d");
+                        var myNewChart = new Chart(ctx).Pie(res.chart, pieOptions);
+                    })
+            }
+        }}
+});
+'use strict';
+
+angular.module('app.homepage').directive('demoPolarChart', function ($http, APP_CONFIG) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attributes) {
+            var polarOptions = {
+                //Boolean - Show a backdrop to the scale label
+                scaleShowLabelBackdrop : true,
+                //String - The colour of the label backdrop
+                scaleBackdropColor : "rgba(255,255,255,0.75)",
+                // Boolean - Whether the scale should begin at zero
+                scaleBeginAtZero : true,
+                //Number - The backdrop padding above & below the label in pixels
+                scaleBackdropPaddingY : 2,
+                //Number - The backdrop padding to the side of the label in pixels
+                scaleBackdropPaddingX : 2,
+                //Boolean - Show line for each value in the scale
+                scaleShowLine : true,
+                //Boolean - Stroke a line around each segment in the chart
+                segmentShowStroke : true,
+                //String - The colour of the stroke on each segement.
+                segmentStrokeColor : "#fff",
+                //Number - The width of the stroke value in pixels
+                segmentStrokeWidth : 2,
+                //Number - Amount of animation steps
+                animationSteps : 100,
+                //String - Animation easing effect.
+                animationEasing : "easeOutBounce",
+                //Boolean - Whether to animate the rotation of the chart
+                animateRotate : true,
+                //Boolean - Whether to animate scaling the chart from the centre
+                animateScale : false,
+                //Boolean - Re-draw chart on page resize
+                responsive: true,
+                //String - A legend template
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+            };
+
+            var polarChartUrl = scope.pageparams["polarChart"];
+
+            if (polarChartUrl) {
+                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(polarChartUrl))
+                    .success(function (res) {
+                        scope.polarChartTitle = res.title;
+                        // render chart
+                        var ctx = element[0].getContext("2d");
+                        new Chart(ctx).PolarArea(res.chart, polarOptions);
+                    })
+            }
+        }}
+});
+'use strict';
+
+angular.module('app.homepage').directive('demoRadarChart', function ($http, APP_CONFIG) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attributes) {
+
+            var radarOptions = {
+                //Boolean - Whether to show lines for each scale point
+                scaleShowLine : true,
+                //Boolean - Whether we show the angle lines out of the radar
+                angleShowLineOut : true,
+                //Boolean - Whether to show labels on the scale
+                scaleShowLabels : false,
+                // Boolean - Whether the scale should begin at zero
+                scaleBeginAtZero : true,
+                //String - Colour of the angle line
+                angleLineColor : "rgba(0,0,0,.1)",
+                //Number - Pixel width of the angle line
+                angleLineWidth : 1,
+                //String - Point label font declaration
+                pointLabelFontFamily : "'Arial'",
+                //String - Point label font weight
+                pointLabelFontStyle : "normal",
+                //Number - Point label font size in pixels
+                pointLabelFontSize : 10,
+                //String - Point label font colour
+                pointLabelFontColor : "#666",
+                //Boolean - Whether to show a dot for each point
+                pointDot : true,
+                //Number - Radius of each point dot in pixels
+                pointDotRadius : 3,
+                //Number - Pixel width of point dot stroke
+                pointDotStrokeWidth : 1,
+                //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+                pointHitDetectionRadius : 20,
+                //Boolean - Whether to show a stroke for datasets
+                datasetStroke : true,
+                //Number - Pixel width of dataset stroke
+                datasetStrokeWidth : 2,
+                //Boolean - Whether to fill the dataset with a colour
+                datasetFill : true,
+                //Boolean - Re-draw chart on page resize
+                responsive: true,
+                //String - A legend template
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+            }
+
+            var radarChartUrl = scope.pageparams["radarChart"];
+
+            if (radarChartUrl) {
+                $http.get(APP_CONFIG.ebaasRootUrl + encodeURIComponent(radarChartUrl))
+                    .success(function (res) {
+                        scope.radarChartTitle = res.title;
+                        // render chart
+                        var ctx = element[0].getContext("2d");
+                        var myNewChart = new Chart(ctx).Radar(res.chart, radarOptions);
+                    })
+            }
+        }}
 });
 'use strict';
 
@@ -26478,6 +26478,153 @@ angular.module('app.tables').directive('jqGrid', function ($compile) {
 
 
             $compile(element.contents())(scope);
+        }
+    }
+});
+"use strict";
+
+angular.module('SmartAdmin.Layout').directive('fullScreen', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element){
+            var $body = $('body');
+            var toggleFullSceen = function(e){
+                if (!$body.hasClass("full-screen")) {
+                    $body.addClass("full-screen");
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen();
+                    } else if (document.documentElement.mozRequestFullScreen) {
+                        document.documentElement.mozRequestFullScreen();
+                    } else if (document.documentElement.webkitRequestFullscreen) {
+                        document.documentElement.webkitRequestFullscreen();
+                    } else if (document.documentElement.msRequestFullscreen) {
+                        document.documentElement.msRequestFullscreen();
+                    }
+                } else {
+                    $body.removeClass("full-screen");
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.mozCancelFullScreen) {
+                        document.mozCancelFullScreen();
+                    } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    }
+                }
+            };
+
+            element.on('click', toggleFullSceen);
+
+        }
+    }
+});
+"use strict";
+
+angular.module('SmartAdmin.Layout').directive('minifyMenu', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element){
+                var $body = $('body');
+            var minifyMenu = function() {
+                if (!$body.hasClass("menu-on-top")) {
+                    $body.toggleClass("minified");
+                    $body.removeClass("hidden-menu");
+                    $('html').removeClass("hidden-menu-mobile-lock");
+                }
+            };
+
+            element.on('click', minifyMenu);
+        }
+    }
+})
+'use strict';
+
+angular.module('SmartAdmin.Layout').directive('reloadState', function ($rootScope) {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttributes) {
+            tElement.removeAttr('reload-state data-reload-state');
+            tElement.on('click', function (e) {
+                $rootScope.$state.transitionTo($rootScope.$state.current, $rootScope.$stateParams, {
+                    reload: true,
+                    inherit: false,
+                    notify: true
+                });
+                e.preventDefault();
+            })
+        }
+    }
+});
+
+"use strict";
+
+angular.module('SmartAdmin.Layout').directive('resetWidgets', function($state){
+
+    return {
+        restrict: 'A',
+        link: function(scope, element){
+            element.on('click', function(){
+                $.SmartMessageBox({
+                    title : "<i class='fa fa-refresh' style='color:green'></i> Clear Local Storage",
+                    content : "Would you like to RESET all your saved widgets and clear LocalStorage?1",
+                    buttons : '[No][Yes]'
+                }, function(ButtonPressed) {
+                    if (ButtonPressed == "Yes" && localStorage) {
+                        localStorage.clear();
+                        location.reload()
+                    }
+                });
+
+            });
+        }
+    }
+
+});
+
+'use strict';
+
+angular.module('SmartAdmin.Layout').directive('searchMobile', function () {
+    return {
+        restrict: 'A',
+        compile: function (element, attributes) {
+            element.removeAttr('search-mobile data-search-mobile');
+
+            element.on('click', function (e) {
+                $('body').addClass('search-mobile');
+                e.preventDefault();
+            });
+
+            $('#cancel-search-js').on('click', function (e) {
+                $('body').removeClass('search-mobile');
+                e.preventDefault();
+            });
+        }
+    }
+});
+"use strict";
+
+angular.module('SmartAdmin.Layout').directive('toggleMenu', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element){
+            var $body = $('body');
+
+            var toggleMenu = function(){
+                if (!$body.hasClass("menu-on-top")){
+                    $('html').toggleClass("hidden-menu-mobile-lock");
+                    $body.toggleClass("hidden-menu");
+                    $body.removeClass("minified");
+                } else if ( $body.hasClass("menu-on-top") && $body.hasClass("mobile-view-activated") ) {
+                    $('html').toggleClass("hidden-menu-mobile-lock");
+                    $body.toggleClass("hidden-menu");
+                    $body.removeClass("minified");
+                }
+            };
+
+            element.on('click', toggleMenu);
+
+            scope.$on('requestToggleMenu', function(){
+                toggleMenu();
+            });
         }
     }
 });
@@ -27743,150 +27890,193 @@ angular.module('SmartAdmin.Layout').factory('SmartCss', function ($rootScope, $t
 
 
 
-"use strict";
-
-angular.module('SmartAdmin.Layout').directive('fullScreen', function(){
-    return {
-        restrict: 'A',
-        link: function(scope, element){
-            var $body = $('body');
-            var toggleFullSceen = function(e){
-                if (!$body.hasClass("full-screen")) {
-                    $body.addClass("full-screen");
-                    if (document.documentElement.requestFullscreen) {
-                        document.documentElement.requestFullscreen();
-                    } else if (document.documentElement.mozRequestFullScreen) {
-                        document.documentElement.mozRequestFullScreen();
-                    } else if (document.documentElement.webkitRequestFullscreen) {
-                        document.documentElement.webkitRequestFullscreen();
-                    } else if (document.documentElement.msRequestFullscreen) {
-                        document.documentElement.msRequestFullscreen();
-                    }
-                } else {
-                    $body.removeClass("full-screen");
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
-                    } else if (document.mozCancelFullScreen) {
-                        document.mozCancelFullScreen();
-                    } else if (document.webkitExitFullscreen) {
-                        document.webkitExitFullscreen();
-                    }
-                }
-            };
-
-            element.on('click', toggleFullSceen);
-
-        }
-    }
-});
-"use strict";
-
-angular.module('SmartAdmin.Layout').directive('minifyMenu', function(){
-    return {
-        restrict: 'A',
-        link: function(scope, element){
-                var $body = $('body');
-            var minifyMenu = function() {
-                if (!$body.hasClass("menu-on-top")) {
-                    $body.toggleClass("minified");
-                    $body.removeClass("hidden-menu");
-                    $('html').removeClass("hidden-menu-mobile-lock");
-                }
-            };
-
-            element.on('click', minifyMenu);
-        }
-    }
-})
 'use strict';
 
-angular.module('SmartAdmin.Layout').directive('reloadState', function ($rootScope) {
+angular.module('SmartAdmin.Forms').directive('smartJcrop', function ($q) {
     return {
         restrict: 'A',
-        compile: function (tElement, tAttributes) {
-            tElement.removeAttr('reload-state data-reload-state');
-            tElement.on('click', function (e) {
-                $rootScope.$state.transitionTo($rootScope.$state.current, $rootScope.$stateParams, {
-                    reload: true,
-                    inherit: false,
-                    notify: true
-                });
-                e.preventDefault();
-            })
-        }
-    }
-});
+        scope: {
+            coords: '=',
+            options: '=',
+            selection: '='
+        },
+        link: function (scope, element, attributes) {
+            var jcropApi, imageWidth, imageHeight, imageLoaded = $q.defer();
 
-"use strict";
-
-angular.module('SmartAdmin.Layout').directive('resetWidgets', function($state){
-
-    return {
-        restrict: 'A',
-        link: function(scope, element){
-            element.on('click', function(){
-                $.SmartMessageBox({
-                    title : "<i class='fa fa-refresh' style='color:green'></i> Clear Local Storage",
-                    content : "Would you like to RESET all your saved widgets and clear LocalStorage?1",
-                    buttons : '[No][Yes]'
-                }, function(ButtonPressed) {
-                    if (ButtonPressed == "Yes" && localStorage) {
-                        localStorage.clear();
-                        location.reload()
-                    }
-                });
-
-            });
-        }
-    }
-
-});
-
-'use strict';
-
-angular.module('SmartAdmin.Layout').directive('searchMobile', function () {
-    return {
-        restrict: 'A',
-        compile: function (element, attributes) {
-            element.removeAttr('search-mobile data-search-mobile');
-
-            element.on('click', function (e) {
-                $('body').addClass('search-mobile');
-                e.preventDefault();
-            });
-
-            $('#cancel-search-js').on('click', function (e) {
-                $('body').removeClass('search-mobile');
-                e.preventDefault();
-            });
-        }
-    }
-});
-"use strict";
-
-angular.module('SmartAdmin.Layout').directive('toggleMenu', function(){
-    return {
-        restrict: 'A',
-        link: function(scope, element){
-            var $body = $('body');
-
-            var toggleMenu = function(){
-                if (!$body.hasClass("menu-on-top")){
-                    $('html').toggleClass("hidden-menu-mobile-lock");
-                    $body.toggleClass("hidden-menu");
-                    $body.removeClass("minified");
-                } else if ( $body.hasClass("menu-on-top") && $body.hasClass("mobile-view-activated") ) {
-                    $('html').toggleClass("hidden-menu-mobile-lock");
-                    $body.toggleClass("hidden-menu");
-                    $body.removeClass("minified");
+            var listeners = {
+                onSelectHandlers: [],
+                onChangeHandlers: [],
+                onSelect: function (c) {
+                    angular.forEach(listeners.onSelectHandlers, function (handler) {
+                        handler.call(jcropApi, c)
+                    })
+                },
+                onChange: function (c) {
+                    angular.forEach(listeners.onChangeHandlers, function (handler) {
+                        handler.call(jcropApi, c)
+                    })
                 }
             };
 
-            element.on('click', toggleMenu);
+            if (attributes.coords) {
+                var coordsUpdate = function (c) {
+                    scope.$apply(function () {
+                        scope.coords = c;
+                    });
+                };
+                listeners.onSelectHandlers.push(coordsUpdate);
+                listeners.onChangeHandlers.push(coordsUpdate);
+            }
 
-            scope.$on('requestToggleMenu', function(){
-                toggleMenu();
-            });
+            var $previewPane = $(attributes.smartJcropPreview),
+                $previewContainer = $previewPane.find('.preview-container'),
+                $previewImg = $previewPane.find('img');
+
+            if ($previewPane.length && $previewImg.length) {
+                var previewUpdate = function (coords) {
+                    if (parseInt(coords.w) > 0) {
+                        var rx = $previewContainer.width() / coords.w;
+                        var ry = $previewContainer.height() / coords.h;
+
+                        $previewImg.css({
+                            width: Math.round(rx * imageWidth) + 'px',
+                            height: Math.round(ry * imageHeight) + 'px',
+                            marginLeft: '-' + Math.round(rx * coords.x) + 'px',
+                            marginTop: '-' + Math.round(ry * coords.y) + 'px'
+                        });
+                    }
+                };
+                listeners.onSelectHandlers.push(previewUpdate);
+                listeners.onChangeHandlers.push(previewUpdate);
+            }
+
+
+            var options = {
+                onSelect: listeners.onSelect,
+                onChange: listeners.onChange
+            };
+
+            if ($previewContainer.length) {
+                options.aspectRatio = $previewContainer.width() / $previewContainer.height()
+            }
+
+            if (attributes.selection) {
+                scope.$watch('selection', function (newVal, oldVal) {
+                    if (newVal != oldVal) {
+                        var rectangle = newVal == 'release' ? [imageWidth / 2, imageHeight / 2, imageWidth / 2, imageHeight / 2] : newVal;
+
+                        var callback = newVal == 'release' ? function () {
+                            jcropApi.release();
+                        } : angular.noop;
+
+                        imageLoaded.promise.then(function () {
+                            if (scope.options && scope.options.animate) {
+                                jcropApi.animateTo(rectangle, callback);
+                            } else {
+                                jcropApi.setSelect(rectangle);
+                            }
+                        });
+                    }
+                });
+            }
+
+            if (attributes.options) {
+
+                var optionNames = [
+                    'bgOpacity', 'bgColor', 'bgFade', 'shade', 'outerImage',
+                    'allowSelect', 'allowMove', 'allowResize',
+                    'aspectRatio'
+                ];
+
+                angular.forEach(optionNames, function (name) {
+                    if (scope.options[name])
+                        options[name] = scope.options[name]
+
+                    scope.$watch('options.' + name, function (newVal, oldVal) {
+                        if (newVal != oldVal) {
+                            imageLoaded.promise.then(function () {
+                                var update = {};
+                                update[name] = newVal;
+                                jcropApi.setOptions(update);
+                            });
+                        }
+                    });
+
+                });
+
+
+                scope.$watch('options.disabled', function (newVal, oldVal) {
+                    if (newVal != oldVal) {
+                        if (newVal) {
+                            jcropApi.disable();
+                        } else {
+                            jcropApi.enable();
+                        }
+                    }
+                });
+
+                scope.$watch('options.destroyed', function (newVal, oldVal) {
+                    if (newVal != oldVal) {
+                        if (newVal) {
+                            jcropApi.destroy();
+                        } else {
+                            _init();
+                        }
+                    }
+                });
+
+                scope.$watch('options.src', function (newVal, oldVal) {
+                    imageLoaded = $q.defer();
+                    if (newVal != oldVal) {
+                        jcropApi.setImage(scope.options.src, function () {
+                            imageLoaded.resolve();
+                        });
+                    }
+                });
+
+                var updateSize = function(){
+                    jcropApi.setOptions({
+                        minSize: [scope.options.minSizeWidth, scope.options.minSizeHeight],
+                        maxSize: [scope.options.maxSizeWidth, scope.options.maxSizeHeight]
+                    });
+                };
+
+                scope.$watch('options.minSizeWidth', function (newVal, oldVal) {
+                    if (newVal != oldVal) updateSize();
+                });
+                scope.$watch('options.minSizeHeight', function (newVal, oldVal) {
+                    if (newVal != oldVal) updateSize();
+                });
+                scope.$watch('options.maxSizeWidth', function (newVal, oldVal) {
+                    if (newVal != oldVal) updateSize();
+                });
+                scope.$watch('options.maxSizeHeight', function (newVal, oldVal) {
+                    if (newVal != oldVal) updateSize();
+                });
+            }
+
+            var _init = function () {
+                element.Jcrop(options, function () {
+                    jcropApi = this;
+                    // Use the API to get the real image size
+                    var bounds = this.getBounds();
+                    imageWidth = bounds[0];
+                    imageHeight = bounds[1];
+
+                    if (attributes.selection && angular.isArray(scope.selection)) {
+                        if (scope.options && scope.options.animate) {
+                            jcropApi.animateTo(scope.selection);
+                        } else {
+                            jcropApi.setSelect(scope.selection);
+                        }
+                    }
+                    imageLoaded.resolve();
+                });
+            };
+
+            _init()
+
+
         }
     }
 });
@@ -28831,196 +29021,6 @@ angular.module('SmartAdmin.Forms').directive('smartReviewForm', function (formsC
 });
 'use strict';
 
-angular.module('SmartAdmin.Forms').directive('smartJcrop', function ($q) {
-    return {
-        restrict: 'A',
-        scope: {
-            coords: '=',
-            options: '=',
-            selection: '='
-        },
-        link: function (scope, element, attributes) {
-            var jcropApi, imageWidth, imageHeight, imageLoaded = $q.defer();
-
-            var listeners = {
-                onSelectHandlers: [],
-                onChangeHandlers: [],
-                onSelect: function (c) {
-                    angular.forEach(listeners.onSelectHandlers, function (handler) {
-                        handler.call(jcropApi, c)
-                    })
-                },
-                onChange: function (c) {
-                    angular.forEach(listeners.onChangeHandlers, function (handler) {
-                        handler.call(jcropApi, c)
-                    })
-                }
-            };
-
-            if (attributes.coords) {
-                var coordsUpdate = function (c) {
-                    scope.$apply(function () {
-                        scope.coords = c;
-                    });
-                };
-                listeners.onSelectHandlers.push(coordsUpdate);
-                listeners.onChangeHandlers.push(coordsUpdate);
-            }
-
-            var $previewPane = $(attributes.smartJcropPreview),
-                $previewContainer = $previewPane.find('.preview-container'),
-                $previewImg = $previewPane.find('img');
-
-            if ($previewPane.length && $previewImg.length) {
-                var previewUpdate = function (coords) {
-                    if (parseInt(coords.w) > 0) {
-                        var rx = $previewContainer.width() / coords.w;
-                        var ry = $previewContainer.height() / coords.h;
-
-                        $previewImg.css({
-                            width: Math.round(rx * imageWidth) + 'px',
-                            height: Math.round(ry * imageHeight) + 'px',
-                            marginLeft: '-' + Math.round(rx * coords.x) + 'px',
-                            marginTop: '-' + Math.round(ry * coords.y) + 'px'
-                        });
-                    }
-                };
-                listeners.onSelectHandlers.push(previewUpdate);
-                listeners.onChangeHandlers.push(previewUpdate);
-            }
-
-
-            var options = {
-                onSelect: listeners.onSelect,
-                onChange: listeners.onChange
-            };
-
-            if ($previewContainer.length) {
-                options.aspectRatio = $previewContainer.width() / $previewContainer.height()
-            }
-
-            if (attributes.selection) {
-                scope.$watch('selection', function (newVal, oldVal) {
-                    if (newVal != oldVal) {
-                        var rectangle = newVal == 'release' ? [imageWidth / 2, imageHeight / 2, imageWidth / 2, imageHeight / 2] : newVal;
-
-                        var callback = newVal == 'release' ? function () {
-                            jcropApi.release();
-                        } : angular.noop;
-
-                        imageLoaded.promise.then(function () {
-                            if (scope.options && scope.options.animate) {
-                                jcropApi.animateTo(rectangle, callback);
-                            } else {
-                                jcropApi.setSelect(rectangle);
-                            }
-                        });
-                    }
-                });
-            }
-
-            if (attributes.options) {
-
-                var optionNames = [
-                    'bgOpacity', 'bgColor', 'bgFade', 'shade', 'outerImage',
-                    'allowSelect', 'allowMove', 'allowResize',
-                    'aspectRatio'
-                ];
-
-                angular.forEach(optionNames, function (name) {
-                    if (scope.options[name])
-                        options[name] = scope.options[name]
-
-                    scope.$watch('options.' + name, function (newVal, oldVal) {
-                        if (newVal != oldVal) {
-                            imageLoaded.promise.then(function () {
-                                var update = {};
-                                update[name] = newVal;
-                                jcropApi.setOptions(update);
-                            });
-                        }
-                    });
-
-                });
-
-
-                scope.$watch('options.disabled', function (newVal, oldVal) {
-                    if (newVal != oldVal) {
-                        if (newVal) {
-                            jcropApi.disable();
-                        } else {
-                            jcropApi.enable();
-                        }
-                    }
-                });
-
-                scope.$watch('options.destroyed', function (newVal, oldVal) {
-                    if (newVal != oldVal) {
-                        if (newVal) {
-                            jcropApi.destroy();
-                        } else {
-                            _init();
-                        }
-                    }
-                });
-
-                scope.$watch('options.src', function (newVal, oldVal) {
-                    imageLoaded = $q.defer();
-                    if (newVal != oldVal) {
-                        jcropApi.setImage(scope.options.src, function () {
-                            imageLoaded.resolve();
-                        });
-                    }
-                });
-
-                var updateSize = function(){
-                    jcropApi.setOptions({
-                        minSize: [scope.options.minSizeWidth, scope.options.minSizeHeight],
-                        maxSize: [scope.options.maxSizeWidth, scope.options.maxSizeHeight]
-                    });
-                };
-
-                scope.$watch('options.minSizeWidth', function (newVal, oldVal) {
-                    if (newVal != oldVal) updateSize();
-                });
-                scope.$watch('options.minSizeHeight', function (newVal, oldVal) {
-                    if (newVal != oldVal) updateSize();
-                });
-                scope.$watch('options.maxSizeWidth', function (newVal, oldVal) {
-                    if (newVal != oldVal) updateSize();
-                });
-                scope.$watch('options.maxSizeHeight', function (newVal, oldVal) {
-                    if (newVal != oldVal) updateSize();
-                });
-            }
-
-            var _init = function () {
-                element.Jcrop(options, function () {
-                    jcropApi = this;
-                    // Use the API to get the real image size
-                    var bounds = this.getBounds();
-                    imageWidth = bounds[0];
-                    imageHeight = bounds[1];
-
-                    if (attributes.selection && angular.isArray(scope.selection)) {
-                        if (scope.options && scope.options.animate) {
-                            jcropApi.animateTo(scope.selection);
-                        } else {
-                            jcropApi.setSelect(scope.selection);
-                        }
-                    }
-                    imageLoaded.resolve();
-                });
-            };
-
-            _init()
-
-
-        }
-    }
-});
-'use strict';
-
 angular.module('SmartAdmin.Forms').directive('smartClockpicker', function () {
     return {
         restrict: 'A',
@@ -29406,6 +29406,24 @@ angular.module('SmartAdmin.Forms').directive('smartXeditable', function($timeout
 });
 'use strict';
 
+angular.module('SmartAdmin.Forms').directive('smartDropzone', function () {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttributes) {
+            tElement.removeAttr('file-dropzone data-file-dropzone');
+
+            tElement.dropzone({
+                addRemoveLinks : true,
+                maxFilesize: 0.5,
+                dictDefaultMessage: '<span class="text-center"><span class="font-lg visible-xs-block visible-sm-block visible-lg-block"><span class="font-lg"><i class="fa fa-caret-right text-danger"></i> Drop files <span class="font-xs">to upload</span></span><span>&nbsp&nbsp<h4 class="display-inline"> (Or Click)</h4></span>',
+                dictResponseError: 'Error uploading file!'
+            });
+        }
+    }
+});
+
+'use strict';
+
 angular.module('SmartAdmin.Forms').directive('smartValidateForm', function (formsCommon) {
     return {
         restrict: 'A',
@@ -29472,150 +29490,6 @@ angular.module('SmartAdmin.Forms').directive('smartValidateForm', function (form
     }
 });
 
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartDropzone', function () {
-    return {
-        restrict: 'A',
-        compile: function (tElement, tAttributes) {
-            tElement.removeAttr('file-dropzone data-file-dropzone');
-
-            tElement.dropzone({
-                addRemoveLinks : true,
-                maxFilesize: 0.5,
-                dictDefaultMessage: '<span class="text-center"><span class="font-lg visible-xs-block visible-sm-block visible-lg-block"><span class="font-lg"><i class="fa fa-caret-right text-danger"></i> Drop files <span class="font-xs">to upload</span></span><span>&nbsp&nbsp<h4 class="display-inline"> (Or Click)</h4></span>',
-                dictResponseError: 'Error uploading file!'
-            });
-        }
-    }
-});
-
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartFueluxWizard', function () {
-    return {
-        restrict: 'A',
-        scope: {
-            smartWizardCallback: '&'
-        },
-        link: function (scope, element, attributes) {
-
-            var wizard = element.wizard();
-
-            var $form = element.find('form');
-
-            wizard.on('actionclicked.fu.wizard', function(e, data){
-                if ($form.data('validator')) {
-                    if (!$form.valid()) {
-                        $form.data('validator').focusInvalid();
-                        e.preventDefault();
-                    }
-                }
-            });
-
-            wizard.on('finished.fu.wizard', function (e, data) {
-                var formData = {};
-                _.each($form.serializeArray(), function(field){
-                    formData[field.name] = field.value
-                });
-                if(typeof scope.smartWizardCallback() === 'function'){
-                    scope.smartWizardCallback()(formData)
-                }
-            });
-        }
-    }
-});
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartWizard', function () {
-    return {
-        restrict: 'A',
-        scope: {
-            'smartWizardCallback': '&'
-        },
-        link: function (scope, element, attributes) {
-
-            var stepsCount = $('[data-smart-wizard-tab]').length;
-
-            var currentStep = 1;
-
-            var validSteps = [];
-
-            var $form = element.closest('form');
-
-            var $prev = $('[data-smart-wizard-prev]', element);
-
-            var $next = $('[data-smart-wizard-next]', element);
-
-            function setStep(step) {
-                currentStep = step;
-                $('[data-smart-wizard-pane=' + step + ']', element).addClass('active').siblings('[data-smart-wizard-pane]').removeClass('active');
-                $('[data-smart-wizard-tab=' + step + ']', element).addClass('active').siblings('[data-smart-wizard-tab]').removeClass('active');
-
-                $prev.toggleClass('disabled', step == 1)
-            }
-
-
-            element.on('click', '[data-smart-wizard-tab]', function (e) {
-                setStep(parseInt($(this).data('smartWizardTab')));
-                e.preventDefault();
-            });
-
-            $next.on('click', function (e) {
-                if ($form.data('validator')) {
-                    if (!$form.valid()) {
-                        validSteps = _.without(validSteps, currentStep);
-                        $form.data('validator').focusInvalid();
-                        return false;
-                    } else {
-                        validSteps = _.without(validSteps, currentStep);
-                        validSteps.push(currentStep);
-                        element.find('[data-smart-wizard-tab=' + currentStep + ']')
-                            .addClass('complete')
-                            .find('.step')
-                            .html('<i class="fa fa-check"></i>');
-                    }
-                }
-                if (currentStep < stepsCount) {
-                    setStep(currentStep + 1);
-                } else {
-                    if (validSteps.length < stepsCount) {
-                        var steps = _.range(1, stepsCount + 1)
-
-                        _(steps).forEach(function (num) {
-                            if (validSteps.indexOf(num) == -1) {
-                                console.log(num);
-                                setStep(num);
-                                return false;
-                            }
-                        })
-                    } else {
-                        var data = {};
-                        _.each($form.serializeArray(), function(field){
-                            data[field.name] = field.value
-                        });
-                        if(typeof  scope.smartWizardCallback() === 'function'){
-                            scope.smartWizardCallback()(data)
-                        }
-                    }
-                }
-
-                e.preventDefault();
-            });
-
-            $prev.on('click', function (e) {
-                if (!$prev.hasClass('disabled') && currentStep > 0) {
-                    setStep(currentStep - 1);
-                }
-                e.preventDefault();
-            });
-
-
-            setStep(currentStep);
-
-        }
-    }
-});
 'use strict';
 
 angular.module('SmartAdmin.Layout').directive('demoStates', function ($rootScope) {
@@ -29927,6 +29801,132 @@ angular.module('SmartAdmin.Layout').directive('smartMenu', function ($state, $ro
     }
 });
 })();
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartFueluxWizard', function () {
+    return {
+        restrict: 'A',
+        scope: {
+            smartWizardCallback: '&'
+        },
+        link: function (scope, element, attributes) {
+
+            var wizard = element.wizard();
+
+            var $form = element.find('form');
+
+            wizard.on('actionclicked.fu.wizard', function(e, data){
+                if ($form.data('validator')) {
+                    if (!$form.valid()) {
+                        $form.data('validator').focusInvalid();
+                        e.preventDefault();
+                    }
+                }
+            });
+
+            wizard.on('finished.fu.wizard', function (e, data) {
+                var formData = {};
+                _.each($form.serializeArray(), function(field){
+                    formData[field.name] = field.value
+                });
+                if(typeof scope.smartWizardCallback() === 'function'){
+                    scope.smartWizardCallback()(formData)
+                }
+            });
+        }
+    }
+});
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartWizard', function () {
+    return {
+        restrict: 'A',
+        scope: {
+            'smartWizardCallback': '&'
+        },
+        link: function (scope, element, attributes) {
+
+            var stepsCount = $('[data-smart-wizard-tab]').length;
+
+            var currentStep = 1;
+
+            var validSteps = [];
+
+            var $form = element.closest('form');
+
+            var $prev = $('[data-smart-wizard-prev]', element);
+
+            var $next = $('[data-smart-wizard-next]', element);
+
+            function setStep(step) {
+                currentStep = step;
+                $('[data-smart-wizard-pane=' + step + ']', element).addClass('active').siblings('[data-smart-wizard-pane]').removeClass('active');
+                $('[data-smart-wizard-tab=' + step + ']', element).addClass('active').siblings('[data-smart-wizard-tab]').removeClass('active');
+
+                $prev.toggleClass('disabled', step == 1)
+            }
+
+
+            element.on('click', '[data-smart-wizard-tab]', function (e) {
+                setStep(parseInt($(this).data('smartWizardTab')));
+                e.preventDefault();
+            });
+
+            $next.on('click', function (e) {
+                if ($form.data('validator')) {
+                    if (!$form.valid()) {
+                        validSteps = _.without(validSteps, currentStep);
+                        $form.data('validator').focusInvalid();
+                        return false;
+                    } else {
+                        validSteps = _.without(validSteps, currentStep);
+                        validSteps.push(currentStep);
+                        element.find('[data-smart-wizard-tab=' + currentStep + ']')
+                            .addClass('complete')
+                            .find('.step')
+                            .html('<i class="fa fa-check"></i>');
+                    }
+                }
+                if (currentStep < stepsCount) {
+                    setStep(currentStep + 1);
+                } else {
+                    if (validSteps.length < stepsCount) {
+                        var steps = _.range(1, stepsCount + 1)
+
+                        _(steps).forEach(function (num) {
+                            if (validSteps.indexOf(num) == -1) {
+                                console.log(num);
+                                setStep(num);
+                                return false;
+                            }
+                        })
+                    } else {
+                        var data = {};
+                        _.each($form.serializeArray(), function(field){
+                            data[field.name] = field.value
+                        });
+                        if(typeof  scope.smartWizardCallback() === 'function'){
+                            scope.smartWizardCallback()(data)
+                        }
+                    }
+                }
+
+                e.preventDefault();
+            });
+
+            $prev.on('click', function (e) {
+                if (!$prev.hasClass('disabled') && currentStep > 0) {
+                    setStep(currentStep - 1);
+                }
+                e.preventDefault();
+            });
+
+
+            setStep(currentStep);
+
+        }
+    }
+});
 /**
  * Jarvis Widget Directive
  *

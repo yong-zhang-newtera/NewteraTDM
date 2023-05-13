@@ -57,8 +57,8 @@
             this.grantReadRadioButton = new System.Windows.Forms.RadioButton();
             this.label6 = new System.Windows.Forms.Label();
             this.ruleListView = new System.Windows.Forms.ListView();
-            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -75,7 +75,6 @@
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.accessControlsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fulltextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutSiteMapStudioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.onlineDocumentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -92,6 +91,7 @@
             this.refreshToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -130,6 +130,7 @@
             // 
             // contextMenuStrip1
             // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addContextMenuStripItem,
             this.deleteContextMenuStripItem,
@@ -216,6 +217,7 @@
             // 
             // propertyGridContextMenuStrip
             // 
+            this.propertyGridContextMenuStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.propertyGridContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.descriptionToolStripMenuItem});
             this.propertyGridContextMenuStrip.Name = "propertyGridContextMenuStrip";
@@ -302,6 +304,7 @@
             this.columnHeader1,
             this.columnHeader2});
             this.ruleListView.FullRowSelect = true;
+            this.ruleListView.HideSelection = false;
             this.ruleListView.Name = "ruleListView";
             this.ruleListView.UseCompatibleStateImageBehavior = false;
             this.ruleListView.View = System.Windows.Forms.View.Details;
@@ -317,6 +320,8 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.editToolStripMenuItem,
@@ -362,8 +367,7 @@
             this.toolStripMenuItem4,
             this.refreshToolStripMenuItem,
             this.toolStripMenuItem5,
-            this.optionsToolStripMenuItem,
-            this.fulltextToolStripMenuItem});
+            this.optionsToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             resources.ApplyResources(this.editToolStripMenuItem, "editToolStripMenuItem");
             // 
@@ -425,12 +429,6 @@
             resources.ApplyResources(this.accessControlsToolStripMenuItem, "accessControlsToolStripMenuItem");
             this.accessControlsToolStripMenuItem.Click += new System.EventHandler(this.accessControlsToolStripMenuItem_Click);
             // 
-            // fulltextToolStripMenuItem
-            // 
-            this.fulltextToolStripMenuItem.Name = "fulltextToolStripMenuItem";
-            resources.ApplyResources(this.fulltextToolStripMenuItem, "fulltextToolStripMenuItem");
-            this.fulltextToolStripMenuItem.Click += new System.EventHandler(this.fulltextToolStripMenuItem_Click);
-            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -453,6 +451,7 @@
             // 
             // toolStrip1
             // 
+            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripButton,
             this.saveToolStripButton,
@@ -533,6 +532,7 @@
             // 
             // statusStrip1
             // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
             resources.ApplyResources(this.statusStrip1, "statusStrip1");
@@ -556,6 +556,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SiteMapStudioApp_FormClosing);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.contextMenuStrip1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
@@ -638,7 +639,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem accessControlsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem fulltextToolStripMenuItem;
     }
 }
 

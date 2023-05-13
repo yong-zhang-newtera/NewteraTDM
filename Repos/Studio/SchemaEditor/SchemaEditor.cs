@@ -4609,26 +4609,7 @@ namespace Newtera.Studio
 						newBool = (bool) newValue;
                         if (newBool)
                         {
-                            /* allow to change IsRequired when a class has instances
-                            if (simpleAttribute.DefaultValue == null &&
-                                simpleAttribute.ColumnName != null &&
-                                simpleAttribute.OwnerClass.TableName != null &&
-                                !IsOwnerClassEmpty(element))
-                            {
-                                // the change is invalid, change it back to old value
-                                simpleAttribute.IsRequired = (bool)oldValue;
-
-                                msg = validator.GetMessage("Simple.IllegalRequiredAttribute");
-                            }
-                            else */
-                            if (simpleAttribute.IsFullTextSearchable)
-                            {
-                                // the change is invalid, change it back to old value
-                                simpleAttribute.IsRequired = (bool)oldValue;
-
-                                msg = validator.GetMessage("Simple.RequiredAttributeInvalidForFullText");
-                            }
-                            else if (simpleAttribute.IsHistoryEdit)
+                            if (simpleAttribute.IsHistoryEdit)
                             {
                                 // the change is invalid, change it back to old value
                                 simpleAttribute.IsRequired = (bool)oldValue;
@@ -4670,65 +4651,6 @@ namespace Newtera.Studio
 						}
 
 						break;
-
-                    case "IsFullTextSearchable":
-                        if (simpleAttribute.IsIndexed)
-                        {
-                            simpleAttribute.IsFullTextSearchable = false;
-
-                            // The DataType has been changed to Text from other data type,
-                            // Since we need to reset the data type
-                            simpleAttribute.ResetDataType();
-
-                            msg = validator.GetMessage("Simple.NormalIndexExisted");
-                        }
-                        else if (simpleAttribute.IsRequired)
-                        {
-                            // required attribute, such as primary key can not be used as full-text search attribute
-                            simpleAttribute.IsFullTextSearchable = false;
-
-                            // The DataType has been changed to Text from other data type,
-                            // Since we need to reset the data type
-                            simpleAttribute.ResetDataType();
-
-                            msg = validator.GetMessage("Simple.RequiredAttributeInvalidForFullText");
-                        }
-                        else if (simpleAttribute.IsGoodForFullTextSearch)
-                        {
-                            simpleAttribute.IsFullTextSearchable = false;
-
-                            // The DataType has been changed to Text from other data type,
-                            // Since we need to reset the data type
-                            simpleAttribute.ResetDataType();
-
-                            msg = validator.GetMessage("Simple.IsGoodForFullTextInvalidForFullText");
-                        }
-                        else if (simpleAttribute.ColumnName != null &&
-                            simpleAttribute.OwnerClass.TableName != null)
-                        {
-                            oldBool = (bool)oldValue;
-                            if (!IsOwnerClassEmpty(element))
-                            {
-                                // the change is invalid, change it back to old value
-                                simpleAttribute.IsFullTextSearchable = oldBool;
-
-                                // The DataType has been changed to Text from other data type,
-                                // Since we need to reset the data type
-                                simpleAttribute.ResetDataType();
-
-                                msg = validator.GetMessage("Simple.InvalidFullTextChange");
-                            }
-                            else if (oldBool)
-                            {
-                                // unable to change the is full-text searchableback once it has been
-                                // saved to database
-                                simpleAttribute.IsFullTextSearchable = oldBool;
-
-                                msg = validator.GetMessage("Simple.UnableToChangeBackFullText");
-                            }
-                        }
-
-                        break;
 
                     case "IsHistoryEdit":
                         if (simpleAttribute.IsIndexed)
@@ -4852,15 +4774,7 @@ namespace Newtera.Studio
                         DataType oldType = (DataType)oldValue;
                         DataType newType = (DataType)newValue;
 
-                        if (newType == DataType.Text && !(simpleAttribute.IsFullTextSearchable || simpleAttribute.IsHistoryEdit || simpleAttribute.IsRichText))
-                        {
-                            // set back to the old type
-                            simpleAttribute.DataType = oldType;
-
-                            // Text type only available for the full-text searcheable attribute
-                            msg = validator.GetMessage("Simple.InvalidUseOfTextType");
-                        }
-                        else if (simpleAttribute.IsPrimaryKey &&
+                        if (simpleAttribute.IsPrimaryKey &&
                             simpleAttribute.ColumnName != null &&
                             simpleAttribute.OwnerClass.TableName != null)
                         {
@@ -4950,16 +4864,6 @@ namespace Newtera.Studio
                             simpleAttribute.MinLength = oldMinLengthValue;
 
                             msg = validator.GetMessage("Simple.InvalidMinLengthChange");
-                        }
-
-                        break;
-                    case "IsGoodForFullTextSearch":
-                        newBool = (bool)newValue;
-                        if (newBool && simpleAttribute.IsFullTextSearchable)
-                        {
-                            simpleAttribute.IsGoodForFullTextSearch = false;
-
-                            msg = validator.GetMessage("Simple.InvalidGoodForFullTextSearchChange");
                         }
 
                         break;

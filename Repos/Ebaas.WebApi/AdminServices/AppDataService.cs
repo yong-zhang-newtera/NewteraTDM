@@ -25,11 +25,10 @@ using Newtera.Common.MetaData.Schema;
 using Newtera.Common.MetaData.DataView;
 using Newtera.Common.MetaData.Logging;
 using Newtera.Common.MetaData.XMLSchemaView;
-using Newtera.Server.UsrMgr;
+using Newtera.Server.FullText;
 using Newtera.Common.MetaData.Principal;
 using Ebaas.WebApi.Infrastructure;
 using Newtera.ElasticSearchIndexer;
-using Newtera.Server.FullText;
 
 namespace Ebaas.WebApi.Controllers
 {
@@ -541,14 +540,13 @@ namespace Ebaas.WebApi.Controllers
         /// <summary>
         /// Build full-text index for a given class.
         /// </summary>
-        /// <param name="className">The given class name.</param>
         [HttpGet]
         [AdminAuthorizeAttribute]
         [Route("IsExternalFullTextSearch")]
         public bool IsExternalFullTextSearch()
         {
             return Newtera.Common.Config.ElasticsearchConfig.Instance.IsElasticsearchEnabled;
-        }    
+        }
 
         /// <summary>
         /// Build full-text index for a given class.
@@ -561,46 +559,27 @@ namespace Ebaas.WebApi.Controllers
         {
             try
             {
-
                 NameValueCollection parameters = Request.RequestUri.ParseQueryString();
                 string connectionStr = parameters["connectionStr"];
 
-                if (!Newtera.Common.Config.ElasticsearchConfig.Instance.IsElasticsearchEnabled)
+                // use ElasticSearch for full-text search
+                using (CMConnection con = new CMConnection(connectionStr))
                 {
-                    // use DB provided full-text search index
-                    using (CMConnection con = new CMConnection(connectionStr))
+                    con.Open();
+
+                    ClassElement classElement = con.MetaDataModel.SchemaModel.FindClass(className);
+                    if (classElement != null)
                     {
-                        con.Open();
+                        IndexingContext context = new IndexingContext(con.MetaDataModel, classElement, null, Newtera.Common.MetaData.Events.OperationType.Insert);
+                        BatchDocumentsRunner runner = new BatchDocumentsRunner();
 
-                        CMCommand cmd = con.CreateCommand();
-
-                        cmd.BuildFullTextIndex(className);
+                        // create document indexes for the instances in the class
+                        await runner.Execute(context);
                     }
-
-                    var resp = new HttpResponseMessage(HttpStatusCode.OK);
-                    return resp;
                 }
-                else
-                {
-                    // use ElasticSearch for full-text search
-                    using (CMConnection con = new CMConnection(connectionStr))
-                    {
-                        con.Open();
 
-                        ClassElement classElement = con.MetaDataModel.SchemaModel.FindClass(className);
-                        if (classElement != null)
-                        {
-                            IndexingContext context = new IndexingContext(con.MetaDataModel, classElement, null, Newtera.Common.MetaData.Events.OperationType.Insert );
-                            BatchDocumentsRunner runner = new BatchDocumentsRunner();
-
-                            // create document indexes for the instances in the class
-                            await runner.Execute(context);
-                        }
-                    }
-
-                    var resp = new HttpResponseMessage(HttpStatusCode.OK);
-                    return resp;
-                }
+                var resp = new HttpResponseMessage(HttpStatusCode.OK);
+                return resp;
             }
             catch (Exception ex)
             {

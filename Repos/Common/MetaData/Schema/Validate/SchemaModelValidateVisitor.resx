@@ -120,11 +120,11 @@
   <data name="Simple.UnknownDataType" xml:space="preserve">
     <value>Unknown data type</value>
   </data>
-  <data name="Simple.WrongFullTextIndexType" xml:space="preserve">
-    <value>Full-text Search only works on attribute of Text type</value>
-  </data>
   <data name="Simple.WrongHistoryEditType" xml:space="preserve">
     <value>HistoryEdit only works on attribute of Text type</value>
+  </data>
+  <data name="Simple.WrongFullTextSearchType" xml:space="preserve">
+    <value>Only attributes with String type can be used in full-text search</value>
   </data>
   <data name="Simple.UnknownConstraint" xml:space="preserve">
     <value>The referring constraint doesn't exist</value>
@@ -183,12 +183,6 @@
   <data name="Array.CaptionTooLong" xml:space="preserve">
     <value>The length of a display name must be less than 100 characters</value>
   </data>
-  <data name="Simple.MissingPKForFullText" xml:space="preserve">
-    <value>To define a full-text search attribute, a Primary Key must exist in the class.</value>
-  </data>
-  <data name="Simple.MoreThanOneFullTextAttributes" xml:space="preserve">
-    <value>Only one full-text search attribute is allowed in a class.</value>
-  </data>
   <data name="Class.IllegalPrimaryKey" xml:space="preserve">
     <value>Change of the primary key(s) is not allowed since the owner class has already had instances. You have to provide a default value or delete the existing instances first.</value>
   </data>
@@ -218,9 +212,6 @@
   </data>
   <data name="Simple.InvalidConstraintChange" xml:space="preserve">
     <value>Unable to set a constraint to the attribute since the class has already had data instances. Please delete the existing data instances first.</value>
-  </data>
-  <data name="Simple.InvalidFullTextChange" xml:space="preserve">
-    <value>Unable to change the attribute to become full-text searchable since the class already has had data instances. Please delete existing data instances first or you can create a new attribute for full-text search purpose.</value>
   </data>
   <data name="Simple.InvalidHistoryEditChange" xml:space="preserve">
     <value>Unable to change the attribute to become history since the class already has had data instances. Please delete existing data instances first or you can create a new attribute for history purpose.</value>
@@ -255,14 +246,8 @@
   <data name="Simple.InvalidAutoIncForHistoryEdit" xml:space="preserve">
     <value>The history edit attribute doesn't allow being auto-incremental</value>
   </data>
-  <data name="Simple.InvalidDefaultForFullText" xml:space="preserve">
-    <value>The full-text searchable attribute doesn't allow to have a default value</value>
-  </data>
   <data name="Simple.InvalidDefaultForHistoryEdit" xml:space="preserve">
     <value>The history edit attribute doesn't allow to have a default value</value>
-  </data>
-  <data name="Simple.InvalidUniqueForFullText" xml:space="preserve">
-    <value>The full-text searchable attribute doesn't allow being unique</value>
   </data>
   <data name="Simple.InvalidUniqueForHistoryEdit" xml:space="preserve">
     <value>The History Edit attribute doesn't allow being unique</value>
@@ -272,9 +257,6 @@
   </data>
   <data name="Class.IllegalUniqueKey" xml:space="preserve">
     <value>Change of the unique keys is not allowed since the owner class has already had instances. You have to delete the existing instances.</value>
-  </data>
-  <data name="Simple.RequiredAttributeInvalidForFullText" xml:space="preserve">
-    <value>Required Attribute cannot be used as a full-text search attribute</value>
   </data>
   <data name="Simple.RequiredAttributeInvalidForHistoryEdit" xml:space="preserve">
     <value>Required Attribute cannot be used as a History Edit attribute</value>
@@ -300,9 +282,6 @@
   <data name="Class.TwoManyToOneRelationship" xml:space="preserve">
     <value>A junction must and only have two many-to-one relationship attributes</value>
   </data>
-  <data name="Simple.UnableToChangeBackFullText" xml:space="preserve">
-    <value>The attribute has been configured in the database for the full-text search that cannot be undone. Please delete it instead.</value>
-  </data>
   <data name="Simple.UnableToChangeBackHistoryEdit" xml:space="preserve">
     <value>The attribute has been configured in the database for history that cannot be undone. Please delete it instead.</value>
   </data>
@@ -320,12 +299,6 @@
   </data>
   <data name="Simple.InvalidMinLengthChange" xml:space="preserve">
     <value>Change of min length is disallowed because the class already has had data instances. Please delete the data instances first.</value>
-  </data>
-  <data name="Simple.InvalidGoodForFullTextSearchChange" xml:space="preserve">
-    <value>Unable to set the value to true since the attribute is a full-text searchable attribute</value>
-  </data>
-  <data name="Simple.IsGoodForFullTextInvalidForFullText" xml:space="preserve">
-    <value>Unable to set the value to true since the 'Is Good For Full-text search' has been set to true</value>
   </data>
   <data name="Constraint.InvalidMinMaxValueChange" xml:space="preserve">
     <value>Changing of the min or max value may cause data integrity problem, because the constraint has been referenced by an attribute  {1} in a non-empty class {0}. Please delete the data instances in the referencing class first. </value>

@@ -15,6 +15,7 @@ namespace Newtera.Server.FullText
 	using Newtera.Common.MetaData;
 	using Newtera.Common.MetaData.Schema;
     using Newtera.Common.MetaData.Events;
+    using Newtera.Server.FullText;
 
 	/// <summary> 
 	/// Full-text search index context for the insert, update, and delete events.

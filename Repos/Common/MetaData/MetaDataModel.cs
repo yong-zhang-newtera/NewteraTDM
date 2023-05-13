@@ -1363,7 +1363,7 @@ namespace Newtera.Common.MetaData
 							{
 								right = new Parameter(simpleAttribute.Name, dataView.BaseClass.Alias, simpleAttribute.DataType);
 							}
-							if (simpleAttribute.IsFullTextSearchable || simpleAttribute.IsHistoryEdit || simpleAttribute.IsRichText)
+							if (simpleAttribute.IsHistoryEdit || simpleAttribute.IsRichText)
 							{
 								expr = new ContainsFunc(left, right);
 							}

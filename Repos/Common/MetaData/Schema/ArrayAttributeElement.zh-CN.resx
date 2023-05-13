@@ -99,17 +99,11 @@
 	<data name="IsSingleRowDescription">
 		<value>指定该数组是否为单行数组.单行数组不能增加行.</value>
 	</data>
-	<data name="IsGoodForFullTextSearch" xml:space="preserve">
-		<value>是否适用于全文检索</value>
+	<data name="IsFullTextSearchAttribute" xml:space="preserve">
+		<value>是否为全文检索属性</value>
 	</data>
-	<data name="IsGoodForFullTextSearchDescription" xml:space="preserve">
-		<value>指定该属性的值是否适用于全文检索?</value>
-	</data>
-	<data name="KeywordFormat" xml:space="preserve">
-		<value>关键字格式</value>
-	</data>
-	<data name="KeywordFormatDescription" xml:space="preserve">
-		<value>定义用于全文检索的关键字格式，例如： 数组列名=值 作为关键字检索</value>
+	<data name="IsFullTextSearchAttributeDescription" xml:space="preserve">
+		<value>指定该属性的值是否用于全文检索?</value>
 	</data>
 	<data name="IndexCategory" xml:space="preserve">
 		<value>检索</value>

@@ -191,21 +191,6 @@ namespace Newtera.Server.DB.MetaData
 					}
 				}
 
-				if (element.IsFullTextSearchable != oldAttribute.IsFullTextSearchable)
-				{
-					if (element.IsFullTextSearchable && element.DataType == DataType.Text)
-					{
-						// full text search works on the attribute of Text type
-						action = new AddSimpleAttributeFullTextSearchAction(_newMetaDataModel, element, _dataProvider);
-						_result.AddAlterSimpleAttributeAction(action);
-					}
-					else if (oldAttribute.DataType == DataType.Text)
-					{
-						action = new DeleteSimpleAttributeFullTextSearchAction(_oldMetaDataModel, oldAttribute, _dataProvider);
-						_result.AddAlterSimpleAttributeAction(action);
-					}
-				}
-
                 if (element.IsRichText != oldAttribute.IsRichText)
                 {
                     if (element.IsRichText && element.DataType == DataType.Text)

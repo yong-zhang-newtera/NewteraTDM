@@ -30,7 +30,6 @@ namespace Newtera.Server.Engine.Cache
         private const string SideMenuFile = @"side_menu_defs.xml";
         private const string CustomCommandFile = @"custom_command_defs.xml";
         private const string XaclPolicyFile = @"xacl.xml";
-        private const string FullTextSettingFile = @"fulltext_defs.xml";
 
         private SiteMapModelSet _siteMapModelSet = null;
         private string _siteMapModelsXml = null;
@@ -481,49 +480,6 @@ namespace Newtera.Server.Engine.Cache
                 // clear the cached one
                 InitializePolicy(siteMapModel, theXaclPolicyFile);
             }
-        }
-
-        /// <summary>
-        /// Get a xml string representing the full-text index settings
-        /// </summary>
-        /// <returns>An xml string</returns>
-        public string GetFullTextSettings()
-        {
-            string filePath = NewteraNameSpace.GetAppHomeDir() + ConfigDir + FullTextSettingFile;
-
-            string xml = null;
-            XmlDocument doc;
-            if (File.Exists(filePath))
-            {
-                doc = new XmlDocument();
-                doc.Load(filePath);
-
-                StringWriter sw = new StringWriter();
-                XmlTextWriter tx = new XmlTextWriter(sw);
-                doc.WriteTo(tx);
-                xml = sw.ToString();
-
-            }
-
-            return xml;
-        }
-
-        /// <summary>
-        /// Save a xml string representing the full-text index settings to the file
-        /// </summary>
-        /// <returns>An xml string</returns>
-        public void SetFullTextSettings(string xmlString)
-        {
-            string filePath = NewteraNameSpace.GetAppHomeDir() + ConfigDir + FullTextSettingFile;
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-            }
-
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(xmlString);
-
-            doc.Save(filePath);
         }
 
         private void Initialize()

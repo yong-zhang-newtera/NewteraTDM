@@ -71,14 +71,11 @@ namespace Newtera.Common.MetaData.Schema
         private string _dataSource = null;
         private string _displayFormat = null;
         private string _inputMask = null;
-		private bool _isFullTextSearchable = false;
         private bool _isHistoryEdit = false;
         private bool _isRichText = false;
-		private FullTextSearchInfo _fullTextInfo = null;
 		private bool _isMultipleLined = false;
 		private bool _isIndexed = false;
-		private bool _isGoodForFullTextSearch = false;
-        private bool _isGoodForSearchSuggester = false;
+		private bool _isFullTextSearchAttribute = false;
         private ConstraintElementBase _refConstraint = null;
         private string _autoValueGenerator = null;
 		private int _rows = 1;
@@ -435,9 +432,9 @@ namespace Newtera.Common.MetaData.Schema
 			}
 			set
 			{
-                if ((this.IsFullTextSearchable || this.IsHistoryEdit || this.IsRichText) && value != DataType.Text)
+                if ((this.IsHistoryEdit || this.IsRichText) && value != DataType.Text)
                 {
-                    return; // do not allow change a full-text. historyedit, rich text attribute to a type other then Text
+                    return; // do not allow change a historyedit, rich text attribute to a type other then Text
                 }
 
                 _oldType = _type;
@@ -642,35 +639,6 @@ namespace Newtera.Common.MetaData.Schema
             }
         }
 
-		/// <summary>
-		/// Gets or sets information indicating whether this attribute is full-text
-		/// searchable.
-		/// </summary>
-		/// <value>
-		/// true if it is full-text searchable, false otherwise. Default is false.
-		/// </value>
-		[
-			CategoryAttribute("Index"),
-			DescriptionAttribute("Is the attribute value full-text searchable?"),
-			DefaultValueAttribute(false)
-		]		
-		public bool IsFullTextSearchable
-		{
-			get
-			{
-			    return _isFullTextSearchable;
-			}
-			set
-			{
-				_isFullTextSearchable = value;
-
-				if (value)
-				{
-					DataType = DataType.Text; // Use Text to store the data to be full-text indexed
-				}
-			}
-		}
-
         /// <summary>
         /// Gets or sets information indicating when the full-text index was built last time
         /// searchable.
@@ -756,102 +724,28 @@ namespace Newtera.Common.MetaData.Schema
         }
 
 		/// <summary>
-		/// Gets or sets information indicating whether this attribute is good for
+		/// Gets or sets information indicating whether this attribute is for
 		/// full-text search. This method is used by the full-text indexer to 
 		/// determine whether to include the content of this attribute as part
 		/// of full-text index.
 		/// </summary>
 		/// <value>
-		/// true if it is good for full-text search, false otherwise. Default is false.
+		/// true if it is a full-text search attribute, false otherwise. Default is false.
 		/// </value>
 		[
 		CategoryAttribute("Index"),
-		DescriptionAttribute("Is the attribute value good for full-text search?"),
+		DescriptionAttribute("Is a full-text search attribute?"),
 		DefaultValueAttribute(false)
 		]		
-		public bool IsGoodForFullTextSearch
+		public bool IsFullTextSearchAttribute
 		{
 			get
 			{
-				return _isGoodForFullTextSearch;
+				return _isFullTextSearchAttribute;
 			}
 			set
 			{
-				_isGoodForFullTextSearch = value;
-			}
-		}
-
-        /// <summary>
-        /// Gets or sets information indicating whether the value of this attribute is good for
-        /// search suggester. This method is used by the full-text indexer to 
-        /// determine whether to include the content of this attribute as part
-        /// of search suggesters.
-        /// </summary>
-        /// <value>
-        /// true if it is good for search suggester, false otherwise. Default is false.
-        /// </value>
-        [
-        CategoryAttribute("Index"),
-        DescriptionAttribute("Is the attribute value good for search suggester?"),
-        DefaultValueAttribute(false)
-        ]
-        public bool IsGoodForSearchSuggester
-        {
-            get
-            {
-                return _isGoodForSearchSuggester;
-            }
-            set
-            {
-                _isGoodForSearchSuggester = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a string representing a keyword format for full-text search
-        /// </summary>
-        /// <value> A string representing full-text indexing content format </value>
-        /// <remarks>The format is similar to C# string.Format(format)</remarks>
-        [
-             CategoryAttribute("Index"),
-             DescriptionAttribute("a string representing a keyword format for full-text search"),
-             DefaultValueAttribute(null)
-        ]
-        public string KeywordFormat
-        {
-            get
-            {
-                return _keywordFormat;
-            }
-            set
-            {
-                _keywordFormat = value;
-            }
-        }
-
-		/// <summary>
-		/// Gets or sets the full-text search related info
-		/// </summary>
-		/// <value>The FullTextSearchInfo object that contains full-text search related info
-		/// </value>
-		[BrowsableAttribute(false)]	
-		public FullTextSearchInfo FullTextInfo
-		{
-			get
-			{
-				if (_fullTextInfo == null)
-				{
-					_fullTextInfo = new FullTextSearchInfo();
-
-					// Full text search on column by default
-					_fullTextInfo.DataStore = NewteraNameSpace.DATASTORE_COLUMN;
-				}
-
-				return _fullTextInfo;
-			}
-			set
-			{
-				_fullTextInfo = value;
+                _isFullTextSearchAttribute = value;
 			}
 		}
 
@@ -1582,22 +1476,6 @@ namespace Newtera.Common.MetaData.Schema
             // Set _autoValueGenerator member
             _autoValueGenerator = this.GetNewteraAttributeValue(NewteraNameSpace.VALUE_GENERATOR);
 
-			// set isFullTextSearchable member
-			status = GetNewteraAttributeValue(NewteraNameSpace.FULL_TEXT);
-			IsFullTextSearchable = (status != null && status == "true" ? true : false);
-
-			// set full-text info member
-            if (IsFullTextSearchable)
-			{
-				FullTextSearchInfo info = new FullTextSearchInfo();
-
-				info.DataStore = GetNewteraAttributeValue(NewteraNameSpace.DATASTORE);
-				info.FileType = GetNewteraAttributeValue(NewteraNameSpace.FILE_TYPE);
-				status = GetNewteraAttributeValue(NewteraNameSpace.FILTER);
-				info.IsFilter = (status != null && status == "true" ? true : false);
-				_fullTextInfo = info;
-			}
-
             // set IsRichText member
             status = GetNewteraAttributeValue(NewteraNameSpace.RICH_TEXT);
             IsRichText = (status != null && status == "true" ? true : false);
@@ -1608,11 +1486,7 @@ namespace Newtera.Common.MetaData.Schema
 
 			// set isGoodForFullTextSearch member
 			status = GetNewteraAttributeValue(NewteraNameSpace.GOOD_FOR_FULL_TEXT);
-			_isGoodForFullTextSearch = (status != null && status == "true" ? true : false);
-
-            // set isGoodForSearchSuggester member
-            status = GetNewteraAttributeValue(NewteraNameSpace.GOOD_FOR_SUGGESTER);
-            _isGoodForSearchSuggester = (status != null && status == "true" ? true : false);
+            _isFullTextSearchAttribute = (status != null && status == "true" ? true : false);
 
             // Set isMultipleLined member
             status = this.GetNewteraAttributeValue(NewteraNameSpace.MULTILINE);
@@ -1822,37 +1696,11 @@ namespace Newtera.Common.MetaData.Schema
 				xmlSchemaElement.DefaultValue = _defaultValue;
 			}
 
-			// Write IsFullTextSearchable member
-			if (_isFullTextSearchable)
-			{
-				SetNewteraAttributeValue(NewteraNameSpace.FULL_TEXT, "true");	
-			}			
-
-			// Write FullTextSearchInfo member
-			if (_isFullTextSearchable)
-			{
-				SetNewteraAttributeValue(NewteraNameSpace.DATASTORE, FullTextInfo.DataStore);
-				if (FullTextInfo.FileType != null)
-				{
-					SetNewteraAttributeValue(NewteraNameSpace.FILE_TYPE, FullTextInfo.FileType);
-				}
-				if (FullTextInfo.IsFilter)
-				{
-					SetNewteraAttributeValue(NewteraNameSpace.FILTER, "true");
-				}
-			}
-
 			// Write IsGoodForFullTextSearch member
-			if (_isGoodForFullTextSearch)
+			if (_isFullTextSearchAttribute)
 			{
 				SetNewteraAttributeValue(NewteraNameSpace.GOOD_FOR_FULL_TEXT, "true");	
 			}
-
-            // Write IsGoodForSearchSuggester member
-            if (_isGoodForSearchSuggester)
-            {
-                SetNewteraAttributeValue(NewteraNameSpace.GOOD_FOR_SUGGESTER, "true");
-            }
 
             // Write IsRichText member
             if (_isRichText)
@@ -2120,67 +1968,5 @@ namespace Newtera.Common.MetaData.Schema
 
             return val;
         }
-	}
-
-	/// <summary>
-	/// The FullTextSearchInfo represents information needed for creating
-	/// full-text search attribute.
-	/// </summary>
-	public class FullTextSearchInfo
-	{
-		private string _dataStore;
-		private string _fileType = null;
-		private bool _isFilter = false;
-
-		/// <summary>
-		/// Gets or sets the data store of the full-text search attribute.
-		/// </summary>
-		/// <value> The datastore of this attribute. 
-		/// </value>
-		public string DataStore
-		{
-			get
-			{
-				return _dataStore;
-			}
-			set
-			{
-				_dataStore = value;
-			}
-		}
-
-		/// <summary>
-		/// Gets or sets the file type of the stored data.
-		/// </summary>
-		/// <value> The file type of the stored data.</value>
-		public string FileType
-		{
-			get
-			{
-				return _fileType;
-			}
-			set
-			{
-				_fileType = value;
-			}	
-		}
-
-		/// <summary>
-		/// Gets or sets the information indicate whether a full-text searchable attribute
-		/// if filtered. 
-		/// </summary>
-		/// <value> true if the attribute value is filtered, false otherwise. Default is false.
-		/// </value>
-		public bool IsFilter
-		{
-			get
-			{
-				return _isFilter;
-			}
-			set
-			{
-				_isFilter = value;
-			}
-		}
 	}
 }

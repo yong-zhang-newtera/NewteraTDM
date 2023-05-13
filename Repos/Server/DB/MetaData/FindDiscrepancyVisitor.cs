@@ -114,13 +114,6 @@ namespace Newtera.Server.DB.MetaData
 						_result.AddAlterSimpleAttributeAction(action);
 					}
 
-					if (element.IsFullTextSearchable && element.DataType == DataType.Text)
-					{
-						// full text search works on the attribute of Text type
-						action = new AddSimpleAttributeFullTextSearchAction(_metaDataModel, element, _dataProvider);
-						_result.AddAlterSimpleAttributeAction(action);
-					}
-
                     if (element.IsHistoryEdit && element.DataType == DataType.Text)
                     {
                         // History edit works on the attribute of Text type

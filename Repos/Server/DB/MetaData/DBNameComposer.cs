@@ -28,7 +28,6 @@ namespace Newtera.Server.DB.MetaData
 		private static string SequenceNamePrefix = "S_";
 		private static string TriggerNamePrefix = "G_";
 		private static string RegularIndexNamePrefix = "IDX_";
-		private static string FullTextIndexNamePrefix = "IDX1_";
 		private static string ForeignKeyNamePrefix = "FK_";
 		private static string PrimaryKeyNamePrefix = "PK_";
         private static string DefaultValuePrefix = "DEF_";
@@ -177,19 +176,11 @@ namespace Newtera.Server.DB.MetaData
 		/// 
 		/// Full text index name format is : IDX1_<attributeID>_<classID>
 		/// </remarks>
-		public static string GetIndexName(ClassElement classElement, SimpleAttributeElement attribute,
-			bool isFullText)
+		public static string GetIndexName(ClassElement classElement, SimpleAttributeElement attribute)
 		{
 			string indexNamePrefix;
 
-			if (!isFullText)
-			{
-				indexNamePrefix = RegularIndexNamePrefix;
-			}
-			else
-			{
-				indexNamePrefix = FullTextIndexNamePrefix;
-			}
+			indexNamePrefix = RegularIndexNamePrefix;
 
 			return indexNamePrefix + attribute.ID + "_" + classElement.ID;
 		}

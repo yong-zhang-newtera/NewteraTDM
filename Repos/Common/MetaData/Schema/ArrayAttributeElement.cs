@@ -47,7 +47,7 @@ namespace Newtera.Common.MetaData.Schema
 		private int _columns = 1; // default value
 		private StringCollection _columnTitles = null;
 		private DataType _elementType = DataType.Unknown;
-        private bool _isGoodForFullTextSearch = false;
+        private bool _isFullTextSearchAttribute = false;
         private string _keywordFormat = null;
 
 		private ArraySizeType _arraySize = ArraySizeType.NormalSize; // default value
@@ -365,37 +365,15 @@ namespace Newtera.Common.MetaData.Schema
         DescriptionAttribute("Is the attribute value good for full-text search?"),
         DefaultValueAttribute(false)
         ]
-        public bool IsGoodForFullTextSearch
-        {
+        public bool IsFullTextSearchAttribute
+		{
             get
             {
-                return _isGoodForFullTextSearch;
+                return _isFullTextSearchAttribute;
             }
             set
             {
-                _isGoodForFullTextSearch = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a string representing a keyword format for full-text search
-        /// </summary>
-        /// <value> A string representing full-text indexing content format </value>
-        /// <remarks>The format is similar to C# string.Format(format)</remarks>
-        [
-             CategoryAttribute("Index"),
-             DescriptionAttribute("a string representing a keyword format for full-text search"),
-             DefaultValueAttribute(null)
-        ]
-        public string KeywordFormat
-        {
-            get
-            {
-                return _keywordFormat;
-            }
-            set
-            {
-                _keywordFormat = value;
+				_isFullTextSearchAttribute = value;
             }
         }
 
@@ -605,7 +583,7 @@ namespace Newtera.Common.MetaData.Schema
 
             // set isGoodForFullTextSearch member
             string status = GetNewteraAttributeValue(NewteraNameSpace.GOOD_FOR_FULL_TEXT);
-            _isGoodForFullTextSearch = (status != null && status == "true" ? true : false);
+			_isFullTextSearchAttribute = (status != null && status == "true" ? true : false);
 
             // set _keywordFormat
             _keywordFormat = this.GetNewteraAttributeValue(NewteraNameSpace.KEYWORD_FORMAT);
@@ -671,7 +649,7 @@ namespace Newtera.Common.MetaData.Schema
             }
 
             // Write IsGoodForFullTextSearch member
-            if (_isGoodForFullTextSearch)
+            if (_isFullTextSearchAttribute)
             {
                 SetNewteraAttributeValue(NewteraNameSpace.GOOD_FOR_FULL_TEXT, "true");
             }

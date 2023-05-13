@@ -481,20 +481,6 @@ namespace Newtera.Server.DB.MetaData
 		}
 
 		/// <summary>
-		/// Get the DDL for deleting a full text index.
-		/// </summary>
-		/// <param name="indexName">The index name</param>
-		/// <param name="tableName">The table name</param>
-		/// <param name="columnName">The column that is full-text indexed.</param>	
-		/// <returns>Deleting full text index DDL</returns>
-		public string[] GetDelFullTextIndexDDLs(string indexName, string tableName, string columnName)
-		{
-			string[] ddls = new string[0];
-
-			return ddls;
-		}
-
-		/// <summary>
 		/// Gets DDLs for deleting a sequnence for an auto-increment column
 		/// </summary>
 		/// <param name="sequenceName">The sequnence name</param>
@@ -504,56 +490,6 @@ namespace Newtera.Server.DB.MetaData
 		{
 			// SQL Server does not use a sequence and trigger to implement a
 			// an auto-increment column, like the Oracle does.
-			string[] ddls = new string[0];
-
-			return ddls;
-		}
-
-		/// <summary>
-		/// Get DDL of creating a full text index for a column
-		/// </summary>
-		/// <param name="indexName">The full text index name</param>
-		/// <param name="tableName">The table name</param>
-		/// <param name="columnName">The column name</param>
-		/// <param name="dataStore">The data store type</param>
-		/// <param name="isFilter">True if it has filter, false otherwise.</param>
-		/// <returns>An array of ddls</returns>
-		public string[] GetAddFullTextIndexDDLs(string indexName, string tableName, string columnName, string dataStore, bool isFilter)
-		{
-			string[] ddls = new string[0];
-
-			return ddls;
-		}
-
-		/// <summary>
-		/// Get DDL for crating a full-text search index
-		/// </summary>
-		/// <param name="indexName">The index name</param>
-		/// <param name="tableName">The name of table that owns the full-text search index</param>
-		/// <param name="columnName">The name of column that is used in full-text search.</param>
-		/// <returns></returns>
-		public string GetCreateFullTextIndexDDL(string indexName, string tableName, string columnName)
-		{
-            return null;
-		}
-
-		/// <summary>
-		/// Gets the DDLs for clear up full text config
-		/// </summary>
-		/// <returns>The DDLs for clear full text config</returns>
-		public string[] GetClearFullTextDDLs()
-		{
-			string[] ddls = new string[0];
-
-			return ddls;
-		}
-
-		/// <summary>
-		/// Gets the DDLs for setting up full text config
-		/// </summary>
-		/// <returns>The DDLs for setting up full text config</returns>
-		public string[] GetFullTextSetupDDLs()
-		{
 			string[] ddls = new string[0];
 
 			return ddls;

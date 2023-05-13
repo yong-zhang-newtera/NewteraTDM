@@ -85,8 +85,7 @@ namespace Newtera.Studio
                                 if (attr is DataSimpleAttribute)
                                 {
                                     SimpleAttributeElement simpleAttribute = (SimpleAttributeElement)attr.GetSchemaModelElement();
-                                    if (!simpleAttribute.IsFullTextSearchable &&
-                                        !simpleAttribute.IsMultipleChoice &&
+                                    if (!simpleAttribute.IsMultipleChoice &&
                                         !simpleAttribute.IsHistoryEdit &&
                                         !simpleAttribute.IsRichText)
                                     {

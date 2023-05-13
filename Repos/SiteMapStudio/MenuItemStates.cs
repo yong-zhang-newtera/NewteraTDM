@@ -118,7 +118,6 @@ namespace Newtera.SiteMapStudio
         EditUp,
         EditDown,
         EditRefresh,
-        EditOptions,
-        EditFullText
+        EditOptions
 	}
 }

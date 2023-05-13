@@ -153,15 +153,6 @@ namespace Newtera.Server.Engine.Sqlbuilder
 		/// </value>
 		public abstract bool IsAutoIncrement {get;}
 
-		/// <summary>
-		/// Gets information indicating whether this attribute is full-text
-		/// searchable.
-		/// </summary>
-		/// <value>
-		/// true if it is full-text searchable, false otherwise. Default is false.
-		/// </value>
-		public abstract bool IsFullTextSearchable {get;}
-
         /// <summary>
         /// Gets information indicating whether this attribute is history edit
         /// searchable.

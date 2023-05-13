@@ -373,19 +373,6 @@ namespace Newtera.WinClientCommon
             string result = PostAPICall("api/metaDataService/SetSiteMapAccessPolicy/" + modelName, xmlString, "application/xml");
         }
 
-        public string GetFullTextSettings()
-        {
-            string result = GetAPICall("api/metaDataService/GetFullTextSettings");
-
-            return result;
-        }
-
-
-        public void SetFullTextSettings(string xmlString)
-        {
-            string result = PostAPICall("api/metaDataService/SetFullTextSettings/", xmlString, "application/xml");
-        }
-
         public string[] GetFormTemplatesFileNames(string schemaId, string className)
         {
             string result = GetAPICall("api/metaDataService/GetFormTemplatesFileNames/" + schemaId + "/" + className);

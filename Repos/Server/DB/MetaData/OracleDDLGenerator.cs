@@ -533,40 +533,6 @@ namespace Newtera.Server.DB.MetaData
 		}
 
 		/// <summary>
-		/// Get the DDL for deleting a full text index.
-		/// </summary>
-		/// <param name="indexName">The index name</param>
-		/// <param name="tableName">The table name</param>		
-		/// <param name="columnName">The column that is full-text index</param>
-		/// <returns>An array of deleting full text index DDLs</returns>
-		public string[] GetDelFullTextIndexDDLs(string indexName, string tableName, string columnName)
-		{
-			string[] ddls = new string[1];
-
-			ddls[0] = "drop index " + indexName;
-			return ddls;
-		}
-
-		/// <summary>
-		/// Get DDL for crating a full-text search index
-		/// </summary>
-		/// <param name="indexName">The index name</param>
-		/// <param name="tableName">The name of table that owns the full-text search index</param>
-		/// <param name="columnName">The name of column that is used in full-text search.</param>
-		/// <returns></returns>
-		public string GetCreateFullTextIndexDDL(string indexName, string tableName, string columnName)
-		{
-
-			StringBuilder builder = new StringBuilder();
-
-			builder.Append("ALTER INDEX ");
-			builder.Append(indexName).Append(" REBUILD");
-
-			return builder.ToString();
-		}
-
-
-		/// <summary>
 		/// Gets DDLs for deleting a sequnence for an auto-increment column
 		/// </summary>
 		/// <param name="sequenceName">The sequnence name</param>
@@ -578,80 +544,6 @@ namespace Newtera.Server.DB.MetaData
 
 			ddls[0] = "drop sequence " + sequenceName;
 			ddls[1] = "drop trigger " + triggerName;
-
-			return ddls;
-		}
-
-		/// <summary>
-		/// Get DDL of creating a full text index for a column
-		/// </summary>
-		/// <param name="indexName">The full text index name</param>
-		/// <param name="tableName">The table name</param>
-		/// <param name="columnName">The column name</param>
-		/// <param name="dataStore">The data store type</param>
-		/// <param name="isFilter">True if it has filter, false otherwise.</param>
-		/// <returns>An array of DDLs</returns>
-		public string[] GetAddFullTextIndexDDLs(string indexName, string tableName, string columnName, string dataStore, bool isFilter)
-		{
-            string[] ddls = new string[1];
-
-			StringBuilder builder = new StringBuilder();
-
-			builder.Append("CREATE INDEX ");
-			builder.Append(indexName).Append(" ON ").Append(tableName);
-			builder.Append("(").Append(columnName).Append(") INDEXTYPE IS ctxsys.CONTEXT");
-			builder.Append(" parameters('lexer mm_default_lexer_pref')");
-
-			ddls[0] = builder.ToString();
-
-			return ddls;
-		}
-
-		/// <summary>
-		/// Gets the DDLs for clear up full text config
-		/// </summary>
-		/// <returns>The DDLs for clear full text config</returns>
-		public string[] GetClearFullTextDDLs()
-		{
-			string[] ddls = new string[1];
-			
-			StringBuilder builder = new StringBuilder();
-
-			builder.Append("BEGIN \n");
-			builder.Append("CTXSYS.CTX_DDL.DROP_PREFERENCE('mm_default_lexer_pref'); \n");
-			builder.Append("END;");
-
-			ddls[0] = builder.ToString();
-
-			return ddls;
-		}
-
-		/// <summary>
-		/// Gets the DDLs for setting up full text config
-		/// </summary>
-		/// <returns>The DDLs for setting up full text config</returns>
-		public string[] GetFullTextSetupDDLs()
-		{
-			string[] ddls = new string[1];
-
-			StringBuilder builder = new StringBuilder();
-
-
-			// ddl for setting up lexer config
-			builder = new StringBuilder();
-			builder.Append("BEGIN \n");
-			builder.Append("CTXSYS.CTX_DDL.CREATE_PREFERENCE('mm_default_lexer_pref','");
-			if (DatabaseConfig.Instance.Lexer!= null)
-			{
-				builder.Append(DatabaseConfig.Instance.Lexer);
-			}
-			else
-			{
-				builder.Append("BASIC_LEXER");
-			}
-			builder.Append("');\n END;");
-
-			ddls[0] = builder.ToString();
 
 			return ddls;
 		}

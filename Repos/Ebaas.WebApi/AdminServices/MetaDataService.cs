@@ -1544,57 +1544,6 @@ namespace Ebaas.WebApi.Controllers
         }
 
         /// <summary>
-        /// Gets the full-text settings in a xml string,return null if the settings doesn't exist
-        /// </summary>
-        [HttpGet]
-        [AdminAuthorizeAttribute]
-        [Route("GetFullTextSettings")]
-        public HttpResponseMessage GetFullTextSettings()
-        {
-            try
-            {
-                string xml = SiteMapManager.Instance.GetFullTextSettings();
-
-                var resp = new HttpResponseMessage(HttpStatusCode.OK);
-                resp.Content = new StringContent(xml, System.Text.Encoding.UTF8, "application/xml");
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                ErrorLog.Instance.WriteLine(ex.Message + "\n" + ex.StackTrace);
-                var resp = new HttpResponseMessage(HttpStatusCode.BadRequest);
-                resp.Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain");
-                return resp;
-            }
-        }
-
-        /// <summary>
-        /// Write full-text settings in xml string.
-        /// </summary>
-        /// <param name="xmlString">An xml string representing full-text settings.</param>
-        [HttpPost]
-        [AdminAuthorizeAttribute]
-        [Route("SetFullTextSettings")]
-        public HttpResponseMessage SetFullTextSettings()
-        {
-            try
-            {
-                var xmlString = Request.Content.ReadAsStringAsync().Result;
-
-                SiteMapManager.Instance.SetFullTextSettings(xmlString);
-
-                return Request.CreateResponse(HttpStatusCode.OK);
-            }
-            catch (Exception ex)
-            {
-                ErrorLog.Instance.WriteLine(ex.Message + "\n" + ex.StackTrace);
-                var resp = new HttpResponseMessage(HttpStatusCode.BadRequest);
-                resp.Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain");
-                return resp;
-            }
-        }
-
-        /// <summary>
         /// Gets the names of form templates.
         /// </summary>
         /// <param name="schemaId">Indicates the schema that form templates belong to </param>
