@@ -261,9 +261,6 @@
     <Compile Include="DB\MetaData\AddSimpleAttributeAutoIncrementAction.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DB\MetaData\AddSimpleAttributeFullTextSearchAction.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="DB\MetaData\AddSimpleAttributeRichTextAction.cs" />
     <Compile Include="DB\MetaData\AddSimpleAttributeIndexAction.cs">
       <SubType>Code</SubType>
@@ -314,9 +311,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DB\MetaData\DeleteSimpleAttributeAutoIncrementAction.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DB\MetaData\DeleteSimpleAttributeFullTextSearchAction.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DB\MetaData\DeleteSimpleAttributeRichTextAction.cs" />
@@ -1257,12 +1251,8 @@
     <Compile Include="Engine\XmlGenerator\XmlDocGenerator.cs" />
     <Compile Include="FullText\IIndexingRunner.cs" />
     <Compile Include="FullText\IndexEventManager.cs" />
-    <Compile Include="FullText\DBIndexCreator.cs" />
-    <Compile Include="FullText\IndexingWorker.cs" />
     <Compile Include="FullText\IndexingContext.cs" />
-    <Compile Include="FullText\IndexBuilder.cs" />
-    <Compile Include="FullText\IndexingManager.cs" />
-    <Compile Include="FullText\Spider.cs" />
+    <Compile Include="FullText\IndexingWorker.cs" />
     <Compile Include="LeaderElection\LeaderElectionManager.cs" />
     <Compile Include="Logging\LoggingMessage.cs" />
     <Compile Include="Logging\LoggingManager.cs" />

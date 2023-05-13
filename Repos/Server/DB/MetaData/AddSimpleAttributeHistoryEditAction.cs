@@ -56,30 +56,6 @@ namespace Newtera.Server.DB.MetaData
 		/// <param name="con">The database connection for executing the action</param>
 		public override void Do(IDbConnection con)
 		{
-            /*
-			IDbCommand cmd = con.CreateCommand();
-			SimpleAttributeElement attribute = (SimpleAttributeElement) SchemaModelElement;
-			IDDLGenerator generator = DDLGeneratorManager.Instance.GetDDLGenerator(_dataProvider);
-
-			string indexName = DBNameComposer.GetIndexName(attribute.OwnerClass, attribute, true);
-			
-			string dataStore = attribute.FullTextInfo.DataStore;
-			bool isFilter = attribute.FullTextInfo.IsFilter;
-
-			string[] ddls = generator.GetAddFullTextIndexDDLs(indexName, attribute.OwnerClass.TableName, attribute.ColumnName, dataStore, isFilter);
-
-			for (int i = 0; i < ddls.Length; i++)
-			{
-				cmd.CommandText = ddls[i];
-
-				if (_log != null)
-				{
-					_log.Append(ddls[i], LogType.DDL);
-				}
-
-				cmd.ExecuteNonQuery();
-			}
-             */
 		}
 	}
 }

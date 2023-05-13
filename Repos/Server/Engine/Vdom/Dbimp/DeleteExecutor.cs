@@ -31,9 +31,9 @@ namespace Newtera.Server.Engine.Vdom.Dbimp
     using Newtera.Common.MetaData.Events;
     using Newtera.Common.Attachment;
 	using Newtera.Server.DB;
-    using Newtera.Server.FullText;
     using Newtera.Server.Attachment;
     using Newtera.Server.Logging;
+    using Newtera.Server.FullText;
 
 	/// <summary>
 	/// Perform deletion-related actions, such as, generating SQL statement(s)

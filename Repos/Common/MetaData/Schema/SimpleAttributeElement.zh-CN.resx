@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="IsRequired" xml:space="preserve">
     <value>是否必要</value>
@@ -170,12 +170,6 @@
   </data>
   <data name="DefaultValueDescription" xml:space="preserve">
     <value>当属性值未指定时, 该值则为属性的缺省值.</value>
-  </data>
-  <data name="IsFullTextSearchable" xml:space="preserve">
-    <value>是否全文检索</value>
-  </data>
-  <data name="IsFullTextSearchableDescription" xml:space="preserve">
-    <value>指定是否为该属性值建立全文检索索引?</value>
   </data>
   <data name="IsRichText" xml:space="preserve">
     <value>是否为富文本</value>
@@ -234,17 +228,11 @@
   <data name="IndexCategory" xml:space="preserve">
     <value>检索</value>
   </data>
-  <data name="IsGoodForFullTextSearch" xml:space="preserve">
-    <value>是否适用于全文检索</value>
+  <data name="IsFullTextSearchAttribute" xml:space="preserve">
+    <value>是否为全文检索属性</value>
   </data>
-  <data name="IsGoodForFullTextSearchDescription" xml:space="preserve">
-    <value>指定该属性的值是否适用于全文检索?</value>
-  </data>
-  <data name="IsGoodForSearchSuggester" xml:space="preserve">
-    <value>是否适用于搜索建议</value>
-  </data>
-  <data name="IsGoodForSearchSuggesterDescription" xml:space="preserve">
-    <value>指定该属性的值是否适用于搜索建议?</value>
+  <data name="IsFullTextSearchAttributeDescription" xml:space="preserve">
+    <value>指定该属性的值是否用于全文检索?</value>
   </data>
   <data name="Usage" xml:space="preserve">
     <value>用途</value>
@@ -297,10 +285,10 @@
   <data name="ShowAsProgressBarDescription" xml:space="preserve">
     <value>指定是否将该属性的值在Web页面显示为进度条？</value>
   </data>
-	<data name="ShowUpdateHistory" xml:space="preserve">
+  <data name="ShowUpdateHistory" xml:space="preserve">
     <value>是否显示修改记录</value>
   </data>
-	<data name="ShowUpdateHistoryDescription" xml:space="preserve">
+  <data name="ShowUpdateHistoryDescription" xml:space="preserve">
     <value>指定是否显示该属性的修改记录？</value>
   </data>
   <data name="CascadedAttributes" xml:space="preserve">
@@ -312,7 +300,7 @@
   <data name="ParentAttribute" xml:space="preserve">
     <value>上级属性</value>
   </data>
-	<data name="ParentAttributeDescription" xml:space="preserve">
+  <data name="ParentAttributeDescription" xml:space="preserve">
     <value>指定一个属性作为本属性的上级属性。上级属性的值将对本属性的值域有影响。</value>
   </data>
   <data name="InputMask" xml:space="preserve">
@@ -342,19 +330,13 @@
   <data name="LastIndexedTime" xml:space="preserve">
     <value>全文索引创建时间</value>
   </data>
-	<data name="LastIndexedTimeDescription" xml:space="preserve">
+  <data name="LastIndexedTimeDescription" xml:space="preserve">
     <value>全文索引最近的创建时间</value>
   </data>
   <data name="ConstraintUsage" xml:space="preserve">
     <value>约束用途</value>
   </data>
-	<data name="ConstraintUsageDescription" xml:space="preserve">
+  <data name="ConstraintUsageDescription" xml:space="preserve">
     <value>指定约束值是用于限制属性值还是作为属性值的建议值</value>
-  </data>
-  <data name="KeywordFormat" xml:space="preserve">
-    <value>关键字格式</value>
-  </data>
-	<data name="KeywordFormatDescription" xml:space="preserve">
-    <value>定义用于全文检索的关键字格式，例如： 速度=值 作为关键字检索</value>
   </data>
 </root>

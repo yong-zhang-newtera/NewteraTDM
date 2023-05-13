@@ -18,7 +18,7 @@ namespace Newtera.ElasticSearchIndexer
     /// </summary>
     public class ElasticSearchWrapper
     {
-        private const string INDEX_PREFIX = "ebass";
+        private const string INDEX_PREFIX = "newtera";
         private const string OBJ_ID = "obj_id";
 
         static private ElasticClient _client;
@@ -45,13 +45,16 @@ namespace Newtera.ElasticSearchIndexer
         {
             var request = new SearchRequest(indexName)
             {
-                //Query = new TermQuery("catch_all") { Value = searchText }
+                Query = new MultiMatchQuery() { 
+                    Query = searchText,
+                    Fuzziness = Fuzziness.Auto,
+                }
             };
 
             if (startRow != null)
             {
                 request.From = startRow;
-                request.Size = pageSize ?? 100;
+                request.Size = pageSize ?? 20;
             }
 
             return request;
@@ -179,11 +182,11 @@ namespace Newtera.ElasticSearchIndexer
 
                 try
                 {
-                    var response = await client.SearchAsync<object>(request);
+                    var response = await client.SearchAsync<JObject>(request);
 
                     if (response.IsValid)
                     {
-                        //result = response.Documents;
+                        result = response.Documents;
                     }
                     else
                     {

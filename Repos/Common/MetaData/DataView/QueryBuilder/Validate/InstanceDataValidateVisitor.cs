@@ -143,7 +143,6 @@ namespace Newtera.Common.MetaData.DataView.Validate
             if (schemaModelElement.IsUnique &&
                 !schemaModelElement.IsAutoIncrement &&
                 !schemaModelElement.IsPrimaryKey &&
-                !schemaModelElement.IsFullTextSearchable &&
                 !schemaModelElement.IsHistoryEdit &&
                 !schemaModelElement.IsRichText &&
                 schemaModelElement.IsRequired)

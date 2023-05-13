@@ -636,38 +636,6 @@ namespace Newtera.Common.MetaData.Schema
 		}
 
         /// <summary>
-        /// Gets the information indicating whether the class is full-text search enabled.
-        /// A class is full-text search enabled is that the class has a local or inherited
-        /// simple attribute which is used for full-text search purpose.
-        /// </summary>
-        /// <value>true if the class is full-text search-enabled, false otherise</value>
-        [BrowsableAttribute(false)]
-        public bool IsFullTextSearchEnabled
-        {
-            get
-            {
-                bool status = false;
-
-                ClassElement current = this;
-                while (current != null)
-                {
-                    foreach (SimpleAttributeElement attribute in current.SimpleAttributes)
-                    {
-                        if (attribute.IsFullTextSearchable)
-                        {
-                            status = true;
-                            break;
-                        }
-                    }
-
-                    current = current.ParentClass;
-                }
-
-                return status;
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the information indicating whether the class is used as a junction for an
         /// many-to-many relationship.
         /// </summary>

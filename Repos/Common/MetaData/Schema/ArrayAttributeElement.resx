@@ -177,17 +177,11 @@
   <data name="IsSingleRowDescription" xml:space="preserve">
     <value>Indicate whether the array attribute represents a single-row array.</value>
   </data>
-  <data name="IsGoodForFullTextSearch" xml:space="preserve">
-    <value>Is Good for Full-text Search</value>
+  <data name="IsFullTextSearchAttribute" xml:space="preserve">
+    <value>Is Full-text Search Attribute</value>
   </data>
-  <data name="IsGoodForFullTextSearchDescription" xml:space="preserve">
-    <value>Indicate whether the content of this attribute is good for full-text search</value>
-  </data>
-  <data name="KeywordFormat" xml:space="preserve">
-    <value>Keyword Format</value>
-  </data>
-  <data name="KeywordFormatDescription" xml:space="preserve">
-    <value>Specify a string representing a keyword format for full-text search</value>
+  <data name="IsFullTextSearchAttributeDescription" xml:space="preserve">
+    <value>Indicate whether the content of this attribute is used for full-text search</value>
   </data>
   <data name="IndexCategory" xml:space="preserve">
     <value>Index</value>

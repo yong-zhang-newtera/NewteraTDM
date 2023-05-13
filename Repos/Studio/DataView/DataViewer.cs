@@ -2524,11 +2524,6 @@ namespace Newtera.Studio
                     // add full-text search enabled bottom classes
                     AddFullTextSearchEnabledBottomClasses(_fullTextIndexClasses, classElement);
                 }
-                else
-                {
-                    // build an index for one class
-                    _fullTextIndexClasses.Add((ClassElement)treeNode.MetaDataElement);
-                }
 			}
             else if (treeNode.Type == Newtera.WinClientCommon.NodeType.ClassesFolder ||
                 treeNode.Type == Newtera.WinClientCommon.NodeType.SchemaInfoNode)
@@ -2544,11 +2539,6 @@ namespace Newtera.Studio
                         {
                             // add full-text search enabled bottom classes
                             AddFullTextSearchEnabledBottomClasses(_fullTextIndexClasses, root);
-                        }
-                        else if (this.HasFullTextAttribute(root.Name))
-                        {
-                            // use database full-text search. A "Keyword" attribute is required
-                            _fullTextIndexClasses.Add(root);
                         }
                     }
 				}
@@ -2719,8 +2709,8 @@ namespace Newtera.Studio
 
         private void AddFullTextSearchEnabledBottomClasses(SchemaModelElementCollection indexClasses, ClassElement classElement)
         {
-            // get the bottom classes and check each of them if it has an attribute with "IsGoodForFullTextSearch" enabled
-            SchemaModelElementCollection bottomClasses;
+			// get the bottom classes and check each of them if it has an attribute with "IsFullTextSearchAttribute" enabled
+			SchemaModelElementCollection bottomClasses;
 
             if (classElement.IsLeaf)
             {
@@ -2729,8 +2719,8 @@ namespace Newtera.Studio
             }
             else
             {
-                // get the bottom classes and check each of them if it has an attribute with "IsGoodForFullTextSearch" enabled
-                bottomClasses = _metaData.GetBottomClasses(classElement.Name);
+				// get the bottom classes and check each of them if it has an attribute with "IsFullTextSearchAttribute" enabled
+				bottomClasses = _metaData.GetBottomClasses(classElement.Name);
             }
 
             bool hasFullTextSearchableAttribute;
@@ -2742,7 +2732,7 @@ namespace Newtera.Studio
                 {
                     foreach (SimpleAttributeElement simpleAttribute in currentClass.SimpleAttributes)
                     {
-                        if (simpleAttribute.IsGoodForFullTextSearch)
+                        if (simpleAttribute.IsFullTextSearchAttribute)
                         {
                             hasFullTextSearchableAttribute = true;
                             break;
@@ -3292,7 +3282,7 @@ namespace Newtera.Studio
 
 			foreach (InstanceAttributePropertyDescriptor property in instanceView.GetProperties(null))
 			{
-				if (property.IsForFullTextSearch || property.IsGoodForFullTextSearch)
+				if (property.IsFullTextSearchAttribute)
 				{
 					hasFullTextAttribute = true;
 					break;

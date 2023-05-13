@@ -29,8 +29,8 @@ namespace Newtera.Server.Engine.Vdom.Dbimp
     using Newtera.Common.MetaData.Events;
     using Newtera.Common.MetaData.Principal;
 	using Newtera.Server.DB;
-    using Newtera.Server.FullText;
     using Newtera.Server.Logging;
+    using Newtera.Server.FullText;
 
 	/// <summary>
 	/// This class perform update-related actions, such as, generating UPDATE SQL statement(s),

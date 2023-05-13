@@ -153,11 +153,11 @@ namespace Newtera.Server.Engine.Interpreter.Builtin.Db
 				
 				if (_arguments.Count == 3)
 				{
-					_containsElement = new ContainsFunc(element, ((IExpr) _arguments[1]).Eval().ToString(), ((IExpr) _arguments[2]).Eval().ToString(), _dataProvider, (attrEntity.IsFullTextSearchable || attrEntity.IsHistoryEdit || attrEntity.IsRichText));
+					_containsElement = new ContainsFunc(element, ((IExpr) _arguments[1]).Eval().ToString(), ((IExpr) _arguments[2]).Eval().ToString(), _dataProvider, (attrEntity.IsHistoryEdit || attrEntity.IsRichText));
 				}
 				else
 				{
-					_containsElement = new ContainsFunc(element, ((IExpr) _arguments[1]).Eval().ToString(), _dataProvider, (attrEntity.IsFullTextSearchable || attrEntity.IsHistoryEdit || attrEntity.IsRichText));
+					_containsElement = new ContainsFunc(element, ((IExpr) _arguments[1]).Eval().ToString(), _dataProvider, (attrEntity.IsHistoryEdit || attrEntity.IsRichText));
 				}
 			}
 			else

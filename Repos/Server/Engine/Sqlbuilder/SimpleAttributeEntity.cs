@@ -76,21 +76,6 @@ namespace Newtera.Server.Engine.Sqlbuilder
 			}
 		}
 
-		/// <summary>
-		/// Gets information indicating whether this attribute is full-text
-		/// searchable.
-		/// </summary>
-		/// <value>
-		/// true if it is full-text searchable, false otherwise. Default is false.
-		/// </value>
-		public override bool IsFullTextSearchable
-		{
-			get
-			{
-				return _attributeElement.IsFullTextSearchable;
-			}
-		}
-
         /// <summary>
         /// Gets information indicating whether this attribute is history edit attribute.
         /// </summary>

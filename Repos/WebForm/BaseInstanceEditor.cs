@@ -1877,10 +1877,7 @@ namespace Newtera.WebForm
                     fTextControl = this.fOwnerEditor.Document.CreateElement("input");
                     fTextControl.SetAttributeValue("class", "form-control");
                     fTextControl.SetAttributeValue("type", "text");
-                    if (!fPropertyInfo.IsForFullTextSearch)
-                    {
-                        fTextControl.SetAttributeValue("maxlength", fPropertyInfo.MaxLength.ToString());
-                    }
+                    fTextControl.SetAttributeValue("maxlength", fPropertyInfo.MaxLength.ToString());
 
                     if (fPropertyInfo.HasConstraint)
                     {

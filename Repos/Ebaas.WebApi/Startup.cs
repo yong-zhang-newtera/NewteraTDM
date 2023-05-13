@@ -33,9 +33,8 @@ using Newtera.Registry;
 using Ebaas.WebApi.Infrastructure;
 using Ebaas.WebApi.Providers;
 using Newtera.Common.Core;
-using Newtera.Server.UsrMgr;
-using Newtera.Server.Timer;
 using Newtera.Server.FullText;
+using Newtera.Server.Timer;
 using Newtera.Server.Engine.Cache;
 using Newtera.ElasticSearchIndexer;
 //using Newtera.MasterServerClient;
@@ -146,7 +145,6 @@ namespace Ebaas.WebApi
         {
             Newtera.Common.MetaData.XmlDataSourceListHandler.XmlDataSourceService = new Newtera.Server.Util.XmlDataSourceService();
             TimerManager.Instance.Start();
-            IndexingManager.Instance.Start();
 
             if (UserDataCache.Instance.AllUsers == null)
             {

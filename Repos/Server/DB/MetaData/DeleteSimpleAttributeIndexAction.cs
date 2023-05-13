@@ -61,7 +61,7 @@ namespace Newtera.Server.DB.MetaData
 			SimpleAttributeElement attribute = (SimpleAttributeElement) SchemaModelElement;
 			IDDLGenerator generator = DDLGeneratorManager.Instance.GetDDLGenerator(_dataProvider);
 
-			string indexName = DBNameComposer.GetIndexName(attribute.OwnerClass, attribute, false);
+			string indexName = DBNameComposer.GetIndexName(attribute.OwnerClass, attribute);
 			string ddl = generator.GetDelIndexDDL(indexName, attribute.OwnerClass.TableName);
 
 			cmd.CommandText = ddl;

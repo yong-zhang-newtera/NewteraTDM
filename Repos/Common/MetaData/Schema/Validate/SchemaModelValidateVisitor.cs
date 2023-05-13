@@ -187,6 +187,15 @@ namespace Newtera.Common.MetaData.Schema.Validate
 				_result.AddError(entry);
 			}
 
+            if (element.IsFullTextSearchAttribute)
+            {
+                if (element.DataType != DataType.String)
+                {
+                    entry = new ValidateResultEntry(_resources.GetString("Simple.WrongFullTextSearchType"), MetaDataValidateHelper.Instance.GetSource(element), EntryType.Error, element);
+                    _result.AddError(entry);
+                }
+            }
+
             if ((element.DataType == DataType.Date || element.DataType == DataType.DateTime) &&
                 !string.IsNullOrEmpty(element.DefaultValue))
             {
@@ -296,54 +305,6 @@ namespace Newtera.Common.MetaData.Schema.Validate
                 entry = new ValidateResultEntry(_resources.GetString("Simple.InputMaskNotAllowedEncrypted"), MetaDataValidateHelper.Instance.GetSource(element), EntryType.Error, element);
                 _result.AddError(entry);
             }
-
-			if (element.IsFullTextSearchable)
-			{
-				if (element.DataType != DataType.Text)
-				{
-                    entry = new ValidateResultEntry(_resources.GetString("Simple.WrongFullTextIndexType"), MetaDataValidateHelper.Instance.GetSource(element), EntryType.Warning, element);
-					_result.AddError(entry);
-				}
-
-				// make sure the owner class has a primary key
-				if (element.OwnerClass.PrimaryKeys.Count == 0)
-				{
-                    entry = new ValidateResultEntry(_resources.GetString("Simple.MissingPKForFullText"), MetaDataValidateHelper.Instance.GetSource(element), EntryType.Error, element);
-					_result.AddError(entry);
-				}
-
-				// make sure there is only one full-text search attribute defined in this class
-				foreach (SimpleAttributeElement attribute in element.OwnerClass.SimpleAttributes)
-				{
-					if (attribute.IsFullTextSearchable && attribute.Name != element.Name)
-					{
-                        entry = new ValidateResultEntry(_resources.GetString("Simple.MoreThanOneFullTextAttributes"), MetaDataValidateHelper.Instance.GetSource(element), EntryType.Error, element);
-						_result.AddError(entry);
-						break;
-					}
-				}
-
-                // make sure that the attribute is not auto-incremental
-                if (element.IsAutoIncrement)
-                {
-                    entry = new ValidateResultEntry(_resources.GetString("Simple.InvalidAutoIncForFullText"), MetaDataValidateHelper.Instance.GetSource(element), EntryType.Error, element);
-                    _result.AddError(entry);
-                }
-
-                // make sure that the attribute is not unqiue
-                if (element.IsUnique)
-                {
-                    entry = new ValidateResultEntry(_resources.GetString("Simple.InvalidUniqueForFullText"), MetaDataValidateHelper.Instance.GetSource(element), EntryType.Error, element);
-                    _result.AddError(entry);
-                }
-
-                // make sure that the attribute has no default value
-                if (!string.IsNullOrEmpty(element.DefaultValue))
-                {
-                    entry = new ValidateResultEntry(_resources.GetString("Simple.InvalidDefaultForFullText"), MetaDataValidateHelper.Instance.GetSource(element), EntryType.Error, element);
-                    _result.AddError(entry);
-                }
-			}
 
             if (element.IsHistoryEdit)
             {

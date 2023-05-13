@@ -84,12 +84,6 @@
       <DependentUpon>DefineStateParametersDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="StateParameterCollectionEditor.cs" />
-    <Compile Include="FulltextSettingsDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FulltextSettingsDialog.Designer.cs">
-      <DependentUpon>FulltextSettingsDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="SelectUserOrRoleDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -147,14 +141,6 @@
     <EmbeddedResource Include="DefineStateParametersDialog.zh-CN.resx">
       <DependentUpon>DefineStateParametersDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FulltextSettingsDialog.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>FulltextSettingsDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FulltextSettingsDialog.zh-CN.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>FulltextSettingsDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SelectUserOrRoleDialog.resx">
       <DependentUpon>SelectUserOrRoleDialog.cs</DependentUpon>

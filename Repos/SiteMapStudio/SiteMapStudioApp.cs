@@ -87,7 +87,6 @@ namespace Newtera.SiteMapStudio
                 treeView1.EndUpdate();
 
                 _menuItemStates.SetState(MenuItemID.FileSave, true);
-                _menuItemStates.SetState(MenuItemID.EditFullText, true);
             }
         }
 
@@ -473,9 +472,6 @@ namespace Newtera.SiteMapStudio
                 case MenuItemID.EditOptions:
                     this.optionsToolStripMenuItem.Enabled = args.State;
                     break;
-                case MenuItemID.EditFullText:
-                    this.fulltextToolStripMenuItem.Enabled = args.State;
-                    break;
             }
         }
 
@@ -808,7 +804,6 @@ namespace Newtera.SiteMapStudio
             _menuItemStates.SetState(MenuItemID.EditDown, false);
             _menuItemStates.SetState(MenuItemID.EditRefresh, false);
             _menuItemStates.SetState(MenuItemID.EditOptions, false);
-            _menuItemStates.SetState(MenuItemID.EditFullText, false);
         }
 
         /// <summary>
@@ -1311,15 +1306,6 @@ namespace Newtera.SiteMapStudio
             }
         }
 
-        private void OpenFulltextSettingsDialog()
-        {
-            FulltextSettingsDialog dialog = new FulltextSettingsDialog();
-
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-            }
-        }
-
         #region event handlers
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1527,11 +1513,6 @@ namespace Newtera.SiteMapStudio
         private void accessControlsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenPermissionDialog();
-        }
-
-        private void fulltextToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OpenFulltextSettingsDialog();
         }
 
         #endregion

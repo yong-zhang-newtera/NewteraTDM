@@ -120,11 +120,11 @@
   <data name="Simple.UnknownDataType" xml:space="preserve">
     <value>未知数据类型</value>
   </data>
-  <data name="Simple.WrongFullTextIndexType" xml:space="preserve">
-    <value>全文检索的功能只适用于Text类型的属性</value>
-  </data>
   <data name="Simple.WrongHistoryEditType" xml:space="preserve">
     <value>历史编辑属性必须是Text类型</value>
+  </data>
+  <data name="Simple.WrongFullTextSearchType" xml:space="preserve">
+    <value>只有String类型的属性才能用于全文检索</value>
   </data>
   <data name="Simple.UnknownConstraint" xml:space="preserve">
     <value>所引用的约束条件不存在</value>
@@ -183,12 +183,6 @@
   <data name="Array.CaptionTooLong" xml:space="preserve">
     <value>显示名太长,要小于100个字符</value>
   </data>
-  <data name="Simple.MissingPKForFullText" xml:space="preserve">
-    <value>定义全文检索属性的数据类必须具有主键.</value>
-  </data>
-  <data name="Simple.MoreThanOneFullTextAttributes" xml:space="preserve">
-    <value>在一个数据类中只允许定义一个全文检索属性.</value>
-  </data>
   <data name="Class.IllegalPrimaryKey" xml:space="preserve">
     <value>不允许修改主键, 因为该数据类已存在数据记录.  您必须先删除数据记录.</value>
   </data>
@@ -219,9 +213,6 @@
   <data name="Simple.InvalidConstraintChange" xml:space="preserve">
     <value>不允许改变属性的约束，因为该数据类已经存在数据实例。请先删除该数据类的数据实例。</value>
   </data>
-  <data name="Simple.InvalidFullTextChange" xml:space="preserve">
-    <value>不允许将该属性修改为“全文检索”属性，因为该数据类已经存在数据实例了。您可以先删除存在的数据实例或创建一个新的全文检索属性。</value>
-  </data>
   <data name="Simple.InvalidHistoryEditChange" xml:space="preserve">
     <value>不允许将该属性修改为“历史编辑”属性，因为该数据类已经存在数据实例了。您可以先删除存在的数据实例或创建一个新的历史编辑属性。</value>
   </data>
@@ -249,20 +240,11 @@
   <data name="Simple.InvalidDefaultChange" xml:space="preserve">
     <value>不允许改变缺省值。因为该数据类中已经存在数据实例。请先删除数据实例。</value>
   </data>
-  <data name="Simple.InvalidAutoIncForFullText" xml:space="preserve">
-    <value>用于全文检索的属性不允许设置为自增</value>
-  </data>
   <data name="Simple.InvalidAutoIncForHistoryEdit" xml:space="preserve">
     <value>用于历史编辑的属性不允许设置为自增</value>
   </data>
-  <data name="Simple.InvalidDefaultForFullText" xml:space="preserve">
-    <value>用于全文检索的属性不允许设置缺省值</value>
-  </data>
   <data name="Simple.InvalidDefaultForHistoryEdit" xml:space="preserve">
     <value>用于历史编辑的属性不允许设置缺省值</value>
-  </data>
-  <data name="Simple.InvalidUniqueForFullText" xml:space="preserve">
-    <value>用于全文检索的属性不允许设置为唯一</value>
   </data>
   <data name="Simple.InvalidUniqueForHistoryEdit" xml:space="preserve">
     <value>用于历史编辑的属性不允许设置为唯一</value>
@@ -272,9 +254,6 @@
   </data>
   <data name="Class.IllegalUniqueKey" xml:space="preserve">
     <value>不允许修改联合唯一约束, 因为该数据类已存在数据记录.  您必须先删除数据记录.</value>
-  </data>
-  <data name="Simple.RequiredAttributeInvalidForFullText" xml:space="preserve">
-    <value>必要属性不能作为全文检索的属性</value>
   </data>
   <data name="Simple.RequiredAttributeInvalidForHistoryEdit" xml:space="preserve">
     <value>历史编辑属性不能为必要属性</value>
@@ -300,9 +279,6 @@
   <data name="Class.TwoManyToOneRelationship" xml:space="preserve">
     <value>联接数据类必须只有两个多对一的关系属性。</value>
   </data>
-  <data name="Simple.UnableToChangeBackFullText" xml:space="preserve">
-    <value>该属性已经在数据库中设置为全文检索属性，不能取消。您可将其删除。</value>
-  </data>
   <data name="Simple.UnableToChangeBackHistoryEdit" xml:space="preserve">
     <value>该属性已经在数据库中设置为历史编辑属性，不能取消。您可将其删除。</value>
   </data>
@@ -320,12 +296,6 @@
   </data>
   <data name="Simple.InvalidMinLengthChange" xml:space="preserve">
     <value>不允许改变最小长度值。因为该数据类中已经存在数据实例。请先删除数据实例。</value>
-  </data>
-  <data name="Simple.InvalidGoodForFullTextSearchChange" xml:space="preserve">
-    <value>当属性的“是否全文检索”设置为true时，不能将“是否适用于全文检索”设置为true。</value>
-  </data>
-  <data name="Simple.IsGoodForFullTextInvalidForFullText" xml:space="preserve">
-    <value>当属性的“是否适合于全文检索”设置为true时，不能将“是否全文检索”设置为true。</value>
   </data>
   <data name="Constraint.InvalidMinMaxValueChange" xml:space="preserve">
     <value>修改约束的最大值或最小值可能会造成已存在的数据不一致的问题。因为该约束被非空数据类'{0}'的属性‘{1}‘引用。</value>

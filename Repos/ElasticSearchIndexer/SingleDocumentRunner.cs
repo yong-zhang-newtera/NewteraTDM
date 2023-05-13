@@ -17,10 +17,10 @@ namespace Newtera.ElasticSearchIndexer
 
 	using Newtera.Common.Core;
     using Newtera.Common.MetaData.DataView;
-    using Newtera.Server.FullText;
     using Newtera.Data;
     using Newtera.WebForm;
     using Newtera.Server.UsrMgr;
+    using Newtera.Server.FullText;
 
     /// <summary> 
     /// Create or update a single document index

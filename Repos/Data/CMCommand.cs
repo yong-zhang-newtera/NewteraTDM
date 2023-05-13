@@ -40,7 +40,6 @@ namespace Newtera.Data
     using Newtera.Common.MetaData.Logging;
     using Newtera.Common.Wrapper;
     using Newtera.Server.Logging;
-    using Newtera.Server.FullText;
 
 	/// <summary> 
 	/// Represents a query or command that is used when connected to a data source.
@@ -1312,51 +1311,6 @@ namespace Newtera.Data
             }
         }
 
-		/// <summary>
-		/// Build full-text index for a given class
-		/// </summary>
-		/// <param name="className">The class name</param>
-		/// <remarks>This is a CMCommand specific method</remarks>
-		public void BuildFullTextIndex(string className)
-		{
-			DataViewModel dataView;
-			InstanceView clsView;
-			InstanceAttributePropertyDescriptor fullTextPropertyDescriptor = null;
-
-			ClassElement theClass = _connection.MetaDataModel.SchemaModel.FindClass(className);
-
-			dataView = _connection.MetaDataModel.GetCompleteDataView(className);
-			// Create an class view
-			clsView = new InstanceView(dataView);
-
-			// find the full-text search attribute
-			foreach (InstanceAttributePropertyDescriptor pd in clsView.GetProperties(null))
-			{
-				if (pd.IsForFullTextSearch)
-				{
-					fullTextPropertyDescriptor = pd;
-					break;
-				}
-			}
-
-			if (fullTextPropertyDescriptor != null)
-			{
-                int depth = IndexingManager.Instance.GetTravelDepth();
-
-                Spider spider = new Spider(depth); 
-
-                spider.StartCrawling(_connection.MetaDataModel, theClass, fullTextPropertyDescriptor.Name);
-
-				// create full-text index on the table
-				if (fullTextPropertyDescriptor.DataViewElement.GetSchemaModelElement() is SimpleAttributeElement)
-				{
-					SimpleAttributeElement attribute = (SimpleAttributeElement) fullTextPropertyDescriptor.DataViewElement.GetSchemaModelElement();
-
-					CreateFullTextIndex(attribute);
-				}
-			}
-		}
-
         /// <summary>
         /// Get sql actions based on the xquery
         /// </summary>
@@ -1646,7 +1600,7 @@ namespace Newtera.Data
 			foreach (InstanceAttributePropertyDescriptor property in instanceView.GetProperties(null))
 			{
 				if (property.IsBrowsable &&
-					property.IsGoodForFullTextSearch &&
+					property.IsFullTextSearchAttribute &&
 					property.GetValue() != null)
 				{
 					object propertyValue = property.GetValue();
@@ -1693,18 +1647,6 @@ namespace Newtera.Data
 					// do not stop if there is error
 				}				
 			}
-		}
-
-		/// <summary>
-		/// Create database full-text index using native database connection
-		/// </summary>
-		private void CreateFullTextIndex(SimpleAttributeElement attribute)
-		{
-            DBIndexCreator indexCreator = new DBIndexCreator();
-
-            IDataProvider dataProvider = DataProviderFactory.Instance.Create();
-
-            indexCreator.CreateFullTextIndex(dataProvider, attribute);
 		}
 
 		/// <summary>

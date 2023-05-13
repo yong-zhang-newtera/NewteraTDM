@@ -65,6 +65,48 @@ namespace Ebaas.WebApi.Controllers
         }
 
         /// <summary>
+        /// Search the Elastic index created for the given class and given schema and return results
+        /// from Elastic Index as suggestions
+        /// </summary>
+        /// <param name="schemaName">A database schema name such as DEMO</param>
+        /// <param name="className" > A data class name such as Issues</param>
+        /// <returns>A collection of JObject representing the search result</returns>
+        [HttpGet]
+        [AuthorizeByMetaDataAttribute]
+        [Route("api/search/raw/{schemaName}/{className}")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(List<Object>), Description = "A collection of JObject from Elastic Index")]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = typeof(string), Description = "An error occured, see error message in data.message")]
+        public async Task<IHttpActionResult> getRawSearchResult(string schemaName, string className)
+        {
+            try
+            {
+                NameValueCollection parameters = Request.RequestUri.ParseQueryString();
+
+                int pageSize = int.Parse(GetParamValue(parameters, PAGE_SIZE, 20));
+                int startRow = int.Parse(GetParamValue(parameters, START_ROW, 0));
+                int pageIndex = startRow / pageSize;
+                string searchText = GetParamValue(parameters, SEARCH_TEXT, "");
+
+                if (!string.IsNullOrEmpty(searchText))
+                {
+                    var result = await ElasticSearchWrapper.GetSearchResult(schemaName, className, searchText, startRow, pageSize);
+
+                    return Ok(result);
+                }
+                else
+                {
+                    return Ok();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Instance.WriteLine(ex.Message + "\n" + ex.StackTrace);
+
+                return BadRequest(ex.GetBaseException().Message);
+            }
+        }
+
+        /// <summary>
         /// Search the indexes of Elasticsearch created for the classes in a given schema and return a collection of
         /// json objects with hit count information.
         /// </summary>
