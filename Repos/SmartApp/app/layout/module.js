@@ -18,8 +18,8 @@ angular.module('app.layout', ['ui.router', 'pdf'])
             resolve: {
                 scripts: function(lazyScript){
                     return lazyScript.register([
-                            'sparkline',
-                            'easy-pie'
+                        'sparkline',
+                        'easy-pie'
                         ]);
                 }
             }

@@ -753,6 +753,8 @@ angular.module('app', [
 
     $rootScope.searchContext = searchContext;
 
+    $rootScope.suggestionText = "Hello World";
+
     Globalize.culture("us");
 
     // to ensure that pulldown menu or datepicker in the filter row can appear in the modal popup
@@ -833,10 +835,26 @@ angular.module('app', [
     $rootScope.getSuggestions = function (typedText) {
         if (typedText && typedText.length > 1) {
             // get suggestions for the type text in search text box
-            var url = APP_CONFIG.ebaasRootUrl + "/api/search/raw/" + encodeURIComponent(APP_CONFIG.dbschema) + "/LabATestOrders?searchtext=" + typedText + "&size=15";
+            var url = APP_CONFIG.ebaasRootUrl + "/api/search/raw/" + encodeURIComponent($rootScope.fullText.schema) + "/" + encodeURIComponent($rootScope.fullText.class) + "?searchtext=" + encodeURIComponent(typedText) + "&size=15";
 
             var promise = $http.get(url).then(function (response) {
-                // The return value gets picked up by the then in the controller.
+                _.forEach(response.data, function (item) {
+                    item.fullText = new Object();
+                    item.fullText.oid = item["obj_id"];
+                    item.fullText.title = item[$rootScope.fullText.title];
+                    item.fullText.ID = item[$rootScope.fullText.ID];
+                    item.fullText.display = truncateText(item.fullText.title, 26) + "<br>" + item.fullText.ID;
+                })
+
+                if (response.data.length > 0) {
+                    var showAllMatch = new Object();
+                    showAllMatch.fullText = new Object();
+                    showAllMatch.fullText.display = $rootScope.getWord("Show All Matches");
+                    showAllMatch.fullText.title = "all";
+                    showAllMatch.fullText.ID = typedText;
+                    response.data.push(showAllMatch);
+                }
+
                 return response.data;
             });
             // Return the promise to the controller
@@ -847,15 +865,53 @@ angular.module('app', [
     }
 
     $rootScope.onSuggestionSelect = function ($item, $model, $label) {
-        $state.go('app.fulltextsearch.result', {}, { reload: true });
+        if ($item.fullText.title === "all") {
+            $state.go('app.smarttables.datagrid', { schema: $rootScope.fullText.schema, class: $rootScope.fullText.class, search: 'fulltext' });
+        }
+        else {
+            var params = new Object();
+            params.schema = $rootScope.fullText.schema;
+            params.class = $rootScope.fullText.class;
+            params.oid = $item.fullText.oid;
+            params.itemClass = $rootScope.fullText.itemClass;
+            params.packetClass = $rootScope.fullText.packetClass;
+            params.taskNodeAttribute = $rootScope.fullText.taskNodeAttribute;
+            params.itemNodeAttribute = $rootScope.fullText.itemNodeAttribute;
+            params.packetNodeAttribute = $rootScope.fullText.packetNodeAttribute;
+            params.taskTemplate = $rootScope.fullText.taskTemplate;
+            params.itemTemplate = $rootScope.fullText.itemTemplate;
+            params.packetTemplate = $rootScope.fullText.packetTemplate;
+            params.activeTabId = "tasktab";
+            $state.go("app.taskviewer.details", params, { reload: true });
+        }
     }
 
     $rootScope.fullTextSearch = function () {
         $state.go('app.fulltextsearch.result', {}, { reload: true });
     }
 
+    $rootScope.formatLabel = function (model) {
+        if (model && model.fullText) {
+            return model.fullText.ID;
+        }
+        else {
+            return "";
+        }
+    }
+
     // editableOptions.theme = 'bs3';
 
+    var GoToTaskInfoView = function (dbschema, dbclass, objId) {
+        console.debug("GoToTaskInfoView");
+    }
+
+    var truncateText = function(text, length) {
+        if (text.length <= length) {
+            return text;
+        }
+
+        return text.substr(0, length) + '\u2026'
+    }
 });
 
 angular.module("app").run(["$templateCache", function($templateCache) {$templateCache.put("app/dashboard/live-feeds.tpl.html","<div jarvis-widget id=\"live-feeds-widget\" data-widget-togglebutton=\"false\" data-widget-editbutton=\"false\"\r\n     data-widget-fullscreenbutton=\"false\" data-widget-colorbutton=\"false\" data-widget-deletebutton=\"false\">\r\n<!-- widget options:\r\nusage: <div class=\"jarviswidget\" id=\"wid-id-0\" data-widget-editbutton=\"false\">\r\n\r\ndata-widget-colorbutton=\"false\"\r\ndata-widget-editbutton=\"false\"\r\ndata-widget-togglebutton=\"false\"\r\ndata-widget-deletebutton=\"false\"\r\ndata-widget-fullscreenbutton=\"false\"\r\ndata-widget-custombutton=\"false\"\r\ndata-widget-collapsed=\"true\"\r\ndata-widget-sortable=\"false\"\r\n\r\n-->\r\n<header>\r\n    <span class=\"widget-icon\"> <i class=\"glyphicon glyphicon-stats txt-color-darken\"></i> </span>\r\n\r\n    <h2>Live Feeds </h2>\r\n\r\n    <ul class=\"nav nav-tabs pull-right in\" id=\"myTab\">\r\n        <li class=\"active\">\r\n            <a data-toggle=\"tab\" href=\"#s1\"><i class=\"fa fa-clock-o\"></i> <span class=\"hidden-mobile hidden-tablet\">Live Stats</span></a>\r\n        </li>\r\n\r\n        <li>\r\n            <a data-toggle=\"tab\" href=\"#s2\"><i class=\"fa fa-facebook\"></i> <span class=\"hidden-mobile hidden-tablet\">Social Network</span></a>\r\n        </li>\r\n\r\n        <li>\r\n            <a data-toggle=\"tab\" href=\"#s3\"><i class=\"fa fa-dollar\"></i> <span class=\"hidden-mobile hidden-tablet\">Revenue</span></a>\r\n        </li>\r\n    </ul>\r\n\r\n</header>\r\n\r\n<!-- widget div-->\r\n<div class=\"no-padding\">\r\n\r\n    <div class=\"widget-body\">\r\n        <!-- content -->\r\n        <div id=\"myTabContent\" class=\"tab-content\">\r\n            <div class=\"tab-pane fade active in padding-10 no-padding-bottom\" id=\"s1\">\r\n                <div class=\"row no-space\">\r\n                    <div class=\"col-xs-12 col-sm-12 col-md-8 col-lg-8\">\r\n														<span class=\"demo-liveupdate-1\"> <span\r\n                                                                class=\"onoffswitch-title\">Live switch</span> <span\r\n                                                                class=\"onoffswitch\">\r\n																<input type=\"checkbox\" name=\"start_interval\" ng-model=\"autoUpdate\"\r\n                                                                       class=\"onoffswitch-checkbox\" id=\"start_interval\">\r\n																<label class=\"onoffswitch-label\" for=\"start_interval\">\r\n                                                                    <span class=\"onoffswitch-inner\"\r\n                                                                          data-swchon-text=\"ON\"\r\n                                                                          data-swchoff-text=\"OFF\"></span>\r\n                                                                    <span class=\"onoffswitch-switch\"></span>\r\n                                                                </label> </span> </span>\r\n\r\n                        <div id=\"updating-chart\" class=\"chart-large txt-color-blue\" flot-basic flot-data=\"liveStats\" flot-options=\"liveStatsOptions\"></div>\r\n\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-12 col-md-4 col-lg-4 show-stats\">\r\n\r\n                        <div class=\"row\">\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> My Tasks <span\r\n                                    class=\"pull-right\">130/200</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blueDark\" style=\"width: 65%;\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> Transfered <span\r\n                                    class=\"pull-right\">440 GB</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blue\" style=\"width: 34%;\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> Bugs Squashed<span\r\n                                    class=\"pull-right\">77%</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blue\" style=\"width: 77%;\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> User Testing <span\r\n                                    class=\"pull-right\">7 Days</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-greenLight\" style=\"width: 84%;\"></div>\r\n                                </div>\r\n                            </div>\r\n\r\n                            <span class=\"show-stat-buttons\"> <span class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\"> <a\r\n                                    href-void class=\"btn btn-default btn-block hidden-xs\">Generate PDF</a> </span> <span\r\n                                    class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\"> <a href-void\r\n                                                                                     class=\"btn btn-default btn-block hidden-xs\">Report\r\n                                a bug</a> </span> </span>\r\n\r\n                        </div>\r\n\r\n                    </div>\r\n                </div>\r\n\r\n                <div class=\"show-stat-microcharts\" data-sparkline-container data-easy-pie-chart-container>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n\r\n                        <div class=\"easy-pie-chart txt-color-orangeDark\" data-percent=\"33\" data-pie-size=\"50\">\r\n                            <span class=\"percent percent-sign\">35</span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> Server Load <i class=\"fa fa-caret-up icon-color-bad\"></i> </span>\r\n                        <ul class=\"smaller-stat hidden-sm pull-right\">\r\n                            <li>\r\n                                <span class=\"label bg-color-greenLight\"><i class=\"fa fa-caret-up\"></i> 97%</span>\r\n                            </li>\r\n                            <li>\r\n                                <span class=\"label bg-color-blueLight\"><i class=\"fa fa-caret-down\"></i> 44%</span>\r\n                            </li>\r\n                        </ul>\r\n                        <div class=\"sparkline txt-color-greenLight hidden-sm hidden-md pull-right\"\r\n                             data-sparkline-type=\"line\" data-sparkline-height=\"33px\" data-sparkline-width=\"70px\"\r\n                             data-fill-color=\"transparent\">\r\n                            130, 187, 250, 257, 200, 210, 300, 270, 363, 247, 270, 363, 247\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-greenLight\" data-percent=\"78.9\" data-pie-size=\"50\">\r\n                            <span class=\"percent percent-sign\">78.9 </span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> Disk Space <i class=\"fa fa-caret-down icon-color-good\"></i></span>\r\n                        <ul class=\"smaller-stat hidden-sm pull-right\">\r\n                            <li>\r\n                                <span class=\"label bg-color-blueDark\"><i class=\"fa fa-caret-up\"></i> 76%</span>\r\n                            </li>\r\n                            <li>\r\n                                <span class=\"label bg-color-blue\"><i class=\"fa fa-caret-down\"></i> 3%</span>\r\n                            </li>\r\n                        </ul>\r\n                        <div class=\"sparkline txt-color-blue hidden-sm hidden-md pull-right\" data-sparkline-type=\"line\"\r\n                             data-sparkline-height=\"33px\" data-sparkline-width=\"70px\" data-fill-color=\"transparent\">\r\n                            257, 200, 210, 300, 270, 363, 130, 187, 250, 247, 270, 363, 247\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-blue\" data-percent=\"23\" data-pie-size=\"50\">\r\n                            <span class=\"percent percent-sign\">23 </span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> Transfered <i class=\"fa fa-caret-up icon-color-good\"></i></span>\r\n                        <ul class=\"smaller-stat hidden-sm pull-right\">\r\n                            <li>\r\n                                <span class=\"label bg-color-darken\">10GB</span>\r\n                            </li>\r\n                            <li>\r\n                                <span class=\"label bg-color-blueDark\"><i class=\"fa fa-caret-up\"></i> 10%</span>\r\n                            </li>\r\n                        </ul>\r\n                        <div class=\"sparkline txt-color-darken hidden-sm hidden-md pull-right\"\r\n                             data-sparkline-type=\"line\" data-sparkline-height=\"33px\" data-sparkline-width=\"70px\"\r\n                             data-fill-color=\"transparent\">\r\n                            200, 210, 363, 247, 300, 270, 130, 187, 250, 257, 363, 247, 270\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-darken\" data-percent=\"36\" data-pie-size=\"50\">\r\n                            <span class=\"percent degree-sign\">36 <i class=\"fa fa-caret-up\"></i></span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> Temperature <i\r\n                                class=\"fa fa-caret-down icon-color-good\"></i></span>\r\n                        <ul class=\"smaller-stat hidden-sm pull-right\">\r\n                            <li>\r\n                                <span class=\"label bg-color-red\"><i class=\"fa fa-caret-up\"></i> 124</span>\r\n                            </li>\r\n                            <li>\r\n                                <span class=\"label bg-color-blue\"><i class=\"fa fa-caret-down\"></i> 40 F</span>\r\n                            </li>\r\n                        </ul>\r\n                        <div class=\"sparkline txt-color-red hidden-sm hidden-md pull-right\" data-sparkline-type=\"line\"\r\n                             data-sparkline-height=\"33px\" data-sparkline-width=\"70px\" data-fill-color=\"transparent\">\r\n                            2700, 3631, 2471, 2700, 3631, 2471, 1300, 1877, 2500, 2577, 2000, 2100, 3000\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n\r\n            </div>\r\n            <!-- end s1 tab pane -->\r\n\r\n            <div class=\"tab-pane fade\" id=\"s2\">\r\n                <div class=\"widget-body-toolbar bg-color-white\">\r\n\r\n                    <form class=\"form-inline\" role=\"form\">\r\n\r\n                        <div class=\"form-group\">\r\n                            <label class=\"sr-only\" for=\"s123\">Show From</label>\r\n                            <input type=\"email\" class=\"form-control input-sm\" id=\"s123\" placeholder=\"Show From\">\r\n                        </div>\r\n                        <div class=\"form-group\">\r\n                            <input type=\"email\" class=\"form-control input-sm\" id=\"s124\" placeholder=\"To\">\r\n                        </div>\r\n\r\n                        <div class=\"btn-group hidden-phone pull-right\">\r\n                            <a class=\"btn dropdown-toggle btn-xs btn-default\" data-toggle=\"dropdown\"><i\r\n                                    class=\"fa fa-cog\"></i> More <span class=\"caret\"> </span> </a>\r\n                            <ul class=\"dropdown-menu pull-right\">\r\n                                <li>\r\n                                    <a href-void><i class=\"fa fa-file-text-alt\"></i> Export to PDF</a>\r\n                                </li>\r\n                                <li>\r\n                                    <a href-void><i class=\"fa fa-question-sign\"></i> Help</a>\r\n                                </li>\r\n                            </ul>\r\n                        </div>\r\n\r\n                    </form>\r\n\r\n                </div>\r\n                <div class=\"padding-10\">\r\n                    <div id=\"statsChart\" class=\"chart-large has-legend-unique\" flot-basic flot-data=\"statsData\" flot-options=\"statsDisplayOptions\"></div>\r\n                </div>\r\n\r\n            </div>\r\n            <!-- end s2 tab pane -->\r\n\r\n            <div class=\"tab-pane fade\" id=\"s3\">\r\n\r\n                <div class=\"widget-body-toolbar bg-color-white smart-form\" id=\"rev-toggles\">\r\n\r\n                    <div class=\"inline-group\">\r\n\r\n                        <label for=\"gra-0\" class=\"checkbox\">\r\n                            <input type=\"checkbox\" id=\"gra-0\" ng-model=\"targetsShow\">\r\n                            <i></i> Target </label>\r\n                        <label for=\"gra-1\" class=\"checkbox\">\r\n                            <input type=\"checkbox\" id=\"gra-1\" ng-model=\"actualsShow\">\r\n                            <i></i> Actual </label>\r\n                        <label for=\"gra-2\" class=\"checkbox\">\r\n                            <input type=\"checkbox\" id=\"gra-2\" ng-model=\"signupsShow\">\r\n                            <i></i> Signups </label>\r\n                    </div>\r\n\r\n                    <div class=\"btn-group hidden-phone pull-right\">\r\n                        <a class=\"btn dropdown-toggle btn-xs btn-default\" data-toggle=\"dropdown\"><i\r\n                                class=\"fa fa-cog\"></i> More <span class=\"caret\"> </span> </a>\r\n                        <ul class=\"dropdown-menu pull-right\">\r\n                            <li>\r\n                                <a href-void><i class=\"fa fa-file-text-alt\"></i> Export to PDF</a>\r\n                            </li>\r\n                            <li>\r\n                                <a href-void><i class=\"fa fa-question-sign\"></i> Help</a>\r\n                            </li>\r\n                        </ul>\r\n                    </div>\r\n\r\n                </div>\r\n\r\n                <div class=\"padding-10\">\r\n                    <div id=\"flotcontainer\" class=\"chart-large has-legend-unique\" flot-basic flot-data=\"revenewData\" flot-options=\"revenewDisplayOptions\" ></div>\r\n                </div>\r\n            </div>\r\n            <!-- end s3 tab pane -->\r\n        </div>\r\n\r\n        <!-- end content -->\r\n    </div>\r\n\r\n</div>\r\n<!-- end widget div -->\r\n</div>\r\n");
@@ -2053,34 +2109,6 @@ angular.module("app.forum").config(function ($stateProvider, modalStateProvider)
     });
 "use strict";
 
-angular.module("app.fulltextsearch", ["ngResource", "ui.router", "ui.bootstrap", "ui.bootstrap.modal", 'ui.select']);
-
-angular.module("app.fulltextsearch")
-    .config(function ($stateProvider, modalStateProvider) {
-
-        $stateProvider
-            .state('app.fulltextsearch', {
-                abstract: true,
-                data: {
-                    title: 'Full Text Search'
-                }
-            })
-            .state('app.fulltextsearch.result', {
-                url: '/fulltext/searchresult',
-                data: {
-                    title: 'Search Result'
-                },
-                views: {
-                    "content@app": {
-                        templateUrl: "app/fulltextsearch/views/search-result.html",
-                        controller: "searchResultCtrl"
-                    }
-                },
-                authenticate: true
-            })
-    });
-"use strict";
-
 angular.module("app.galleryview", ["ui.router", "ui.bootstrap", "superbox"]);
 
 angular.module("app.galleryview").config(function ($stateProvider, modalStateProvider) {
@@ -2132,6 +2160,34 @@ angular.module("app.galleryview").config(function ($stateProvider, modalStatePro
             animation: false,
             size: 'lg'
         });
+    });
+"use strict";
+
+angular.module("app.fulltextsearch", ["ngResource", "ui.router", "ui.bootstrap", "ui.bootstrap.modal", 'ui.select']);
+
+angular.module("app.fulltextsearch")
+    .config(function ($stateProvider, modalStateProvider) {
+
+        $stateProvider
+            .state('app.fulltextsearch', {
+                abstract: true,
+                data: {
+                    title: 'Full Text Search'
+                }
+            })
+            .state('app.fulltextsearch.result', {
+                url: '/fulltext/searchresult',
+                data: {
+                    title: 'Search Result'
+                },
+                views: {
+                    "content@app": {
+                        templateUrl: "app/fulltextsearch/views/search-result.html",
+                        controller: "searchResultCtrl"
+                    }
+                },
+                authenticate: true
+            })
     });
 "use strict";
 
@@ -2277,6 +2333,9 @@ angular.module("app.homepage").config(function ($stateProvider, modalStateProvid
             resolve: {
                 promisedMenuItems: function ($http, APP_CONFIG) {
                     return $http.get(APP_CONFIG.ebaasRootUrl + "/api/sitemap/menu")
+                },
+                scripts: function (lazyScript) {
+                    return lazyScript.register('dropzone');
                 }
             }
 
@@ -2348,8 +2407,8 @@ angular.module('app.layout', ['ui.router', 'pdf'])
             resolve: {
                 scripts: function(lazyScript){
                     return lazyScript.register([
-                            'sparkline',
-                            'easy-pie'
+                        'sparkline',
+                        'easy-pie'
                         ]);
                 }
             }
@@ -2379,6 +2438,69 @@ angular.module("app.logs").config(function ($stateProvider, modalStateProvider) 
                     templateUrl: "app/logs/views/change-log-viewer.html"
                 }
             }
+        });
+    });
+"use strict";
+
+angular.module("app.mldashboard", ["ui.router", "ui.bootstrap"]);
+
+angular.module("app.mldashboard").config(function ($stateProvider, modalStateProvider) {
+
+    $stateProvider
+        .state('app.mldashboard', {
+            url: '/mldashboard/:hash',
+            data: {
+                title: 'ML Dashboard'
+            },
+            views: {
+                "content@app": {
+                    templateUrl: "app/mldashboard/views/ml-dashboard-layout.html",
+                    controller: 'MLDashboardLayoutCtrl'
+                }
+            },
+            authenticate: true,
+            resolve: {
+                propmisedParams: function ($http, APP_CONFIG, $stateParams) {
+                    return $http.get(APP_CONFIG.ebaasRootUrl + "/api/sitemap/parameters/" + $stateParams.hash)
+                }
+            }
+
+        })
+        .state('app.mldashboard.modeldashboard', {
+            url: '/modeldashboard/:project/:model',
+            data: {
+                title: 'Model Dashboard'
+            },
+            views: {
+                "modeldashboard@app.mldashboard": {
+                    controller: 'MLModelDashboardCtrl',
+                    templateUrl: "app/mldashboard/views/ml-model-dashboard.html"
+                }
+            },
+            authenticate: true,
+            resolve: {
+                scripts: function (lazyScript) {
+                    return lazyScript.register(
+                        [
+                            'flot',
+                            'flot-resize',
+                            'flot-selection',
+                            'flot-fillbetween',
+                            'flot-orderBar',
+                            'flot-pie',
+                            'flot-time',
+                            'flot-tooltip'
+                        ])
+                }
+            }
+        });
+
+        modalStateProvider.state('app.mldashboard.help', {
+            url: '^/mldashboardhelp/:hash',
+            templateUrl: "app/layout/partials/help-viewer.tpl.html",
+            controller: 'helpViewerCtlr',
+            animation: false,
+            size: 'lg'
         });
     });
 "use strict";
@@ -2472,69 +2594,6 @@ angular.module("app.myspace").config(function ($stateProvider, modalStateProvide
             controller: 'taskSubstituteCtrl',
             animation: false,
             size: 'md'
-        });
-    });
-"use strict";
-
-angular.module("app.mldashboard", ["ui.router", "ui.bootstrap"]);
-
-angular.module("app.mldashboard").config(function ($stateProvider, modalStateProvider) {
-
-    $stateProvider
-        .state('app.mldashboard', {
-            url: '/mldashboard/:hash',
-            data: {
-                title: 'ML Dashboard'
-            },
-            views: {
-                "content@app": {
-                    templateUrl: "app/mldashboard/views/ml-dashboard-layout.html",
-                    controller: 'MLDashboardLayoutCtrl'
-                }
-            },
-            authenticate: true,
-            resolve: {
-                propmisedParams: function ($http, APP_CONFIG, $stateParams) {
-                    return $http.get(APP_CONFIG.ebaasRootUrl + "/api/sitemap/parameters/" + $stateParams.hash)
-                }
-            }
-
-        })
-        .state('app.mldashboard.modeldashboard', {
-            url: '/modeldashboard/:project/:model',
-            data: {
-                title: 'Model Dashboard'
-            },
-            views: {
-                "modeldashboard@app.mldashboard": {
-                    controller: 'MLModelDashboardCtrl',
-                    templateUrl: "app/mldashboard/views/ml-model-dashboard.html"
-                }
-            },
-            authenticate: true,
-            resolve: {
-                scripts: function (lazyScript) {
-                    return lazyScript.register(
-                        [
-                            'flot',
-                            'flot-resize',
-                            'flot-selection',
-                            'flot-fillbetween',
-                            'flot-orderBar',
-                            'flot-pie',
-                            'flot-time',
-                            'flot-tooltip'
-                        ])
-                }
-            }
-        });
-
-        modalStateProvider.state('app.mldashboard.help', {
-            url: '^/mldashboardhelp/:hash',
-            templateUrl: "app/layout/partials/help-viewer.tpl.html",
-            controller: 'helpViewerCtlr',
-            animation: false,
-            size: 'lg'
         });
     });
 "use strict";
@@ -3414,7 +3473,7 @@ $templateCache.put("app/dashboard/todo/todo-widget.tpl.html","<div id=\"todo-wid
 $templateCache.put("app/homepage/views/sub-header.tpl.html","<div class=\"col-xs-12 col-sm-5 col-md-5 col-lg-8\" data-sparkline-container>\r\n    <ul id=\"sparks\" class=\"\">\r\n        <li class=\"sparks-info\">\r\n            <h5> {{getWord(\'TaskCount\')}} <span class=\"txt-color-blue\">1,271</span></h5>\r\n            <div class=\"sparkline txt-color-blue hidden-mobile hidden-md hidden-sm\">\r\n                130, 187, 250, 257, 200, 210, 300, 270, 363, 247, 270, 363, 247\r\n            </div>\r\n        </li>\r\n        <li class=\"sparks-info\">\r\n            <h5> {{getWord(\"Efficiency\")}} <span class=\"txt-color-purple\"><i class=\"fa fa-arrow-circle-up\"></i>&nbsp;25%</span></h5>\r\n            <div class=\"sparkline txt-color-purple hidden-mobile hidden-md hidden-sm\">\r\n                110,150,300,130,400,240,220,310,220,300, 270, 210\r\n            </div>\r\n        </li>\r\n        <li class=\"sparks-info\">\r\n            <h5> {{getWord(\"CompletedTasks\")}} <span class=\"txt-color-greenDark\"><i class=\"fa fa-check-circle\"></i>&nbsp;879</span></h5>\r\n            <div class=\"sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm\">\r\n                110,150,300,130,400,240,220,310,220,300, 270, 210\r\n            </div>\r\n        </li>\r\n    </ul>\r\n</div>\r\n			");
 $templateCache.put("app/layout/language/language-selector.tpl.html","<ul class=\"header-dropdown-list hidden-xs ng-cloak\" ng-controller=\"LanguagesCtrl\">\r\n    <li class=\"dropdown\" dropdown>\r\n        <a class=\"dropdown-toggle\"  dropdown-toggle href> <img src=\"styles/img/blank.gif\" class=\"flag flag-{{currentLanguage.key}}\" alt=\"{{currentLanguage.alt}}\"> <span> {{currentLanguage.title}} </span>\r\n            <i class=\"fa fa-angle-down\"></i> </a>\r\n        <ul class=\"dropdown-menu pull-right\">\r\n            <li ng-class=\"{active: language==currentLanguage}\" ng-repeat=\"language in languages\">\r\n                <a ng-click=\"selectLanguage(language)\" ><img src=\"styles/img/blank.gif\" class=\"flag flag-{{language.key}}\"\r\n                                                   alt=\"{{language.alt}}\"> {{language.title}}</a>\r\n            </li>\r\n        </ul>\r\n    </li>\r\n</ul>");
 $templateCache.put("app/layout/partials/footer.tpl.html","<div class=\"page-footer\">\r\n    <div class=\"row\">\r\n        <div class=\"col-xs-12 col-sm-6\">\r\n            <span class=\"txt-color-white\">Testing Data Management (TDM) System</span>\r\n        </div>\r\n\r\n        <div class=\"col-xs-6 col-sm-6 text-right hidden-xs\">\r\n            \r\n        </div>\r\n    </div>\r\n</div>");
-$templateCache.put("app/layout/partials/header.tpl.html","<header id=\"header\">\r\n<div id=\"logo-group\">\r\n\r\n    <!-- PLACE YOUR LOGO HERE -->\r\n    <span id=\"logo\"><a ui-sref=\"app.homepage.mainmenu\"><img src=\"styles/img/logo.gif\" alt=\"TDM\"></a>\r\n    </span>\r\n    <!-- END LOGO PLACEHOLDER -->\r\n\r\n    <!-- Note: The activity badge color changes when clicked and resets the number to 0\r\n    Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->\r\n   \r\n    <!--\r\n    <span id=\"activity\"> \r\n        <a ui-sref=\"app.tasks.list\" ui-sref-opts=\"{reload: true}\" title=\"{{getWord(\'MyTasks\')}}\"><i class=\"fa fa-user\"></i>\r\n            <b class=\"badge bg-color-red\">{{getTaskCount()}}</b>\r\n        </a>\r\n    </span>\r\n    -->\r\n\r\n    <!-- Note: The activity badge color changes when clicked and resets the number to 0\r\n    Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->\r\n    <span id=\"activity\" class=\"activity-dropdown\" activities-dropdown-toggle>\r\n        <i class=\"fa fa-user\"></i>\r\n        <b class=\"badge bg-color-red\">{{getTotalCount()}}</b>\r\n    </span>\r\n    <div smart-include=\"app/homepage/views/my-activities.html\"></div>\r\n</div>\r\n\r\n<!--\r\n<div style=\"margin-left:300px\">\r\n    <h1 class=\"text-primary hidden-xs hidden-sm hidden-md\">{{getWord(\'AppName\')}}</h1>\r\n</div>\r\n-->\r\n\r\n<!-- pulled right: nav area -->\r\n<div class=\"pull-right\">\r\n\r\n    <!-- intro button -->\r\n    <div id=\"intro\" class=\"btn-header transparent pull-right\">\r\n        <span>\r\n            <a title=\"{{getWord(\'Intro\')}}\" ng-click=\"CallMe();\">\r\n                <i class=\"fa fa-info\"></i>\r\n            </a>\r\n        </span>\r\n    </div>\r\n    <!-- end intro button -->\r\n\r\n    <!-- collapse menu button -->\r\n    <div id=\"hide-menu\" class=\"btn-header pull-right\">\r\n        <span> <a toggle-menu title=\"{{getWord(\'CollapseMenu\')}}\"><i\r\n                class=\"fa fa-reorder\"></i></a> </span>\r\n    </div>\r\n    <!-- end collapse menu -->\r\n\r\n    <!-- #MOBILE -->\r\n    <!-- Top menu profile link : this shows only when top menu is active -->\r\n    <ul id=\"mobile-profile-img\" class=\"header-dropdown-list hidden-xs padding-5\">\r\n        <li class=\"\">\r\n            <a href=\"#\" class=\"dropdown-toggle no-margin userdropdown\" data-toggle=\"dropdown\">\r\n                <img src=\"styles/custom/avatars/male.png\" alt=\"John Doe\" class=\"online\"/>\r\n            </a>\r\n            <ul class=\"dropdown-menu pull-right\">\r\n                <li>\r\n                    <a href-void class=\"padding-10 padding-top-0 padding-bottom-0\"><i\r\n                            class=\"fa fa-cog\"></i> Setting</a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                    <a ui-sref=\"app.appViews.profileDemo\" class=\"padding-10 padding-top-0 padding-bottom-0\"> <i class=\"fa fa-user\"></i>\r\n                        <u>P</u>rofile</a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                    <a href-void class=\"padding-10 padding-top-0 padding-bottom-0\"\r\n                       data-action=\"toggleShortcut\"><i class=\"fa fa-arrow-down\"></i> <u>S</u>hortcut</a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                    <a href-void class=\"padding-10 padding-top-0 padding-bottom-0\"\r\n                       data-action=\"launchFullscreen\"><i class=\"fa fa-arrows-alt\"></i> Full <u>S</u>creen</a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                    <a href=\"#/login\" class=\"padding-10 padding-top-5 padding-bottom-5\" data-action=\"userLogout\"><i\r\n                            class=\"fa fa-sign-out fa-lg\"></i> <strong><u>L</u>ogout</strong></a>\r\n                </li>\r\n            </ul>\r\n        </li>\r\n    </ul>\r\n\r\n    <!-- logout button -->\r\n    <div id=\"logout\" class=\"btn-header transparent pull-right\">\r\n        <span> <a ui-sref=\"logout\" title=\"{{getWord(\'SignOut\')}}\" data-action=\"userLogout\"\r\n                  data-logout-msg=\"You can improve your security further after logging out by closing this opened browser\"><i\r\n                class=\"fa fa-sign-out\"></i></a> </span>\r\n    </div>\r\n    <!-- end logout button -->\r\n\r\n    <!-- search mobile button (this is hidden till mobile view port) -->\r\n    <div id=\"search-mobile\" class=\"btn-header transparent pull-right\" data-search-mobile>\r\n        <span> <a href=\"#\" title=\"Search\"><i class=\"fa fa-search\"></i></a> </span>\r\n    </div>\r\n    <!-- end search mobile button -->\r\n\r\n    <!-- fullscreen button -->\r\n    <div id=\"fullscreen\" class=\"btn-header transparent pull-right\">\r\n        <span> <a full-screen title=\"{{getWord(\'FullScreen\')}}\"><i\r\n                class=\"fa fa-arrows-alt\"></i></a> </span>\r\n    </div>\r\n    <!-- end fullscreen button -->\r\n\r\n    <!-- multiple lang dropdown : find all flags in the flags page -->\r\n    <language-selector></language-selector>\r\n    <!-- end multiple lang -->\r\n\r\n    <!-- input: full text search field -->\r\n    <form ng-show=\"searchEnabled\" ng-submit=\"fullTextSearch()\" class=\"header-search pull-right\" style=\"padding-right:10px\">\r\n        <input id=\"search-keywords\" name=\"searchKeywords\" type=\"text\" autocomplete=\"off\" size=\"50\" \r\n               placeholder=\"{{getWord(\'FindReports\')}}\"\r\n               ng-model=\"searchContext.searchText\"\r\n               typeahead=\"suggestion for suggestion in getSuggestions($viewValue)\"\r\n               typeahead-on-select=\"onSuggestionSelect($item, $model, $label)\">\r\n        <button type=\"submit\" style=\"padding-right:15px\">\r\n            <i class=\"fa fa-search\"></i>\r\n        </button>\r\n        <a href=\"$\" id=\"cancel-search-js\" title=\"Cancel Search\"><i class=\"fa fa-times\"></i></a>\r\n    </form>\r\n    <!-- end input: search field -->\r\n\r\n</div>\r\n<!-- end pulled right: nav area -->\r\n\r\n</header>");
+$templateCache.put("app/layout/partials/header.tpl.html","<header id=\"header\">\r\n<div id=\"logo-group\">\r\n\r\n    <!-- PLACE YOUR LOGO HERE -->\r\n    <span id=\"logo\"><a ui-sref=\"app.homepage.mainmenu\"><img src=\"styles/img/logo.gif\" alt=\"TDM\"></a>\r\n    </span>\r\n    <!-- END LOGO PLACEHOLDER -->\r\n\r\n    <!-- Note: The activity badge color changes when clicked and resets the number to 0\r\n    Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->\r\n   \r\n    <!--\r\n    <span id=\"activity\"> \r\n        <a ui-sref=\"app.tasks.list\" ui-sref-opts=\"{reload: true}\" title=\"{{getWord(\'MyTasks\')}}\"><i class=\"fa fa-user\"></i>\r\n            <b class=\"badge bg-color-red\">{{getTaskCount()}}</b>\r\n        </a>\r\n    </span>\r\n    -->\r\n\r\n    <!-- Note: The activity badge color changes when clicked and resets the number to 0\r\n    Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->\r\n    <span id=\"activity\" class=\"activity-dropdown\" activities-dropdown-toggle>\r\n        <i class=\"fa fa-user\"></i>\r\n        <b class=\"badge bg-color-red\">{{getTotalCount()}}</b>\r\n    </span>\r\n    <div smart-include=\"app/homepage/views/my-activities.html\"></div>\r\n</div>\r\n\r\n<!--\r\n<div style=\"margin-left:300px\">\r\n    <h1 class=\"text-primary hidden-xs hidden-sm hidden-md\">{{getWord(\'AppName\')}}</h1>\r\n</div>\r\n-->\r\n\r\n<!-- pulled right: nav area -->\r\n<div class=\"pull-right\">\r\n\r\n    <!-- intro button -->\r\n    <div id=\"intro\" class=\"btn-header transparent pull-right\">\r\n        <span>\r\n            <a title=\"{{getWord(\'Intro\')}}\" ng-click=\"CallMe();\">\r\n                <i class=\"fa fa-info\"></i>\r\n            </a>\r\n        </span>\r\n    </div>\r\n    <!-- end intro button -->\r\n    <!-- collapse menu button -->\r\n    <div id=\"hide-menu\" class=\"btn-header pull-right\">\r\n        <span>\r\n            <a toggle-menu title=\"{{getWord(\'CollapseMenu\')}}\">\r\n                <i class=\"fa fa-reorder\"></i>\r\n            </a>\r\n        </span>\r\n    </div>\r\n    <!-- end collapse menu -->\r\n    <!-- #MOBILE -->\r\n    <!-- Top menu profile link : this shows only when top menu is active -->\r\n    <ul id=\"mobile-profile-img\" class=\"header-dropdown-list hidden-xs padding-5\">\r\n        <li class=\"\">\r\n            <a href=\"#\" class=\"dropdown-toggle no-margin userdropdown\" data-toggle=\"dropdown\">\r\n                <img src=\"styles/custom/avatars/male.png\" alt=\"John Doe\" class=\"online\" />\r\n            </a>\r\n            <ul class=\"dropdown-menu pull-right\">\r\n                <li>\r\n                    <a href-void class=\"padding-10 padding-top-0 padding-bottom-0\">\r\n                        <i class=\"fa fa-cog\"></i> Setting\r\n                    </a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                    <a ui-sref=\"app.appViews.profileDemo\" class=\"padding-10 padding-top-0 padding-bottom-0\">\r\n                        <i class=\"fa fa-user\"></i>\r\n                        <u>P</u>rofile\r\n                    </a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                    <a href-void class=\"padding-10 padding-top-0 padding-bottom-0\"\r\n                       data-action=\"toggleShortcut\"><i class=\"fa fa-arrow-down\"></i> <u>S</u>hortcut</a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                    <a href-void class=\"padding-10 padding-top-0 padding-bottom-0\"\r\n                       data-action=\"launchFullscreen\"><i class=\"fa fa-arrows-alt\"></i> Full <u>S</u>creen</a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                    <a href=\"#/login\" class=\"padding-10 padding-top-5 padding-bottom-5\" data-action=\"userLogout\">\r\n                        <i class=\"fa fa-sign-out fa-lg\"></i> <strong><u>L</u>ogout</strong>\r\n                    </a>\r\n                </li>\r\n            </ul>\r\n        </li>\r\n    </ul>\r\n\r\n    <!-- logout button -->\r\n    <div id=\"logout\" class=\"btn-header transparent pull-right\">\r\n        <span>\r\n            <a ui-sref=\"logout\" title=\"{{getWord(\'SignOut\')}}\" data-action=\"userLogout\"\r\n               data-logout-msg=\"You can improve your security further after logging out by closing this opened browser\">\r\n                <i class=\"fa fa-sign-out\"></i>\r\n            </a>\r\n        </span>\r\n    </div>\r\n    <!-- end logout button -->\r\n    <!-- search mobile button (this is hidden till mobile view port) -->\r\n    <div id=\"search-mobile\" class=\"btn-header transparent pull-right\" data-search-mobile>\r\n        <span> <a href=\"#\" title=\"Search\"><i class=\"fa fa-search\"></i></a> </span>\r\n    </div>\r\n    <!-- end search mobile button -->\r\n    <!-- fullscreen button -->\r\n    <div id=\"fullscreen\" class=\"btn-header transparent pull-right\">\r\n        <span>\r\n            <a full-screen title=\"{{getWord(\'FullScreen\')}}\">\r\n                <i class=\"fa fa-arrows-alt\"></i>\r\n            </a>\r\n        </span>\r\n    </div>\r\n    <!-- end fullscreen button -->\r\n    <!-- multiple lang dropdown : find all flags in the flags page -->\r\n    <language-selector></language-selector>\r\n    <i ng-show=\"loadingNodeLabels\" class=\"glyphicon glyphicon-refresh\"></i>\r\n    <!-- end multiple lang -->\r\n    <!-- input: full text search field -->\r\n    <form ng-show=\"searchEnabled\" ng-submit=\"fullTextSearch()\" class=\"header-search pull-right\" style=\"padding-right:10px\">\r\n        <input id=\"search-keywords\" name=\"searchKeywords\" type=\"text\" autocomplete=\"off\" size=\"50\"\r\n               placeholder=\"{{getWord(\'FindReports\')}}\"\r\n               ng-model=\"searchContext.searchText\"\r\n               typeahead-input-formatter=\"formatLabel($model)\"\r\n               typeahead=\"suggestion as suggestion.fullText.display for suggestion in getSuggestions($viewValue) | limitTo:10\"\r\n               typeahead-loading=\"loadingNodeLabels\"\r\n               typeahead-on-select=\"onSuggestionSelect($item, $model, $label)\">\r\n        <button type=\"reset\">&times;</button>\r\n    </form>\r\n    <!-- end input: search field -->\r\n\r\n</div>\r\n<!-- end pulled right: nav area -->\r\n\r\n</header>");
 $templateCache.put("app/layout/partials/help-viewer.tpl.html","<div id=\"content\" class=\"wrapper\">\r\n    <!-- widget grid -->\r\n    <section widget-grid id=\"widget-grid\">\r\n        <div class=\"row\">\r\n            <article class=\"col-sm-12 col-md-12 col-lg-12\">\r\n                <div jarvis-widget id=\"wid-id-1\" data-widget-editbutton=\"false\" data-widget-custombutton=\"false\">\r\n                    <header>\r\n                        <span class=\"widget-icon\"> <i class=\"fa fa-edit\"></i> </span>\r\n                        <h2>{{getWord(\"Help\")}}</h2>\r\n                        <div class=\"widget-toolbar\">\r\n                            <span class=\"jarviswidget-ctrls\" ng-click=\"$dismiss()\"> <i class=\"fa fa-close\"></i> </span>\r\n                        </div>\r\n                    </header>\r\n                    <div style=\"overflow-x:auto;\">\r\n                        <!-- widget content -->\r\n                        <div align=\"center\" class=\"padding-10\">\r\n                            <button ng-click=\"zoomIn()\"><i class=\"fa fa-plus\"></i></button>\r\n                            <button ng-click=\"fit()\"><span>100%</span></button>\r\n                            <button ng-click=\"zoomOut()\"><i class=\"fa fa-minus\"></i></button>\r\n                        </div>\r\n                        <div>\r\n                            <ng-pdf template-url=\"app/layout/partials/help-viewer..html\" scale=\"page-fit\"></ng-pdf>\r\n                        </div>\r\n                        <div align=\"center\" class=\"padding-10\">\r\n                            <button ng-click=\"goPrevious()\"><i class=\"fa fa-chevron-left\"></i><span> {{getWord(\"Prev Page\")}}</span></button>\r\n                            <button ng-click=\"goNext()\"><i class=\"fa fa-chevron-right\"></i><span> {{getWord(\"Next Page\")}}</span></button>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </article>\r\n        </div>\r\n    </section>\r\n</div>");
 $templateCache.put("app/layout/partials/navigation.tpl.html","<aside id=\"left-panel\">\r\n\r\n    <!-- User info -->\r\n    <div login-info></div>\r\n    <!-- end user info -->\r\n\r\n    <nav id=\"sidemenu\">\r\n\r\n        <!-- NOTE: This allows you to pull menu items from server -->\r\n        <ul data-smart-menu-items=\"/api/sitemap/menu\"></ul>\r\n\r\n    </nav>\r\n\r\n  <span id=\"minimize-sidemenu\" class=\"minifyme\" data-action=\"minifyMenu\" minify-menu>\r\n    <i class=\"fa fa-arrow-circle-left hit\"></i>\r\n  </span>\r\n\r\n</aside>");
 $templateCache.put("app/layout/partials/sub-header.tpl.html","<div class=\"col-xs-12 col-sm-5 col-md-5 col-lg-8\" data-sparkline-container>\r\n    <ul id=\"sparks\" class=\"\">\r\n        <li class=\"sparks-info\">\r\n            <h5> My Income <span class=\"txt-color-blue\">$47,171</span></h5>\r\n            <div class=\"sparkline txt-color-blue hidden-mobile hidden-md hidden-sm\">\r\n                1300, 1877, 2500, 2577, 2000, 2100, 3000, 2700, 3631, 2471, 2700, 3631, 2471\r\n            </div>\r\n        </li>\r\n        <li class=\"sparks-info\">\r\n            <h5> Site Traffic <span class=\"txt-color-purple\"><i class=\"fa fa-arrow-circle-up\"></i>&nbsp;45%</span></h5>\r\n            <div class=\"sparkline txt-color-purple hidden-mobile hidden-md hidden-sm\">\r\n                110,150,300,130,400,240,220,310,220,300, 270, 210\r\n            </div>\r\n        </li>\r\n        <li class=\"sparks-info\">\r\n            <h5> Site Orders <span class=\"txt-color-greenDark\"><i class=\"fa fa-shopping-cart\"></i>&nbsp;2447</span></h5>\r\n            <div class=\"sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm\">\r\n                110,150,300,130,400,240,220,310,220,300, 270, 210\r\n            </div>\r\n        </li>\r\n    </ul>\r\n</div>\r\n			");
@@ -3422,18 +3481,18 @@ $templateCache.put("app/layout/partials/voice-commands.tpl.html","<!-- TRIGGER B
 $templateCache.put("app/layout/shortcut/shortcut.tpl.html","<div id=\"shortcut\">\r\n	<ul>\r\n		<li>\r\n			<a href=\"#/tasks/list\" class=\"jarvismetro-tile big-cubes bg-color-blue\"> <span class=\"iconbox\"> <i class=\"fa fa-folder-open fa-4x\"></i> <span>{{getWord(\'MyTasks\')}} <span class=\"label pull-right bg-color-darken\">{{getTaskCount()}}</span></span> </span> </a>\r\n		</li>\r\n		<li>\r\n			<a href=\"#/user/profile\" class=\"jarvismetro-tile big-cubes selected bg-color-pinkDark\"> <span class=\"iconbox\"> <i class=\"fa fa-user fa-4x\"></i> <span>{{getWord(\'My Profile\')}} </span> </span> </a>\r\n		</li>\r\n        <li>\r\n            <a href=\"#/user/password\" class=\"jarvismetro-tile big-cubes selected bg-color-darken\"> <span class=\"iconbox\"> <i class=\"fa fa-lock fa-4x\"></i> <span>{{getWord(\'Change Password\')}} </span> </span> </a>\r\n        </li>\r\n	</ul>\r\n</div>");
 $templateCache.put("app/mldashboard/views/model-dashboard.tpl.html","<div jarvis-widget id=\"live-feeds-widget\" data-widget-togglebutton=\"false\" data-widget-editbutton=\"false\"\r\n     data-widget-fullscreenbutton=\"false\" data-widget-colorbutton=\"false\" data-widget-deletebutton=\"false\">\r\n    <header>\r\n        <span class=\"widget-icon\"> <i class=\"glyphicon glyphicon-stats txt-color-darken\"></i> </span>\r\n\r\n        <h2>{{project}}=>{{model}}</h2>\r\n\r\n        <ul class=\"nav nav-tabs pull-right in\" id=\"myTab\">\r\n            <li class=\"active\">\r\n                <a data-toggle=\"tab\" href=\"#s1\"><i class=\"fa fa-clock-o\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"Single Record\")}}</span></a>\r\n            </li>\r\n\r\n            <li>\r\n                <a data-toggle=\"tab\" href=\"#s2\"><i class=\"fa fa-cog\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"Batch Records\")}}</span></a>\r\n            </li>\r\n        </ul>\r\n\r\n    </header>\r\n\r\n    <!-- widget div-->\r\n    <div class=\"no-padding\">\r\n\r\n        <div class=\"widget-body\">\r\n            <!-- content -->\r\n            <div id=\"myTabContent\" class=\"tab-content\">\r\n                <div class=\"tab-pane fade active in padding-10 no-padding-bottom\" id=\"s1\">\r\n                    <!-- widget grid -->\r\n                    <section id=\"widget-grid\" class=\"\">\r\n\r\n                        <!-- START ROW -->\r\n                        <div class=\"row\">\r\n\r\n                            <!-- NEW COL START -->\r\n                            <article class=\"col-sm-12 col-md-12 col-lg-12\">\r\n\r\n                                <!-- Widget ID (each widget will need unique ID)-->\r\n                                <div class=\"jarviswidget\" id=\"wid-id-0\" data-widget-colorbutton=\"false\" data-widget-editbutton=\"false\" data-widget-custombutton=\"false\">\r\n                                                <!-- widget options:\r\n                                    usage: <div class=\"jarviswidget\" id=\"wid-id-0\" data-widget-editbutton=\"false\">\r\n\r\n                                    data-widget-colorbutton=\"false\"\r\n                                    data-widget-editbutton=\"false\"\r\n                                    data-widget-togglebutton=\"false\"\r\n                                    data-widget-deletebutton=\"false\"\r\n                                    data-widget-fullscreenbutton=\"false\"\r\n                                    data-widget-custombutton=\"false\"\r\n                                    data-widget-collapsed=\"true\"\r\n                                    data-widget-sortable=\"false\"\r\n\r\n                                    -->\r\n                                    <header>\r\n                                        <span class=\"widget-icon\"> <i class=\"fa fa-edit\"></i> </span>\r\n                                        <h2>{{getWord(\"ML Model Form\")}}</h2>\r\n\r\n                                    </header>\r\n\r\n                                    <!-- widget div-->\r\n                                    <div>\r\n                                        <!-- widget content -->\r\n                                        <div class=\"widget-body no-padding\">\r\n\r\n                                            <form class=\"smart-form\" ng-submit=\"submitModelForm()\">\r\n                                                <header>\r\n                                                    {{getWord(\"ML Model Inputs\")}}\r\n                                                </header>\r\n\r\n                                                <fieldset>\r\n                                                    <div class=\"row\">\r\n                                                        <section class=\"col col-3\" ng-repeat=\"inputField in inputFields\">\r\n                                                            <label class=\"label\">{{inputField.Label}}</label>\r\n                                                            <label class=\"input\">\r\n                                                                <input type=\"text\" id=\"{{inputField.Label}}\" required ng-model=\"inputField.Value\">\r\n                                                            </label>\r\n                                                        </section>\r\n                                                    </div>\r\n                                                </fieldset>\r\n\r\n                                                <header>\r\n                                                    {{getWord(\"ML Model Outputs\")}}\r\n                                                </header>\r\n\r\n                                                <fieldset>\r\n                                                    <div class=\"row\">\r\n                                                        <section class=\"col col-3\" ng-repeat=\"outputField in outputFields\">\r\n                                                            <label class=\"label\">{{outputField.Label}}</label>\r\n                                                            <label class=\"input\">\r\n                                                                <input type=\"text\" id=\"{{outputField.Label}}\" disabled=\"disabled\" ng-model=\"outputField.Value\">\r\n                                                            </label>\r\n                                                        </section>\r\n                                                    </div>\r\n\r\n                                                </fieldset>\r\n\r\n                                                <footer>\r\n                                                    <button type=\"submit\" class=\"btn btn-primary\" button-spinner=\"loading\">\r\n                                                        {{getWord(\"Evaluate\")}}\r\n                                                    </button>\r\n                                                </footer>\r\n                                            </form>\r\n\r\n                                        </div>\r\n                                        <!-- end widget content -->\r\n\r\n                                    </div>\r\n                                    <!-- end widget div -->\r\n\r\n                                </div>\r\n                                <!-- end widget -->\r\n\r\n                            </article>\r\n                            <!-- END COL -->\r\n\r\n                        </div>\r\n\r\n                        <!-- END ROW -->\r\n                    </section>\r\n                    <!-- end widget grid -->\r\n                </div>\r\n                <!-- end s1 tab pane -->\r\n\r\n                <div class=\"tab-pane fade\" id=\"s2\">\r\n                    <div class=\"padding-10\">\r\n                   \r\n                    </div>\r\n                </div>\r\n                <!-- end s2 tab pane -->\r\n            </div>\r\n            <!-- end content -->\r\n        </div>\r\n    </div>\r\n    <!-- end widget div -->\r\n</div>\r\n");
 $templateCache.put("app/stations/views/live-feeds.tpl.html","<div jarvis-widget id=\"live-feeds-widget\" data-widget-togglebutton=\"false\" data-widget-editbutton=\"false\"\r\n     data-widget-fullscreenbutton=\"false\" data-widget-colorbutton=\"false\" data-widget-deletebutton=\"false\">\r\n<!-- widget options:\r\nusage: <div class=\"jarviswidget\" id=\"wid-id-0\" data-widget-editbutton=\"false\">\r\n\r\ndata-widget-colorbutton=\"false\"\r\ndata-widget-editbutton=\"false\"\r\ndata-widget-togglebutton=\"false\"\r\ndata-widget-deletebutton=\"false\"\r\ndata-widget-fullscreenbutton=\"false\"\r\ndata-widget-custombutton=\"false\"\r\ndata-widget-collapsed=\"true\"\r\ndata-widget-sortable=\"false\"\r\n\r\n-->\r\n<header>\r\n    <span class=\"widget-icon\"> <i class=\"glyphicon glyphicon-stats txt-color-darken\"></i> </span>\r\n\r\n    <h2>{{CurrentStationName}}</h2>\r\n\r\n    <ul class=\"nav nav-tabs pull-right in\" id=\"myTab\">\r\n        <li ng-class=\"showMonitor? \'active\' : null\" ng-show=\"showMonitor\">\r\n            <a data-toggle=\"tab\" href=\"#s1\"><i class=\"fa fa-clock-o\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"LiveData\")}}</span></a>\r\n        </li>\r\n\r\n        <li ng-class=\"!showMonitor? \'active\' : null\">\r\n            <a data-toggle=\"tab\" href=\"#s2\"><i class=\"fa fa-cog\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"StationConfig\")}}</span></a>\r\n        </li>\r\n\r\n        <li>\r\n            <a data-toggle=\"tab\" href=\"#s3\"><i class=\"fa fa-calendar\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"Scheduler\")}}</span></a>\r\n        </li>\r\n    </ul>\r\n\r\n</header>\r\n\r\n<!-- widget div-->\r\n<div class=\"no-padding\">\r\n\r\n    <div class=\"widget-body\">\r\n        <!-- content -->\r\n        <div id=\"myTabContent\" class=\"tab-content\">\r\n            <div ng-class=\"showMonitor? \'tab-pane fade active in padding-10 no-padding-bottom\' : \'tab-pane fade\'\" id=\"s1\" ng-show=\"showMonitor\">\r\n                <div class=\"row no-space\">\r\n                    <div class=\"col-xs-12 col-sm-12 col-md-8 col-lg-8\">\r\n						<span class=\"demo-liveupdate-1\"> <span\r\n                                class=\"onoffswitch-title\">{{getWord(\"LiveSwitch\")}}</span> <span\r\n                                class=\"onoffswitch\">\r\n								<input type=\"checkbox\" name=\"start_interval\" ng-model=\"autoUpdate\"\r\n                                        class=\"onoffswitch-checkbox\" id=\"start_interval\">\r\n								<label class=\"onoffswitch-label\" for=\"start_interval\">\r\n                                    <span class=\"onoffswitch-inner\"\r\n                                            data-swchon-text=\"{{getWord(\'SwitchOn\')}}\"\r\n                                            data-swchoff-text=\"{{getWord(\'SwitchOff\')}}\"></span>\r\n                                    <span class=\"onoffswitch-switch\"></span>\r\n                                </label> </span> </span>\r\n\r\n                        <div id=\"updating-chart\" class=\"chart-large txt-color-blue\" flot-basic flot-data=\"liveStats\" flot-options=\"liveStatsOptions\"></div>\r\n\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-12 col-md-4 col-lg-4 show-stats\">\r\n\r\n                        <div class=\"row\">\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> {{settings.ProgressName1}} :<span\r\n                                    >{{settings.ProgressValue1}} {{settings.ProgressUnit1}}</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blueDark\" data-smart-progressbar aria-valuenow=\"{{ settings.ProgressPercent1 }}\"  ng-style=\"{width : ( settings.ProgressPercent1 + \'%\' ) }\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> {{settings.ProgressName2}} : <span\r\n                                    >{{settings.ProgressValue2}} {{settings.ProgressUnit2}}</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blue\" data-smart-progressbar aria-valuenow=\"{{ settings.ProgressPercent2 }}\" ng-style=\"{width : ( settings.ProgressPercent2 + \'%\' ) }\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> {{settings.ProgressName3}} : <span\r\n                                    >{{settings.ProgressValue3}} {{settings.ProgressUnit3}}</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blue\" data-smart-progressbar aria-valuenow=\"{{ settings.ProgressPercent3 }}\" ng-style=\"{width : ( settings.ProgressPercent3 + \'%\' ) }\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> {{settings.ProgressName4}} : <span\r\n                                    >{{settings.ProgressValue4}} {{settings.ProgressUnit4}}</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-greenLight\" data-smart-progressbar ng-style=\"{width : ( settings.ProgressPercent4 + \'%\' ) }\">></div>\r\n                                </div>\r\n                            </div>\r\n\r\n                        </div>\r\n\r\n                    </div>\r\n                </div>\r\n\r\n                <div class=\"show-stat-microcharts\" data-sparkline-container data-easy-pie-chart-container>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n\r\n                        <div class=\"easy-pie-chart txt-color-orangeDark\" data-percent=\"0\" data-pie-size=\"50\" data-ng-model=\"PiePercent1\">\r\n                            <span class=\"percent percent-sign\">{{settings.PieValue1}}</span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> {{settings.PieName1}} <i class=\"fa fa-caret-up icon-color-bad\"></i> </span>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-greenLight\" data-percent=\"0\" data-pie-size=\"50\" data-ng-model=\"PiePercent2\">\r\n                            <span class=\"percent percent-sign\">{{settings.PieValue2}} </span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> {{settings.PieName2}} <i class=\"fa fa-caret-down icon-color-good\"></i></span>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-blue\" data-percent=\"0\" data-pie-size=\"50\" data-ng-model=\"PiePercent3\">\r\n                            <span class=\"percent percent-sign\">{{settings.PieValue3}} </span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> {{settings.PieName3}} <i class=\"fa fa-caret-up icon-color-good\"></i></span>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-darken\" data-percent=\"0\" data-pie-size=\"50\" data-ng-model=\"PiePercent4\">\r\n                            <span class=\"percent degree-sign\">{{settings.PieValue4}} <i class=\"fa fa-caret-up\"></i></span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> {{settings.PieName4}} <i\r\n                                class=\"fa fa-caret-down icon-color-good\"></i></span>\r\n                    </div>\r\n                </div>\r\n\r\n            </div>\r\n            <!-- end s1 tab pane -->\r\n\r\n            <div ng-class=\"!showMonitor? \'tab-pane fade active in padding-10 no-padding-bottom\' : \'tab-pane fade\'\" id=\"s2\">\r\n                <div class=\"padding-10\">\r\n                    <form name=\"ebaasform\" novalidate\">\r\n                        <ebaas-form-template dbschema=\"dbschema\" dbclass=\"dbclass\" oid=\"oid\" template=\"template\" formattribute=\"formAttribute\" readonly=\"true\"></ebaas-form-template>\r\n                    </form>\r\n                </div>\r\n            </div>\r\n            <!-- end s2 tab pane -->\r\n\r\n            <div ng-class=\"\'tab-pane fade\'\" id=\"s3\">\r\n                <div class=\"padding-10\">\r\n                    <div dx-scheduler=\"schedulerOptions\"></div>\r\n                </div>\r\n            </div>\r\n            <!-- end s3 tab pane -->\r\n        </div>\r\n\r\n        <!-- end content -->\r\n    </div>\r\n\r\n</div>\r\n<!-- end widget div -->\r\n</div>\r\n");
+$templateCache.put("app/dashboard/todo/directives/todo-list.tpl.html","<div>\r\n    <h5 class=\"todo-group-title\"><i class=\"fa fa-{{icon}}\"></i> {{title}} (\r\n        <small class=\"num-of-tasks\">{{scopeItems.length}}</small>\r\n        )\r\n    </h5>\r\n    <ul class=\"todo\">\r\n        <li ng-class=\"{complete: todo.completedAt}\" ng-repeat=\"todo in todos | orderBy: todo._id | filter: filter  track by todo._id\" >\r\n    	<span class=\"handle\"> <label class=\"checkbox\">\r\n            <input type=\"checkbox\" ng-click=\"todo.toggle()\" ng-checked=\"todo.completedAt\"\r\n                   name=\"checkbox-inline\">\r\n            <i></i> </label> </span>\r\n\r\n            <p>\r\n                <strong>Ticket #{{$index + 1}}</strong> - {{todo.title}}\r\n                <span class=\"text-muted\" ng-if=\"todo.description\">{{todo.description}}</span>\r\n                <span class=\"date\">{{todo.createdAt | date}} &dash; <a ng-click=\"deleteTodo(todo)\" class=\"text-muted\"><i\r\n                        class=\"fa fa-trash\"></i></a></span>\r\n\r\n            </p>\r\n        </li>\r\n    </ul>\r\n</div>");
 $templateCache.put("app/dashboard/chat/directives/aside-chat-widget.tpl.html","<ul>\r\n    <li>\r\n        <div class=\"display-users\">\r\n            <input class=\"form-control chat-user-filter\" placeholder=\"Filter\" type=\"text\">\r\n            <dl>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr\"\r\n                       data-chat-id=\"cha1\"\r\n                       data-chat-fname=\"Sadi\"\r\n                       data-chat-lname=\"Orlaf\"\r\n                       data-chat-status=\"busy\"\r\n                       data-chat-alertmsg=\"Sadi Orlaf is in a meeting. Please do not disturb!\"\r\n                       data-chat-alertshow=\"true\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/5.png\' alt=\'Sadi Orlaf\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Sadi Orlaf</h3>\r\n												<p>Marketing Executive</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Sadi Orlaf\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr\"\r\n                       data-chat-id=\"cha2\"\r\n                       data-chat-fname=\"Jessica\"\r\n                       data-chat-lname=\"Dolof\"\r\n                       data-chat-status=\"online\"\r\n                       data-chat-alertmsg=\"\"\r\n                       data-chat-alertshow=\"false\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/1.png\' alt=\'Jessica Dolof\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Jessica Dolof</h3>\r\n												<p>Sales Administrator</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Jessica Dolof\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr\"\r\n                       data-chat-id=\"cha3\"\r\n                       data-chat-fname=\"Zekarburg\"\r\n                       data-chat-lname=\"Almandalie\"\r\n                       data-chat-status=\"online\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/3.png\' alt=\'Zekarburg Almandalie\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Zekarburg Almandalie</h3>\r\n												<p>Sales Admin</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Zekarburg Almandalie\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr\"\r\n                       data-chat-id=\"cha4\"\r\n                       data-chat-fname=\"Barley\"\r\n                       data-chat-lname=\"Krazurkth\"\r\n                       data-chat-status=\"away\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/4.png\' alt=\'Barley Krazurkth\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Barley Krazurkth</h3>\r\n												<p>Sales Director</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Barley Krazurkth\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr offline\"\r\n                       data-chat-id=\"cha5\"\r\n                       data-chat-fname=\"Farhana\"\r\n                       data-chat-lname=\"Amrin\"\r\n                       data-chat-status=\"incognito\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/female.png\' alt=\'Farhana Amrin\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Farhana Amrin</h3>\r\n												<p>Support Admin <small><i class=\'fa fa-music\'></i> Playing Beethoven Classics</small></p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Farhana Amrin (offline)\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr offline\"\r\n                       data-chat-id=\"cha6\"\r\n                       data-chat-fname=\"Lezley\"\r\n                       data-chat-lname=\"Jacob\"\r\n                       data-chat-status=\"incognito\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/male.png\' alt=\'Lezley Jacob\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Lezley Jacob</h3>\r\n												<p>Sales Director</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Lezley Jacob (offline)\r\n                    </a>\r\n                </dt>\r\n            </dl>\r\n\r\n\r\n            <!--<a href=\"chat.html\" class=\"btn btn-xs btn-default btn-block sa-chat-learnmore-btn\">About the API</a>-->\r\n        </div>\r\n    </li>\r\n</ul>");
 $templateCache.put("app/dashboard/chat/directives/chat-users.tpl.html","<div id=\"chat-container\" ng-class=\"{open: open}\">\r\n    <span class=\"chat-list-open-close\" ng-click=\"openToggle()\"><i class=\"fa fa-user\"></i><b>!</b></span>\r\n\r\n    <div class=\"chat-list-body custom-scroll\">\r\n        <ul id=\"chat-users\">\r\n            <li ng-repeat=\"chatUser in chatUsers | filter: chatUserFilter\">\r\n                <a ng-click=\"messageTo(chatUser)\"><img ng-src=\"{{chatUser.picture}}\">{{chatUser.username}} <span\r\n                        class=\"badge badge-inverse\">{{chatUser.username.length}}</span><span class=\"state\"><i\r\n                        class=\"fa fa-circle txt-color-green pull-right\"></i></span></a>\r\n            </li>\r\n        </ul>\r\n    </div>\r\n    <div class=\"chat-list-footer\">\r\n        <div class=\"control-group\">\r\n            <form class=\"smart-form\">\r\n                <section>\r\n                    <label class=\"input\" >\r\n                        <input type=\"text\" ng-model=\"chatUserFilter\" id=\"filter-chat-list\" placeholder=\"Filter\">\r\n                    </label>\r\n                </section>\r\n            </form>\r\n        </div>\r\n    </div>\r\n</div>");
 $templateCache.put("app/dashboard/chat/directives/chat-widget.tpl.html","<div id=\"chat-widget\" jarvis-widget data-widget-color=\"blueDark\" data-widget-editbutton=\"false\"\r\n     data-widget-fullscreenbutton=\"false\">\r\n\r\n\r\n    <header>\r\n        <span class=\"widget-icon\"> <i class=\"fa fa-comments txt-color-white\"></i> </span>\r\n\r\n        <h2> SmartMessage </h2>\r\n\r\n        <div class=\"widget-toolbar\">\r\n            <!-- add: non-hidden - to disable auto hide -->\r\n\r\n            <div class=\"btn-group\" data-dropdown>\r\n                <button class=\"btn dropdown-toggle btn-xs btn-success\" dropdown-toggle>\r\n                    Status <i class=\"fa fa-caret-down\"></i>\r\n                </button>\r\n                <ul class=\"dropdown-menu pull-right js-status-update\">\r\n                    <li>\r\n                        <a href-void><i class=\"fa fa-circle txt-color-green\"></i> Online</a>\r\n                    </li>\r\n                    <li>\r\n                        <a href-void><i class=\"fa fa-circle txt-color-red\"></i> Busy</a>\r\n                    </li>\r\n                    <li>\r\n                        <a href-void><i class=\"fa fa-circle txt-color-orange\"></i> Away</a>\r\n                    </li>\r\n                    <li class=\"divider\"></li>\r\n                    <li>\r\n                        <a href-void><i class=\"fa fa-power-off\"></i> Log Off</a>\r\n                    </li>\r\n                </ul>\r\n            </div>\r\n        </div>\r\n    </header>\r\n\r\n    <!-- widget div-->\r\n    <div>\r\n        <div class=\"widget-body widget-hide-overflow no-padding\">\r\n            <!-- content goes here -->\r\n\r\n            <chat-users></chat-users>\r\n\r\n            <!-- CHAT BODY -->\r\n            <div id=\"chat-body\" class=\"chat-body custom-scroll\">\r\n                <ul>\r\n                    <li class=\"message\" ng-repeat=\"message in chatMessages\">\r\n                        <img class=\"message-picture online\" ng-src=\"{{message.user.picture}}\">\r\n\r\n                        <div class=\"message-text\">\r\n                            <time>\r\n                                {{message.date | date }}\r\n                            </time>\r\n                            <a ng-click=\"messageTo(message.user)\" class=\"username\">{{message.user.username}}</a>\r\n                            <div ng-bind-html=\"message.body\"></div>\r\n\r\n                        </div>\r\n                    </li>\r\n                </ul>\r\n            </div>\r\n\r\n            <!-- CHAT FOOTER -->\r\n            <div class=\"chat-footer\">\r\n\r\n                <!-- CHAT TEXTAREA -->\r\n                <div class=\"textarea-div\">\r\n\r\n                    <div class=\"typearea\">\r\n                        <textarea placeholder=\"Write a reply...\" id=\"textarea-expand\"\r\n                                  class=\"custom-scroll\" ng-model=\"newMessage\"></textarea>\r\n                    </div>\r\n\r\n                </div>\r\n\r\n                <!-- CHAT REPLY/SEND -->\r\n											<span class=\"textarea-controls\">\r\n												<button class=\"btn btn-sm btn-primary pull-right\" ng-click=\"sendMessage()\">\r\n                                                    Reply\r\n                                                </button> <span class=\"pull-right smart-form\"\r\n                                                                style=\"margin-top: 3px; margin-right: 10px;\"> <label\r\n                                                    class=\"checkbox pull-right\">\r\n                                                <input type=\"checkbox\" name=\"subscription\" id=\"subscription\">\r\n                                                <i></i>Press <strong> ENTER </strong> to send </label> </span> <a\r\n                                                    href-void class=\"pull-left\"><i\r\n                                                    class=\"fa fa-camera fa-fw fa-lg\"></i></a> </span>\r\n\r\n            </div>\r\n\r\n            <!-- end content -->\r\n        </div>\r\n\r\n    </div>\r\n    <!-- end widget div -->\r\n</div>");
-$templateCache.put("app/dashboard/todo/directives/todo-list.tpl.html","<div>\r\n    <h5 class=\"todo-group-title\"><i class=\"fa fa-{{icon}}\"></i> {{title}} (\r\n        <small class=\"num-of-tasks\">{{scopeItems.length}}</small>\r\n        )\r\n    </h5>\r\n    <ul class=\"todo\">\r\n        <li ng-class=\"{complete: todo.completedAt}\" ng-repeat=\"todo in todos | orderBy: todo._id | filter: filter  track by todo._id\" >\r\n    	<span class=\"handle\"> <label class=\"checkbox\">\r\n            <input type=\"checkbox\" ng-click=\"todo.toggle()\" ng-checked=\"todo.completedAt\"\r\n                   name=\"checkbox-inline\">\r\n            <i></i> </label> </span>\r\n\r\n            <p>\r\n                <strong>Ticket #{{$index + 1}}</strong> - {{todo.title}}\r\n                <span class=\"text-muted\" ng-if=\"todo.description\">{{todo.description}}</span>\r\n                <span class=\"date\">{{todo.createdAt | date}} &dash; <a ng-click=\"deleteTodo(todo)\" class=\"text-muted\"><i\r\n                        class=\"fa fa-trash\"></i></a></span>\r\n\r\n            </p>\r\n        </li>\r\n    </ul>\r\n</div>");
+$templateCache.put("app/_common/layout/directives/demo/demo-states.tpl.html","<div class=\"demo\"><span id=\"demo-setting\"><i class=\"fa fa-cog txt-color-blueDark\"></i></span>\r\n\r\n    <form>\r\n        <legend class=\"no-padding margin-bottom-10\">Layout Options</legend>\r\n        <section>\r\n            <label><input type=\"checkbox\" ng-model=\"fixedHeader\"\r\n                          class=\"checkbox style-0\"><span>Fixed Header</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"fixedNavigation\"\r\n                          class=\"checkbox style-0\"><span>Fixed Navigation</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"fixedRibbon\"\r\n                          class=\"checkbox style-0\"><span>Fixed Ribbon</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"fixedPageFooter\"\r\n                          class=\"checkbox style-0\"><span>Fixed Footer</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"insideContainer\"\r\n                          class=\"checkbox style-0\"><span>Inside <b>.container</b></span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"rtl\"\r\n                          class=\"checkbox style-0\"><span>RTL</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"menuOnTop\"\r\n                          class=\"checkbox style-0\"><span>Menu on <b>top</b></span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"colorblindFriendly\"\r\n                          class=\"checkbox style-0\"><span>For Colorblind <div\r\n                    class=\"font-xs text-right\">(experimental)\r\n            </div></span>\r\n            </label><span id=\"smart-bgimages\"></span></section>\r\n        <section><h6 class=\"margin-top-10 semi-bold margin-bottom-5\">Clear Localstorage</h6><a\r\n                ng-click=\"factoryReset()\" class=\"btn btn-xs btn-block btn-primary\" id=\"reset-smart-widget\"><i\r\n                class=\"fa fa-refresh\"></i> Factory Reset</a></section>\r\n\r\n        <h6 class=\"margin-top-10 semi-bold margin-bottom-5\">SmartAdmin Skins</h6>\r\n\r\n\r\n        <section id=\"smart-styles\">\r\n            <a ng-repeat=\"skin in skins\" ng-click=\"setSkin(skin)\" class=\"{{skin.class}}\" style=\"{{skin.style}}\"><i ng-if=\"skin.name == $parent.smartSkin\" class=\"fa fa-check fa-fw\"></i> {{skin.label}}</a>\r\n        </section>\r\n    </form>\r\n</div>");
 $templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-attribute-form.tpl.html","<form id=\"attributeForm\" class=\"form-horizontal\"\r\n      data-bv-message=\"This value is not valid\"\r\n      data-bv-feedbackicons-valid=\"glyphicon glyphicon-ok\"\r\n      data-bv-feedbackicons-invalid=\"glyphicon glyphicon-remove\"\r\n      data-bv-feedbackicons-validating=\"glyphicon glyphicon-refresh\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Set validator options via HTML attributes\r\n        </legend>\r\n\r\n        <div class=\"alert alert-warning\">\r\n            <code>&lt; input\r\n                data-bv-validatorname\r\n                data-bv-validatorname-validatoroption=\"...\" / &gt;</code>\r\n\r\n            <br>\r\n            <br>\r\n            More validator options can be found here:\r\n            <a href=\"http://bootstrapvalidator.com/validators/\" target=\"_blank\">http://bootstrapvalidator.com/validators/</a>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Full name</label>\r\n            <div class=\"col-lg-4\">\r\n                <input type=\"text\" class=\"form-control\" name=\"firstName\" placeholder=\"First name\"\r\n                       data-bv-notempty=\"true\"\r\n                       data-bv-notempty-message=\"The first name is required and cannot be empty\" />\r\n            </div>\r\n            <div class=\"col-lg-4\">\r\n                <input type=\"text\" class=\"form-control\" name=\"lastName\" placeholder=\"Last name\"\r\n                       data-bv-notempty=\"true\"\r\n                       data-bv-notempty-message=\"The last name is required and cannot be empty\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Username</label>\r\n            <div class=\"col-lg-5\">\r\n                <input type=\"text\" class=\"form-control\" name=\"username\"\r\n                       data-bv-message=\"The username is not valid\"\r\n\r\n                       data-bv-notempty=\"true\"\r\n                       data-bv-notempty-message=\"The username is required and cannot be empty\"\r\n\r\n                       data-bv-regexp=\"true\"\r\n                       data-bv-regexp-regexp=\"^[a-zA-Z0-9_\\.]+$\"\r\n                       data-bv-regexp-message=\"The username can only consist of alphabetical, number, dot and underscore\"\r\n\r\n                       data-bv-stringlength=\"true\"\r\n                       data-bv-stringlength-min=\"6\"\r\n                       data-bv-stringlength-max=\"30\"\r\n                       data-bv-stringlength-message=\"The username must be more than 6 and less than 30 characters long\"\r\n\r\n                       data-bv-different=\"true\"\r\n                       data-bv-different-field=\"password\"\r\n                       data-bv-different-message=\"The username and password cannot be the same as each other\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Email address</label>\r\n            <div class=\"col-lg-5\">\r\n                <input class=\"form-control\" name=\"email\" type=\"email\"\r\n                       data-bv-emailaddress=\"true\"\r\n                       data-bv-emailaddress-message=\"The input is not a valid email address\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Password</label>\r\n            <div class=\"col-lg-5\">\r\n                <input type=\"password\" class=\"form-control\" name=\"password\"\r\n                       data-bv-notempty=\"true\"\r\n                       data-bv-notempty-message=\"The password is required and cannot be empty\"\r\n\r\n                       data-bv-identical=\"true\"\r\n                       data-bv-identical-field=\"confirmPassword\"\r\n                       data-bv-identical-message=\"The password and its confirm are not the same\"\r\n\r\n                       data-bv-different=\"true\"\r\n                       data-bv-different-field=\"username\"\r\n                       data-bv-different-message=\"The password cannot be the same as username\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Retype password</label>\r\n            <div class=\"col-lg-5\">\r\n                <input type=\"password\" class=\"form-control\" name=\"confirmPassword\"\r\n                       data-bv-notempty=\"true\"\r\n                       data-bv-notempty-message=\"The confirm password is required and cannot be empty\"\r\n\r\n                       data-bv-identical=\"true\"\r\n                       data-bv-identical-field=\"password\"\r\n                       data-bv-identical-message=\"The password and its confirm are not the same\"\r\n\r\n                       data-bv-different=\"true\"\r\n                       data-bv-different-field=\"username\"\r\n                       data-bv-different-message=\"The password cannot be the same as username\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Languages</label>\r\n            <div class=\"col-lg-5\">\r\n                <div class=\"checkbox\">\r\n                    <label>\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"english\"\r\n                               data-bv-message=\"Please specify at least one language you can speak\"\r\n                               data-bv-notempty=\"true\" />\r\n                        English </label>\r\n                </div>\r\n                <div class=\"checkbox\">\r\n                    <label>\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"french\" />\r\n                        French </label>\r\n                </div>\r\n                <div class=\"checkbox\">\r\n                    <label>\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"german\" />\r\n                        German </label>\r\n                </div>\r\n                <div class=\"checkbox\">\r\n                    <label>\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"russian\" />\r\n                        Russian </label>\r\n                </div>\r\n                <div class=\"checkbox\">\r\n                    <label>\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"other\" />\r\n                        Other </label>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n</form>\r\n     ");
 $templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-button-group-form.tpl.html","<form id=\"buttonGroupForm\" method=\"post\" class=\"form-horizontal\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Default Form Elements\r\n        </legend>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Gender</label>\r\n            <div class=\"col-lg-9\">\r\n                <div class=\"btn-group\" data-toggle=\"buttons\">\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"radio\" name=\"gender\" value=\"male\" />\r\n                        Male </label>\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"radio\" name=\"gender\" value=\"female\" />\r\n                        Female </label>\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"radio\" name=\"gender\" value=\"other\" />\r\n                        Other </label>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Languages</label>\r\n            <div class=\"col-lg-9\">\r\n                <div class=\"btn-group\" data-toggle=\"buttons\">\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"english\" />\r\n                        English </label>\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"german\" />\r\n                        German </label>\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"french\" />\r\n                        French </label>\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"russian\" />\r\n                        Russian </label>\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"italian\">\r\n                        Italian </label>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n</form>\r\n");
 $templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-contact-form.tpl.html","<form id=\"contactForm\" method=\"post\" class=\"form-horizontal\">\r\n\r\n    <fieldset>\r\n        <legend>Showing messages in custom area</legend>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-md-3 control-label\">Full name</label>\r\n            <div class=\"col-md-6\">\r\n                <input type=\"text\" class=\"form-control\" name=\"fullName\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-md-3 control-label\">Email</label>\r\n            <div class=\"col-md-6\">\r\n                <input type=\"text\" class=\"form-control\" name=\"email\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-md-3 control-label\">Title</label>\r\n            <div class=\"col-md-6\">\r\n                <input type=\"text\" class=\"form-control\" name=\"title\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-md-3 control-label\">Content</label>\r\n            <div class=\"col-md-6\">\r\n                <textarea class=\"form-control\" name=\"content\" rows=\"5\"></textarea>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <!-- #messages is where the messages are placed inside -->\r\n        <div class=\"form-group\">\r\n            <div class=\"col-md-9 col-md-offset-3\">\r\n                <div id=\"messages\"></div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n</form>\r\n");
 $templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-movie-form.tpl.html","\r\n<form id=\"movieForm\" method=\"post\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Default Form Elements\r\n        </legend>\r\n        <div class=\"form-group\">\r\n            <div class=\"row\">\r\n                <div class=\"col-md-8\">\r\n                    <label class=\"control-label\">Movie title</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"title\" />\r\n                </div>\r\n\r\n                <div class=\"col-md-4 selectContainer\">\r\n                    <label class=\"control-label\">Genre</label>\r\n                    <select class=\"form-control\" name=\"genre\">\r\n                        <option value=\"\">Choose a genre</option>\r\n                        <option value=\"action\">Action</option>\r\n                        <option value=\"comedy\">Comedy</option>\r\n                        <option value=\"horror\">Horror</option>\r\n                        <option value=\"romance\">Romance</option>\r\n                    </select>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <div class=\"row\">\r\n                <div class=\"col-sm-12 col-md-4\">\r\n                    <label class=\"control-label\">Director</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"director\" />\r\n                </div>\r\n\r\n                <div class=\"col-sm-12 col-md-4\">\r\n                    <label class=\"control-label\">Writer</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"writer\" />\r\n                </div>\r\n\r\n                <div class=\"col-sm-12 col-md-4\">\r\n                    <label class=\"control-label\">Producer</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"producer\" />\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <div class=\"row\">\r\n                <div class=\"col-sm-12 col-md-6\">\r\n                    <label class=\"control-label\">Website</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"website\" />\r\n                </div>\r\n\r\n                <div class=\"col-sm-12 col-md-6\">\r\n                    <label class=\"control-label\">Youtube trailer</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"trailer\" />\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"control-label\">Review</label>\r\n            <textarea class=\"form-control\" name=\"review\" rows=\"8\"></textarea>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n\r\n            <div class=\"row\">\r\n                <div class=\"col-sm-12 col-md-12\">\r\n                    <label class=\"control-label\">Rating</label>\r\n                </div>\r\n\r\n                <div class=\"col-sm-12 col-md-10\">\r\n\r\n                    <label class=\"radio radio-inline no-margin\">\r\n                        <input type=\"radio\" name=\"rating\" value=\"terrible\" class=\"radiobox style-2\" />\r\n                        <span>Terrible</span> </label>\r\n\r\n                    <label class=\"radio radio-inline\">\r\n                        <input type=\"radio\" name=\"rating\" value=\"watchable\" class=\"radiobox style-2\" />\r\n                        <span>Watchable</span> </label>\r\n                    <label class=\"radio radio-inline\">\r\n                        <input type=\"radio\" name=\"rating\" value=\"best\" class=\"radiobox style-2\" />\r\n                        <span>Best ever</span> </label>\r\n\r\n                </div>\r\n\r\n            </div>\r\n\r\n        </div>\r\n    </fieldset>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n</form>\r\n\r\n ");
 $templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-product-form.tpl.html","<form id=\"productForm\" class=\"form-horizontal\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Default Form Elements\r\n        </legend>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-xs-2 col-lg-3 control-label\">Price</label>\r\n            <div class=\"col-xs-9 col-lg-6 inputGroupContainer\">\r\n                <div class=\"input-group\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"price\" />\r\n                    <span class=\"input-group-addon\">$</span>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-xs-2 col-lg-3 control-label\">Amount</label>\r\n            <div class=\"col-xs-9 col-lg-6 inputGroupContainer\">\r\n                <div class=\"input-group\">\r\n                    <span class=\"input-group-addon\">&#8364;</span>\r\n                    <input type=\"text\" class=\"form-control\" name=\"amount\" />\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-xs-2 col-lg-3 control-label\">Color</label>\r\n            <div class=\"col-xs-9 col-lg-6 selectContainer\">\r\n                <select class=\"form-control\" name=\"color\">\r\n                    <option value=\"\">Choose a color</option>\r\n                    <option value=\"blue\">Blue</option>\r\n                    <option value=\"green\">Green</option>\r\n                    <option value=\"red\">Red</option>\r\n                    <option value=\"yellow\">Yellow</option>\r\n                    <option value=\"white\">White</option>\r\n                </select>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-xs-2 col-lg-3 control-label\">Size</label>\r\n            <div class=\"col-xs-9 col-lg-6 selectContainer\">\r\n                <select class=\"form-control\" name=\"size\">\r\n                    <option value=\"\">Choose a size</option>\r\n                    <option value=\"S\">S</option>\r\n                    <option value=\"M\">M</option>\r\n                    <option value=\"L\">L</option>\r\n                    <option value=\"XL\">XL</option>\r\n                </select>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</form>\r\n\r\n");
 $templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-profile-form.tpl.html","<form id=\"profileForm\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Default Form Elements\r\n        </legend>\r\n        <div class=\"form-group\">\r\n            <label>Email address</label>\r\n            <input type=\"text\" class=\"form-control\" name=\"email\" />\r\n        </div>\r\n    </fieldset>\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label>Password</label>\r\n            <input type=\"password\" class=\"form-control\" name=\"password\" />\r\n        </div>\r\n    </fieldset>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</form>\r\n");
-$templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-toggling-form.tpl.html","<form id=\"togglingForm\" method=\"post\" class=\"form-horizontal\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Default Form Elements\r\n        </legend>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Full name <sup>*</sup></label>\r\n            <div class=\"col-lg-4\">\r\n                <input type=\"text\" class=\"form-control\" name=\"firstName\" placeholder=\"First name\" />\r\n            </div>\r\n            <div class=\"col-lg-4\">\r\n                <input type=\"text\" class=\"form-control\" name=\"lastName\" placeholder=\"Last name\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Company <sup>*</sup></label>\r\n            <div class=\"col-lg-5\">\r\n                <input type=\"text\" class=\"form-control\" name=\"company\"\r\n                       required data-bv-notempty-message=\"The company name is required\" />\r\n            </div>\r\n            <div class=\"col-lg-2\">\r\n                <button type=\"button\" class=\"btn btn-info btn-sm\" data-toggle=\"#jobInfo\">\r\n                    Add more info\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <!-- These fields will not be validated as long as they are not visible -->\r\n    <div id=\"jobInfo\" style=\"display: none;\">\r\n        <fieldset>\r\n            <div class=\"form-group\">\r\n                <label class=\"col-lg-3 control-label\">Job title <sup>*</sup></label>\r\n                <div class=\"col-lg-5\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"job\" />\r\n                </div>\r\n            </div>\r\n        </fieldset>\r\n\r\n        <fieldset>\r\n            <div class=\"form-group\">\r\n                <label class=\"col-lg-3 control-label\">Department <sup>*</sup></label>\r\n                <div class=\"col-lg-5\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"department\" />\r\n                </div>\r\n            </div>\r\n        </fieldset>\r\n    </div>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Mobile phone <sup>*</sup></label>\r\n            <div class=\"col-lg-5\">\r\n                <input type=\"text\" class=\"form-control\" name=\"mobilePhone\" />\r\n            </div>\r\n            <div class=\"col-lg-2\">\r\n                <button type=\"button\" class=\"btn btn-info btn-sm\" data-toggle=\"#phoneInfo\">\r\n                    Add more phone numbers\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n    <!-- These fields will not be validated as long as they are not visible -->\r\n    <div id=\"phoneInfo\" style=\"display: none;\">\r\n\r\n        <fieldset>\r\n            <div class=\"form-group\">\r\n                <label class=\"col-lg-3 control-label\">Home phone</label>\r\n                <div class=\"col-lg-5\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"homePhone\" />\r\n                </div>\r\n            </div>\r\n        </fieldset>\r\n        <fieldset>\r\n            <div class=\"form-group\">\r\n                <label class=\"col-lg-3 control-label\">Office phone</label>\r\n                <div class=\"col-lg-5\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"officePhone\" />\r\n                </div>\r\n            </div>\r\n        </fieldset>\r\n    </div>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</form>");
-$templateCache.put("app/_common/layout/directives/demo/demo-states.tpl.html","<div class=\"demo\"><span id=\"demo-setting\"><i class=\"fa fa-cog txt-color-blueDark\"></i></span>\r\n\r\n    <form>\r\n        <legend class=\"no-padding margin-bottom-10\">Layout Options</legend>\r\n        <section>\r\n            <label><input type=\"checkbox\" ng-model=\"fixedHeader\"\r\n                          class=\"checkbox style-0\"><span>Fixed Header</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"fixedNavigation\"\r\n                          class=\"checkbox style-0\"><span>Fixed Navigation</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"fixedRibbon\"\r\n                          class=\"checkbox style-0\"><span>Fixed Ribbon</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"fixedPageFooter\"\r\n                          class=\"checkbox style-0\"><span>Fixed Footer</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"insideContainer\"\r\n                          class=\"checkbox style-0\"><span>Inside <b>.container</b></span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"rtl\"\r\n                          class=\"checkbox style-0\"><span>RTL</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"menuOnTop\"\r\n                          class=\"checkbox style-0\"><span>Menu on <b>top</b></span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"colorblindFriendly\"\r\n                          class=\"checkbox style-0\"><span>For Colorblind <div\r\n                    class=\"font-xs text-right\">(experimental)\r\n            </div></span>\r\n            </label><span id=\"smart-bgimages\"></span></section>\r\n        <section><h6 class=\"margin-top-10 semi-bold margin-bottom-5\">Clear Localstorage</h6><a\r\n                ng-click=\"factoryReset()\" class=\"btn btn-xs btn-block btn-primary\" id=\"reset-smart-widget\"><i\r\n                class=\"fa fa-refresh\"></i> Factory Reset</a></section>\r\n\r\n        <h6 class=\"margin-top-10 semi-bold margin-bottom-5\">SmartAdmin Skins</h6>\r\n\r\n\r\n        <section id=\"smart-styles\">\r\n            <a ng-repeat=\"skin in skins\" ng-click=\"setSkin(skin)\" class=\"{{skin.class}}\" style=\"{{skin.style}}\"><i ng-if=\"skin.name == $parent.smartSkin\" class=\"fa fa-check fa-fw\"></i> {{skin.label}}</a>\r\n        </section>\r\n    </form>\r\n</div>");}]);
+$templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-toggling-form.tpl.html","<form id=\"togglingForm\" method=\"post\" class=\"form-horizontal\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Default Form Elements\r\n        </legend>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Full name <sup>*</sup></label>\r\n            <div class=\"col-lg-4\">\r\n                <input type=\"text\" class=\"form-control\" name=\"firstName\" placeholder=\"First name\" />\r\n            </div>\r\n            <div class=\"col-lg-4\">\r\n                <input type=\"text\" class=\"form-control\" name=\"lastName\" placeholder=\"Last name\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Company <sup>*</sup></label>\r\n            <div class=\"col-lg-5\">\r\n                <input type=\"text\" class=\"form-control\" name=\"company\"\r\n                       required data-bv-notempty-message=\"The company name is required\" />\r\n            </div>\r\n            <div class=\"col-lg-2\">\r\n                <button type=\"button\" class=\"btn btn-info btn-sm\" data-toggle=\"#jobInfo\">\r\n                    Add more info\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <!-- These fields will not be validated as long as they are not visible -->\r\n    <div id=\"jobInfo\" style=\"display: none;\">\r\n        <fieldset>\r\n            <div class=\"form-group\">\r\n                <label class=\"col-lg-3 control-label\">Job title <sup>*</sup></label>\r\n                <div class=\"col-lg-5\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"job\" />\r\n                </div>\r\n            </div>\r\n        </fieldset>\r\n\r\n        <fieldset>\r\n            <div class=\"form-group\">\r\n                <label class=\"col-lg-3 control-label\">Department <sup>*</sup></label>\r\n                <div class=\"col-lg-5\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"department\" />\r\n                </div>\r\n            </div>\r\n        </fieldset>\r\n    </div>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Mobile phone <sup>*</sup></label>\r\n            <div class=\"col-lg-5\">\r\n                <input type=\"text\" class=\"form-control\" name=\"mobilePhone\" />\r\n            </div>\r\n            <div class=\"col-lg-2\">\r\n                <button type=\"button\" class=\"btn btn-info btn-sm\" data-toggle=\"#phoneInfo\">\r\n                    Add more phone numbers\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n    <!-- These fields will not be validated as long as they are not visible -->\r\n    <div id=\"phoneInfo\" style=\"display: none;\">\r\n\r\n        <fieldset>\r\n            <div class=\"form-group\">\r\n                <label class=\"col-lg-3 control-label\">Home phone</label>\r\n                <div class=\"col-lg-5\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"homePhone\" />\r\n                </div>\r\n            </div>\r\n        </fieldset>\r\n        <fieldset>\r\n            <div class=\"form-group\">\r\n                <label class=\"col-lg-3 control-label\">Office phone</label>\r\n                <div class=\"col-lg-5\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"officePhone\" />\r\n                </div>\r\n            </div>\r\n        </fieldset>\r\n    </div>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</form>");}]);
 "use strict";
 
 angular.module("app.stations", ["ui.router", "ui.bootstrap"]);
@@ -4835,12 +4894,12 @@ angular.module('app.chat', ['ngSanitize'])
 (function(){
     "use strict";
 
-    angular.module('SmartAdmin.Forms', []);
+    angular.module('SmartAdmin.Layout', []);
 })();
 (function(){
     "use strict";
 
-    angular.module('SmartAdmin.Layout', []);
+    angular.module('SmartAdmin.Forms', []);
 })();
 (function (app) {
     app.factory('AuthInterceptorService', ['$q', '$location', 'localStorageService', function ($q, $location, localStorageService) {
@@ -5606,522 +5665,6 @@ angular.module('app.attachments').controller('attachmentsModalCtrl', function ($
 
 'use strict';
 
-angular.module('app.attachments').directive('attachments', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/attachments/views/attachments.html',
-        replace: true,
-        scope: {},
-        bindToController: {
-            dbschema: '=',
-            dbclass: '=',
-            oid: '=',
-            read: '='
-        },
-        controllerAs: 'vm',
-        controller: 'attachmentsCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
-'use strict';
-
-angular.module('app.attachments').directive('dropzone', function ($rootScope, APP_CONFIG, fileManager, User) {
-    return {
-        restrict: 'C',
-        link: function (scope, element, attributes) {
-            
-            var config = {
-                url: APP_CONFIG.ebaasRootUrl + "/" + fileManager.params.api + "/" + encodeURIComponent(fileManager.params.schema) + "/" + fileManager.params.cls + "/" + fileManager.params.oid + "?prefix=" + encodeURIComponent(fileManager.params.prefix) + "&user=" + encodeURIComponent(User.userName),
-                maxFilesize: 100,
-                maxFiles: 20,
-                maxThumbnailFilesize: 10,
-                previewTemplate: '<div class="dz-preview dz-file-preview"><div><div class="dz-filename"><span data-dz-name></span></span></div><span class="fa fa-lg fa-file-text-o"></span></div><div><span class="dz-size" data-dz-size></div><div><span class="dz-upload" data-dz-uploadprogress></span></div><div class="dz-success-mark"><span class="fa fa-check"></span></div><div class="dz-error-mark"><span class="fa fa-exclamation-triangle"></span></div><div class="dz-error-message"><span data-dz-errormessage></span></div></div>',
-                addRemoveLinks: false,
-                paramName: "uploadFile",
-                parallelUploads: 20,
-                autoProcessQueue: false,
-                dictDefaultMessage: '<span class="text-center"><span class="font-md visible-lg-block"><span class="font-md"><i class="fa fa-caret-right text-danger"></i><span class="font-xs">' + $rootScope.getWord("DropZone") + '</span></span>',
-                dictResponseError: $rootScope.getWord("UploadError"),
-                dictCancelUpload: "Cancel Upload",
-                dictRemoveFile: "Remove File",
-
-            };
-
-            var eventHandlers = {
-                'addedFile': function (file) {
-                    scope.file = file;
-                    if (this.files[1] != null) {
-                        this.removeFile(this.files[0]);
-                    }
-                    scope.$apply(function () {
-                        scope.fileAdded = true;
-                    });
-                },
-
-                'success': function (file, response) {
-                },
-
-                'removedFile': function(file)
-                {
-                    console.debug("Removed file called");
-                },
-
-                'queuecomplete': function () {
-                    fileManager.load();
-
-                    setTimeout(function () {
-                        //scope.resetDropzone();
-                    }, 2000);
-                }
-            };
-
-            var dropzone = new Dropzone(element[0], config);
-
-            angular.forEach(eventHandlers, function (handler, event) {
-                dropzone.on(event, handler);
-            });
-
-            scope.processDropzone = function () {
-
-                var url = undefined;
-                if (fileManager.params.oid)
-                {
-                    url = APP_CONFIG.ebaasRootUrl + "/" + fileManager.params.api + "/" + encodeURIComponent(fileManager.params.schema) + "/" + fileManager.params.cls + "/" + fileManager.params.oid + "?prefix=" + encodeURIComponent(fileManager.params.prefix) + "&user=" + encodeURIComponent(User.userName);
-                }
-
-                dropzone.options.url = url;
-                dropzone.processQueue();
-            };
-
-            scope.resetDropzone = function () {
-                dropzone.removeAllFiles();
-            }
-        }
-    }
-});
-
-'use strict';
-
-angular.module('app.attachments').directive('egAppStatus', function (loadingInfo) {
-    var directive = {
-        link: link,
-        restrict: 'E',
-        templateUrl: 'app/attachments/views/egAppStatus.html'
-    };
-    return directive;
-
-    function link(scope, element, attrs) {
-        scope.status = loadingInfo.status;
-    }
-});
-'use strict';
-
-angular.module('app.attachments').directive('egFiles', function () {
-
-    var directive = {
-        link: link,
-        restrict: 'A',
-        scope: {
-            files: '=egFiles',
-            hasFiles: '='
-        }
-    };
-    return directive;
-
-    function link(scope, element, attrs) {
-        element.bind('change', function () {
-            scope.$apply(function () {
-                if (element[0].files) {
-                    scope.files.length = 0;
-
-                    angular.forEach(element[0].files, function (f) {
-                        scope.files.push(f);
-                    });
-
-                    scope.hasFiles = true;
-                }
-            });
-        });
-
-        if (element[0].form) {
-            angular.element(element[0].form)
-                    .bind('reset', function () {
-                        scope.$apply(function () {
-                            scope.files.length = 0;
-                            scope.hasFiles = false;
-                        });
-                    });
-        }
-    }
-});
-'use strict';
-
-angular.module('app.attachments').directive('egUpload', function ($timeout) {
-    var directive = {
-        link: link,
-        restrict: 'A',
-        scope: {
-            upload: '&egUpload'
-        }
-    };
-    return directive;
-
-    function link(scope, element, attrs) {
-        var parentForm = element[0].form;
-        if (parentForm) {
-            element.on('click', function (event) {
-                return scope.upload().then(function () {
-                    //see:https://docs.angularjs.org/error/$rootScope/inprog?p0=$digest for why there is a need to use timeout to avoid conflict
-                    $timeout(function () {
-                        parentForm.reset();
-                    });
-                });
-            });
-        }
-    }
-});
-'use strict';
-
-angular.module('app.attachments').directive('fileDropzone', function ($rootScope) {
-    return {
-        restrict: 'A',
-        compile: function (tElement, tAttributes) {
-            tElement.removeAttr('smart-dropzone data-smart-dropzone');
-
-            tElement.dropzone({
-                addRemoveLinks : true,
-                maxFilesize: 0.5,
-                dictDefaultMessage: '<span class="text-center"><span class="font-lg visible-xs-block visible-sm-block visible-lg-block"><span class="font-lg"><i class="fa fa-caret-right text-danger"></i><span class="font-xs">' + $rootScope.getWord("DropZone") + '</span></span>',
-                dictResponseError: $rootScope.getWord("UploadError")
-            });
-        }
-    }
-});
-
-'use strict';
-
-angular.module('app.attachments').directive('egFileUploader', function (loadingInfo, fileManager) {
-
-    var directive = {
-        link: link,
-        restrict: 'E',
-        templateUrl: 'app/attachments/views/fileUploader.html',
-        scope: true
-    };
-    return directive;
-
-    function link(scope, element, attrs) {
-        scope.hasFiles = false;
-        scope.files = [];
-        scope.upload = fileManager.upload;
-        scope.appStatus = loadingInfo.status;
-        scope.fileManagerStatus = fileManager.status;
-    }
-
-});
-'use strict';
-
-angular.module('app.attachments').factory('fileManager', function ($q, fileManagerClient, $http, loadingInfo, User) {
-
-    var service = {
-        files: [],
-        load: load,
-        upload: upload,
-        remove: remove,
-        download: download,
-        performDownload: performDownload,
-        fileExists: fileExists,
-        status: {
-            uploading: false
-        },
-        params: {
-            serviceBase: "",
-            schema: "",
-            cls: "",
-            oid: "",
-            api: "",
-            prefix: ""
-        }
-    };
-
-    return service;
-
-    function load() {
-
-        loadingInfo.setInfo({ busy: true, message: "loading files" })
-
-        service.files.length = 0;
-
-        if (!service.params.oid)
-            return [];
-        else
-            return fileManagerClient.query({api: service.params.api, schema: service.params.schema, cls: service.params.cls, oid: service.params.oid, prefix: service.params.prefix })
-                                .$promise
-                                .then(function (result) {
-                                    result.files
-                                            .forEach(function (file) {
-                                                service.files.push(file);
-                                            });
-
-                                    loadingInfo.setInfo({ message: "files loaded successfully" });
-
-                                    return result.$promise;
-                                },
-                                function (result) {
-                                    if (result.data) {
-                                        loadingInfo.setInfo({ message: "something went wrong: " + result.data.message });
-                                    }
-                                    else
-                                    {
-                                        loadingInfo.setInfo({ message: "something went wrong: "});
-                                    }
-                                    return $q.reject(result);
-                                })
-                                ['finally'](
-                                function () {
-                                    loadingInfo.setInfo({ busy: false });
-                                });
-    }
-
-    function upload(files) {
-        
-        service.status.uploading = true;
-        loadingInfo.setInfo({ busy: true, message: "uploading files" });
-
-        var formData = new FormData();
-
-        angular.forEach(files, function (file) {
-            console.debug("upload file name =" + file.name);
-            formData.append(file.name, file);
-        });
-
-        return fileManagerClient.save({ api: service.params.api, schema: service.params.schema, cls: service.params.cls, oid: service.params.oid, prefix: service.params.prefix }, formData)
-                                    .$promise
-                                    .then(function (result) {
-                                        if (result && result.files) {
-                                            result.files.forEach(function (file) {
-                                                if (!fileExists(file.name)) {
-                                                    service.files.push(file);
-                                                }
-                                            });
-                                        }
-
-                                        loadingInfo.setInfo({ message: "files uploaded successfully" });
-
-                                        return result.$promise;
-                                    },
-                                    function (result) {
-                                        loadingInfo.setInfo({ message: "something went wrong: " + result.data.message });
-                                        return $q.reject(result);
-                                    })
-                                    ['finally'](
-                                    function () {
-                                        loadingInfo.setInfo({ busy: false });
-                                        service.status.uploading = false;
-                                    });
-    }
-
-    function remove(file) {
-        loadingInfo.setInfo({ busy: true, message: "deleting file " + file.name });
-      
-        return fileManagerClient.remove({ api: service.params.api, schema: service.params.schema, cls: service.params.cls, oid: service.params.oid, fileId: file.id, prefix: service.params.prefix })
-                                    .$promise
-                                    .then(function (result) {
-                                        //if the file was deleted successfully remove it from the files array
-                                        var i = service.files.indexOf(file);
-                                        service.files.splice(i, 1);
-
-                                        loadingInfo.setInfo({ message: "files deleted" });
-
-                                        return result.$promise;
-                                    },
-                                    function (result) {
-                                        loadingInfo.setInfo({ message: "something went wrong: " + result.data.message });
-                                        return $q.reject(result);
-                                    })
-                                    ['finally'](
-                                    function () {
-                                        loadingInfo.setInfo({ busy: false });
-                                    });
-    }
-
-    function download(file)
-    {
-        var getFileUrl = service.params.serviceBase + "/" + service.params.api + "/" + service.params.schema + "/" + service.params.cls + "/" + service.params.oid + "/" + file.id;
-        if (service.params.prefix)
-        {
-            getFileUrl += "?prefix=" + encodeURIComponent(service.params.prefix) + "&user=" + encodeURIComponent(User.userName);
-        }
-
-        performDownload(getFileUrl, null);
-    }
-
-    function performDownload(url, callback) {
-    
-        // Use an arraybuffer
-        $http.get(url, { responseType: 'arraybuffer' })
-            .success(function (data, status, headers) {
-
-                var octetStreamMime = 'application/octet-stream';
-                var success = false;
-
-                // Get the headers
-                headers = headers();
-
-                // Get the filename from the x-filename header or default to "download.bin"
-                var filename = headers['x-filename'] || 'download.bin';
-                filename = decodeURIComponent(filename);
-
-                // Determine the content type from the header or default to "application/octet-stream"
-                var contentType = headers['content-type'] || octetStreamMime;
-
-                try {
-                    // Try using msSaveBlob if supported
-                    console.log("Trying saveBlob method ...");
-                    var blob = new Blob([data], { type: contentType });
-                    if (navigator.msSaveBlob)
-                        navigator.msSaveBlob(blob, filename);
-                    else {
-                        // Try using other saveBlob implementations, if available
-                        var saveBlob = navigator.webkitSaveBlob || navigator.mozSaveBlob || navigator.saveBlob;
-                        if (saveBlob === undefined) throw "Not supported";
-                        saveBlob(blob, filename);
-                    }
-                    console.log("saveBlob succeeded");
-                    success = true;
-                } catch (ex) {
-                    console.log("saveBlob method failed with the following exception:");
-                    console.log(ex);
-                }
-
-                if (!success) {
-                    // Get the blob url creator
-                    var urlCreator = window.URL || window.webkitURL || window.mozURL || window.msURL;
-                    if (urlCreator) {
-                        // Try to use a download link
-                        var link = document.createElement('a');
-                        if ('download' in link) {
-                            // Try to simulate a click
-                            try {
-                                // Prepare a blob URL
-                                console.log("Trying download link method with simulated click ...");
-                                var blob = new Blob([data], { type: contentType });
-                                var url = urlCreator.createObjectURL(blob);
-                                link.setAttribute('href', url);
-
-                                // Set the download attribute (Supported in Chrome 14+ / Firefox 20+)
-                                link.setAttribute("download", filename);
-
-                                // Simulate clicking the download link
-                                var event = document.createEvent('MouseEvents');
-                                event.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
-                                link.dispatchEvent(event);
-                                console.log("Download link method with simulated click succeeded");
-                                success = true;
-
-                            } catch (ex) {
-                                console.log("Download link method with simulated click failed with the following exception:");
-                                console.log(ex);
-                            }
-                        }
-
-                        if (!success) {
-                            // Fallback to window.location method
-                            try {
-                                // Prepare a blob URL
-                                // Use application/octet-stream when using window.location to force download
-                                console.log("Trying download link method with window.location ...");
-                                var blob = new Blob([data], { type: octetStreamMime });
-                                var url = urlCreator.createObjectURL(blob);
-                                window.location = url;
-                                console.log("Download link method with window.location succeeded");
-                                success = true;
-                            } catch (ex) {
-                                console.log("Download link method with window.location failed with the following exception:");
-                                console.log(ex);
-                            }
-                        }
-
-                    }
-                }
-
-                if (!success) {
-                    // Fallback to window.open method
-                    console.log("No methods worked for saving the arraybuffer, using last resort window.open");
-                    window.open(httpPath, '_blank', '');
-                }
-
-                if (callback)
-                {
-                    callback();
-                }
-            })
-        .error(function (data, status) {
-            console.log("Request failed with status: " + status);
-
-            // Optionally write the error out to scope
-            //$scope.errorDetails = "Request failed with status: " + status;
-
-            if (callback) {
-                callback();
-            }
-        });
-    }
-
-    function fileExists(fileName) {
-        var res = false
-        service.files.forEach(function (file) {
-            if (file.name === fileName) {
-                res = true;
-            }
-        });
-
-        return res;
-    }
-});
-'use strict';
-
-angular.module('app.attachments').factory('fileManagerClient', function ($resource, APP_CONFIG) {
-
-    return $resource(APP_CONFIG.ebaasRootUrl + "/:api/:schema/:cls/:oid?prefix=:prefix",
-        { id: "@Id" },
-        {
-            'query': { method: 'GET', params: {api: "api", schema: "schema", cls: "cls", oid: "oid", prefix: "prefix"} },
-            'save': { method: 'POST', params: { api: "api", schema: "schema", cls: "cls", oid: "oid", prefix: 'prefix' }, transformRequest: angular.identity, headers: { 'Content-Type': undefined } },
-            'remove': { method: 'DELETE', url: APP_CONFIG.ebaasRootUrl + '/:api/:schema/:cls/:oid/:fileId?prefix=:prefix', params: {api: "api", schema: "schema", cls: "cls", oid: "oid", fileId: "fileId", prefix: "prefix"} }
-        });
-});
-
-'use strict';
-
-angular.module('app.attachments').factory('loadingInfo', function () {
-    var service = {
-        status: {
-            busy: false,
-            message: ''
-        },
-        setInfo: setInfo
-    };
-
-    return service;
-
-    function setInfo(args) {
-        if (args) {
-            if (args.hasOwnProperty('busy')) {
-                service.status.busy = args.busy;
-            }
-            if (args.hasOwnProperty('message')) {
-                service.status.message = args.message;
-            }
-        } else {
-            service.status.busy = false;
-            service.status.message = '';
-        }
-    }
-});
-'use strict';
-
 angular.module('app.blog').controller('blogGeneralCtrl', function ($scope, $rootScope, $http, $state, $stateParams, APP_CONFIG, User, blogService) {
     $scope.dbschema = "COMMON";
     $scope.dbclass = "BlogGroup";
@@ -6731,6 +6274,857 @@ angular.module('app.blog').controller('blogViewCtrl', function ($scope, $state, 
         $state.go('app.blog', { keywords: $scope.keywords });
     }
 });
+'use strict';
+
+angular.module('app.attachments').directive('attachments', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/attachments/views/attachments.html',
+        replace: true,
+        scope: {},
+        bindToController: {
+            dbschema: '=',
+            dbclass: '=',
+            oid: '=',
+            read: '='
+        },
+        controllerAs: 'vm',
+        controller: 'attachmentsCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
+'use strict';
+
+angular.module('app.attachments').directive('dropzone', function ($rootScope, APP_CONFIG, fileManager, User) {
+    return {
+        restrict: 'C',
+        link: function (scope, element, attributes) {
+            
+            var config = {
+                url: APP_CONFIG.ebaasRootUrl + "/" + fileManager.params.api + "/" + encodeURIComponent(fileManager.params.schema) + "/" + fileManager.params.cls + "/" + fileManager.params.oid + "?prefix=" + encodeURIComponent(fileManager.params.prefix) + "&user=" + encodeURIComponent(User.userName),
+                maxFilesize: 100,
+                maxFiles: 20,
+                maxThumbnailFilesize: 10,
+                previewTemplate: '<div class="dz-preview dz-file-preview"><div><div class="dz-filename"><span data-dz-name></span></span></div><span class="fa fa-lg fa-file-text-o"></span></div><div><span class="dz-size" data-dz-size></div><div><span class="dz-upload" data-dz-uploadprogress></span></div><div class="dz-success-mark"><span class="fa fa-check"></span></div><div class="dz-error-mark"><span class="fa fa-exclamation-triangle"></span></div><div class="dz-error-message"><span data-dz-errormessage></span></div></div>',
+                addRemoveLinks: false,
+                paramName: "uploadFile",
+                parallelUploads: 20,
+                autoProcessQueue: false,
+                dictDefaultMessage: '<span class="text-center"><span class="font-md visible-lg-block"><span class="font-md"><i class="fa fa-caret-right text-danger"></i><span class="font-xs">' + $rootScope.getWord("DropZone") + '</span></span>',
+                dictResponseError: $rootScope.getWord("UploadError"),
+                dictCancelUpload: "Cancel Upload",
+                dictRemoveFile: "Remove File",
+
+            };
+
+            var eventHandlers = {
+                'addedFile': function (file) {
+                    scope.file = file;
+                    if (this.files[1] != null) {
+                        this.removeFile(this.files[0]);
+                    }
+                    scope.$apply(function () {
+                        scope.fileAdded = true;
+                    });
+                },
+
+                'success': function (file, response) {
+                },
+
+                'removedFile': function(file)
+                {
+                    console.debug("Removed file called");
+                },
+
+                'queuecomplete': function () {
+                    fileManager.load();
+
+                    setTimeout(function () {
+                        //scope.resetDropzone();
+                    }, 2000);
+                }
+            };
+
+            var dropzone = new Dropzone(element[0], config);
+
+            angular.forEach(eventHandlers, function (handler, event) {
+                dropzone.on(event, handler);
+            });
+
+            scope.processDropzone = function () {
+
+                var url = undefined;
+                if (fileManager.params.oid)
+                {
+                    url = APP_CONFIG.ebaasRootUrl + "/" + fileManager.params.api + "/" + encodeURIComponent(fileManager.params.schema) + "/" + fileManager.params.cls + "/" + fileManager.params.oid + "?prefix=" + encodeURIComponent(fileManager.params.prefix) + "&user=" + encodeURIComponent(User.userName);
+                }
+
+                dropzone.options.url = url;
+                dropzone.processQueue();
+            };
+
+            scope.resetDropzone = function () {
+                dropzone.removeAllFiles();
+            }
+        }
+    }
+});
+
+'use strict';
+
+angular.module('app.attachments').directive('egAppStatus', function (loadingInfo) {
+    var directive = {
+        link: link,
+        restrict: 'E',
+        templateUrl: 'app/attachments/views/egAppStatus.html'
+    };
+    return directive;
+
+    function link(scope, element, attrs) {
+        scope.status = loadingInfo.status;
+    }
+});
+'use strict';
+
+angular.module('app.attachments').directive('egFiles', function () {
+
+    var directive = {
+        link: link,
+        restrict: 'A',
+        scope: {
+            files: '=egFiles',
+            hasFiles: '='
+        }
+    };
+    return directive;
+
+    function link(scope, element, attrs) {
+        element.bind('change', function () {
+            scope.$apply(function () {
+                if (element[0].files) {
+                    scope.files.length = 0;
+
+                    angular.forEach(element[0].files, function (f) {
+                        scope.files.push(f);
+                    });
+
+                    scope.hasFiles = true;
+                }
+            });
+        });
+
+        if (element[0].form) {
+            angular.element(element[0].form)
+                    .bind('reset', function () {
+                        scope.$apply(function () {
+                            scope.files.length = 0;
+                            scope.hasFiles = false;
+                        });
+                    });
+        }
+    }
+});
+'use strict';
+
+angular.module('app.attachments').directive('egUpload', function ($timeout) {
+    var directive = {
+        link: link,
+        restrict: 'A',
+        scope: {
+            upload: '&egUpload'
+        }
+    };
+    return directive;
+
+    function link(scope, element, attrs) {
+        var parentForm = element[0].form;
+        if (parentForm) {
+            element.on('click', function (event) {
+                return scope.upload().then(function () {
+                    //see:https://docs.angularjs.org/error/$rootScope/inprog?p0=$digest for why there is a need to use timeout to avoid conflict
+                    $timeout(function () {
+                        parentForm.reset();
+                    });
+                });
+            });
+        }
+    }
+});
+'use strict';
+
+angular.module('app.attachments').directive('fileDropzone', function ($rootScope) {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttributes) {
+            tElement.removeAttr('smart-dropzone data-smart-dropzone');
+
+            tElement.dropzone({
+                addRemoveLinks : true,
+                maxFilesize: 0.5,
+                dictDefaultMessage: '<span class="text-center"><span class="font-lg visible-xs-block visible-sm-block visible-lg-block"><span class="font-lg"><i class="fa fa-caret-right text-danger"></i><span class="font-xs">' + $rootScope.getWord("DropZone") + '</span></span>',
+                dictResponseError: $rootScope.getWord("UploadError")
+            });
+        }
+    }
+});
+
+'use strict';
+
+angular.module('app.attachments').directive('egFileUploader', function (loadingInfo, fileManager) {
+
+    var directive = {
+        link: link,
+        restrict: 'E',
+        templateUrl: 'app/attachments/views/fileUploader.html',
+        scope: true
+    };
+    return directive;
+
+    function link(scope, element, attrs) {
+        scope.hasFiles = false;
+        scope.files = [];
+        scope.upload = fileManager.upload;
+        scope.appStatus = loadingInfo.status;
+        scope.fileManagerStatus = fileManager.status;
+    }
+
+});
+'use strict';
+
+angular.module('app.attachments').factory('fileManager', function ($q, fileManagerClient, $http, loadingInfo, User) {
+
+    var service = {
+        files: [],
+        load: load,
+        upload: upload,
+        remove: remove,
+        download: download,
+        performDownload: performDownload,
+        fileExists: fileExists,
+        status: {
+            uploading: false
+        },
+        params: {
+            serviceBase: "",
+            schema: "",
+            cls: "",
+            oid: "",
+            api: "",
+            prefix: ""
+        }
+    };
+
+    return service;
+
+    function load() {
+
+        loadingInfo.setInfo({ busy: true, message: "loading files" })
+
+        service.files.length = 0;
+
+        if (!service.params.oid)
+            return [];
+        else
+            return fileManagerClient.query({api: service.params.api, schema: service.params.schema, cls: service.params.cls, oid: service.params.oid, prefix: service.params.prefix })
+                                .$promise
+                                .then(function (result) {
+                                    result.files
+                                            .forEach(function (file) {
+                                                service.files.push(file);
+                                            });
+
+                                    loadingInfo.setInfo({ message: "files loaded successfully" });
+
+                                    return result.$promise;
+                                },
+                                function (result) {
+                                    if (result.data) {
+                                        loadingInfo.setInfo({ message: "something went wrong: " + result.data.message });
+                                    }
+                                    else
+                                    {
+                                        loadingInfo.setInfo({ message: "something went wrong: "});
+                                    }
+                                    return $q.reject(result);
+                                })
+                                ['finally'](
+                                function () {
+                                    loadingInfo.setInfo({ busy: false });
+                                });
+    }
+
+    function upload(files) {
+        
+        service.status.uploading = true;
+        loadingInfo.setInfo({ busy: true, message: "uploading files" });
+
+        var formData = new FormData();
+
+        angular.forEach(files, function (file) {
+            console.debug("upload file name =" + file.name);
+            formData.append(file.name, file);
+        });
+
+        return fileManagerClient.save({ api: service.params.api, schema: service.params.schema, cls: service.params.cls, oid: service.params.oid, prefix: service.params.prefix }, formData)
+                                    .$promise
+                                    .then(function (result) {
+                                        if (result && result.files) {
+                                            result.files.forEach(function (file) {
+                                                if (!fileExists(file.name)) {
+                                                    service.files.push(file);
+                                                }
+                                            });
+                                        }
+
+                                        loadingInfo.setInfo({ message: "files uploaded successfully" });
+
+                                        return result.$promise;
+                                    },
+                                    function (result) {
+                                        loadingInfo.setInfo({ message: "something went wrong: " + result.data.message });
+                                        return $q.reject(result);
+                                    })
+                                    ['finally'](
+                                    function () {
+                                        loadingInfo.setInfo({ busy: false });
+                                        service.status.uploading = false;
+                                    });
+    }
+
+    function remove(file) {
+        loadingInfo.setInfo({ busy: true, message: "deleting file " + file.name });
+      
+        return fileManagerClient.remove({ api: service.params.api, schema: service.params.schema, cls: service.params.cls, oid: service.params.oid, fileId: file.id, prefix: service.params.prefix })
+                                    .$promise
+                                    .then(function (result) {
+                                        //if the file was deleted successfully remove it from the files array
+                                        var i = service.files.indexOf(file);
+                                        service.files.splice(i, 1);
+
+                                        loadingInfo.setInfo({ message: "files deleted" });
+
+                                        return result.$promise;
+                                    },
+                                    function (result) {
+                                        loadingInfo.setInfo({ message: "something went wrong: " + result.data.message });
+                                        return $q.reject(result);
+                                    })
+                                    ['finally'](
+                                    function () {
+                                        loadingInfo.setInfo({ busy: false });
+                                    });
+    }
+
+    function download(file)
+    {
+        var getFileUrl = service.params.serviceBase + "/" + service.params.api + "/" + service.params.schema + "/" + service.params.cls + "/" + service.params.oid + "/" + file.id;
+        if (service.params.prefix)
+        {
+            getFileUrl += "?prefix=" + encodeURIComponent(service.params.prefix) + "&user=" + encodeURIComponent(User.userName);
+        }
+
+        performDownload(getFileUrl, null);
+    }
+
+    function performDownload(url, callback) {
+    
+        // Use an arraybuffer
+        $http.get(url, { responseType: 'arraybuffer' })
+            .success(function (data, status, headers) {
+
+                var octetStreamMime = 'application/octet-stream';
+                var success = false;
+
+                // Get the headers
+                headers = headers();
+
+                // Get the filename from the x-filename header or default to "download.bin"
+                var filename = headers['x-filename'] || 'download.bin';
+                filename = decodeURIComponent(filename);
+
+                // Determine the content type from the header or default to "application/octet-stream"
+                var contentType = headers['content-type'] || octetStreamMime;
+
+                try {
+                    // Try using msSaveBlob if supported
+                    console.log("Trying saveBlob method ...");
+                    var blob = new Blob([data], { type: contentType });
+                    if (navigator.msSaveBlob)
+                        navigator.msSaveBlob(blob, filename);
+                    else {
+                        // Try using other saveBlob implementations, if available
+                        var saveBlob = navigator.webkitSaveBlob || navigator.mozSaveBlob || navigator.saveBlob;
+                        if (saveBlob === undefined) throw "Not supported";
+                        saveBlob(blob, filename);
+                    }
+                    console.log("saveBlob succeeded");
+                    success = true;
+                } catch (ex) {
+                    console.log("saveBlob method failed with the following exception:");
+                    console.log(ex);
+                }
+
+                if (!success) {
+                    // Get the blob url creator
+                    var urlCreator = window.URL || window.webkitURL || window.mozURL || window.msURL;
+                    if (urlCreator) {
+                        // Try to use a download link
+                        var link = document.createElement('a');
+                        if ('download' in link) {
+                            // Try to simulate a click
+                            try {
+                                // Prepare a blob URL
+                                console.log("Trying download link method with simulated click ...");
+                                var blob = new Blob([data], { type: contentType });
+                                var url = urlCreator.createObjectURL(blob);
+                                link.setAttribute('href', url);
+
+                                // Set the download attribute (Supported in Chrome 14+ / Firefox 20+)
+                                link.setAttribute("download", filename);
+
+                                // Simulate clicking the download link
+                                var event = document.createEvent('MouseEvents');
+                                event.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+                                link.dispatchEvent(event);
+                                console.log("Download link method with simulated click succeeded");
+                                success = true;
+
+                            } catch (ex) {
+                                console.log("Download link method with simulated click failed with the following exception:");
+                                console.log(ex);
+                            }
+                        }
+
+                        if (!success) {
+                            // Fallback to window.location method
+                            try {
+                                // Prepare a blob URL
+                                // Use application/octet-stream when using window.location to force download
+                                console.log("Trying download link method with window.location ...");
+                                var blob = new Blob([data], { type: octetStreamMime });
+                                var url = urlCreator.createObjectURL(blob);
+                                window.location = url;
+                                console.log("Download link method with window.location succeeded");
+                                success = true;
+                            } catch (ex) {
+                                console.log("Download link method with window.location failed with the following exception:");
+                                console.log(ex);
+                            }
+                        }
+
+                    }
+                }
+
+                if (!success) {
+                    // Fallback to window.open method
+                    console.log("No methods worked for saving the arraybuffer, using last resort window.open");
+                    window.open(httpPath, '_blank', '');
+                }
+
+                if (callback)
+                {
+                    callback();
+                }
+            })
+        .error(function (data, status) {
+            console.log("Request failed with status: " + status);
+
+            // Optionally write the error out to scope
+            //$scope.errorDetails = "Request failed with status: " + status;
+
+            if (callback) {
+                callback();
+            }
+        });
+    }
+
+    function fileExists(fileName) {
+        var res = false
+        service.files.forEach(function (file) {
+            if (file.name === fileName) {
+                res = true;
+            }
+        });
+
+        return res;
+    }
+});
+'use strict';
+
+angular.module('app.attachments').factory('fileManagerClient', function ($resource, APP_CONFIG) {
+
+    return $resource(APP_CONFIG.ebaasRootUrl + "/:api/:schema/:cls/:oid?prefix=:prefix",
+        { id: "@Id" },
+        {
+            'query': { method: 'GET', params: {api: "api", schema: "schema", cls: "cls", oid: "oid", prefix: "prefix"} },
+            'save': { method: 'POST', params: { api: "api", schema: "schema", cls: "cls", oid: "oid", prefix: 'prefix' }, transformRequest: angular.identity, headers: { 'Content-Type': undefined } },
+            'remove': { method: 'DELETE', url: APP_CONFIG.ebaasRootUrl + '/:api/:schema/:cls/:oid/:fileId?prefix=:prefix', params: {api: "api", schema: "schema", cls: "cls", oid: "oid", fileId: "fileId", prefix: "prefix"} }
+        });
+});
+
+'use strict';
+
+angular.module('app.attachments').factory('loadingInfo', function () {
+    var service = {
+        status: {
+            busy: false,
+            message: ''
+        },
+        setInfo: setInfo
+    };
+
+    return service;
+
+    function setInfo(args) {
+        if (args) {
+            if (args.hasOwnProperty('busy')) {
+                service.status.busy = args.busy;
+            }
+            if (args.hasOwnProperty('message')) {
+                service.status.message = args.message;
+            }
+        } else {
+            service.status.busy = false;
+            service.status.message = '';
+        }
+    }
+});
+"use strict";
+
+angular.module("app.auth").factory("authService", function($rootScope, $http, $q, localStorageService, APP_CONFIG) {
+
+    var authServiceFactory = {};
+
+    var _authentication = {
+        isAuth: false,
+        userName: ""
+    };
+
+    var _saveRegistration = function(registration) {
+
+        _logOut();
+
+        return $http.post(APP_CONFIG.ebaasRootUrl + '/api/accounts/create', registration).then(function(response) {
+            return response;
+        });
+    };
+
+    var _login = function(loginData) {
+
+        var data = "grant_type=password&username=" + loginData.userName + "&password=" + loginData.password;
+
+        var deferred = $q.defer();
+
+        var url = APP_CONFIG.ebaasRootUrl + '/oauth/token';
+
+        $http.post(url, data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).success(function(response) {
+
+            localStorageService.set('authorizationData', { token: response.access_token, userName: loginData.userName });
+
+            _authentication.isAuth = true;
+            _authentication.userName = loginData.userName;
+
+            deferred.resolve(response);
+
+        }).error(function (err, status) {
+            if (err.error === "invalid_grant")
+            {
+                err.error_description = $rootScope.getWord("Invalid user name or password");
+            }
+            _logOut();
+            deferred.reject(err);
+        });
+
+        return deferred.promise;
+
+    };
+
+    var _logOut = function() {
+
+        localStorageService.remove('authorizationData');
+
+        _authentication.isAuth = false;
+        _authentication.userName = "";
+
+    };
+
+    var _fillAuthData = function() {
+
+        var authData = localStorageService.get('authorizationData');
+        if (authData) {
+            _authentication.isAuth = true;
+            _authentication.userName = authData.userName;
+        }
+
+    }
+
+    authServiceFactory.saveRegistration = _saveRegistration;
+    authServiceFactory.login = _login;
+    authServiceFactory.logOut = _logOut;
+    authServiceFactory.fillAuthData = _fillAuthData;
+    authServiceFactory.authentication = _authentication;
+
+    return authServiceFactory;
+});
+(function (app) {
+    var LoginController = function ($rootScope, $scope, $http, $state, $location, authService, APP_CONFIG, User, TasksInfo, myActivityService, hubService) {
+
+        $scope.loginData = {
+            userName: "",
+            password: ""
+        };
+
+        $scope.message = "";
+
+        $scope.login = function () {
+            authService.login($scope.loginData).then(function (response) {
+
+                if ($rootScope.returnToState) {
+                    $location.path($rootScope.returnToState);
+                } else {
+                    $location.path('/');
+                }
+
+                // load user's info
+                User.load(function () {
+                    hubService.connect(APP_CONFIG.dbschema, function (type, message) {
+                        myActivityService.add(type, message);
+                    }); // connect to server hub to receive messages
+                }); // load user info
+
+                //get user's task count to display at header
+                $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/" + encodeURIComponent(APP_CONFIG.dbschema) + "/count")
+                    .success(function (data) {
+                        TasksInfo.count = data;
+                    });
+
+                //get user's message count to display at header
+                $http.get(APP_CONFIG.ebaasRootUrl + "/api/messages/count")
+                    .success(function (data) {
+                        myActivityService.MessageModel.count = data;
+                    });
+            },
+            function (err) {
+                $scope.message = err.error_description;
+            });
+        };
+
+        if (!String.format) {
+            String.format = function (format) {
+                var args = Array.prototype.slice.call(arguments, 1);
+                return format.replace(/{(\d+)}/g, function (match, number) {
+                    return typeof args[number] != 'undefined'
+                      ? args[number]
+                      : match
+                    ;
+                });
+            };
+        }
+  
+    }
+
+    app.controller("LoginController", LoginController);
+
+}(angular.module("app.auth")));
+"use strict";
+
+angular.module('app.auth').controller('LogoutController', function ($scope, authService, hubService) {
+    hubService.disconnect();
+    authService.logOut();
+})
+"use strict";
+
+angular.module('app.auth').controller('RegisterController', function ($scope, $location, $timeout, authService) {
+        $scope.savedSuccessfully = false;
+        $scope.message = "";
+
+        $scope.registration = {
+            userName: "",
+            lastName: "",
+            firstName: "",
+            email: "",
+            password: "",
+            confirmPassword: ""
+        };
+
+        $scope.signUp = function () {
+            authService.saveRegistration($scope.registration).then(function (response) {
+
+                $scope.savedSuccessfully = true;
+                $scope.message = "User has been registered successfully, you will be redicted to login page in 2 seconds.";
+                startTimer();
+
+            },
+             function (response) {
+                 var errors = [];
+                 for (var key in response.data.modelState) {
+                     for (var i = 0; i < response.data.modelState[key].length; i++) {
+                         errors.push(response.data.modelState[key][i]);
+                     }
+                 }
+                 $scope.message = "Failed to register user due to:" + errors.join(' ');
+             });
+        };
+
+        var startTimer = function () {
+            var timer = $timeout(function () {
+                $timeout.cancel(timer);
+                $location.path('/login');
+            }, 2000);
+        }
+
+    });
+"use strict";
+
+angular.module('app.auth').controller('LoginCtrl', function ($scope, $state, GooglePlus, User, ezfb) {
+
+    $scope.$on('event:google-plus-signin-success', function (event, authResult) {
+        if (authResult.status.method == 'PROMPT') {
+            GooglePlus.getUser().then(function (user) {
+                User.userName = user.name;
+                User.picture = user.picture;
+                $state.go('app.dashboard');
+            });
+        }
+    });
+
+    $scope.$on('event:facebook-signin-success', function (event, authResult) {
+        ezfb.api('/me', function (res) {
+            User.userName = res.name;
+            User.picture = 'https://graph.facebook.com/' + res.id + '/picture';
+            $state.go('app.dashboard');
+        });
+    });
+})
+
+"use strict";
+
+angular.module('app.auth').directive('loginInfo', function(User){
+
+    return {
+        restrict: 'A',
+        templateUrl: 'app/auth/directives/login-info.tpl.html',
+        link: function(scope, element){
+            User.initialized.then(function () {
+                scope.user = User
+            });
+        }
+    }
+})
+
+
+
+'use strict';
+
+angular.module('app.auth').factory('User', function ($http, $q, APP_CONFIG, authService) {
+    var dfd = $q.defer();
+
+    function imageExists(image_url) {
+
+        var http = new XMLHttpRequest();
+
+        http.open('HEAD', image_url, false);
+        http.send();
+
+        return http.status != 404;
+    }
+
+    var UserModel = {
+        initialized: dfd.promise,
+        userName: undefined,
+        picture: undefined,
+        email: undefined,
+        phoneNumber : undefined,
+        password: undefined,
+        confirmPassword: undefined,
+        firstName: undefined,
+        lastName: undefined,
+        displayName : undefined,
+        division: undefined,
+        address: undefined,
+        imageUrl: undefined,
+        pictureChangeTime: undefined,
+        userImageUrls: undefined,
+        load: function(callback)
+        {
+            $http.get(APP_CONFIG.ebaasRootUrl + '/api/accounts/user/' + authService.authentication.userName).then(function (response) {
+                UserModel.userName = response.data.userName;
+                UserModel.email = response.data.email;
+                UserModel.password = response.data.password;
+                UserModel.firstName = response.data.firstName;
+                UserModel.lastName = response.data.lastName;
+                UserModel.displayName = response.data.displayName;
+                UserModel.phoneNumber = response.data.phoneNumber;
+                UserModel.division = response.data.division;
+                UserModel.address = response.data.address;
+                UserModel.imageUrl = undefined;
+                UserModel.userImageUrls = {};
+
+                UserModel.picture = UserModel.userName + ".png";
+
+                dfd.resolve(UserModel);
+
+                if (callback) {
+                    callback();
+                }
+            });
+        },
+        save : function (callback) {
+            var model = {};
+            model.userName = UserModel.userName;
+            model.email = UserModel.email;
+            model.phoneNumber = UserModel.phoneNumber;
+            model.firstName = UserModel.firstName;
+            model.lastName = UserModel.lastName;
+            model.picture = UserModel.picture;
+           
+            $http.post(APP_CONFIG.ebaasRootUrl + '/api/accounts/update', model).success(function (data) {
+                if (callback) {
+                    callback();
+                }
+            });
+        },
+        image : function()
+        {
+            if (!UserModel.imageUrl) {
+                var imageUrl = APP_CONFIG.avatarsUrl + UserModel.picture;
+                if (!imageExists(imageUrl)) {
+                    UserModel.imageUrl = APP_CONFIG.avatarsUrl + "male.png";
+                }
+                else {
+                    UserModel.imageUrl = imageUrl + '?' + UserModel.pictureChangeTime;
+                }
+            }
+            //console.debug(UserModel.imageUrl);
+            return UserModel.imageUrl;
+        },
+        getUserImage: function (userId) {
+            if (UserModel.userImageUrls) {
+                var imageUrl = UserModel.userImageUrls[userId];
+                if (!imageUrl) {
+                    imageUrl = APP_CONFIG.avatarsUrl + userId + ".png";
+                    if (!imageExists(imageUrl)) {
+                        imageUrl = APP_CONFIG.avatarsUrl + "male.png";
+                        UserModel.userImageUrls[userId] = imageUrl;
+                    }
+                    else {
+                        UserModel.userImageUrls[userId] = imageUrl;
+                    }
+                }
+            }
+            else
+            {
+                return APP_CONFIG.avatarsUrl + "male.png";
+            }
+     
+            return imageUrl;
+        }
+    };
+
+    return UserModel;
+});
+
 "use strict";
 
 angular.module('app.bulletinboard').controller('bulletinBoardCtrl', function ($scope, $http, $state, $stateParams, APP_CONFIG, bulletinService) {
@@ -7007,341 +7401,6 @@ angular.module('app.bulletinboard').controller('bulletinViewCtrl', function ($sc
         $scope.post = {};
     }
 });
-"use strict";
-
-angular.module('app.auth').directive('loginInfo', function(User){
-
-    return {
-        restrict: 'A',
-        templateUrl: 'app/auth/directives/login-info.tpl.html',
-        link: function(scope, element){
-            User.initialized.then(function () {
-                scope.user = User
-            });
-        }
-    }
-})
-
-"use strict";
-
-angular.module("app.auth").factory("authService", function($rootScope, $http, $q, localStorageService, APP_CONFIG) {
-
-    var authServiceFactory = {};
-
-    var _authentication = {
-        isAuth: false,
-        userName: ""
-    };
-
-    var _saveRegistration = function(registration) {
-
-        _logOut();
-
-        return $http.post(APP_CONFIG.ebaasRootUrl + '/api/accounts/create', registration).then(function(response) {
-            return response;
-        });
-    };
-
-    var _login = function(loginData) {
-
-        var data = "grant_type=password&username=" + loginData.userName + "&password=" + loginData.password;
-
-        var deferred = $q.defer();
-
-        var url = APP_CONFIG.ebaasRootUrl + '/oauth/token';
-
-        $http.post(url, data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).success(function(response) {
-
-            localStorageService.set('authorizationData', { token: response.access_token, userName: loginData.userName });
-
-            _authentication.isAuth = true;
-            _authentication.userName = loginData.userName;
-
-            deferred.resolve(response);
-
-        }).error(function (err, status) {
-            if (err.error === "invalid_grant")
-            {
-                err.error_description = $rootScope.getWord("Invalid user name or password");
-            }
-            _logOut();
-            deferred.reject(err);
-        });
-
-        return deferred.promise;
-
-    };
-
-    var _logOut = function() {
-
-        localStorageService.remove('authorizationData');
-
-        _authentication.isAuth = false;
-        _authentication.userName = "";
-
-    };
-
-    var _fillAuthData = function() {
-
-        var authData = localStorageService.get('authorizationData');
-        if (authData) {
-            _authentication.isAuth = true;
-            _authentication.userName = authData.userName;
-        }
-
-    }
-
-    authServiceFactory.saveRegistration = _saveRegistration;
-    authServiceFactory.login = _login;
-    authServiceFactory.logOut = _logOut;
-    authServiceFactory.fillAuthData = _fillAuthData;
-    authServiceFactory.authentication = _authentication;
-
-    return authServiceFactory;
-});
-(function (app) {
-    var LoginController = function ($rootScope, $scope, $http, $state, $location, authService, APP_CONFIG, User, TasksInfo, myActivityService, hubService) {
-
-        $scope.loginData = {
-            userName: "",
-            password: ""
-        };
-
-        $scope.message = "";
-
-        $scope.login = function () {
-            authService.login($scope.loginData).then(function (response) {
-
-                if ($rootScope.returnToState) {
-                    $location.path($rootScope.returnToState);
-                } else {
-                    $location.path('/');
-                }
-
-                // load user's info
-                User.load(function () {
-                    hubService.connect(APP_CONFIG.dbschema, function (type, message) {
-                        myActivityService.add(type, message);
-                    }); // connect to server hub to receive messages
-                }); // load user info
-
-                //get user's task count to display at header
-                $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/" + encodeURIComponent(APP_CONFIG.dbschema) + "/count")
-                    .success(function (data) {
-                        TasksInfo.count = data;
-                    });
-
-                //get user's message count to display at header
-                $http.get(APP_CONFIG.ebaasRootUrl + "/api/messages/count")
-                    .success(function (data) {
-                        myActivityService.MessageModel.count = data;
-                    });
-            },
-            function (err) {
-                $scope.message = err.error_description;
-            });
-        };
-
-        if (!String.format) {
-            String.format = function (format) {
-                var args = Array.prototype.slice.call(arguments, 1);
-                return format.replace(/{(\d+)}/g, function (match, number) {
-                    return typeof args[number] != 'undefined'
-                      ? args[number]
-                      : match
-                    ;
-                });
-            };
-        }
-  
-    }
-
-    app.controller("LoginController", LoginController);
-
-}(angular.module("app.auth")));
-"use strict";
-
-angular.module('app.auth').controller('LogoutController', function ($scope, authService, hubService) {
-    hubService.disconnect();
-    authService.logOut();
-})
-"use strict";
-
-angular.module('app.auth').controller('RegisterController', function ($scope, $location, $timeout, authService) {
-        $scope.savedSuccessfully = false;
-        $scope.message = "";
-
-        $scope.registration = {
-            userName: "",
-            lastName: "",
-            firstName: "",
-            email: "",
-            password: "",
-            confirmPassword: ""
-        };
-
-        $scope.signUp = function () {
-            authService.saveRegistration($scope.registration).then(function (response) {
-
-                $scope.savedSuccessfully = true;
-                $scope.message = "User has been registered successfully, you will be redicted to login page in 2 seconds.";
-                startTimer();
-
-            },
-             function (response) {
-                 var errors = [];
-                 for (var key in response.data.modelState) {
-                     for (var i = 0; i < response.data.modelState[key].length; i++) {
-                         errors.push(response.data.modelState[key][i]);
-                     }
-                 }
-                 $scope.message = "Failed to register user due to:" + errors.join(' ');
-             });
-        };
-
-        var startTimer = function () {
-            var timer = $timeout(function () {
-                $timeout.cancel(timer);
-                $location.path('/login');
-            }, 2000);
-        }
-
-    });
-"use strict";
-
-angular.module('app.auth').controller('LoginCtrl', function ($scope, $state, GooglePlus, User, ezfb) {
-
-    $scope.$on('event:google-plus-signin-success', function (event, authResult) {
-        if (authResult.status.method == 'PROMPT') {
-            GooglePlus.getUser().then(function (user) {
-                User.userName = user.name;
-                User.picture = user.picture;
-                $state.go('app.dashboard');
-            });
-        }
-    });
-
-    $scope.$on('event:facebook-signin-success', function (event, authResult) {
-        ezfb.api('/me', function (res) {
-            User.userName = res.name;
-            User.picture = 'https://graph.facebook.com/' + res.id + '/picture';
-            $state.go('app.dashboard');
-        });
-    });
-})
-
-
-
-'use strict';
-
-angular.module('app.auth').factory('User', function ($http, $q, APP_CONFIG, authService) {
-    var dfd = $q.defer();
-
-    function imageExists(image_url) {
-
-        var http = new XMLHttpRequest();
-
-        http.open('HEAD', image_url, false);
-        http.send();
-
-        return http.status != 404;
-    }
-
-    var UserModel = {
-        initialized: dfd.promise,
-        userName: undefined,
-        picture: undefined,
-        email: undefined,
-        phoneNumber : undefined,
-        password: undefined,
-        confirmPassword: undefined,
-        firstName: undefined,
-        lastName: undefined,
-        displayName : undefined,
-        division: undefined,
-        address: undefined,
-        imageUrl: undefined,
-        pictureChangeTime: undefined,
-        userImageUrls: undefined,
-        load: function(callback)
-        {
-            $http.get(APP_CONFIG.ebaasRootUrl + '/api/accounts/user/' + authService.authentication.userName).then(function (response) {
-                UserModel.userName = response.data.userName;
-                UserModel.email = response.data.email;
-                UserModel.password = response.data.password;
-                UserModel.firstName = response.data.firstName;
-                UserModel.lastName = response.data.lastName;
-                UserModel.displayName = response.data.displayName;
-                UserModel.phoneNumber = response.data.phoneNumber;
-                UserModel.division = response.data.division;
-                UserModel.address = response.data.address;
-                UserModel.imageUrl = undefined;
-                UserModel.userImageUrls = {};
-
-                UserModel.picture = UserModel.userName + ".png";
-
-                dfd.resolve(UserModel);
-
-                if (callback) {
-                    callback();
-                }
-            });
-        },
-        save : function (callback) {
-            var model = {};
-            model.userName = UserModel.userName;
-            model.email = UserModel.email;
-            model.phoneNumber = UserModel.phoneNumber;
-            model.firstName = UserModel.firstName;
-            model.lastName = UserModel.lastName;
-            model.picture = UserModel.picture;
-           
-            $http.post(APP_CONFIG.ebaasRootUrl + '/api/accounts/update', model).success(function (data) {
-                if (callback) {
-                    callback();
-                }
-            });
-        },
-        image : function()
-        {
-            if (!UserModel.imageUrl) {
-                var imageUrl = APP_CONFIG.avatarsUrl + UserModel.picture;
-                if (!imageExists(imageUrl)) {
-                    UserModel.imageUrl = APP_CONFIG.avatarsUrl + "male.png";
-                }
-                else {
-                    UserModel.imageUrl = imageUrl + '?' + UserModel.pictureChangeTime;
-                }
-            }
-            //console.debug(UserModel.imageUrl);
-            return UserModel.imageUrl;
-        },
-        getUserImage: function (userId) {
-            if (UserModel.userImageUrls) {
-                var imageUrl = UserModel.userImageUrls[userId];
-                if (!imageUrl) {
-                    imageUrl = APP_CONFIG.avatarsUrl + userId + ".png";
-                    if (!imageExists(imageUrl)) {
-                        imageUrl = APP_CONFIG.avatarsUrl + "male.png";
-                        UserModel.userImageUrls[userId] = imageUrl;
-                    }
-                    else {
-                        UserModel.userImageUrls[userId] = imageUrl;
-                    }
-                }
-            }
-            else
-            {
-                return APP_CONFIG.avatarsUrl + "male.png";
-            }
-     
-            return imageUrl;
-        }
-    };
-
-    return UserModel;
-});
-
 "use strict";	
 
 angular.module('app').controller("ActivitiesCtrl", function ActivitiesCtrl($scope, $log, activityService){
@@ -7514,44 +7573,6 @@ angular.module('app').directive('recentProjects', function(Project){
             }
         }
     }
-});
-"use strict";
-
-angular.module('app').controller('TodoCtrl', function ($scope, $timeout, Todo) {
-    $scope.newTodo = undefined;
-
-    $scope.states = ['Critical', 'Important', 'Completed'];
-
-    $scope.todos = Todo.getList().$object;
-
-    // $scope.$watch('todos', function(){ }, true)
-
-    $scope.toggleAdd = function () {
-        if (!$scope.newTodo) {
-            $scope.newTodo = {
-                state: 'Important'
-            };
-        } else {
-            $scope.newTodo = undefined;
-        }
-    };
-
-    $scope.createTodo = function () {
-        $scope.todos.push($scope.newTodo);
-        $scope.newTodo = undefined;
-        // $scope.newTodo.$save(function (respoonse) {
-        //     $scope.todos.push(respoonse);
-        //     $scope.newTodo = undefined;
-        // });
-    };
-
-    $scope.deleteTodo = function (todo) {
-        todo.remove().then(function () {
-            $scope.todos.splice($scope.todos.indexOf(todo), 1);
-        });
-
-    };
-
 });
 "use strict";
 
@@ -7824,6 +7845,44 @@ angular.module('app.datacart').controller('downloadReportsCtrl', function ($scop
     $scope.closeModal = function () {
         $modalInstance.dismiss("dismiss");
     };
+});
+"use strict";
+
+angular.module('app').controller('TodoCtrl', function ($scope, $timeout, Todo) {
+    $scope.newTodo = undefined;
+
+    $scope.states = ['Critical', 'Important', 'Completed'];
+
+    $scope.todos = Todo.getList().$object;
+
+    // $scope.$watch('todos', function(){ }, true)
+
+    $scope.toggleAdd = function () {
+        if (!$scope.newTodo) {
+            $scope.newTodo = {
+                state: 'Important'
+            };
+        } else {
+            $scope.newTodo = undefined;
+        }
+    };
+
+    $scope.createTodo = function () {
+        $scope.todos.push($scope.newTodo);
+        $scope.newTodo = undefined;
+        // $scope.newTodo.$save(function (respoonse) {
+        //     $scope.todos.push(respoonse);
+        //     $scope.newTodo = undefined;
+        // });
+    };
+
+    $scope.deleteTodo = function (todo) {
+        todo.remove().then(function () {
+            $scope.todos.splice($scope.todos.indexOf(todo), 1);
+        });
+
+    };
+
 });
 
 
@@ -8331,6 +8390,128 @@ angular.module('app.datacatalog').controller('DataTableViewCtrl', function ($con
         }
 
         return found;
+    }
+});
+'use strict';
+
+angular.module('app.dataImporter').controller('dataImportCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, Upload) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+    $scope.oid = $stateParams.oid;
+    $scope.relatedclass = $stateParams.relatedclass;
+
+    $scope.selectedScript = undefined;
+    $scope.submitted = false;
+    $scope.loading = false;
+
+    var url;
+    if (!$scope.relatedclass) {
+        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/All";
+    }
+    else
+    {
+        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.relatedclass + "/All";
+    }
+
+    $http.get(url).success(function (data) {
+        $scope.scripts = data.scripts;
+    });
+
+    // upload on file select or drop
+    $scope.uploadFile = function (file) {
+        $scope.loading = true;
+        var uploadUrl;
+
+        if ($scope.selectedScript.name === "Data Package") {
+            uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/import/datapackage/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass;
+        }
+        else {
+            if (!$scope.relatedclass) {
+                uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/import/files/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + encodeURIComponent($scope.selectedScript.name);
+            }
+            else {
+                uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/import/files/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + $scope.oid + "/" + $scope.relatedclass + "/" + encodeURIComponent($scope.selectedScript.name);
+            }
+        }
+
+        if ($scope.selectedScript) {
+            
+            Upload.upload({
+                url: uploadUrl,
+                data: { file: file }
+            }).then(function (resp) {
+                $scope.errorMsg = "";
+                file.result = resp.data;
+                $scope.loading = false;
+                $scope.submitted = true;
+                $scope.selectedScript = undefined;
+                //console.log(resp);
+            }, function (resp) {
+                if (resp.status > 0)
+                    $scope.errorMsg = resp.status + ': ' + resp.data.message;
+                $scope.loading = false;
+            }, function (evt) {
+                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                file.progress = progressPercentage;
+            });
+        }
+    };
+
+    $scope.selectFile = function()
+    {
+        var fileType = undefined
+        if ($scope.file && $scope.file.name) {
+            var extension = $scope.file.name.split('.').pop();
+            if (extension) {
+                switch (extension.toUpperCase()) {
+                    case "XLS":
+                    case "XLSX":
+                        fileType = "Excel";
+                        break;
+                    case "TXT":
+                    case "CSV":
+                    case "DAT":
+
+                        fileType = "Text";
+                        break;
+                    case "PAK":
+
+                        fileType = "DataPackage";
+                        break;
+                    default:
+                        fileType = "Other";
+                        break;
+                }
+
+                var url;
+                if (fileType != "DataPackage") {
+                    if (!$scope.relatedclass) {
+                        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + fileType;
+                    }
+                    else {
+                        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.relatedclass + "/" + fileType;
+                    }
+
+                    $http.get(url).success(function (data) {
+                        $scope.scripts = data.scripts;
+                    });
+                }
+                else
+                {
+                    $scope.selectedScript = { name: "Data Package" };
+                    $scope.scripts = [{ name: "Data Package" }];
+                }
+            }
+        }
+    }
+
+    $scope.closeModal = function ()
+    {
+        if ($scope.submitted)
+            $modalInstance.close("update");
+        else
+            $modalInstance.dismiss("dismiss");
     }
 });
 'use strict';
@@ -10043,26 +10224,6 @@ angular
   .directive('rowSelect', rowSelect)
 'use strict';
 
-angular.module('app.filemanager').directive('ebaasFileManager', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/filemanager/views/file-manager.html',
-        replace: true,
-        scope: {},
-        bindToController: {
-            dbschema: '=',
-            dbclass: '=',
-            oid: '=',
-            prefix: '='
-        },
-        controllerAs: 'vm',
-        controller: 'fileManagerCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
-'use strict';
-
 angular.module('app.filemanager').controller('fileManagerCtrl', function ($scope, $rootScope, fileManager, APP_CONFIG, $stateParams) {
 
     /* jshint validthis:true */
@@ -10247,596 +10408,24 @@ angular.module('app.filemanager').controller('fileManagerViewerCtrl', function (
 
 'use strict';
 
-angular.module('app.dataImporter').controller('dataImportCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, Upload) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
-    $scope.oid = $stateParams.oid;
-    $scope.relatedclass = $stateParams.relatedclass;
-
-    $scope.selectedScript = undefined;
-    $scope.submitted = false;
-    $scope.loading = false;
-
-    var url;
-    if (!$scope.relatedclass) {
-        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/All";
-    }
-    else
-    {
-        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.relatedclass + "/All";
-    }
-
-    $http.get(url).success(function (data) {
-        $scope.scripts = data.scripts;
-    });
-
-    // upload on file select or drop
-    $scope.uploadFile = function (file) {
-        $scope.loading = true;
-        var uploadUrl;
-
-        if ($scope.selectedScript.name === "Data Package") {
-            uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/import/datapackage/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass;
-        }
-        else {
-            if (!$scope.relatedclass) {
-                uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/import/files/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + encodeURIComponent($scope.selectedScript.name);
-            }
-            else {
-                uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/import/files/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + $scope.oid + "/" + $scope.relatedclass + "/" + encodeURIComponent($scope.selectedScript.name);
-            }
-        }
-
-        if ($scope.selectedScript) {
-            
-            Upload.upload({
-                url: uploadUrl,
-                data: { file: file }
-            }).then(function (resp) {
-                $scope.errorMsg = "";
-                file.result = resp.data;
-                $scope.loading = false;
-                $scope.submitted = true;
-                $scope.selectedScript = undefined;
-                //console.log(resp);
-            }, function (resp) {
-                if (resp.status > 0)
-                    $scope.errorMsg = resp.status + ': ' + resp.data.message;
-                $scope.loading = false;
-            }, function (evt) {
-                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                file.progress = progressPercentage;
-            });
-        }
-    };
-
-    $scope.selectFile = function()
-    {
-        var fileType = undefined
-        if ($scope.file && $scope.file.name) {
-            var extension = $scope.file.name.split('.').pop();
-            if (extension) {
-                switch (extension.toUpperCase()) {
-                    case "XLS":
-                    case "XLSX":
-                        fileType = "Excel";
-                        break;
-                    case "TXT":
-                    case "CSV":
-                    case "DAT":
-
-                        fileType = "Text";
-                        break;
-                    case "PAK":
-
-                        fileType = "DataPackage";
-                        break;
-                    default:
-                        fileType = "Other";
-                        break;
-                }
-
-                var url;
-                if (fileType != "DataPackage") {
-                    if (!$scope.relatedclass) {
-                        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + fileType;
-                    }
-                    else {
-                        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.relatedclass + "/" + fileType;
-                    }
-
-                    $http.get(url).success(function (data) {
-                        $scope.scripts = data.scripts;
-                    });
-                }
-                else
-                {
-                    $scope.selectedScript = { name: "Data Package" };
-                    $scope.scripts = [{ name: "Data Package" }];
-                }
-            }
-        }
-    }
-
-    $scope.closeModal = function ()
-    {
-        if ($scope.submitted)
-            $modalInstance.close("update");
-        else
-            $modalInstance.dismiss("dismiss");
-    }
-});
-'use strict';
-
-angular.module('app.formeditor').controller('formEditorCtrl', function ($scope, $rootScope, $state, APP_CONFIG, $stateParams, formEditorService, $templateCache) {
-
-    $scope.dbschema = $stateParams.schema;
-    formEditorService.formInfo.dbclass = undefined;
-    formEditorService.formInfo.classTitle = undefined;
-    formEditorService.formInfo.formName = undefined;
-    $scope.content =  $rootScope.getWord("Form Editor Tip");
-    $scope.saved = false;
-    $scope.previewId = 0;
-
-    $scope.saveModel = function () {
-        if (formEditorService.formInfo.dbclass && formEditorService.formInfo.formName) {
-            formEditorService.saveFormFile($scope.dbschema, formEditorService.formInfo.dbclass, formEditorService.formInfo.formName, $scope.content, function () {
-                BootstrapDialog.show({
-                    title: $rootScope.getWord("Info Dialog"),
-                    type: BootstrapDialog.TYPE_INFO,
-                    message: $rootScope.getWord("Form Saved"),
-                    buttons: [{
-                        label: $rootScope.getWord("Cancel"),
-                        action: function (dialog) {
-                            dialog.close();
-                        }
-                    }]
-                });
-                $scope.saved = true;
-            });
-        }
-        else
-        {
-            BootstrapDialog.show({
-                title: $rootScope.getWord("Info Dialog"),
-                type: BootstrapDialog.TYPE_INFO,
-                message: $rootScope.getWord("Open Form First"),
-                buttons: [{
-                    label: $rootScope.getWord("Cancel"),
-                    action: function (dialog) {
-                        dialog.close();
-                    }
-                }]
-            });
-        }
-    }
-
-    $scope.previewForm = function () {
-        if (formEditorService.formInfo.dbclass && formEditorService.formInfo.formName) {
-            if ($scope.saved) {
-                // previewId is used to prevent template caching, it has a different id each time
-                $scope.previewId++;
-                $state.go('.preview', { schema: $stateParams.schema, class: formEditorService.formInfo.dbclass, template: formEditorService.formInfo.formName + ".htm", previewid: $scope.previewId });
-            }
-            else
-            {
-                BootstrapDialog.show({
-                    title: $rootScope.getWord("Info Dialog"),
-                    type: BootstrapDialog.TYPE_INFO,
-                    message: $rootScope.getWord("Save Form First"),
-                    buttons: [{
-                        label: $rootScope.getWord("Cancel"),
-                        action: function (dialog) {
-                            dialog.close();
-                        }
-                    }]
-                });
-            }
-        }
-        else
-        {
-            BootstrapDialog.show({
-                title: $rootScope.getWord("Info Dialog"),
-                type: BootstrapDialog.TYPE_INFO,
-                message: $rootScope.getWord("Open Form First"),
-                buttons: [{
-                    label: $rootScope.getWord("Cancel"),
-                    action: function (dialog) {
-                        dialog.close();
-                    }
-                }]
-            });
-        }
-    }
-
-    $scope.loadForm = function()
-    {
-        if (formEditorService.formInfo.dbclass) {
-
-            formEditorService.getFormFile($scope.dbschema, formEditorService.formInfo.dbclass, formEditorService.formInfo.formName, function (data) {
-                $scope.content = data;
-                if (data != "") {
-                    $scope.saved = true; // allow preview an existing form
-                }
-            });
-        }
-        else
-        {
-            $scope.content = "";
-            $scope.saved = false;
-        }
-    }
-
-    $scope.getTitle = function()
-    {
-        var className = formEditorService.formInfo.classTitle;
-        var formName = formEditorService.formInfo.formName;
-        if (!className)
-        {
-            className = "None";
-        }
-        if (!formName)
-        {
-            formName = "None";
-        }
-        return String.format($rootScope.getWord("Form Info"), className, formName);
-    }
-
-    /*
-    $scope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-        var answer = confirm("Are you sure you want to leave this page?")
-        if (!answer) {
-            event.preventDefault();
-        }
-    });
-    */
-});
-
-"use strict";
-
-angular.module('app.formeditor').factory('formEditorService', function ($http, APP_CONFIG) {
-
-    var contextModel = {
-        dbschema: undefined,
-        dbclass: undefined,
-        selectedProperty: undefined
-    };
-
-    var formInfo = {
-        dbclass: undefined,
-        classTitle: undefined,
-        formName: undefined
-    }
-
-    function getClassTreeData(dbschema, callback) {
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/metadata/schematree/" + encodeURIComponent(dbschema);
-
-        $http.get(url).success(function (data) {
-            callback(data);
-        }).error(function () {
-            callback([]);
-
-        });
-    }
-
-    function getRelationshipTreeData(dbschema, dbclass, callback) {
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/metadata/relationtree/" + encodeURIComponent(dbschema) + "/" + dbclass;
-
-        $http.get(url).success(function (data) {
-            callback(data);
-        }).error(function () {
-            callback([]);
-
-        });
-    }
-
-    function getClassProperties(dbschema, dbclass, callback) {
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/metadata/view/" + encodeURIComponent(dbschema) + "/" + dbclass + "?view=full"
-
-        $http.get(url).success(function (data) {
-            //console.debug(JSON.stringify(data));
-            callback(data);
-        }).error(function () {
-            callback([]);
-
-        });
-    }
-
-    function getLeafClasses(dbschema, dbclass, callback) {
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/metadata/leafclasses/" + encodeURIComponent(dbschema) + "/" + dbclass;
-
-        $http.get(url).success(function (data) {
-            callback(data);
-        }).error(function () {
-            callback([]);
-
-        });
-    }
-
-    function getFormFiles(dbschema, dbclass, callback) {
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/form/layouts/" + dbschema + "/" + dbclass;
-
-        $http.get(url).success(function (data) {
-            callback(data);
-        }).error(function () {
-            callback([]);
-
-        });
-    }
-
-    function getFormFile(dbschema, dbclass, formName, callback) {
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/form/layout/" + dbschema + "/" + dbclass + "/" + formName;
-
-        $http.get(url).success(function (data) {
-            callback(data);
-        }).error(function () {
-            callback([]);
-
-        });
-    }
-
-    function saveFormFile(dbschema, dbclass, formName, content, callback) {
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/form/layout/" + dbschema + "/" + dbclass + "/" + formName;
-
-        $http.post(url, JSON.stringify(content)).success(function () {
-            callback();
-        }).error(function () {
-            callback();
-
-        });
-    }
-
+angular.module('app.filemanager').directive('ebaasFileManager', function () {
     return {
-        contextModel: function()
-        {
-            return contextModel;
+        restrict: 'E',
+        templateUrl: 'app/filemanager/views/file-manager.html',
+        replace: true,
+        scope: {},
+        bindToController: {
+            dbschema: '=',
+            dbclass: '=',
+            oid: '=',
+            prefix: '='
         },
-        formInfo : function ()
-        {
-            return formInfo;
-        },
-        getFormFiles: function (dbschema, dbclass, callback)
-        {
-            getFormFiles(dbschema, dbclass, callback);
-        },
-        getFormFile: function (dbschema, dbclass, formName, callback) {
-            getFormFile(dbschema, dbclass, formName, callback);
-        },
-        saveFormFile: function (dbschema, dbclass, formName, content, callback) {
-            saveFormFile(dbschema, dbclass, formName, content, callback);
-        },
-        getClassTreeData: function (dbschema, callback) {
-            getClassTreeData(dbschema, callback);
-        },
-        getRelationshipTreeData: function (dbschema, dbclass, callback) {
-            getRelationshipTreeData(dbschema, dbclass, callback);
-        },
-        getLeafClasses: function (dbschema, dbclass, callback) {
-            getLeafClasses(dbschema, dbclass, callback);
-        },
-        getClassProperties: function (dbschema, dbclass, callback) {
-            getClassProperties(dbschema, dbclass, callback);
+        controllerAs: 'vm',
+        controller: 'fileManagerCtrl',
+        link: function (scope, element, attributes) {
         }
-	}
-});
-'use strict';
-
-angular.module('app.formeditor').controller('insertPropertyCtrl', function ($scope, $rootScope, APP_CONFIG, $stateParams, formEditorService) {
-
-    $scope.Initialize = function () {
-        $scope.properties = [];
-        $scope.leafClasses = [];
-        $scope.isReadOnly = false;
-        $scope.includeLabel = true;
-        $scope.selectedClass = undefined;
-
-        formEditorService.getRelationshipTreeData(formEditorService.contextModel.dbschema, formEditorService.contextModel.dbclass, function (data) {
-            var roots = [];
-            roots.push(data);
-            $scope.treedata = roots;
-
-            formEditorService.getClassProperties(formEditorService.contextModel.dbschema, formEditorService.contextModel.dbclass, function (data) {
-                $scope.selectedClass = formEditorService.contextModel.dbclass;
-                $scope.properties = getProperties(data);
-            });
-        });
-    };
-
-    $scope.Initialize();
-
-    $scope.reInitialize = function()
-    {
-        if ($scope.selectedClass &&
-            $scope.selectedClass != formEditorService.contextModel.dbclass)
-        {
-            $scope.Initialize();
-        }
-    }
-
-    $scope.$watch('classes.currentNode', function (newObj, oldObj) {
-        if ($scope.classes && angular.isObject($scope.classes.currentNode)) {
-            formEditorService.getClassProperties(formEditorService.contextModel.dbschema, $scope.classes.currentNode.name, function (data) {
-                $scope.properties = getProperties(data);
-                $scope.selectedClass = $scope.classes.currentNode.name;
-                if (!$scope.classes.currentNode.leaf)
-                {
-                    formEditorService.getLeafClasses(formEditorService.contextModel.dbschema, $scope.classes.currentNode.name, function (data) {
-                        $scope.leafClasses = data;
-                    });
-                }
-                else
-                {
-                    $scope.leafClasses = [];
-                }
-            });
-        }
-    }, false);
-
-    $scope.selectLeafClass = function()
-    {
-        if ($scope.selectedLeafClass) {
-            formEditorService.getClassProperties(formEditorService.contextModel.dbschema, $scope.selectedLeafClass.name, function (data) {
-                $scope.properties = getProperties(data);
-                $scope.selectedClass = $scope.selectedLeafClass.name;
-            });
-        }
-    }
-
-    $scope.selectProperty = function () {
-        $scope.isReadOnly = false;
-        formEditorService.contextModel.selectedProperty = $scope.selectedClassProperty;
-    }
-
-    $scope.getFieldElement = function()
-    {
-        var selectedProperty = formEditorService.contextModel.selectedProperty;
-        if (!selectedProperty)
-        {
-            return undefined;
-        }
-        else
-        {
-            var html = '<div class="form-group">';
-            if ($scope.includeLabel)
-            {
-                html += '<label>' + selectedProperty.label + '</label>';
-            }
-            html += '<input class="form-control" name="' + $scope.selectedClass + '_' + selectedProperty.name + '"';
-            if ($scope.isReadOnly)
-            {
-                html += ' read="true"';
-            }
-            html += '/></div>';
-
-            return html;
-        }
-    }
-
-    var getProperties = function(data)
-    {
-        var column;
-        var columns = [];
-
-        // data is a JSON Schema for the class
-        var properties = data.properties; // data.properies contains infos of each property of the schema
-
-        var propertyInfo;
-        for (var property in properties) {
-            if (properties.hasOwnProperty(property)) {
-                propertyInfo = properties[property];
-                column = {};
-                column.name = property;
-                column.label = propertyInfo["title"];
-                if (!propertyInfo["description"])
-                    column.title = propertyInfo["title"];
-                else
-                    column.title = propertyInfo["title"] + " (" + propertyInfo["description"] + ")";
-                columns.push(column);
-            }
-        }
-
-        return columns;
     }
 });
-
-'use strict';
-
-angular.module('app.formeditor').controller('openFileCtrl', function ($scope, $rootScope, APP_CONFIG, $stateParams, formEditorService) {
-
-    $scope.dbschema = $stateParams.schema;
-    formEditorService.contextModel.dbschema = $stateParams.schema;
-    formEditorService.formInfo.formName = undefined;
-    formEditorService.formInfo.classTitle = undefined;
-    formEditorService.formInfo.dbclass = undefined;
-    $scope.nodeType = "Folder";
-    $scope.selectedVal = undefined;
-    $scope.editorService = formEditorService;
-
-    $scope.filenames = [];
-
-    formEditorService.getClassTreeData($scope.dbschema, function (data) {
-        $scope.treedata = data;
-    });
-
-    $scope.$watch('classes.currentNode', function (newObj, oldObj) {
-        if ($scope.classes && angular.isObject($scope.classes.currentNode)) {
-            if ($scope.classes.currentNode["type"] &&
-                $scope.classes.currentNode["type"] === "Folder") {
-                $scope.nodeType = "Folder";
-                formEditorService.formInfo.dbclass = undefined;
-                formEditorService.formInfo.classTitle = undefined;
-                $scope.filenames = [];
-                formEditorService.formInfo.formName = undefined;
-            }
-            else {
-                formEditorService.getFormFiles($scope.dbschema, $scope.classes.currentNode.name, function (data) {
-                    formEditorService.formInfo.dbclass = $scope.classes.currentNode.name;
-                    formEditorService.formInfo.classTitle = $scope.classes.currentNode.title;
-                    $scope.nodeType = "Class";
-                    $scope.filenames = data;
-                    formEditorService.contextModel.dbclass = formEditorService.formInfo.dbclass;
-                    if ($scope.filenames && $scope.filenames.length > 0) {
-                        $scope.selectedVal = $scope.filenames[0];
-                        formEditorService.formInfo.formName = $scope.filenames[0];
-                    }
-                    else {
-                        formEditorService.formInfo.formName = undefined;
-                    }
-                });
-            }
-        }
-    }, false);
-
-    $scope.selectFile = function()
-    {
-        formEditorService.formInfo.formName = $scope.selectedVal;
-    }
-});
-
-'use strict';
-
-angular.module('app.smartforms').directive('ckEditor', function (APP_CONFIG, $stateParams, $compile) {
-    return {
-        require: '?ngModel',
-        link: function (scope, elm, attr, ngModel) {
-            CKEDITOR.config.contentsCss = ['plugin/bootstrap/dist/css/bootstrap.min.css'];
-            var ck = CKEDITOR.replace(elm[0], { height: '450px', startupFocus: true });
-            if (!ngModel) return;
-            ck.scope = scope;
-            ck.compile = $compile;
-            ck.on('instanceReady', function () {
-                ck.setData(ngModel.$viewValue);
-            });
-            function updateModel() {
-                scope.$apply(function () {
-                    ngModel.$setViewValue(ck.getData());
-                });
-            };
-            function saveModel() {
-                scope.saveModel();
-
-                return false;
-            }
-            ck.on('change', updateModel);
-            ck.on('key', updateModel);
-            ck.on('dataReady', updateModel);
-            ck.on('save', saveModel);
-
-            ngModel.$render = function (value) {
-                ck.setData(ngModel.$viewValue);
-            };
-        }
-    };
-});
-
 
 "use strict";
 
@@ -11825,6 +11414,533 @@ angular.module('app.forum').controller('forumTopicsCtrl', function ($scope, $roo
         });
     }
 });
+"use strict";
+
+
+angular.module('app.fulltextsearch').controller('searchResultCtrl', function ($scope, $http, $state, $stateParams, APP_CONFIG, searchContext, searchService) {
+
+    $scope.searchCounts = [];
+    $scope.loading = true;
+    searchService.getSearchResultCounts(APP_CONFIG.dbschema, searchContext.searchText, function (counts) {
+
+        $scope.searchCounts = counts;
+        $scope.loading = false;
+
+        if (counts.length == 1) {
+            // show the matched items if there is only one class contains them
+            $state.go('app.smarttables.datagrid', { schema: APP_CONFIG.dbschema, class: counts[0].className, search: 'fulltext' });
+        }
+    });
+
+    $scope.showClassData = function (className) {
+        $state.go('app.smarttables.datagrid', { schema: APP_CONFIG.dbschema, class: className, search: 'fulltext' });
+    }
+});
+"use strict";
+
+angular.module('app.fulltextsearch').factory('searchService', function ($http, APP_CONFIG) {
+
+    function getResultCounts(dbschema, searchtext, callback) {
+      
+        var url = APP_CONFIG.ebaasRootUrl + "/api/search/" + encodeURIComponent(dbschema) + "/counts?searchtext=" + encodeURIComponent(searchtext);
+
+	    $http.get(url).success(function (data) {
+	        callback(data);
+				
+		}).error(function(){
+		    callback([]);
+		});
+    }
+	
+	return {
+	    getSearchResultCounts: function (dbschema, searchtext, callback) {
+	        getResultCounts(dbschema, searchtext, callback);
+	    }
+	}
+});
+'use strict';
+
+angular.module('app.formeditor').controller('formEditorCtrl', function ($scope, $rootScope, $state, APP_CONFIG, $stateParams, formEditorService, $templateCache) {
+
+    $scope.dbschema = $stateParams.schema;
+    formEditorService.formInfo.dbclass = undefined;
+    formEditorService.formInfo.classTitle = undefined;
+    formEditorService.formInfo.formName = undefined;
+    $scope.content =  $rootScope.getWord("Form Editor Tip");
+    $scope.saved = false;
+    $scope.previewId = 0;
+
+    $scope.saveModel = function () {
+        if (formEditorService.formInfo.dbclass && formEditorService.formInfo.formName) {
+            formEditorService.saveFormFile($scope.dbschema, formEditorService.formInfo.dbclass, formEditorService.formInfo.formName, $scope.content, function () {
+                BootstrapDialog.show({
+                    title: $rootScope.getWord("Info Dialog"),
+                    type: BootstrapDialog.TYPE_INFO,
+                    message: $rootScope.getWord("Form Saved"),
+                    buttons: [{
+                        label: $rootScope.getWord("Cancel"),
+                        action: function (dialog) {
+                            dialog.close();
+                        }
+                    }]
+                });
+                $scope.saved = true;
+            });
+        }
+        else
+        {
+            BootstrapDialog.show({
+                title: $rootScope.getWord("Info Dialog"),
+                type: BootstrapDialog.TYPE_INFO,
+                message: $rootScope.getWord("Open Form First"),
+                buttons: [{
+                    label: $rootScope.getWord("Cancel"),
+                    action: function (dialog) {
+                        dialog.close();
+                    }
+                }]
+            });
+        }
+    }
+
+    $scope.previewForm = function () {
+        if (formEditorService.formInfo.dbclass && formEditorService.formInfo.formName) {
+            if ($scope.saved) {
+                // previewId is used to prevent template caching, it has a different id each time
+                $scope.previewId++;
+                $state.go('.preview', { schema: $stateParams.schema, class: formEditorService.formInfo.dbclass, template: formEditorService.formInfo.formName + ".htm", previewid: $scope.previewId });
+            }
+            else
+            {
+                BootstrapDialog.show({
+                    title: $rootScope.getWord("Info Dialog"),
+                    type: BootstrapDialog.TYPE_INFO,
+                    message: $rootScope.getWord("Save Form First"),
+                    buttons: [{
+                        label: $rootScope.getWord("Cancel"),
+                        action: function (dialog) {
+                            dialog.close();
+                        }
+                    }]
+                });
+            }
+        }
+        else
+        {
+            BootstrapDialog.show({
+                title: $rootScope.getWord("Info Dialog"),
+                type: BootstrapDialog.TYPE_INFO,
+                message: $rootScope.getWord("Open Form First"),
+                buttons: [{
+                    label: $rootScope.getWord("Cancel"),
+                    action: function (dialog) {
+                        dialog.close();
+                    }
+                }]
+            });
+        }
+    }
+
+    $scope.loadForm = function()
+    {
+        if (formEditorService.formInfo.dbclass) {
+
+            formEditorService.getFormFile($scope.dbschema, formEditorService.formInfo.dbclass, formEditorService.formInfo.formName, function (data) {
+                $scope.content = data;
+                if (data != "") {
+                    $scope.saved = true; // allow preview an existing form
+                }
+            });
+        }
+        else
+        {
+            $scope.content = "";
+            $scope.saved = false;
+        }
+    }
+
+    $scope.getTitle = function()
+    {
+        var className = formEditorService.formInfo.classTitle;
+        var formName = formEditorService.formInfo.formName;
+        if (!className)
+        {
+            className = "None";
+        }
+        if (!formName)
+        {
+            formName = "None";
+        }
+        return String.format($rootScope.getWord("Form Info"), className, formName);
+    }
+
+    /*
+    $scope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+        var answer = confirm("Are you sure you want to leave this page?")
+        if (!answer) {
+            event.preventDefault();
+        }
+    });
+    */
+});
+
+"use strict";
+
+angular.module('app.formeditor').factory('formEditorService', function ($http, APP_CONFIG) {
+
+    var contextModel = {
+        dbschema: undefined,
+        dbclass: undefined,
+        selectedProperty: undefined
+    };
+
+    var formInfo = {
+        dbclass: undefined,
+        classTitle: undefined,
+        formName: undefined
+    }
+
+    function getClassTreeData(dbschema, callback) {
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/metadata/schematree/" + encodeURIComponent(dbschema);
+
+        $http.get(url).success(function (data) {
+            callback(data);
+        }).error(function () {
+            callback([]);
+
+        });
+    }
+
+    function getRelationshipTreeData(dbschema, dbclass, callback) {
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/metadata/relationtree/" + encodeURIComponent(dbschema) + "/" + dbclass;
+
+        $http.get(url).success(function (data) {
+            callback(data);
+        }).error(function () {
+            callback([]);
+
+        });
+    }
+
+    function getClassProperties(dbschema, dbclass, callback) {
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/metadata/view/" + encodeURIComponent(dbschema) + "/" + dbclass + "?view=full"
+
+        $http.get(url).success(function (data) {
+            //console.debug(JSON.stringify(data));
+            callback(data);
+        }).error(function () {
+            callback([]);
+
+        });
+    }
+
+    function getLeafClasses(dbschema, dbclass, callback) {
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/metadata/leafclasses/" + encodeURIComponent(dbschema) + "/" + dbclass;
+
+        $http.get(url).success(function (data) {
+            callback(data);
+        }).error(function () {
+            callback([]);
+
+        });
+    }
+
+    function getFormFiles(dbschema, dbclass, callback) {
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/form/layouts/" + dbschema + "/" + dbclass;
+
+        $http.get(url).success(function (data) {
+            callback(data);
+        }).error(function () {
+            callback([]);
+
+        });
+    }
+
+    function getFormFile(dbschema, dbclass, formName, callback) {
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/form/layout/" + dbschema + "/" + dbclass + "/" + formName;
+
+        $http.get(url).success(function (data) {
+            callback(data);
+        }).error(function () {
+            callback([]);
+
+        });
+    }
+
+    function saveFormFile(dbschema, dbclass, formName, content, callback) {
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/form/layout/" + dbschema + "/" + dbclass + "/" + formName;
+
+        $http.post(url, JSON.stringify(content)).success(function () {
+            callback();
+        }).error(function () {
+            callback();
+
+        });
+    }
+
+    return {
+        contextModel: function()
+        {
+            return contextModel;
+        },
+        formInfo : function ()
+        {
+            return formInfo;
+        },
+        getFormFiles: function (dbschema, dbclass, callback)
+        {
+            getFormFiles(dbschema, dbclass, callback);
+        },
+        getFormFile: function (dbschema, dbclass, formName, callback) {
+            getFormFile(dbschema, dbclass, formName, callback);
+        },
+        saveFormFile: function (dbschema, dbclass, formName, content, callback) {
+            saveFormFile(dbschema, dbclass, formName, content, callback);
+        },
+        getClassTreeData: function (dbschema, callback) {
+            getClassTreeData(dbschema, callback);
+        },
+        getRelationshipTreeData: function (dbschema, dbclass, callback) {
+            getRelationshipTreeData(dbschema, dbclass, callback);
+        },
+        getLeafClasses: function (dbschema, dbclass, callback) {
+            getLeafClasses(dbschema, dbclass, callback);
+        },
+        getClassProperties: function (dbschema, dbclass, callback) {
+            getClassProperties(dbschema, dbclass, callback);
+        }
+	}
+});
+'use strict';
+
+angular.module('app.formeditor').controller('insertPropertyCtrl', function ($scope, $rootScope, APP_CONFIG, $stateParams, formEditorService) {
+
+    $scope.Initialize = function () {
+        $scope.properties = [];
+        $scope.leafClasses = [];
+        $scope.isReadOnly = false;
+        $scope.includeLabel = true;
+        $scope.selectedClass = undefined;
+
+        formEditorService.getRelationshipTreeData(formEditorService.contextModel.dbschema, formEditorService.contextModel.dbclass, function (data) {
+            var roots = [];
+            roots.push(data);
+            $scope.treedata = roots;
+
+            formEditorService.getClassProperties(formEditorService.contextModel.dbschema, formEditorService.contextModel.dbclass, function (data) {
+                $scope.selectedClass = formEditorService.contextModel.dbclass;
+                $scope.properties = getProperties(data);
+            });
+        });
+    };
+
+    $scope.Initialize();
+
+    $scope.reInitialize = function()
+    {
+        if ($scope.selectedClass &&
+            $scope.selectedClass != formEditorService.contextModel.dbclass)
+        {
+            $scope.Initialize();
+        }
+    }
+
+    $scope.$watch('classes.currentNode', function (newObj, oldObj) {
+        if ($scope.classes && angular.isObject($scope.classes.currentNode)) {
+            formEditorService.getClassProperties(formEditorService.contextModel.dbschema, $scope.classes.currentNode.name, function (data) {
+                $scope.properties = getProperties(data);
+                $scope.selectedClass = $scope.classes.currentNode.name;
+                if (!$scope.classes.currentNode.leaf)
+                {
+                    formEditorService.getLeafClasses(formEditorService.contextModel.dbschema, $scope.classes.currentNode.name, function (data) {
+                        $scope.leafClasses = data;
+                    });
+                }
+                else
+                {
+                    $scope.leafClasses = [];
+                }
+            });
+        }
+    }, false);
+
+    $scope.selectLeafClass = function()
+    {
+        if ($scope.selectedLeafClass) {
+            formEditorService.getClassProperties(formEditorService.contextModel.dbschema, $scope.selectedLeafClass.name, function (data) {
+                $scope.properties = getProperties(data);
+                $scope.selectedClass = $scope.selectedLeafClass.name;
+            });
+        }
+    }
+
+    $scope.selectProperty = function () {
+        $scope.isReadOnly = false;
+        formEditorService.contextModel.selectedProperty = $scope.selectedClassProperty;
+    }
+
+    $scope.getFieldElement = function()
+    {
+        var selectedProperty = formEditorService.contextModel.selectedProperty;
+        if (!selectedProperty)
+        {
+            return undefined;
+        }
+        else
+        {
+            var html = '<div class="form-group">';
+            if ($scope.includeLabel)
+            {
+                html += '<label>' + selectedProperty.label + '</label>';
+            }
+            html += '<input class="form-control" name="' + $scope.selectedClass + '_' + selectedProperty.name + '"';
+            if ($scope.isReadOnly)
+            {
+                html += ' read="true"';
+            }
+            html += '/></div>';
+
+            return html;
+        }
+    }
+
+    var getProperties = function(data)
+    {
+        var column;
+        var columns = [];
+
+        // data is a JSON Schema for the class
+        var properties = data.properties; // data.properies contains infos of each property of the schema
+
+        var propertyInfo;
+        for (var property in properties) {
+            if (properties.hasOwnProperty(property)) {
+                propertyInfo = properties[property];
+                column = {};
+                column.name = property;
+                column.label = propertyInfo["title"];
+                if (!propertyInfo["description"])
+                    column.title = propertyInfo["title"];
+                else
+                    column.title = propertyInfo["title"] + " (" + propertyInfo["description"] + ")";
+                columns.push(column);
+            }
+        }
+
+        return columns;
+    }
+});
+
+'use strict';
+
+angular.module('app.formeditor').controller('openFileCtrl', function ($scope, $rootScope, APP_CONFIG, $stateParams, formEditorService) {
+
+    $scope.dbschema = $stateParams.schema;
+    formEditorService.contextModel.dbschema = $stateParams.schema;
+    formEditorService.formInfo.formName = undefined;
+    formEditorService.formInfo.classTitle = undefined;
+    formEditorService.formInfo.dbclass = undefined;
+    $scope.nodeType = "Folder";
+    $scope.selectedVal = undefined;
+    $scope.editorService = formEditorService;
+
+    $scope.filenames = [];
+
+    formEditorService.getClassTreeData($scope.dbschema, function (data) {
+        $scope.treedata = data;
+    });
+
+    $scope.$watch('classes.currentNode', function (newObj, oldObj) {
+        if ($scope.classes && angular.isObject($scope.classes.currentNode)) {
+            if ($scope.classes.currentNode["type"] &&
+                $scope.classes.currentNode["type"] === "Folder") {
+                $scope.nodeType = "Folder";
+                formEditorService.formInfo.dbclass = undefined;
+                formEditorService.formInfo.classTitle = undefined;
+                $scope.filenames = [];
+                formEditorService.formInfo.formName = undefined;
+            }
+            else {
+                formEditorService.getFormFiles($scope.dbschema, $scope.classes.currentNode.name, function (data) {
+                    formEditorService.formInfo.dbclass = $scope.classes.currentNode.name;
+                    formEditorService.formInfo.classTitle = $scope.classes.currentNode.title;
+                    $scope.nodeType = "Class";
+                    $scope.filenames = data;
+                    formEditorService.contextModel.dbclass = formEditorService.formInfo.dbclass;
+                    if ($scope.filenames && $scope.filenames.length > 0) {
+                        $scope.selectedVal = $scope.filenames[0];
+                        formEditorService.formInfo.formName = $scope.filenames[0];
+                    }
+                    else {
+                        formEditorService.formInfo.formName = undefined;
+                    }
+                });
+            }
+        }
+    }, false);
+
+    $scope.selectFile = function()
+    {
+        formEditorService.formInfo.formName = $scope.selectedVal;
+    }
+});
+
+
+
+'use strict';
+
+angular.module('app.fulltextsearch').factory('searchContext', function () {
+
+    var SearchContextModel = {
+            searchText: undefined
+        };
+
+    return SearchContextModel;
+});
+
+'use strict';
+
+angular.module('app.smartforms').directive('ckEditor', function (APP_CONFIG, $stateParams, $compile) {
+    return {
+        require: '?ngModel',
+        link: function (scope, elm, attr, ngModel) {
+            CKEDITOR.config.contentsCss = ['plugin/bootstrap/dist/css/bootstrap.min.css'];
+            var ck = CKEDITOR.replace(elm[0], { height: '450px', startupFocus: true });
+            if (!ngModel) return;
+            ck.scope = scope;
+            ck.compile = $compile;
+            ck.on('instanceReady', function () {
+                ck.setData(ngModel.$viewValue);
+            });
+            function updateModel() {
+                scope.$apply(function () {
+                    ngModel.$setViewValue(ck.getData());
+                });
+            };
+            function saveModel() {
+                scope.saveModel();
+
+                return false;
+            }
+            ck.on('change', updateModel);
+            ck.on('key', updateModel);
+            ck.on('dataReady', updateModel);
+            ck.on('save', saveModel);
+
+            ngModel.$render = function (value) {
+                ck.setData(ngModel.$viewValue);
+            };
+        }
+    };
+});
+
 'use strict';
 
 angular.module('app.galleryview').controller('galleryViewCtrl', function ($scope, $rootScope, $http, $state, $stateParams, APP_CONFIG, promiseParams, promiseClassInfo, promiseItems, promisedCommands) {
@@ -12020,63 +12136,6 @@ angular.module('app.galleryview').controller('galleryViewCtrl', function ($scope
         $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
     }
 });
-"use strict";
-
-
-angular.module('app.fulltextsearch').controller('searchResultCtrl', function ($scope, $http, $state, $stateParams, APP_CONFIG, searchContext, searchService) {
-
-    $scope.searchCounts = [];
-    $scope.loading = true;
-    searchService.getSearchResultCounts(APP_CONFIG.dbschema, searchContext.searchText, function (counts) {
-
-        $scope.searchCounts = counts;
-        $scope.loading = false;
-
-        if (counts.length == 1) {
-            // show the matched items if there is only one class contains them
-            $state.go('app.smarttables.datagrid', { schema: APP_CONFIG.dbschema, class: counts[0].className, search: 'fulltext' });
-        }
-    });
-
-    $scope.showClassData = function (className) {
-        $state.go('app.smarttables.datagrid', { schema: APP_CONFIG.dbschema, class: className, search: 'fulltext' });
-    }
-});
-"use strict";
-
-angular.module('app.fulltextsearch').factory('searchService', function ($http, APP_CONFIG) {
-
-    function getResultCounts(dbschema, searchtext, callback) {
-      
-        var url = APP_CONFIG.ebaasRootUrl + "/api/search/" + encodeURIComponent(dbschema) + "/counts?searchtext=" + encodeURIComponent(searchtext);
-
-	    $http.get(url).success(function (data) {
-	        callback(data);
-				
-		}).error(function(){
-		    callback([]);
-		});
-    }
-	
-	return {
-	    getSearchResultCounts: function (dbschema, searchtext, callback) {
-	        getResultCounts(dbschema, searchtext, callback);
-	    }
-	}
-});
-
-
-'use strict';
-
-angular.module('app.fulltextsearch').factory('searchContext', function () {
-
-    var SearchContextModel = {
-            searchText: undefined
-        };
-
-    return SearchContextModel;
-});
-
 "use strict";
 
 angular.module('app.graphs').controller('FlotCtrl', function ($scope) {
@@ -12706,11 +12765,12 @@ angular.module('app.homepage').controller('mainChartsCtrl', function ($scope, $h
 "use strict";
 
 
-angular.module('app.homepage').controller('mainMenuCtrl', function ($scope, $http, $state, $stateParams, APP_CONFIG, promisedMenuItems, bulletinService, User) {
+angular.module('app.homepage').controller('mainMenuCtrl', function ($scope, $rootScope, $state, promisedMenuItems, bulletinService) {
 
     $scope.dbschema = undefined;
     $scope.dbclass = undefined;
 
+    var foundFullTextSearch = false;
     var menuItems = new Array();
     _.forEach(promisedMenuItems.data.items, function (item) {
         if (item.visible) {
@@ -12725,8 +12785,7 @@ angular.module('app.homepage').controller('mainMenuCtrl', function ($scope, $htt
                 if (item.name.toUpperCase() != "HOME") {
                     menuItems.push(item);
                 }
-                else
-                {
+                else {
                     $scope.dbschema = item.schema;
                     $scope.dbclass = item.class;
                 }
@@ -12743,7 +12802,39 @@ angular.module('app.homepage').controller('mainMenuCtrl', function ($scope, $htt
                 })
             }
         }
-    })
+
+        // find the first level menu item with name FULLTEXTSEARCH
+        if (item.name.toUpperCase() === "FULLTEXTSEARCH") {
+            var parameters = ["ID", "title", "itemClass", "packetClass",
+                "taskNodeAttribute", "itemNodeAttribute", "packetNodeAttribute",
+                "taskTemplate", "itemTemplate", "packetTemplate"];
+
+            $rootScope.fullText = new Object();
+            $rootScope.fullText.schema = item.schema;
+            $rootScope.fullText.class = item.class;
+            $rootScope.fullText.sref = item.sref;
+            if (item.parameters) {
+                for (var i = 0; i < parameters.length; i++) {
+                    var parameter = parameters[i];
+                    if (item.parameters.hasOwnProperty(parameter)) {
+                        $rootScope.fullText[parameter] = item.parameters[parameter];
+                    }
+                    else {
+                        console.error("The FullTextSearh menu item is missing " + parameter + " parameter");
+                    }
+                }              
+            }
+            else {
+                console.error("The FullTextSearh menu item is missing parameters");
+            };
+
+            foundFullTextSearch = true;
+        }
+    });
+
+    if (!foundFullTextSearch) {
+        console.error("Unable to find a first level menu item with name FullTextSearch");
+    }
 
     $scope.menuItems = menuItems;
 
@@ -12884,6 +12975,204 @@ angular.module("app.hub").factory("hubService", function($http, $q, localStorage
 
     return hubServiceFactory;
 });
+'use strict';
+
+angular.module('app.logs').controller('changeLogCtrl', function ($scope, $rootScope, APP_CONFIG, logManager, $stateParams) {
+
+    var vm = this;
+    vm.title = 'Log Viewer';
+
+    vm.getWord = getWord;
+
+    logManager.params.dbschema = $stateParams.logschema;
+    logManager.params.dbclass = $stateParams.logclass;
+    logManager.params.oid = $stateParams.logoid;
+    logManager.params.property = $stateParams.logproperty;
+
+    activate();
+
+    function activate() {
+        logManager.load(function (logs) {
+            console.log(logs);
+            vm.logs = logs;
+        });
+    }
+
+    function getWord(key) {
+        return $rootScope.getWord(key);
+    }
+});
+
+'use strict';
+
+angular.module('app.logs').controller('changeLogViewerCtrl', function ($scope, $rootScope, APP_CONFIG, $stateParams, $modalInstance) {
+
+    $scope.dbschema = $stateParams.logschema;
+    $scope.dbclass = $stateParams.logclass;
+    $scope.oid = $stateParams.logoid;
+    $scope.property = $stateParams.logproperty;
+
+
+    $scope.closeModal = function () {
+        $modalInstance.dismiss("dismiss");
+    };
+});
+
+'use strict';
+
+angular.module('app.logs').directive('changelog', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/logs/views/change-log.html',
+        replace: true,
+        scope: {},
+        controllerAs: 'vm',
+        controller: 'changeLogCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
+'use strict';
+
+angular.module('app.logs').factory('logManager', function ($q, $http, APP_CONFIG) {
+
+    var service = {
+        logs: [],
+        load: load,
+        status: {
+            uploading: false
+        },
+        params: {
+            dbschema: "",
+            dbclass: "",
+            oid: "",
+            property: ""
+        }
+    };
+
+    return service;
+
+    function load(callback) {
+        service.logs.length = 0;
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/log/" + encodeURIComponent(service.params.dbschema) + "/" + service.params.dbclass + "/" + service.params.oid + "/" + service.params.property;
+
+        $http.get(url).success(function (data) {
+
+            callback(convertLogs(data));
+
+        }).error(function () {
+
+        });
+    }
+
+    function convertLogs(logRecordCollection) {
+
+        var logs = [];
+
+        if (logRecordCollection) {
+
+            for (var i = 0; i < logRecordCollection.length; i++) {
+                var logRecord = logRecordCollection[i];
+
+                var log = {};
+
+                switch (logRecord.actionType)
+                {
+                    case 1:
+                        log.type = "Create";
+                        break;
+
+                    case 2:
+                        log.type = "Modify";
+                        break
+                }
+                
+                log.user = logRecord.userDisplayText;
+                log.time = logRecord.actionTime;
+                log.content = logRecord.actionData;
+
+                logs.push(log);
+            }
+        }
+
+        return logs;
+    }
+});
+"use strict";
+
+angular.module('app').controller("LanguagesCtrl",  function LanguagesCtrl($scope, $rootScope, $log, Language){
+
+
+
+
+    $scope.selectLanguage = function(language){
+        $rootScope.currentLanguage = language;
+        
+        Language.getLang(language.key,function(data){
+
+            $rootScope.lang = data;
+            
+        });
+    }
+
+ 
+
+});
+"use strict";
+
+angular.module('app').factory('Language', function($http, APP_CONFIG){
+
+	function getLanguage(key, callback) {
+
+		$http.get(APP_CONFIG.apiRootUrl + '/langs/' + key + '.json').success(function(data){
+
+			callback(data);
+			
+		}).error(function(){
+
+			$log.log('Error');
+			callback([]);
+
+		});
+
+	}
+
+	function getLanguages(callback) {
+
+		$http.get(APP_CONFIG.apiRootUrl + '/languages.json').success(function(data){
+
+			callback(data);
+			
+		}).error(function(){
+
+			$log.log('Error');
+			callback([]);
+
+		});
+
+	}
+
+	return {
+		getLang: function(type, callback) {
+			getLanguage(type, callback);
+		},
+		getLanguages:function(callback){
+			getLanguages(callback);
+		}
+	}
+
+});
+"use strict";
+
+angular.module('app').directive('languageSelector', function(Language){
+    return {
+        restrict: "EA",
+        replace: true,
+        templateUrl: "app/layout/language/language-selector.tpl.html",
+        scope: true
+    }
+});
 "use strict";
 
 angular.module('app.layout').controller('helpViewerCtlr', function ($rootScope, $scope, $stateParams, $http, APP_CONFIG) {
@@ -12984,142 +13273,6 @@ angular.module('app.layout').controller('layoutCtrl', function ($rootScope, $sco
     }
 });
 
-"use strict";
-
-angular.module('app').controller("LanguagesCtrl",  function LanguagesCtrl($scope, $rootScope, $log, Language){
-
-
-
-
-    $scope.selectLanguage = function(language){
-        $rootScope.currentLanguage = language;
-        
-        Language.getLang(language.key,function(data){
-
-            $rootScope.lang = data;
-            
-        });
-    }
-
- 
-
-});
-"use strict";
-
-angular.module('app').factory('Language', function($http, APP_CONFIG){
-
-	function getLanguage(key, callback) {
-
-		$http.get(APP_CONFIG.apiRootUrl + '/langs/' + key + '.json').success(function(data){
-
-			callback(data);
-			
-		}).error(function(){
-
-			$log.log('Error');
-			callback([]);
-
-		});
-
-	}
-
-	function getLanguages(callback) {
-
-		$http.get(APP_CONFIG.apiRootUrl + '/languages.json').success(function(data){
-
-			callback(data);
-			
-		}).error(function(){
-
-			$log.log('Error');
-			callback([]);
-
-		});
-
-	}
-
-	return {
-		getLang: function(type, callback) {
-			getLanguage(type, callback);
-		},
-		getLanguages:function(callback){
-			getLanguages(callback);
-		}
-	}
-
-});
-"use strict";
-
-angular.module('app').directive('languageSelector', function(Language){
-    return {
-        restrict: "EA",
-        replace: true,
-        templateUrl: "app/layout/language/language-selector.tpl.html",
-        scope: true
-    }
-});
-"use strict";
-
-angular.module('app').directive('toggleShortcut', function($log,$timeout) {
-
-	var initDomEvents = function($element){
-
-		var shortcut_dropdown = $('#shortcut');
-
-		$element.on('click',function(){
-		
-			if (shortcut_dropdown.is(":visible")) {
-				shortcut_buttons_hide();
-			} else {
-				shortcut_buttons_show();
-			}
-
-		})
-
-		shortcut_dropdown.find('a').click(function(e) {
-			e.preventDefault();
-			window.location = $(this).attr('href');
-			setTimeout(shortcut_buttons_hide, 300);
-		});
-
-		
-
-		// SHORTCUT buttons goes away if mouse is clicked outside of the area
-		$(document).mouseup(function(e) {
-			if (shortcut_dropdown && !shortcut_dropdown.is(e.target) && shortcut_dropdown.has(e.target).length === 0) {
-				shortcut_buttons_hide();
-			}
-		});
-
-		// SHORTCUT ANIMATE HIDE
-		function shortcut_buttons_hide() {
-			shortcut_dropdown.animate({
-				height : "hide"
-			}, 300, "easeOutCirc");
-			$('body').removeClass('shortcut-on');
-
-		}
-
-		// SHORTCUT ANIMATE SHOW
-		function shortcut_buttons_show() {
-			shortcut_dropdown.animate({
-				height : "show"
-			}, 200, "easeOutCirc");
-			$('body').addClass('shortcut-on');
-		}
-	}
-
-	var link = function($scope,$element){
-		$timeout(function(){
-			initDomEvents($element);
-		});
-	}
-
-	return{
-		restrict:'EA',
-		link:link
-	}
-})
 'use strict';
 
 angular.module('app.mldashboard').controller('MLDashboardLayoutCtrl', function ($http, APP_CONFIG, $scope, $state, $stateParams, propmisedParams) {
@@ -13314,130 +13467,68 @@ angular.module('app.mldashboard').controller('MLModelDashboardCtrl', function ($
         return labels;
     }
 });
-'use strict';
+"use strict";
 
-angular.module('app.logs').directive('changelog', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/logs/views/change-log.html',
-        replace: true,
-        scope: {},
-        controllerAs: 'vm',
-        controller: 'changeLogCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
-'use strict';
+angular.module('app').directive('toggleShortcut', function($log,$timeout) {
 
-angular.module('app.logs').controller('changeLogCtrl', function ($scope, $rootScope, APP_CONFIG, logManager, $stateParams) {
+	var initDomEvents = function($element){
 
-    var vm = this;
-    vm.title = 'Log Viewer';
+		var shortcut_dropdown = $('#shortcut');
 
-    vm.getWord = getWord;
+		$element.on('click',function(){
+		
+			if (shortcut_dropdown.is(":visible")) {
+				shortcut_buttons_hide();
+			} else {
+				shortcut_buttons_show();
+			}
 
-    logManager.params.dbschema = $stateParams.logschema;
-    logManager.params.dbclass = $stateParams.logclass;
-    logManager.params.oid = $stateParams.logoid;
-    logManager.params.property = $stateParams.logproperty;
+		})
 
-    activate();
+		shortcut_dropdown.find('a').click(function(e) {
+			e.preventDefault();
+			window.location = $(this).attr('href');
+			setTimeout(shortcut_buttons_hide, 300);
+		});
 
-    function activate() {
-        logManager.load(function (logs) {
-            console.log(logs);
-            vm.logs = logs;
-        });
-    }
+		
 
-    function getWord(key) {
-        return $rootScope.getWord(key);
-    }
-});
+		// SHORTCUT buttons goes away if mouse is clicked outside of the area
+		$(document).mouseup(function(e) {
+			if (shortcut_dropdown && !shortcut_dropdown.is(e.target) && shortcut_dropdown.has(e.target).length === 0) {
+				shortcut_buttons_hide();
+			}
+		});
 
-'use strict';
+		// SHORTCUT ANIMATE HIDE
+		function shortcut_buttons_hide() {
+			shortcut_dropdown.animate({
+				height : "hide"
+			}, 300, "easeOutCirc");
+			$('body').removeClass('shortcut-on');
 
-angular.module('app.logs').controller('changeLogViewerCtrl', function ($scope, $rootScope, APP_CONFIG, $stateParams, $modalInstance) {
+		}
 
-    $scope.dbschema = $stateParams.logschema;
-    $scope.dbclass = $stateParams.logclass;
-    $scope.oid = $stateParams.logoid;
-    $scope.property = $stateParams.logproperty;
+		// SHORTCUT ANIMATE SHOW
+		function shortcut_buttons_show() {
+			shortcut_dropdown.animate({
+				height : "show"
+			}, 200, "easeOutCirc");
+			$('body').addClass('shortcut-on');
+		}
+	}
 
+	var link = function($scope,$element){
+		$timeout(function(){
+			initDomEvents($element);
+		});
+	}
 
-    $scope.closeModal = function () {
-        $modalInstance.dismiss("dismiss");
-    };
-});
-
-'use strict';
-
-angular.module('app.logs').factory('logManager', function ($q, $http, APP_CONFIG) {
-
-    var service = {
-        logs: [],
-        load: load,
-        status: {
-            uploading: false
-        },
-        params: {
-            dbschema: "",
-            dbclass: "",
-            oid: "",
-            property: ""
-        }
-    };
-
-    return service;
-
-    function load(callback) {
-        service.logs.length = 0;
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/log/" + encodeURIComponent(service.params.dbschema) + "/" + service.params.dbclass + "/" + service.params.oid + "/" + service.params.property;
-
-        $http.get(url).success(function (data) {
-
-            callback(convertLogs(data));
-
-        }).error(function () {
-
-        });
-    }
-
-    function convertLogs(logRecordCollection) {
-
-        var logs = [];
-
-        if (logRecordCollection) {
-
-            for (var i = 0; i < logRecordCollection.length; i++) {
-                var logRecord = logRecordCollection[i];
-
-                var log = {};
-
-                switch (logRecord.actionType)
-                {
-                    case 1:
-                        log.type = "Create";
-                        break;
-
-                    case 2:
-                        log.type = "Modify";
-                        break
-                }
-                
-                log.user = logRecord.userDisplayText;
-                log.time = logRecord.actionTime;
-                log.content = logRecord.actionData;
-
-                logs.push(log);
-            }
-        }
-
-        return logs;
-    }
-});
+	return{
+		restrict:'EA',
+		link:link
+	}
+})
 "use strict";
 
 angular.module('app.myspace').controller('finishedTaskFormCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $stateParams, $state, promiseFinishedTaskInfo) {
@@ -14803,6 +14894,66 @@ angular.module('app.smartforms').controller('viewManyToManyCtrl', function ($sco
 
 'use strict';
 
+angular.module('app.smartreports').controller('downloadReportCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $stateParams, $modalInstance, fileManager) {
+ 
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+    $scope.oid = $stateParams.oid;
+    $scope.template = $stateParams.template;
+    $scope.templateAttribute = $stateParams.templateAttribute;
+
+    $scope.baseUrl = APP_CONFIG.ebaasRootUrl;
+    if (APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash])
+    {
+        $scope.baseUrl = APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash];
+    }
+   
+    $scope.loading = false;
+
+    $scope.closeModal = function () {
+        $modalInstance.dismiss("dismiss");
+    };
+
+    $scope.download = function() {
+
+        var getFileUrl = undefined;
+ 
+        if ($scope.templateAttribute)
+        {
+            getFileUrl = $scope.baseUrl + "/api/report/" + $scope.dbschema + "/" + $scope.dbclass + "/" + $scope.oid + "?templateSource=property&property=" + $scope.templateAttribute;
+
+        }
+        else if ($scope.template) {
+            getFileUrl = $scope.baseUrl + "/api/report/" + $scope.dbschema + "/" + $scope.dbclass + "/" + $scope.oid + "?templateSource=file&template=" + encodeURIComponent($scope.template);
+        }
+
+        if (getFileUrl) {
+            $scope.loading = true;
+
+            fileManager.performDownload(getFileUrl, function () {
+                $scope.loading = false;
+            });
+        }
+        else
+        {
+            BootstrapDialog.show({
+                title: $rootScope.getWord("Info Dialog"),
+                type: BootstrapDialog.TYPE_DANGER,
+                message: "template or property parameter not defined",
+                buttons: [{
+                    label: $rootScope.getWord("Cancel"),
+                    action: function (dialog) {
+                        dialog.close();
+                    }
+                }]
+            });
+            
+        }
+    }
+});
+
+'use strict';
+
 angular.module('app.smartforms').directive('buttonSpinner', function ($compile) {
     return {
         restrict: 'A',
@@ -14944,66 +15095,839 @@ angular.module('app.smartforms').directive('compile', function ($compile) {
     };
 });
 
+
+
 'use strict';
 
-angular.module('app.smartreports').controller('downloadReportCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $stateParams, $modalInstance, fileManager) {
- 
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
-    $scope.oid = $stateParams.oid;
-    $scope.template = $stateParams.template;
-    $scope.templateAttribute = $stateParams.templateAttribute;
+angular.module('app.stations').factory('TestStations', function () {
 
-    $scope.baseUrl = APP_CONFIG.ebaasRootUrl;
-    if (APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash])
-    {
-        $scope.baseUrl = APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash];
-    }
-   
-    $scope.loading = false;
-
-    $scope.closeModal = function () {
-        $modalInstance.dismiss("dismiss");
+    var TestStationsModel = {
+        params: undefined,
+        stations: undefined,
+        error: "",
+        init: function()
+        {
+            this.params = undefined;
+            this.stations = undefined;
+            this.error = "";
+        }
     };
 
-    $scope.download = function() {
+    return TestStationsModel;
+});
 
-        var getFileUrl = undefined;
- 
-        if ($scope.templateAttribute)
+'use strict';
+
+angular.module('app.stations').controller('StationDashboardCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, TestStations, promisedSettings, $interval) {
+
+    // Live Feeds Widget Data And Display Controls
+    // Live Stats Tab
+    var index = $stateParams.index;
+    var testStationName = TestStations.params['testStationName'];
+
+    $scope.CurrentStationName = TestStations.stations[index][testStationName];
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+    $scope.template = TestStations.params['testStationForm'];
+    $scope.oid = $stateParams.oid;
+    $scope.showMonitor = true;
+  
+    if (TestStations.params['monitor'] && TestStations.params['monitor'] === "hidden")
+    {
+        $scope.showMonitor = false;
+    }
+
+    var defaultSettings = {
+        ID: "0",
+        LineXName1: "X",
+        LineXMin1: "0",
+        LineXMax1: "100",
+        LineXValue1: "0",
+        LineYName1: "Y",
+        LineYMin1: "0",
+        LineYMax1: "100",
+        LineYValue1: "0",
+        PieName1: "",
+        PieName2: "",
+        PieName3: "",
+        PieName4: "",
+        PieUnit1: "",
+        PieUnit2: "",
+        PieUnit3: "",
+        PieUnit4: "",
+        PieValue1: "",
+        PieValue2: "",
+        PieValue3: "",
+        PieValue4: "",
+        PiePercent1: "0",
+        PiePercent2: "0",
+        PiePercent3: "0",
+        PiePercent4: "0",
+        ProgressName1: "",
+        ProgressName2: "",
+        ProgressName3: "",
+        ProgressName4: "",
+        ProgressUnit1: "",
+        ProgressUnit2: "",
+        ProgressUnit3: "",
+        ProgressUnit4: "",
+        ProgressValue1: "",
+        ProgressValue2: "",
+        ProgressValue3: "",
+        ProgressValue4: "",
+        ProgressPercent1: "0",
+        ProgressPercent2: "0",
+        ProgressPercent3: "0",
+        ProgressPercent4: "0"
+    };
+
+    if ($scope.showMonitor && promisedSettings)
+    {
+        var settingsWrapper = promisedSettings.data
+        var settings = findObjectByName(settingsWrapper, "Settings")
+        if (settings)
         {
-            getFileUrl = $scope.baseUrl + "/api/report/" + $scope.dbschema + "/" + $scope.dbclass + "/" + $scope.oid + "?templateSource=property&property=" + $scope.templateAttribute;
-
+            $scope.settings = settings;
         }
-        else if ($scope.template) {
-            getFileUrl = $scope.baseUrl + "/api/report/" + $scope.dbschema + "/" + $scope.dbclass + "/" + $scope.oid + "?templateSource=file&template=" + encodeURIComponent($scope.template);
+        else
+        {
+            $scope.settings = defaultSettings;
         }
+    }
+    else
+    {
+        $scope.settings = defaultSettings;
+    }
 
-        if (getFileUrl) {
-            $scope.loading = true;
+    function findObjectByName(obj, name) {
+        for (var i in obj) {
+            if (obj.hasOwnProperty(i)) {
+                if (i === name)
+                {
+                    return obj[i];
+                }
+                else if (obj[i] instanceof Object)
+                {
+                    return findObjectByName(obj[i], name);
+                }
+            }
+        }
+        return null;
+    };
 
-            fileManager.performDownload(getFileUrl, function () {
-                $scope.loading = false;
+    angular.extend(this, $controller('ebaasFormBaseCtrl', { $rootScope: $rootScope, $scope: $scope, $http: $http, APP_CONFIG: APP_CONFIG }));
+
+    $scope.autoUpdate = false;
+    var data = [];
+    var totalPoints = 100;
+    var timerInterval = 1000;
+    var currentTime = new Date().getTime();
+
+    var updateInterval = undefined;
+    $scope.$watch('autoUpdate', function (autoUpdate) {
+
+        if (autoUpdate) {
+            updateInterval = $interval(function () {
+
+                GetData(true);
+
+                $.plot($("#updating-chart"), [data], $scope.liveStatsOptions)
+            }, timerInterval)
+        } else {
+            $interval.cancel(updateInterval);
+        }
+    });
+
+    // cancel the auto updating when exiting
+    $scope.$on("$destroy", function (event) {
+        if (updateInterval) {
+            $interval.cancel(updateInterval);
+        }
+    });
+
+    if ($scope.showMonitor) {
+
+        GetData(false);
+
+        $scope.liveStats = [data];
+    }
+    else
+    {
+        $scope.liveStats = [];
+    }
+
+    function GetData(fromDB) {
+        data.shift(); //to remove first item of array
+      
+        var temp, y;
+        if (fromDB && $stateParams.xmlschema)
+        {
+            var url = APP_CONFIG.ebaasRootUrl + "/api/data/extract/" + encodeURIComponent($stateParams.schema) + "/" + $stateParams.class + "/" + $stateParams.oid + "/" + $stateParams.xmlschema;
+
+            $http.get(url).success(function (res) {
+                var settings = findObjectByName(res, "Settings")
+                if (settings) {
+                    y = settings.LineYValue1;
+                    $scope.settings = settings;
+                }
+                else
+                {
+                    y = 3.0; // fake data
+                }
+
+                temp = [currentTime += timerInterval, y]; //data format [x, y]
+
+                data.push(temp);
             });
         }
         else
         {
-            BootstrapDialog.show({
-                title: $rootScope.getWord("Info Dialog"),
-                type: BootstrapDialog.TYPE_DANGER,
-                message: "template or property parameter not defined",
-                buttons: [{
-                    label: $rootScope.getWord("Cancel"),
-                    action: function (dialog) {
-                        dialog.close();
-                    }
-                }]
-            });
-            
+            while (data.length < totalPoints) {
+                // fake data
+                 y = 2.0;
+                //y = Math.random() * 100;
+
+                temp = [currentTime += timerInterval, y]; //data format [x, y]
+
+                data.push(temp);
+            }
         }
     }
-});
 
+    if ($scope.showMonitor) {
+        $scope.liveStatsOptions = {
+            yaxis: {
+                min: $scope.settings.LineYMin1,
+                max: $scope.settings.LineYMax1,
+                tickFormatter: function (v, axis) {
+                    if (v % 10 == 0) {
+                        return v;
+                    } else {
+                        return "";
+                    }
+                }
+            },
+            xaxis: {
+                mode: "time",
+                tickSize: [2, "second"],
+                tickFormatter: function (v, axis) {
+                    var date = new Date(v);
+
+                    if (date.getSeconds() % 20 == 0) {
+                        var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+                        var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+                        var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+
+                        return hours + ":" + minutes + ":" + seconds;
+                    } else {
+                        return "";
+                    }
+                }
+            },
+            colors: ['rgb(87, 136, 156)'],
+            series: {
+                lines: {
+                    lineWidth: 1,
+                    fill: true,
+                    fillColor: {
+                        colors: [
+                            {
+                                opacity: 0.4
+                            },
+                            {
+                                opacity: 0
+                            }
+                        ]
+                    },
+                    steps: false
+                }
+            }
+        };
+    }
+
+    // station scheduler code
+    var appointmentClass = TestStations.params['appointmentClass'];
+    var appointmentToStation = TestStations.params['appointmentToStation'];
+    $scope.stationpk = TestStations.stations[index]["obj_pk"];
+
+    $scope.schedulerOptions = {
+        dataSource: new DevExpress.data.DataSource({
+            store: new DevExpress.data.CustomStore({
+                key: 'obj_id',
+                load: function (options) {
+                    var def = $.Deferred();
+
+                    var filter = createFilter(options);
+                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + $scope.oid + "/" + appointmentClass + "?from=0&size=500&filter=" + JSON.stringify(filter);
+                    $http.get(url).success(function (result) {
+                        def.resolve(result);
+                    }).error(function (err) {
+                        def.reject(err);
+                    });
+
+                    return def.promise();
+                },
+                byKey: function (key) {
+
+                    var def = $.Deferred();
+
+                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass + "/" + key;
+
+                    $http.get(url).success(function (result) {
+                        def.resolve(result);
+                    }).error(function (err) {
+                        def.reject(err);
+                    });
+
+                    return def.promise();
+                },
+                insert: function (data) {
+
+                    var def = $.Deferred();
+
+                    //scheduler.server.saveAppointment(data.text, data.startDate, data.endDate);
+                    var converted = convertModel(data)
+
+                    // associated new appointment with the station by primary key
+                    converted[appointmentToStation] = $scope.stationpk;
+
+                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass;
+
+                    $http.post(url, converted)
+                     .success(function (result) {
+                         def.resolve(result);
+                     }).error(function (err) {
+                         def.reject(err);
+                     });
+
+                    return def.promise();
+                },
+                remove: function (key) {
+                    var def = $.Deferred();
+
+                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass + "/" + key;
+
+                    $http.delete(url).success(function (result) {
+                        def.resolve(result);
+                    })
+                    .error(function (err) {
+                        def.reject(err);
+                    });
+
+                    return def.promise();
+                },
+                update: function (key, data) {
+                    var def = $.Deferred();
+
+                    var converted = convertModel(data);
+
+                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass + "/" + key;
+
+                    $http.post(url, converted)
+                     .success(function (result) {
+                         def.resolve(result);
+                     }).error(function (err) {
+                         def.reject(err);
+                     });
+
+                    return def.promise();
+                }
+            }),
+            map: function (item) {
+                var appointment = {
+                    text: item.Subject,
+                    description: item.Description,
+                    startDate: createDate(item.StartTime),
+                    endDate: createDate(item.EndTime),
+                    color: "#ff00aa",
+                    obj_id: item.obj_id
+                };
+
+                //console.debug("appointment=" + JSON.stringify(appointment));
+                return appointment;
+            }
+        }),
+        views: ["month", "week", "day"],
+        currentView: "month",
+        currentDate: new Date(),
+        firstDayOfWeek: 0,
+        startDayHour: 8,
+        endDayHour: 19,
+        width: "100%",
+        height: 600,
+        onInitialized: function (e) {
+            $scope.scheduleInstance = e.component;
+        }
+    };
+
+    function createDate(str1) {
+        // str1 format should be yyyy-mm-ddThh:mm:SS.
+        var dt1 = parseInt(str1.substring(8, 10));
+        var mon1 = parseInt(str1.substring(5, 7));
+        var yr1 = parseInt(str1.substring(0, 4));
+        var date1 = new Date(yr1, mon1 - 1, dt1);
+        return date1;
+    }
+
+    function createFilter(options) {
+        var filter = new Array();
+
+        var composite = new Array();
+
+        var expr = new Array();
+        // StartTime >= intervalStartDay
+        expr.push("StartTime");
+        expr.push(">=");
+        expr.push(options.dxScheduler.startDate);
+
+        composite.push(expr);
+
+        composite.push("and");
+
+        expr = new Array();
+        expr.push("StartTime");
+        expr.push("<");
+        expr.push(options.dxScheduler.endDate);
+
+        composite.push(expr);
+
+        filter.push(composite);
+
+        filter.push("or");
+
+        composite = new Array();
+        expr = new Array();
+        expr.push("EndTime");
+        expr.push(">=");
+        expr.push(options.dxScheduler.startDate);
+
+        composite.push(expr);
+
+        composite.push("and");
+
+        expr = new Array();
+        expr.push("EndTime");
+        expr.push("<");
+        expr.push(options.dxScheduler.endDate);
+
+        composite.push(expr);
+
+        filter.push(composite);
+
+        return filter;
+    }
+
+    function convertModel(data) {
+        var converted = new Object();
+
+        converted.StartTime = data.startDate;
+        converted.EndTime = data.endDate;
+        converted.Subject = data.text;
+        converted.Description = data.description;
+
+        return converted;
+    }
+
+    var timezoneParseNameResults = /\((.*)\)/.exec(new Date().toString());
+
+    if (timezoneParseNameResults && timezoneParseNameResults.length > 0) {
+        $scope.timezone = timezoneParseNameResults[1];
+    } else {
+        var timezoneOffset = new Date().getTimezoneOffset();
+        $scope.timezone = "UTC" + (timezoneOffset < 0 ? "+" : "") + timezoneOffset / (-60) + " time zone";
+    }
+});
+'use strict';
+
+angular.module('app.stations').controller('StationSchedulerCtrl', function ($scope, $http, $stateParams, APP_CONFIG, TestStations) {
+
+    var index = $stateParams.index;
+    var testStationName = TestStations.params['testStationName'];
+    var appointmentClass = TestStations.params['appointmentClass'];
+    var appointmentToStation = TestStations.params['appointmentToStation'];
+
+    $scope.CurrentStationName = TestStations.stations[index][testStationName];
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+    $scope.oid = TestStations.stations[index]["obj_id"];
+    $scope.stationpk = TestStations.stations[index]["obj_pk"];
+
+    $scope.schedulerOptions = {
+        dataSource: new DevExpress.data.DataSource({
+            store: new DevExpress.data.CustomStore({
+                key: 'obj_id',
+                load: function (options) {
+                    var def = $.Deferred();
+
+                    var filter = createFilter(options);
+                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + $scope.oid + "/" + appointmentClass + "?from=0&size=500&filter=" + JSON.stringify(filter);
+
+                    $http.get(url).success(function (result) {
+                        def.resolve(result);
+                    }).error(function (err) {
+                        def.reject(err);
+                    });
+
+                    return def.promise();
+                },
+                byKey: function (key) {
+
+                    var def = $.Deferred();
+
+                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass + "/" + key;
+
+                    $http.get(url).success(function (result) {
+                        def.resolve(result);
+                    }).error(function (err) {
+                        def.reject(err);
+                    });
+
+                    return def.promise();
+                },
+                insert: function (data) {
+
+                    var def = $.Deferred();
+
+                    //scheduler.server.saveAppointment(data.text, data.startDate, data.endDate);
+                    var converted = convertModel(data)
+                    
+                    // associated new appointment with the station by primary key
+                    converted[appointmentToStation] = $scope.stationpk;
+
+                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass;
+
+                    $http.post(url, converted)
+                     .success(function (result) {
+                         def.resolve(result);
+                     }).error(function (err) {
+                         def.reject(err);
+                     });
+
+                    return def.promise();
+                },
+                remove: function (key) {
+                    var def = $.Deferred();
+
+                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass + "/" + key;
+
+                    $http.delete(url).success(function (result) {
+                        def.resolve(result);
+                    })
+                    .error(function (err) {
+                        def.reject(err);
+                    });
+
+                    return def.promise();
+                },
+                update: function (key, data) {
+                    var def = $.Deferred();
+
+                    var converted = convertModel(data);
+
+                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass + "/" + key;
+
+                    $http.post(url, converted)
+                     .success(function (result) {
+                         def.resolve(result);
+                     }).error(function (err) {
+                         def.reject(err);
+                     });
+
+                    return def.promise();
+                }
+            }),
+            map: function (item) {
+                var appointment = {
+                    text: item.Subject,
+                    description: item.Description,
+                    startDate: createDate(item.StartTime),
+                    endDate: createDate(item.EndTime),
+                    color: "#ff00aa",
+                    obj_id: item.obj_id
+                };
+
+                //console.debug("appointment=" + JSON.stringify(appointment));
+                return appointment;
+            }
+        }),
+        views: ["month", "week", "day"],
+        currentView: "month",
+        currentDate: new Date(2016, 3, 25),
+        firstDayOfWeek: 0,
+        startDayHour: 8,
+        endDayHour: 19,
+        width: "100%",
+        height: 600,
+        onInitialized: function (e) {
+            $scope.scheduleInstance = e.component;
+        }
+    };
+
+    function createDate(str1) {
+        // str1 format should be yyyy-mm-ddThh:mm:SS.
+        var dt1 = parseInt(str1.substring(8, 10));
+        var mon1 = parseInt(str1.substring(5, 7));
+        var yr1 = parseInt(str1.substring(0, 4));
+        var date1 = new Date(yr1, mon1 - 1, dt1);
+        return date1;
+    }
+
+    function createFilter(options) {
+        var filter = new Array();
+
+        var composite = new Array();
+
+        var expr = new Array();
+        // StartTime >= intervalStartDay
+        expr.push("StartTime");
+        expr.push(">=");
+        expr.push(options.dxScheduler.startDate);
+
+        composite.push(expr);
+
+        composite.push("and");
+
+        expr = new Array();
+        expr.push("StartTime");
+        expr.push("<");
+        expr.push(options.dxScheduler.endDate);
+
+        composite.push(expr);
+
+        filter.push(composite);
+
+        filter.push("or");
+
+        composite = new Array();
+        expr = new Array();
+        expr.push("EndTime");
+        expr.push(">=");
+        expr.push(options.dxScheduler.startDate);
+
+        composite.push(expr);
+
+        composite.push("and");
+
+        expr = new Array();
+        expr.push("EndTime");
+        expr.push("<");
+        expr.push(options.dxScheduler.endDate);
+
+        composite.push(expr);
+
+        filter.push(composite);
+
+        return filter;
+    }
+
+    function convertModel(data)
+    {
+        var converted = new Object();
+
+        converted.StartTime = data.startDate;
+        converted.EndTime = data.endDate;
+        converted.Subject = data.text;
+        converted.Description = data.description;
+        
+        return converted;
+    }
+
+    var timezoneParseNameResults = /\((.*)\)/.exec(new Date().toString());
+
+    if (timezoneParseNameResults && timezoneParseNameResults.length > 0) {
+        $scope.timezone = timezoneParseNameResults[1];
+    } else {
+        var timezoneOffset = new Date().getTimezoneOffset();
+        $scope.timezone = "UTC" + (timezoneOffset < 0 ? "+" : "") + timezoneOffset / (-60) + " time zone";
+    }
+});
+'use strict';
+
+angular.module('app.stations').controller('StationsLayoutCtrl', function ($http, APP_CONFIG, $scope, $rootScope, $state, $stateParams, stationParams, TestStations, MetaDataCache) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+ 
+    TestStations.params = stationParams.data;
+
+    var testStationGroup = TestStations.params['testStationGroup'];
+    var testStationName = TestStations.params['testStationName'];
+    var testStationStatus = TestStations.params['testStationStatus'];
+
+    if (MetaDataCache.getNamedData("stationTree")) {
+        $scope.stationTree = MetaDataCache.getNamedData("stationTree");
+
+        if (TestStations.stations.length > 0) {
+            // show the dashboard of the first station by default
+            var oid = TestStations.stations[0].obj_id;
+            $state.go('app.stations.dashboard', { schema: $stateParams.schema, class: $stateParams.class, oid: oid, xmlschema: TestStations.params['xmlSchemaName'], index: 0 });
+        }
+    }
+    else {
+        // url to get station tree model, assuming no more than 1000 stations
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "?view=full&from=0&size=1000";
+
+        $http.get(url).then(function (res) {
+
+            TestStations.stations = res.data;
+
+            $scope.stationTree = CreateTree(testStationGroup,
+                testStationName,
+                testStationStatus,
+                $scope.dbclass);
+
+            MetaDataCache.setNamedData("stationTree", $scope.stationTree);
+
+            if (TestStations.stations.length > 0) {
+                // show the dashboard of the first station by default
+                var oid = TestStations.stations[0].obj_id;
+                $state.go('app.stations.dashboard', { schema: $stateParams.schema, class: $stateParams.class, oid: oid, xmlschema: TestStations.params['xmlSchemaName'], index: 0 });
+            }
+        });
+    }
+
+    function GetNodeClass(status)
+    {
+        var nodeClass;
+      
+        switch (status)
+        {
+            case $rootScope.getWord("Available"):
+                nodeClass = "label label-primary";
+                break;
+
+            case $rootScope.getWord("Occupied"):
+                nodeClass = "label label-success";
+                break;
+
+            case $rootScope.getWord("Under Maintenance"):
+                nodeClass = "label label-warning";
+                break;
+
+            case $rootScope.getWord("Not In Service"):
+                nodeClass = "label label-danger";
+                break;
+
+            default:
+                nodeClass = "label label-info";
+
+                break;
+        }
+
+        return nodeClass;
+    }
+
+    function GetNodeIcon(status) {
+        var nodeIcon;
+        switch (status) {
+            case $rootScope.getWord("Available"):
+                nodeIcon = "fa fa-check-square-o";
+                break;
+
+            case $rootScope.getWord("Occupied"):
+                nodeIcon = "fa fa-spinner fa-spin";
+                break;
+
+            case $rootScope.getWord("Under Maintenance"):
+                nodeIcon = "fa fa-exclamation-circle";
+                break;
+
+            case $rootScope.getWord("Not In Service"):
+                nodeIcon = "fa fa-warning";
+                break;
+
+            default:
+                nodeIcon = "fa  fa-question-circle";
+
+                break;
+        }
+
+        return nodeIcon;
+    }
+
+    function CreateTree(groupName, testStationName, testStationStatus, testStationClass) {
+        var treeNodes = new Array();
+
+        var stations = TestStations.stations;
+
+        var groupNames = new Array();
+        var found;
+        var hasGroups = false;
+        var menuItem;
+        // create folder items
+        if (groupName) {
+            for (var i = 0; i < stations.length; i++) {
+                var gn = stations[i][groupName];
+
+                found = false;
+                for (var j = 0; j < groupNames.length; j++) {
+                    if (groupNames[j] === gn) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    groupNames.push(gn);
+                }
+            }
+
+            if (groupNames.length > 0) {
+                hasGroups = true;
+
+                // add gorup names as first level menus, they are not clickable
+                for (var i = 0; i < groupNames.length; i++) {
+                    menuItem = new Object();
+                    menuItem.content = "<span><i class=\"fa fa-lg fa-plus-circle\"></i>" + groupNames[i] + "</span>";
+                    menuItem.name = groupNames[i];
+                    if (i === 0) {
+                        menuItem.expanded = true;
+                    }
+                    else {
+                        menuItem.expanded = true;
+                    }
+                    menuItem.children = new Array();
+
+                    treeNodes.push(menuItem);
+                }
+            }
+        }
+
+        // create item category menu items
+        for (var i = 0; i < stations.length; i++) {
+            stations[i].checked = false;
+            var status = stations[i][testStationStatus];
+            if (!status)
+            {
+                status = "Unknown";
+            }
+            if (hasGroups) {
+                for (var j = 0; j < treeNodes.length; j++) {
+                    if (treeNodes[j].name === stations[i][groupName]) {
+                        menuItem = new Object();
+       
+                        menuItem.content = "<span class=\"" + GetNodeClass(status) + "\"><i class=\"" + GetNodeIcon(stations[i][testStationStatus]) + "\" style=\"color:white\"></i>&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('StationsLayoutCtrl')).scope().OpenDashboard(" + i + ");\">" + stations[i][testStationName] + " (" + status + ")" + "</a></span>";
+                        treeNodes[j].children.push(menuItem);
+                        break;
+                    }
+                }
+            }
+            else {
+                menuItem = new Object();
+                menuItem.content = "<span class=\"" + GetNodeClass(status) + "\"><i class=\"" + GetNodeIcon(stations[i][testStationStatus]) + "\" style=\"color:white\"></i>&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('StationsLayoutCtrl')).scope().OpenDashboard(" + i + ");\">" + stations[i][testStationName] + " (" + status + ")" + "</a></span>";
+
+                treeNodes.push(menuItem);
+            }
+        }
+
+        return treeNodes;
+    };
+
+    $scope.OpenDashboard = function OpenDashboard(index) {
+        var oid = TestStations.stations[index].obj_id;
+        $state.go('app.stations.dashboard', { schema: $stateParams.schema, class: $stateParams.class, oid: oid, xmlschema: TestStations.params['xmlSchemaName'], index: index });
+    }
+});
 'use strict';
 
 angular.module('app.smarttables').controller('dataGridBaseCtrl', function ($scope, $rootScope, $state, $http, APP_CONFIG, $timeout, MetaDataCache, ngProgressFactory, searchContext) {
@@ -16359,1065 +17283,6 @@ angular.module("app.smarttables").factory("MetaDataCache", function () {
         setNamedData : _setNamedData
     };
 });
-
-
-'use strict';
-
-angular.module('app.stations').factory('TestStations', function () {
-
-    var TestStationsModel = {
-        params: undefined,
-        stations: undefined,
-        error: "",
-        init: function()
-        {
-            this.params = undefined;
-            this.stations = undefined;
-            this.error = "";
-        }
-    };
-
-    return TestStationsModel;
-});
-
-'use strict';
-
-angular.module('app.stations').controller('StationDashboardCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, TestStations, promisedSettings, $interval) {
-
-    // Live Feeds Widget Data And Display Controls
-    // Live Stats Tab
-    var index = $stateParams.index;
-    var testStationName = TestStations.params['testStationName'];
-
-    $scope.CurrentStationName = TestStations.stations[index][testStationName];
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
-    $scope.template = TestStations.params['testStationForm'];
-    $scope.oid = $stateParams.oid;
-    $scope.showMonitor = true;
-  
-    if (TestStations.params['monitor'] && TestStations.params['monitor'] === "hidden")
-    {
-        $scope.showMonitor = false;
-    }
-
-    var defaultSettings = {
-        ID: "0",
-        LineXName1: "X",
-        LineXMin1: "0",
-        LineXMax1: "100",
-        LineXValue1: "0",
-        LineYName1: "Y",
-        LineYMin1: "0",
-        LineYMax1: "100",
-        LineYValue1: "0",
-        PieName1: "",
-        PieName2: "",
-        PieName3: "",
-        PieName4: "",
-        PieUnit1: "",
-        PieUnit2: "",
-        PieUnit3: "",
-        PieUnit4: "",
-        PieValue1: "",
-        PieValue2: "",
-        PieValue3: "",
-        PieValue4: "",
-        PiePercent1: "0",
-        PiePercent2: "0",
-        PiePercent3: "0",
-        PiePercent4: "0",
-        ProgressName1: "",
-        ProgressName2: "",
-        ProgressName3: "",
-        ProgressName4: "",
-        ProgressUnit1: "",
-        ProgressUnit2: "",
-        ProgressUnit3: "",
-        ProgressUnit4: "",
-        ProgressValue1: "",
-        ProgressValue2: "",
-        ProgressValue3: "",
-        ProgressValue4: "",
-        ProgressPercent1: "0",
-        ProgressPercent2: "0",
-        ProgressPercent3: "0",
-        ProgressPercent4: "0"
-    };
-
-    if ($scope.showMonitor && promisedSettings)
-    {
-        var settingsWrapper = promisedSettings.data
-        var settings = findObjectByName(settingsWrapper, "Settings")
-        if (settings)
-        {
-            $scope.settings = settings;
-        }
-        else
-        {
-            $scope.settings = defaultSettings;
-        }
-    }
-    else
-    {
-        $scope.settings = defaultSettings;
-    }
-
-    function findObjectByName(obj, name) {
-        for (var i in obj) {
-            if (obj.hasOwnProperty(i)) {
-                if (i === name)
-                {
-                    return obj[i];
-                }
-                else if (obj[i] instanceof Object)
-                {
-                    return findObjectByName(obj[i], name);
-                }
-            }
-        }
-        return null;
-    };
-
-    angular.extend(this, $controller('ebaasFormBaseCtrl', { $rootScope: $rootScope, $scope: $scope, $http: $http, APP_CONFIG: APP_CONFIG }));
-
-    $scope.autoUpdate = false;
-    var data = [];
-    var totalPoints = 100;
-    var timerInterval = 1000;
-    var currentTime = new Date().getTime();
-
-    var updateInterval = undefined;
-    $scope.$watch('autoUpdate', function (autoUpdate) {
-
-        if (autoUpdate) {
-            updateInterval = $interval(function () {
-
-                GetData(true);
-
-                $.plot($("#updating-chart"), [data], $scope.liveStatsOptions)
-            }, timerInterval)
-        } else {
-            $interval.cancel(updateInterval);
-        }
-    });
-
-    // cancel the auto updating when exiting
-    $scope.$on("$destroy", function (event) {
-        if (updateInterval) {
-            $interval.cancel(updateInterval);
-        }
-    });
-
-    if ($scope.showMonitor) {
-
-        GetData(false);
-
-        $scope.liveStats = [data];
-    }
-    else
-    {
-        $scope.liveStats = [];
-    }
-
-    function GetData(fromDB) {
-        data.shift(); //to remove first item of array
-      
-        var temp, y;
-        if (fromDB && $stateParams.xmlschema)
-        {
-            var url = APP_CONFIG.ebaasRootUrl + "/api/data/extract/" + encodeURIComponent($stateParams.schema) + "/" + $stateParams.class + "/" + $stateParams.oid + "/" + $stateParams.xmlschema;
-
-            $http.get(url).success(function (res) {
-                var settings = findObjectByName(res, "Settings")
-                if (settings) {
-                    y = settings.LineYValue1;
-                    $scope.settings = settings;
-                }
-                else
-                {
-                    y = 3.0; // fake data
-                }
-
-                temp = [currentTime += timerInterval, y]; //data format [x, y]
-
-                data.push(temp);
-            });
-        }
-        else
-        {
-            while (data.length < totalPoints) {
-                // fake data
-                 y = 2.0;
-                //y = Math.random() * 100;
-
-                temp = [currentTime += timerInterval, y]; //data format [x, y]
-
-                data.push(temp);
-            }
-        }
-    }
-
-    if ($scope.showMonitor) {
-        $scope.liveStatsOptions = {
-            yaxis: {
-                min: $scope.settings.LineYMin1,
-                max: $scope.settings.LineYMax1,
-                tickFormatter: function (v, axis) {
-                    if (v % 10 == 0) {
-                        return v;
-                    } else {
-                        return "";
-                    }
-                }
-            },
-            xaxis: {
-                mode: "time",
-                tickSize: [2, "second"],
-                tickFormatter: function (v, axis) {
-                    var date = new Date(v);
-
-                    if (date.getSeconds() % 20 == 0) {
-                        var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-                        var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-                        var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
-
-                        return hours + ":" + minutes + ":" + seconds;
-                    } else {
-                        return "";
-                    }
-                }
-            },
-            colors: ['rgb(87, 136, 156)'],
-            series: {
-                lines: {
-                    lineWidth: 1,
-                    fill: true,
-                    fillColor: {
-                        colors: [
-                            {
-                                opacity: 0.4
-                            },
-                            {
-                                opacity: 0
-                            }
-                        ]
-                    },
-                    steps: false
-                }
-            }
-        };
-    }
-
-    // station scheduler code
-    var appointmentClass = TestStations.params['appointmentClass'];
-    var appointmentToStation = TestStations.params['appointmentToStation'];
-    $scope.stationpk = TestStations.stations[index]["obj_pk"];
-
-    $scope.schedulerOptions = {
-        dataSource: new DevExpress.data.DataSource({
-            store: new DevExpress.data.CustomStore({
-                key: 'obj_id',
-                load: function (options) {
-                    var def = $.Deferred();
-
-                    var filter = createFilter(options);
-                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + $scope.oid + "/" + appointmentClass + "?from=0&size=500&filter=" + JSON.stringify(filter);
-                    $http.get(url).success(function (result) {
-                        def.resolve(result);
-                    }).error(function (err) {
-                        def.reject(err);
-                    });
-
-                    return def.promise();
-                },
-                byKey: function (key) {
-
-                    var def = $.Deferred();
-
-                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass + "/" + key;
-
-                    $http.get(url).success(function (result) {
-                        def.resolve(result);
-                    }).error(function (err) {
-                        def.reject(err);
-                    });
-
-                    return def.promise();
-                },
-                insert: function (data) {
-
-                    var def = $.Deferred();
-
-                    //scheduler.server.saveAppointment(data.text, data.startDate, data.endDate);
-                    var converted = convertModel(data)
-
-                    // associated new appointment with the station by primary key
-                    converted[appointmentToStation] = $scope.stationpk;
-
-                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass;
-
-                    $http.post(url, converted)
-                     .success(function (result) {
-                         def.resolve(result);
-                     }).error(function (err) {
-                         def.reject(err);
-                     });
-
-                    return def.promise();
-                },
-                remove: function (key) {
-                    var def = $.Deferred();
-
-                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass + "/" + key;
-
-                    $http.delete(url).success(function (result) {
-                        def.resolve(result);
-                    })
-                    .error(function (err) {
-                        def.reject(err);
-                    });
-
-                    return def.promise();
-                },
-                update: function (key, data) {
-                    var def = $.Deferred();
-
-                    var converted = convertModel(data);
-
-                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass + "/" + key;
-
-                    $http.post(url, converted)
-                     .success(function (result) {
-                         def.resolve(result);
-                     }).error(function (err) {
-                         def.reject(err);
-                     });
-
-                    return def.promise();
-                }
-            }),
-            map: function (item) {
-                var appointment = {
-                    text: item.Subject,
-                    description: item.Description,
-                    startDate: createDate(item.StartTime),
-                    endDate: createDate(item.EndTime),
-                    color: "#ff00aa",
-                    obj_id: item.obj_id
-                };
-
-                //console.debug("appointment=" + JSON.stringify(appointment));
-                return appointment;
-            }
-        }),
-        views: ["month", "week", "day"],
-        currentView: "month",
-        currentDate: new Date(),
-        firstDayOfWeek: 0,
-        startDayHour: 8,
-        endDayHour: 19,
-        width: "100%",
-        height: 600,
-        onInitialized: function (e) {
-            $scope.scheduleInstance = e.component;
-        }
-    };
-
-    function createDate(str1) {
-        // str1 format should be yyyy-mm-ddThh:mm:SS.
-        var dt1 = parseInt(str1.substring(8, 10));
-        var mon1 = parseInt(str1.substring(5, 7));
-        var yr1 = parseInt(str1.substring(0, 4));
-        var date1 = new Date(yr1, mon1 - 1, dt1);
-        return date1;
-    }
-
-    function createFilter(options) {
-        var filter = new Array();
-
-        var composite = new Array();
-
-        var expr = new Array();
-        // StartTime >= intervalStartDay
-        expr.push("StartTime");
-        expr.push(">=");
-        expr.push(options.dxScheduler.startDate);
-
-        composite.push(expr);
-
-        composite.push("and");
-
-        expr = new Array();
-        expr.push("StartTime");
-        expr.push("<");
-        expr.push(options.dxScheduler.endDate);
-
-        composite.push(expr);
-
-        filter.push(composite);
-
-        filter.push("or");
-
-        composite = new Array();
-        expr = new Array();
-        expr.push("EndTime");
-        expr.push(">=");
-        expr.push(options.dxScheduler.startDate);
-
-        composite.push(expr);
-
-        composite.push("and");
-
-        expr = new Array();
-        expr.push("EndTime");
-        expr.push("<");
-        expr.push(options.dxScheduler.endDate);
-
-        composite.push(expr);
-
-        filter.push(composite);
-
-        return filter;
-    }
-
-    function convertModel(data) {
-        var converted = new Object();
-
-        converted.StartTime = data.startDate;
-        converted.EndTime = data.endDate;
-        converted.Subject = data.text;
-        converted.Description = data.description;
-
-        return converted;
-    }
-
-    var timezoneParseNameResults = /\((.*)\)/.exec(new Date().toString());
-
-    if (timezoneParseNameResults && timezoneParseNameResults.length > 0) {
-        $scope.timezone = timezoneParseNameResults[1];
-    } else {
-        var timezoneOffset = new Date().getTimezoneOffset();
-        $scope.timezone = "UTC" + (timezoneOffset < 0 ? "+" : "") + timezoneOffset / (-60) + " time zone";
-    }
-});
-'use strict';
-
-angular.module('app.stations').controller('StationSchedulerCtrl', function ($scope, $http, $stateParams, APP_CONFIG, TestStations) {
-
-    var index = $stateParams.index;
-    var testStationName = TestStations.params['testStationName'];
-    var appointmentClass = TestStations.params['appointmentClass'];
-    var appointmentToStation = TestStations.params['appointmentToStation'];
-
-    $scope.CurrentStationName = TestStations.stations[index][testStationName];
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
-    $scope.oid = TestStations.stations[index]["obj_id"];
-    $scope.stationpk = TestStations.stations[index]["obj_pk"];
-
-    $scope.schedulerOptions = {
-        dataSource: new DevExpress.data.DataSource({
-            store: new DevExpress.data.CustomStore({
-                key: 'obj_id',
-                load: function (options) {
-                    var def = $.Deferred();
-
-                    var filter = createFilter(options);
-                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + $scope.oid + "/" + appointmentClass + "?from=0&size=500&filter=" + JSON.stringify(filter);
-
-                    $http.get(url).success(function (result) {
-                        def.resolve(result);
-                    }).error(function (err) {
-                        def.reject(err);
-                    });
-
-                    return def.promise();
-                },
-                byKey: function (key) {
-
-                    var def = $.Deferred();
-
-                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass + "/" + key;
-
-                    $http.get(url).success(function (result) {
-                        def.resolve(result);
-                    }).error(function (err) {
-                        def.reject(err);
-                    });
-
-                    return def.promise();
-                },
-                insert: function (data) {
-
-                    var def = $.Deferred();
-
-                    //scheduler.server.saveAppointment(data.text, data.startDate, data.endDate);
-                    var converted = convertModel(data)
-                    
-                    // associated new appointment with the station by primary key
-                    converted[appointmentToStation] = $scope.stationpk;
-
-                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass;
-
-                    $http.post(url, converted)
-                     .success(function (result) {
-                         def.resolve(result);
-                     }).error(function (err) {
-                         def.reject(err);
-                     });
-
-                    return def.promise();
-                },
-                remove: function (key) {
-                    var def = $.Deferred();
-
-                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass + "/" + key;
-
-                    $http.delete(url).success(function (result) {
-                        def.resolve(result);
-                    })
-                    .error(function (err) {
-                        def.reject(err);
-                    });
-
-                    return def.promise();
-                },
-                update: function (key, data) {
-                    var def = $.Deferred();
-
-                    var converted = convertModel(data);
-
-                    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + appointmentClass + "/" + key;
-
-                    $http.post(url, converted)
-                     .success(function (result) {
-                         def.resolve(result);
-                     }).error(function (err) {
-                         def.reject(err);
-                     });
-
-                    return def.promise();
-                }
-            }),
-            map: function (item) {
-                var appointment = {
-                    text: item.Subject,
-                    description: item.Description,
-                    startDate: createDate(item.StartTime),
-                    endDate: createDate(item.EndTime),
-                    color: "#ff00aa",
-                    obj_id: item.obj_id
-                };
-
-                //console.debug("appointment=" + JSON.stringify(appointment));
-                return appointment;
-            }
-        }),
-        views: ["month", "week", "day"],
-        currentView: "month",
-        currentDate: new Date(2016, 3, 25),
-        firstDayOfWeek: 0,
-        startDayHour: 8,
-        endDayHour: 19,
-        width: "100%",
-        height: 600,
-        onInitialized: function (e) {
-            $scope.scheduleInstance = e.component;
-        }
-    };
-
-    function createDate(str1) {
-        // str1 format should be yyyy-mm-ddThh:mm:SS.
-        var dt1 = parseInt(str1.substring(8, 10));
-        var mon1 = parseInt(str1.substring(5, 7));
-        var yr1 = parseInt(str1.substring(0, 4));
-        var date1 = new Date(yr1, mon1 - 1, dt1);
-        return date1;
-    }
-
-    function createFilter(options) {
-        var filter = new Array();
-
-        var composite = new Array();
-
-        var expr = new Array();
-        // StartTime >= intervalStartDay
-        expr.push("StartTime");
-        expr.push(">=");
-        expr.push(options.dxScheduler.startDate);
-
-        composite.push(expr);
-
-        composite.push("and");
-
-        expr = new Array();
-        expr.push("StartTime");
-        expr.push("<");
-        expr.push(options.dxScheduler.endDate);
-
-        composite.push(expr);
-
-        filter.push(composite);
-
-        filter.push("or");
-
-        composite = new Array();
-        expr = new Array();
-        expr.push("EndTime");
-        expr.push(">=");
-        expr.push(options.dxScheduler.startDate);
-
-        composite.push(expr);
-
-        composite.push("and");
-
-        expr = new Array();
-        expr.push("EndTime");
-        expr.push("<");
-        expr.push(options.dxScheduler.endDate);
-
-        composite.push(expr);
-
-        filter.push(composite);
-
-        return filter;
-    }
-
-    function convertModel(data)
-    {
-        var converted = new Object();
-
-        converted.StartTime = data.startDate;
-        converted.EndTime = data.endDate;
-        converted.Subject = data.text;
-        converted.Description = data.description;
-        
-        return converted;
-    }
-
-    var timezoneParseNameResults = /\((.*)\)/.exec(new Date().toString());
-
-    if (timezoneParseNameResults && timezoneParseNameResults.length > 0) {
-        $scope.timezone = timezoneParseNameResults[1];
-    } else {
-        var timezoneOffset = new Date().getTimezoneOffset();
-        $scope.timezone = "UTC" + (timezoneOffset < 0 ? "+" : "") + timezoneOffset / (-60) + " time zone";
-    }
-});
-'use strict';
-
-angular.module('app.stations').controller('StationsLayoutCtrl', function ($http, APP_CONFIG, $scope, $rootScope, $state, $stateParams, stationParams, TestStations, MetaDataCache) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
- 
-    TestStations.params = stationParams.data;
-
-    var testStationGroup = TestStations.params['testStationGroup'];
-    var testStationName = TestStations.params['testStationName'];
-    var testStationStatus = TestStations.params['testStationStatus'];
-
-    if (MetaDataCache.getNamedData("stationTree")) {
-        $scope.stationTree = MetaDataCache.getNamedData("stationTree");
-
-        if (TestStations.stations.length > 0) {
-            // show the dashboard of the first station by default
-            var oid = TestStations.stations[0].obj_id;
-            $state.go('app.stations.dashboard', { schema: $stateParams.schema, class: $stateParams.class, oid: oid, xmlschema: TestStations.params['xmlSchemaName'], index: 0 });
-        }
-    }
-    else {
-        // url to get station tree model, assuming no more than 1000 stations
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "?view=full&from=0&size=1000";
-
-        $http.get(url).then(function (res) {
-
-            TestStations.stations = res.data;
-
-            $scope.stationTree = CreateTree(testStationGroup,
-                testStationName,
-                testStationStatus,
-                $scope.dbclass);
-
-            MetaDataCache.setNamedData("stationTree", $scope.stationTree);
-
-            if (TestStations.stations.length > 0) {
-                // show the dashboard of the first station by default
-                var oid = TestStations.stations[0].obj_id;
-                $state.go('app.stations.dashboard', { schema: $stateParams.schema, class: $stateParams.class, oid: oid, xmlschema: TestStations.params['xmlSchemaName'], index: 0 });
-            }
-        });
-    }
-
-    function GetNodeClass(status)
-    {
-        var nodeClass;
-      
-        switch (status)
-        {
-            case $rootScope.getWord("Available"):
-                nodeClass = "label label-primary";
-                break;
-
-            case $rootScope.getWord("Occupied"):
-                nodeClass = "label label-success";
-                break;
-
-            case $rootScope.getWord("Under Maintenance"):
-                nodeClass = "label label-warning";
-                break;
-
-            case $rootScope.getWord("Not In Service"):
-                nodeClass = "label label-danger";
-                break;
-
-            default:
-                nodeClass = "label label-info";
-
-                break;
-        }
-
-        return nodeClass;
-    }
-
-    function GetNodeIcon(status) {
-        var nodeIcon;
-        switch (status) {
-            case $rootScope.getWord("Available"):
-                nodeIcon = "fa fa-check-square-o";
-                break;
-
-            case $rootScope.getWord("Occupied"):
-                nodeIcon = "fa fa-spinner fa-spin";
-                break;
-
-            case $rootScope.getWord("Under Maintenance"):
-                nodeIcon = "fa fa-exclamation-circle";
-                break;
-
-            case $rootScope.getWord("Not In Service"):
-                nodeIcon = "fa fa-warning";
-                break;
-
-            default:
-                nodeIcon = "fa  fa-question-circle";
-
-                break;
-        }
-
-        return nodeIcon;
-    }
-
-    function CreateTree(groupName, testStationName, testStationStatus, testStationClass) {
-        var treeNodes = new Array();
-
-        var stations = TestStations.stations;
-
-        var groupNames = new Array();
-        var found;
-        var hasGroups = false;
-        var menuItem;
-        // create folder items
-        if (groupName) {
-            for (var i = 0; i < stations.length; i++) {
-                var gn = stations[i][groupName];
-
-                found = false;
-                for (var j = 0; j < groupNames.length; j++) {
-                    if (groupNames[j] === gn) {
-                        found = true;
-                        break;
-                    }
-                }
-
-                if (!found) {
-                    groupNames.push(gn);
-                }
-            }
-
-            if (groupNames.length > 0) {
-                hasGroups = true;
-
-                // add gorup names as first level menus, they are not clickable
-                for (var i = 0; i < groupNames.length; i++) {
-                    menuItem = new Object();
-                    menuItem.content = "<span><i class=\"fa fa-lg fa-plus-circle\"></i>" + groupNames[i] + "</span>";
-                    menuItem.name = groupNames[i];
-                    if (i === 0) {
-                        menuItem.expanded = true;
-                    }
-                    else {
-                        menuItem.expanded = true;
-                    }
-                    menuItem.children = new Array();
-
-                    treeNodes.push(menuItem);
-                }
-            }
-        }
-
-        // create item category menu items
-        for (var i = 0; i < stations.length; i++) {
-            stations[i].checked = false;
-            var status = stations[i][testStationStatus];
-            if (!status)
-            {
-                status = "Unknown";
-            }
-            if (hasGroups) {
-                for (var j = 0; j < treeNodes.length; j++) {
-                    if (treeNodes[j].name === stations[i][groupName]) {
-                        menuItem = new Object();
-       
-                        menuItem.content = "<span class=\"" + GetNodeClass(status) + "\"><i class=\"" + GetNodeIcon(stations[i][testStationStatus]) + "\" style=\"color:white\"></i>&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('StationsLayoutCtrl')).scope().OpenDashboard(" + i + ");\">" + stations[i][testStationName] + " (" + status + ")" + "</a></span>";
-                        treeNodes[j].children.push(menuItem);
-                        break;
-                    }
-                }
-            }
-            else {
-                menuItem = new Object();
-                menuItem.content = "<span class=\"" + GetNodeClass(status) + "\"><i class=\"" + GetNodeIcon(stations[i][testStationStatus]) + "\" style=\"color:white\"></i>&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('StationsLayoutCtrl')).scope().OpenDashboard(" + i + ");\">" + stations[i][testStationName] + " (" + status + ")" + "</a></span>";
-
-                treeNodes.push(menuItem);
-            }
-        }
-
-        return treeNodes;
-    };
-
-    $scope.OpenDashboard = function OpenDashboard(index) {
-        var oid = TestStations.stations[index].obj_id;
-        $state.go('app.stations.dashboard', { schema: $stateParams.schema, class: $stateParams.class, oid: oid, xmlschema: TestStations.params['xmlSchemaName'], index: index });
-    }
-});
-'use strict';
-
-angular.module('app.tables').controller('JqGridCtrl', function ($scope) {
-    $scope.gridData = {
-        data: [
-            {
-                id: "1",
-                date: "2007-10-01",
-                name: "test",
-                note: "note",
-                amount: "200.00",
-                tax: "10.00",
-                total: "210.00"
-            },
-            {
-                id: "2",
-                date: "2007-10-02",
-                name: "test2",
-                note: "note2",
-                amount: "300.00",
-                tax: "20.00",
-                total: "320.00"
-            },
-            {
-                id: "3",
-                date: "2007-09-01",
-                name: "test3",
-                note: "note3",
-                amount: "400.00",
-                tax: "30.00",
-                total: "430.00"
-            },
-            {
-                id: "4",
-                date: "2007-10-04",
-                name: "test",
-                note: "note",
-                amount: "200.00",
-                tax: "10.00",
-                total: "210.00"
-            },
-            {
-                id: "5",
-                date: "2007-10-05",
-                name: "test2",
-                note: "note2",
-                amount: "300.00",
-                tax: "20.00",
-                total: "320.00"
-            },
-            {
-                id: "6",
-                date: "2007-09-06",
-                name: "test3",
-                note: "note3",
-                amount: "400.00",
-                tax: "30.00",
-                total: "430.00"
-            },
-            {
-                id: "7",
-                date: "2007-10-04",
-                name: "test",
-                note: "note",
-                amount: "200.00",
-                tax: "10.00",
-                total: "210.00"
-            },
-            {
-                id: "8",
-                date: "2007-10-03",
-                name: "test2",
-                note: "note2",
-                amount: "300.00",
-                tax: "20.00",
-                total: "320.00"
-            },
-            {
-                id: "9",
-                date: "2007-09-01",
-                name: "test3",
-                note: "note3",
-                amount: "400.00",
-                tax: "30.00",
-                total: "430.00"
-            },
-            {
-                id: "10",
-                date: "2007-10-01",
-                name: "test",
-                note: "note",
-                amount: "200.00",
-                tax: "10.00",
-                total: "210.00"
-            },
-            {
-                id: "11",
-                date: "2007-10-02",
-                name: "test2",
-                note: "note2",
-                amount: "300.00",
-                tax: "20.00",
-                total: "320.00"
-            },
-            {
-                id: "12",
-                date: "2007-09-01",
-                name: "test3",
-                note: "note3",
-                amount: "400.00",
-                tax: "30.00",
-                total: "430.00"
-            },
-            {
-                id: "13",
-                date: "2007-10-04",
-                name: "test",
-                note: "note",
-                amount: "200.00",
-                tax: "10.00",
-                total: "210.00"
-            },
-            {
-                id: "14",
-                date: "2007-10-05",
-                name: "test2",
-                note: "note2",
-                amount: "300.00",
-                tax: "20.00",
-                total: "320.00"
-            },
-            {
-                id: "15",
-                date: "2007-09-06",
-                name: "test3",
-                note: "note3",
-                amount: "400.00",
-                tax: "30.00",
-                total: "430.00"
-            },
-            {
-                id: "16",
-                date: "2007-10-04",
-                name: "test",
-                note: "note",
-                amount: "200.00",
-                tax: "10.00",
-                total: "210.00"
-            },
-            {
-                id: "17",
-                date: "2007-10-03",
-                name: "test2",
-                note: "note2",
-                amount: "300.00",
-                tax: "20.00",
-                total: "320.00"
-            },
-            {
-                id: "18",
-                date: "2007-09-01",
-                name: "test3",
-                note: "note3",
-                amount: "400.00",
-                tax: "30.00",
-                total: "430.00"
-            }
-        ],
-        colNames: ['Actions', 'Inv No', 'Date', 'Client', 'Amount', 'Tax', 'Total', 'Notes'],
-        colModel: [
-            {
-                name: 'act',
-                index: 'act',
-                sortable: false
-            },
-            {
-                name: 'id',
-                index: 'id'
-            },
-            {
-                name: 'date',
-                index: 'date',
-                editable: true
-            },
-            {
-                name: 'name',
-                index: 'name',
-                editable: true
-            },
-            {
-                name: 'amount',
-                index: 'amount',
-                align: "right",
-                editable: true
-            },
-            {
-                name: 'tax',
-                index: 'tax',
-                align: "right",
-                editable: true
-            },
-            {
-                name: 'total',
-                index: 'total',
-                align: "right",
-                editable: true
-            },
-            {
-                name: 'note',
-                index: 'note',
-                sortable: false,
-                editable: true
-            }
-        ]
-    }
-
-
-    $scope.getSelection = function(){
-        alert(jQuery('table').jqGrid('getGridParam', 'selarrrow'));
-    };
-
-    $scope.selectRow = function(row){
-       jQuery('table').jqGrid('setSelection', row);
-
-    }
-});
 'use strict';
 
 angular.module('app.taskforum').controller('PostViewCtrl', function ($scope, $http, $state, $stateParams, APP_CONFIG, User, $modalInstance, myActivityService) {
@@ -17662,34 +17527,6 @@ angular.module('app.taskforum').controller('PostViewCtrl', function ($scope, $ht
         $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
     }
 });
-angular.module('app.tasks').directive('convertToNumber', function () {
-    return {
-        require: 'ngModel',
-        link: function (scope, element, attrs, ngModel) {
-            ngModel.$parsers.push(function (val) {
-                return val != null ? parseInt(val, 10) : null;
-            });
-            ngModel.$formatters.push(function (val) {
-                return val != null ? '' + val : null;
-            });
-        }
-    };
-});
-
-
-'use strict';
-
-angular.module('app.tasks').factory('TasksInfo', function () {
-
-    var TaskModel = {
-            count: 0,
-            tasks: [],
-            currentTask: undefined
-        };
-
-    return TaskModel;
-});
-
 /// <reference path='./DlhSoft.Kanban.Angular.Components.ts'/>
 var KanbanBoard = DlhSoft.Controls.KanbanBoard;
 
@@ -18171,6 +18008,464 @@ angular.module('app.taskkanban').factory('KanbanService', function ($http, APP_C
 		}
 	}
 });
+'use strict';
+
+angular.module('app.taskkanban').directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if (event.which === 13) {
+                scope.$apply(function () {
+                    scope.$eval(attrs.ngEnter, { 'event': event });
+                });
+
+                event.preventDefault();
+            }
+        });
+    };
+});
+
+'use strict';
+
+angular.module('app.tables').controller('JqGridCtrl', function ($scope) {
+    $scope.gridData = {
+        data: [
+            {
+                id: "1",
+                date: "2007-10-01",
+                name: "test",
+                note: "note",
+                amount: "200.00",
+                tax: "10.00",
+                total: "210.00"
+            },
+            {
+                id: "2",
+                date: "2007-10-02",
+                name: "test2",
+                note: "note2",
+                amount: "300.00",
+                tax: "20.00",
+                total: "320.00"
+            },
+            {
+                id: "3",
+                date: "2007-09-01",
+                name: "test3",
+                note: "note3",
+                amount: "400.00",
+                tax: "30.00",
+                total: "430.00"
+            },
+            {
+                id: "4",
+                date: "2007-10-04",
+                name: "test",
+                note: "note",
+                amount: "200.00",
+                tax: "10.00",
+                total: "210.00"
+            },
+            {
+                id: "5",
+                date: "2007-10-05",
+                name: "test2",
+                note: "note2",
+                amount: "300.00",
+                tax: "20.00",
+                total: "320.00"
+            },
+            {
+                id: "6",
+                date: "2007-09-06",
+                name: "test3",
+                note: "note3",
+                amount: "400.00",
+                tax: "30.00",
+                total: "430.00"
+            },
+            {
+                id: "7",
+                date: "2007-10-04",
+                name: "test",
+                note: "note",
+                amount: "200.00",
+                tax: "10.00",
+                total: "210.00"
+            },
+            {
+                id: "8",
+                date: "2007-10-03",
+                name: "test2",
+                note: "note2",
+                amount: "300.00",
+                tax: "20.00",
+                total: "320.00"
+            },
+            {
+                id: "9",
+                date: "2007-09-01",
+                name: "test3",
+                note: "note3",
+                amount: "400.00",
+                tax: "30.00",
+                total: "430.00"
+            },
+            {
+                id: "10",
+                date: "2007-10-01",
+                name: "test",
+                note: "note",
+                amount: "200.00",
+                tax: "10.00",
+                total: "210.00"
+            },
+            {
+                id: "11",
+                date: "2007-10-02",
+                name: "test2",
+                note: "note2",
+                amount: "300.00",
+                tax: "20.00",
+                total: "320.00"
+            },
+            {
+                id: "12",
+                date: "2007-09-01",
+                name: "test3",
+                note: "note3",
+                amount: "400.00",
+                tax: "30.00",
+                total: "430.00"
+            },
+            {
+                id: "13",
+                date: "2007-10-04",
+                name: "test",
+                note: "note",
+                amount: "200.00",
+                tax: "10.00",
+                total: "210.00"
+            },
+            {
+                id: "14",
+                date: "2007-10-05",
+                name: "test2",
+                note: "note2",
+                amount: "300.00",
+                tax: "20.00",
+                total: "320.00"
+            },
+            {
+                id: "15",
+                date: "2007-09-06",
+                name: "test3",
+                note: "note3",
+                amount: "400.00",
+                tax: "30.00",
+                total: "430.00"
+            },
+            {
+                id: "16",
+                date: "2007-10-04",
+                name: "test",
+                note: "note",
+                amount: "200.00",
+                tax: "10.00",
+                total: "210.00"
+            },
+            {
+                id: "17",
+                date: "2007-10-03",
+                name: "test2",
+                note: "note2",
+                amount: "300.00",
+                tax: "20.00",
+                total: "320.00"
+            },
+            {
+                id: "18",
+                date: "2007-09-01",
+                name: "test3",
+                note: "note3",
+                amount: "400.00",
+                tax: "30.00",
+                total: "430.00"
+            }
+        ],
+        colNames: ['Actions', 'Inv No', 'Date', 'Client', 'Amount', 'Tax', 'Total', 'Notes'],
+        colModel: [
+            {
+                name: 'act',
+                index: 'act',
+                sortable: false
+            },
+            {
+                name: 'id',
+                index: 'id'
+            },
+            {
+                name: 'date',
+                index: 'date',
+                editable: true
+            },
+            {
+                name: 'name',
+                index: 'name',
+                editable: true
+            },
+            {
+                name: 'amount',
+                index: 'amount',
+                align: "right",
+                editable: true
+            },
+            {
+                name: 'tax',
+                index: 'tax',
+                align: "right",
+                editable: true
+            },
+            {
+                name: 'total',
+                index: 'total',
+                align: "right",
+                editable: true
+            },
+            {
+                name: 'note',
+                index: 'note',
+                sortable: false,
+                editable: true
+            }
+        ]
+    }
+
+
+    $scope.getSelection = function(){
+        alert(jQuery('table').jqGrid('getGridParam', 'selarrrow'));
+    };
+
+    $scope.selectRow = function(row){
+       jQuery('table').jqGrid('setSelection', row);
+
+    }
+});
+'use strict';
+
+angular.module('app.tasktrack').controller('TaskListCtrl', function ($scope, $state, $rootScope, $stateParams, taskTrackService, hubService) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.taskclass = $stateParams.class;
+    $scope.pickoid = $stateParams.pickoid;
+    $scope.template = "IssueForm.htm";
+
+    $scope.displayed = [];
+
+    $scope.isLoading = true;
+
+    $scope.tableState;
+
+    $scope.callServer = function callServer(tableState) {
+
+        $scope.isLoading = true;
+
+        $scope.tableState = tableState;
+
+        if (!$scope.pickoid) {
+            var pagination = tableState.pagination;
+
+            var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
+            var number = pagination.number || 10;  // Number of entries showed per page.
+
+            taskTrackService.getTaskResult($scope.dbschema, $scope.taskclass, start, number, tableState, function (result) {
+                $scope.displayed = result.data;
+         
+                tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
+                $scope.isLoading = false;
+            });
+        }
+        else
+        {
+            taskTrackService.getOneTask($scope.dbschema, $scope.taskclass, $scope.pickoid, function (result) {
+                $scope.displayed = result.data;
+                tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
+                $scope.isLoading = false;
+            });
+         }
+    };
+
+    $scope.searchIssues = function () {
+
+    }
+
+    $scope.switchTrackStatus = function (row) {
+        var groupName = $scope.dbschema + "-" + row.type + "-" + row.obj_id;
+
+        if (row.TrackStatus)
+        {
+            hubService.addToGroup(groupName); // hubService adds the current user to the group
+        }
+        else
+        {
+            hubService.removeFromGroup(groupName); // hubService removes the current user from the group
+        }
+    }
+
+    $rootScope.$on('modalClosed', function (event, data) {
+        if (data === "update") {
+            $scope.callServer($scope.tableState);
+        }
+    });
+});
+"use strict";
+
+angular.module('app.tasktrack').factory('taskTrackService', function ($http, APP_CONFIG, hubService) {
+
+    function getTaskResult(dbschema, taskclass, start, pageSize, params, callback) {
+	    
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + taskclass + "?view=full&from=" + start + "&size=" + pageSize;
+	
+        var filters = params.search.predicateObject;
+        var count = 0;
+        var expre = [];
+        if (filters)
+        {
+            var filter;
+            for (var property in filters) {
+                if (filters.hasOwnProperty(property)) {
+                    filter = [];
+                    filter.push(property);
+                    if (property === "Subject") {
+                        filter.push("contains");
+                    }
+                    else {
+                        filter.push("=");
+                    }
+                    filter.push(filters[property]);
+                }
+
+                count++;
+
+                if (count === 1) {
+                    expre.push(filter);
+                }
+                else
+                {
+                    expre.push("and");
+                    expre.push(filter);
+                }
+            }
+
+            if (count > 0) {
+                if (count === 1) {
+                    url += "&filter=" + JSON.stringify(expre[0]); // single filter
+                }
+                else {
+                    url += "&filter=" + JSON.stringify(expre); // compound filter
+                }
+            }
+        }
+
+        var sortField = params.sort.predicate;
+        var sortReverse = params.sort.reverse;
+        if (sortField)
+        {
+            url += "&sortfield=" + sortField + "&sortreverse=" + sortReverse;
+        }
+
+        hubService.getUserGroups(function (groups) {
+
+            $http.get(url).success(function (data) {
+                var result = new Object();
+                addTrackStatus(dbschema, data, groups);
+                result.data = data;
+
+                url = APP_CONFIG.ebaasRootUrl + "/api/count/" + encodeURIComponent(dbschema) + "/" + taskclass;
+                if (count > 0) {
+                    if (count === 1) {
+                        url += "?filter=" + JSON.stringify(expre[0]); // single filter
+                    }
+                    else {
+                        url += "?filter=" + JSON.stringify(expre); // compound filter
+                    }
+                }
+                $http.get(url).success(function (data) {
+                    var numberOfPages = Math.ceil(data / pageSize);
+                    result.numberOfPages = numberOfPages;
+                    callback(result);
+                }).error(function () {
+                    callback(undefined);
+
+                });
+            }).error(function () {
+                callback(undefined);
+            });
+        });
+    }
+
+    function getOneTask(dbschema, taskclass, oid, callback) {
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + taskclass + "/" + oid
+
+        hubService.getUserGroups(function (groups) {
+
+            $http.get(url).success(function (data) {
+                var array = [];
+                array.push(data);
+                var result = new Object();
+                addTrackStatus(dbschema, array, groups);
+                result.data = array;
+                result.numberOfPages = 1;
+                callback(result);
+
+            }).error(function () {
+                callback(undefined);
+            });
+        });
+    }
+
+    function addTrackStatus(dbschema, data, userGroups)
+    {
+        if (data && data.length > 0)
+        {
+            for (var i = 0; i < data.length; i++)
+            {
+                data[i].TrackStatus = false;
+                var groupName = dbschema + "-" + data[i].type + "-" + data[i].obj_id;
+                for (var j = 0; j < userGroups.length; j++)
+                {
+                    if (userGroups[j] === groupName)
+                    {
+                        data[i].TrackStatus = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+	
+	return {
+	    getTaskResult: function (dbschema, taskclass, start, pagesize, tableState, callback) {
+	        getTaskResult(dbschema, taskclass, start, pagesize, tableState, callback);
+	    },
+	    getOneTask: function (dbschema, taskclass, oid, callback) {
+	        getOneTask(dbschema, taskclass, oid, callback);
+	    }
+	}
+});
+angular.module('app.tasks').directive('convertToNumber', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, element, attrs, ngModel) {
+            ngModel.$parsers.push(function (val) {
+                return val != null ? parseInt(val, 10) : null;
+            });
+            ngModel.$formatters.push(function (val) {
+                return val != null ? '' + val : null;
+            });
+        }
+    };
+});
 "use strict";
 
 angular.module('app.tasks').controller('reassignTaskCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, User) {
@@ -18470,22 +18765,221 @@ angular.module('app.tasks').controller('taskSubstituteCtrl', function ($scope, $
         $modalInstance.dismiss("dismiss");
     };
 });
+
+
 'use strict';
 
-angular.module('app.taskkanban').directive('ngEnter', function () {
-    return function (scope, element, attrs) {
-        element.bind("keydown keypress", function (event) {
-            if (event.which === 13) {
-                scope.$apply(function () {
-                    scope.$eval(attrs.ngEnter, { 'event': event });
-                });
+angular.module('app.tasks').factory('TasksInfo', function () {
 
-                event.preventDefault();
-            }
-        });
-    };
+    var TaskModel = {
+            count: 0,
+            tasks: [],
+            currentTask: undefined
+        };
+
+    return TaskModel;
 });
 
+'use strict';
+
+angular.module('app.taskviewer')
+    .factory('ContextMenuService', function () {
+        return {
+            element: null,
+            menuElement: null
+        };
+    })
+    .directive('contextMenu', [
+        '$document',
+        'ContextMenuService',
+        function ($document, ContextMenuService) {
+            return {
+                restrict: 'A',
+                scope: {
+                    'callback': '&contextMenu',
+                    'disabled': '&contextMenuDisabled',
+                    'closeCallback': '&contextMenuClose',
+                    'marginBottom': '@contextMenuMarginBottom'
+                },
+                link: function ($scope, $element, $attrs) {
+                    var opened = false;
+
+                    function open(event, menuElement) {
+                        menuElement.addClass('open');
+
+                        var doc = $document[0].documentElement;
+                        var docLeft = (window.pageXOffset || doc.scrollLeft) -
+                            (doc.clientLeft || 0),
+                            docTop = (window.pageYOffset || doc.scrollTop) -
+                                (doc.clientTop || 0),
+                            elementWidth = menuElement[0].scrollWidth,
+                            elementHeight = menuElement[0].scrollHeight;
+                        var pageX;
+                        var pageY;
+                        // browser compatibility fix for the click location
+                        if (event.pageX || event.pageY) {
+                            // use pageX and pageY when available (modern browsers)
+                            pageX = event.pageX;
+                            pageY = event.pageY;
+                        } else {
+                            // calculate pageX and pageY when they do not exist
+                            // (IE8 and generated events in later versions of IE)
+                            var docBody = $document[0].body;
+                            pageX = event.clientX + docBody.scrollLeft + doc.scrollLeft;
+                            pageY = event.clientY + docBody.scrollTop + doc.scrollTop;
+                        }
+                        var docWidth = doc.clientWidth + docLeft,
+                            docHeight = doc.clientHeight + docTop,
+                            totalWidth = elementWidth + pageX,
+                            totalHeight = elementHeight + pageY,
+                            left = Math.max(pageX - docLeft, 0),
+                            top = Math.max(pageY - docTop, 0);
+
+                        if (totalWidth > docWidth) {
+                            left = left - (totalWidth - docWidth);
+                        }
+
+                        if (totalHeight > docHeight) {
+                            var marginBottom = $scope.marginBottom || 0;
+                            top = top - (totalHeight - docHeight) - marginBottom;
+                        }
+
+                        menuElement.css('top', top + 'px');
+                        menuElement.css('left', left + 'px');
+                        opened = true;
+                    }
+
+                    function close(menuElement) {
+                        menuElement.removeClass('open');
+
+                        if (opened) {
+                            $scope.closeCallback();
+                        }
+
+                        opened = false;
+                    }
+
+                    $element.bind('contextmenu', function (event) {
+                        if (!$scope.disabled()) {
+                            if (ContextMenuService.menuElement !== null) {
+                                close(ContextMenuService.menuElement);
+                            }
+                            ContextMenuService.menuElement = angular.element(
+                                document.getElementById($attrs.target)
+                            );
+                            ContextMenuService.element = event.target;
+
+                            event.preventDefault();
+                            event.stopPropagation();
+                            $scope.$apply(function () {
+                                $scope.callback({ $event: event });
+                            });
+                            $scope.$apply(function () {
+                                open(event, ContextMenuService.menuElement);
+                            });
+                        }
+                    });
+
+                    function handleKeyUpEvent(event) {
+                        if (opened && event.keyCode === 27) {
+                            $scope.$apply(function () {
+                                close(ContextMenuService.menuElement);
+                            });
+                        }
+                    }
+
+                    function handleClickEvent(event) {
+                        if (opened &&
+                            (event.button !== 2 ||
+                                event.target !== ContextMenuService.element)) {
+                            $scope.$apply(function () {
+                                close(ContextMenuService.menuElement);
+                            });
+                        }
+                    }
+
+                    $document.bind('keyup', handleKeyUpEvent);
+                    // Firefox treats a right-click as a click and a contextmenu event
+                    // while other browsers just treat it as a contextmenu event
+                    $document.bind('click', handleClickEvent);
+                    $document.bind('contextmenu', handleClickEvent);
+
+                    $scope.$on('$destroy', function () {
+                        $document.unbind('keyup', handleKeyUpEvent);
+                        $document.unbind('click', handleClickEvent);
+                        $document.unbind('contextmenu', handleClickEvent);
+                    });
+                }
+            };
+        }
+    ]);
+
+'use strict';
+
+angular.module('app.taskviewer').directive('taskTreeviewContent', function ($compile) {
+    return {
+        restrict: 'E',
+        link: function (scope, element) {
+            var $content = $(scope.item.content);
+
+            function handleExpanded(){
+                $content.find('>i')
+                    .toggleClass('fa-plus-circle', !scope.item.expanded)
+                    .toggleClass('fa-minus-circle', !!scope.item.expanded)
+
+            }
+
+
+            if (scope.item.children && scope.item.children.length) {
+                $content.on('click', function(){
+                    scope.$apply(function(){
+                        scope.item.expanded = !scope.item.expanded;
+                        handleExpanded();
+                    });
+
+
+                });
+                handleExpanded();
+            }
+
+            element.replaceWith($content);
+
+
+        }
+    }
+});
+
+angular.module('app.taskviewer').directive('taskTreeview', function ($compile, $sce) {
+    return {
+        restrict: 'A',
+        scope: {
+            'items': '='
+        },
+        template: '<li ng-class="{parent_li: item.children.length}" ng-repeat="item in items" role="treeitem">' +
+            '<div context-menu data-target="menu-{{ item.index }}">' +
+            '<task-treeview-content></task-treeview-content>' +
+            '</div>' +
+            '<ul ng-if="item.children.length" task-treeview ng-show="item.expanded"  items="item.children" role="group" class="smart-treeview-group" ></ul>' +
+            '</li>',
+        compile: function (element) {
+            // Break the recursion loop by removing the contents
+            var contents = element.contents().remove();
+            var compiledContents;
+            return {
+                post: function (scope, element) {
+                    // Compile the contents
+                    if (!compiledContents) {
+                        compiledContents = $compile(contents);
+                    }
+                    // Re-add the compiled contents to the element
+                    compiledContents(scope, function (clone) {
+                        element.append(clone);
+                    });
+                }
+            };
+        }
+    };
+});
 'use strict';
 
 angular.module('app.taskviewer').controller('ItemFormCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, taskService, $document, $window) {
@@ -18919,409 +19413,6 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($r
         }
     });
 });
-'use strict';
-
-angular.module('app.taskviewer')
-    .factory('ContextMenuService', function () {
-        return {
-            element: null,
-            menuElement: null
-        };
-    })
-    .directive('contextMenu', [
-        '$document',
-        'ContextMenuService',
-        function ($document, ContextMenuService) {
-            return {
-                restrict: 'A',
-                scope: {
-                    'callback': '&contextMenu',
-                    'disabled': '&contextMenuDisabled',
-                    'closeCallback': '&contextMenuClose',
-                    'marginBottom': '@contextMenuMarginBottom'
-                },
-                link: function ($scope, $element, $attrs) {
-                    var opened = false;
-
-                    function open(event, menuElement) {
-                        menuElement.addClass('open');
-
-                        var doc = $document[0].documentElement;
-                        var docLeft = (window.pageXOffset || doc.scrollLeft) -
-                            (doc.clientLeft || 0),
-                            docTop = (window.pageYOffset || doc.scrollTop) -
-                                (doc.clientTop || 0),
-                            elementWidth = menuElement[0].scrollWidth,
-                            elementHeight = menuElement[0].scrollHeight;
-                        var pageX;
-                        var pageY;
-                        // browser compatibility fix for the click location
-                        if (event.pageX || event.pageY) {
-                            // use pageX and pageY when available (modern browsers)
-                            pageX = event.pageX;
-                            pageY = event.pageY;
-                        } else {
-                            // calculate pageX and pageY when they do not exist
-                            // (IE8 and generated events in later versions of IE)
-                            var docBody = $document[0].body;
-                            pageX = event.clientX + docBody.scrollLeft + doc.scrollLeft;
-                            pageY = event.clientY + docBody.scrollTop + doc.scrollTop;
-                        }
-                        var docWidth = doc.clientWidth + docLeft,
-                            docHeight = doc.clientHeight + docTop,
-                            totalWidth = elementWidth + pageX,
-                            totalHeight = elementHeight + pageY,
-                            left = Math.max(pageX - docLeft, 0),
-                            top = Math.max(pageY - docTop, 0);
-
-                        if (totalWidth > docWidth) {
-                            left = left - (totalWidth - docWidth);
-                        }
-
-                        if (totalHeight > docHeight) {
-                            var marginBottom = $scope.marginBottom || 0;
-                            top = top - (totalHeight - docHeight) - marginBottom;
-                        }
-
-                        menuElement.css('top', top + 'px');
-                        menuElement.css('left', left + 'px');
-                        opened = true;
-                    }
-
-                    function close(menuElement) {
-                        menuElement.removeClass('open');
-
-                        if (opened) {
-                            $scope.closeCallback();
-                        }
-
-                        opened = false;
-                    }
-
-                    $element.bind('contextmenu', function (event) {
-                        if (!$scope.disabled()) {
-                            if (ContextMenuService.menuElement !== null) {
-                                close(ContextMenuService.menuElement);
-                            }
-                            ContextMenuService.menuElement = angular.element(
-                                document.getElementById($attrs.target)
-                            );
-                            ContextMenuService.element = event.target;
-
-                            event.preventDefault();
-                            event.stopPropagation();
-                            $scope.$apply(function () {
-                                $scope.callback({ $event: event });
-                            });
-                            $scope.$apply(function () {
-                                open(event, ContextMenuService.menuElement);
-                            });
-                        }
-                    });
-
-                    function handleKeyUpEvent(event) {
-                        if (opened && event.keyCode === 27) {
-                            $scope.$apply(function () {
-                                close(ContextMenuService.menuElement);
-                            });
-                        }
-                    }
-
-                    function handleClickEvent(event) {
-                        if (opened &&
-                            (event.button !== 2 ||
-                                event.target !== ContextMenuService.element)) {
-                            $scope.$apply(function () {
-                                close(ContextMenuService.menuElement);
-                            });
-                        }
-                    }
-
-                    $document.bind('keyup', handleKeyUpEvent);
-                    // Firefox treats a right-click as a click and a contextmenu event
-                    // while other browsers just treat it as a contextmenu event
-                    $document.bind('click', handleClickEvent);
-                    $document.bind('contextmenu', handleClickEvent);
-
-                    $scope.$on('$destroy', function () {
-                        $document.unbind('keyup', handleKeyUpEvent);
-                        $document.unbind('click', handleClickEvent);
-                        $document.unbind('contextmenu', handleClickEvent);
-                    });
-                }
-            };
-        }
-    ]);
-
-'use strict';
-
-angular.module('app.taskviewer').directive('taskTreeviewContent', function ($compile) {
-    return {
-        restrict: 'E',
-        link: function (scope, element) {
-            var $content = $(scope.item.content);
-
-            function handleExpanded(){
-                $content.find('>i')
-                    .toggleClass('fa-plus-circle', !scope.item.expanded)
-                    .toggleClass('fa-minus-circle', !!scope.item.expanded)
-
-            }
-
-
-            if (scope.item.children && scope.item.children.length) {
-                $content.on('click', function(){
-                    scope.$apply(function(){
-                        scope.item.expanded = !scope.item.expanded;
-                        handleExpanded();
-                    });
-
-
-                });
-                handleExpanded();
-            }
-
-            element.replaceWith($content);
-
-
-        }
-    }
-});
-
-angular.module('app.taskviewer').directive('taskTreeview', function ($compile, $sce) {
-    return {
-        restrict: 'A',
-        scope: {
-            'items': '='
-        },
-        template: '<li ng-class="{parent_li: item.children.length}" ng-repeat="item in items" role="treeitem">' +
-            '<div context-menu data-target="menu-{{ item.index }}">' +
-            '<task-treeview-content></task-treeview-content>' +
-            '</div>' +
-            '<ul ng-if="item.children.length" task-treeview ng-show="item.expanded"  items="item.children" role="group" class="smart-treeview-group" ></ul>' +
-            '</li>',
-        compile: function (element) {
-            // Break the recursion loop by removing the contents
-            var contents = element.contents().remove();
-            var compiledContents;
-            return {
-                post: function (scope, element) {
-                    // Compile the contents
-                    if (!compiledContents) {
-                        compiledContents = $compile(contents);
-                    }
-                    // Re-add the compiled contents to the element
-                    compiledContents(scope, function (clone) {
-                        element.append(clone);
-                    });
-                }
-            };
-        }
-    };
-});
-'use strict';
-
-angular.module('app.tasktrack').controller('TaskListCtrl', function ($scope, $state, $rootScope, $stateParams, taskTrackService, hubService) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.taskclass = $stateParams.class;
-    $scope.pickoid = $stateParams.pickoid;
-    $scope.template = "IssueForm.htm";
-
-    $scope.displayed = [];
-
-    $scope.isLoading = true;
-
-    $scope.tableState;
-
-    $scope.callServer = function callServer(tableState) {
-
-        $scope.isLoading = true;
-
-        $scope.tableState = tableState;
-
-        if (!$scope.pickoid) {
-            var pagination = tableState.pagination;
-
-            var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
-            var number = pagination.number || 10;  // Number of entries showed per page.
-
-            taskTrackService.getTaskResult($scope.dbschema, $scope.taskclass, start, number, tableState, function (result) {
-                $scope.displayed = result.data;
-         
-                tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
-                $scope.isLoading = false;
-            });
-        }
-        else
-        {
-            taskTrackService.getOneTask($scope.dbschema, $scope.taskclass, $scope.pickoid, function (result) {
-                $scope.displayed = result.data;
-                tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
-                $scope.isLoading = false;
-            });
-         }
-    };
-
-    $scope.searchIssues = function () {
-
-    }
-
-    $scope.switchTrackStatus = function (row) {
-        var groupName = $scope.dbschema + "-" + row.type + "-" + row.obj_id;
-
-        if (row.TrackStatus)
-        {
-            hubService.addToGroup(groupName); // hubService adds the current user to the group
-        }
-        else
-        {
-            hubService.removeFromGroup(groupName); // hubService removes the current user from the group
-        }
-    }
-
-    $rootScope.$on('modalClosed', function (event, data) {
-        if (data === "update") {
-            $scope.callServer($scope.tableState);
-        }
-    });
-});
-"use strict";
-
-angular.module('app.tasktrack').factory('taskTrackService', function ($http, APP_CONFIG, hubService) {
-
-    function getTaskResult(dbschema, taskclass, start, pageSize, params, callback) {
-	    
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + taskclass + "?view=full&from=" + start + "&size=" + pageSize;
-	
-        var filters = params.search.predicateObject;
-        var count = 0;
-        var expre = [];
-        if (filters)
-        {
-            var filter;
-            for (var property in filters) {
-                if (filters.hasOwnProperty(property)) {
-                    filter = [];
-                    filter.push(property);
-                    if (property === "Subject") {
-                        filter.push("contains");
-                    }
-                    else {
-                        filter.push("=");
-                    }
-                    filter.push(filters[property]);
-                }
-
-                count++;
-
-                if (count === 1) {
-                    expre.push(filter);
-                }
-                else
-                {
-                    expre.push("and");
-                    expre.push(filter);
-                }
-            }
-
-            if (count > 0) {
-                if (count === 1) {
-                    url += "&filter=" + JSON.stringify(expre[0]); // single filter
-                }
-                else {
-                    url += "&filter=" + JSON.stringify(expre); // compound filter
-                }
-            }
-        }
-
-        var sortField = params.sort.predicate;
-        var sortReverse = params.sort.reverse;
-        if (sortField)
-        {
-            url += "&sortfield=" + sortField + "&sortreverse=" + sortReverse;
-        }
-
-        hubService.getUserGroups(function (groups) {
-
-            $http.get(url).success(function (data) {
-                var result = new Object();
-                addTrackStatus(dbschema, data, groups);
-                result.data = data;
-
-                url = APP_CONFIG.ebaasRootUrl + "/api/count/" + encodeURIComponent(dbschema) + "/" + taskclass;
-                if (count > 0) {
-                    if (count === 1) {
-                        url += "?filter=" + JSON.stringify(expre[0]); // single filter
-                    }
-                    else {
-                        url += "?filter=" + JSON.stringify(expre); // compound filter
-                    }
-                }
-                $http.get(url).success(function (data) {
-                    var numberOfPages = Math.ceil(data / pageSize);
-                    result.numberOfPages = numberOfPages;
-                    callback(result);
-                }).error(function () {
-                    callback(undefined);
-
-                });
-            }).error(function () {
-                callback(undefined);
-            });
-        });
-    }
-
-    function getOneTask(dbschema, taskclass, oid, callback) {
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + taskclass + "/" + oid
-
-        hubService.getUserGroups(function (groups) {
-
-            $http.get(url).success(function (data) {
-                var array = [];
-                array.push(data);
-                var result = new Object();
-                addTrackStatus(dbschema, array, groups);
-                result.data = array;
-                result.numberOfPages = 1;
-                callback(result);
-
-            }).error(function () {
-                callback(undefined);
-            });
-        });
-    }
-
-    function addTrackStatus(dbschema, data, userGroups)
-    {
-        if (data && data.length > 0)
-        {
-            for (var i = 0; i < data.length; i++)
-            {
-                data[i].TrackStatus = false;
-                var groupName = dbschema + "-" + data[i].type + "-" + data[i].obj_id;
-                for (var j = 0; j < userGroups.length; j++)
-                {
-                    if (userGroups[j] === groupName)
-                    {
-                        data[i].TrackStatus = true;
-                        break;
-                    }
-                }
-            }
-        }
-    }
-	
-	return {
-	    getTaskResult: function (dbschema, taskclass, start, pagesize, tableState, callback) {
-	        getTaskResult(dbschema, taskclass, start, pagesize, tableState, callback);
-	    },
-	    getOneTask: function (dbschema, taskclass, oid, callback) {
-	        getOneTask(dbschema, taskclass, oid, callback);
-	    }
-	}
-});
 "use strict";
 
 angular.module('app.ui').controller('GeneralElementsCtrl', function ($scope) {
@@ -19666,67 +19757,6 @@ angular.module('app.ui').controller('TreeviewCtrl', function ($scope) {
         ]}
     ]
 });
-"use strict";
-
-angular.module('app.user').controller('ChangePasswordController', function ($http, $scope, $rootScope, User, APP_CONFIG) {
-        $scope.savedSuccessfully = false;
-        $scope.message = "";
-
-        $scope.registration = {
-            userName: User.userName,
-            password: "",
-            newPassword: "",
-            confirmNewPassword: ""
-        };
-
-        $scope.save = function () {
- 
-            if ($scope.registration.newPassword != $scope.registration.confirmNewPassword)
-            {
-                $scope.savedSuccessfully = false;
-                $scope.message = $rootScope.getWord("ConfirmPasswordIncorrect");
-            }
-            else if ($scope.registration.newPassword.length < 3)
-            {
-                $scope.savedSuccessfully = false;
-                $scope.message = $rootScope.getWord("NewPasswordInvalid");
-            }
-            else
-            {
-                var model = {};
-                model.oldPassword = $scope.registration.password;
-                model.newPassword = $scope.registration.newPassword;
-                model.confirmPassword = $scope.registration.confirmNewPassword;
-                $http.post(APP_CONFIG.ebaasRootUrl + '/api/accounts/ChangePassword', model).success(function (data) {
-                    $scope.message = $rootScope.getWord("PasswordUpdated");
-                    $scope.savedSuccessfully = true;
-                })
-                .error(function (err) {
-                    console.log(err);
-                    $scope.message = err.message;
-                    $scope.savedSuccessfully = false;
-                });
-            }
-        };
-
-    });
-"use strict";
-
-angular.module('app.user').controller('EditProfileController', function ($http, $scope, $rootScope, User, APP_CONFIG) {
-        $scope.savedSuccessfully = false;
-        $scope.message = "";
-
-        $scope.profile = User;
-
-        $scope.save = function () {
-
-            User.save(function () {
-                $scope.message = $rootScope.getWord("ProfileUpdated");
-                $scope.savedSuccessfully = true;
-            })
-        }
-
-    });
 'use strict';
 
 angular.module('app.ui').directive('smartClassFilter', function () {
@@ -20202,1056 +20232,149 @@ angular.module('app.ui').directive('smartTreeview', function ($compile, $sce) {
         }
     };
 });
-'use strict';
-
-angular.module('app.userdirectory').controller('assignRolesCtrl', function ($scope, $controller, $rootScope, $http, APP_CONFIG, $stateParams, $modalInstance) {
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = "Role";
-    $scope.masterclass = $stateParams.class;
-    $scope.masterid = $stateParams.oid;
-    $scope.roletype = $stateParams.roletype;
-
-    if ($stateParams.dataview)
-    {
-        $scope.view = $stateParams.dataview;
-    }
-    else
-    {
-        $scope.view = undefined;
-    }
-
-    $scope.filter = "['RType', '=', '" + $scope.roletype + "']";
-
-    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG }));
-
-    $scope.gridInstance = null;
-    $scope.existingKeys = null;
-    $scope.currentKeys = null;
-    $scope.isUpdated = false;
-    $scope.loading = false;
-    $scope.dataGridSettings = {
-        dataSource: {
-            store: $scope.customStore
-        },
-        columnAutoWidth: true,
-        sorting: {
-            mode: "multiple"
-        },
-        editing: {
-            allowAdding: false,
-            allowUpdating: false,
-            allowDeleting: false
-        },
-        grouping: {
-            autoExpandAll: false
-        },
-        pager: {
-            visible: true,
-            showPageSizeSelector: true,
-            showInfo: true
-        },
-        filterRow: {
-            visible: true,
-            applyFilter: "auto"
-        },
-        searchPanel: { visible: false },
-        selection: { mode: 'multiple' },
-        remoteOperations: true,
-        bindingOptions: {
-            columns: 'columns'
-        },
-        headerFilter: {
-            visible: true
-        },
-        rowAlternationEnabled: true,
-        onInitialized: function (e) {
-            $scope.gridInstance = e.component;
-        },
-        onContentReady: function (e) {
-            selectGridRows();
-        },
-        onSelectionChanged: function (e) {
-            changeSelections(e.currentSelectedRowKeys, e.currentDeselectedRowKeys);
-        }
-    };
-
-    var asyncLoop = function(o)
-    {
-        var i = -1;
-
-        var loop = function() {
-            i++;
-            if (i == o.length)
-            {
-                o.callback();
-                return;
-            }
-
-            o.functionToLoop(loop, i);
-        }
-
-        loop(); // init
-    }
-
-    var selectGridRows = function()
-    {
-        if ($scope.currentKeys) {
-            var keys = $scope.currentKeys;
-            var indexes = [];
-            for (var i = 0; i < keys.length; i++) {
-                var index = $scope.gridInstance.getRowIndexByKey(keys[i]);
-
-                if (index >= 0)
-                    indexes.push(index);
-            }
-
-            $scope.gridInstance.selectRowsByIndexes(indexes, true);
-        }
-        else {
-            if ($scope.masterid) {
-                $http.get(APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($stateParams.schema) + "/" + $scope.masterclass + "/" + $scope.masterid + "/" + $scope.dbclass)
-                    .success(function (data) {
-                        var keys = new Array();
-                        if (data) {
-                            for (var i = 0; i < data.length; i++) {
-                                keys.push(data[i].obj_id);
-                            }
-
-                            if (keys.length > 0) {
-                                // set the existing selections of rows
-                                $scope.gridInstance.selectRows(keys, false);
-                            }
-                        }
-
-                        $scope.existingKeys = keys; // keep the existing keys
-                        // initialize the current keys
-                        $scope.currentKeys = [];
-                        for (var i = 0; i < keys.length; i++) {
-                            $scope.currentKeys.push(keys[i]);
-                        }
-                    });
-            }
-        }
-    }
-
-    // keep the current keys in sync with grid row selections
-    var changeSelections = function (selectedKeys, deselectedKeys) {
-        var addedKeys = new Array();
-        var removedKeys = new Array();
-        var found;
-
-        // find the newly selected keys
-        if (selectedKeys && $scope.currentKeys) {
-            for (var i = 0; i < selectedKeys.length; i++) {
-                found = false;
-
-                var index = $scope.gridInstance.getRowIndexByKey(selectedKeys[i]);
-                if (index > -1) {
-                    for (var j = 0; j < $scope.currentKeys.length; j++) {
-                        if (selectedKeys[i] === $scope.currentKeys[j]) {
-                            found = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (!found) {
-                    addedKeys.push(selectedKeys[i]);
-                }
-            }
-        }
-
-        if (deselectedKeys && $scope.currentKeys) {
-            // find the unselected keys
-            for (var i = 0; i < $scope.currentKeys.length; i++) {
-                found = false;
-
-                for (var j = 0; j < deselectedKeys.length; j++) {
-                    var index = $scope.gridInstance.getRowIndexByKey(deselectedKeys[j]);
-                    if (index > -1) {
-                        if ($scope.currentKeys[i] === deselectedKeys[j]) {
-                            found = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (found) {
-                    removedKeys.push($scope.currentKeys[i]);
-                }
-            }
-        }
-
-        for (var i = 0; i < addedKeys.length; i++) {
-            $scope.currentKeys.push(addedKeys[i]);
-        }
-
-        for (var i = 0; i < removedKeys.length; i++) {
-            var index = $scope.currentKeys.indexOf(removedKeys[i]);
-            if (index > -1)
-                $scope.currentKeys.splice(index, 1);
-        }
-
-        //console.log("after current keys = " + $scope.currentKeys);
-    }
-
-    $scope.saveSelection = function () {
-        var addedKeys = new Array();
-        var removedKeys = new Array();
-        var found;
-
-        // find the added selections
-        for (var i = 0; i < $scope.currentKeys.length; i++) {
-            found = false;
-
-            for (var j = 0; j < $scope.existingKeys.length; j++) {
-                if ($scope.currentKeys[i] === $scope.existingKeys[j]) {
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found) {
-                addedKeys.push($scope.currentKeys[i]);
-            }
-        }
-
-        // find the removed selections
-        for (var i = 0; i < $scope.existingKeys.length; i++) {
-            found = false;
-
-            for (var j = 0; j < $scope.currentKeys.length; j++) {
-                if ($scope.existingKeys[i] === $scope.currentKeys[j]) {
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found) {
-                removedKeys.push($scope.existingKeys[i]);
-            }
-        }
-
-        if (addedKeys.length > 0) {
-            $scope.loading = true;
-
-            // add relationhsips to the db
-            asyncLoop({
-                length: addedKeys.length,
-                functionToLoop: function (loop, i) {
-                    if ($scope.masterid) {
-                        $http.post(APP_CONFIG.ebaasRootUrl + "/api/relationship/" + encodeURIComponent($stateParams.schema) + "/" + $scope.masterclass + "/" + $scope.masterid + "/" + $scope.dbclass + "/" + encodeURIComponent(addedKeys[i]))
-                             .success(function (data) {
-                                 loop();
-                             });
-                    }
-                },
-                callback: function () {
-                    $scope.loading = false;
-                    $scope.isUpdated = true;
-                }
-            })
-        }
-
-        if (removedKeys.length > 0) {
-            $scope.loading = true;
-            // delete relationhsips from the db
-            asyncLoop({
-                length: removedKeys.length,
-                functionToLoop: function (loop, i) {
-                    $http.delete(APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($stateParams.schema) + "/" + $scope.masterclass + "/" + $scope.masterid + "/" + $scope.dbclass + "/" + encodeURIComponent(removedKeys[i]))
-                         .success(function (data) {
-                             loop();
-                         });
-                },
-                callback: function () {
-                    $scope.existingKeys = [];
-                    for (var i = 0; i < $scope.currentKeys.length; i++)
-                        $scope.existingKeys.push($scope.currentKeys[i]);
-                    $scope.loading = false;
-                    $scope.isUpdated = true;
-                }
-            })
-        }
-
-    };
-
-    $scope.goBack = function () {
-        if ($scope.isUpdated) {
-            $modalInstance.close({ "modal": "viewManyToMany"});
-        }
-        else {
-            $modalInstance.dismiss("dismiss");
-        }
-    };
-});
-
-'use strict';
-
-angular.module('app.userdirectory').controller('RoleListViewCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, TestStations, $interval, userService) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.baseclass;
-    $scope.roletype = $stateParams.roletype;
-
-    $scope.filter = "['RType', '=', '" + $scope.roletype + "']";
-
-    if ($stateParams.insert && $stateParams.insert === "false") {
-        $scope.add = false;
-    }
-    else {
-        $scope.add = true;
-    }
-
-    if ($stateParams.export && $stateParams.export === "true") {
-        $scope.exportData = true;
-    }
-    else {
-        $scope.exportData = false;
-    }
-
-    if ($stateParams.import && $stateParams.import === "true") {
-        $scope.importData = true;
-    }
-    else {
-        $scope.importData = false;
-    }
-
-    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG }));
-
-    $scope.openModal = function () {
-        $state.go('.modalform', { schema: $scope.dbschema, class: $scope.dbclass }, { location: false, notify: false });
-    };
-
-    $scope.GetCommands = function (rowIndex, data) {
-        var items = new Array();
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/sitemap/commands/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass;
-
-        $http.get(url).success(function (commands) {
-
-            // custom commands
-            $scope.commands = commands;
-            var cmdInfo;
-            var item;
-            for (var cmd in commands) {
-                if (commands.hasOwnProperty(cmd)) {
-                    cmdInfo = commands[cmd];
-                    item = new Object();
-                    item.text = cmdInfo.title;
-                    item.css = "btn btn-primary btn-md btn-nav";
-                    if (cmdInfo.icon) {
-                        item.icon = cmdInfo.icon;
-                    }
-                    else {
-                        item.icon = "fa fa-lg fa-tasks";
-                    }
-
-                    item.onItemClick = function (text) {
-                        gotoState(text, $scope.dbschema, data.type, data.obj_id)
-                    }
-
-                    items.push(item);
-
-                    if (cmdInfo.baseUrl && !APP_CONFIG.hashedBaseUrls[cmdInfo.hash]) {
-                        APP_CONFIG.hashedBaseUrls[cmdInfo.hash] = cmdInfo.baseUrl;
-                    }
-                }
-            }
-
-            if (data.allowWrite && $stateParams.edit !== "false") {
-                items.push({
-                    text: $rootScope.getWord('Edit'),
-                    icon: "fa fa-lg fa-edit",
-                    css: "btn btn-default btn-md btn-nav",
-                    onItemClick: function () {
-                        $state.go('.modalform', { schema: $scope.dbschema, class: data.type, oid: data.obj_id }, { location: false, notify: false });
-                    }
-                });
-            }
-
-            if (data.allowDelete && $stateParams.delete !== "false") {
-                items.push({
-                    text: $rootScope.getWord('Delete'),
-                    icon: "fa fa-lg fa-times",
-                    css: "btn btn-default btn-md btn-nav",
-                    onItemClick: function () {
-                        $scope.gridInstance.deleteRow(rowIndex);
-                    }
-                });
-            }
-        });
-        return items;
-    }
-
-    var gotoState = function (title, dbschema, dbclass, oid) {
-        var commands = $scope.commands;
-        var url = undefined;
-        var cmdUrl = undefined;
-        var params = undefined;
-        var cmdInfo;
-        for (var cmd in commands) {
-            if (commands.hasOwnProperty(cmd)) {
-                cmdInfo = commands[cmd];
-                if (cmdInfo.title === title) {
-                    url = cmdInfo.url;
-                    cmdUrl = cmdInfo.url;
-                    params = new Object();
-                    params.schema = dbschema;
-                    params.class = dbclass;
-                    params.oid = oid;
-                    params.cmdHash = cmdInfo.hash;
-
-                    // add command's parameters to the state parameters
-                    if (cmdInfo.parameters) {
-                        for (var key in cmdInfo.parameters) {
-                            if (cmdInfo.parameters.hasOwnProperty(key)) {
-                                params[key] = cmdInfo.parameters[key];
-                            }
-                        }
-                    };
-
-                    break;
-                }
-            }
-        }
-
-        if (url) {
-            try
-            {
-                if (cmdUrl === ".modalform") {
-                    $state.go(url, params, { location: false, notify: false });
-                }
-                else {
-                    $state.go(url, params);
-                }
-            }
-            catch (err)
-            {
-                BootstrapDialog.show({
-                    title: $rootScope.getWord("Info Dialog"),
-                    type: BootstrapDialog.TYPE_INFO,
-                    message: $rootScope.getWord("Invalid Command"),
-                    buttons: [{
-                        label: $rootScope.getWord("Cancel"),
-                        action: function (dialog) {
-                            dialog.close();
-                        }
-                    }]
-                });
-            }
-        }
-    }
-
-    $scope.gridInstance = null;
-    $scope.dataGridSettings = {
-        dataSource: {
-            store: $scope.customStore
-        },
-        columnAutoWidth: true,
-        height: $rootScope.isChrome() === true ? '750px' : undefined,
-        sorting: {
-            mode: "multiple"
-        },
-        searchPanel: {
-            visible: $stateParams.search && $stateParams.search === "true"? true: false,
-            width: 300,
-            placeholder: $rootScope.getWord("Keyword Search")
-        },
-        editing: {
-            allowAdding: false,
-            allowUpdating: false,
-            allowDeleting: false
-        },
-        grouping: {
-            autoExpandAll: false
-        },
-        pager: {
-            visible: true,
-            showPageSizeSelector: true,
-            showInfo: true
-        },
-        filterRow: {
-            visible: true,
-            applyFilter: "auto"
-        },
-        selection: { mode: 'single' },
-        remoteOperations: true,
-        bindingOptions: {
-            columns: 'columns'
-        },
-        headerFilter: {
-            visible: true
-        },
-        rowAlternationEnabled: true,
-        masterDetail: {
-            enabled: true,
-            template: "detail"
-        },
-        onRowClick: function (e) {
-            if (e.rowType === "data") {
-                var isExpanded = $scope.gridInstance.isRowExpanded(e.key);
-                $scope.gridInstance.collapseAll(-1); // collaspsed all
-                if (!isExpanded) {
-                    $scope.gridInstance.expandRow(e.key);
-                }
-            }
-        },
-        onInitialized: function (e) {
-            $scope.gridInstance = e.component;
-        },
-        onRowPrepared: function (e) {
-        }
-    };
-
-    $rootScope.$on('modalClosed', function (event, data) {
-        if ($scope.gridInstance && data === "update")
-            $scope.gridInstance.refresh();
-    });
-});
-'use strict';
-
-angular.module('app.userdirectory').controller('UserDirectoryLayoutCtrl', function ($http, APP_CONFIG, $scope, $rootScope, $state, $stateParams, userService, propmisedParams) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.userclass = $stateParams.class;
-    $scope.roleclass = "Role";
-
-    // Getting unit tree
-    $scope.unitObjId = $stateParams.unitObjId;
-
-    var params = propmisedParams.data;
-
-    $scope.view = params['dataView'];
-    $scope.formTemplate = params['formTemplate'];
-
-    userService.getUnitTree($stateParams.schema, $scope.roleclass, $scope.unitObjId, function (data) {
-        $scope.unitTree = data;
-    });
-
-    // Getting function list
-    userService.getFunctions($stateParams.schema, $scope.roleclass, function (data) {
-        // add "Every One" as the first function
-        var role = {};
-        role.Text = $rootScope.getWord("Everyone");
-        role.obj_id = undefined;
-        if (data)
-        {
-            data.unshift(role);
-        }
-        else
-        {
-            data = [];
-            data.push(role);
-        }
- 
-        $scope.functions = data;
-    });
-
-    $state.go('app.userdirectory.usertable', { schema: $scope.dbschema, baseclass: $scope.roleclass, baseoid: undefined, relatedclass: $scope.userclass, view: $scope.view, formtemplate: $scope.formTemplate });
-
-    $scope.functionObjId = undefined;
-    
-    $scope.getFunctionUsers = function (functionObjId) {
-        $scope.functionObjId = functionObjId;
-        $state.go('app.userdirectory.usertable', { schema: $scope.dbschema, baseclass: $scope.roleclass, baseoid: functionObjId, relatedclass: $scope.userclass, view: $scope.view, formtemplate: $scope.formTemplate });
-    }
-
-    $scope.getUnitUsers = function (unitObjId) {
-        $scope.unitObjId = unitObjId;
-        $state.go('app.userdirectory.usertable', { schema: $scope.dbschema, baseclass: $scope.roleclass, baseoid: unitObjId, relatedclass: $scope.userclass, view: $scope.view, formtemplate: $scope.formTemplate });
-    }
-
-    $scope.openFunctions = function () {
-        $state.go('app.userdirectory.roletable', { schema: $scope.dbschema, baseclass: $scope.roleclass, roletype: "Function" });
-    }
-
-    $scope.openUnits = function () {
-        $state.go('app.userdirectory.roletable', { schema: $scope.dbschema, baseclass: $scope.roleclass, roletype: "Unit" });
-    }
-
-    $scope.refresh = function () {
-        $state.reload();
-    }
-});
-'use strict';
-
-angular.module('app.userdirectory').controller('UserListCtrl', function ($scope, $rootScope, $state, $stateParams, APP_CONFIG, userService, promisedUsers) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.userclass = $stateParams.class;
-    $scope.roleclass = "Role";
-
-    $scope.getWord = function(key)
-    {
-        return key;
-    }
-
-    $scope.tableOptions = {
-        "data": userService.convertUsers(promisedUsers.data),
-        //            "bDestroy": true,
-        "iDisplayLength": 20,
-        "columns": [
-            {
-                "class": 'details-control',
-                "orderable": false,
-                "data": null,
-                "defaultContent": ''
-            },
-            { "data": "FullName" },
-            { "data": "ID" },
-            { "data": "PhoneNumber" },
-            { "data": "Email" }
-        ],
-        "order": [[1, 'asc']]
-    }
-
-    // Getting unit tree
-    $scope.unitObjId = $stateParams.unitObjId;
-
-    userService.getUnitTree($stateParams.schema, $scope.roleclass, $scope.unitObjId, function (data) {
-        $scope.unitTree = data;
-
-    });
-
-    // Getting function list
-    userService.getFunctions($stateParams.schema, $scope.roleclass, function (data) {
-       
-        $scope.functions = data;
-
-    });
-
-    $scope.functionObjId = $stateParams.functionObjId;
-    $scope.getFunctionUsers = function (functionObjId) {
-        var params = new Object();
-
-        params.functionObjId = functionObjId;
-        params.unitObjId = undefined;
-        $scope.functionObjId = functionObjId;
-        $scope.unitObjId = undefined;
-
-        $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
-    }
-
-    $scope.getUnitUsers = function(unitObjId)
-    {
-        var params = new Object();
-
-        params.unitObjId = unitObjId;
-        params.functionObjId = undefined;
-        $scope.unitObjId = unitObjId;
-        $scope.functionObjId = undefined;
-
-        $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
-    }
-});
-'use strict';
-
-angular.module('app.userdirectory').controller('UserListViewCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, TestStations, $interval, userService) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.userclass = $stateParams.relatedclass;
-    
-    $scope.formTemplate = $stateParams.formtemplate;
-
-    if ($stateParams.baseoid) {
-        $scope.dbclass = $stateParams.baseclass;
-        $scope.relatedclass = $stateParams.relatedclass;
-        $scope.relatedview = $stateParams.view;
-        $scope.oid = $stateParams.baseoid;
-        
-        $scope.isrelated = true;
-    }
-    else
-    {
-        // get all users
-        $scope.dbclass = $stateParams.relatedclass;
-        $scope.view = $stateParams.view;
-    }
-
-    if ($stateParams.insert && $stateParams.insert === "false") {
-        $scope.add = false;
-    }
-    else {
-        $scope.add = true;
-    }
-
-    if ($stateParams.export && $stateParams.export === "true") {
-        $scope.exportData = true;
-    }
-    else {
-        $scope.exportData = false;
-    }
-
-    if ($stateParams.import && $stateParams.import === "true") {
-        $scope.importData = true;
-    }
-    else {
-        $scope.importData = false;
-    }
-
-    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG }));
-
-    $scope.openModal = function () {
-        $state.go('.modalform', { schema: $scope.dbschema, class: $scope.userclass, template: $scope.formTemplate }, { location: false, notify: false });
-    };
-
-    $scope.GetCommands = function (rowIndex, data) {
-        var items = new Array();
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/sitemap/commands/" + encodeURIComponent($scope.dbschema) + "/" + $scope.userclass;
-
-        $http.get(url).success(function (commands) {
-
-            // custom commands
-            $scope.commands = commands;
-            var cmdInfo;
-            var item;
-            for (var cmd in commands) {
-                if (commands.hasOwnProperty(cmd)) {
-                    cmdInfo = commands[cmd];
-                    item = new Object();
-                    item.text = cmdInfo.title;
-                    item.css = "btn btn-primary btn-md btn-nav";
-                    if (cmdInfo.icon) {
-                        item.icon = cmdInfo.icon;
-                    }
-                    else {
-                        item.icon = "fa fa-lg fa-tasks";
-                    }
-
-                    item.onItemClick = function (text) {
-                        gotoState(text, $scope.dbschema, data.type, data.obj_id)
-                    }
-
-                    items.push(item);
-
-                    if (cmdInfo.baseUrl && !APP_CONFIG.hashedBaseUrls[cmdInfo.hash]) {
-                        APP_CONFIG.hashedBaseUrls[cmdInfo.hash] = cmdInfo.baseUrl;
-                    }
-                }
-            }
-
-            if (data.allowWrite && $stateParams.edit !== "false") {
-                items.push({
-                    text: $rootScope.getWord('Edit'),
-                    icon: "fa fa-lg fa-edit",
-                    css: "btn btn-default btn-md btn-nav",
-                    onItemClick: function () {
-                        $state.go('.modalform', { schema: $scope.dbschema, class: data.type, oid: data.obj_id, template: $scope.formTemplate }, { location: false, notify: false });
-                    }
-                });
-            }
-
-            if (data.allowDelete && $stateParams.delete !== "false") {
-                items.push({
-                    text: $rootScope.getWord('Delete'),
-                    icon: "fa fa-lg fa-times",
-                    css: "btn btn-default btn-md btn-nav",
-                    onItemClick: function () {
-                        $scope.gridInstance.deleteRow(rowIndex);
-                    }
-                });
-            }
-        });
-        return items;
-    }
-
-    var gotoState = function (title, dbschema, dbclass, oid) {
-        var commands = $scope.commands;
-        var url = undefined;
-        var cmdUrl = undefined;
-        var params = undefined;
-        var cmdInfo;
-        for (var cmd in commands) {
-            if (commands.hasOwnProperty(cmd)) {
-                cmdInfo = commands[cmd];
-                if (cmdInfo.title === title) {
-                    url = cmdInfo.url;
-                    cmdUrl = cmdInfo.url;
-                    params = new Object();
-                    params.schema = dbschema;
-                    params.class = dbclass;
-                    params.oid = oid;
-                    params.cmdHash = cmdInfo.hash;
-
-                    // add command's parameters to the state parameters
-                    if (cmdInfo.parameters) {
-                        for (var key in cmdInfo.parameters) {
-                            if (cmdInfo.parameters.hasOwnProperty(key)) {
-                                params[key] = cmdInfo.parameters[key];
-                            }
-                        }
-                    };
-
-                    break;
-                }
-            }
-        }
-
-        if (url) {
-            try
-            {
-                if (cmdUrl === ".modalform") {
-                    $state.go(url, params, { location: false, notify: false });
-                }
-                else {
-                    $state.go(url, params);
-                }
-            }
-            catch (err)
-            {
-                BootstrapDialog.show({
-                    title: $rootScope.getWord("Info Dialog"),
-                    type: BootstrapDialog.TYPE_INFO,
-                    message: $rootScope.getWord("Invalid Command"),
-                    buttons: [{
-                        label: $rootScope.getWord("Cancel"),
-                        action: function (dialog) {
-                            dialog.close();
-                        }
-                    }]
-                });
-            }
-        }
-    }
-
-    $scope.gridInstance = null;
-    $scope.dataGridSettings = {
-        dataSource: {
-            store: $scope.customStore
-        },
-        columnAutoWidth: true,
-        height: $rootScope.isChrome() === true ? '750px' : undefined,
-        sorting: {
-            mode: "multiple"
-        },
-        searchPanel: {
-            visible: $stateParams.search && $stateParams.search === "true"? true: false,
-            width: 300,
-            placeholder: $rootScope.getWord("Keyword Search")
-        },
-        editing: {
-            allowAdding: false,
-            allowUpdating: false,
-            allowDeleting: false
-        },
-        grouping: {
-            autoExpandAll: false
-        },
-        pager: {
-            visible: true,
-            showPageSizeSelector: true,
-            showInfo: true
-        },
-        filterRow: {
-            visible: true,
-            applyFilter: "auto"
-        },
-        selection: { mode: 'single' },
-        remoteOperations: true,
-        bindingOptions: {
-            columns: 'columns'
-        },
-        headerFilter: {
-            visible: true
-        },
-        rowAlternationEnabled: true,
-        masterDetail: {
-            enabled: true,
-            template: "detail"
-        },
-        onRowClick: function (e) {
-            if (e.rowType === "data") {
-                var isExpanded = $scope.gridInstance.isRowExpanded(e.key);
-                $scope.gridInstance.collapseAll(-1); // collaspsed all
-                if (!isExpanded) {
-                    $scope.gridInstance.expandRow(e.key);
-                }
-            }
-        },
-        onInitialized: function (e) {
-            $scope.gridInstance = e.component;
-        },
-        onRowPrepared: function (e) {
-        }
-    };
-
-    $rootScope.$on('modalClosed', function (event, data) {
-        if ($scope.gridInstance && data === "update")
-            $scope.gridInstance.refresh();
-    });
-});
 "use strict";
 
-angular.module('app.userdirectory').factory('userService', function ($http, APP_CONFIG) {
+angular.module('app.user').controller('ChangePasswordController', function ($http, $scope, $rootScope, User, APP_CONFIG) {
+        $scope.savedSuccessfully = false;
+        $scope.message = "";
 
-    var convertUsers = function (userCollection) {
+        $scope.registration = {
+            userName: User.userName,
+            password: "",
+            newPassword: "",
+            confirmNewPassword: ""
+        };
 
-        var id = "ID";
-        var firstName = "FirstName";
-        var lastName = "LastName";
-        var phoneNumber = "PhoneNumber";
-        var email = "Email";
-        var picture = "Picture";
-        var division = "Department";
-        var address = "Location";
-        var displayText = "DisplayText";
-
-        var users = new Array();
-
-        if (userCollection) {
-
-            for (var i = 0; i < userCollection.length; i++) {
-                var user = userCollection[i];
-
-                var userItem = new Object();
-
-                userItem.obj_id = user["obj_id"];
-                userItem.ID = user[id];
-                if (user[displayText]) {
-                    userItem.FullName = user[displayText];
-                }
-                else
-                {
-                    userItem.FullName = user[lastName] + user[firstName];
-                }
-                userItem.PhoneNumber = user[phoneNumber];
-                userItem.Email = user[email];
-                userItem.Division = user[division];
-                userItem.Address = user[address];
-                if (user[picture]) {
-                    userItem.Picture = APP_CONFIG.avatarsUrl + userItem.ID + ".png";
-                }
-                else
-                {
-                    userItem.Picture = APP_CONFIG.avatarsUrl + "male.png";
-                }
-
-                users.push(userItem);
+        $scope.save = function () {
+ 
+            if ($scope.registration.newPassword != $scope.registration.confirmNewPassword)
+            {
+                $scope.savedSuccessfully = false;
+                $scope.message = $rootScope.getWord("ConfirmPasswordIncorrect");
             }
-        }
-
-        return users;
-    }
-
-    var createUnitTree = function (nodes, currentNodeObjId) {
-        var map = {}, node, menuItem, parentItem, roots = [], menuItems = [];
-        for (var i = 0; i < nodes.length; i += 1) {
-            node = nodes[i];
-            
-            menuItem = new Object();
-            menuItem.name = node.Name;
-            menuItem.text = node.Text;
-            menuItem.children = new Array();
-            map[menuItem.name] = i; // use map to look-up the parents
-            menuItems.push(menuItem);
-        }
-
-        for (var i = 0; i < nodes.length; i += 1) {
-            node = nodes[i];
-            menuItem = menuItems[i];
-
-            if (node.parentRole != "") {
-                parentItem = menuItems[map[node.parentRole]];
-                parentItem.children.push(menuItem);
-                menuItem.parentItem = parentItem;
-            } else {
-                //menuItem.expanded = true;
-                menuItem.parentItem = undefined;
-                roots.push(menuItem);
+            else if ($scope.registration.newPassword.length < 3)
+            {
+                $scope.savedSuccessfully = false;
+                $scope.message = $rootScope.getWord("NewPasswordInvalid");
             }
+            else
+            {
+                var model = {};
+                model.oldPassword = $scope.registration.password;
+                model.newPassword = $scope.registration.newPassword;
+                model.confirmPassword = $scope.registration.confirmNewPassword;
+                $http.post(APP_CONFIG.ebaasRootUrl + '/api/accounts/ChangePassword', model).success(function (data) {
+                    $scope.message = $rootScope.getWord("PasswordUpdated");
+                    $scope.savedSuccessfully = true;
+                })
+                .error(function (err) {
+                    console.log(err);
+                    $scope.message = err.message;
+                    $scope.savedSuccessfully = false;
+                });
+            }
+        };
+
+    });
+"use strict";
+
+angular.module('app.user').controller('EditProfileController', function ($http, $scope, $rootScope, User, APP_CONFIG) {
+        $scope.savedSuccessfully = false;
+        $scope.message = "";
+
+        $scope.profile = User;
+
+        $scope.save = function () {
+
+            User.save(function () {
+                $scope.message = $rootScope.getWord("ProfileUpdated");
+                $scope.savedSuccessfully = true;
+            })
         }
 
-        for (var i = 0; i < nodes.length; i += 1) {
-            node = nodes[i];
-            menuItem = menuItems[i];
+    });
 
-            if (menuItem.children.length > 0) {
-                menuItem.content = "<span><i class=\"fa fa-lg fa-plus-circle\"></i> " + node.Text + "</span>";
-                //menuItem.content = "<span class='label label-info'><i class=\"fa fa-lg fa-plus-circle\"></i>&nbsp;&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('unitTreeContainer')).scope().getUnitUsers(" + node.obj_id + ");\">" + node.Text + "</a></span>";
-            } else {
-                if (currentNodeObjId && currentNodeObjId === node.obj_id)
-                {
-                    menuItem.content = "<span class='label label-warning'><a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('unitTreeContainer')).scope().getUnitUsers(" + node.obj_id + ");\">" + node.Text + "</a></span>";
 
-                    var thisItem = menuItem;
-                    while (thisItem.parentItem) {
-                        thisItem = thisItem.parentItem;
-                        thisItem.expanded = true;
+'use strict';
+
+angular.module('app.wizards').factory('RequestInfo', function () {
+
+    var RequestModel = {
+        params: undefined,
+        instance: undefined,
+        metadata: undefined,
+        sampleGridInstance: undefined,
+        itemGridInstance: undefined,
+        selectedItemIds: undefined,
+        selectedItemOwners: undefined,
+        selectdSampleKey : undefined,
+        sampleItemMap : undefined,
+        error: "",
+        init: function()
+        {
+            this.params = undefined;
+            this.instance = undefined;
+            this.metadata = undefined;
+            this.sampleGridInstance = undefined;
+            this.itemGridInstance = undefined;
+            this.selectdSampleKey = undefined;
+            this.selectedItemIds = undefined;
+            this.selectedItemOwners = undefined;
+            this.sampleItemsMap = new Object();
+            this.error = "";
+        },
+        requestId: function()
+        {
+            if (this.instance)
+            {
+                return this.instance.obj_id;
+            }
+            else
+            {
+                return undefined;
+            }
+        },
+        requestPk: function()
+        {
+            if (this.instance) {
+                return this.instance.obj_pk;
+            }
+            else {
+                return undefined;
+            }
+        },
+        getPropertyValue : function(property)
+        {
+            if (this.instance && this.metadata)
+            {
+                var propertyValue = this.instance[property];
+
+                if (propertyValue) {
+                    if (this.metadata.properties[property].enum) {
+                        if (propertyValue > 0) {
+                            // convert property value from index to enum name
+                            propertyValue = this.metadata.properties[property].enum[propertyValue];
+                        }
+                        else
+                        {
+                            // 0 is for unknown, convert it to empty string
+                            propertyValue = "";
+                        }
                     }
                 }
-                else
-                {
-                    menuItem.content = "<span class='label label-info'><a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('unitTreeContainer')).scope().getUnitUsers(" + node.obj_id + ");\">" + node.Text + "</a></span>";
-                }
+
+                return propertyValue
+            }
+            else
+            {
+                return undefined;
             }
         }
-
-        return roots;
     };
 
-    function getAllUsers(dbschema, userclass, pageIndex, callback) {
-	    
-	    var pageSize = 20;
-	    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + userclass + "?view=full&size=" + pageSize;
-	    if (pageIndex) {
-	        var from = pageIndex * pageSize;
-	        url += "&from=" + from;
-	    }
-
-        $http.get(url).success(function (data) {
-	        callback(convertUsers(data));
-				
-		}).error(function(){
-		    callback([]);
-
-		});
-    }
-
-    function getUnitTree(dbschema, roleclass, currentNodeId, callback) {
-
-        var pageSize = 200;
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + roleclass + "?view=full&size=" + pageSize + "&filter=['RType', '=', 'Unit']";
-
-        $http.get(url).success(function (data) {
-            callback(createUnitTree(data, currentNodeId));
-
-        }).error(function () {
-            callback(undefined);
-
-        });
-    }
-
-    function getFunctions(dbschema, roleclass, callback) {
-
-        var pageSize = 200;
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + roleclass + "?view=full&size=" + pageSize + "&filter=['RType', '=', 'Function']";
-
-        $http.get(url).success(function (data) {
-            callback(data);
-
-        }).error(function () {
-            callback(undefined);
-
-        });
-    }
-	
-	return {
-	    getAllUsers: function (dbschema, userclass, pageIndex, callback) {
-	        getAllUsers(dbschema, userclass, pageIndex, callback);
-	    },
-	    convertUsers: function (userCollection) {
-	        return convertUsers(userCollection);
-	    },
-	    getUnitTree: function (dbschema, roleclass, currentNodeId, callback) {
-	        return getUnitTree(dbschema, roleclass, currentNodeId, callback);
-	    },
-	    getFunctions: function (dbschema, roleclass, callback) {
-	        return getFunctions(dbschema, roleclass, callback);
-	    }
-	}
+    return RequestModel;
 });
+
 'use strict';
 
 angular.module('app.wizards').directive('ebaasFormWizard', function () {
@@ -22754,88 +21877,1056 @@ angular.module('app.wizards').controller('sampleTreeModalCtrl', function ($rootS
     }
 });
 
-
-
 'use strict';
 
-angular.module('app.wizards').factory('RequestInfo', function () {
+angular.module('app.userdirectory').controller('assignRolesCtrl', function ($scope, $controller, $rootScope, $http, APP_CONFIG, $stateParams, $modalInstance) {
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = "Role";
+    $scope.masterclass = $stateParams.class;
+    $scope.masterid = $stateParams.oid;
+    $scope.roletype = $stateParams.roletype;
 
-    var RequestModel = {
-        params: undefined,
-        instance: undefined,
-        metadata: undefined,
-        sampleGridInstance: undefined,
-        itemGridInstance: undefined,
-        selectedItemIds: undefined,
-        selectedItemOwners: undefined,
-        selectdSampleKey : undefined,
-        sampleItemMap : undefined,
-        error: "",
-        init: function()
-        {
-            this.params = undefined;
-            this.instance = undefined;
-            this.metadata = undefined;
-            this.sampleGridInstance = undefined;
-            this.itemGridInstance = undefined;
-            this.selectdSampleKey = undefined;
-            this.selectedItemIds = undefined;
-            this.selectedItemOwners = undefined;
-            this.sampleItemsMap = new Object();
-            this.error = "";
-        },
-        requestId: function()
-        {
-            if (this.instance)
-            {
-                return this.instance.obj_id;
-            }
-            else
-            {
-                return undefined;
-            }
-        },
-        requestPk: function()
-        {
-            if (this.instance) {
-                return this.instance.obj_pk;
-            }
-            else {
-                return undefined;
-            }
-        },
-        getPropertyValue : function(property)
-        {
-            if (this.instance && this.metadata)
-            {
-                var propertyValue = this.instance[property];
+    if ($stateParams.dataview)
+    {
+        $scope.view = $stateParams.dataview;
+    }
+    else
+    {
+        $scope.view = undefined;
+    }
 
-                if (propertyValue) {
-                    if (this.metadata.properties[property].enum) {
-                        if (propertyValue > 0) {
-                            // convert property value from index to enum name
-                            propertyValue = this.metadata.properties[property].enum[propertyValue];
+    $scope.filter = "['RType', '=', '" + $scope.roletype + "']";
+
+    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG }));
+
+    $scope.gridInstance = null;
+    $scope.existingKeys = null;
+    $scope.currentKeys = null;
+    $scope.isUpdated = false;
+    $scope.loading = false;
+    $scope.dataGridSettings = {
+        dataSource: {
+            store: $scope.customStore
+        },
+        columnAutoWidth: true,
+        sorting: {
+            mode: "multiple"
+        },
+        editing: {
+            allowAdding: false,
+            allowUpdating: false,
+            allowDeleting: false
+        },
+        grouping: {
+            autoExpandAll: false
+        },
+        pager: {
+            visible: true,
+            showPageSizeSelector: true,
+            showInfo: true
+        },
+        filterRow: {
+            visible: true,
+            applyFilter: "auto"
+        },
+        searchPanel: { visible: false },
+        selection: { mode: 'multiple' },
+        remoteOperations: true,
+        bindingOptions: {
+            columns: 'columns'
+        },
+        headerFilter: {
+            visible: true
+        },
+        rowAlternationEnabled: true,
+        onInitialized: function (e) {
+            $scope.gridInstance = e.component;
+        },
+        onContentReady: function (e) {
+            selectGridRows();
+        },
+        onSelectionChanged: function (e) {
+            changeSelections(e.currentSelectedRowKeys, e.currentDeselectedRowKeys);
+        }
+    };
+
+    var asyncLoop = function(o)
+    {
+        var i = -1;
+
+        var loop = function() {
+            i++;
+            if (i == o.length)
+            {
+                o.callback();
+                return;
+            }
+
+            o.functionToLoop(loop, i);
+        }
+
+        loop(); // init
+    }
+
+    var selectGridRows = function()
+    {
+        if ($scope.currentKeys) {
+            var keys = $scope.currentKeys;
+            var indexes = [];
+            for (var i = 0; i < keys.length; i++) {
+                var index = $scope.gridInstance.getRowIndexByKey(keys[i]);
+
+                if (index >= 0)
+                    indexes.push(index);
+            }
+
+            $scope.gridInstance.selectRowsByIndexes(indexes, true);
+        }
+        else {
+            if ($scope.masterid) {
+                $http.get(APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($stateParams.schema) + "/" + $scope.masterclass + "/" + $scope.masterid + "/" + $scope.dbclass)
+                    .success(function (data) {
+                        var keys = new Array();
+                        if (data) {
+                            for (var i = 0; i < data.length; i++) {
+                                keys.push(data[i].obj_id);
+                            }
+
+                            if (keys.length > 0) {
+                                // set the existing selections of rows
+                                $scope.gridInstance.selectRows(keys, false);
+                            }
                         }
-                        else
-                        {
-                            // 0 is for unknown, convert it to empty string
-                            propertyValue = "";
+
+                        $scope.existingKeys = keys; // keep the existing keys
+                        // initialize the current keys
+                        $scope.currentKeys = [];
+                        for (var i = 0; i < keys.length; i++) {
+                            $scope.currentKeys.push(keys[i]);
+                        }
+                    });
+            }
+        }
+    }
+
+    // keep the current keys in sync with grid row selections
+    var changeSelections = function (selectedKeys, deselectedKeys) {
+        var addedKeys = new Array();
+        var removedKeys = new Array();
+        var found;
+
+        // find the newly selected keys
+        if (selectedKeys && $scope.currentKeys) {
+            for (var i = 0; i < selectedKeys.length; i++) {
+                found = false;
+
+                var index = $scope.gridInstance.getRowIndexByKey(selectedKeys[i]);
+                if (index > -1) {
+                    for (var j = 0; j < $scope.currentKeys.length; j++) {
+                        if (selectedKeys[i] === $scope.currentKeys[j]) {
+                            found = true;
+                            break;
                         }
                     }
                 }
 
-                return propertyValue
+                if (!found) {
+                    addedKeys.push(selectedKeys[i]);
+                }
             }
-            else
+        }
+
+        if (deselectedKeys && $scope.currentKeys) {
+            // find the unselected keys
+            for (var i = 0; i < $scope.currentKeys.length; i++) {
+                found = false;
+
+                for (var j = 0; j < deselectedKeys.length; j++) {
+                    var index = $scope.gridInstance.getRowIndexByKey(deselectedKeys[j]);
+                    if (index > -1) {
+                        if ($scope.currentKeys[i] === deselectedKeys[j]) {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (found) {
+                    removedKeys.push($scope.currentKeys[i]);
+                }
+            }
+        }
+
+        for (var i = 0; i < addedKeys.length; i++) {
+            $scope.currentKeys.push(addedKeys[i]);
+        }
+
+        for (var i = 0; i < removedKeys.length; i++) {
+            var index = $scope.currentKeys.indexOf(removedKeys[i]);
+            if (index > -1)
+                $scope.currentKeys.splice(index, 1);
+        }
+
+        //console.log("after current keys = " + $scope.currentKeys);
+    }
+
+    $scope.saveSelection = function () {
+        var addedKeys = new Array();
+        var removedKeys = new Array();
+        var found;
+
+        // find the added selections
+        for (var i = 0; i < $scope.currentKeys.length; i++) {
+            found = false;
+
+            for (var j = 0; j < $scope.existingKeys.length; j++) {
+                if ($scope.currentKeys[i] === $scope.existingKeys[j]) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                addedKeys.push($scope.currentKeys[i]);
+            }
+        }
+
+        // find the removed selections
+        for (var i = 0; i < $scope.existingKeys.length; i++) {
+            found = false;
+
+            for (var j = 0; j < $scope.currentKeys.length; j++) {
+                if ($scope.existingKeys[i] === $scope.currentKeys[j]) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                removedKeys.push($scope.existingKeys[i]);
+            }
+        }
+
+        if (addedKeys.length > 0) {
+            $scope.loading = true;
+
+            // add relationhsips to the db
+            asyncLoop({
+                length: addedKeys.length,
+                functionToLoop: function (loop, i) {
+                    if ($scope.masterid) {
+                        $http.post(APP_CONFIG.ebaasRootUrl + "/api/relationship/" + encodeURIComponent($stateParams.schema) + "/" + $scope.masterclass + "/" + $scope.masterid + "/" + $scope.dbclass + "/" + encodeURIComponent(addedKeys[i]))
+                             .success(function (data) {
+                                 loop();
+                             });
+                    }
+                },
+                callback: function () {
+                    $scope.loading = false;
+                    $scope.isUpdated = true;
+                }
+            })
+        }
+
+        if (removedKeys.length > 0) {
+            $scope.loading = true;
+            // delete relationhsips from the db
+            asyncLoop({
+                length: removedKeys.length,
+                functionToLoop: function (loop, i) {
+                    $http.delete(APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($stateParams.schema) + "/" + $scope.masterclass + "/" + $scope.masterid + "/" + $scope.dbclass + "/" + encodeURIComponent(removedKeys[i]))
+                         .success(function (data) {
+                             loop();
+                         });
+                },
+                callback: function () {
+                    $scope.existingKeys = [];
+                    for (var i = 0; i < $scope.currentKeys.length; i++)
+                        $scope.existingKeys.push($scope.currentKeys[i]);
+                    $scope.loading = false;
+                    $scope.isUpdated = true;
+                }
+            })
+        }
+
+    };
+
+    $scope.goBack = function () {
+        if ($scope.isUpdated) {
+            $modalInstance.close({ "modal": "viewManyToMany"});
+        }
+        else {
+            $modalInstance.dismiss("dismiss");
+        }
+    };
+});
+
+'use strict';
+
+angular.module('app.userdirectory').controller('RoleListViewCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, TestStations, $interval, userService) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.baseclass;
+    $scope.roletype = $stateParams.roletype;
+
+    $scope.filter = "['RType', '=', '" + $scope.roletype + "']";
+
+    if ($stateParams.insert && $stateParams.insert === "false") {
+        $scope.add = false;
+    }
+    else {
+        $scope.add = true;
+    }
+
+    if ($stateParams.export && $stateParams.export === "true") {
+        $scope.exportData = true;
+    }
+    else {
+        $scope.exportData = false;
+    }
+
+    if ($stateParams.import && $stateParams.import === "true") {
+        $scope.importData = true;
+    }
+    else {
+        $scope.importData = false;
+    }
+
+    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG }));
+
+    $scope.openModal = function () {
+        $state.go('.modalform', { schema: $scope.dbschema, class: $scope.dbclass }, { location: false, notify: false });
+    };
+
+    $scope.GetCommands = function (rowIndex, data) {
+        var items = new Array();
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/sitemap/commands/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass;
+
+        $http.get(url).success(function (commands) {
+
+            // custom commands
+            $scope.commands = commands;
+            var cmdInfo;
+            var item;
+            for (var cmd in commands) {
+                if (commands.hasOwnProperty(cmd)) {
+                    cmdInfo = commands[cmd];
+                    item = new Object();
+                    item.text = cmdInfo.title;
+                    item.css = "btn btn-primary btn-md btn-nav";
+                    if (cmdInfo.icon) {
+                        item.icon = cmdInfo.icon;
+                    }
+                    else {
+                        item.icon = "fa fa-lg fa-tasks";
+                    }
+
+                    item.onItemClick = function (text) {
+                        gotoState(text, $scope.dbschema, data.type, data.obj_id)
+                    }
+
+                    items.push(item);
+
+                    if (cmdInfo.baseUrl && !APP_CONFIG.hashedBaseUrls[cmdInfo.hash]) {
+                        APP_CONFIG.hashedBaseUrls[cmdInfo.hash] = cmdInfo.baseUrl;
+                    }
+                }
+            }
+
+            if (data.allowWrite && $stateParams.edit !== "false") {
+                items.push({
+                    text: $rootScope.getWord('Edit'),
+                    icon: "fa fa-lg fa-edit",
+                    css: "btn btn-default btn-md btn-nav",
+                    onItemClick: function () {
+                        $state.go('.modalform', { schema: $scope.dbschema, class: data.type, oid: data.obj_id }, { location: false, notify: false });
+                    }
+                });
+            }
+
+            if (data.allowDelete && $stateParams.delete !== "false") {
+                items.push({
+                    text: $rootScope.getWord('Delete'),
+                    icon: "fa fa-lg fa-times",
+                    css: "btn btn-default btn-md btn-nav",
+                    onItemClick: function () {
+                        $scope.gridInstance.deleteRow(rowIndex);
+                    }
+                });
+            }
+        });
+        return items;
+    }
+
+    var gotoState = function (title, dbschema, dbclass, oid) {
+        var commands = $scope.commands;
+        var url = undefined;
+        var cmdUrl = undefined;
+        var params = undefined;
+        var cmdInfo;
+        for (var cmd in commands) {
+            if (commands.hasOwnProperty(cmd)) {
+                cmdInfo = commands[cmd];
+                if (cmdInfo.title === title) {
+                    url = cmdInfo.url;
+                    cmdUrl = cmdInfo.url;
+                    params = new Object();
+                    params.schema = dbschema;
+                    params.class = dbclass;
+                    params.oid = oid;
+                    params.cmdHash = cmdInfo.hash;
+
+                    // add command's parameters to the state parameters
+                    if (cmdInfo.parameters) {
+                        for (var key in cmdInfo.parameters) {
+                            if (cmdInfo.parameters.hasOwnProperty(key)) {
+                                params[key] = cmdInfo.parameters[key];
+                            }
+                        }
+                    };
+
+                    break;
+                }
+            }
+        }
+
+        if (url) {
+            try
             {
-                return undefined;
+                if (cmdUrl === ".modalform") {
+                    $state.go(url, params, { location: false, notify: false });
+                }
+                else {
+                    $state.go(url, params);
+                }
             }
+            catch (err)
+            {
+                BootstrapDialog.show({
+                    title: $rootScope.getWord("Info Dialog"),
+                    type: BootstrapDialog.TYPE_INFO,
+                    message: $rootScope.getWord("Invalid Command"),
+                    buttons: [{
+                        label: $rootScope.getWord("Cancel"),
+                        action: function (dialog) {
+                            dialog.close();
+                        }
+                    }]
+                });
+            }
+        }
+    }
+
+    $scope.gridInstance = null;
+    $scope.dataGridSettings = {
+        dataSource: {
+            store: $scope.customStore
+        },
+        columnAutoWidth: true,
+        height: $rootScope.isChrome() === true ? '750px' : undefined,
+        sorting: {
+            mode: "multiple"
+        },
+        searchPanel: {
+            visible: $stateParams.search && $stateParams.search === "true"? true: false,
+            width: 300,
+            placeholder: $rootScope.getWord("Keyword Search")
+        },
+        editing: {
+            allowAdding: false,
+            allowUpdating: false,
+            allowDeleting: false
+        },
+        grouping: {
+            autoExpandAll: false
+        },
+        pager: {
+            visible: true,
+            showPageSizeSelector: true,
+            showInfo: true
+        },
+        filterRow: {
+            visible: true,
+            applyFilter: "auto"
+        },
+        selection: { mode: 'single' },
+        remoteOperations: true,
+        bindingOptions: {
+            columns: 'columns'
+        },
+        headerFilter: {
+            visible: true
+        },
+        rowAlternationEnabled: true,
+        masterDetail: {
+            enabled: true,
+            template: "detail"
+        },
+        onRowClick: function (e) {
+            if (e.rowType === "data") {
+                var isExpanded = $scope.gridInstance.isRowExpanded(e.key);
+                $scope.gridInstance.collapseAll(-1); // collaspsed all
+                if (!isExpanded) {
+                    $scope.gridInstance.expandRow(e.key);
+                }
+            }
+        },
+        onInitialized: function (e) {
+            $scope.gridInstance = e.component;
+        },
+        onRowPrepared: function (e) {
         }
     };
 
-    return RequestModel;
+    $rootScope.$on('modalClosed', function (event, data) {
+        if ($scope.gridInstance && data === "update")
+            $scope.gridInstance.refresh();
+    });
 });
+'use strict';
 
+angular.module('app.userdirectory').controller('UserDirectoryLayoutCtrl', function ($http, APP_CONFIG, $scope, $rootScope, $state, $stateParams, userService, propmisedParams) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.userclass = $stateParams.class;
+    $scope.roleclass = "Role";
+
+    // Getting unit tree
+    $scope.unitObjId = $stateParams.unitObjId;
+
+    var params = propmisedParams.data;
+
+    $scope.view = params['dataView'];
+    $scope.formTemplate = params['formTemplate'];
+
+    userService.getUnitTree($stateParams.schema, $scope.roleclass, $scope.unitObjId, function (data) {
+        $scope.unitTree = data;
+    });
+
+    // Getting function list
+    userService.getFunctions($stateParams.schema, $scope.roleclass, function (data) {
+        // add "Every One" as the first function
+        var role = {};
+        role.Text = $rootScope.getWord("Everyone");
+        role.obj_id = undefined;
+        if (data)
+        {
+            data.unshift(role);
+        }
+        else
+        {
+            data = [];
+            data.push(role);
+        }
+ 
+        $scope.functions = data;
+    });
+
+    $state.go('app.userdirectory.usertable', { schema: $scope.dbschema, baseclass: $scope.roleclass, baseoid: undefined, relatedclass: $scope.userclass, view: $scope.view, formtemplate: $scope.formTemplate });
+
+    $scope.functionObjId = undefined;
+    
+    $scope.getFunctionUsers = function (functionObjId) {
+        $scope.functionObjId = functionObjId;
+        $state.go('app.userdirectory.usertable', { schema: $scope.dbschema, baseclass: $scope.roleclass, baseoid: functionObjId, relatedclass: $scope.userclass, view: $scope.view, formtemplate: $scope.formTemplate });
+    }
+
+    $scope.getUnitUsers = function (unitObjId) {
+        $scope.unitObjId = unitObjId;
+        $state.go('app.userdirectory.usertable', { schema: $scope.dbschema, baseclass: $scope.roleclass, baseoid: unitObjId, relatedclass: $scope.userclass, view: $scope.view, formtemplate: $scope.formTemplate });
+    }
+
+    $scope.openFunctions = function () {
+        $state.go('app.userdirectory.roletable', { schema: $scope.dbschema, baseclass: $scope.roleclass, roletype: "Function" });
+    }
+
+    $scope.openUnits = function () {
+        $state.go('app.userdirectory.roletable', { schema: $scope.dbschema, baseclass: $scope.roleclass, roletype: "Unit" });
+    }
+
+    $scope.refresh = function () {
+        $state.reload();
+    }
+});
+'use strict';
+
+angular.module('app.userdirectory').controller('UserListCtrl', function ($scope, $rootScope, $state, $stateParams, APP_CONFIG, userService, promisedUsers) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.userclass = $stateParams.class;
+    $scope.roleclass = "Role";
+
+    $scope.getWord = function(key)
+    {
+        return key;
+    }
+
+    $scope.tableOptions = {
+        "data": userService.convertUsers(promisedUsers.data),
+        //            "bDestroy": true,
+        "iDisplayLength": 20,
+        "columns": [
+            {
+                "class": 'details-control',
+                "orderable": false,
+                "data": null,
+                "defaultContent": ''
+            },
+            { "data": "FullName" },
+            { "data": "ID" },
+            { "data": "PhoneNumber" },
+            { "data": "Email" }
+        ],
+        "order": [[1, 'asc']]
+    }
+
+    // Getting unit tree
+    $scope.unitObjId = $stateParams.unitObjId;
+
+    userService.getUnitTree($stateParams.schema, $scope.roleclass, $scope.unitObjId, function (data) {
+        $scope.unitTree = data;
+
+    });
+
+    // Getting function list
+    userService.getFunctions($stateParams.schema, $scope.roleclass, function (data) {
+       
+        $scope.functions = data;
+
+    });
+
+    $scope.functionObjId = $stateParams.functionObjId;
+    $scope.getFunctionUsers = function (functionObjId) {
+        var params = new Object();
+
+        params.functionObjId = functionObjId;
+        params.unitObjId = undefined;
+        $scope.functionObjId = functionObjId;
+        $scope.unitObjId = undefined;
+
+        $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
+    }
+
+    $scope.getUnitUsers = function(unitObjId)
+    {
+        var params = new Object();
+
+        params.unitObjId = unitObjId;
+        params.functionObjId = undefined;
+        $scope.unitObjId = unitObjId;
+        $scope.functionObjId = undefined;
+
+        $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
+    }
+});
+'use strict';
+
+angular.module('app.userdirectory').controller('UserListViewCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, TestStations, $interval, userService) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.userclass = $stateParams.relatedclass;
+    
+    $scope.formTemplate = $stateParams.formtemplate;
+
+    if ($stateParams.baseoid) {
+        $scope.dbclass = $stateParams.baseclass;
+        $scope.relatedclass = $stateParams.relatedclass;
+        $scope.relatedview = $stateParams.view;
+        $scope.oid = $stateParams.baseoid;
+        
+        $scope.isrelated = true;
+    }
+    else
+    {
+        // get all users
+        $scope.dbclass = $stateParams.relatedclass;
+        $scope.view = $stateParams.view;
+    }
+
+    if ($stateParams.insert && $stateParams.insert === "false") {
+        $scope.add = false;
+    }
+    else {
+        $scope.add = true;
+    }
+
+    if ($stateParams.export && $stateParams.export === "true") {
+        $scope.exportData = true;
+    }
+    else {
+        $scope.exportData = false;
+    }
+
+    if ($stateParams.import && $stateParams.import === "true") {
+        $scope.importData = true;
+    }
+    else {
+        $scope.importData = false;
+    }
+
+    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG }));
+
+    $scope.openModal = function () {
+        $state.go('.modalform', { schema: $scope.dbschema, class: $scope.userclass, template: $scope.formTemplate }, { location: false, notify: false });
+    };
+
+    $scope.GetCommands = function (rowIndex, data) {
+        var items = new Array();
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/sitemap/commands/" + encodeURIComponent($scope.dbschema) + "/" + $scope.userclass;
+
+        $http.get(url).success(function (commands) {
+
+            // custom commands
+            $scope.commands = commands;
+            var cmdInfo;
+            var item;
+            for (var cmd in commands) {
+                if (commands.hasOwnProperty(cmd)) {
+                    cmdInfo = commands[cmd];
+                    item = new Object();
+                    item.text = cmdInfo.title;
+                    item.css = "btn btn-primary btn-md btn-nav";
+                    if (cmdInfo.icon) {
+                        item.icon = cmdInfo.icon;
+                    }
+                    else {
+                        item.icon = "fa fa-lg fa-tasks";
+                    }
+
+                    item.onItemClick = function (text) {
+                        gotoState(text, $scope.dbschema, data.type, data.obj_id)
+                    }
+
+                    items.push(item);
+
+                    if (cmdInfo.baseUrl && !APP_CONFIG.hashedBaseUrls[cmdInfo.hash]) {
+                        APP_CONFIG.hashedBaseUrls[cmdInfo.hash] = cmdInfo.baseUrl;
+                    }
+                }
+            }
+
+            if (data.allowWrite && $stateParams.edit !== "false") {
+                items.push({
+                    text: $rootScope.getWord('Edit'),
+                    icon: "fa fa-lg fa-edit",
+                    css: "btn btn-default btn-md btn-nav",
+                    onItemClick: function () {
+                        $state.go('.modalform', { schema: $scope.dbschema, class: data.type, oid: data.obj_id, template: $scope.formTemplate }, { location: false, notify: false });
+                    }
+                });
+            }
+
+            if (data.allowDelete && $stateParams.delete !== "false") {
+                items.push({
+                    text: $rootScope.getWord('Delete'),
+                    icon: "fa fa-lg fa-times",
+                    css: "btn btn-default btn-md btn-nav",
+                    onItemClick: function () {
+                        $scope.gridInstance.deleteRow(rowIndex);
+                    }
+                });
+            }
+        });
+        return items;
+    }
+
+    var gotoState = function (title, dbschema, dbclass, oid) {
+        var commands = $scope.commands;
+        var url = undefined;
+        var cmdUrl = undefined;
+        var params = undefined;
+        var cmdInfo;
+        for (var cmd in commands) {
+            if (commands.hasOwnProperty(cmd)) {
+                cmdInfo = commands[cmd];
+                if (cmdInfo.title === title) {
+                    url = cmdInfo.url;
+                    cmdUrl = cmdInfo.url;
+                    params = new Object();
+                    params.schema = dbschema;
+                    params.class = dbclass;
+                    params.oid = oid;
+                    params.cmdHash = cmdInfo.hash;
+
+                    // add command's parameters to the state parameters
+                    if (cmdInfo.parameters) {
+                        for (var key in cmdInfo.parameters) {
+                            if (cmdInfo.parameters.hasOwnProperty(key)) {
+                                params[key] = cmdInfo.parameters[key];
+                            }
+                        }
+                    };
+
+                    break;
+                }
+            }
+        }
+
+        if (url) {
+            try
+            {
+                if (cmdUrl === ".modalform") {
+                    $state.go(url, params, { location: false, notify: false });
+                }
+                else {
+                    $state.go(url, params);
+                }
+            }
+            catch (err)
+            {
+                BootstrapDialog.show({
+                    title: $rootScope.getWord("Info Dialog"),
+                    type: BootstrapDialog.TYPE_INFO,
+                    message: $rootScope.getWord("Invalid Command"),
+                    buttons: [{
+                        label: $rootScope.getWord("Cancel"),
+                        action: function (dialog) {
+                            dialog.close();
+                        }
+                    }]
+                });
+            }
+        }
+    }
+
+    $scope.gridInstance = null;
+    $scope.dataGridSettings = {
+        dataSource: {
+            store: $scope.customStore
+        },
+        columnAutoWidth: true,
+        height: $rootScope.isChrome() === true ? '750px' : undefined,
+        sorting: {
+            mode: "multiple"
+        },
+        searchPanel: {
+            visible: $stateParams.search && $stateParams.search === "true"? true: false,
+            width: 300,
+            placeholder: $rootScope.getWord("Keyword Search")
+        },
+        editing: {
+            allowAdding: false,
+            allowUpdating: false,
+            allowDeleting: false
+        },
+        grouping: {
+            autoExpandAll: false
+        },
+        pager: {
+            visible: true,
+            showPageSizeSelector: true,
+            showInfo: true
+        },
+        filterRow: {
+            visible: true,
+            applyFilter: "auto"
+        },
+        selection: { mode: 'single' },
+        remoteOperations: true,
+        bindingOptions: {
+            columns: 'columns'
+        },
+        headerFilter: {
+            visible: true
+        },
+        rowAlternationEnabled: true,
+        masterDetail: {
+            enabled: true,
+            template: "detail"
+        },
+        onRowClick: function (e) {
+            if (e.rowType === "data") {
+                var isExpanded = $scope.gridInstance.isRowExpanded(e.key);
+                $scope.gridInstance.collapseAll(-1); // collaspsed all
+                if (!isExpanded) {
+                    $scope.gridInstance.expandRow(e.key);
+                }
+            }
+        },
+        onInitialized: function (e) {
+            $scope.gridInstance = e.component;
+        },
+        onRowPrepared: function (e) {
+        }
+    };
+
+    $rootScope.$on('modalClosed', function (event, data) {
+        if ($scope.gridInstance && data === "update")
+            $scope.gridInstance.refresh();
+    });
+});
+"use strict";
+
+angular.module('app.userdirectory').factory('userService', function ($http, APP_CONFIG) {
+
+    var convertUsers = function (userCollection) {
+
+        var id = "ID";
+        var firstName = "FirstName";
+        var lastName = "LastName";
+        var phoneNumber = "PhoneNumber";
+        var email = "Email";
+        var picture = "Picture";
+        var division = "Department";
+        var address = "Location";
+        var displayText = "DisplayText";
+
+        var users = new Array();
+
+        if (userCollection) {
+
+            for (var i = 0; i < userCollection.length; i++) {
+                var user = userCollection[i];
+
+                var userItem = new Object();
+
+                userItem.obj_id = user["obj_id"];
+                userItem.ID = user[id];
+                if (user[displayText]) {
+                    userItem.FullName = user[displayText];
+                }
+                else
+                {
+                    userItem.FullName = user[lastName] + user[firstName];
+                }
+                userItem.PhoneNumber = user[phoneNumber];
+                userItem.Email = user[email];
+                userItem.Division = user[division];
+                userItem.Address = user[address];
+                if (user[picture]) {
+                    userItem.Picture = APP_CONFIG.avatarsUrl + userItem.ID + ".png";
+                }
+                else
+                {
+                    userItem.Picture = APP_CONFIG.avatarsUrl + "male.png";
+                }
+
+                users.push(userItem);
+            }
+        }
+
+        return users;
+    }
+
+    var createUnitTree = function (nodes, currentNodeObjId) {
+        var map = {}, node, menuItem, parentItem, roots = [], menuItems = [];
+        for (var i = 0; i < nodes.length; i += 1) {
+            node = nodes[i];
+            
+            menuItem = new Object();
+            menuItem.name = node.Name;
+            menuItem.text = node.Text;
+            menuItem.children = new Array();
+            map[menuItem.name] = i; // use map to look-up the parents
+            menuItems.push(menuItem);
+        }
+
+        for (var i = 0; i < nodes.length; i += 1) {
+            node = nodes[i];
+            menuItem = menuItems[i];
+
+            if (node.parentRole != "") {
+                parentItem = menuItems[map[node.parentRole]];
+                parentItem.children.push(menuItem);
+                menuItem.parentItem = parentItem;
+            } else {
+                //menuItem.expanded = true;
+                menuItem.parentItem = undefined;
+                roots.push(menuItem);
+            }
+        }
+
+        for (var i = 0; i < nodes.length; i += 1) {
+            node = nodes[i];
+            menuItem = menuItems[i];
+
+            if (menuItem.children.length > 0) {
+                menuItem.content = "<span><i class=\"fa fa-lg fa-plus-circle\"></i> " + node.Text + "</span>";
+                //menuItem.content = "<span class='label label-info'><i class=\"fa fa-lg fa-plus-circle\"></i>&nbsp;&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('unitTreeContainer')).scope().getUnitUsers(" + node.obj_id + ");\">" + node.Text + "</a></span>";
+            } else {
+                if (currentNodeObjId && currentNodeObjId === node.obj_id)
+                {
+                    menuItem.content = "<span class='label label-warning'><a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('unitTreeContainer')).scope().getUnitUsers(" + node.obj_id + ");\">" + node.Text + "</a></span>";
+
+                    var thisItem = menuItem;
+                    while (thisItem.parentItem) {
+                        thisItem = thisItem.parentItem;
+                        thisItem.expanded = true;
+                    }
+                }
+                else
+                {
+                    menuItem.content = "<span class='label label-info'><a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('unitTreeContainer')).scope().getUnitUsers(" + node.obj_id + ");\">" + node.Text + "</a></span>";
+                }
+            }
+        }
+
+        return roots;
+    };
+
+    function getAllUsers(dbschema, userclass, pageIndex, callback) {
+	    
+	    var pageSize = 20;
+	    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + userclass + "?view=full&size=" + pageSize;
+	    if (pageIndex) {
+	        var from = pageIndex * pageSize;
+	        url += "&from=" + from;
+	    }
+
+        $http.get(url).success(function (data) {
+	        callback(convertUsers(data));
+				
+		}).error(function(){
+		    callback([]);
+
+		});
+    }
+
+    function getUnitTree(dbschema, roleclass, currentNodeId, callback) {
+
+        var pageSize = 200;
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + roleclass + "?view=full&size=" + pageSize + "&filter=['RType', '=', 'Unit']";
+
+        $http.get(url).success(function (data) {
+            callback(createUnitTree(data, currentNodeId));
+
+        }).error(function () {
+            callback(undefined);
+
+        });
+    }
+
+    function getFunctions(dbschema, roleclass, callback) {
+
+        var pageSize = 200;
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + roleclass + "?view=full&size=" + pageSize + "&filter=['RType', '=', 'Function']";
+
+        $http.get(url).success(function (data) {
+            callback(data);
+
+        }).error(function () {
+            callback(undefined);
+
+        });
+    }
+	
+	return {
+	    getAllUsers: function (dbschema, userclass, pageIndex, callback) {
+	        getAllUsers(dbschema, userclass, pageIndex, callback);
+	    },
+	    convertUsers: function (userCollection) {
+	        return convertUsers(userCollection);
+	    },
+	    getUnitTree: function (dbschema, roleclass, currentNodeId, callback) {
+	        return getUnitTree(dbschema, roleclass, currentNodeId, callback);
+	    },
+	    getFunctions: function (dbschema, roleclass, callback) {
+	        return getFunctions(dbschema, roleclass, callback);
+	    }
+	}
+});
 "use strict";
 
 angular.module('app.auth').directive('facebookSignin', function ($rootScope, ezfb) {
@@ -22876,6 +22967,81 @@ angular.module('app.auth').directive('googleSignin', function ($rootScope, Googl
     };
 });
 
+"use strict";
+
+angular.module('app').factory('Todo', function (Restangular, APP_CONFIG) {
+
+
+    Restangular.extendModel(APP_CONFIG.apiRootUrl + '/todos.json', function(todo) {
+        todo.toggle = function(){
+            if (!todo.completedAt) {
+                todo.state = 'Completed';
+                todo.completedAt = JSON.stringify(new Date());
+            } else {
+                todo.state = 'Critical';
+                todo.completedAt = null;
+            }
+            // return this.$update();
+        };
+
+        todo.setState = function(state){
+            todo.state = state;
+            if (state == 'Completed') {
+                todo.completedAt = JSON.stringify(new Date());
+            } else {
+                todo.completedAt = null;
+            }
+            // return this.$update();
+        };
+
+        return todo;
+      });
+
+    return Restangular.all(APP_CONFIG.apiRootUrl + '/todos.json')
+});
+"use strict";
+
+ angular.module('app').directive('todoList', function ($timeout, Todo) {
+
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: 'app/dashboard/todo/directives/todo-list.tpl.html',
+        scope: {
+            todos: '='
+        },
+        link: function (scope, element, attributes) {
+            scope.title = attributes.title
+            scope.icon = attributes.icon
+            scope.state = attributes.state
+            scope.filter = {
+                state: scope.state
+            }
+
+            element.find('.todo').sortable({
+                handle: '.handle',
+                connectWith: ".todo",
+                receive: function (event, ui) {
+
+                    console.log(ui.item.scope().todo,scope.state)
+                    var todo = ui.item.scope().todo;
+                    var state = scope.state
+                    // // console.log(ui.item, todo, state)
+                    // // console.log(state, todo)
+                    if (todo && state) {
+                        todo.setState(state);
+                         // ui.sender.sortable("cancel");
+                        // scope.$apply();
+                    } else {
+                        console.log('Wat', todo, state);
+                    }
+                    
+                }
+            }).disableSelection();
+
+        }
+    }
+});
 (function() {
         
    'use strict';
@@ -23544,49 +23710,6 @@ angular.module('app.chat').factory('ChatApi', function ($q, $rootScope, User, $h
     return ChatSrv;
 
 });
-"use strict";
-
- angular.module('app').directive('todoList', function ($timeout, Todo) {
-
-    return {
-        restrict: 'E',
-        replace: true,
-        templateUrl: 'app/dashboard/todo/directives/todo-list.tpl.html',
-        scope: {
-            todos: '='
-        },
-        link: function (scope, element, attributes) {
-            scope.title = attributes.title
-            scope.icon = attributes.icon
-            scope.state = attributes.state
-            scope.filter = {
-                state: scope.state
-            }
-
-            element.find('.todo').sortable({
-                handle: '.handle',
-                connectWith: ".todo",
-                receive: function (event, ui) {
-
-                    console.log(ui.item.scope().todo,scope.state)
-                    var todo = ui.item.scope().todo;
-                    var state = scope.state
-                    // // console.log(ui.item, todo, state)
-                    // // console.log(state, todo)
-                    if (todo && state) {
-                        todo.setState(state);
-                         // ui.sender.sortable("cancel");
-                        // scope.$apply();
-                    } else {
-                        console.log('Wat', todo, state);
-                    }
-                    
-                }
-            }).disableSelection();
-
-        }
-    }
-});
 'use strict';
 
 angular.module('app.graphs').directive('chartjsBarChart', function () {
@@ -23980,38 +24103,6 @@ angular.module('app.graphs').directive('chartjsRadarChart', function () {
             var ctx = element[0].getContext("2d");
             var myNewChart = new Chart(ctx).Radar(radarData, radarOptions);
         }}
-});
-"use strict";
-
-angular.module('app').factory('Todo', function (Restangular, APP_CONFIG) {
-
-
-    Restangular.extendModel(APP_CONFIG.apiRootUrl + '/todos.json', function(todo) {
-        todo.toggle = function(){
-            if (!todo.completedAt) {
-                todo.state = 'Completed';
-                todo.completedAt = JSON.stringify(new Date());
-            } else {
-                todo.state = 'Critical';
-                todo.completedAt = null;
-            }
-            // return this.$update();
-        };
-
-        todo.setState = function(state){
-            todo.state = state;
-            if (state == 'Completed') {
-                todo.completedAt = JSON.stringify(new Date());
-            } else {
-                todo.completedAt = null;
-            }
-            // return this.$update();
-        };
-
-        return todo;
-      });
-
-    return Restangular.all(APP_CONFIG.apiRootUrl + '/todos.json')
 });
 'use strict'
 
@@ -26076,6 +26167,274 @@ angular.module('app.homepage').directive('demoRadarChart', function ($http, APP_
 });
 'use strict';
 
+angular.module('app.tables').directive('jqGrid', function ($compile) {
+    var jqGridCounter = 0;
+
+    return {
+        replace: true,
+        restrict: 'E',
+        scope: {
+            gridData: '='
+        },
+        template: '<div>' +
+            '<table></table>' +
+            '<div class="jqgrid-pagination"></div>' +
+            '</div>',
+        controller: function($scope, $element){
+            $scope.editRow  = function(row){
+                $element.find('table').editRow(row);
+            };
+            $scope.saveRow  = function(row){
+                $element.find('table').saveRow(row);
+            };
+            $scope.restoreRow  = function(row){
+                $element.find('table').restoreRow(row);
+            };
+        },
+        link: function (scope, element) {
+            var gridNumber = jqGridCounter++;
+            var wrapperId = 'jqgrid-' + gridNumber;
+            element.attr('id', wrapperId);
+
+            var tableId = 'jqgrid-table-' + gridNumber;
+            var table = element.find('table');
+            table.attr('id', tableId);
+
+            var pagerId = 'jqgrid-pager-' + gridNumber;
+            element.find('.jqgrid-pagination').attr('id', pagerId);
+
+
+            table.jqGrid({
+                data : scope.gridData.data,
+                datatype : "local",
+                height : 'auto',
+                colNames : scope.gridData.colNames || [],
+                colModel : scope.gridData.colModel || [],
+                rowNum : 10,
+                rowList : [10, 20, 30],
+                pager : '#' + pagerId,
+                sortname : 'id',
+                toolbarfilter : true,
+                viewrecords : true,
+                sortorder : "asc",
+                gridComplete : function() {
+                    var ids = table.jqGrid('getDataIDs');
+                    for (var i = 0; i < ids.length; i++) {
+                        var cl = ids[i];
+                        var be = "<button class='btn btn-xs btn-default' tooltip='Edit Row' tooltip-append-to-body='true' ng-click='editRow("+ cl +")'><i class='fa fa-pencil'></i></button>";
+
+                        var se = "<button class='btn btn-xs btn-default' tooltip='Save Row' tooltip-append-to-body='true' ng-click='saveRow("+ cl +")'><i class='fa fa-save'></i></button>";
+
+                        var ca = "<button class='btn btn-xs btn-default' tooltip='Cancel' tooltip-append-to-body='true' ng-click='restoreRow("+ cl +")'><i class='fa fa-times'></i></button>";
+
+                        table.jqGrid('setRowData', ids[i], {
+                            act : be + se + ca
+                        });
+                    }
+                },
+                editurl : "dummy.html",
+                caption : "SmartAdmin jQgrid Skin",
+                multiselect : true,
+                autowidth : true
+
+            });
+            table.jqGrid('navGrid', '#' + pagerId, {
+                edit : false,
+                add : false,
+                del : true
+            });
+            table.jqGrid('inlineNav', '#' + pagerId);
+
+
+            element.find(".ui-jqgrid").removeClass("ui-widget ui-widget-content");
+            element.find(".ui-jqgrid-view").children().removeClass("ui-widget-header ui-state-default");
+            element.find(".ui-jqgrid-labels, .ui-search-toolbar").children().removeClass("ui-state-default ui-th-column ui-th-ltr");
+            element.find(".ui-jqgrid-pager").removeClass("ui-state-default");
+            element.find(".ui-jqgrid").removeClass("ui-widget-content");
+
+            // add classes
+            element.find(".ui-jqgrid-htable").addClass("table table-bordered table-hover");
+            element.find(".ui-jqgrid-btable").addClass("table table-bordered table-striped");
+
+            element.find(".ui-pg-div").removeClass().addClass("btn btn-sm btn-primary");
+            element.find(".ui-icon.ui-icon-plus").removeClass().addClass("fa fa-plus");
+            element.find(".ui-icon.ui-icon-pencil").removeClass().addClass("fa fa-pencil");
+            element.find(".ui-icon.ui-icon-trash").removeClass().addClass("fa fa-trash-o");
+            element.find(".ui-icon.ui-icon-search").removeClass().addClass("fa fa-search");
+            element.find(".ui-icon.ui-icon-refresh").removeClass().addClass("fa fa-refresh");
+            element.find(".ui-icon.ui-icon-disk").removeClass().addClass("fa fa-save").parent(".btn-primary").removeClass("btn-primary").addClass("btn-success");
+            element.find(".ui-icon.ui-icon-cancel").removeClass().addClass("fa fa-times").parent(".btn-primary").removeClass("btn-primary").addClass("btn-danger");
+
+            element.find(".ui-icon.ui-icon-seek-prev").wrap("<div class='btn btn-sm btn-default'></div>");
+            element.find(".ui-icon.ui-icon-seek-prev").removeClass().addClass("fa fa-backward");
+
+            element.find(".ui-icon.ui-icon-seek-first").wrap("<div class='btn btn-sm btn-default'></div>");
+            element.find(".ui-icon.ui-icon-seek-first").removeClass().addClass("fa fa-fast-backward");
+
+            element.find(".ui-icon.ui-icon-seek-next").wrap("<div class='btn btn-sm btn-default'></div>");
+            element.find(".ui-icon.ui-icon-seek-next").removeClass().addClass("fa fa-forward");
+
+            element.find(".ui-icon.ui-icon-seek-end").wrap("<div class='btn btn-sm btn-default'></div>");
+            element.find(".ui-icon.ui-icon-seek-end").removeClass().addClass("fa fa-fast-forward");
+
+            $(window).on('resize.jqGrid', function() {
+               table.jqGrid('setGridWidth', $("#content").width());
+            });
+
+
+            $compile(element.contents())(scope);
+        }
+    }
+});
+"use strict";
+
+angular.module('SmartAdmin.Layout').directive('fullScreen', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element){
+            var $body = $('body');
+            var toggleFullSceen = function(e){
+                if (!$body.hasClass("full-screen")) {
+                    $body.addClass("full-screen");
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen();
+                    } else if (document.documentElement.mozRequestFullScreen) {
+                        document.documentElement.mozRequestFullScreen();
+                    } else if (document.documentElement.webkitRequestFullscreen) {
+                        document.documentElement.webkitRequestFullscreen();
+                    } else if (document.documentElement.msRequestFullscreen) {
+                        document.documentElement.msRequestFullscreen();
+                    }
+                } else {
+                    $body.removeClass("full-screen");
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.mozCancelFullScreen) {
+                        document.mozCancelFullScreen();
+                    } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    }
+                }
+            };
+
+            element.on('click', toggleFullSceen);
+
+        }
+    }
+});
+"use strict";
+
+angular.module('SmartAdmin.Layout').directive('minifyMenu', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element){
+                var $body = $('body');
+            var minifyMenu = function() {
+                if (!$body.hasClass("menu-on-top")) {
+                    $body.toggleClass("minified");
+                    $body.removeClass("hidden-menu");
+                    $('html').removeClass("hidden-menu-mobile-lock");
+                }
+            };
+
+            element.on('click', minifyMenu);
+        }
+    }
+})
+'use strict';
+
+angular.module('SmartAdmin.Layout').directive('reloadState', function ($rootScope) {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttributes) {
+            tElement.removeAttr('reload-state data-reload-state');
+            tElement.on('click', function (e) {
+                $rootScope.$state.transitionTo($rootScope.$state.current, $rootScope.$stateParams, {
+                    reload: true,
+                    inherit: false,
+                    notify: true
+                });
+                e.preventDefault();
+            })
+        }
+    }
+});
+
+"use strict";
+
+angular.module('SmartAdmin.Layout').directive('resetWidgets', function($state){
+
+    return {
+        restrict: 'A',
+        link: function(scope, element){
+            element.on('click', function(){
+                $.SmartMessageBox({
+                    title : "<i class='fa fa-refresh' style='color:green'></i> Clear Local Storage",
+                    content : "Would you like to RESET all your saved widgets and clear LocalStorage?1",
+                    buttons : '[No][Yes]'
+                }, function(ButtonPressed) {
+                    if (ButtonPressed == "Yes" && localStorage) {
+                        localStorage.clear();
+                        location.reload()
+                    }
+                });
+
+            });
+        }
+    }
+
+});
+
+'use strict';
+
+angular.module('SmartAdmin.Layout').directive('searchMobile', function () {
+    return {
+        restrict: 'A',
+        compile: function (element, attributes) {
+            element.removeAttr('search-mobile data-search-mobile');
+
+            element.on('click', function (e) {
+                $('body').addClass('search-mobile');
+                e.preventDefault();
+            });
+
+            $('#cancel-search-js').on('click', function (e) {
+                $('body').removeClass('search-mobile');
+                e.preventDefault();
+            });
+        }
+    }
+});
+"use strict";
+
+angular.module('SmartAdmin.Layout').directive('toggleMenu', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element){
+            var $body = $('body');
+
+            var toggleMenu = function(){
+                if (!$body.hasClass("menu-on-top")){
+                    $('html').toggleClass("hidden-menu-mobile-lock");
+                    $body.toggleClass("hidden-menu");
+                    $body.removeClass("minified");
+                } else if ( $body.hasClass("menu-on-top") && $body.hasClass("mobile-view-activated") ) {
+                    $('html').toggleClass("hidden-menu-mobile-lock");
+                    $body.toggleClass("hidden-menu");
+                    $body.removeClass("minified");
+                }
+            };
+
+            element.on('click', toggleMenu);
+
+            scope.$on('requestToggleMenu', function(){
+                toggleMenu();
+            });
+        }
+    }
+});
+'use strict';
+
 angular.module('app.tables').directive('datatableBasic', function ($compile) {
     return {
         restrict: 'A',
@@ -26356,274 +26715,6 @@ angular.module('app.tables').directive('datatableTableTools', function () {
                 drawCallback: function (oSettings) {
                     responsiveHelper.respond();
                 }
-            });
-        }
-    }
-});
-'use strict';
-
-angular.module('app.tables').directive('jqGrid', function ($compile) {
-    var jqGridCounter = 0;
-
-    return {
-        replace: true,
-        restrict: 'E',
-        scope: {
-            gridData: '='
-        },
-        template: '<div>' +
-            '<table></table>' +
-            '<div class="jqgrid-pagination"></div>' +
-            '</div>',
-        controller: function($scope, $element){
-            $scope.editRow  = function(row){
-                $element.find('table').editRow(row);
-            };
-            $scope.saveRow  = function(row){
-                $element.find('table').saveRow(row);
-            };
-            $scope.restoreRow  = function(row){
-                $element.find('table').restoreRow(row);
-            };
-        },
-        link: function (scope, element) {
-            var gridNumber = jqGridCounter++;
-            var wrapperId = 'jqgrid-' + gridNumber;
-            element.attr('id', wrapperId);
-
-            var tableId = 'jqgrid-table-' + gridNumber;
-            var table = element.find('table');
-            table.attr('id', tableId);
-
-            var pagerId = 'jqgrid-pager-' + gridNumber;
-            element.find('.jqgrid-pagination').attr('id', pagerId);
-
-
-            table.jqGrid({
-                data : scope.gridData.data,
-                datatype : "local",
-                height : 'auto',
-                colNames : scope.gridData.colNames || [],
-                colModel : scope.gridData.colModel || [],
-                rowNum : 10,
-                rowList : [10, 20, 30],
-                pager : '#' + pagerId,
-                sortname : 'id',
-                toolbarfilter : true,
-                viewrecords : true,
-                sortorder : "asc",
-                gridComplete : function() {
-                    var ids = table.jqGrid('getDataIDs');
-                    for (var i = 0; i < ids.length; i++) {
-                        var cl = ids[i];
-                        var be = "<button class='btn btn-xs btn-default' tooltip='Edit Row' tooltip-append-to-body='true' ng-click='editRow("+ cl +")'><i class='fa fa-pencil'></i></button>";
-
-                        var se = "<button class='btn btn-xs btn-default' tooltip='Save Row' tooltip-append-to-body='true' ng-click='saveRow("+ cl +")'><i class='fa fa-save'></i></button>";
-
-                        var ca = "<button class='btn btn-xs btn-default' tooltip='Cancel' tooltip-append-to-body='true' ng-click='restoreRow("+ cl +")'><i class='fa fa-times'></i></button>";
-
-                        table.jqGrid('setRowData', ids[i], {
-                            act : be + se + ca
-                        });
-                    }
-                },
-                editurl : "dummy.html",
-                caption : "SmartAdmin jQgrid Skin",
-                multiselect : true,
-                autowidth : true
-
-            });
-            table.jqGrid('navGrid', '#' + pagerId, {
-                edit : false,
-                add : false,
-                del : true
-            });
-            table.jqGrid('inlineNav', '#' + pagerId);
-
-
-            element.find(".ui-jqgrid").removeClass("ui-widget ui-widget-content");
-            element.find(".ui-jqgrid-view").children().removeClass("ui-widget-header ui-state-default");
-            element.find(".ui-jqgrid-labels, .ui-search-toolbar").children().removeClass("ui-state-default ui-th-column ui-th-ltr");
-            element.find(".ui-jqgrid-pager").removeClass("ui-state-default");
-            element.find(".ui-jqgrid").removeClass("ui-widget-content");
-
-            // add classes
-            element.find(".ui-jqgrid-htable").addClass("table table-bordered table-hover");
-            element.find(".ui-jqgrid-btable").addClass("table table-bordered table-striped");
-
-            element.find(".ui-pg-div").removeClass().addClass("btn btn-sm btn-primary");
-            element.find(".ui-icon.ui-icon-plus").removeClass().addClass("fa fa-plus");
-            element.find(".ui-icon.ui-icon-pencil").removeClass().addClass("fa fa-pencil");
-            element.find(".ui-icon.ui-icon-trash").removeClass().addClass("fa fa-trash-o");
-            element.find(".ui-icon.ui-icon-search").removeClass().addClass("fa fa-search");
-            element.find(".ui-icon.ui-icon-refresh").removeClass().addClass("fa fa-refresh");
-            element.find(".ui-icon.ui-icon-disk").removeClass().addClass("fa fa-save").parent(".btn-primary").removeClass("btn-primary").addClass("btn-success");
-            element.find(".ui-icon.ui-icon-cancel").removeClass().addClass("fa fa-times").parent(".btn-primary").removeClass("btn-primary").addClass("btn-danger");
-
-            element.find(".ui-icon.ui-icon-seek-prev").wrap("<div class='btn btn-sm btn-default'></div>");
-            element.find(".ui-icon.ui-icon-seek-prev").removeClass().addClass("fa fa-backward");
-
-            element.find(".ui-icon.ui-icon-seek-first").wrap("<div class='btn btn-sm btn-default'></div>");
-            element.find(".ui-icon.ui-icon-seek-first").removeClass().addClass("fa fa-fast-backward");
-
-            element.find(".ui-icon.ui-icon-seek-next").wrap("<div class='btn btn-sm btn-default'></div>");
-            element.find(".ui-icon.ui-icon-seek-next").removeClass().addClass("fa fa-forward");
-
-            element.find(".ui-icon.ui-icon-seek-end").wrap("<div class='btn btn-sm btn-default'></div>");
-            element.find(".ui-icon.ui-icon-seek-end").removeClass().addClass("fa fa-fast-forward");
-
-            $(window).on('resize.jqGrid', function() {
-               table.jqGrid('setGridWidth', $("#content").width());
-            });
-
-
-            $compile(element.contents())(scope);
-        }
-    }
-});
-"use strict";
-
-angular.module('SmartAdmin.Layout').directive('fullScreen', function(){
-    return {
-        restrict: 'A',
-        link: function(scope, element){
-            var $body = $('body');
-            var toggleFullSceen = function(e){
-                if (!$body.hasClass("full-screen")) {
-                    $body.addClass("full-screen");
-                    if (document.documentElement.requestFullscreen) {
-                        document.documentElement.requestFullscreen();
-                    } else if (document.documentElement.mozRequestFullScreen) {
-                        document.documentElement.mozRequestFullScreen();
-                    } else if (document.documentElement.webkitRequestFullscreen) {
-                        document.documentElement.webkitRequestFullscreen();
-                    } else if (document.documentElement.msRequestFullscreen) {
-                        document.documentElement.msRequestFullscreen();
-                    }
-                } else {
-                    $body.removeClass("full-screen");
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
-                    } else if (document.mozCancelFullScreen) {
-                        document.mozCancelFullScreen();
-                    } else if (document.webkitExitFullscreen) {
-                        document.webkitExitFullscreen();
-                    }
-                }
-            };
-
-            element.on('click', toggleFullSceen);
-
-        }
-    }
-});
-"use strict";
-
-angular.module('SmartAdmin.Layout').directive('minifyMenu', function(){
-    return {
-        restrict: 'A',
-        link: function(scope, element){
-                var $body = $('body');
-            var minifyMenu = function() {
-                if (!$body.hasClass("menu-on-top")) {
-                    $body.toggleClass("minified");
-                    $body.removeClass("hidden-menu");
-                    $('html').removeClass("hidden-menu-mobile-lock");
-                }
-            };
-
-            element.on('click', minifyMenu);
-        }
-    }
-})
-'use strict';
-
-angular.module('SmartAdmin.Layout').directive('reloadState', function ($rootScope) {
-    return {
-        restrict: 'A',
-        compile: function (tElement, tAttributes) {
-            tElement.removeAttr('reload-state data-reload-state');
-            tElement.on('click', function (e) {
-                $rootScope.$state.transitionTo($rootScope.$state.current, $rootScope.$stateParams, {
-                    reload: true,
-                    inherit: false,
-                    notify: true
-                });
-                e.preventDefault();
-            })
-        }
-    }
-});
-
-"use strict";
-
-angular.module('SmartAdmin.Layout').directive('resetWidgets', function($state){
-
-    return {
-        restrict: 'A',
-        link: function(scope, element){
-            element.on('click', function(){
-                $.SmartMessageBox({
-                    title : "<i class='fa fa-refresh' style='color:green'></i> Clear Local Storage",
-                    content : "Would you like to RESET all your saved widgets and clear LocalStorage?1",
-                    buttons : '[No][Yes]'
-                }, function(ButtonPressed) {
-                    if (ButtonPressed == "Yes" && localStorage) {
-                        localStorage.clear();
-                        location.reload()
-                    }
-                });
-
-            });
-        }
-    }
-
-});
-
-'use strict';
-
-angular.module('SmartAdmin.Layout').directive('searchMobile', function () {
-    return {
-        restrict: 'A',
-        compile: function (element, attributes) {
-            element.removeAttr('search-mobile data-search-mobile');
-
-            element.on('click', function (e) {
-                $('body').addClass('search-mobile');
-                e.preventDefault();
-            });
-
-            $('#cancel-search-js').on('click', function (e) {
-                $('body').removeClass('search-mobile');
-                e.preventDefault();
-            });
-        }
-    }
-});
-"use strict";
-
-angular.module('SmartAdmin.Layout').directive('toggleMenu', function(){
-    return {
-        restrict: 'A',
-        link: function(scope, element){
-            var $body = $('body');
-
-            var toggleMenu = function(){
-                if (!$body.hasClass("menu-on-top")){
-                    $('html').toggleClass("hidden-menu-mobile-lock");
-                    $body.toggleClass("hidden-menu");
-                    $body.removeClass("minified");
-                } else if ( $body.hasClass("menu-on-top") && $body.hasClass("mobile-view-activated") ) {
-                    $('html').toggleClass("hidden-menu-mobile-lock");
-                    $body.toggleClass("hidden-menu");
-                    $body.removeClass("minified");
-                }
-            };
-
-            element.on('click', toggleMenu);
-
-            scope.$on('requestToggleMenu', function(){
-                toggleMenu();
             });
         }
     }
@@ -27892,191 +27983,928 @@ angular.module('SmartAdmin.Layout').factory('SmartCss', function ($rootScope, $t
 
 'use strict';
 
-angular.module('SmartAdmin.Forms').directive('smartJcrop', function ($q) {
+angular.module('SmartAdmin.Layout').directive('demoStates', function ($rootScope) {
+    return {
+        restrict: 'EA',
+        replace: true,
+        templateUrl: 'app/_common/layout/directives/demo/demo-states.tpl.html',
+        scope: true,
+        link: function (scope, element, attributes) {
+            element.parent().css({
+                position: 'relative'
+            });
+
+            element.on('click', '#demo-setting', function () {
+                element.toggleClass('activate')
+            })
+        },
+        controller: function ($scope) {
+            var $root = $('body');
+
+            $scope.$watch('fixedHeader', function (fixedHeader) {
+                localStorage.setItem('sm-fixed-header', fixedHeader);
+                $root.toggleClass('fixed-header', fixedHeader);
+                if (fixedHeader == false) {
+                    $scope.fixedRibbon = false;
+                    $scope.fixedNavigation = false;
+                }
+            });
+
+
+            $scope.$watch('fixedNavigation', function (fixedNavigation) {
+                localStorage.setItem('sm-fixed-navigation', fixedNavigation);
+                $root.toggleClass('fixed-navigation', fixedNavigation);
+                if (fixedNavigation) {
+                    $scope.insideContainer = false;
+                    $scope.fixedHeader = true;
+                } else {
+                    $scope.fixedRibbon = false;
+                }
+            });
+
+
+            $scope.$watch('fixedRibbon', function (fixedRibbon) {
+                localStorage.setItem('sm-fixed-ribbon', fixedRibbon);
+                $root.toggleClass('fixed-ribbon', fixedRibbon);
+                if (fixedRibbon) {
+                    $scope.fixedHeader = true;
+                    $scope.fixedNavigation = true;
+                    $scope.insideContainer = false;
+                }
+            });
+
+            $scope.$watch('fixedPageFooter', function (fixedPageFooter) {
+                localStorage.setItem('sm-fixed-page-footer', fixedPageFooter);
+                $root.toggleClass('fixed-page-footer', fixedPageFooter);
+            });
+
+            $scope.$watch('insideContainer', function (insideContainer) {
+                localStorage.setItem('sm-inside-container', insideContainer);
+                $root.toggleClass('container', insideContainer);
+                if (insideContainer) {
+                    $scope.fixedRibbon = false;
+                    $scope.fixedNavigation = false;
+                }
+            });
+
+            $scope.$watch('rtl', function (rtl) {
+                localStorage.setItem('sm-rtl', rtl);
+                $root.toggleClass('smart-rtl', rtl);
+            });
+
+            $scope.$watch('menuOnTop', function (menuOnTop) {
+                $rootScope.$broadcast('$smartLayoutMenuOnTop', menuOnTop);
+                localStorage.setItem('sm-menu-on-top', menuOnTop);
+                $root.toggleClass('menu-on-top', menuOnTop);
+
+                if(menuOnTop)$root.removeClass('minified');
+            });
+
+            $scope.$watch('colorblindFriendly', function (colorblindFriendly) {
+                localStorage.setItem('sm-colorblind-friendly', colorblindFriendly);
+                $root.toggleClass('colorblind-friendly', colorblindFriendly);
+            });
+
+
+            $scope.fixedHeader = localStorage.getItem('sm-fixed-header') == 'true';
+            $scope.fixedNavigation = localStorage.getItem('sm-fixed-navigation') == 'true';
+            $scope.fixedRibbon = localStorage.getItem('sm-fixed-ribbon') == 'true';
+            $scope.fixedPageFooter = localStorage.getItem('sm-fixed-page-footer') == 'true';
+            $scope.insideContainer = localStorage.getItem('sm-inside-container') == 'true';
+            $scope.rtl = localStorage.getItem('sm-rtl') == 'true';
+            $scope.menuOnTop = localStorage.getItem('sm-menu-on-top') == 'true' || $root.hasClass('menu-on-top');
+            $scope.colorblindFriendly = localStorage.getItem('sm-colorblind-friendly') == 'true';
+
+
+            $scope.skins = appConfig.skins;
+
+            $scope.smartSkin = localStorage.getItem('sm-skin') || appConfig.smartSkin;
+
+
+            $scope.setSkin = function (skin) {
+                $scope.smartSkin = skin.name;
+                $root.removeClass(_.pluck($scope.skins, 'name').join(' '));
+                $root.addClass(skin.name);
+                localStorage.setItem('sm-skin', skin.name);
+                $("#logo img").attr('src', skin.logo);
+            };
+
+
+            if($scope.smartSkin != "smart-style-0"){
+                $scope.setSkin(_.find($scope.skins, {name: $scope.smartSkin}))
+            }
+
+
+            $scope.factoryReset = function () {
+                $.SmartMessageBox({
+                    title: "<i class='fa fa-refresh' style='color:green'></i> Clear Local Storage",
+                    content: "Would you like to RESET all your saved widgets and clear LocalStorage?1",
+                    buttons: '[No][Yes]'
+                }, function (ButtonPressed) {
+                    if (ButtonPressed == "Yes" && localStorage) {
+                        localStorage.clear();
+                        location.reload()
+                    }
+                });
+            }
+        }
+    }
+});
+"use strict";
+
+(function ($) {
+
+    $.fn.smartCollapseToggle = function () {
+
+        return this.each(function () {
+
+            var $body = $('body');
+            var $this = $(this);
+
+            // only if not  'menu-on-top'
+            if ($body.hasClass('menu-on-top')) {
+
+
+            } else {
+
+                $body.hasClass('mobile-view-activated')
+
+                // toggle open
+                $this.toggleClass('open');
+
+                // for minified menu collapse only second level
+                if ($body.hasClass('minified')) {
+                    if ($this.closest('nav ul ul').length) {
+                        $this.find('>a .collapse-sign .fa').toggleClass('fa-minus-square-o fa-plus-square-o');
+                        $this.find('ul:first').slideToggle(appConfig.menu_speed || 200);
+                    }
+                } else {
+                    // toggle expand item
+                    $this.find('>a .collapse-sign .fa').toggleClass('fa-minus-square-o fa-plus-square-o');
+                    $this.find('ul:first').slideToggle(appConfig.menu_speed || 200);
+                }
+            }
+        });
+    };
+})(jQuery);
+
+angular.module('SmartAdmin.Layout').directive('smartMenu', function ($state, $rootScope) {
     return {
         restrict: 'A',
-        scope: {
-            coords: '=',
-            options: '=',
-            selection: '='
-        },
-        link: function (scope, element, attributes) {
-            var jcropApi, imageWidth, imageHeight, imageLoaded = $q.defer();
+        link: function (scope, element, attrs) {
+            var $body = $('body');
 
-            var listeners = {
-                onSelectHandlers: [],
-                onChangeHandlers: [],
-                onSelect: function (c) {
-                    angular.forEach(listeners.onSelectHandlers, function (handler) {
-                        handler.call(jcropApi, c)
-                    })
-                },
-                onChange: function (c) {
-                    angular.forEach(listeners.onChangeHandlers, function (handler) {
-                        handler.call(jcropApi, c)
-                    })
-                }
-            };
+            var $collapsible = element.find('li[data-menu-collapse]');
 
-            if (attributes.coords) {
-                var coordsUpdate = function (c) {
-                    scope.$apply(function () {
-                        scope.coords = c;
-                    });
-                };
-                listeners.onSelectHandlers.push(coordsUpdate);
-                listeners.onChangeHandlers.push(coordsUpdate);
-            }
+            var bindEvents = function(){
+                $collapsible.each(function (idx, li) {
+                    var $li = $(li);
+                    $li
+                        .on('click', '>a', function (e) {
 
-            var $previewPane = $(attributes.smartJcropPreview),
-                $previewContainer = $previewPane.find('.preview-container'),
-                $previewImg = $previewPane.find('img');
+                            // collapse all open siblings
+                            $li.siblings('.open').smartCollapseToggle();
 
-            if ($previewPane.length && $previewImg.length) {
-                var previewUpdate = function (coords) {
-                    if (parseInt(coords.w) > 0) {
-                        var rx = $previewContainer.width() / coords.w;
-                        var ry = $previewContainer.height() / coords.h;
+                            // toggle element
+                            $li.smartCollapseToggle();
 
-                        $previewImg.css({
-                            width: Math.round(rx * imageWidth) + 'px',
-                            height: Math.round(ry * imageHeight) + 'px',
-                            marginLeft: '-' + Math.round(rx * coords.x) + 'px',
-                            marginTop: '-' + Math.round(ry * coords.y) + 'px'
-                        });
+                            // add active marker to collapsed element if it has active childs
+                            if (!$li.hasClass('open') && $li.find('li.active').length > 0) {
+                                $li.addClass('active')
+                            }
+
+                            e.preventDefault();
+                        })
+                        .find('>a').append('<b class="collapse-sign"><em class="fa fa-plus-square-o"></em></b>');
+
+                    // initialization toggle
+                    if ($li.find('li.active').length) {
+                        $li.smartCollapseToggle();
+                        $li.find('li.active').parents('li').addClass('active');
                     }
-                };
-                listeners.onSelectHandlers.push(previewUpdate);
-                listeners.onChangeHandlers.push(previewUpdate);
+                });
+            }
+            bindEvents();
+
+
+            // click on route link
+            element.on('click', 'a[data-ui-sref]', function (e) {
+                // collapse all siblings to element parents and remove active markers
+                $(this)
+                    .parents('li').addClass('active')
+                    .each(function () {
+                        $(this).siblings('li.open').smartCollapseToggle();
+                        $(this).siblings('li').removeClass('active')
+                    });
+
+                if ($body.hasClass('mobile-view-activated')) {
+                    $rootScope.$broadcast('requestToggleMenu');
+                }
+            });
+
+
+            scope.$on('$smartLayoutMenuOnTop', function (event, menuOnTop) {
+                if (menuOnTop) {
+                    $collapsible.filter('.open').smartCollapseToggle();
+                }
+            });
+        }
+    }
+});
+(function(){
+    "use strict";
+
+    angular.module('SmartAdmin.Layout').directive('smartMenuItems', function ($http, $rootScope, $compile, APP_CONFIG) {
+    return {
+        restrict: 'A',
+        compile: function (element, attrs) {
+            
+
+            function createItem(item, parent, level){
+                var li = $('<li />' ,{'ui-sref-active': "active"})
+                var a = $('<a />');
+                var i = $('<i />');
+
+                li.append(a);
+
+                if (item.sref) {
+                    a.attr('ui-sref', item.sref);
+                    // add this option to reload state when clicked
+
+                    a.attr("ui-sref-opts", "{reload: true}");
+                }
+                if(item.href)
+                    a.attr('href', item.href);
+                if(item.icon){
+                    i.attr('class', item.icon);
+                    a.append(i);
+                }
+                if(item.title){
+                    a.attr('title', item.title);
+                    if(level == 1){ 
+                        a.append(' <span class="menu-item-parent">' + item.title + '</span>');
+                    } else {
+                        a.append(' ' + item.title);
+
+                    }
+
+                    // add a badge to the app.tasks.list item
+                    if (item.sref) {
+                        var myTaskSref = "app.myspace";
+                        if (item.sref.substring(0, myTaskSref.length) === myTaskSref) {
+                            a.append('<span class="badge pull-right inbox-badge">{{getTotalCount()}}</span>');
+                        }
+                    }
+                }
+
+                if(item.items){
+                    var ul = $('<ul />');
+                    li.append(ul);
+                    li.attr('data-menu-collapse', '');
+                    _.forEach(item.items, function(child) {
+                        createItem(child, ul, level+1);
+                    })
+                } 
+
+                parent.append(li); 
             }
 
+            $http.get(APP_CONFIG.ebaasRootUrl + attrs.smartMenuItems).then(function (res) {
 
-            var options = {
-                onSelect: listeners.onSelect,
-                onChange: listeners.onChange
-            };
+                var ul = $('<ul />', {
+                    'smart-menu': ''
+                })
+                _.forEach(res.data.items, function (item) {
+                    if (item.visible) {
+                        createItem(item, ul, 1);
+                    }
+                })
+                
+                var $scope = $rootScope.$new();
+                var html = $('<div>').append(ul).html(); 
+                var linkingFunction = $compile(html);
+                
+                var _element = linkingFunction($scope);
 
-            if ($previewContainer.length) {
-                options.aspectRatio = $previewContainer.width() / $previewContainer.height()
+                element.replaceWith(_element);                
+            })
+        }
+    }
+});
+})();
+/**
+ * Jarvis Widget Directive
+ *
+ *    colorbutton="false"
+ *    editbutton="false"
+      togglebutton="false"
+       deletebutton="false"
+        fullscreenbutton="false"
+        custombutton="false"
+        collapsed="true"
+          sortable="false"
+ *
+ *
+ */
+"use strict";
+
+angular.module('SmartAdmin.Layout').directive('jarvisWidget', function($rootScope){
+    return {
+        restrict: "A",
+        compile: function(element, attributes){
+            if(element.data('widget-color'))
+                element.addClass('jarviswidget-color-' + element.data('widget-color'));
+
+
+            element.find('.widget-body').prepend('<div class="jarviswidget-editbox"><input class="form-control" type="text"></div>');
+
+            element.addClass('jarviswidget jarviswidget-sortable');
+            $rootScope.$emit('jarvisWidgetAdded', element )
+
+        }
+    }
+});
+ "use strict";
+ 
+ angular.module('SmartAdmin.Layout').directive('widgetGrid', function ($rootScope, $compile, $q, $state, $timeout) {
+
+    var jarvisWidgetsDefaults = {
+        grid: 'article',
+        widgets: '.jarviswidget',
+        localStorage: true,
+        deleteSettingsKey: '#deletesettingskey-options',
+        settingsKeyLabel: 'Reset settings?',
+        deletePositionKey: '#deletepositionkey-options',
+        positionKeyLabel: 'Reset position?',
+        sortable: true,
+        buttonsHidden: false,
+        // toggle button
+        toggleButton: true,
+        toggleClass: 'fa fa-minus | fa fa-plus',
+        toggleSpeed: 200,
+        onToggle: function () {
+        },
+        // delete btn
+        deleteButton: true,
+        deleteMsg: 'Warning: This action cannot be undone!',
+        deleteClass: 'fa fa-times',
+        deleteSpeed: 200,
+        onDelete: function () {
+        },
+        // edit btn
+        editButton: true,
+        editPlaceholder: '.jarviswidget-editbox',
+        editClass: 'fa fa-cog | fa fa-save',
+        editSpeed: 200,
+        onEdit: function () {
+        },
+        // color button
+        colorButton: true,
+        // full screen
+        fullscreenButton: true,
+        fullscreenClass: 'fa fa-expand | fa fa-compress',
+        fullscreenDiff: 3,
+        onFullscreen: function () {
+        },
+        // custom btn
+        customButton: false,
+        customClass: 'folder-10 | next-10',
+        customStart: function () {
+            alert('Hello you, this is a custom button...');
+        },
+        customEnd: function () {
+            alert('bye, till next time...');
+        },
+        // order
+        buttonOrder: '%refresh% %custom% %edit% %toggle% %fullscreen% %delete%',
+        opacity: 1.0,
+        dragHandle: '> header',
+        placeholderClass: 'jarviswidget-placeholder',
+        indicator: true,
+        indicatorTime: 600,
+        ajax: true,
+        timestampPlaceholder: '.jarviswidget-timestamp',
+        timestampFormat: 'Last update: %m%/%d%/%y% %h%:%i%:%s%',
+        refreshButton: true,
+        refreshButtonClass: 'fa fa-refresh',
+        labelError: 'Sorry but there was a error:',
+        labelUpdated: 'Last Update:',
+        labelRefresh: 'Refresh',
+        labelDelete: 'Delete widget:',
+        afterLoad: function () {
+        },
+        rtl: false, // best not to toggle this!
+        onChange: function () {
+
+        },
+        onSave: function () {
+
+        },
+        ajaxnav: true
+
+    }
+
+    var dispatchedWidgetIds = [];
+    var setupWaiting = false;
+
+    var debug = 1;
+
+    var setupWidgets = function (element, widgetIds) {
+
+        if (!setupWaiting) {
+
+            if(_.intersection(widgetIds, dispatchedWidgetIds).length != widgetIds.length){
+
+                dispatchedWidgetIds = _.union(widgetIds, dispatchedWidgetIds);
+
+//                    console.log('setupWidgets', debug++);
+
+                element.data('jarvisWidgets') && element.data('jarvisWidgets').destroy();
+                element.jarvisWidgets(jarvisWidgetsDefaults);
+                initDropdowns(widgetIds);
             }
 
-            if (attributes.selection) {
-                scope.$watch('selection', function (newVal, oldVal) {
-                    if (newVal != oldVal) {
-                        var rectangle = newVal == 'release' ? [imageWidth / 2, imageHeight / 2, imageWidth / 2, imageHeight / 2] : newVal;
+        } else {
+            if (!setupWaiting) {
+                setupWaiting = true;
+                $timeout(function () {
+                    setupWaiting = false;
+                    setupWidgets(element, widgetIds)
+                }, 200);
+            }
+        }
 
-                        var callback = newVal == 'release' ? function () {
-                            jcropApi.release();
-                        } : angular.noop;
+    };
 
-                        imageLoaded.promise.then(function () {
-                            if (scope.options && scope.options.animate) {
-                                jcropApi.animateTo(rectangle, callback);
-                            } else {
-                                jcropApi.setSelect(rectangle);
+    var destroyWidgets = function(element, widgetIds){
+        element.data('jarvisWidgets') && element.data('jarvisWidgets').destroy();
+        dispatchedWidgetIds = _.xor(dispatchedWidgetIds, widgetIds);
+    };
+
+    var initDropdowns = function (widgetIds) {
+        angular.forEach(widgetIds, function (wid) {
+            $('#' + wid + ' [data-toggle="dropdown"]').each(function () {
+                var $parent = $(this).parent();
+                // $(this).removeAttr('data-toggle');
+                if (!$parent.attr('dropdown')) {
+                    $(this).removeAttr('href');
+                    $parent.attr('dropdown', '');
+                    var compiled = $compile($parent)($parent.scope())
+                    $parent.replaceWith(compiled);
+                }
+            })
+        });
+    };
+
+    var jarvisWidgetAddedOff,
+        $viewContentLoadedOff,
+        $stateChangeStartOff;
+
+    return {
+        restrict: 'A',
+        compile: function(element){
+
+            element.removeAttr('widget-grid data-widget-grid');
+
+            var widgetIds = [];
+
+            $viewContentLoadedOff = $rootScope.$on('$viewContentLoaded', function (event, data) {
+                $timeout(function () {
+                    setupWidgets(element, widgetIds)
+                }, 100);
+            });
+
+
+            $stateChangeStartOff = $rootScope.$on('$stateChangeStart',
+                function(event, toState, toParams, fromState, fromParams){
+                    jarvisWidgetAddedOff();
+                    $viewContentLoadedOff();
+                    $stateChangeStartOff();
+                    destroyWidgets(element, widgetIds)
+                });
+
+            jarvisWidgetAddedOff = $rootScope.$on('jarvisWidgetAdded', function (event, widget) {
+                if (widgetIds.indexOf(widget.attr('id')) == -1) {
+                    widgetIds.push(widget.attr('id'));
+                    $timeout(function () {
+                        setupWidgets(element, widgetIds)
+                    }, 100);
+                }
+//                    console.log('jarvisWidgetAdded', widget.attr('id'));
+            });
+
+        }
+    }
+});
+
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartCheckoutForm', function (formsCommon, lazyScript) {
+    return {
+        restrict: 'A',
+        link: function (scope, form) {
+           lazyScript.register('jquery-validation').then(function(){
+
+               scope.countries = formsCommon.countries;
+
+               form.validate(angular.extend({
+                    // Rules for form validation
+                    rules : {
+                        fname : {
+                            required : true
+                        },
+                        lname : {
+                            required : true
+                        },
+                        email : {
+                            required : true,
+                            email : true
+                        },
+                        phone : {
+                            required : true
+                        },
+                        country : {
+                            required : true
+                        },
+                        city : {
+                            required : true
+                        },
+                        code : {
+                            required : true,
+                            digits : true
+                        },
+                        address : {
+                            required : true
+                        },
+                        name : {
+                            required : true
+                        },
+                        card : {
+                            required : true,
+                            creditcard : true
+                        },
+                        cvv : {
+                            required : true,
+                            digits : true
+                        },
+                        month : {
+                            required : true
+                        },
+                        year : {
+                            required : true,
+                            digits : true
+                        }
+                    },
+
+                    // Messages for form validation
+                    messages : {
+                        fname : {
+                            required : 'Please enter your first name'
+                        },
+                        lname : {
+                            required : 'Please enter your last name'
+                        },
+                        email : {
+                            required : 'Please enter your email address',
+                            email : 'Please enter a VALID email address'
+                        },
+                        phone : {
+                            required : 'Please enter your phone number'
+                        },
+                        country : {
+                            required : 'Please select your country'
+                        },
+                        city : {
+                            required : 'Please enter your city'
+                        },
+                        code : {
+                            required : 'Please enter code',
+                            digits : 'Digits only please'
+                        },
+                        address : {
+                            required : 'Please enter your full address'
+                        },
+                        name : {
+                            required : 'Please enter name on your card'
+                        },
+                        card : {
+                            required : 'Please enter your card number'
+                        },
+                        cvv : {
+                            required : 'Enter CVV2',
+                            digits : 'Digits only'
+                        },
+                        month : {
+                            required : 'Select month'
+                        },
+                        year : {
+                            required : 'Enter year',
+                            digits : 'Digits only please'
+                        }
+                    }
+                }, formsCommon.validateOptions));
+            });
+        }
+    }
+});
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartCommentForm', function (formsCommon, lazyScript) {
+    return {
+        restrict: 'A',
+        link: function (scope, form) {
+            lazyScript.register('jquery-validation').then(function(){
+                form.validate(angular.extend({
+                    // Rules for form validation
+                    rules : {
+                        name : {
+                            required : true
+                        },
+                        email : {
+                            required : true,
+                            email : true
+                        },
+                        url : {
+                            url : true
+                        },
+                        comment : {
+                            required : true
+                        }
+                    },
+
+                    // Messages for form validation
+                    messages : {
+                        name : {
+                            required : 'Enter your name',
+                        },
+                        email : {
+                            required : 'Enter your email address',
+                            email : 'Enter a VALID email'
+                        },
+                        url : {
+                            email : 'Enter a VALID url'
+                        },
+                        comment : {
+                            required : 'Please enter your comment'
+                        }
+                    },
+
+                    // Ajax form submition
+                    submitHandler : function() {
+                        form.ajaxSubmit({
+                            success : function() {
+                                form.addClass('submited');
                             }
                         });
                     }
-                });
-            }
 
-            if (attributes.options) {
+                }, formsCommon.validateOptions));
+            });
 
-                var optionNames = [
-                    'bgOpacity', 'bgColor', 'bgFade', 'shade', 'outerImage',
-                    'allowSelect', 'allowMove', 'allowResize',
-                    'aspectRatio'
-                ];
+        }
+    }
+});
 
-                angular.forEach(optionNames, function (name) {
-                    if (scope.options[name])
-                        options[name] = scope.options[name]
+'use strict';
 
-                    scope.$watch('options.' + name, function (newVal, oldVal) {
-                        if (newVal != oldVal) {
-                            imageLoaded.promise.then(function () {
-                                var update = {};
-                                update[name] = newVal;
-                                jcropApi.setOptions(update);
-                            });
+angular.module('SmartAdmin.Forms').directive('smartContactsForm', function (formsCommon, lazyScript) {
+    return {
+        restrict: 'A',
+        link: function (scope, form) {
+            lazyScript.register('jquery-validation').then(function(){
+                form.validate(angular.extend({
+                    // Rules for form validation
+                    rules : {
+                        name : {
+                            required : true
+                        },
+                        email : {
+                            required : true,
+                            email : true
+                        },
+                        message : {
+                            required : true,
+                            minlength : 10
                         }
-                    });
+                    },
 
-                });
-
-
-                scope.$watch('options.disabled', function (newVal, oldVal) {
-                    if (newVal != oldVal) {
-                        if (newVal) {
-                            jcropApi.disable();
-                        } else {
-                            jcropApi.enable();
+                    // Messages for form validation
+                    messages : {
+                        name : {
+                            required : 'Please enter your name'
+                        },
+                        email : {
+                            required : 'Please enter your email address',
+                            email : 'Please enter a VALID email address'
+                        },
+                        message : {
+                            required : 'Please enter your message'
                         }
-                    }
-                });
+                    },
 
-                scope.$watch('options.destroyed', function (newVal, oldVal) {
-                    if (newVal != oldVal) {
-                        if (newVal) {
-                            jcropApi.destroy();
-                        } else {
-                            _init();
-                        }
-                    }
-                });
-
-                scope.$watch('options.src', function (newVal, oldVal) {
-                    imageLoaded = $q.defer();
-                    if (newVal != oldVal) {
-                        jcropApi.setImage(scope.options.src, function () {
-                            imageLoaded.resolve();
+                    // Ajax form submition
+                    submitHandler : function() {
+                        form.ajaxSubmit({
+                            success : function() {
+                                form.addClass('submited');
+                            }
                         });
                     }
-                });
+                }, formsCommon.validateOptions));
+            });
+        }
+    }
+});
+'use strict';
 
-                var updateSize = function(){
-                    jcropApi.setOptions({
-                        minSize: [scope.options.minSizeWidth, scope.options.minSizeHeight],
-                        maxSize: [scope.options.maxSizeWidth, scope.options.maxSizeHeight]
-                    });
-                };
+angular.module('SmartAdmin.Forms').directive('smartOrderForm', function (formsCommon, lazyScript) {
+    return {
+        restrict: 'E',
+        link: function (scope, form) {
+            lazyScript.register('jquery-validation').then(function(){
+                form.validate(angular.extend({
+                    // Rules for form validation
+                    rules : {
+                        name : {
+                            required : true
+                        },
+                        email : {
+                            required : true,
+                            email : true
+                        },
+                        phone : {
+                            required : true
+                        },
+                        interested : {
+                            required : true
+                        },
+                        budget : {
+                            required : true
+                        }
+                    },
 
-                scope.$watch('options.minSizeWidth', function (newVal, oldVal) {
-                    if (newVal != oldVal) updateSize();
-                });
-                scope.$watch('options.minSizeHeight', function (newVal, oldVal) {
-                    if (newVal != oldVal) updateSize();
-                });
-                scope.$watch('options.maxSizeWidth', function (newVal, oldVal) {
-                    if (newVal != oldVal) updateSize();
-                });
-                scope.$watch('options.maxSizeHeight', function (newVal, oldVal) {
-                    if (newVal != oldVal) updateSize();
-                });
-            }
+                    // Messages for form validation
+                    messages : {
+                        name : {
+                            required : 'Please enter your name'
+                        },
+                        email : {
+                            required : 'Please enter your email address',
+                            email : 'Please enter a VALID email address'
+                        },
+                        phone : {
+                            required : 'Please enter your phone number'
+                        },
+                        interested : {
+                            required : 'Please select interested service'
+                        },
+                        budget : {
+                            required : 'Please select your budget'
+                        }
+                    },
 
-            var _init = function () {
-                element.Jcrop(options, function () {
-                    jcropApi = this;
-                    // Use the API to get the real image size
-                    var bounds = this.getBounds();
-                    imageWidth = bounds[0];
-                    imageHeight = bounds[1];
+                }, formsCommon.validateOptions));
+            });
 
-                    if (attributes.selection && angular.isArray(scope.selection)) {
-                        if (scope.options && scope.options.animate) {
-                            jcropApi.animateTo(scope.selection);
-                        } else {
-                            jcropApi.setSelect(scope.selection);
+        }
+    }
+});
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartRegistrationForm', function (formsCommon, lazyScript) {
+    return {
+        restrict: 'A',
+        link: function (scope, form, attributes) {
+            lazyScript.register('jquery-validation').then(function(){
+                form.validate(angular.extend({
+
+                    // Rules for form validation
+                    rules: {
+                        username: {
+                            required: true
+                        },
+                        email: {
+                            required: true,
+                            email: true
+                        },
+                        password: {
+                            required: true,
+                            minlength: 3,
+                            maxlength: 20
+                        },
+                        passwordConfirm: {
+                            required: true,
+                            minlength: 3,
+                            maxlength: 20,
+                            equalTo: '#password'
+                        },
+                        firstname: {
+                            required: true
+                        },
+                        lastname: {
+                            required: true
+                        },
+                        gender: {
+                            required: true
+                        },
+                        terms: {
+                            required: true
+                        }
+                    },
+
+                    // Messages for form validation
+                    messages: {
+                        login: {
+                            required: 'Please enter your login'
+                        },
+                        email: {
+                            required: 'Please enter your email address',
+                            email: 'Please enter a VALID email address'
+                        },
+                        password: {
+                            required: 'Please enter your password'
+                        },
+                        passwordConfirm: {
+                            required: 'Please enter your password one more time',
+                            equalTo: 'Please enter the same password as above'
+                        },
+                        firstname: {
+                            required: 'Please select your first name'
+                        },
+                        lastname: {
+                            required: 'Please select your last name'
+                        },
+                        gender: {
+                            required: 'Please select your gender'
+                        },
+                        terms: {
+                            required: 'You must agree with Terms and Conditions'
                         }
                     }
-                    imageLoaded.resolve();
-                });
-            };
 
-            _init()
+                }, formsCommon.validateOptions));
+            });
+        }
+    }
+});
+'use strict';
 
+angular.module('SmartAdmin.Forms').directive('smartReviewForm', function (formsCommon, lazyScript) {
+    return {
+        restrict: 'E',
+        link: function (scope, form) {
+            lazyScript.register('jquery-validation').then(function(){
 
+                form.validate(angular.extend({
+                    // Rules for form validation
+                    rules : {
+                        name : {
+                            required : true
+                        },
+                        email : {
+                            required : true,
+                            email : true
+                        },
+                        review : {
+                            required : true,
+                            minlength : 20
+                        },
+                        quality : {
+                            required : true
+                        },
+                        reliability : {
+                            required : true
+                        },
+                        overall : {
+                            required : true
+                        }
+                    },
+
+                    // Messages for form validation
+                    messages : {
+                        name : {
+                            required : 'Please enter your name'
+                        },
+                        email : {
+                            required : 'Please enter your email address',
+                            email : '<i class="fa fa-warning"></i><strong>Please enter a VALID email addres</strong>'
+                        },
+                        review : {
+                            required : 'Please enter your review'
+                        },
+                        quality : {
+                            required : 'Please rate quality of the product'
+                        },
+                        reliability : {
+                            required : 'Please rate reliability of the product'
+                        },
+                        overall : {
+                            required : 'Please rate the product'
+                        }
+                    }
+
+                }, formsCommon.validateOptions));
+            });
         }
     }
 });
@@ -28610,412 +29438,191 @@ angular.module('SmartAdmin.Forms').directive('smartSummernoteEditor', function (
 });
 'use strict';
 
-angular.module('SmartAdmin.Forms').directive('smartCheckoutForm', function (formsCommon, lazyScript) {
+angular.module('SmartAdmin.Forms').directive('smartJcrop', function ($q) {
     return {
         restrict: 'A',
-        link: function (scope, form) {
-           lazyScript.register('jquery-validation').then(function(){
+        scope: {
+            coords: '=',
+            options: '=',
+            selection: '='
+        },
+        link: function (scope, element, attributes) {
+            var jcropApi, imageWidth, imageHeight, imageLoaded = $q.defer();
 
-               scope.countries = formsCommon.countries;
+            var listeners = {
+                onSelectHandlers: [],
+                onChangeHandlers: [],
+                onSelect: function (c) {
+                    angular.forEach(listeners.onSelectHandlers, function (handler) {
+                        handler.call(jcropApi, c)
+                    })
+                },
+                onChange: function (c) {
+                    angular.forEach(listeners.onChangeHandlers, function (handler) {
+                        handler.call(jcropApi, c)
+                    })
+                }
+            };
 
-               form.validate(angular.extend({
-                    // Rules for form validation
-                    rules : {
-                        fname : {
-                            required : true
-                        },
-                        lname : {
-                            required : true
-                        },
-                        email : {
-                            required : true,
-                            email : true
-                        },
-                        phone : {
-                            required : true
-                        },
-                        country : {
-                            required : true
-                        },
-                        city : {
-                            required : true
-                        },
-                        code : {
-                            required : true,
-                            digits : true
-                        },
-                        address : {
-                            required : true
-                        },
-                        name : {
-                            required : true
-                        },
-                        card : {
-                            required : true,
-                            creditcard : true
-                        },
-                        cvv : {
-                            required : true,
-                            digits : true
-                        },
-                        month : {
-                            required : true
-                        },
-                        year : {
-                            required : true,
-                            digits : true
-                        }
-                    },
+            if (attributes.coords) {
+                var coordsUpdate = function (c) {
+                    scope.$apply(function () {
+                        scope.coords = c;
+                    });
+                };
+                listeners.onSelectHandlers.push(coordsUpdate);
+                listeners.onChangeHandlers.push(coordsUpdate);
+            }
 
-                    // Messages for form validation
-                    messages : {
-                        fname : {
-                            required : 'Please enter your first name'
-                        },
-                        lname : {
-                            required : 'Please enter your last name'
-                        },
-                        email : {
-                            required : 'Please enter your email address',
-                            email : 'Please enter a VALID email address'
-                        },
-                        phone : {
-                            required : 'Please enter your phone number'
-                        },
-                        country : {
-                            required : 'Please select your country'
-                        },
-                        city : {
-                            required : 'Please enter your city'
-                        },
-                        code : {
-                            required : 'Please enter code',
-                            digits : 'Digits only please'
-                        },
-                        address : {
-                            required : 'Please enter your full address'
-                        },
-                        name : {
-                            required : 'Please enter name on your card'
-                        },
-                        card : {
-                            required : 'Please enter your card number'
-                        },
-                        cvv : {
-                            required : 'Enter CVV2',
-                            digits : 'Digits only'
-                        },
-                        month : {
-                            required : 'Select month'
-                        },
-                        year : {
-                            required : 'Enter year',
-                            digits : 'Digits only please'
-                        }
+            var $previewPane = $(attributes.smartJcropPreview),
+                $previewContainer = $previewPane.find('.preview-container'),
+                $previewImg = $previewPane.find('img');
+
+            if ($previewPane.length && $previewImg.length) {
+                var previewUpdate = function (coords) {
+                    if (parseInt(coords.w) > 0) {
+                        var rx = $previewContainer.width() / coords.w;
+                        var ry = $previewContainer.height() / coords.h;
+
+                        $previewImg.css({
+                            width: Math.round(rx * imageWidth) + 'px',
+                            height: Math.round(ry * imageHeight) + 'px',
+                            marginLeft: '-' + Math.round(rx * coords.x) + 'px',
+                            marginTop: '-' + Math.round(ry * coords.y) + 'px'
+                        });
                     }
-                }, formsCommon.validateOptions));
-            });
-        }
-    }
-});
-'use strict';
+                };
+                listeners.onSelectHandlers.push(previewUpdate);
+                listeners.onChangeHandlers.push(previewUpdate);
+            }
 
-angular.module('SmartAdmin.Forms').directive('smartCommentForm', function (formsCommon, lazyScript) {
-    return {
-        restrict: 'A',
-        link: function (scope, form) {
-            lazyScript.register('jquery-validation').then(function(){
-                form.validate(angular.extend({
-                    // Rules for form validation
-                    rules : {
-                        name : {
-                            required : true
-                        },
-                        email : {
-                            required : true,
-                            email : true
-                        },
-                        url : {
-                            url : true
-                        },
-                        comment : {
-                            required : true
-                        }
-                    },
 
-                    // Messages for form validation
-                    messages : {
-                        name : {
-                            required : 'Enter your name',
-                        },
-                        email : {
-                            required : 'Enter your email address',
-                            email : 'Enter a VALID email'
-                        },
-                        url : {
-                            email : 'Enter a VALID url'
-                        },
-                        comment : {
-                            required : 'Please enter your comment'
-                        }
-                    },
+            var options = {
+                onSelect: listeners.onSelect,
+                onChange: listeners.onChange
+            };
 
-                    // Ajax form submition
-                    submitHandler : function() {
-                        form.ajaxSubmit({
-                            success : function() {
-                                form.addClass('submited');
+            if ($previewContainer.length) {
+                options.aspectRatio = $previewContainer.width() / $previewContainer.height()
+            }
+
+            if (attributes.selection) {
+                scope.$watch('selection', function (newVal, oldVal) {
+                    if (newVal != oldVal) {
+                        var rectangle = newVal == 'release' ? [imageWidth / 2, imageHeight / 2, imageWidth / 2, imageHeight / 2] : newVal;
+
+                        var callback = newVal == 'release' ? function () {
+                            jcropApi.release();
+                        } : angular.noop;
+
+                        imageLoaded.promise.then(function () {
+                            if (scope.options && scope.options.animate) {
+                                jcropApi.animateTo(rectangle, callback);
+                            } else {
+                                jcropApi.setSelect(rectangle);
                             }
                         });
                     }
+                });
+            }
 
-                }, formsCommon.validateOptions));
-            });
+            if (attributes.options) {
 
-        }
-    }
-});
+                var optionNames = [
+                    'bgOpacity', 'bgColor', 'bgFade', 'shade', 'outerImage',
+                    'allowSelect', 'allowMove', 'allowResize',
+                    'aspectRatio'
+                ];
 
-'use strict';
+                angular.forEach(optionNames, function (name) {
+                    if (scope.options[name])
+                        options[name] = scope.options[name]
 
-angular.module('SmartAdmin.Forms').directive('smartContactsForm', function (formsCommon, lazyScript) {
-    return {
-        restrict: 'A',
-        link: function (scope, form) {
-            lazyScript.register('jquery-validation').then(function(){
-                form.validate(angular.extend({
-                    // Rules for form validation
-                    rules : {
-                        name : {
-                            required : true
-                        },
-                        email : {
-                            required : true,
-                            email : true
-                        },
-                        message : {
-                            required : true,
-                            minlength : 10
+                    scope.$watch('options.' + name, function (newVal, oldVal) {
+                        if (newVal != oldVal) {
+                            imageLoaded.promise.then(function () {
+                                var update = {};
+                                update[name] = newVal;
+                                jcropApi.setOptions(update);
+                            });
                         }
-                    },
+                    });
 
-                    // Messages for form validation
-                    messages : {
-                        name : {
-                            required : 'Please enter your name'
-                        },
-                        email : {
-                            required : 'Please enter your email address',
-                            email : 'Please enter a VALID email address'
-                        },
-                        message : {
-                            required : 'Please enter your message'
+                });
+
+
+                scope.$watch('options.disabled', function (newVal, oldVal) {
+                    if (newVal != oldVal) {
+                        if (newVal) {
+                            jcropApi.disable();
+                        } else {
+                            jcropApi.enable();
                         }
-                    },
+                    }
+                });
 
-                    // Ajax form submition
-                    submitHandler : function() {
-                        form.ajaxSubmit({
-                            success : function() {
-                                form.addClass('submited');
-                            }
+                scope.$watch('options.destroyed', function (newVal, oldVal) {
+                    if (newVal != oldVal) {
+                        if (newVal) {
+                            jcropApi.destroy();
+                        } else {
+                            _init();
+                        }
+                    }
+                });
+
+                scope.$watch('options.src', function (newVal, oldVal) {
+                    imageLoaded = $q.defer();
+                    if (newVal != oldVal) {
+                        jcropApi.setImage(scope.options.src, function () {
+                            imageLoaded.resolve();
                         });
                     }
-                }, formsCommon.validateOptions));
-            });
-        }
-    }
-});
-'use strict';
+                });
 
-angular.module('SmartAdmin.Forms').directive('smartOrderForm', function (formsCommon, lazyScript) {
-    return {
-        restrict: 'E',
-        link: function (scope, form) {
-            lazyScript.register('jquery-validation').then(function(){
-                form.validate(angular.extend({
-                    // Rules for form validation
-                    rules : {
-                        name : {
-                            required : true
-                        },
-                        email : {
-                            required : true,
-                            email : true
-                        },
-                        phone : {
-                            required : true
-                        },
-                        interested : {
-                            required : true
-                        },
-                        budget : {
-                            required : true
-                        }
-                    },
+                var updateSize = function(){
+                    jcropApi.setOptions({
+                        minSize: [scope.options.minSizeWidth, scope.options.minSizeHeight],
+                        maxSize: [scope.options.maxSizeWidth, scope.options.maxSizeHeight]
+                    });
+                };
 
-                    // Messages for form validation
-                    messages : {
-                        name : {
-                            required : 'Please enter your name'
-                        },
-                        email : {
-                            required : 'Please enter your email address',
-                            email : 'Please enter a VALID email address'
-                        },
-                        phone : {
-                            required : 'Please enter your phone number'
-                        },
-                        interested : {
-                            required : 'Please select interested service'
-                        },
-                        budget : {
-                            required : 'Please select your budget'
-                        }
-                    },
+                scope.$watch('options.minSizeWidth', function (newVal, oldVal) {
+                    if (newVal != oldVal) updateSize();
+                });
+                scope.$watch('options.minSizeHeight', function (newVal, oldVal) {
+                    if (newVal != oldVal) updateSize();
+                });
+                scope.$watch('options.maxSizeWidth', function (newVal, oldVal) {
+                    if (newVal != oldVal) updateSize();
+                });
+                scope.$watch('options.maxSizeHeight', function (newVal, oldVal) {
+                    if (newVal != oldVal) updateSize();
+                });
+            }
 
-                }, formsCommon.validateOptions));
-            });
+            var _init = function () {
+                element.Jcrop(options, function () {
+                    jcropApi = this;
+                    // Use the API to get the real image size
+                    var bounds = this.getBounds();
+                    imageWidth = bounds[0];
+                    imageHeight = bounds[1];
 
-        }
-    }
-});
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartRegistrationForm', function (formsCommon, lazyScript) {
-    return {
-        restrict: 'A',
-        link: function (scope, form, attributes) {
-            lazyScript.register('jquery-validation').then(function(){
-                form.validate(angular.extend({
-
-                    // Rules for form validation
-                    rules: {
-                        username: {
-                            required: true
-                        },
-                        email: {
-                            required: true,
-                            email: true
-                        },
-                        password: {
-                            required: true,
-                            minlength: 3,
-                            maxlength: 20
-                        },
-                        passwordConfirm: {
-                            required: true,
-                            minlength: 3,
-                            maxlength: 20,
-                            equalTo: '#password'
-                        },
-                        firstname: {
-                            required: true
-                        },
-                        lastname: {
-                            required: true
-                        },
-                        gender: {
-                            required: true
-                        },
-                        terms: {
-                            required: true
-                        }
-                    },
-
-                    // Messages for form validation
-                    messages: {
-                        login: {
-                            required: 'Please enter your login'
-                        },
-                        email: {
-                            required: 'Please enter your email address',
-                            email: 'Please enter a VALID email address'
-                        },
-                        password: {
-                            required: 'Please enter your password'
-                        },
-                        passwordConfirm: {
-                            required: 'Please enter your password one more time',
-                            equalTo: 'Please enter the same password as above'
-                        },
-                        firstname: {
-                            required: 'Please select your first name'
-                        },
-                        lastname: {
-                            required: 'Please select your last name'
-                        },
-                        gender: {
-                            required: 'Please select your gender'
-                        },
-                        terms: {
-                            required: 'You must agree with Terms and Conditions'
+                    if (attributes.selection && angular.isArray(scope.selection)) {
+                        if (scope.options && scope.options.animate) {
+                            jcropApi.animateTo(scope.selection);
+                        } else {
+                            jcropApi.setSelect(scope.selection);
                         }
                     }
+                    imageLoaded.resolve();
+                });
+            };
 
-                }, formsCommon.validateOptions));
-            });
-        }
-    }
-});
-'use strict';
+            _init()
 
-angular.module('SmartAdmin.Forms').directive('smartReviewForm', function (formsCommon, lazyScript) {
-    return {
-        restrict: 'E',
-        link: function (scope, form) {
-            lazyScript.register('jquery-validation').then(function(){
 
-                form.validate(angular.extend({
-                    // Rules for form validation
-                    rules : {
-                        name : {
-                            required : true
-                        },
-                        email : {
-                            required : true,
-                            email : true
-                        },
-                        review : {
-                            required : true,
-                            minlength : 20
-                        },
-                        quality : {
-                            required : true
-                        },
-                        reliability : {
-                            required : true
-                        },
-                        overall : {
-                            required : true
-                        }
-                    },
-
-                    // Messages for form validation
-                    messages : {
-                        name : {
-                            required : 'Please enter your name'
-                        },
-                        email : {
-                            required : 'Please enter your email address',
-                            email : '<i class="fa fa-warning"></i><strong>Please enter a VALID email addres</strong>'
-                        },
-                        review : {
-                            required : 'Please enter your review'
-                        },
-                        quality : {
-                            required : 'Please rate quality of the product'
-                        },
-                        reliability : {
-                            required : 'Please rate reliability of the product'
-                        },
-                        overall : {
-                            required : 'Please rate the product'
-                        }
-                    }
-
-                }, formsCommon.validateOptions));
-            });
         }
     }
 });
@@ -29492,317 +30099,6 @@ angular.module('SmartAdmin.Forms').directive('smartValidateForm', function (form
 
 'use strict';
 
-angular.module('SmartAdmin.Layout').directive('demoStates', function ($rootScope) {
-    return {
-        restrict: 'EA',
-        replace: true,
-        templateUrl: 'app/_common/layout/directives/demo/demo-states.tpl.html',
-        scope: true,
-        link: function (scope, element, attributes) {
-            element.parent().css({
-                position: 'relative'
-            });
-
-            element.on('click', '#demo-setting', function () {
-                element.toggleClass('activate')
-            })
-        },
-        controller: function ($scope) {
-            var $root = $('body');
-
-            $scope.$watch('fixedHeader', function (fixedHeader) {
-                localStorage.setItem('sm-fixed-header', fixedHeader);
-                $root.toggleClass('fixed-header', fixedHeader);
-                if (fixedHeader == false) {
-                    $scope.fixedRibbon = false;
-                    $scope.fixedNavigation = false;
-                }
-            });
-
-
-            $scope.$watch('fixedNavigation', function (fixedNavigation) {
-                localStorage.setItem('sm-fixed-navigation', fixedNavigation);
-                $root.toggleClass('fixed-navigation', fixedNavigation);
-                if (fixedNavigation) {
-                    $scope.insideContainer = false;
-                    $scope.fixedHeader = true;
-                } else {
-                    $scope.fixedRibbon = false;
-                }
-            });
-
-
-            $scope.$watch('fixedRibbon', function (fixedRibbon) {
-                localStorage.setItem('sm-fixed-ribbon', fixedRibbon);
-                $root.toggleClass('fixed-ribbon', fixedRibbon);
-                if (fixedRibbon) {
-                    $scope.fixedHeader = true;
-                    $scope.fixedNavigation = true;
-                    $scope.insideContainer = false;
-                }
-            });
-
-            $scope.$watch('fixedPageFooter', function (fixedPageFooter) {
-                localStorage.setItem('sm-fixed-page-footer', fixedPageFooter);
-                $root.toggleClass('fixed-page-footer', fixedPageFooter);
-            });
-
-            $scope.$watch('insideContainer', function (insideContainer) {
-                localStorage.setItem('sm-inside-container', insideContainer);
-                $root.toggleClass('container', insideContainer);
-                if (insideContainer) {
-                    $scope.fixedRibbon = false;
-                    $scope.fixedNavigation = false;
-                }
-            });
-
-            $scope.$watch('rtl', function (rtl) {
-                localStorage.setItem('sm-rtl', rtl);
-                $root.toggleClass('smart-rtl', rtl);
-            });
-
-            $scope.$watch('menuOnTop', function (menuOnTop) {
-                $rootScope.$broadcast('$smartLayoutMenuOnTop', menuOnTop);
-                localStorage.setItem('sm-menu-on-top', menuOnTop);
-                $root.toggleClass('menu-on-top', menuOnTop);
-
-                if(menuOnTop)$root.removeClass('minified');
-            });
-
-            $scope.$watch('colorblindFriendly', function (colorblindFriendly) {
-                localStorage.setItem('sm-colorblind-friendly', colorblindFriendly);
-                $root.toggleClass('colorblind-friendly', colorblindFriendly);
-            });
-
-
-            $scope.fixedHeader = localStorage.getItem('sm-fixed-header') == 'true';
-            $scope.fixedNavigation = localStorage.getItem('sm-fixed-navigation') == 'true';
-            $scope.fixedRibbon = localStorage.getItem('sm-fixed-ribbon') == 'true';
-            $scope.fixedPageFooter = localStorage.getItem('sm-fixed-page-footer') == 'true';
-            $scope.insideContainer = localStorage.getItem('sm-inside-container') == 'true';
-            $scope.rtl = localStorage.getItem('sm-rtl') == 'true';
-            $scope.menuOnTop = localStorage.getItem('sm-menu-on-top') == 'true' || $root.hasClass('menu-on-top');
-            $scope.colorblindFriendly = localStorage.getItem('sm-colorblind-friendly') == 'true';
-
-
-            $scope.skins = appConfig.skins;
-
-            $scope.smartSkin = localStorage.getItem('sm-skin') || appConfig.smartSkin;
-
-
-            $scope.setSkin = function (skin) {
-                $scope.smartSkin = skin.name;
-                $root.removeClass(_.pluck($scope.skins, 'name').join(' '));
-                $root.addClass(skin.name);
-                localStorage.setItem('sm-skin', skin.name);
-                $("#logo img").attr('src', skin.logo);
-            };
-
-
-            if($scope.smartSkin != "smart-style-0"){
-                $scope.setSkin(_.find($scope.skins, {name: $scope.smartSkin}))
-            }
-
-
-            $scope.factoryReset = function () {
-                $.SmartMessageBox({
-                    title: "<i class='fa fa-refresh' style='color:green'></i> Clear Local Storage",
-                    content: "Would you like to RESET all your saved widgets and clear LocalStorage?1",
-                    buttons: '[No][Yes]'
-                }, function (ButtonPressed) {
-                    if (ButtonPressed == "Yes" && localStorage) {
-                        localStorage.clear();
-                        location.reload()
-                    }
-                });
-            }
-        }
-    }
-});
-"use strict";
-
-(function ($) {
-
-    $.fn.smartCollapseToggle = function () {
-
-        return this.each(function () {
-
-            var $body = $('body');
-            var $this = $(this);
-
-            // only if not  'menu-on-top'
-            if ($body.hasClass('menu-on-top')) {
-
-
-            } else {
-
-                $body.hasClass('mobile-view-activated')
-
-                // toggle open
-                $this.toggleClass('open');
-
-                // for minified menu collapse only second level
-                if ($body.hasClass('minified')) {
-                    if ($this.closest('nav ul ul').length) {
-                        $this.find('>a .collapse-sign .fa').toggleClass('fa-minus-square-o fa-plus-square-o');
-                        $this.find('ul:first').slideToggle(appConfig.menu_speed || 200);
-                    }
-                } else {
-                    // toggle expand item
-                    $this.find('>a .collapse-sign .fa').toggleClass('fa-minus-square-o fa-plus-square-o');
-                    $this.find('ul:first').slideToggle(appConfig.menu_speed || 200);
-                }
-            }
-        });
-    };
-})(jQuery);
-
-angular.module('SmartAdmin.Layout').directive('smartMenu', function ($state, $rootScope) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attrs) {
-            var $body = $('body');
-
-            var $collapsible = element.find('li[data-menu-collapse]');
-
-            var bindEvents = function(){
-                $collapsible.each(function (idx, li) {
-                    var $li = $(li);
-                    $li
-                        .on('click', '>a', function (e) {
-
-                            // collapse all open siblings
-                            $li.siblings('.open').smartCollapseToggle();
-
-                            // toggle element
-                            $li.smartCollapseToggle();
-
-                            // add active marker to collapsed element if it has active childs
-                            if (!$li.hasClass('open') && $li.find('li.active').length > 0) {
-                                $li.addClass('active')
-                            }
-
-                            e.preventDefault();
-                        })
-                        .find('>a').append('<b class="collapse-sign"><em class="fa fa-plus-square-o"></em></b>');
-
-                    // initialization toggle
-                    if ($li.find('li.active').length) {
-                        $li.smartCollapseToggle();
-                        $li.find('li.active').parents('li').addClass('active');
-                    }
-                });
-            }
-            bindEvents();
-
-
-            // click on route link
-            element.on('click', 'a[data-ui-sref]', function (e) {
-                // collapse all siblings to element parents and remove active markers
-                $(this)
-                    .parents('li').addClass('active')
-                    .each(function () {
-                        $(this).siblings('li.open').smartCollapseToggle();
-                        $(this).siblings('li').removeClass('active')
-                    });
-
-                if ($body.hasClass('mobile-view-activated')) {
-                    $rootScope.$broadcast('requestToggleMenu');
-                }
-            });
-
-
-            scope.$on('$smartLayoutMenuOnTop', function (event, menuOnTop) {
-                if (menuOnTop) {
-                    $collapsible.filter('.open').smartCollapseToggle();
-                }
-            });
-        }
-    }
-});
-(function(){
-    "use strict";
-
-    angular.module('SmartAdmin.Layout').directive('smartMenuItems', function ($http, $rootScope, $compile, APP_CONFIG) {
-    return {
-        restrict: 'A',
-        compile: function (element, attrs) {
-            
-
-            function createItem(item, parent, level){
-                var li = $('<li />' ,{'ui-sref-active': "active"})
-                var a = $('<a />');
-                var i = $('<i />');
-
-                li.append(a);
-
-                if (item.sref) {
-                    a.attr('ui-sref', item.sref);
-                    // add this option to reload state when clicked
-
-                    a.attr("ui-sref-opts", "{reload: true}");
-                }
-                if(item.href)
-                    a.attr('href', item.href);
-                if(item.icon){
-                    i.attr('class', item.icon);
-                    a.append(i);
-                }
-                if(item.title){
-                    a.attr('title', item.title);
-                    if(level == 1){ 
-                        a.append(' <span class="menu-item-parent">' + item.title + '</span>');
-                    } else {
-                        a.append(' ' + item.title);
-
-                    }
-
-                    // add a badge to the app.tasks.list item
-                    if (item.sref) {
-                        var myTaskSref = "app.myspace";
-                        if (item.sref.substring(0, myTaskSref.length) === myTaskSref) {
-                            a.append('<span class="badge pull-right inbox-badge">{{getTotalCount()}}</span>');
-                        }
-                    }
-                }
-
-                if(item.items){
-                    var ul = $('<ul />');
-                    li.append(ul);
-                    li.attr('data-menu-collapse', '');
-                    _.forEach(item.items, function(child) {
-                        createItem(child, ul, level+1);
-                    })
-                } 
-
-                parent.append(li); 
-            }
-
-            $http.get(APP_CONFIG.ebaasRootUrl + attrs.smartMenuItems).then(function (res) {
-
-                var ul = $('<ul />', {
-                    'smart-menu': ''
-                })
-                _.forEach(res.data.items, function (item) {
-                    if (item.visible) {
-                        createItem(item, ul, 1);
-                    }
-                })
-                
-                var $scope = $rootScope.$new();
-                var html = $('<div>').append(ul).html(); 
-                var linkingFunction = $compile(html);
-                
-                var _element = linkingFunction($scope);
-
-                element.replaceWith(_element);                
-            })
-        }
-    }
-});
-})();
-'use strict';
-
 angular.module('SmartAdmin.Forms').directive('smartFueluxWizard', function () {
     return {
         restrict: 'A',
@@ -29923,210 +30219,6 @@ angular.module('SmartAdmin.Forms').directive('smartWizard', function () {
 
 
             setStep(currentStep);
-
-        }
-    }
-});
-/**
- * Jarvis Widget Directive
- *
- *    colorbutton="false"
- *    editbutton="false"
-      togglebutton="false"
-       deletebutton="false"
-        fullscreenbutton="false"
-        custombutton="false"
-        collapsed="true"
-          sortable="false"
- *
- *
- */
-"use strict";
-
-angular.module('SmartAdmin.Layout').directive('jarvisWidget', function($rootScope){
-    return {
-        restrict: "A",
-        compile: function(element, attributes){
-            if(element.data('widget-color'))
-                element.addClass('jarviswidget-color-' + element.data('widget-color'));
-
-
-            element.find('.widget-body').prepend('<div class="jarviswidget-editbox"><input class="form-control" type="text"></div>');
-
-            element.addClass('jarviswidget jarviswidget-sortable');
-            $rootScope.$emit('jarvisWidgetAdded', element )
-
-        }
-    }
-});
- "use strict";
- 
- angular.module('SmartAdmin.Layout').directive('widgetGrid', function ($rootScope, $compile, $q, $state, $timeout) {
-
-    var jarvisWidgetsDefaults = {
-        grid: 'article',
-        widgets: '.jarviswidget',
-        localStorage: true,
-        deleteSettingsKey: '#deletesettingskey-options',
-        settingsKeyLabel: 'Reset settings?',
-        deletePositionKey: '#deletepositionkey-options',
-        positionKeyLabel: 'Reset position?',
-        sortable: true,
-        buttonsHidden: false,
-        // toggle button
-        toggleButton: true,
-        toggleClass: 'fa fa-minus | fa fa-plus',
-        toggleSpeed: 200,
-        onToggle: function () {
-        },
-        // delete btn
-        deleteButton: true,
-        deleteMsg: 'Warning: This action cannot be undone!',
-        deleteClass: 'fa fa-times',
-        deleteSpeed: 200,
-        onDelete: function () {
-        },
-        // edit btn
-        editButton: true,
-        editPlaceholder: '.jarviswidget-editbox',
-        editClass: 'fa fa-cog | fa fa-save',
-        editSpeed: 200,
-        onEdit: function () {
-        },
-        // color button
-        colorButton: true,
-        // full screen
-        fullscreenButton: true,
-        fullscreenClass: 'fa fa-expand | fa fa-compress',
-        fullscreenDiff: 3,
-        onFullscreen: function () {
-        },
-        // custom btn
-        customButton: false,
-        customClass: 'folder-10 | next-10',
-        customStart: function () {
-            alert('Hello you, this is a custom button...');
-        },
-        customEnd: function () {
-            alert('bye, till next time...');
-        },
-        // order
-        buttonOrder: '%refresh% %custom% %edit% %toggle% %fullscreen% %delete%',
-        opacity: 1.0,
-        dragHandle: '> header',
-        placeholderClass: 'jarviswidget-placeholder',
-        indicator: true,
-        indicatorTime: 600,
-        ajax: true,
-        timestampPlaceholder: '.jarviswidget-timestamp',
-        timestampFormat: 'Last update: %m%/%d%/%y% %h%:%i%:%s%',
-        refreshButton: true,
-        refreshButtonClass: 'fa fa-refresh',
-        labelError: 'Sorry but there was a error:',
-        labelUpdated: 'Last Update:',
-        labelRefresh: 'Refresh',
-        labelDelete: 'Delete widget:',
-        afterLoad: function () {
-        },
-        rtl: false, // best not to toggle this!
-        onChange: function () {
-
-        },
-        onSave: function () {
-
-        },
-        ajaxnav: true
-
-    }
-
-    var dispatchedWidgetIds = [];
-    var setupWaiting = false;
-
-    var debug = 1;
-
-    var setupWidgets = function (element, widgetIds) {
-
-        if (!setupWaiting) {
-
-            if(_.intersection(widgetIds, dispatchedWidgetIds).length != widgetIds.length){
-
-                dispatchedWidgetIds = _.union(widgetIds, dispatchedWidgetIds);
-
-//                    console.log('setupWidgets', debug++);
-
-                element.data('jarvisWidgets') && element.data('jarvisWidgets').destroy();
-                element.jarvisWidgets(jarvisWidgetsDefaults);
-                initDropdowns(widgetIds);
-            }
-
-        } else {
-            if (!setupWaiting) {
-                setupWaiting = true;
-                $timeout(function () {
-                    setupWaiting = false;
-                    setupWidgets(element, widgetIds)
-                }, 200);
-            }
-        }
-
-    };
-
-    var destroyWidgets = function(element, widgetIds){
-        element.data('jarvisWidgets') && element.data('jarvisWidgets').destroy();
-        dispatchedWidgetIds = _.xor(dispatchedWidgetIds, widgetIds);
-    };
-
-    var initDropdowns = function (widgetIds) {
-        angular.forEach(widgetIds, function (wid) {
-            $('#' + wid + ' [data-toggle="dropdown"]').each(function () {
-                var $parent = $(this).parent();
-                // $(this).removeAttr('data-toggle');
-                if (!$parent.attr('dropdown')) {
-                    $(this).removeAttr('href');
-                    $parent.attr('dropdown', '');
-                    var compiled = $compile($parent)($parent.scope())
-                    $parent.replaceWith(compiled);
-                }
-            })
-        });
-    };
-
-    var jarvisWidgetAddedOff,
-        $viewContentLoadedOff,
-        $stateChangeStartOff;
-
-    return {
-        restrict: 'A',
-        compile: function(element){
-
-            element.removeAttr('widget-grid data-widget-grid');
-
-            var widgetIds = [];
-
-            $viewContentLoadedOff = $rootScope.$on('$viewContentLoaded', function (event, data) {
-                $timeout(function () {
-                    setupWidgets(element, widgetIds)
-                }, 100);
-            });
-
-
-            $stateChangeStartOff = $rootScope.$on('$stateChangeStart',
-                function(event, toState, toParams, fromState, fromParams){
-                    jarvisWidgetAddedOff();
-                    $viewContentLoadedOff();
-                    $stateChangeStartOff();
-                    destroyWidgets(element, widgetIds)
-                });
-
-            jarvisWidgetAddedOff = $rootScope.$on('jarvisWidgetAdded', function (event, widget) {
-                if (widgetIds.indexOf(widget.attr('id')) == -1) {
-                    widgetIds.push(widget.attr('id'));
-                    $timeout(function () {
-                        setupWidgets(element, widgetIds)
-                    }, 100);
-                }
-//                    console.log('jarvisWidgetAdded', widget.attr('id'));
-            });
 
         }
     }

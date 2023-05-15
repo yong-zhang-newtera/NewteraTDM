@@ -149,6 +149,16 @@ namespace Ebaas.WebApi.Infrastructure
                     ((JArray)_rootItem["items"]).Add(item);
                 }
 
+                if (node.StateParameters != null && node.StateParameters.Count > 0)
+                {
+                    JObject parameters = new JObject();
+                    item.Add("parameters", parameters);
+                    foreach (StateParameter parameter in node.StateParameters)
+                    {
+                        parameters.Add(parameter.Name, parameter.Value);
+                    }
+                }
+
                 _parentItemTable[node] = item;
             }
 
@@ -235,11 +245,7 @@ namespace Ebaas.WebApi.Infrastructure
         {
             bool status = true;
 
-            if (!node.IsVisible)
-            {
-                status = false;
-            }
-            else if (_policy != null)
+            if (_policy != null)
             {
                 if (!PermissionChecker.Instance.HasPermission(_policy, node, XaclActionType.Read))
                 {

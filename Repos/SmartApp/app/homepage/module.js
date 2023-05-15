@@ -26,6 +26,9 @@ angular.module("app.homepage").config(function ($stateProvider, modalStateProvid
             resolve: {
                 promisedMenuItems: function ($http, APP_CONFIG) {
                     return $http.get(APP_CONFIG.ebaasRootUrl + "/api/sitemap/menu")
+                },
+                scripts: function (lazyScript) {
+                    return lazyScript.register('dropzone');
                 }
             }
 

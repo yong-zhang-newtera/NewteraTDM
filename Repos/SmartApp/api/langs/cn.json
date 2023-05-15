@@ -397,5 +397,6 @@
   "Delete Packet Info": "删除数据包信息",
   "Confirm Delete Test Item": "该操作不可复原，您确定要删除试验项目信息吗？",
   "Confirm Delete Test Data Packet": "该操作不可复原，您确定要删除试验数据包吗？",
-  "Frequent Queries": "常用查询"
+  "Frequent Queries": "常用查询",
+  "Show All Matches": "显示所有的匹配"
 }
