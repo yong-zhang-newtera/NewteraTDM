@@ -7,7 +7,7 @@ using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
-using Microsoft.Web.Services.Dime;
+using System.Threading;
 
 using Newtera.WinClientCommon;
 using Newtera.WindowsControl;
@@ -40,6 +40,8 @@ namespace Newtera.Studio
 		private AttachmentServiceStub _attachmentService;
         private ActiveXControlServiceStub _activeXService;
 		private WorkInProgressDialog _workInProgressDialog;
+		private CancellationTokenSource _cancellationTokenSource;
+		private MethodInvoker _buildFullTextIndexMethod;
 		private bool _isRequestComplete;
 		private bool _isCancelled;
 		private int _pageSize = 100;
@@ -156,7 +158,8 @@ namespace Newtera.Studio
 			_isAttachmentChanged = false;
 			_isDefaultDataView = true;
 			_workInProgressDialog = new WorkInProgressDialog();
-            _isDBA = true;
+			_buildFullTextIndexMethod = null;
+			_isDBA = true;
 
             this.resultDataControl1.MenuItemStates = _menuItemStates;
 		}
@@ -2546,19 +2549,42 @@ namespace Newtera.Studio
 
 			if (_fullTextIndexClasses.Count > 0)
 			{
-				ClassElement classElement = (ClassElement) _fullTextIndexClasses[_currentIndexClassPosition];
-	
+				// run the generating process on a worker thread since it may take a long time
+				this._buildFullTextIndexMethod = new MethodInvoker(BuildFullTextIndexAsync);
+
+				_buildFullTextIndexMethod.BeginInvoke(new AsyncCallback(BuildFullTextIndexDone), null);
+
 				_isRequestComplete = false;
 
+				// Show the working dialog			
+				ShowWorkingDialog(true, new MethodInvoker(CancelIndexingJob));
+			}
+		}
+
+		private void BuildFullTextIndexAsync()
+		{
+			CMDataServiceStub dataService = new CMDataServiceStub();
+
+			// invoke the web service synchronously
+			// create a cancellation toekn
+			this._cancellationTokenSource = new CancellationTokenSource();
+
+			ClassElement classElement = (ClassElement)_fullTextIndexClasses[_currentIndexClassPosition];
+
+			dataService.BuildFullTextIndex(ConnectionStringBuilder.Instance.Create(_metaData.SchemaInfo),
+				classElement.Name, this._cancellationTokenSource.Token);
+
+			_currentIndexClassPosition++; // move to next class in the list
+
+			while (_currentIndexClassPosition < _fullTextIndexClasses.Count)
+			{
+				classElement = (ClassElement)_fullTextIndexClasses[_currentIndexClassPosition];
+
 				// invoke the web service synchronously
+				dataService.BuildFullTextIndex(ConnectionStringBuilder.Instance.Create(_metaData.SchemaInfo),
+					classElement.Name, this._cancellationTokenSource.Token);
 
-                // Show the status
-                ((DesignStudio)this.MdiParent).ShowWorkingStatus(Newtera.WindowsControl.MessageResourceManager.GetString("DataViewer.BuildFullTextIndex"));
-
-                dataService.BuildFullTextIndex(ConnectionStringBuilder.Instance.Create(_metaData.SchemaInfo),
-					classElement.Name);
-
-                BuildFullTextIndexDone();
+				_currentIndexClassPosition++; // move to next class in the list
 			}
 		}
 
@@ -3025,37 +3051,19 @@ namespace Newtera.Studio
 		/// The AsyncCallback event handler for build full-text index.
 		/// </summary>
 		/// <param name="res">The result</param>
-		private void BuildFullTextIndexDone()
+		private void BuildFullTextIndexDone(IAsyncResult res)
 		{
 			try
 			{
-				_currentIndexClassPosition++; // move to next class in the list
-
-				while (_currentIndexClassPosition < _fullTextIndexClasses.Count)
-				{
-					ClassElement classElement = (ClassElement) _fullTextIndexClasses[_currentIndexClassPosition];
-
-					CMDataServiceStub dataService = new CMDataServiceStub();
-					
-
-					// invoke the web service synchronously
-					dataService.BuildFullTextIndex(ConnectionStringBuilder.Instance.Create(_metaData.SchemaInfo),
-						classElement.Name);
-
-					_currentIndexClassPosition++; // move to next class in the list
-				}
-
-				((DesignStudio) this.MdiParent).ShowReadyStatus();
-						
+				this._buildFullTextIndexMethod.EndInvoke(res);
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show(ex.Message, "Server Error",
-					MessageBoxButtons.OK,
-					MessageBoxIcon.Error);
 			}
 			finally
 			{
+				//Bring down the work in progress dialog
+				HideWorkingDialog();
 			}
 		}
 
@@ -3879,5 +3887,18 @@ namespace Newtera.Studio
         {
             ExportXmlDoc();
         }
+
+		/// <summary>
+		/// Cancel the full text indexing job
+		/// </summary>
+		private void CancelIndexingJob()
+		{
+			if (this._cancellationTokenSource != null)
+			{
+				this._cancellationTokenSource.Cancel();
+			}
+
+			_isRequestComplete = true;
+		}
 	}
 }

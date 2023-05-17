@@ -7,7 +7,7 @@
 namespace Newtera.Server.FullText
 {
 	using System;
-	using System.Data;
+    using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -20,6 +20,6 @@ namespace Newtera.Server.FullText
         /// <summary>
         /// Create or update an external full-text search index
         /// </summary>
-        Task Execute(IndexingContext context);	
+        Task Execute(IndexingContext context, CancellationToken cancellationToken);	
 	}
 }

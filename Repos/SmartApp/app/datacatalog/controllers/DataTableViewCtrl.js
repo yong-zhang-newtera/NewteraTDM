@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app.datacatalog').controller('DataTableViewCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, MetaDataCache, $interval, CartInfo) {
+angular.module('app.datacatalog').controller('DataTableViewCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, MetaDataCache) {
 
     $scope.dbschema = $stateParams.schema;
     $scope.dbclass = $stateParams.class;
@@ -54,11 +54,6 @@ angular.module('app.datacatalog').controller('DataTableViewCtrl', function ($con
     else {
         $scope.attachment = true;
     }
-
-    $scope.hasDataCart = false;
-    var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
-    if (cart.showDataCart)
-        $scope.hasDataCart = true;
 
     $scope.openModal = function () {
         $state.go('.modalform', { schema: $scope.dbschema, class: $scope.dbclass, template: $scope.formTemplate }, { location: false, notify: false });
@@ -277,17 +272,6 @@ angular.module('app.datacatalog').controller('DataTableViewCtrl', function ($con
         if ($scope.gridInstance && data === "update")
             $scope.gridInstance.refresh();
     });
-
-    $scope.getCartItemCount = function()
-    {
-        var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
-        return cart.count;
-    }
-
-    $scope.openCart = function()
-    {
-        $state.go(".datacart", { schema: $scope.dbschema, class: $scope.dbclass }, { location: false, notify: false });
-    }
 
     $scope.downloadReports = function () {
         $state.go(".downloadreports", { schema: $scope.dbschema, class: $scope.dbclass }, { location: false, notify: false });

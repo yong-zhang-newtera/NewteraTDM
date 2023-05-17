@@ -640,12 +640,12 @@ angular.module('app.smarttables').controller('dataGridBaseCtrl', function ($scop
             }
 
             // full text search text
-            var searchText = searchContext.searchText;
+            var searchText = searchContext.typedText;
 
             var filter = undefined;
           
             if (searchText) {
-                filter = "filter=['keywords', 'contains','" + encodeURIComponent(searchText) + "']";
+                filter = "searchtext=" + encodeURIComponent(searchText);
             }
 
             if (filter) {

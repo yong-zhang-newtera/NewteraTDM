@@ -4,14 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Threading;
 
 using Newtera.Common.Core;
-using Newtera.Common.MetaData;
-using Newtera.Common.MetaData.Schema;
-using Newtera.Common.MetaData.Principal;
 
 namespace Newtera.WinClientCommon
 {
@@ -74,6 +69,11 @@ namespace Newtera.WinClientCommon
 
         protected string PostAPICall(string apiUrl, string data, string mineType)
         {
+            return PostAPICall(apiUrl, data, mineType, CancellationToken.None);
+        }
+
+        protected string PostAPICall(string apiUrl, string data, string mineType, CancellationToken cancellationToken)
+        {
             try
             {
                 // Change the cursor to indicate that we are waiting
@@ -96,7 +96,7 @@ namespace Newtera.WinClientCommon
                         postContent.Headers.ContentType = new MediaTypeHeaderValue(mineType);
                     }
 
-                    var response = client.PostAsync(apiUrl, postContent).Result;
+                    var response = client.PostAsync(apiUrl, postContent, cancellationToken).Result;
 
                     if (response.IsSuccessStatusCode)
                     {

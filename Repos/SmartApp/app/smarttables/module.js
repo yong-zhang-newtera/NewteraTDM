@@ -57,7 +57,7 @@ angular.module("app.smarttables")
                 }
             })
             .state('app.smarttables.datagrid', {
-                url: '/datagrid/:schema/:class/:edit/:delete/:insert/:track/:export/:import/:cart/:search/:reports/:attachment/:hash',
+                url: '/datagrid/:schema/:class/:edit/:delete/:insert/:track/:export/:import/:reports/:attachment/:hash',
                 data: {
                     title: 'Smart Data Grid',
                     animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
@@ -91,6 +91,45 @@ angular.module("app.smarttables")
                         }
                         else
                         {
+                            return [];
+                        }
+                    }
+                }
+            })
+            .state('app.smarttables.fulltextdatagrid', {
+                url: '/fulltextdatagrid/:schema/:class/:edit/:delete/:insert/:track/:export/:import/:search/:reports/:attachment/:hash',
+                data: {
+                    title: 'Smart Data Grid',
+                    animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
+                },
+                authenticate: true,
+                views: {
+                    "content@app": {
+                        controller: 'dataGridCtrl',
+                        templateUrl: "app/smarttables/views/datagrid.html"
+                    }
+                },
+                resolve: {
+                    scripts: function (lazyScript) {
+                        return lazyScript.register(
+                            [
+                                'flot',
+                                'flot-resize',
+                                'flot-selection',
+                                'flot-fillbetween',
+                                'flot-orderBar',
+                                'flot-pie',
+                                'flot-time',
+                                'flot-tooltip',
+                                'dropzone',
+                                'summernote'
+                            ])
+                    },
+                    propmisedParams: function ($http, APP_CONFIG, $stateParams) {
+                        if ($stateParams.hash) {
+                            return $http.get(APP_CONFIG.ebaasRootUrl + "/api/sitemap/parameters/" + $stateParams.hash);
+                        }
+                        else {
                             return [];
                         }
                     }
@@ -562,16 +601,6 @@ angular.module("app.smarttables")
             size: 'sm'
         });
 
-        modalStateProvider.state('app.smarttables.datagrid.addtocart', {
-            url: '^/datagridaddtocart/:schema/:class/:oid',
-            templateUrl: "app/datacart/views/add-to-data-cart.html",
-            controller: 'addToDataCartCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'sm'
-        });
-
         modalStateProvider.state('app.smarttables.datagrid.createrequest', {
             url: '^/datagridcreaterequest/:schema/:class/:oid/:sourcetemplate/:orderclass/:targettemplate/:api/:wizardhash',
             templateUrl: "app/wizards/views/create-request.html",
@@ -616,16 +645,6 @@ angular.module("app.smarttables")
             url: '^/datagridfilemanager/:schema/:class/:oid/:cmdHash',
             templateUrl: "app/fileManager/views/file-manager-viewer.html",
             controller: 'fileManagerViewerCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.smarttables.datagrid.datacart', {
-            url: '^/datagriddatacart/:schema/:class',
-            templateUrl: "app/datacart/views/data-cart.html",
-            controller: 'dataCartCtrl',
             backdrop: 'static', /*  this prevent user interaction with the background  */
             keyboard: false,
             animation: false,

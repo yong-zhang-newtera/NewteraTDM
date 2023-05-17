@@ -11,13 +11,12 @@ namespace Newtera.ElasticSearchIndexer
     using System.Data;
     using System.Threading.Tasks;
     using System.Collections.Generic;
- 
+    using System.Threading;
+
     using Newtonsoft.Json.Linq;
     using Newtonsoft.Json;
 
     using Newtera.Common.Core;
-    using Newtera.Common.Config;
-	using Newtera.Common.MetaData.Schema;
     using Newtera.Common.MetaData.DataView;
     using Newtera.Data;
     using Newtera.WebForm;
@@ -37,7 +36,7 @@ namespace Newtera.ElasticSearchIndexer
         /// <summary>
         /// Execute the runner
         /// </summary>
-        public async Task Execute(IndexingContext context)
+        public async Task Execute(IndexingContext context, CancellationToken cancellationToken)
         {
             _context = context;
 
@@ -49,7 +48,7 @@ namespace Newtera.ElasticSearchIndexer
 
                         await DeleteIndex();
 
-                        await CreateDocuments ();
+                        await CreateDocuments(cancellationToken);
 
                         break;
 
@@ -77,7 +76,7 @@ namespace Newtera.ElasticSearchIndexer
         }
 
         // create a document
-        private async Task CreateDocuments()
+        private async Task CreateDocuments(CancellationToken cancellationToken)
         {
             List<JObject> documents = null;
             string schemaName = _context.MetaData.SchemaInfo.Name;
@@ -109,6 +108,11 @@ namespace Newtera.ElasticSearchIndexer
                     // export data to the file in pages
                     while (dataReader.Read())
                     {
+                        if (cancellationToken.IsCancellationRequested)
+                        {
+                            break;
+                        }
+
                         doc = dataReader.GetXmlDocument();
 
                         xmlReader = new XmlNodeReader(doc);
@@ -144,7 +148,7 @@ namespace Newtera.ElasticSearchIndexer
                         else
                         {
                             // got an empty result
-                            break;
+                            //break;
                         }
                     }
                 }

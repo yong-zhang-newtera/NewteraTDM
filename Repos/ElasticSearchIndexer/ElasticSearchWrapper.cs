@@ -48,6 +48,7 @@ namespace Newtera.ElasticSearchIndexer
                 Query = new MultiMatchQuery() { 
                     Query = searchText,
                     Fuzziness = Fuzziness.Auto,
+                    Operator = Operator.And
                 }
             };
 
