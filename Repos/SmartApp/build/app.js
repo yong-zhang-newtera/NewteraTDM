@@ -611,7 +611,6 @@ angular.module('app', [
     "app.filemanager",
     'app.formeditor',
     "app.smartreports",
-    "app.datacart",
     "app.bulletinboard",
     "app.hub",
     "app.dataImporter",
@@ -833,6 +832,7 @@ angular.module('app', [
     }
 
     $rootScope.getSuggestions = function (typedText) {
+        searchContext.typedText = typedText;
         if (typedText && typedText.length > 1) {
             // get suggestions for the type text in search text box
             var url = APP_CONFIG.ebaasRootUrl + "/api/search/raw/" + encodeURIComponent($rootScope.fullText.schema) + "/" + encodeURIComponent($rootScope.fullText.class) + "?searchtext=" + encodeURIComponent(typedText) + "&size=15";
@@ -866,7 +866,7 @@ angular.module('app', [
 
     $rootScope.onSuggestionSelect = function ($item, $model, $label) {
         if ($item.fullText.title === "all") {
-            $state.go('app.smarttables.datagrid', { schema: $rootScope.fullText.schema, class: $rootScope.fullText.class, search: 'fulltext' });
+            $state.go("app.smarttables.fulltextdatagrid", { schema: $rootScope.fullText.schema, class: $rootScope.fullText.class, track: true, attachment: false, search: 'fulltext' });
         }
         else {
             var params = new Object();
@@ -887,7 +887,7 @@ angular.module('app', [
     }
 
     $rootScope.fullTextSearch = function () {
-        $state.go('app.fulltextsearch.result', {}, { reload: true });
+        $state.go("app.smarttables.fulltextdatagrid", { schema: $rootScope.fullText.schema, class: $rootScope.fullText.class, track: true, attachment: false, search: 'fulltext'});
     }
 
     $rootScope.formatLabel = function (model) {
@@ -1589,16 +1589,6 @@ angular.module("app.datacatalog").config(function ($stateProvider, modalStatePro
             size: 'sm'
         });
 
-        modalStateProvider.state('app.datacatalog.datatable.datacart', {
-            url: '^/catalogdatacart/:schema/:class',
-            templateUrl: "app/datacart/views/data-cart.html",
-            controller: 'dataCartCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'lg'
-        });
-
         modalStateProvider.state('app.datacatalog.datatable.downloadreports', {
             url: '^/catalogdownloadreports/:schema/:class',
             templateUrl: "app/datacart/views/download-reports.html",
@@ -1607,16 +1597,6 @@ angular.module("app.datacatalog").config(function ($stateProvider, modalStatePro
             keyboard: false,
             animation: false,
             size: 'md'
-        });
-
-        modalStateProvider.state('app.datacatalog.datatable.addtocart', {
-            url: '^/catalogaddtocart/:schema/:class/:oid',
-            templateUrl: "app/datacart/views/add-to-data-cart.html",
-            controller: 'addToDataCartCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'sm'
         });
 
         modalStateProvider.state('app.datacatalog.datatable.filemanager', {
@@ -2033,6 +2013,34 @@ angular.module('app.forms').config(function ($stateProvider) {
 });
 "use strict";
 
+angular.module("app.fulltextsearch", ["ngResource", "ui.router", "ui.bootstrap", "ui.bootstrap.modal", 'ui.select']);
+
+angular.module("app.fulltextsearch")
+    .config(function ($stateProvider, modalStateProvider) {
+
+        $stateProvider
+            .state('app.fulltextsearch', {
+                abstract: true,
+                data: {
+                    title: 'Full Text Search'
+                }
+            })
+            .state('app.fulltextsearch.result', {
+                url: '/fulltext/searchresult',
+                data: {
+                    title: 'Search Result'
+                },
+                views: {
+                    "content@app": {
+                        templateUrl: "app/fulltextsearch/views/search-result.html",
+                        controller: "searchResultCtrl"
+                    }
+                },
+                authenticate: true
+            })
+    });
+"use strict";
+
 angular.module("app.forum", ["ui.router", "ui.bootstrap"]);
 
 angular.module("app.forum").config(function ($stateProvider, modalStateProvider) {
@@ -2160,34 +2168,6 @@ angular.module("app.galleryview").config(function ($stateProvider, modalStatePro
             animation: false,
             size: 'lg'
         });
-    });
-"use strict";
-
-angular.module("app.fulltextsearch", ["ngResource", "ui.router", "ui.bootstrap", "ui.bootstrap.modal", 'ui.select']);
-
-angular.module("app.fulltextsearch")
-    .config(function ($stateProvider, modalStateProvider) {
-
-        $stateProvider
-            .state('app.fulltextsearch', {
-                abstract: true,
-                data: {
-                    title: 'Full Text Search'
-                }
-            })
-            .state('app.fulltextsearch.result', {
-                url: '/fulltext/searchresult',
-                data: {
-                    title: 'Search Result'
-                },
-                views: {
-                    "content@app": {
-                        templateUrl: "app/fulltextsearch/views/search-result.html",
-                        controller: "searchResultCtrl"
-                    }
-                },
-                authenticate: true
-            })
     });
 "use strict";
 
@@ -2375,20 +2355,6 @@ angular.module("app.homepage").config(function ($stateProvider, modalStateProvid
     });
 "use strict";
 
-angular.module("app.hub", ["ui.router"]);
-
-angular.module("app.hub").config(function ($stateProvider) {
-
-    $stateProvider
-        .state('app.hub', {
-            url: '/hub/:schema',
-            data: {
-                title: 'Message Hub'
-            }
-        });
-    });
-"use strict";
-
 
 angular.module('app.layout', ['ui.router', 'pdf'])
 
@@ -2421,6 +2387,20 @@ angular.module('app.layout', ['ui.router', 'pdf'])
 })
 
 
+"use strict";
+
+angular.module("app.hub", ["ui.router"]);
+
+angular.module("app.hub").config(function ($stateProvider) {
+
+    $stateProvider
+        .state('app.hub', {
+            url: '/hub/:schema',
+            data: {
+                title: 'Message Hub'
+            }
+        });
+    });
 "use strict";
 
 angular.module("app.logs", ["ui.router", "ui.bootstrap"]);
@@ -2788,7 +2768,7 @@ angular.module("app.smarttables")
                 }
             })
             .state('app.smarttables.datagrid', {
-                url: '/datagrid/:schema/:class/:edit/:delete/:insert/:track/:export/:import/:cart/:search/:reports/:attachment/:hash',
+                url: '/datagrid/:schema/:class/:edit/:delete/:insert/:track/:export/:import/:reports/:attachment/:hash',
                 data: {
                     title: 'Smart Data Grid',
                     animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
@@ -2822,6 +2802,45 @@ angular.module("app.smarttables")
                         }
                         else
                         {
+                            return [];
+                        }
+                    }
+                }
+            })
+            .state('app.smarttables.fulltextdatagrid', {
+                url: '/fulltextdatagrid/:schema/:class/:edit/:delete/:insert/:track/:export/:import/:search/:reports/:attachment/:hash',
+                data: {
+                    title: 'Smart Data Grid',
+                    animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
+                },
+                authenticate: true,
+                views: {
+                    "content@app": {
+                        controller: 'dataGridCtrl',
+                        templateUrl: "app/smarttables/views/datagrid.html"
+                    }
+                },
+                resolve: {
+                    scripts: function (lazyScript) {
+                        return lazyScript.register(
+                            [
+                                'flot',
+                                'flot-resize',
+                                'flot-selection',
+                                'flot-fillbetween',
+                                'flot-orderBar',
+                                'flot-pie',
+                                'flot-time',
+                                'flot-tooltip',
+                                'dropzone',
+                                'summernote'
+                            ])
+                    },
+                    propmisedParams: function ($http, APP_CONFIG, $stateParams) {
+                        if ($stateParams.hash) {
+                            return $http.get(APP_CONFIG.ebaasRootUrl + "/api/sitemap/parameters/" + $stateParams.hash);
+                        }
+                        else {
                             return [];
                         }
                     }
@@ -3293,16 +3312,6 @@ angular.module("app.smarttables")
             size: 'sm'
         });
 
-        modalStateProvider.state('app.smarttables.datagrid.addtocart', {
-            url: '^/datagridaddtocart/:schema/:class/:oid',
-            templateUrl: "app/datacart/views/add-to-data-cart.html",
-            controller: 'addToDataCartCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'sm'
-        });
-
         modalStateProvider.state('app.smarttables.datagrid.createrequest', {
             url: '^/datagridcreaterequest/:schema/:class/:oid/:sourcetemplate/:orderclass/:targettemplate/:api/:wizardhash',
             templateUrl: "app/wizards/views/create-request.html",
@@ -3347,16 +3356,6 @@ angular.module("app.smarttables")
             url: '^/datagridfilemanager/:schema/:class/:oid/:cmdHash',
             templateUrl: "app/fileManager/views/file-manager-viewer.html",
             controller: 'fileManagerViewerCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.smarttables.datagrid.datacart', {
-            url: '^/datagriddatacart/:schema/:class',
-            templateUrl: "app/datacart/views/data-cart.html",
-            controller: 'dataCartCtrl',
             backdrop: 'static', /*  this prevent user interaction with the background  */
             keyboard: false,
             animation: false,
@@ -3472,7 +3471,7 @@ $templateCache.put("app/dashboard/projects/recent-projects.tpl.html","<div class
 $templateCache.put("app/dashboard/todo/todo-widget.tpl.html","<div id=\"todo-widget\" jarvis-widget data-widget-editbutton=\"false\" data-widget-color=\"blue\"\r\n     ng-controller=\"TodoCtrl\">\r\n    <header>\r\n        <span class=\"widget-icon\"> <i class=\"fa fa-check txt-color-white\"></i> </span>\r\n\r\n        <h2> ToDo\'s </h2>\r\n\r\n        <div class=\"widget-toolbar\">\r\n            <!-- add: non-hidden - to disable auto hide -->\r\n            <button class=\"btn btn-xs btn-default\" ng-class=\"{active: newTodo}\" ng-click=\"toggleAdd()\"><i ng-class=\"{ \'fa fa-plus\': !newTodo, \'fa fa-times\': newTodo}\"></i> Add</button>\r\n\r\n        </div>\r\n    </header>\r\n    <!-- widget div-->\r\n    <div>\r\n        <div class=\"widget-body no-padding smart-form\">\r\n            <!-- content goes here -->\r\n            <div ng-show=\"newTodo\">\r\n                <h5 class=\"todo-group-title\"><i class=\"fa fa-plus-circle\"></i> New Todo</h5>\r\n\r\n                <form name=\"newTodoForm\" class=\"smart-form\">\r\n                    <fieldset>\r\n                        <section>\r\n                            <label class=\"input\">\r\n                                <input type=\"text\" required class=\"input-lg\" ng-model=\"newTodo.title\"\r\n                                       placeholder=\"What needs to be done?\">\r\n                            </label>\r\n                        </section>\r\n                        <section>\r\n                            <div class=\"col-xs-6\">\r\n                                <label class=\"select\">\r\n                                    <select class=\"input-sm\" ng-model=\"newTodo.state\"\r\n                                            ng-options=\"state as state for state in states\"></select> <i></i> </label>\r\n                            </div>\r\n                        </section>\r\n                    </fieldset>\r\n                    <footer>\r\n                        <button ng-disabled=\"newTodoForm.$invalid\" type=\"button\" class=\"btn btn-primary\"\r\n                                ng-click=\"createTodo()\">\r\n                            Add\r\n                        </button>\r\n                        <button type=\"button\" class=\"btn btn-default\" ng-click=\"toggleAdd()\">\r\n                            Cancel\r\n                        </button>\r\n                    </footer>\r\n                </form>\r\n            </div>\r\n\r\n            <todo-list state=\"Critical\"  title=\"Critical Tasks\" icon=\"warning\" todos=\"todos\"></todo-list>\r\n\r\n            <todo-list state=\"Important\" title=\"Important Tasks\" icon=\"exclamation\" todos=\"todos\"></todo-list>\r\n\r\n            <todo-list state=\"Completed\" title=\"Completed Tasks\" icon=\"check\" todos=\"todos\"></todo-list>\r\n\r\n            <!-- end content -->\r\n        </div>\r\n\r\n    </div>\r\n    <!-- end widget div -->\r\n</div>");
 $templateCache.put("app/homepage/views/sub-header.tpl.html","<div class=\"col-xs-12 col-sm-5 col-md-5 col-lg-8\" data-sparkline-container>\r\n    <ul id=\"sparks\" class=\"\">\r\n        <li class=\"sparks-info\">\r\n            <h5> {{getWord(\'TaskCount\')}} <span class=\"txt-color-blue\">1,271</span></h5>\r\n            <div class=\"sparkline txt-color-blue hidden-mobile hidden-md hidden-sm\">\r\n                130, 187, 250, 257, 200, 210, 300, 270, 363, 247, 270, 363, 247\r\n            </div>\r\n        </li>\r\n        <li class=\"sparks-info\">\r\n            <h5> {{getWord(\"Efficiency\")}} <span class=\"txt-color-purple\"><i class=\"fa fa-arrow-circle-up\"></i>&nbsp;25%</span></h5>\r\n            <div class=\"sparkline txt-color-purple hidden-mobile hidden-md hidden-sm\">\r\n                110,150,300,130,400,240,220,310,220,300, 270, 210\r\n            </div>\r\n        </li>\r\n        <li class=\"sparks-info\">\r\n            <h5> {{getWord(\"CompletedTasks\")}} <span class=\"txt-color-greenDark\"><i class=\"fa fa-check-circle\"></i>&nbsp;879</span></h5>\r\n            <div class=\"sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm\">\r\n                110,150,300,130,400,240,220,310,220,300, 270, 210\r\n            </div>\r\n        </li>\r\n    </ul>\r\n</div>\r\n			");
 $templateCache.put("app/layout/language/language-selector.tpl.html","<ul class=\"header-dropdown-list hidden-xs ng-cloak\" ng-controller=\"LanguagesCtrl\">\r\n    <li class=\"dropdown\" dropdown>\r\n        <a class=\"dropdown-toggle\"  dropdown-toggle href> <img src=\"styles/img/blank.gif\" class=\"flag flag-{{currentLanguage.key}}\" alt=\"{{currentLanguage.alt}}\"> <span> {{currentLanguage.title}} </span>\r\n            <i class=\"fa fa-angle-down\"></i> </a>\r\n        <ul class=\"dropdown-menu pull-right\">\r\n            <li ng-class=\"{active: language==currentLanguage}\" ng-repeat=\"language in languages\">\r\n                <a ng-click=\"selectLanguage(language)\" ><img src=\"styles/img/blank.gif\" class=\"flag flag-{{language.key}}\"\r\n                                                   alt=\"{{language.alt}}\"> {{language.title}}</a>\r\n            </li>\r\n        </ul>\r\n    </li>\r\n</ul>");
-$templateCache.put("app/layout/partials/footer.tpl.html","<div class=\"page-footer\">\r\n    <div class=\"row\">\r\n        <div class=\"col-xs-12 col-sm-6\">\r\n            <span class=\"txt-color-white\">Testing Data Management (TDM) System</span>\r\n        </div>\r\n\r\n        <div class=\"col-xs-6 col-sm-6 text-right hidden-xs\">\r\n            \r\n        </div>\r\n    </div>\r\n</div>");
+$templateCache.put("app/layout/partials/footer.tpl.html","<div class=\"page-footer\">\r\n    <div class=\"row\">\r\n        <div class=\"col-xs-12 col-sm-6\">\r\n            <span class=\"txt-color-white\">Newtera TDM</span>\r\n        </div>\r\n\r\n        <div class=\"col-xs-6 col-sm-6 text-right hidden-xs\">\r\n            \r\n        </div>\r\n    </div>\r\n</div>");
 $templateCache.put("app/layout/partials/header.tpl.html","<header id=\"header\">\r\n<div id=\"logo-group\">\r\n\r\n    <!-- PLACE YOUR LOGO HERE -->\r\n    <span id=\"logo\"><a ui-sref=\"app.homepage.mainmenu\"><img src=\"styles/img/logo.gif\" alt=\"TDM\"></a>\r\n    </span>\r\n    <!-- END LOGO PLACEHOLDER -->\r\n\r\n    <!-- Note: The activity badge color changes when clicked and resets the number to 0\r\n    Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->\r\n   \r\n    <!--\r\n    <span id=\"activity\"> \r\n        <a ui-sref=\"app.tasks.list\" ui-sref-opts=\"{reload: true}\" title=\"{{getWord(\'MyTasks\')}}\"><i class=\"fa fa-user\"></i>\r\n            <b class=\"badge bg-color-red\">{{getTaskCount()}}</b>\r\n        </a>\r\n    </span>\r\n    -->\r\n\r\n    <!-- Note: The activity badge color changes when clicked and resets the number to 0\r\n    Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->\r\n    <span id=\"activity\" class=\"activity-dropdown\" activities-dropdown-toggle>\r\n        <i class=\"fa fa-user\"></i>\r\n        <b class=\"badge bg-color-red\">{{getTotalCount()}}</b>\r\n    </span>\r\n    <div smart-include=\"app/homepage/views/my-activities.html\"></div>\r\n</div>\r\n\r\n<!--\r\n<div style=\"margin-left:300px\">\r\n    <h1 class=\"text-primary hidden-xs hidden-sm hidden-md\">{{getWord(\'AppName\')}}</h1>\r\n</div>\r\n-->\r\n\r\n<!-- pulled right: nav area -->\r\n<div class=\"pull-right\">\r\n\r\n    <!-- intro button -->\r\n    <div id=\"intro\" class=\"btn-header transparent pull-right\">\r\n        <span>\r\n            <a title=\"{{getWord(\'Intro\')}}\" ng-click=\"CallMe();\">\r\n                <i class=\"fa fa-info\"></i>\r\n            </a>\r\n        </span>\r\n    </div>\r\n    <!-- end intro button -->\r\n    <!-- collapse menu button -->\r\n    <div id=\"hide-menu\" class=\"btn-header pull-right\">\r\n        <span>\r\n            <a toggle-menu title=\"{{getWord(\'CollapseMenu\')}}\">\r\n                <i class=\"fa fa-reorder\"></i>\r\n            </a>\r\n        </span>\r\n    </div>\r\n    <!-- end collapse menu -->\r\n    <!-- #MOBILE -->\r\n    <!-- Top menu profile link : this shows only when top menu is active -->\r\n    <ul id=\"mobile-profile-img\" class=\"header-dropdown-list hidden-xs padding-5\">\r\n        <li class=\"\">\r\n            <a href=\"#\" class=\"dropdown-toggle no-margin userdropdown\" data-toggle=\"dropdown\">\r\n                <img src=\"styles/custom/avatars/male.png\" alt=\"John Doe\" class=\"online\" />\r\n            </a>\r\n            <ul class=\"dropdown-menu pull-right\">\r\n                <li>\r\n                    <a href-void class=\"padding-10 padding-top-0 padding-bottom-0\">\r\n                        <i class=\"fa fa-cog\"></i> Setting\r\n                    </a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                    <a ui-sref=\"app.appViews.profileDemo\" class=\"padding-10 padding-top-0 padding-bottom-0\">\r\n                        <i class=\"fa fa-user\"></i>\r\n                        <u>P</u>rofile\r\n                    </a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                    <a href-void class=\"padding-10 padding-top-0 padding-bottom-0\"\r\n                       data-action=\"toggleShortcut\"><i class=\"fa fa-arrow-down\"></i> <u>S</u>hortcut</a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                    <a href-void class=\"padding-10 padding-top-0 padding-bottom-0\"\r\n                       data-action=\"launchFullscreen\"><i class=\"fa fa-arrows-alt\"></i> Full <u>S</u>creen</a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                    <a href=\"#/login\" class=\"padding-10 padding-top-5 padding-bottom-5\" data-action=\"userLogout\">\r\n                        <i class=\"fa fa-sign-out fa-lg\"></i> <strong><u>L</u>ogout</strong>\r\n                    </a>\r\n                </li>\r\n            </ul>\r\n        </li>\r\n    </ul>\r\n\r\n    <!-- logout button -->\r\n    <div id=\"logout\" class=\"btn-header transparent pull-right\">\r\n        <span>\r\n            <a ui-sref=\"logout\" title=\"{{getWord(\'SignOut\')}}\" data-action=\"userLogout\"\r\n               data-logout-msg=\"You can improve your security further after logging out by closing this opened browser\">\r\n                <i class=\"fa fa-sign-out\"></i>\r\n            </a>\r\n        </span>\r\n    </div>\r\n    <!-- end logout button -->\r\n    <!-- search mobile button (this is hidden till mobile view port) -->\r\n    <div id=\"search-mobile\" class=\"btn-header transparent pull-right\" data-search-mobile>\r\n        <span> <a href=\"#\" title=\"Search\"><i class=\"fa fa-search\"></i></a> </span>\r\n    </div>\r\n    <!-- end search mobile button -->\r\n    <!-- fullscreen button -->\r\n    <div id=\"fullscreen\" class=\"btn-header transparent pull-right\">\r\n        <span>\r\n            <a full-screen title=\"{{getWord(\'FullScreen\')}}\">\r\n                <i class=\"fa fa-arrows-alt\"></i>\r\n            </a>\r\n        </span>\r\n    </div>\r\n    <!-- end fullscreen button -->\r\n    <!-- multiple lang dropdown : find all flags in the flags page -->\r\n    <language-selector></language-selector>\r\n    <i ng-show=\"loadingNodeLabels\" class=\"glyphicon glyphicon-refresh\"></i>\r\n    <!-- end multiple lang -->\r\n    <!-- input: full text search field -->\r\n    <form ng-show=\"searchEnabled\" ng-submit=\"fullTextSearch()\" class=\"header-search pull-right\" style=\"padding-right:10px\">\r\n        <input id=\"search-keywords\" name=\"searchKeywords\" type=\"text\" autocomplete=\"off\" size=\"50\"\r\n               placeholder=\"{{getWord(\'FindReports\')}}\"\r\n               ng-model=\"searchContext.searchText\"\r\n               typeahead-input-formatter=\"formatLabel($model)\"\r\n               typeahead=\"suggestion as suggestion.fullText.display for suggestion in getSuggestions($viewValue) | limitTo:10\"\r\n               typeahead-loading=\"loadingNodeLabels\"\r\n               typeahead-on-select=\"onSuggestionSelect($item, $model, $label)\">\r\n        <button type=\"reset\">&times;</button>\r\n    </form>\r\n    <!-- end input: search field -->\r\n\r\n</div>\r\n<!-- end pulled right: nav area -->\r\n\r\n</header>");
 $templateCache.put("app/layout/partials/help-viewer.tpl.html","<div id=\"content\" class=\"wrapper\">\r\n    <!-- widget grid -->\r\n    <section widget-grid id=\"widget-grid\">\r\n        <div class=\"row\">\r\n            <article class=\"col-sm-12 col-md-12 col-lg-12\">\r\n                <div jarvis-widget id=\"wid-id-1\" data-widget-editbutton=\"false\" data-widget-custombutton=\"false\">\r\n                    <header>\r\n                        <span class=\"widget-icon\"> <i class=\"fa fa-edit\"></i> </span>\r\n                        <h2>{{getWord(\"Help\")}}</h2>\r\n                        <div class=\"widget-toolbar\">\r\n                            <span class=\"jarviswidget-ctrls\" ng-click=\"$dismiss()\"> <i class=\"fa fa-close\"></i> </span>\r\n                        </div>\r\n                    </header>\r\n                    <div style=\"overflow-x:auto;\">\r\n                        <!-- widget content -->\r\n                        <div align=\"center\" class=\"padding-10\">\r\n                            <button ng-click=\"zoomIn()\"><i class=\"fa fa-plus\"></i></button>\r\n                            <button ng-click=\"fit()\"><span>100%</span></button>\r\n                            <button ng-click=\"zoomOut()\"><i class=\"fa fa-minus\"></i></button>\r\n                        </div>\r\n                        <div>\r\n                            <ng-pdf template-url=\"app/layout/partials/help-viewer..html\" scale=\"page-fit\"></ng-pdf>\r\n                        </div>\r\n                        <div align=\"center\" class=\"padding-10\">\r\n                            <button ng-click=\"goPrevious()\"><i class=\"fa fa-chevron-left\"></i><span> {{getWord(\"Prev Page\")}}</span></button>\r\n                            <button ng-click=\"goNext()\"><i class=\"fa fa-chevron-right\"></i><span> {{getWord(\"Next Page\")}}</span></button>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </article>\r\n        </div>\r\n    </section>\r\n</div>");
 $templateCache.put("app/layout/partials/navigation.tpl.html","<aside id=\"left-panel\">\r\n\r\n    <!-- User info -->\r\n    <div login-info></div>\r\n    <!-- end user info -->\r\n\r\n    <nav id=\"sidemenu\">\r\n\r\n        <!-- NOTE: This allows you to pull menu items from server -->\r\n        <ul data-smart-menu-items=\"/api/sitemap/menu\"></ul>\r\n\r\n    </nav>\r\n\r\n  <span id=\"minimize-sidemenu\" class=\"minifyme\" data-action=\"minifyMenu\" minify-menu>\r\n    <i class=\"fa fa-arrow-circle-left hit\"></i>\r\n  </span>\r\n\r\n</aside>");
@@ -3481,18 +3480,18 @@ $templateCache.put("app/layout/partials/voice-commands.tpl.html","<!-- TRIGGER B
 $templateCache.put("app/layout/shortcut/shortcut.tpl.html","<div id=\"shortcut\">\r\n	<ul>\r\n		<li>\r\n			<a href=\"#/tasks/list\" class=\"jarvismetro-tile big-cubes bg-color-blue\"> <span class=\"iconbox\"> <i class=\"fa fa-folder-open fa-4x\"></i> <span>{{getWord(\'MyTasks\')}} <span class=\"label pull-right bg-color-darken\">{{getTaskCount()}}</span></span> </span> </a>\r\n		</li>\r\n		<li>\r\n			<a href=\"#/user/profile\" class=\"jarvismetro-tile big-cubes selected bg-color-pinkDark\"> <span class=\"iconbox\"> <i class=\"fa fa-user fa-4x\"></i> <span>{{getWord(\'My Profile\')}} </span> </span> </a>\r\n		</li>\r\n        <li>\r\n            <a href=\"#/user/password\" class=\"jarvismetro-tile big-cubes selected bg-color-darken\"> <span class=\"iconbox\"> <i class=\"fa fa-lock fa-4x\"></i> <span>{{getWord(\'Change Password\')}} </span> </span> </a>\r\n        </li>\r\n	</ul>\r\n</div>");
 $templateCache.put("app/mldashboard/views/model-dashboard.tpl.html","<div jarvis-widget id=\"live-feeds-widget\" data-widget-togglebutton=\"false\" data-widget-editbutton=\"false\"\r\n     data-widget-fullscreenbutton=\"false\" data-widget-colorbutton=\"false\" data-widget-deletebutton=\"false\">\r\n    <header>\r\n        <span class=\"widget-icon\"> <i class=\"glyphicon glyphicon-stats txt-color-darken\"></i> </span>\r\n\r\n        <h2>{{project}}=>{{model}}</h2>\r\n\r\n        <ul class=\"nav nav-tabs pull-right in\" id=\"myTab\">\r\n            <li class=\"active\">\r\n                <a data-toggle=\"tab\" href=\"#s1\"><i class=\"fa fa-clock-o\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"Single Record\")}}</span></a>\r\n            </li>\r\n\r\n            <li>\r\n                <a data-toggle=\"tab\" href=\"#s2\"><i class=\"fa fa-cog\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"Batch Records\")}}</span></a>\r\n            </li>\r\n        </ul>\r\n\r\n    </header>\r\n\r\n    <!-- widget div-->\r\n    <div class=\"no-padding\">\r\n\r\n        <div class=\"widget-body\">\r\n            <!-- content -->\r\n            <div id=\"myTabContent\" class=\"tab-content\">\r\n                <div class=\"tab-pane fade active in padding-10 no-padding-bottom\" id=\"s1\">\r\n                    <!-- widget grid -->\r\n                    <section id=\"widget-grid\" class=\"\">\r\n\r\n                        <!-- START ROW -->\r\n                        <div class=\"row\">\r\n\r\n                            <!-- NEW COL START -->\r\n                            <article class=\"col-sm-12 col-md-12 col-lg-12\">\r\n\r\n                                <!-- Widget ID (each widget will need unique ID)-->\r\n                                <div class=\"jarviswidget\" id=\"wid-id-0\" data-widget-colorbutton=\"false\" data-widget-editbutton=\"false\" data-widget-custombutton=\"false\">\r\n                                                <!-- widget options:\r\n                                    usage: <div class=\"jarviswidget\" id=\"wid-id-0\" data-widget-editbutton=\"false\">\r\n\r\n                                    data-widget-colorbutton=\"false\"\r\n                                    data-widget-editbutton=\"false\"\r\n                                    data-widget-togglebutton=\"false\"\r\n                                    data-widget-deletebutton=\"false\"\r\n                                    data-widget-fullscreenbutton=\"false\"\r\n                                    data-widget-custombutton=\"false\"\r\n                                    data-widget-collapsed=\"true\"\r\n                                    data-widget-sortable=\"false\"\r\n\r\n                                    -->\r\n                                    <header>\r\n                                        <span class=\"widget-icon\"> <i class=\"fa fa-edit\"></i> </span>\r\n                                        <h2>{{getWord(\"ML Model Form\")}}</h2>\r\n\r\n                                    </header>\r\n\r\n                                    <!-- widget div-->\r\n                                    <div>\r\n                                        <!-- widget content -->\r\n                                        <div class=\"widget-body no-padding\">\r\n\r\n                                            <form class=\"smart-form\" ng-submit=\"submitModelForm()\">\r\n                                                <header>\r\n                                                    {{getWord(\"ML Model Inputs\")}}\r\n                                                </header>\r\n\r\n                                                <fieldset>\r\n                                                    <div class=\"row\">\r\n                                                        <section class=\"col col-3\" ng-repeat=\"inputField in inputFields\">\r\n                                                            <label class=\"label\">{{inputField.Label}}</label>\r\n                                                            <label class=\"input\">\r\n                                                                <input type=\"text\" id=\"{{inputField.Label}}\" required ng-model=\"inputField.Value\">\r\n                                                            </label>\r\n                                                        </section>\r\n                                                    </div>\r\n                                                </fieldset>\r\n\r\n                                                <header>\r\n                                                    {{getWord(\"ML Model Outputs\")}}\r\n                                                </header>\r\n\r\n                                                <fieldset>\r\n                                                    <div class=\"row\">\r\n                                                        <section class=\"col col-3\" ng-repeat=\"outputField in outputFields\">\r\n                                                            <label class=\"label\">{{outputField.Label}}</label>\r\n                                                            <label class=\"input\">\r\n                                                                <input type=\"text\" id=\"{{outputField.Label}}\" disabled=\"disabled\" ng-model=\"outputField.Value\">\r\n                                                            </label>\r\n                                                        </section>\r\n                                                    </div>\r\n\r\n                                                </fieldset>\r\n\r\n                                                <footer>\r\n                                                    <button type=\"submit\" class=\"btn btn-primary\" button-spinner=\"loading\">\r\n                                                        {{getWord(\"Evaluate\")}}\r\n                                                    </button>\r\n                                                </footer>\r\n                                            </form>\r\n\r\n                                        </div>\r\n                                        <!-- end widget content -->\r\n\r\n                                    </div>\r\n                                    <!-- end widget div -->\r\n\r\n                                </div>\r\n                                <!-- end widget -->\r\n\r\n                            </article>\r\n                            <!-- END COL -->\r\n\r\n                        </div>\r\n\r\n                        <!-- END ROW -->\r\n                    </section>\r\n                    <!-- end widget grid -->\r\n                </div>\r\n                <!-- end s1 tab pane -->\r\n\r\n                <div class=\"tab-pane fade\" id=\"s2\">\r\n                    <div class=\"padding-10\">\r\n                   \r\n                    </div>\r\n                </div>\r\n                <!-- end s2 tab pane -->\r\n            </div>\r\n            <!-- end content -->\r\n        </div>\r\n    </div>\r\n    <!-- end widget div -->\r\n</div>\r\n");
 $templateCache.put("app/stations/views/live-feeds.tpl.html","<div jarvis-widget id=\"live-feeds-widget\" data-widget-togglebutton=\"false\" data-widget-editbutton=\"false\"\r\n     data-widget-fullscreenbutton=\"false\" data-widget-colorbutton=\"false\" data-widget-deletebutton=\"false\">\r\n<!-- widget options:\r\nusage: <div class=\"jarviswidget\" id=\"wid-id-0\" data-widget-editbutton=\"false\">\r\n\r\ndata-widget-colorbutton=\"false\"\r\ndata-widget-editbutton=\"false\"\r\ndata-widget-togglebutton=\"false\"\r\ndata-widget-deletebutton=\"false\"\r\ndata-widget-fullscreenbutton=\"false\"\r\ndata-widget-custombutton=\"false\"\r\ndata-widget-collapsed=\"true\"\r\ndata-widget-sortable=\"false\"\r\n\r\n-->\r\n<header>\r\n    <span class=\"widget-icon\"> <i class=\"glyphicon glyphicon-stats txt-color-darken\"></i> </span>\r\n\r\n    <h2>{{CurrentStationName}}</h2>\r\n\r\n    <ul class=\"nav nav-tabs pull-right in\" id=\"myTab\">\r\n        <li ng-class=\"showMonitor? \'active\' : null\" ng-show=\"showMonitor\">\r\n            <a data-toggle=\"tab\" href=\"#s1\"><i class=\"fa fa-clock-o\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"LiveData\")}}</span></a>\r\n        </li>\r\n\r\n        <li ng-class=\"!showMonitor? \'active\' : null\">\r\n            <a data-toggle=\"tab\" href=\"#s2\"><i class=\"fa fa-cog\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"StationConfig\")}}</span></a>\r\n        </li>\r\n\r\n        <li>\r\n            <a data-toggle=\"tab\" href=\"#s3\"><i class=\"fa fa-calendar\"></i> <span class=\"hidden-mobile hidden-tablet\">{{getWord(\"Scheduler\")}}</span></a>\r\n        </li>\r\n    </ul>\r\n\r\n</header>\r\n\r\n<!-- widget div-->\r\n<div class=\"no-padding\">\r\n\r\n    <div class=\"widget-body\">\r\n        <!-- content -->\r\n        <div id=\"myTabContent\" class=\"tab-content\">\r\n            <div ng-class=\"showMonitor? \'tab-pane fade active in padding-10 no-padding-bottom\' : \'tab-pane fade\'\" id=\"s1\" ng-show=\"showMonitor\">\r\n                <div class=\"row no-space\">\r\n                    <div class=\"col-xs-12 col-sm-12 col-md-8 col-lg-8\">\r\n						<span class=\"demo-liveupdate-1\"> <span\r\n                                class=\"onoffswitch-title\">{{getWord(\"LiveSwitch\")}}</span> <span\r\n                                class=\"onoffswitch\">\r\n								<input type=\"checkbox\" name=\"start_interval\" ng-model=\"autoUpdate\"\r\n                                        class=\"onoffswitch-checkbox\" id=\"start_interval\">\r\n								<label class=\"onoffswitch-label\" for=\"start_interval\">\r\n                                    <span class=\"onoffswitch-inner\"\r\n                                            data-swchon-text=\"{{getWord(\'SwitchOn\')}}\"\r\n                                            data-swchoff-text=\"{{getWord(\'SwitchOff\')}}\"></span>\r\n                                    <span class=\"onoffswitch-switch\"></span>\r\n                                </label> </span> </span>\r\n\r\n                        <div id=\"updating-chart\" class=\"chart-large txt-color-blue\" flot-basic flot-data=\"liveStats\" flot-options=\"liveStatsOptions\"></div>\r\n\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-12 col-md-4 col-lg-4 show-stats\">\r\n\r\n                        <div class=\"row\">\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> {{settings.ProgressName1}} :<span\r\n                                    >{{settings.ProgressValue1}} {{settings.ProgressUnit1}}</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blueDark\" data-smart-progressbar aria-valuenow=\"{{ settings.ProgressPercent1 }}\"  ng-style=\"{width : ( settings.ProgressPercent1 + \'%\' ) }\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> {{settings.ProgressName2}} : <span\r\n                                    >{{settings.ProgressValue2}} {{settings.ProgressUnit2}}</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blue\" data-smart-progressbar aria-valuenow=\"{{ settings.ProgressPercent2 }}\" ng-style=\"{width : ( settings.ProgressPercent2 + \'%\' ) }\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> {{settings.ProgressName3}} : <span\r\n                                    >{{settings.ProgressValue3}} {{settings.ProgressUnit3}}</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-blue\" data-smart-progressbar aria-valuenow=\"{{ settings.ProgressPercent3 }}\" ng-style=\"{width : ( settings.ProgressPercent3 + \'%\' ) }\"></div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"col-xs-6 col-sm-6 col-md-12 col-lg-12\"><span class=\"text\"> {{settings.ProgressName4}} : <span\r\n                                    >{{settings.ProgressValue4}} {{settings.ProgressUnit4}}</span> </span>\r\n\r\n                                <div class=\"progress\">\r\n                                    <div class=\"progress-bar bg-color-greenLight\" data-smart-progressbar ng-style=\"{width : ( settings.ProgressPercent4 + \'%\' ) }\">></div>\r\n                                </div>\r\n                            </div>\r\n\r\n                        </div>\r\n\r\n                    </div>\r\n                </div>\r\n\r\n                <div class=\"show-stat-microcharts\" data-sparkline-container data-easy-pie-chart-container>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n\r\n                        <div class=\"easy-pie-chart txt-color-orangeDark\" data-percent=\"0\" data-pie-size=\"50\" data-ng-model=\"PiePercent1\">\r\n                            <span class=\"percent percent-sign\">{{settings.PieValue1}}</span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> {{settings.PieName1}} <i class=\"fa fa-caret-up icon-color-bad\"></i> </span>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-greenLight\" data-percent=\"0\" data-pie-size=\"50\" data-ng-model=\"PiePercent2\">\r\n                            <span class=\"percent percent-sign\">{{settings.PieValue2}} </span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> {{settings.PieName2}} <i class=\"fa fa-caret-down icon-color-good\"></i></span>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-blue\" data-percent=\"0\" data-pie-size=\"50\" data-ng-model=\"PiePercent3\">\r\n                            <span class=\"percent percent-sign\">{{settings.PieValue3}} </span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> {{settings.PieName3}} <i class=\"fa fa-caret-up icon-color-good\"></i></span>\r\n                    </div>\r\n                    <div class=\"col-xs-12 col-sm-3 col-md-3 col-lg-3\">\r\n                        <div class=\"easy-pie-chart txt-color-darken\" data-percent=\"0\" data-pie-size=\"50\" data-ng-model=\"PiePercent4\">\r\n                            <span class=\"percent degree-sign\">{{settings.PieValue4}} <i class=\"fa fa-caret-up\"></i></span>\r\n                        </div>\r\n                        <span class=\"easy-pie-title\"> {{settings.PieName4}} <i\r\n                                class=\"fa fa-caret-down icon-color-good\"></i></span>\r\n                    </div>\r\n                </div>\r\n\r\n            </div>\r\n            <!-- end s1 tab pane -->\r\n\r\n            <div ng-class=\"!showMonitor? \'tab-pane fade active in padding-10 no-padding-bottom\' : \'tab-pane fade\'\" id=\"s2\">\r\n                <div class=\"padding-10\">\r\n                    <form name=\"ebaasform\" novalidate\">\r\n                        <ebaas-form-template dbschema=\"dbschema\" dbclass=\"dbclass\" oid=\"oid\" template=\"template\" formattribute=\"formAttribute\" readonly=\"true\"></ebaas-form-template>\r\n                    </form>\r\n                </div>\r\n            </div>\r\n            <!-- end s2 tab pane -->\r\n\r\n            <div ng-class=\"\'tab-pane fade\'\" id=\"s3\">\r\n                <div class=\"padding-10\">\r\n                    <div dx-scheduler=\"schedulerOptions\"></div>\r\n                </div>\r\n            </div>\r\n            <!-- end s3 tab pane -->\r\n        </div>\r\n\r\n        <!-- end content -->\r\n    </div>\r\n\r\n</div>\r\n<!-- end widget div -->\r\n</div>\r\n");
-$templateCache.put("app/dashboard/todo/directives/todo-list.tpl.html","<div>\r\n    <h5 class=\"todo-group-title\"><i class=\"fa fa-{{icon}}\"></i> {{title}} (\r\n        <small class=\"num-of-tasks\">{{scopeItems.length}}</small>\r\n        )\r\n    </h5>\r\n    <ul class=\"todo\">\r\n        <li ng-class=\"{complete: todo.completedAt}\" ng-repeat=\"todo in todos | orderBy: todo._id | filter: filter  track by todo._id\" >\r\n    	<span class=\"handle\"> <label class=\"checkbox\">\r\n            <input type=\"checkbox\" ng-click=\"todo.toggle()\" ng-checked=\"todo.completedAt\"\r\n                   name=\"checkbox-inline\">\r\n            <i></i> </label> </span>\r\n\r\n            <p>\r\n                <strong>Ticket #{{$index + 1}}</strong> - {{todo.title}}\r\n                <span class=\"text-muted\" ng-if=\"todo.description\">{{todo.description}}</span>\r\n                <span class=\"date\">{{todo.createdAt | date}} &dash; <a ng-click=\"deleteTodo(todo)\" class=\"text-muted\"><i\r\n                        class=\"fa fa-trash\"></i></a></span>\r\n\r\n            </p>\r\n        </li>\r\n    </ul>\r\n</div>");
 $templateCache.put("app/dashboard/chat/directives/aside-chat-widget.tpl.html","<ul>\r\n    <li>\r\n        <div class=\"display-users\">\r\n            <input class=\"form-control chat-user-filter\" placeholder=\"Filter\" type=\"text\">\r\n            <dl>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr\"\r\n                       data-chat-id=\"cha1\"\r\n                       data-chat-fname=\"Sadi\"\r\n                       data-chat-lname=\"Orlaf\"\r\n                       data-chat-status=\"busy\"\r\n                       data-chat-alertmsg=\"Sadi Orlaf is in a meeting. Please do not disturb!\"\r\n                       data-chat-alertshow=\"true\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/5.png\' alt=\'Sadi Orlaf\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Sadi Orlaf</h3>\r\n												<p>Marketing Executive</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Sadi Orlaf\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr\"\r\n                       data-chat-id=\"cha2\"\r\n                       data-chat-fname=\"Jessica\"\r\n                       data-chat-lname=\"Dolof\"\r\n                       data-chat-status=\"online\"\r\n                       data-chat-alertmsg=\"\"\r\n                       data-chat-alertshow=\"false\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/1.png\' alt=\'Jessica Dolof\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Jessica Dolof</h3>\r\n												<p>Sales Administrator</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Jessica Dolof\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr\"\r\n                       data-chat-id=\"cha3\"\r\n                       data-chat-fname=\"Zekarburg\"\r\n                       data-chat-lname=\"Almandalie\"\r\n                       data-chat-status=\"online\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/3.png\' alt=\'Zekarburg Almandalie\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Zekarburg Almandalie</h3>\r\n												<p>Sales Admin</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Zekarburg Almandalie\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr\"\r\n                       data-chat-id=\"cha4\"\r\n                       data-chat-fname=\"Barley\"\r\n                       data-chat-lname=\"Krazurkth\"\r\n                       data-chat-status=\"away\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/4.png\' alt=\'Barley Krazurkth\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Barley Krazurkth</h3>\r\n												<p>Sales Director</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Barley Krazurkth\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr offline\"\r\n                       data-chat-id=\"cha5\"\r\n                       data-chat-fname=\"Farhana\"\r\n                       data-chat-lname=\"Amrin\"\r\n                       data-chat-status=\"incognito\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/female.png\' alt=\'Farhana Amrin\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Farhana Amrin</h3>\r\n												<p>Support Admin <small><i class=\'fa fa-music\'></i> Playing Beethoven Classics</small></p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Farhana Amrin (offline)\r\n                    </a>\r\n                </dt>\r\n                <dt>\r\n                    <a href=\"#\" class=\"usr offline\"\r\n                       data-chat-id=\"cha6\"\r\n                       data-chat-fname=\"Lezley\"\r\n                       data-chat-lname=\"Jacob\"\r\n                       data-chat-status=\"incognito\"\r\n                       popover-trigger=\"mouseenter\"\r\n                       popover-placement=\"right\"\r\n                       popover=\"\r\n										<div class=\'usr-card\'>\r\n											<img src=\'styles/img/avatars/male.png\' alt=\'Lezley Jacob\'>\r\n											<div class=\'usr-card-content\'>\r\n												<h3>Lezley Jacob</h3>\r\n												<p>Sales Director</p>\r\n											</div>\r\n										</div>\r\n									\">\r\n                        <i></i>Lezley Jacob (offline)\r\n                    </a>\r\n                </dt>\r\n            </dl>\r\n\r\n\r\n            <!--<a href=\"chat.html\" class=\"btn btn-xs btn-default btn-block sa-chat-learnmore-btn\">About the API</a>-->\r\n        </div>\r\n    </li>\r\n</ul>");
 $templateCache.put("app/dashboard/chat/directives/chat-users.tpl.html","<div id=\"chat-container\" ng-class=\"{open: open}\">\r\n    <span class=\"chat-list-open-close\" ng-click=\"openToggle()\"><i class=\"fa fa-user\"></i><b>!</b></span>\r\n\r\n    <div class=\"chat-list-body custom-scroll\">\r\n        <ul id=\"chat-users\">\r\n            <li ng-repeat=\"chatUser in chatUsers | filter: chatUserFilter\">\r\n                <a ng-click=\"messageTo(chatUser)\"><img ng-src=\"{{chatUser.picture}}\">{{chatUser.username}} <span\r\n                        class=\"badge badge-inverse\">{{chatUser.username.length}}</span><span class=\"state\"><i\r\n                        class=\"fa fa-circle txt-color-green pull-right\"></i></span></a>\r\n            </li>\r\n        </ul>\r\n    </div>\r\n    <div class=\"chat-list-footer\">\r\n        <div class=\"control-group\">\r\n            <form class=\"smart-form\">\r\n                <section>\r\n                    <label class=\"input\" >\r\n                        <input type=\"text\" ng-model=\"chatUserFilter\" id=\"filter-chat-list\" placeholder=\"Filter\">\r\n                    </label>\r\n                </section>\r\n            </form>\r\n        </div>\r\n    </div>\r\n</div>");
 $templateCache.put("app/dashboard/chat/directives/chat-widget.tpl.html","<div id=\"chat-widget\" jarvis-widget data-widget-color=\"blueDark\" data-widget-editbutton=\"false\"\r\n     data-widget-fullscreenbutton=\"false\">\r\n\r\n\r\n    <header>\r\n        <span class=\"widget-icon\"> <i class=\"fa fa-comments txt-color-white\"></i> </span>\r\n\r\n        <h2> SmartMessage </h2>\r\n\r\n        <div class=\"widget-toolbar\">\r\n            <!-- add: non-hidden - to disable auto hide -->\r\n\r\n            <div class=\"btn-group\" data-dropdown>\r\n                <button class=\"btn dropdown-toggle btn-xs btn-success\" dropdown-toggle>\r\n                    Status <i class=\"fa fa-caret-down\"></i>\r\n                </button>\r\n                <ul class=\"dropdown-menu pull-right js-status-update\">\r\n                    <li>\r\n                        <a href-void><i class=\"fa fa-circle txt-color-green\"></i> Online</a>\r\n                    </li>\r\n                    <li>\r\n                        <a href-void><i class=\"fa fa-circle txt-color-red\"></i> Busy</a>\r\n                    </li>\r\n                    <li>\r\n                        <a href-void><i class=\"fa fa-circle txt-color-orange\"></i> Away</a>\r\n                    </li>\r\n                    <li class=\"divider\"></li>\r\n                    <li>\r\n                        <a href-void><i class=\"fa fa-power-off\"></i> Log Off</a>\r\n                    </li>\r\n                </ul>\r\n            </div>\r\n        </div>\r\n    </header>\r\n\r\n    <!-- widget div-->\r\n    <div>\r\n        <div class=\"widget-body widget-hide-overflow no-padding\">\r\n            <!-- content goes here -->\r\n\r\n            <chat-users></chat-users>\r\n\r\n            <!-- CHAT BODY -->\r\n            <div id=\"chat-body\" class=\"chat-body custom-scroll\">\r\n                <ul>\r\n                    <li class=\"message\" ng-repeat=\"message in chatMessages\">\r\n                        <img class=\"message-picture online\" ng-src=\"{{message.user.picture}}\">\r\n\r\n                        <div class=\"message-text\">\r\n                            <time>\r\n                                {{message.date | date }}\r\n                            </time>\r\n                            <a ng-click=\"messageTo(message.user)\" class=\"username\">{{message.user.username}}</a>\r\n                            <div ng-bind-html=\"message.body\"></div>\r\n\r\n                        </div>\r\n                    </li>\r\n                </ul>\r\n            </div>\r\n\r\n            <!-- CHAT FOOTER -->\r\n            <div class=\"chat-footer\">\r\n\r\n                <!-- CHAT TEXTAREA -->\r\n                <div class=\"textarea-div\">\r\n\r\n                    <div class=\"typearea\">\r\n                        <textarea placeholder=\"Write a reply...\" id=\"textarea-expand\"\r\n                                  class=\"custom-scroll\" ng-model=\"newMessage\"></textarea>\r\n                    </div>\r\n\r\n                </div>\r\n\r\n                <!-- CHAT REPLY/SEND -->\r\n											<span class=\"textarea-controls\">\r\n												<button class=\"btn btn-sm btn-primary pull-right\" ng-click=\"sendMessage()\">\r\n                                                    Reply\r\n                                                </button> <span class=\"pull-right smart-form\"\r\n                                                                style=\"margin-top: 3px; margin-right: 10px;\"> <label\r\n                                                    class=\"checkbox pull-right\">\r\n                                                <input type=\"checkbox\" name=\"subscription\" id=\"subscription\">\r\n                                                <i></i>Press <strong> ENTER </strong> to send </label> </span> <a\r\n                                                    href-void class=\"pull-left\"><i\r\n                                                    class=\"fa fa-camera fa-fw fa-lg\"></i></a> </span>\r\n\r\n            </div>\r\n\r\n            <!-- end content -->\r\n        </div>\r\n\r\n    </div>\r\n    <!-- end widget div -->\r\n</div>");
-$templateCache.put("app/_common/layout/directives/demo/demo-states.tpl.html","<div class=\"demo\"><span id=\"demo-setting\"><i class=\"fa fa-cog txt-color-blueDark\"></i></span>\r\n\r\n    <form>\r\n        <legend class=\"no-padding margin-bottom-10\">Layout Options</legend>\r\n        <section>\r\n            <label><input type=\"checkbox\" ng-model=\"fixedHeader\"\r\n                          class=\"checkbox style-0\"><span>Fixed Header</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"fixedNavigation\"\r\n                          class=\"checkbox style-0\"><span>Fixed Navigation</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"fixedRibbon\"\r\n                          class=\"checkbox style-0\"><span>Fixed Ribbon</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"fixedPageFooter\"\r\n                          class=\"checkbox style-0\"><span>Fixed Footer</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"insideContainer\"\r\n                          class=\"checkbox style-0\"><span>Inside <b>.container</b></span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"rtl\"\r\n                          class=\"checkbox style-0\"><span>RTL</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"menuOnTop\"\r\n                          class=\"checkbox style-0\"><span>Menu on <b>top</b></span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"colorblindFriendly\"\r\n                          class=\"checkbox style-0\"><span>For Colorblind <div\r\n                    class=\"font-xs text-right\">(experimental)\r\n            </div></span>\r\n            </label><span id=\"smart-bgimages\"></span></section>\r\n        <section><h6 class=\"margin-top-10 semi-bold margin-bottom-5\">Clear Localstorage</h6><a\r\n                ng-click=\"factoryReset()\" class=\"btn btn-xs btn-block btn-primary\" id=\"reset-smart-widget\"><i\r\n                class=\"fa fa-refresh\"></i> Factory Reset</a></section>\r\n\r\n        <h6 class=\"margin-top-10 semi-bold margin-bottom-5\">SmartAdmin Skins</h6>\r\n\r\n\r\n        <section id=\"smart-styles\">\r\n            <a ng-repeat=\"skin in skins\" ng-click=\"setSkin(skin)\" class=\"{{skin.class}}\" style=\"{{skin.style}}\"><i ng-if=\"skin.name == $parent.smartSkin\" class=\"fa fa-check fa-fw\"></i> {{skin.label}}</a>\r\n        </section>\r\n    </form>\r\n</div>");
+$templateCache.put("app/dashboard/todo/directives/todo-list.tpl.html","<div>\r\n    <h5 class=\"todo-group-title\"><i class=\"fa fa-{{icon}}\"></i> {{title}} (\r\n        <small class=\"num-of-tasks\">{{scopeItems.length}}</small>\r\n        )\r\n    </h5>\r\n    <ul class=\"todo\">\r\n        <li ng-class=\"{complete: todo.completedAt}\" ng-repeat=\"todo in todos | orderBy: todo._id | filter: filter  track by todo._id\" >\r\n    	<span class=\"handle\"> <label class=\"checkbox\">\r\n            <input type=\"checkbox\" ng-click=\"todo.toggle()\" ng-checked=\"todo.completedAt\"\r\n                   name=\"checkbox-inline\">\r\n            <i></i> </label> </span>\r\n\r\n            <p>\r\n                <strong>Ticket #{{$index + 1}}</strong> - {{todo.title}}\r\n                <span class=\"text-muted\" ng-if=\"todo.description\">{{todo.description}}</span>\r\n                <span class=\"date\">{{todo.createdAt | date}} &dash; <a ng-click=\"deleteTodo(todo)\" class=\"text-muted\"><i\r\n                        class=\"fa fa-trash\"></i></a></span>\r\n\r\n            </p>\r\n        </li>\r\n    </ul>\r\n</div>");
 $templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-attribute-form.tpl.html","<form id=\"attributeForm\" class=\"form-horizontal\"\r\n      data-bv-message=\"This value is not valid\"\r\n      data-bv-feedbackicons-valid=\"glyphicon glyphicon-ok\"\r\n      data-bv-feedbackicons-invalid=\"glyphicon glyphicon-remove\"\r\n      data-bv-feedbackicons-validating=\"glyphicon glyphicon-refresh\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Set validator options via HTML attributes\r\n        </legend>\r\n\r\n        <div class=\"alert alert-warning\">\r\n            <code>&lt; input\r\n                data-bv-validatorname\r\n                data-bv-validatorname-validatoroption=\"...\" / &gt;</code>\r\n\r\n            <br>\r\n            <br>\r\n            More validator options can be found here:\r\n            <a href=\"http://bootstrapvalidator.com/validators/\" target=\"_blank\">http://bootstrapvalidator.com/validators/</a>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Full name</label>\r\n            <div class=\"col-lg-4\">\r\n                <input type=\"text\" class=\"form-control\" name=\"firstName\" placeholder=\"First name\"\r\n                       data-bv-notempty=\"true\"\r\n                       data-bv-notempty-message=\"The first name is required and cannot be empty\" />\r\n            </div>\r\n            <div class=\"col-lg-4\">\r\n                <input type=\"text\" class=\"form-control\" name=\"lastName\" placeholder=\"Last name\"\r\n                       data-bv-notempty=\"true\"\r\n                       data-bv-notempty-message=\"The last name is required and cannot be empty\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Username</label>\r\n            <div class=\"col-lg-5\">\r\n                <input type=\"text\" class=\"form-control\" name=\"username\"\r\n                       data-bv-message=\"The username is not valid\"\r\n\r\n                       data-bv-notempty=\"true\"\r\n                       data-bv-notempty-message=\"The username is required and cannot be empty\"\r\n\r\n                       data-bv-regexp=\"true\"\r\n                       data-bv-regexp-regexp=\"^[a-zA-Z0-9_\\.]+$\"\r\n                       data-bv-regexp-message=\"The username can only consist of alphabetical, number, dot and underscore\"\r\n\r\n                       data-bv-stringlength=\"true\"\r\n                       data-bv-stringlength-min=\"6\"\r\n                       data-bv-stringlength-max=\"30\"\r\n                       data-bv-stringlength-message=\"The username must be more than 6 and less than 30 characters long\"\r\n\r\n                       data-bv-different=\"true\"\r\n                       data-bv-different-field=\"password\"\r\n                       data-bv-different-message=\"The username and password cannot be the same as each other\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Email address</label>\r\n            <div class=\"col-lg-5\">\r\n                <input class=\"form-control\" name=\"email\" type=\"email\"\r\n                       data-bv-emailaddress=\"true\"\r\n                       data-bv-emailaddress-message=\"The input is not a valid email address\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Password</label>\r\n            <div class=\"col-lg-5\">\r\n                <input type=\"password\" class=\"form-control\" name=\"password\"\r\n                       data-bv-notempty=\"true\"\r\n                       data-bv-notempty-message=\"The password is required and cannot be empty\"\r\n\r\n                       data-bv-identical=\"true\"\r\n                       data-bv-identical-field=\"confirmPassword\"\r\n                       data-bv-identical-message=\"The password and its confirm are not the same\"\r\n\r\n                       data-bv-different=\"true\"\r\n                       data-bv-different-field=\"username\"\r\n                       data-bv-different-message=\"The password cannot be the same as username\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Retype password</label>\r\n            <div class=\"col-lg-5\">\r\n                <input type=\"password\" class=\"form-control\" name=\"confirmPassword\"\r\n                       data-bv-notempty=\"true\"\r\n                       data-bv-notempty-message=\"The confirm password is required and cannot be empty\"\r\n\r\n                       data-bv-identical=\"true\"\r\n                       data-bv-identical-field=\"password\"\r\n                       data-bv-identical-message=\"The password and its confirm are not the same\"\r\n\r\n                       data-bv-different=\"true\"\r\n                       data-bv-different-field=\"username\"\r\n                       data-bv-different-message=\"The password cannot be the same as username\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Languages</label>\r\n            <div class=\"col-lg-5\">\r\n                <div class=\"checkbox\">\r\n                    <label>\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"english\"\r\n                               data-bv-message=\"Please specify at least one language you can speak\"\r\n                               data-bv-notempty=\"true\" />\r\n                        English </label>\r\n                </div>\r\n                <div class=\"checkbox\">\r\n                    <label>\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"french\" />\r\n                        French </label>\r\n                </div>\r\n                <div class=\"checkbox\">\r\n                    <label>\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"german\" />\r\n                        German </label>\r\n                </div>\r\n                <div class=\"checkbox\">\r\n                    <label>\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"russian\" />\r\n                        Russian </label>\r\n                </div>\r\n                <div class=\"checkbox\">\r\n                    <label>\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"other\" />\r\n                        Other </label>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n</form>\r\n     ");
 $templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-button-group-form.tpl.html","<form id=\"buttonGroupForm\" method=\"post\" class=\"form-horizontal\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Default Form Elements\r\n        </legend>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Gender</label>\r\n            <div class=\"col-lg-9\">\r\n                <div class=\"btn-group\" data-toggle=\"buttons\">\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"radio\" name=\"gender\" value=\"male\" />\r\n                        Male </label>\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"radio\" name=\"gender\" value=\"female\" />\r\n                        Female </label>\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"radio\" name=\"gender\" value=\"other\" />\r\n                        Other </label>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Languages</label>\r\n            <div class=\"col-lg-9\">\r\n                <div class=\"btn-group\" data-toggle=\"buttons\">\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"english\" />\r\n                        English </label>\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"german\" />\r\n                        German </label>\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"french\" />\r\n                        French </label>\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"russian\" />\r\n                        Russian </label>\r\n                    <label class=\"btn btn-default\">\r\n                        <input type=\"checkbox\" name=\"languages[]\" value=\"italian\">\r\n                        Italian </label>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n</form>\r\n");
 $templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-contact-form.tpl.html","<form id=\"contactForm\" method=\"post\" class=\"form-horizontal\">\r\n\r\n    <fieldset>\r\n        <legend>Showing messages in custom area</legend>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-md-3 control-label\">Full name</label>\r\n            <div class=\"col-md-6\">\r\n                <input type=\"text\" class=\"form-control\" name=\"fullName\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-md-3 control-label\">Email</label>\r\n            <div class=\"col-md-6\">\r\n                <input type=\"text\" class=\"form-control\" name=\"email\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-md-3 control-label\">Title</label>\r\n            <div class=\"col-md-6\">\r\n                <input type=\"text\" class=\"form-control\" name=\"title\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-md-3 control-label\">Content</label>\r\n            <div class=\"col-md-6\">\r\n                <textarea class=\"form-control\" name=\"content\" rows=\"5\"></textarea>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <!-- #messages is where the messages are placed inside -->\r\n        <div class=\"form-group\">\r\n            <div class=\"col-md-9 col-md-offset-3\">\r\n                <div id=\"messages\"></div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n</form>\r\n");
 $templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-movie-form.tpl.html","\r\n<form id=\"movieForm\" method=\"post\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Default Form Elements\r\n        </legend>\r\n        <div class=\"form-group\">\r\n            <div class=\"row\">\r\n                <div class=\"col-md-8\">\r\n                    <label class=\"control-label\">Movie title</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"title\" />\r\n                </div>\r\n\r\n                <div class=\"col-md-4 selectContainer\">\r\n                    <label class=\"control-label\">Genre</label>\r\n                    <select class=\"form-control\" name=\"genre\">\r\n                        <option value=\"\">Choose a genre</option>\r\n                        <option value=\"action\">Action</option>\r\n                        <option value=\"comedy\">Comedy</option>\r\n                        <option value=\"horror\">Horror</option>\r\n                        <option value=\"romance\">Romance</option>\r\n                    </select>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <div class=\"row\">\r\n                <div class=\"col-sm-12 col-md-4\">\r\n                    <label class=\"control-label\">Director</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"director\" />\r\n                </div>\r\n\r\n                <div class=\"col-sm-12 col-md-4\">\r\n                    <label class=\"control-label\">Writer</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"writer\" />\r\n                </div>\r\n\r\n                <div class=\"col-sm-12 col-md-4\">\r\n                    <label class=\"control-label\">Producer</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"producer\" />\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <div class=\"row\">\r\n                <div class=\"col-sm-12 col-md-6\">\r\n                    <label class=\"control-label\">Website</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"website\" />\r\n                </div>\r\n\r\n                <div class=\"col-sm-12 col-md-6\">\r\n                    <label class=\"control-label\">Youtube trailer</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"trailer\" />\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"control-label\">Review</label>\r\n            <textarea class=\"form-control\" name=\"review\" rows=\"8\"></textarea>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n\r\n            <div class=\"row\">\r\n                <div class=\"col-sm-12 col-md-12\">\r\n                    <label class=\"control-label\">Rating</label>\r\n                </div>\r\n\r\n                <div class=\"col-sm-12 col-md-10\">\r\n\r\n                    <label class=\"radio radio-inline no-margin\">\r\n                        <input type=\"radio\" name=\"rating\" value=\"terrible\" class=\"radiobox style-2\" />\r\n                        <span>Terrible</span> </label>\r\n\r\n                    <label class=\"radio radio-inline\">\r\n                        <input type=\"radio\" name=\"rating\" value=\"watchable\" class=\"radiobox style-2\" />\r\n                        <span>Watchable</span> </label>\r\n                    <label class=\"radio radio-inline\">\r\n                        <input type=\"radio\" name=\"rating\" value=\"best\" class=\"radiobox style-2\" />\r\n                        <span>Best ever</span> </label>\r\n\r\n                </div>\r\n\r\n            </div>\r\n\r\n        </div>\r\n    </fieldset>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n</form>\r\n\r\n ");
 $templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-product-form.tpl.html","<form id=\"productForm\" class=\"form-horizontal\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Default Form Elements\r\n        </legend>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-xs-2 col-lg-3 control-label\">Price</label>\r\n            <div class=\"col-xs-9 col-lg-6 inputGroupContainer\">\r\n                <div class=\"input-group\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"price\" />\r\n                    <span class=\"input-group-addon\">$</span>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-xs-2 col-lg-3 control-label\">Amount</label>\r\n            <div class=\"col-xs-9 col-lg-6 inputGroupContainer\">\r\n                <div class=\"input-group\">\r\n                    <span class=\"input-group-addon\">&#8364;</span>\r\n                    <input type=\"text\" class=\"form-control\" name=\"amount\" />\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-xs-2 col-lg-3 control-label\">Color</label>\r\n            <div class=\"col-xs-9 col-lg-6 selectContainer\">\r\n                <select class=\"form-control\" name=\"color\">\r\n                    <option value=\"\">Choose a color</option>\r\n                    <option value=\"blue\">Blue</option>\r\n                    <option value=\"green\">Green</option>\r\n                    <option value=\"red\">Red</option>\r\n                    <option value=\"yellow\">Yellow</option>\r\n                    <option value=\"white\">White</option>\r\n                </select>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-xs-2 col-lg-3 control-label\">Size</label>\r\n            <div class=\"col-xs-9 col-lg-6 selectContainer\">\r\n                <select class=\"form-control\" name=\"size\">\r\n                    <option value=\"\">Choose a size</option>\r\n                    <option value=\"S\">S</option>\r\n                    <option value=\"M\">M</option>\r\n                    <option value=\"L\">L</option>\r\n                    <option value=\"XL\">XL</option>\r\n                </select>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</form>\r\n\r\n");
 $templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-profile-form.tpl.html","<form id=\"profileForm\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Default Form Elements\r\n        </legend>\r\n        <div class=\"form-group\">\r\n            <label>Email address</label>\r\n            <input type=\"text\" class=\"form-control\" name=\"email\" />\r\n        </div>\r\n    </fieldset>\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label>Password</label>\r\n            <input type=\"password\" class=\"form-control\" name=\"password\" />\r\n        </div>\r\n    </fieldset>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</form>\r\n");
-$templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-toggling-form.tpl.html","<form id=\"togglingForm\" method=\"post\" class=\"form-horizontal\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Default Form Elements\r\n        </legend>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Full name <sup>*</sup></label>\r\n            <div class=\"col-lg-4\">\r\n                <input type=\"text\" class=\"form-control\" name=\"firstName\" placeholder=\"First name\" />\r\n            </div>\r\n            <div class=\"col-lg-4\">\r\n                <input type=\"text\" class=\"form-control\" name=\"lastName\" placeholder=\"Last name\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Company <sup>*</sup></label>\r\n            <div class=\"col-lg-5\">\r\n                <input type=\"text\" class=\"form-control\" name=\"company\"\r\n                       required data-bv-notempty-message=\"The company name is required\" />\r\n            </div>\r\n            <div class=\"col-lg-2\">\r\n                <button type=\"button\" class=\"btn btn-info btn-sm\" data-toggle=\"#jobInfo\">\r\n                    Add more info\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <!-- These fields will not be validated as long as they are not visible -->\r\n    <div id=\"jobInfo\" style=\"display: none;\">\r\n        <fieldset>\r\n            <div class=\"form-group\">\r\n                <label class=\"col-lg-3 control-label\">Job title <sup>*</sup></label>\r\n                <div class=\"col-lg-5\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"job\" />\r\n                </div>\r\n            </div>\r\n        </fieldset>\r\n\r\n        <fieldset>\r\n            <div class=\"form-group\">\r\n                <label class=\"col-lg-3 control-label\">Department <sup>*</sup></label>\r\n                <div class=\"col-lg-5\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"department\" />\r\n                </div>\r\n            </div>\r\n        </fieldset>\r\n    </div>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Mobile phone <sup>*</sup></label>\r\n            <div class=\"col-lg-5\">\r\n                <input type=\"text\" class=\"form-control\" name=\"mobilePhone\" />\r\n            </div>\r\n            <div class=\"col-lg-2\">\r\n                <button type=\"button\" class=\"btn btn-info btn-sm\" data-toggle=\"#phoneInfo\">\r\n                    Add more phone numbers\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n    <!-- These fields will not be validated as long as they are not visible -->\r\n    <div id=\"phoneInfo\" style=\"display: none;\">\r\n\r\n        <fieldset>\r\n            <div class=\"form-group\">\r\n                <label class=\"col-lg-3 control-label\">Home phone</label>\r\n                <div class=\"col-lg-5\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"homePhone\" />\r\n                </div>\r\n            </div>\r\n        </fieldset>\r\n        <fieldset>\r\n            <div class=\"form-group\">\r\n                <label class=\"col-lg-3 control-label\">Office phone</label>\r\n                <div class=\"col-lg-5\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"officePhone\" />\r\n                </div>\r\n            </div>\r\n        </fieldset>\r\n    </div>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</form>");}]);
+$templateCache.put("app/_common/forms/directives/bootstrap-validation/bootstrap-toggling-form.tpl.html","<form id=\"togglingForm\" method=\"post\" class=\"form-horizontal\">\r\n\r\n    <fieldset>\r\n        <legend>\r\n            Default Form Elements\r\n        </legend>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Full name <sup>*</sup></label>\r\n            <div class=\"col-lg-4\">\r\n                <input type=\"text\" class=\"form-control\" name=\"firstName\" placeholder=\"First name\" />\r\n            </div>\r\n            <div class=\"col-lg-4\">\r\n                <input type=\"text\" class=\"form-control\" name=\"lastName\" placeholder=\"Last name\" />\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Company <sup>*</sup></label>\r\n            <div class=\"col-lg-5\">\r\n                <input type=\"text\" class=\"form-control\" name=\"company\"\r\n                       required data-bv-notempty-message=\"The company name is required\" />\r\n            </div>\r\n            <div class=\"col-lg-2\">\r\n                <button type=\"button\" class=\"btn btn-info btn-sm\" data-toggle=\"#jobInfo\">\r\n                    Add more info\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n\r\n    <!-- These fields will not be validated as long as they are not visible -->\r\n    <div id=\"jobInfo\" style=\"display: none;\">\r\n        <fieldset>\r\n            <div class=\"form-group\">\r\n                <label class=\"col-lg-3 control-label\">Job title <sup>*</sup></label>\r\n                <div class=\"col-lg-5\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"job\" />\r\n                </div>\r\n            </div>\r\n        </fieldset>\r\n\r\n        <fieldset>\r\n            <div class=\"form-group\">\r\n                <label class=\"col-lg-3 control-label\">Department <sup>*</sup></label>\r\n                <div class=\"col-lg-5\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"department\" />\r\n                </div>\r\n            </div>\r\n        </fieldset>\r\n    </div>\r\n\r\n    <fieldset>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-3 control-label\">Mobile phone <sup>*</sup></label>\r\n            <div class=\"col-lg-5\">\r\n                <input type=\"text\" class=\"form-control\" name=\"mobilePhone\" />\r\n            </div>\r\n            <div class=\"col-lg-2\">\r\n                <button type=\"button\" class=\"btn btn-info btn-sm\" data-toggle=\"#phoneInfo\">\r\n                    Add more phone numbers\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </fieldset>\r\n    <!-- These fields will not be validated as long as they are not visible -->\r\n    <div id=\"phoneInfo\" style=\"display: none;\">\r\n\r\n        <fieldset>\r\n            <div class=\"form-group\">\r\n                <label class=\"col-lg-3 control-label\">Home phone</label>\r\n                <div class=\"col-lg-5\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"homePhone\" />\r\n                </div>\r\n            </div>\r\n        </fieldset>\r\n        <fieldset>\r\n            <div class=\"form-group\">\r\n                <label class=\"col-lg-3 control-label\">Office phone</label>\r\n                <div class=\"col-lg-5\">\r\n                    <input type=\"text\" class=\"form-control\" name=\"officePhone\" />\r\n                </div>\r\n            </div>\r\n        </fieldset>\r\n    </div>\r\n\r\n    <div class=\"form-actions\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <button class=\"btn btn-default\" type=\"submit\">\r\n                    <i class=\"fa fa-eye\"></i>\r\n                    Validate\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</form>");
+$templateCache.put("app/_common/layout/directives/demo/demo-states.tpl.html","<div class=\"demo\"><span id=\"demo-setting\"><i class=\"fa fa-cog txt-color-blueDark\"></i></span>\r\n\r\n    <form>\r\n        <legend class=\"no-padding margin-bottom-10\">Layout Options</legend>\r\n        <section>\r\n            <label><input type=\"checkbox\" ng-model=\"fixedHeader\"\r\n                          class=\"checkbox style-0\"><span>Fixed Header</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"fixedNavigation\"\r\n                          class=\"checkbox style-0\"><span>Fixed Navigation</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"fixedRibbon\"\r\n                          class=\"checkbox style-0\"><span>Fixed Ribbon</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"fixedPageFooter\"\r\n                          class=\"checkbox style-0\"><span>Fixed Footer</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"insideContainer\"\r\n                          class=\"checkbox style-0\"><span>Inside <b>.container</b></span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"rtl\"\r\n                          class=\"checkbox style-0\"><span>RTL</span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"menuOnTop\"\r\n                          class=\"checkbox style-0\"><span>Menu on <b>top</b></span></label>\r\n            <label><input type=\"checkbox\"\r\n                          ng-model=\"colorblindFriendly\"\r\n                          class=\"checkbox style-0\"><span>For Colorblind <div\r\n                    class=\"font-xs text-right\">(experimental)\r\n            </div></span>\r\n            </label><span id=\"smart-bgimages\"></span></section>\r\n        <section><h6 class=\"margin-top-10 semi-bold margin-bottom-5\">Clear Localstorage</h6><a\r\n                ng-click=\"factoryReset()\" class=\"btn btn-xs btn-block btn-primary\" id=\"reset-smart-widget\"><i\r\n                class=\"fa fa-refresh\"></i> Factory Reset</a></section>\r\n\r\n        <h6 class=\"margin-top-10 semi-bold margin-bottom-5\">SmartAdmin Skins</h6>\r\n\r\n\r\n        <section id=\"smart-styles\">\r\n            <a ng-repeat=\"skin in skins\" ng-click=\"setSkin(skin)\" class=\"{{skin.class}}\" style=\"{{skin.style}}\"><i ng-if=\"skin.name == $parent.smartSkin\" class=\"fa fa-check fa-fw\"></i> {{skin.label}}</a>\r\n        </section>\r\n    </form>\r\n</div>");}]);
 "use strict";
 
 angular.module("app.stations", ["ui.router", "ui.bootstrap"]);
@@ -4894,12 +4893,12 @@ angular.module('app.chat', ['ngSanitize'])
 (function(){
     "use strict";
 
-    angular.module('SmartAdmin.Layout', []);
+    angular.module('SmartAdmin.Forms', []);
 })();
 (function(){
     "use strict";
 
-    angular.module('SmartAdmin.Forms', []);
+    angular.module('SmartAdmin.Layout', []);
 })();
 (function (app) {
     app.factory('AuthInterceptorService', ['$q', '$location', 'localStorageService', function ($q, $location, localStorageService) {
@@ -5510,34 +5509,556 @@ angular.module('app.forms').value('formsCommon', {
             }
         }
     });
+"use strict";
+
+angular.module('app.auth').directive('loginInfo', function(User){
+
+    return {
+        restrict: 'A',
+        templateUrl: 'app/auth/directives/login-info.tpl.html',
+        link: function(scope, element){
+            User.initialized.then(function () {
+                scope.user = User
+            });
+        }
+    }
+})
+
+"use strict";
+
+angular.module("app.auth").factory("authService", function($rootScope, $http, $q, localStorageService, APP_CONFIG) {
+
+    var authServiceFactory = {};
+
+    var _authentication = {
+        isAuth: false,
+        userName: ""
+    };
+
+    var _saveRegistration = function(registration) {
+
+        _logOut();
+
+        return $http.post(APP_CONFIG.ebaasRootUrl + '/api/accounts/create', registration).then(function(response) {
+            return response;
+        });
+    };
+
+    var _login = function(loginData) {
+
+        var data = "grant_type=password&username=" + loginData.userName + "&password=" + loginData.password;
+
+        var deferred = $q.defer();
+
+        var url = APP_CONFIG.ebaasRootUrl + '/oauth/token';
+
+        $http.post(url, data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).success(function(response) {
+
+            localStorageService.set('authorizationData', { token: response.access_token, userName: loginData.userName });
+
+            _authentication.isAuth = true;
+            _authentication.userName = loginData.userName;
+
+            deferred.resolve(response);
+
+        }).error(function (err, status) {
+            if (err.error === "invalid_grant")
+            {
+                err.error_description = $rootScope.getWord("Invalid user name or password");
+            }
+            _logOut();
+            deferred.reject(err);
+        });
+
+        return deferred.promise;
+
+    };
+
+    var _logOut = function() {
+
+        localStorageService.remove('authorizationData');
+
+        _authentication.isAuth = false;
+        _authentication.userName = "";
+
+    };
+
+    var _fillAuthData = function() {
+
+        var authData = localStorageService.get('authorizationData');
+        if (authData) {
+            _authentication.isAuth = true;
+            _authentication.userName = authData.userName;
+        }
+
+    }
+
+    authServiceFactory.saveRegistration = _saveRegistration;
+    authServiceFactory.login = _login;
+    authServiceFactory.logOut = _logOut;
+    authServiceFactory.fillAuthData = _fillAuthData;
+    authServiceFactory.authentication = _authentication;
+
+    return authServiceFactory;
+});
+(function (app) {
+    var LoginController = function ($rootScope, $scope, $http, $state, $location, authService, APP_CONFIG, User, TasksInfo, myActivityService, hubService) {
+
+        $scope.loginData = {
+            userName: "",
+            password: ""
+        };
+
+        $scope.message = "";
+
+        $scope.login = function () {
+            authService.login($scope.loginData).then(function (response) {
+
+                if ($rootScope.returnToState) {
+                    $location.path($rootScope.returnToState);
+                } else {
+                    $location.path('/');
+                }
+
+                // load user's info
+                User.load(function () {
+                    hubService.connect(APP_CONFIG.dbschema, function (type, message) {
+                        myActivityService.add(type, message);
+                    }); // connect to server hub to receive messages
+                }); // load user info
+
+                //get user's task count to display at header
+                $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/" + encodeURIComponent(APP_CONFIG.dbschema) + "/count")
+                    .success(function (data) {
+                        TasksInfo.count = data;
+                    });
+
+                //get user's message count to display at header
+                $http.get(APP_CONFIG.ebaasRootUrl + "/api/messages/count")
+                    .success(function (data) {
+                        myActivityService.MessageModel.count = data;
+                    });
+            },
+            function (err) {
+                $scope.message = err.error_description;
+            });
+        };
+
+        if (!String.format) {
+            String.format = function (format) {
+                var args = Array.prototype.slice.call(arguments, 1);
+                return format.replace(/{(\d+)}/g, function (match, number) {
+                    return typeof args[number] != 'undefined'
+                      ? args[number]
+                      : match
+                    ;
+                });
+            };
+        }
+  
+    }
+
+    app.controller("LoginController", LoginController);
+
+}(angular.module("app.auth")));
+"use strict";
+
+angular.module('app.auth').controller('LogoutController', function ($scope, authService, hubService) {
+    hubService.disconnect();
+    authService.logOut();
+})
+"use strict";
+
+angular.module('app.auth').controller('RegisterController', function ($scope, $location, $timeout, authService) {
+        $scope.savedSuccessfully = false;
+        $scope.message = "";
+
+        $scope.registration = {
+            userName: "",
+            lastName: "",
+            firstName: "",
+            email: "",
+            password: "",
+            confirmPassword: ""
+        };
+
+        $scope.signUp = function () {
+            authService.saveRegistration($scope.registration).then(function (response) {
+
+                $scope.savedSuccessfully = true;
+                $scope.message = "User has been registered successfully, you will be redicted to login page in 2 seconds.";
+                startTimer();
+
+            },
+             function (response) {
+                 var errors = [];
+                 for (var key in response.data.modelState) {
+                     for (var i = 0; i < response.data.modelState[key].length; i++) {
+                         errors.push(response.data.modelState[key][i]);
+                     }
+                 }
+                 $scope.message = "Failed to register user due to:" + errors.join(' ');
+             });
+        };
+
+        var startTimer = function () {
+            var timer = $timeout(function () {
+                $timeout.cancel(timer);
+                $location.path('/login');
+            }, 2000);
+        }
+
+    });
+
+
 'use strict';
 
-angular.module('app.appViews').controller('ProjectsDemoCtrl', function ($scope, projects) {
+angular.module('app.auth').factory('User', function ($http, $q, APP_CONFIG, authService) {
+    var dfd = $q.defer();
 
-    $scope.projects = projects.data;
+    function imageExists(image_url) {
 
-    $scope.tableOptions =  {
-        "data": projects.data.data,
-//            "bDestroy": true,
-        "iDisplayLength": 15,
-        "columns": [
-            {
-                "class":          'details-control',
-                "orderable":      false,
-                "data":           null,
-                "defaultContent": ''
-            },
-            { "data": "name" },
-            { "data": "est" },
-            { "data": "contacts" },
-            { "data": "status" },
-            { "data": "target-actual" },
-            { "data": "starts" },
-            { "data": "ends" },
-            { "data": "tracker" }
-        ],
-        "order": [[1, 'asc']]
+        var http = new XMLHttpRequest();
+
+        http.open('HEAD', image_url, false);
+        http.send();
+
+        return http.status != 404;
     }
+
+    var UserModel = {
+        initialized: dfd.promise,
+        userName: undefined,
+        picture: undefined,
+        email: undefined,
+        phoneNumber : undefined,
+        password: undefined,
+        confirmPassword: undefined,
+        firstName: undefined,
+        lastName: undefined,
+        displayName : undefined,
+        division: undefined,
+        address: undefined,
+        imageUrl: undefined,
+        pictureChangeTime: undefined,
+        userImageUrls: undefined,
+        load: function(callback)
+        {
+            $http.get(APP_CONFIG.ebaasRootUrl + '/api/accounts/user/' + authService.authentication.userName).then(function (response) {
+                UserModel.userName = response.data.userName;
+                UserModel.email = response.data.email;
+                UserModel.password = response.data.password;
+                UserModel.firstName = response.data.firstName;
+                UserModel.lastName = response.data.lastName;
+                UserModel.displayName = response.data.displayName;
+                UserModel.phoneNumber = response.data.phoneNumber;
+                UserModel.division = response.data.division;
+                UserModel.address = response.data.address;
+                UserModel.imageUrl = undefined;
+                UserModel.userImageUrls = {};
+
+                UserModel.picture = UserModel.userName + ".png";
+
+                dfd.resolve(UserModel);
+
+                if (callback) {
+                    callback();
+                }
+            });
+        },
+        save : function (callback) {
+            var model = {};
+            model.userName = UserModel.userName;
+            model.email = UserModel.email;
+            model.phoneNumber = UserModel.phoneNumber;
+            model.firstName = UserModel.firstName;
+            model.lastName = UserModel.lastName;
+            model.picture = UserModel.picture;
+           
+            $http.post(APP_CONFIG.ebaasRootUrl + '/api/accounts/update', model).success(function (data) {
+                if (callback) {
+                    callback();
+                }
+            });
+        },
+        image : function()
+        {
+            if (!UserModel.imageUrl) {
+                var imageUrl = APP_CONFIG.avatarsUrl + UserModel.picture;
+                if (!imageExists(imageUrl)) {
+                    UserModel.imageUrl = APP_CONFIG.avatarsUrl + "male.png";
+                }
+                else {
+                    UserModel.imageUrl = imageUrl + '?' + UserModel.pictureChangeTime;
+                }
+            }
+            //console.debug(UserModel.imageUrl);
+            return UserModel.imageUrl;
+        },
+        getUserImage: function (userId) {
+            if (UserModel.userImageUrls) {
+                var imageUrl = UserModel.userImageUrls[userId];
+                if (!imageUrl) {
+                    imageUrl = APP_CONFIG.avatarsUrl + userId + ".png";
+                    if (!imageExists(imageUrl)) {
+                        imageUrl = APP_CONFIG.avatarsUrl + "male.png";
+                        UserModel.userImageUrls[userId] = imageUrl;
+                    }
+                    else {
+                        UserModel.userImageUrls[userId] = imageUrl;
+                    }
+                }
+            }
+            else
+            {
+                return APP_CONFIG.avatarsUrl + "male.png";
+            }
+     
+            return imageUrl;
+        }
+    };
+
+    return UserModel;
+});
+
+"use strict";
+
+angular.module('app.auth').controller('LoginCtrl', function ($scope, $state, GooglePlus, User, ezfb) {
+
+    $scope.$on('event:google-plus-signin-success', function (event, authResult) {
+        if (authResult.status.method == 'PROMPT') {
+            GooglePlus.getUser().then(function (user) {
+                User.userName = user.name;
+                User.picture = user.picture;
+                $state.go('app.dashboard');
+            });
+        }
+    });
+
+    $scope.$on('event:facebook-signin-success', function (event, authResult) {
+        ezfb.api('/me', function (res) {
+            User.userName = res.name;
+            User.picture = 'https://graph.facebook.com/' + res.id + '/picture';
+            $state.go('app.dashboard');
+        });
+    });
+})
+
+'use strict';
+
+angular.module('app.attachments').directive('attachments', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/attachments/views/attachments.html',
+        replace: true,
+        scope: {},
+        bindToController: {
+            dbschema: '=',
+            dbclass: '=',
+            oid: '=',
+            read: '='
+        },
+        controllerAs: 'vm',
+        controller: 'attachmentsCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
+'use strict';
+
+angular.module('app.attachments').directive('dropzone', function ($rootScope, APP_CONFIG, fileManager, User) {
+    return {
+        restrict: 'C',
+        link: function (scope, element, attributes) {
+            
+            var config = {
+                url: APP_CONFIG.ebaasRootUrl + "/" + fileManager.params.api + "/" + encodeURIComponent(fileManager.params.schema) + "/" + fileManager.params.cls + "/" + fileManager.params.oid + "?prefix=" + encodeURIComponent(fileManager.params.prefix) + "&user=" + encodeURIComponent(User.userName),
+                maxFilesize: 100,
+                maxFiles: 20,
+                maxThumbnailFilesize: 10,
+                previewTemplate: '<div class="dz-preview dz-file-preview"><div><div class="dz-filename"><span data-dz-name></span></span></div><span class="fa fa-lg fa-file-text-o"></span></div><div><span class="dz-size" data-dz-size></div><div><span class="dz-upload" data-dz-uploadprogress></span></div><div class="dz-success-mark"><span class="fa fa-check"></span></div><div class="dz-error-mark"><span class="fa fa-exclamation-triangle"></span></div><div class="dz-error-message"><span data-dz-errormessage></span></div></div>',
+                addRemoveLinks: false,
+                paramName: "uploadFile",
+                parallelUploads: 20,
+                autoProcessQueue: false,
+                dictDefaultMessage: '<span class="text-center"><span class="font-md visible-lg-block"><span class="font-md"><i class="fa fa-caret-right text-danger"></i><span class="font-xs">' + $rootScope.getWord("DropZone") + '</span></span>',
+                dictResponseError: $rootScope.getWord("UploadError"),
+                dictCancelUpload: "Cancel Upload",
+                dictRemoveFile: "Remove File",
+
+            };
+
+            var eventHandlers = {
+                'addedFile': function (file) {
+                    scope.file = file;
+                    if (this.files[1] != null) {
+                        this.removeFile(this.files[0]);
+                    }
+                    scope.$apply(function () {
+                        scope.fileAdded = true;
+                    });
+                },
+
+                'success': function (file, response) {
+                },
+
+                'removedFile': function(file)
+                {
+                    console.debug("Removed file called");
+                },
+
+                'queuecomplete': function () {
+                    fileManager.load();
+
+                    setTimeout(function () {
+                        //scope.resetDropzone();
+                    }, 2000);
+                }
+            };
+
+            var dropzone = new Dropzone(element[0], config);
+
+            angular.forEach(eventHandlers, function (handler, event) {
+                dropzone.on(event, handler);
+            });
+
+            scope.processDropzone = function () {
+
+                var url = undefined;
+                if (fileManager.params.oid)
+                {
+                    url = APP_CONFIG.ebaasRootUrl + "/" + fileManager.params.api + "/" + encodeURIComponent(fileManager.params.schema) + "/" + fileManager.params.cls + "/" + fileManager.params.oid + "?prefix=" + encodeURIComponent(fileManager.params.prefix) + "&user=" + encodeURIComponent(User.userName);
+                }
+
+                dropzone.options.url = url;
+                dropzone.processQueue();
+            };
+
+            scope.resetDropzone = function () {
+                dropzone.removeAllFiles();
+            }
+        }
+    }
+});
+
+'use strict';
+
+angular.module('app.attachments').directive('egAppStatus', function (loadingInfo) {
+    var directive = {
+        link: link,
+        restrict: 'E',
+        templateUrl: 'app/attachments/views/egAppStatus.html'
+    };
+    return directive;
+
+    function link(scope, element, attrs) {
+        scope.status = loadingInfo.status;
+    }
+});
+'use strict';
+
+angular.module('app.attachments').directive('egFiles', function () {
+
+    var directive = {
+        link: link,
+        restrict: 'A',
+        scope: {
+            files: '=egFiles',
+            hasFiles: '='
+        }
+    };
+    return directive;
+
+    function link(scope, element, attrs) {
+        element.bind('change', function () {
+            scope.$apply(function () {
+                if (element[0].files) {
+                    scope.files.length = 0;
+
+                    angular.forEach(element[0].files, function (f) {
+                        scope.files.push(f);
+                    });
+
+                    scope.hasFiles = true;
+                }
+            });
+        });
+
+        if (element[0].form) {
+            angular.element(element[0].form)
+                    .bind('reset', function () {
+                        scope.$apply(function () {
+                            scope.files.length = 0;
+                            scope.hasFiles = false;
+                        });
+                    });
+        }
+    }
+});
+'use strict';
+
+angular.module('app.attachments').directive('egUpload', function ($timeout) {
+    var directive = {
+        link: link,
+        restrict: 'A',
+        scope: {
+            upload: '&egUpload'
+        }
+    };
+    return directive;
+
+    function link(scope, element, attrs) {
+        var parentForm = element[0].form;
+        if (parentForm) {
+            element.on('click', function (event) {
+                return scope.upload().then(function () {
+                    //see:https://docs.angularjs.org/error/$rootScope/inprog?p0=$digest for why there is a need to use timeout to avoid conflict
+                    $timeout(function () {
+                        parentForm.reset();
+                    });
+                });
+            });
+        }
+    }
+});
+'use strict';
+
+angular.module('app.attachments').directive('fileDropzone', function ($rootScope) {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttributes) {
+            tElement.removeAttr('smart-dropzone data-smart-dropzone');
+
+            tElement.dropzone({
+                addRemoveLinks : true,
+                maxFilesize: 0.5,
+                dictDefaultMessage: '<span class="text-center"><span class="font-lg visible-xs-block visible-sm-block visible-lg-block"><span class="font-lg"><i class="fa fa-caret-right text-danger"></i><span class="font-xs">' + $rootScope.getWord("DropZone") + '</span></span>',
+                dictResponseError: $rootScope.getWord("UploadError")
+            });
+        }
+    }
+});
+
+'use strict';
+
+angular.module('app.attachments').directive('egFileUploader', function (loadingInfo, fileManager) {
+
+    var directive = {
+        link: link,
+        restrict: 'E',
+        templateUrl: 'app/attachments/views/fileUploader.html',
+        scope: true
+    };
+    return directive;
+
+    function link(scope, element, attrs) {
+        scope.hasFiles = false;
+        scope.files = [];
+        scope.upload = fileManager.upload;
+        scope.appStatus = loadingInfo.status;
+        scope.fileManagerStatus = fileManager.status;
+    }
+
 });
 'use strict';
 
@@ -5663,6 +6184,727 @@ angular.module('app.attachments').controller('attachmentsModalCtrl', function ($
     };
 });
 
+'use strict';
+
+angular.module('app.attachments').factory('fileManager', function ($q, fileManagerClient, $http, loadingInfo, User) {
+
+    var service = {
+        files: [],
+        load: load,
+        upload: upload,
+        remove: remove,
+        download: download,
+        performDownload: performDownload,
+        fileExists: fileExists,
+        status: {
+            uploading: false
+        },
+        params: {
+            serviceBase: "",
+            schema: "",
+            cls: "",
+            oid: "",
+            api: "",
+            prefix: ""
+        }
+    };
+
+    return service;
+
+    function load() {
+
+        loadingInfo.setInfo({ busy: true, message: "loading files" })
+
+        service.files.length = 0;
+
+        if (!service.params.oid)
+            return [];
+        else
+            return fileManagerClient.query({api: service.params.api, schema: service.params.schema, cls: service.params.cls, oid: service.params.oid, prefix: service.params.prefix })
+                                .$promise
+                                .then(function (result) {
+                                    result.files
+                                            .forEach(function (file) {
+                                                service.files.push(file);
+                                            });
+
+                                    loadingInfo.setInfo({ message: "files loaded successfully" });
+
+                                    return result.$promise;
+                                },
+                                function (result) {
+                                    if (result.data) {
+                                        loadingInfo.setInfo({ message: "something went wrong: " + result.data.message });
+                                    }
+                                    else
+                                    {
+                                        loadingInfo.setInfo({ message: "something went wrong: "});
+                                    }
+                                    return $q.reject(result);
+                                })
+                                ['finally'](
+                                function () {
+                                    loadingInfo.setInfo({ busy: false });
+                                });
+    }
+
+    function upload(files) {
+        
+        service.status.uploading = true;
+        loadingInfo.setInfo({ busy: true, message: "uploading files" });
+
+        var formData = new FormData();
+
+        angular.forEach(files, function (file) {
+            console.debug("upload file name =" + file.name);
+            formData.append(file.name, file);
+        });
+
+        return fileManagerClient.save({ api: service.params.api, schema: service.params.schema, cls: service.params.cls, oid: service.params.oid, prefix: service.params.prefix }, formData)
+                                    .$promise
+                                    .then(function (result) {
+                                        if (result && result.files) {
+                                            result.files.forEach(function (file) {
+                                                if (!fileExists(file.name)) {
+                                                    service.files.push(file);
+                                                }
+                                            });
+                                        }
+
+                                        loadingInfo.setInfo({ message: "files uploaded successfully" });
+
+                                        return result.$promise;
+                                    },
+                                    function (result) {
+                                        loadingInfo.setInfo({ message: "something went wrong: " + result.data.message });
+                                        return $q.reject(result);
+                                    })
+                                    ['finally'](
+                                    function () {
+                                        loadingInfo.setInfo({ busy: false });
+                                        service.status.uploading = false;
+                                    });
+    }
+
+    function remove(file) {
+        loadingInfo.setInfo({ busy: true, message: "deleting file " + file.name });
+      
+        return fileManagerClient.remove({ api: service.params.api, schema: service.params.schema, cls: service.params.cls, oid: service.params.oid, fileId: file.id, prefix: service.params.prefix })
+                                    .$promise
+                                    .then(function (result) {
+                                        //if the file was deleted successfully remove it from the files array
+                                        var i = service.files.indexOf(file);
+                                        service.files.splice(i, 1);
+
+                                        loadingInfo.setInfo({ message: "files deleted" });
+
+                                        return result.$promise;
+                                    },
+                                    function (result) {
+                                        loadingInfo.setInfo({ message: "something went wrong: " + result.data.message });
+                                        return $q.reject(result);
+                                    })
+                                    ['finally'](
+                                    function () {
+                                        loadingInfo.setInfo({ busy: false });
+                                    });
+    }
+
+    function download(file)
+    {
+        var getFileUrl = service.params.serviceBase + "/" + service.params.api + "/" + service.params.schema + "/" + service.params.cls + "/" + service.params.oid + "/" + file.id;
+        if (service.params.prefix)
+        {
+            getFileUrl += "?prefix=" + encodeURIComponent(service.params.prefix) + "&user=" + encodeURIComponent(User.userName);
+        }
+
+        performDownload(getFileUrl, null);
+    }
+
+    function performDownload(url, callback) {
+    
+        // Use an arraybuffer
+        $http.get(url, { responseType: 'arraybuffer' })
+            .success(function (data, status, headers) {
+
+                var octetStreamMime = 'application/octet-stream';
+                var success = false;
+
+                // Get the headers
+                headers = headers();
+
+                // Get the filename from the x-filename header or default to "download.bin"
+                var filename = headers['x-filename'] || 'download.bin';
+                filename = decodeURIComponent(filename);
+
+                // Determine the content type from the header or default to "application/octet-stream"
+                var contentType = headers['content-type'] || octetStreamMime;
+
+                try {
+                    // Try using msSaveBlob if supported
+                    console.log("Trying saveBlob method ...");
+                    var blob = new Blob([data], { type: contentType });
+                    if (navigator.msSaveBlob)
+                        navigator.msSaveBlob(blob, filename);
+                    else {
+                        // Try using other saveBlob implementations, if available
+                        var saveBlob = navigator.webkitSaveBlob || navigator.mozSaveBlob || navigator.saveBlob;
+                        if (saveBlob === undefined) throw "Not supported";
+                        saveBlob(blob, filename);
+                    }
+                    console.log("saveBlob succeeded");
+                    success = true;
+                } catch (ex) {
+                    console.log("saveBlob method failed with the following exception:");
+                    console.log(ex);
+                }
+
+                if (!success) {
+                    // Get the blob url creator
+                    var urlCreator = window.URL || window.webkitURL || window.mozURL || window.msURL;
+                    if (urlCreator) {
+                        // Try to use a download link
+                        var link = document.createElement('a');
+                        if ('download' in link) {
+                            // Try to simulate a click
+                            try {
+                                // Prepare a blob URL
+                                console.log("Trying download link method with simulated click ...");
+                                var blob = new Blob([data], { type: contentType });
+                                var url = urlCreator.createObjectURL(blob);
+                                link.setAttribute('href', url);
+
+                                // Set the download attribute (Supported in Chrome 14+ / Firefox 20+)
+                                link.setAttribute("download", filename);
+
+                                // Simulate clicking the download link
+                                var event = document.createEvent('MouseEvents');
+                                event.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+                                link.dispatchEvent(event);
+                                console.log("Download link method with simulated click succeeded");
+                                success = true;
+
+                            } catch (ex) {
+                                console.log("Download link method with simulated click failed with the following exception:");
+                                console.log(ex);
+                            }
+                        }
+
+                        if (!success) {
+                            // Fallback to window.location method
+                            try {
+                                // Prepare a blob URL
+                                // Use application/octet-stream when using window.location to force download
+                                console.log("Trying download link method with window.location ...");
+                                var blob = new Blob([data], { type: octetStreamMime });
+                                var url = urlCreator.createObjectURL(blob);
+                                window.location = url;
+                                console.log("Download link method with window.location succeeded");
+                                success = true;
+                            } catch (ex) {
+                                console.log("Download link method with window.location failed with the following exception:");
+                                console.log(ex);
+                            }
+                        }
+
+                    }
+                }
+
+                if (!success) {
+                    // Fallback to window.open method
+                    console.log("No methods worked for saving the arraybuffer, using last resort window.open");
+                    window.open(httpPath, '_blank', '');
+                }
+
+                if (callback)
+                {
+                    callback();
+                }
+            })
+        .error(function (data, status) {
+            console.log("Request failed with status: " + status);
+
+            // Optionally write the error out to scope
+            //$scope.errorDetails = "Request failed with status: " + status;
+
+            if (callback) {
+                callback();
+            }
+        });
+    }
+
+    function fileExists(fileName) {
+        var res = false
+        service.files.forEach(function (file) {
+            if (file.name === fileName) {
+                res = true;
+            }
+        });
+
+        return res;
+    }
+});
+'use strict';
+
+angular.module('app.attachments').factory('fileManagerClient', function ($resource, APP_CONFIG) {
+
+    return $resource(APP_CONFIG.ebaasRootUrl + "/:api/:schema/:cls/:oid?prefix=:prefix",
+        { id: "@Id" },
+        {
+            'query': { method: 'GET', params: {api: "api", schema: "schema", cls: "cls", oid: "oid", prefix: "prefix"} },
+            'save': { method: 'POST', params: { api: "api", schema: "schema", cls: "cls", oid: "oid", prefix: 'prefix' }, transformRequest: angular.identity, headers: { 'Content-Type': undefined } },
+            'remove': { method: 'DELETE', url: APP_CONFIG.ebaasRootUrl + '/:api/:schema/:cls/:oid/:fileId?prefix=:prefix', params: {api: "api", schema: "schema", cls: "cls", oid: "oid", fileId: "fileId", prefix: "prefix"} }
+        });
+});
+
+'use strict';
+
+angular.module('app.attachments').factory('loadingInfo', function () {
+    var service = {
+        status: {
+            busy: false,
+            message: ''
+        },
+        setInfo: setInfo
+    };
+
+    return service;
+
+    function setInfo(args) {
+        if (args) {
+            if (args.hasOwnProperty('busy')) {
+                service.status.busy = args.busy;
+            }
+            if (args.hasOwnProperty('message')) {
+                service.status.message = args.message;
+            }
+        } else {
+            service.status.busy = false;
+            service.status.message = '';
+        }
+    }
+});
+'use strict';
+
+angular.module('app.appViews').controller('ProjectsDemoCtrl', function ($scope, projects) {
+
+    $scope.projects = projects.data;
+
+    $scope.tableOptions =  {
+        "data": projects.data.data,
+//            "bDestroy": true,
+        "iDisplayLength": 15,
+        "columns": [
+            {
+                "class":          'details-control',
+                "orderable":      false,
+                "data":           null,
+                "defaultContent": ''
+            },
+            { "data": "name" },
+            { "data": "est" },
+            { "data": "contacts" },
+            { "data": "status" },
+            { "data": "target-actual" },
+            { "data": "starts" },
+            { "data": "ends" },
+            { "data": "tracker" }
+        ],
+        "order": [[1, 'asc']]
+    }
+});
+'use strict';
+
+angular.module('app.datacatalog').controller('DataCatalogLayoutCtrl', function ($http, APP_CONFIG, $scope, $state, $stateParams, propmisedParams, MetaDataCache) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.class = $stateParams.class;
+    var params = propmisedParams.data;
+
+    $scope.treeName = params['treeName'];
+    $scope.view = params['dataView'];
+    $scope.formTemplate = params['formTemplate'];
+    $scope.node = undefined;
+ 
+    if (MetaDataCache.getNamedData($scope.treeName)) {
+        $scope.catalogTree = MetaDataCache.getNamedData($scope.treeName);
+
+        $state.go('app.datacatalog.datatable', { schema: $scope.dbschema, class: $scope.class, node: $scope.node, view: $scope.view, formtemplate: $scope.formTemplate });
+    }
+    else {
+        // url to get tree model
+        var url = APP_CONFIG.ebaasRootUrl + "/api/metadata/classificationtree/" + encodeURIComponent($scope.dbschema) + "/" + $scope.treeName;
+
+        $http.get(url).then(function (res) {
+
+            var treeData = res.data;
+
+            $scope.catalogTree = createMenuTree(treeData);
+
+            MetaDataCache.setNamedData($scope.treeName + "treeData", treeData);
+
+            MetaDataCache.setNamedData($scope.treeName, $scope.catalogTree);
+
+            $state.go('app.datacatalog.datatable', { schema: $scope.dbschema, class: $scope.class, node: $scope.node, view: $scope.view, formtemplate: $scope.formTemplate });
+        });
+    }
+
+    $scope.OpenDataTable = function OpenDataTable(nodeName) {
+
+        $state.go('app.datacatalog.datatable', { schema: $scope.dbschema, class: $scope.class, node: nodeName, tree: $scope.treeName, formtemplate: $scope.formTemplate });
+    }
+
+    var createMenuTree = function (treeData) {
+        var node, rootMenuItem, roots = [];
+        node = treeData;
+        
+        var rootMenuItem = {};
+        //rootMenuItem.content = "<span><i class=\"fa fa-lg fa-plus-circle\"></i> " + node.title + "</span>";
+        rootMenuItem.content = "<span class='label label-info'><i class=\"fa fa-lg fa-plus-circle\"></i>&nbsp;&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('catalogTree')).scope().OpenDataTable('" + node.name + "');\">" + node.title + "</a></span>";
+        rootMenuItem.children = [];
+        rootMenuItem.expanded = true;
+        roots.push(rootMenuItem);
+
+        addChildMenuItems(rootMenuItem, treeData.children);
+
+        return roots;
+    };
+
+    var addChildMenuItems = function(parentItem, nodes)
+    {
+        var node, menuItem;
+
+        for (var i = 0; i < nodes.length; i += 1) {
+            node = nodes[i];
+
+            menuItem = {};
+            menuItem.children = [];
+
+            if (node.children.length > 0) {
+                menuItem.content = "<span class='label label-info'><i class=\"fa fa-lg fa-plus-circle\"></i>&nbsp;&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('catalogTree')).scope().OpenDataTable('" + node.name + "');\">" + node.title + "</a></span>";
+            } else {
+                menuItem.content = "<span class='label label-info'><a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('catalogTree')).scope().OpenDataTable('" + node.name + "');\">" + node.title + "</a></span>";
+            }
+
+            parentItem.children.push(menuItem);
+
+            addChildMenuItems(menuItem, node.children);
+        }
+    }
+});
+'use strict';
+
+angular.module('app.datacatalog').controller('DataTableViewCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, MetaDataCache) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+    $scope.view = $stateParams.view;
+    $scope.tree = $stateParams.tree;
+    $scope.node = $stateParams.node;
+    $scope.formTemplate = $stateParams.formtemplate;
+
+    var node = FindTreeNode($scope.node);
+
+    if (node) {
+        $scope.caption = node.title;
+        if (node.class)
+        {
+            // the node has a different class, load the data from the specified class
+            $scope.dbclass = node.class;
+        }
+    }
+
+    if ($stateParams.insert && $stateParams.insert === "false") {
+        $scope.add = false;
+    }
+    else {
+        $scope.add = true;
+    }
+
+    if ($stateParams.export && $stateParams.export === "true") {
+        $scope.exportData = true;
+    }
+    else {
+        $scope.exportData = false;
+    }
+
+    if ($stateParams.import && $stateParams.import === "true") {
+        $scope.importData = true;
+    }
+    else {
+        $scope.importData = false;
+    }
+
+    if ($stateParams.reports && $stateParams.reports === "true") {
+        $scope.reports = true;
+    }
+    else {
+        $scope.reports = false;
+    }
+
+    if ($stateParams.attachment && $stateParams.attachment === "false") {
+        $scope.attachment = false;
+    }
+    else {
+        $scope.attachment = true;
+    }
+
+    $scope.openModal = function () {
+        $state.go('.modalform', { schema: $scope.dbschema, class: $scope.dbclass, template: $scope.formTemplate }, { location: false, notify: false });
+    };
+
+    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG }));
+
+    $scope.GetCommands = function (rowIndex, data) {
+        var items = new Array();
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/sitemap/commands/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + data.obj_id;
+
+        $http.get(url).success(function (commands) {
+
+            // custom commands
+            $scope.commands = commands;
+            var cmdInfo;
+            var item;
+            for (var cmd in commands) {
+                if (commands.hasOwnProperty(cmd)) {
+                    cmdInfo = commands[cmd];
+                    item = new Object();
+                    item.text = cmdInfo.title;
+                    item.css = "btn btn-primary btn-md btn-nav";
+                    if (cmdInfo.icon) {
+                        item.icon = cmdInfo.icon;
+                    }
+                    else {
+                        item.icon = "fa fa-lg fa-tasks";
+                    }
+
+                    item.onItemClick = function (text) {
+                        gotoState(text, $scope.dbschema, data.type, data.obj_id, !data.allowWrite)
+                    }
+
+                    items.push(item);
+
+                    if (cmdInfo.baseUrl && !APP_CONFIG.hashedBaseUrls[cmdInfo.hash])
+                    {
+                        APP_CONFIG.hashedBaseUrls[cmdInfo.hash] = cmdInfo.baseUrl;
+                    }
+                }
+            }
+
+            // add standard commands
+            if ($scope.attachment) {
+                items.push({
+                    text: $rootScope.getWord('Attachments'),
+                    icon: "fa fa-lg fa-file-archive-o",
+                    css: "btn btn-default btn-md btn-nav",
+                    onItemClick: function () {
+                        $state.go('.attachments', { schema: $scope.dbschema, class: data.type, oid: data.obj_id, readonly: !data.allowWrite }, { location: false, notify: false });
+                    }
+                });
+            }
+
+            if (data.allowWrite && $stateParams.edit !== "false") {
+                items.push({
+                    text: $rootScope.getWord('Edit'),
+                    icon: "fa fa-lg fa-edit",
+                    css: "btn btn-default btn-md btn-nav",
+                    onItemClick: function () {
+                        $state.go('.modalform', { schema: $scope.dbschema, class: data.type, oid: data.obj_id, template: $scope.formTemplate }, { location: false, notify: false });
+                    }
+                });
+            }
+
+            /*
+            if (data.allowCreate && $stateParams.insert !== "false") {
+                items.push({
+                    text: $rootScope.getWord('Add'),
+                    icon: "fa fa-lg fa-plus-square",
+                    css: "btn btn-default btn-md btn-nav",
+                    onItemClick: function () {
+                        $state.go('.modalform', { schema: $scope.dbschema, class: data.type }, { location: false, notify: false });
+                    }
+                });
+            }
+            */
+
+            if (data.allowDelete && $stateParams.delete !== "false") {
+                items.push({
+                    text: $rootScope.getWord('Delete'),
+                    icon: "fa fa-lg fa-times",
+                    css: "btn btn-default btn-md btn-nav",
+                    onItemClick: function () {
+                        $scope.gridInstance.deleteRow(rowIndex);
+                    }
+                });
+            }
+        });
+        return items;
+    }
+
+    var gotoState = function (title, dbschema, dbclass, oid, readonly) {
+        var commands = $scope.commands;
+        var url = undefined;
+        var cmdUrl = undefined;
+        var params = undefined;
+        var cmdInfo;
+        for (var cmd in commands) {
+            if (commands.hasOwnProperty(cmd)) {
+                cmdInfo = commands[cmd];
+                if (cmdInfo.title === title) {
+                    url = cmdInfo.url;
+                    cmdUrl = cmdInfo.url;
+                    params = new Object();
+                    params.schema = dbschema;
+                    params.class = dbclass;
+                    params.oid = oid;
+                    params.readonly = readonly;
+                    params.cmdHash = cmdInfo.hash;
+                    // add command's parameters to the state parameters
+                    if (cmdInfo.parameters) {
+                        for (var key in cmdInfo.parameters) {
+                            if (cmdInfo.parameters.hasOwnProperty(key)) {
+                                params[key] = cmdInfo.parameters[key];
+                            }
+                        }
+                    };
+
+                    break;
+                }
+            }
+        }
+
+        if (url) {
+            try
+            {
+                if (cmdUrl === ".modalform") {
+                    $state.go(url, params, { location: false, notify: false });
+                }
+                else {
+                    $state.go(url, params);
+                }
+            }
+            catch (err)
+            {
+                BootstrapDialog.show({
+                    title: $rootScope.getWord("Info Dialog"),
+                    type: BootstrapDialog.TYPE_INFO,
+                    message: $rootScope.getWord("Invalid Command"),
+                    buttons: [{
+                        label: $rootScope.getWord("Cancel"),
+                        action: function (dialog) {
+                            dialog.close();
+                        }
+                    }]
+                });
+            }
+        }
+    }
+
+    $scope.gridInstance = null;
+    $scope.dataGridSettings = {
+        dataSource: {
+            store: $scope.customStore
+        },
+        columnAutoWidth: true,
+        sorting: {
+            mode: "multiple"
+        },
+        height: $rootScope.isChrome() === true ? '750px' : undefined,
+        searchPanel: {
+            visible: $stateParams.search && $stateParams.search === "true"? true: false,
+            width: 300,
+            placeholder: $rootScope.getWord("Keyword Search")
+        },
+        editing: {
+            allowAdding: false,
+            allowUpdating: false,
+            allowDeleting: false
+        },
+        grouping: {
+            autoExpandAll: false
+        },
+        pager: {
+            visible: true,
+            showPageSizeSelector: true,
+            showInfo: true
+        },
+        filterRow: {
+            visible: true,
+            applyFilter: "auto"
+        },
+        selection: { mode: 'single' },
+        remoteOperations: true,
+        bindingOptions: {
+            columns: 'columns'
+        },
+        headerFilter: {
+            visible: true
+        },
+        rowAlternationEnabled: true,
+        masterDetail: {
+            enabled: true,
+            template: "detail"
+        },
+        onRowClick: function (e) {
+            if (e.rowType === "data") {
+                var isExpanded = $scope.gridInstance.isRowExpanded(e.key);
+                $scope.gridInstance.collapseAll(-1); // collaspsed all
+                if (!isExpanded) {
+                    $scope.gridInstance.expandRow(e.key);
+                }
+            }
+        },
+        onInitialized: function (e) {
+            $scope.gridInstance = e.component;
+        },
+        onRowPrepared: function (e) {
+        }
+    };
+
+    $rootScope.$on('modalClosed', function (event, data) {
+        if ($scope.gridInstance && data === "update")
+            $scope.gridInstance.refresh();
+    });
+
+    $scope.downloadReports = function () {
+        $state.go(".downloadreports", { schema: $scope.dbschema, class: $scope.dbclass }, { location: false, notify: false });
+    }
+
+    function FindTreeNode(nodeName)
+    {
+        var found = undefined;
+        var treeData = MetaDataCache.getNamedData($scope.tree + "treeData");
+        if (treeData) {
+            found = FindChildNode(nodeName, treeData.children);
+        }
+
+        return found;
+    }
+
+    function FindChildNode(nodeName, nodes) {
+        var found = undefined;
+
+        for (var i = 0; i < nodes.length; i += 1) {
+            node = nodes[i];
+
+            if (node.name === nodeName)
+            {
+                found = node;
+
+                break;
+            }
+            
+            found = FindChildNode(nodeName, node.children);
+            if (found)
+            {
+                break;
+            }
+        }
+
+        return found;
+    }
+});
 'use strict';
 
 angular.module('app.blog').controller('blogGeneralCtrl', function ($scope, $rootScope, $http, $state, $stateParams, APP_CONFIG, User, blogService) {
@@ -6274,855 +7516,580 @@ angular.module('app.blog').controller('blogViewCtrl', function ($scope, $state, 
         $state.go('app.blog', { keywords: $scope.keywords });
     }
 });
-'use strict';
+"use strict";	
 
-angular.module('app.attachments').directive('attachments', function () {
+angular.module('app').controller("ActivitiesCtrl", function ActivitiesCtrl($scope, $log, activityService){
+
+	$scope.activeTab = 'default';
+	$scope.currentActivityItems = [];
+	
+	// Getting different type of activites
+	activityService.get(function(data){
+
+		$scope.activities = data.activities;
+		
+	});
+
+
+	$scope.isActive = function(tab){
+		return $scope.activeTab === tab;
+	};
+
+	$scope.setTab = function(activityType){
+		$scope.activeTab = activityType;
+
+		activityService.getbytype(activityType, function(data) {
+
+			$scope.currentActivityItems = data.data;
+
+		});
+
+	};
+
+});
+"use strict";
+
+// Speed up calls to hasOwnProperty
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+function isEmpty(obj) {
+
+    // null and undefined are "empty"
+    if (obj == null) return true;
+
+    // Assume if it has a length property with a non-zero value
+    // that that property is correct.
+    if (obj.length > 0) return false;
+    if (obj.length === 0) return true;
+
+    // Otherwise, does it have any properties of its own?
+    // Note that this doesn't handle
+    // toString and valueOf enumeration bugs in IE < 9
+    for (var key in obj) {
+        if (hasOwnProperty.call(obj, key)) return false;
+    }
+
+    return true;
+}
+
+angular.module('app').directive('activitiesDropdownToggle', function($log) {
+
+	var link = function($scope,$element, attrs){
+		var ajax_dropdown = null;
+
+		$element.on('click', function () {
+			var badge = $(this).find('.badge');
+
+            /*
+			if (badge.hasClass('bg-color-red')) {
+
+				badge.removeClass('bg-color-red').text(0);
+
+			}
+            */
+
+			ajax_dropdown = $(this).next('.ajax-dropdown');
+
+			if (!ajax_dropdown.is(':visible')) {
+
+				ajax_dropdown.fadeIn(150);
+
+				$(this).addClass('active');
+
+			}
+			 else {
+				
+				ajax_dropdown.fadeOut(150);
+				
+				$(this).removeClass('active');
+
+			}
+
+		})
+
+		$(document).mouseup(function (e) {
+		    if (ajax_dropdown && !ajax_dropdown.is(e.target) && (ajax_dropdown.has(e.target).length === 0 || isEmpty(e.target))) {
+				ajax_dropdown.fadeOut(150);
+				$element.removeClass('active');
+			}
+		});
+	}
+	
+	return{
+		restrict:'EA',
+		link:link
+	}
+});
+"use strict";
+
+angular.module('app').factory('activityService', function($http, $log, APP_CONFIG) {
+
+	function getActivities(callback){
+
+		$http.get(APP_CONFIG.apiRootUrl + '/activities/activity.json').success(function(data){
+
+			callback(data);
+				
+		}).error(function(){
+
+			$log.log('Error');
+			callback([]);
+
+		});
+
+	}
+
+	function getActivitiesByType(type, callback){
+
+		$http.get(APP_CONFIG.apiRootUrl + '/activities/activity-' + type + '.json').success(function(data){
+
+			callback(data);
+				
+		}).error(function(){
+
+			$log.log('Error');
+			callback([]);
+
+		});
+
+	}
+	
+	return{
+		get:function(callback){
+			getActivities(callback);
+		},
+		getbytype:function(type,callback){
+			getActivitiesByType(type, callback);
+		}
+	}
+});
+"use strict";
+
+angular.module('app').factory('Project', function($http, APP_CONFIG){
     return {
-        restrict: 'E',
-        templateUrl: 'app/attachments/views/attachments.html',
+        list: $http.get(APP_CONFIG.apiRootUrl + '/projects.json')
+    }
+});
+"use strict";
+
+angular.module('app').directive('recentProjects', function(Project){
+    return {
+        restrict: "EA",
         replace: true,
-        scope: {},
-        bindToController: {
-            dbschema: '=',
-            dbclass: '=',
-            oid: '=',
-            read: '='
-        },
-        controllerAs: 'vm',
-        controller: 'attachmentsCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
-'use strict';
-
-angular.module('app.attachments').directive('dropzone', function ($rootScope, APP_CONFIG, fileManager, User) {
-    return {
-        restrict: 'C',
-        link: function (scope, element, attributes) {
-            
-            var config = {
-                url: APP_CONFIG.ebaasRootUrl + "/" + fileManager.params.api + "/" + encodeURIComponent(fileManager.params.schema) + "/" + fileManager.params.cls + "/" + fileManager.params.oid + "?prefix=" + encodeURIComponent(fileManager.params.prefix) + "&user=" + encodeURIComponent(User.userName),
-                maxFilesize: 100,
-                maxFiles: 20,
-                maxThumbnailFilesize: 10,
-                previewTemplate: '<div class="dz-preview dz-file-preview"><div><div class="dz-filename"><span data-dz-name></span></span></div><span class="fa fa-lg fa-file-text-o"></span></div><div><span class="dz-size" data-dz-size></div><div><span class="dz-upload" data-dz-uploadprogress></span></div><div class="dz-success-mark"><span class="fa fa-check"></span></div><div class="dz-error-mark"><span class="fa fa-exclamation-triangle"></span></div><div class="dz-error-message"><span data-dz-errormessage></span></div></div>',
-                addRemoveLinks: false,
-                paramName: "uploadFile",
-                parallelUploads: 20,
-                autoProcessQueue: false,
-                dictDefaultMessage: '<span class="text-center"><span class="font-md visible-lg-block"><span class="font-md"><i class="fa fa-caret-right text-danger"></i><span class="font-xs">' + $rootScope.getWord("DropZone") + '</span></span>',
-                dictResponseError: $rootScope.getWord("UploadError"),
-                dictCancelUpload: "Cancel Upload",
-                dictRemoveFile: "Remove File",
-
-            };
-
-            var eventHandlers = {
-                'addedFile': function (file) {
-                    scope.file = file;
-                    if (this.files[1] != null) {
-                        this.removeFile(this.files[0]);
-                    }
-                    scope.$apply(function () {
-                        scope.fileAdded = true;
-                    });
-                },
-
-                'success': function (file, response) {
-                },
-
-                'removedFile': function(file)
-                {
-                    console.debug("Removed file called");
-                },
-
-                'queuecomplete': function () {
-                    fileManager.load();
-
-                    setTimeout(function () {
-                        //scope.resetDropzone();
-                    }, 2000);
-                }
-            };
-
-            var dropzone = new Dropzone(element[0], config);
-
-            angular.forEach(eventHandlers, function (handler, event) {
-                dropzone.on(event, handler);
-            });
-
-            scope.processDropzone = function () {
-
-                var url = undefined;
-                if (fileManager.params.oid)
-                {
-                    url = APP_CONFIG.ebaasRootUrl + "/" + fileManager.params.api + "/" + encodeURIComponent(fileManager.params.schema) + "/" + fileManager.params.cls + "/" + fileManager.params.oid + "?prefix=" + encodeURIComponent(fileManager.params.prefix) + "&user=" + encodeURIComponent(User.userName);
-                }
-
-                dropzone.options.url = url;
-                dropzone.processQueue();
-            };
-
-            scope.resetDropzone = function () {
-                dropzone.removeAllFiles();
-            }
-        }
-    }
-});
-
-'use strict';
-
-angular.module('app.attachments').directive('egAppStatus', function (loadingInfo) {
-    var directive = {
-        link: link,
-        restrict: 'E',
-        templateUrl: 'app/attachments/views/egAppStatus.html'
-    };
-    return directive;
-
-    function link(scope, element, attrs) {
-        scope.status = loadingInfo.status;
-    }
-});
-'use strict';
-
-angular.module('app.attachments').directive('egFiles', function () {
-
-    var directive = {
-        link: link,
-        restrict: 'A',
-        scope: {
-            files: '=egFiles',
-            hasFiles: '='
-        }
-    };
-    return directive;
-
-    function link(scope, element, attrs) {
-        element.bind('change', function () {
-            scope.$apply(function () {
-                if (element[0].files) {
-                    scope.files.length = 0;
-
-                    angular.forEach(element[0].files, function (f) {
-                        scope.files.push(f);
-                    });
-
-                    scope.hasFiles = true;
-                }
-            });
-        });
-
-        if (element[0].form) {
-            angular.element(element[0].form)
-                    .bind('reset', function () {
-                        scope.$apply(function () {
-                            scope.files.length = 0;
-                            scope.hasFiles = false;
-                        });
-                    });
-        }
-    }
-});
-'use strict';
-
-angular.module('app.attachments').directive('egUpload', function ($timeout) {
-    var directive = {
-        link: link,
-        restrict: 'A',
-        scope: {
-            upload: '&egUpload'
-        }
-    };
-    return directive;
-
-    function link(scope, element, attrs) {
-        var parentForm = element[0].form;
-        if (parentForm) {
-            element.on('click', function (event) {
-                return scope.upload().then(function () {
-                    //see:https://docs.angularjs.org/error/$rootScope/inprog?p0=$digest for why there is a need to use timeout to avoid conflict
-                    $timeout(function () {
-                        parentForm.reset();
-                    });
-                });
-            });
-        }
-    }
-});
-'use strict';
-
-angular.module('app.attachments').directive('fileDropzone', function ($rootScope) {
-    return {
-        restrict: 'A',
-        compile: function (tElement, tAttributes) {
-            tElement.removeAttr('smart-dropzone data-smart-dropzone');
-
-            tElement.dropzone({
-                addRemoveLinks : true,
-                maxFilesize: 0.5,
-                dictDefaultMessage: '<span class="text-center"><span class="font-lg visible-xs-block visible-sm-block visible-lg-block"><span class="font-lg"><i class="fa fa-caret-right text-danger"></i><span class="font-xs">' + $rootScope.getWord("DropZone") + '</span></span>',
-                dictResponseError: $rootScope.getWord("UploadError")
-            });
-        }
-    }
-});
-
-'use strict';
-
-angular.module('app.attachments').directive('egFileUploader', function (loadingInfo, fileManager) {
-
-    var directive = {
-        link: link,
-        restrict: 'E',
-        templateUrl: 'app/attachments/views/fileUploader.html',
-        scope: true
-    };
-    return directive;
-
-    function link(scope, element, attrs) {
-        scope.hasFiles = false;
-        scope.files = [];
-        scope.upload = fileManager.upload;
-        scope.appStatus = loadingInfo.status;
-        scope.fileManagerStatus = fileManager.status;
-    }
-
-});
-'use strict';
-
-angular.module('app.attachments').factory('fileManager', function ($q, fileManagerClient, $http, loadingInfo, User) {
-
-    var service = {
-        files: [],
-        load: load,
-        upload: upload,
-        remove: remove,
-        download: download,
-        performDownload: performDownload,
-        fileExists: fileExists,
-        status: {
-            uploading: false
-        },
-        params: {
-            serviceBase: "",
-            schema: "",
-            cls: "",
-            oid: "",
-            api: "",
-            prefix: ""
-        }
-    };
-
-    return service;
-
-    function load() {
-
-        loadingInfo.setInfo({ busy: true, message: "loading files" })
-
-        service.files.length = 0;
-
-        if (!service.params.oid)
-            return [];
-        else
-            return fileManagerClient.query({api: service.params.api, schema: service.params.schema, cls: service.params.cls, oid: service.params.oid, prefix: service.params.prefix })
-                                .$promise
-                                .then(function (result) {
-                                    result.files
-                                            .forEach(function (file) {
-                                                service.files.push(file);
-                                            });
-
-                                    loadingInfo.setInfo({ message: "files loaded successfully" });
-
-                                    return result.$promise;
-                                },
-                                function (result) {
-                                    if (result.data) {
-                                        loadingInfo.setInfo({ message: "something went wrong: " + result.data.message });
-                                    }
-                                    else
-                                    {
-                                        loadingInfo.setInfo({ message: "something went wrong: "});
-                                    }
-                                    return $q.reject(result);
-                                })
-                                ['finally'](
-                                function () {
-                                    loadingInfo.setInfo({ busy: false });
-                                });
-    }
-
-    function upload(files) {
-        
-        service.status.uploading = true;
-        loadingInfo.setInfo({ busy: true, message: "uploading files" });
-
-        var formData = new FormData();
-
-        angular.forEach(files, function (file) {
-            console.debug("upload file name =" + file.name);
-            formData.append(file.name, file);
-        });
-
-        return fileManagerClient.save({ api: service.params.api, schema: service.params.schema, cls: service.params.cls, oid: service.params.oid, prefix: service.params.prefix }, formData)
-                                    .$promise
-                                    .then(function (result) {
-                                        if (result && result.files) {
-                                            result.files.forEach(function (file) {
-                                                if (!fileExists(file.name)) {
-                                                    service.files.push(file);
-                                                }
-                                            });
-                                        }
-
-                                        loadingInfo.setInfo({ message: "files uploaded successfully" });
-
-                                        return result.$promise;
-                                    },
-                                    function (result) {
-                                        loadingInfo.setInfo({ message: "something went wrong: " + result.data.message });
-                                        return $q.reject(result);
-                                    })
-                                    ['finally'](
-                                    function () {
-                                        loadingInfo.setInfo({ busy: false });
-                                        service.status.uploading = false;
-                                    });
-    }
-
-    function remove(file) {
-        loadingInfo.setInfo({ busy: true, message: "deleting file " + file.name });
-      
-        return fileManagerClient.remove({ api: service.params.api, schema: service.params.schema, cls: service.params.cls, oid: service.params.oid, fileId: file.id, prefix: service.params.prefix })
-                                    .$promise
-                                    .then(function (result) {
-                                        //if the file was deleted successfully remove it from the files array
-                                        var i = service.files.indexOf(file);
-                                        service.files.splice(i, 1);
-
-                                        loadingInfo.setInfo({ message: "files deleted" });
-
-                                        return result.$promise;
-                                    },
-                                    function (result) {
-                                        loadingInfo.setInfo({ message: "something went wrong: " + result.data.message });
-                                        return $q.reject(result);
-                                    })
-                                    ['finally'](
-                                    function () {
-                                        loadingInfo.setInfo({ busy: false });
-                                    });
-    }
-
-    function download(file)
-    {
-        var getFileUrl = service.params.serviceBase + "/" + service.params.api + "/" + service.params.schema + "/" + service.params.cls + "/" + service.params.oid + "/" + file.id;
-        if (service.params.prefix)
-        {
-            getFileUrl += "?prefix=" + encodeURIComponent(service.params.prefix) + "&user=" + encodeURIComponent(User.userName);
-        }
-
-        performDownload(getFileUrl, null);
-    }
-
-    function performDownload(url, callback) {
-    
-        // Use an arraybuffer
-        $http.get(url, { responseType: 'arraybuffer' })
-            .success(function (data, status, headers) {
-
-                var octetStreamMime = 'application/octet-stream';
-                var success = false;
-
-                // Get the headers
-                headers = headers();
-
-                // Get the filename from the x-filename header or default to "download.bin"
-                var filename = headers['x-filename'] || 'download.bin';
-                filename = decodeURIComponent(filename);
-
-                // Determine the content type from the header or default to "application/octet-stream"
-                var contentType = headers['content-type'] || octetStreamMime;
-
-                try {
-                    // Try using msSaveBlob if supported
-                    console.log("Trying saveBlob method ...");
-                    var blob = new Blob([data], { type: contentType });
-                    if (navigator.msSaveBlob)
-                        navigator.msSaveBlob(blob, filename);
-                    else {
-                        // Try using other saveBlob implementations, if available
-                        var saveBlob = navigator.webkitSaveBlob || navigator.mozSaveBlob || navigator.saveBlob;
-                        if (saveBlob === undefined) throw "Not supported";
-                        saveBlob(blob, filename);
-                    }
-                    console.log("saveBlob succeeded");
-                    success = true;
-                } catch (ex) {
-                    console.log("saveBlob method failed with the following exception:");
-                    console.log(ex);
-                }
-
-                if (!success) {
-                    // Get the blob url creator
-                    var urlCreator = window.URL || window.webkitURL || window.mozURL || window.msURL;
-                    if (urlCreator) {
-                        // Try to use a download link
-                        var link = document.createElement('a');
-                        if ('download' in link) {
-                            // Try to simulate a click
-                            try {
-                                // Prepare a blob URL
-                                console.log("Trying download link method with simulated click ...");
-                                var blob = new Blob([data], { type: contentType });
-                                var url = urlCreator.createObjectURL(blob);
-                                link.setAttribute('href', url);
-
-                                // Set the download attribute (Supported in Chrome 14+ / Firefox 20+)
-                                link.setAttribute("download", filename);
-
-                                // Simulate clicking the download link
-                                var event = document.createEvent('MouseEvents');
-                                event.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
-                                link.dispatchEvent(event);
-                                console.log("Download link method with simulated click succeeded");
-                                success = true;
-
-                            } catch (ex) {
-                                console.log("Download link method with simulated click failed with the following exception:");
-                                console.log(ex);
-                            }
-                        }
-
-                        if (!success) {
-                            // Fallback to window.location method
-                            try {
-                                // Prepare a blob URL
-                                // Use application/octet-stream when using window.location to force download
-                                console.log("Trying download link method with window.location ...");
-                                var blob = new Blob([data], { type: octetStreamMime });
-                                var url = urlCreator.createObjectURL(blob);
-                                window.location = url;
-                                console.log("Download link method with window.location succeeded");
-                                success = true;
-                            } catch (ex) {
-                                console.log("Download link method with window.location failed with the following exception:");
-                                console.log(ex);
-                            }
-                        }
-
-                    }
-                }
-
-                if (!success) {
-                    // Fallback to window.open method
-                    console.log("No methods worked for saving the arraybuffer, using last resort window.open");
-                    window.open(httpPath, '_blank', '');
-                }
-
-                if (callback)
-                {
-                    callback();
-                }
-            })
-        .error(function (data, status) {
-            console.log("Request failed with status: " + status);
-
-            // Optionally write the error out to scope
-            //$scope.errorDetails = "Request failed with status: " + status;
-
-            if (callback) {
-                callback();
-            }
-        });
-    }
-
-    function fileExists(fileName) {
-        var res = false
-        service.files.forEach(function (file) {
-            if (file.name === fileName) {
-                res = true;
-            }
-        });
-
-        return res;
-    }
-});
-'use strict';
-
-angular.module('app.attachments').factory('fileManagerClient', function ($resource, APP_CONFIG) {
-
-    return $resource(APP_CONFIG.ebaasRootUrl + "/:api/:schema/:cls/:oid?prefix=:prefix",
-        { id: "@Id" },
-        {
-            'query': { method: 'GET', params: {api: "api", schema: "schema", cls: "cls", oid: "oid", prefix: "prefix"} },
-            'save': { method: 'POST', params: { api: "api", schema: "schema", cls: "cls", oid: "oid", prefix: 'prefix' }, transformRequest: angular.identity, headers: { 'Content-Type': undefined } },
-            'remove': { method: 'DELETE', url: APP_CONFIG.ebaasRootUrl + '/:api/:schema/:cls/:oid/:fileId?prefix=:prefix', params: {api: "api", schema: "schema", cls: "cls", oid: "oid", fileId: "fileId", prefix: "prefix"} }
-        });
-});
-
-'use strict';
-
-angular.module('app.attachments').factory('loadingInfo', function () {
-    var service = {
-        status: {
-            busy: false,
-            message: ''
-        },
-        setInfo: setInfo
-    };
-
-    return service;
-
-    function setInfo(args) {
-        if (args) {
-            if (args.hasOwnProperty('busy')) {
-                service.status.busy = args.busy;
-            }
-            if (args.hasOwnProperty('message')) {
-                service.status.message = args.message;
-            }
-        } else {
-            service.status.busy = false;
-            service.status.message = '';
-        }
-    }
-});
-"use strict";
-
-angular.module("app.auth").factory("authService", function($rootScope, $http, $q, localStorageService, APP_CONFIG) {
-
-    var authServiceFactory = {};
-
-    var _authentication = {
-        isAuth: false,
-        userName: ""
-    };
-
-    var _saveRegistration = function(registration) {
-
-        _logOut();
-
-        return $http.post(APP_CONFIG.ebaasRootUrl + '/api/accounts/create', registration).then(function(response) {
-            return response;
-        });
-    };
-
-    var _login = function(loginData) {
-
-        var data = "grant_type=password&username=" + loginData.userName + "&password=" + loginData.password;
-
-        var deferred = $q.defer();
-
-        var url = APP_CONFIG.ebaasRootUrl + '/oauth/token';
-
-        $http.post(url, data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).success(function(response) {
-
-            localStorageService.set('authorizationData', { token: response.access_token, userName: loginData.userName });
-
-            _authentication.isAuth = true;
-            _authentication.userName = loginData.userName;
-
-            deferred.resolve(response);
-
-        }).error(function (err, status) {
-            if (err.error === "invalid_grant")
-            {
-                err.error_description = $rootScope.getWord("Invalid user name or password");
-            }
-            _logOut();
-            deferred.reject(err);
-        });
-
-        return deferred.promise;
-
-    };
-
-    var _logOut = function() {
-
-        localStorageService.remove('authorizationData');
-
-        _authentication.isAuth = false;
-        _authentication.userName = "";
-
-    };
-
-    var _fillAuthData = function() {
-
-        var authData = localStorageService.get('authorizationData');
-        if (authData) {
-            _authentication.isAuth = true;
-            _authentication.userName = authData.userName;
-        }
-
-    }
-
-    authServiceFactory.saveRegistration = _saveRegistration;
-    authServiceFactory.login = _login;
-    authServiceFactory.logOut = _logOut;
-    authServiceFactory.fillAuthData = _fillAuthData;
-    authServiceFactory.authentication = _authentication;
-
-    return authServiceFactory;
-});
-(function (app) {
-    var LoginController = function ($rootScope, $scope, $http, $state, $location, authService, APP_CONFIG, User, TasksInfo, myActivityService, hubService) {
-
-        $scope.loginData = {
-            userName: "",
-            password: ""
-        };
-
-        $scope.message = "";
-
-        $scope.login = function () {
-            authService.login($scope.loginData).then(function (response) {
-
-                if ($rootScope.returnToState) {
-                    $location.path($rootScope.returnToState);
-                } else {
-                    $location.path('/');
-                }
-
-                // load user's info
-                User.load(function () {
-                    hubService.connect(APP_CONFIG.dbschema, function (type, message) {
-                        myActivityService.add(type, message);
-                    }); // connect to server hub to receive messages
-                }); // load user info
-
-                //get user's task count to display at header
-                $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/" + encodeURIComponent(APP_CONFIG.dbschema) + "/count")
-                    .success(function (data) {
-                        TasksInfo.count = data;
-                    });
-
-                //get user's message count to display at header
-                $http.get(APP_CONFIG.ebaasRootUrl + "/api/messages/count")
-                    .success(function (data) {
-                        myActivityService.MessageModel.count = data;
-                    });
-            },
-            function (err) {
-                $scope.message = err.error_description;
-            });
-        };
-
-        if (!String.format) {
-            String.format = function (format) {
-                var args = Array.prototype.slice.call(arguments, 1);
-                return format.replace(/{(\d+)}/g, function (match, number) {
-                    return typeof args[number] != 'undefined'
-                      ? args[number]
-                      : match
-                    ;
-                });
-            };
-        }
-  
-    }
-
-    app.controller("LoginController", LoginController);
-
-}(angular.module("app.auth")));
-"use strict";
-
-angular.module('app.auth').controller('LogoutController', function ($scope, authService, hubService) {
-    hubService.disconnect();
-    authService.logOut();
-})
-"use strict";
-
-angular.module('app.auth').controller('RegisterController', function ($scope, $location, $timeout, authService) {
-        $scope.savedSuccessfully = false;
-        $scope.message = "";
-
-        $scope.registration = {
-            userName: "",
-            lastName: "",
-            firstName: "",
-            email: "",
-            password: "",
-            confirmPassword: ""
-        };
-
-        $scope.signUp = function () {
-            authService.saveRegistration($scope.registration).then(function (response) {
-
-                $scope.savedSuccessfully = true;
-                $scope.message = "User has been registered successfully, you will be redicted to login page in 2 seconds.";
-                startTimer();
-
-            },
-             function (response) {
-                 var errors = [];
-                 for (var key in response.data.modelState) {
-                     for (var i = 0; i < response.data.modelState[key].length; i++) {
-                         errors.push(response.data.modelState[key][i]);
-                     }
-                 }
-                 $scope.message = "Failed to register user due to:" + errors.join(' ');
-             });
-        };
-
-        var startTimer = function () {
-            var timer = $timeout(function () {
-                $timeout.cancel(timer);
-                $location.path('/login');
-            }, 2000);
-        }
-
-    });
-"use strict";
-
-angular.module('app.auth').controller('LoginCtrl', function ($scope, $state, GooglePlus, User, ezfb) {
-
-    $scope.$on('event:google-plus-signin-success', function (event, authResult) {
-        if (authResult.status.method == 'PROMPT') {
-            GooglePlus.getUser().then(function (user) {
-                User.userName = user.name;
-                User.picture = user.picture;
-                $state.go('app.dashboard');
-            });
-        }
-    });
-
-    $scope.$on('event:facebook-signin-success', function (event, authResult) {
-        ezfb.api('/me', function (res) {
-            User.userName = res.name;
-            User.picture = 'https://graph.facebook.com/' + res.id + '/picture';
-            $state.go('app.dashboard');
-        });
-    });
-})
-
-"use strict";
-
-angular.module('app.auth').directive('loginInfo', function(User){
-
-    return {
-        restrict: 'A',
-        templateUrl: 'app/auth/directives/login-info.tpl.html',
+        templateUrl: "app/dashboard/projects/recent-projects.tpl.html",
+        scope: true,
         link: function(scope, element){
-            User.initialized.then(function () {
-                scope.user = User
+
+            Project.list.then(function(response){
+                scope.projects = response.data;
+            });
+            scope.clearProjects = function(){
+                scope.projects = [];
+            }
+        }
+    }
+});
+"use strict";
+
+angular.module('app').controller('TodoCtrl', function ($scope, $timeout, Todo) {
+    $scope.newTodo = undefined;
+
+    $scope.states = ['Critical', 'Important', 'Completed'];
+
+    $scope.todos = Todo.getList().$object;
+
+    // $scope.$watch('todos', function(){ }, true)
+
+    $scope.toggleAdd = function () {
+        if (!$scope.newTodo) {
+            $scope.newTodo = {
+                state: 'Important'
+            };
+        } else {
+            $scope.newTodo = undefined;
+        }
+    };
+
+    $scope.createTodo = function () {
+        $scope.todos.push($scope.newTodo);
+        $scope.newTodo = undefined;
+        // $scope.newTodo.$save(function (respoonse) {
+        //     $scope.todos.push(respoonse);
+        //     $scope.newTodo = undefined;
+        // });
+    };
+
+    $scope.deleteTodo = function (todo) {
+        todo.remove().then(function () {
+            $scope.todos.splice($scope.todos.indexOf(todo), 1);
+        });
+
+    };
+
+});
+"use strict";
+
+angular.module('app.datacart').controller('addToDataCartCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, CartInfo, dataCartService) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+    $scope.oid = $stateParams.oid;
+
+    $scope.addToCart = function () {
+        var exist = false;
+        var cart = CartInfo.getCart($scope.dbschema, $scope.dbclass);
+        var arrayLength = cart.items.length;
+        for (var i = 0; i < arrayLength; i++) {
+            if (cart.items[i].obj_id === $scope.oid) {
+                exist = true;
+                break;
+            }
+        }
+
+        if (!exist)
+        {
+            dataCartService.getCartItem($stateParams.schema, $stateParams.class, cart.dataViewName, $stateParams.oid, function (data) {
+
+                CartInfo.addToCart($scope.dbschema, $scope.dbclass, data);
+            });
+        }
+ 
+        $modalInstance.dismiss("dismiss");
+    };
+
+    $scope.closeModal = function () {
+        $modalInstance.dismiss("dismiss");
+    };
+});
+"use strict";
+
+angular.module('app.datacart').controller('dataCartCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, CartInfo, dataCartService, fileManager) {
+
+    $scope.isEmpty = true;
+
+    $scope.selectedTemplate = "0";
+
+    $scope.loading = false;
+
+    var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
+
+    dataCartService.getColumns($stateParams.schema, $stateParams.class, cart.dataViewName, function (data) {
+        
+        $scope.columns = data;
+
+        $scope.rowCollection = cart.items;
+
+        if ($scope.rowCollection.length > 0)
+        {
+            $scope.isEmpty = false;
+        }
+    });
+
+    dataCartService.getReportTemplates($stateParams.schema, $stateParams.class, function (data) {
+        $scope.templates = data;
+    });
+
+    $scope.clearCartItems = function()
+    {
+        CartInfo.clearCart($stateParams.schema, $stateParams.class);
+        $scope.rowCollection = [];
+        $scope.isEmpty = true;
+    }
+
+    $scope.deleteItem = function(oid)
+    {
+        CartInfo.removeFromCart($stateParams.schema, $stateParams.class, oid);
+        var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
+        $scope.rowCollection = cart.items;
+        if (cart.count === 0) {
+            $scope.isEmpty = true;
+        }
+    }
+
+    $scope.compareItems = function()
+    {
+        var objIds = "";
+        var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
+        for (var i = 0; i < cart.items.length; i++)
+        {
+            if (objIds != "")
+            {
+                objIds += ",";
+            }
+
+            objIds += cart.items[i].obj_id;
+        }
+
+        $scope.loading = true;
+        var getFileUrl = APP_CONFIG.apiRootUrl + "/report/" + encodeURIComponent($stateParams.schema) + "/" + $stateParams.class + "?template=" + encodeURIComponent($scope.selectedTemplate) + "&oids=" + objIds;
+
+        fileManager.performDownload(getFileUrl, function () {
+            $scope.loading = false;
+        });
+    }
+
+    $scope.downloadDataPackage = function()
+    {
+        var objIds = "";
+        var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
+        for (var i = 0; i < cart.items.length; i++) {
+            if (objIds != "") {
+                objIds += ",";
+            }
+
+            objIds += cart.items[i].obj_id;
+        }
+
+        $scope.loading = true;
+        var getDataPackageUrl = APP_CONFIG.apiRootUrl + "/export/datapackage/" + encodeURIComponent($stateParams.schema) + "/" + $stateParams.class + "?oids=" + objIds;
+
+        fileManager.performDownload(getDataPackageUrl, function () {
+            $scope.loading = false;
+        });
+    }
+
+    $scope.closeModal = function () {
+        $modalInstance.dismiss("dismiss");
+    };
+});
+"use strict";
+
+angular.module('app.datacart').factory('dataCartService', function ($http, APP_CONFIG) {
+
+    function getColumns(dbschema, dbclass, dbview, callback) {
+        var url;
+        if (dbview) {
+            url = APP_CONFIG.ebaasRootUrl + "/api/metadata/view/" + encodeURIComponent(dbschema) + "/" + dbclass + "?view=" + dbview;
+        }
+        else
+        {
+            url = APP_CONFIG.ebaasRootUrl + "/api/metadata/view/" + encodeURIComponent(dbschema) + "/" + dbclass;
+        }
+
+        $http.get(url).success(function (data) {
+
+            var column;
+            var columns = new Array();
+
+            // data is a JSON Schema for the class
+            var properties = data.properties; // data.properies contains infos of each property of the schema
+
+            var propertyInfo;
+            for (var property in properties) {
+                if (properties.hasOwnProperty(property)) {
+                    propertyInfo = properties[property];
+                    column = new Object();
+                    column.name = property;
+                    column.title = propertyInfo["title"];
+
+                    columns.push(column);
+                }
+            }
+            callback(columns);
+        }).error(function () {
+            callback([]);
+
+        });
+    }
+
+    function getCartItem(dbschema, dbclass, dbview, oid, callback) {
+
+        var url;
+
+        // get data for the items saved in the cart
+        if (dbview) {
+            url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + dbclass + "/" + oid + "?view=" + dbview;
+        }
+        else
+        {
+            url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + dbclass + "/" + oid;
+        }
+        $http.get(url).success(function (data) {
+            callback(data);
+        }).error(function () {
+            callback([]);
+        });
+    }
+
+    function getReportTemplates(dbschema, dbclass, callback) {
+
+        // get data for the items saved in the cart
+        var url = APP_CONFIG.ebaasRootUrl + "/api/report/templates/" + encodeURIComponent(dbschema) + "/" + dbclass;
+
+        $http.get(url).success(function (data) {
+            callback(data);
+        }).error(function () {
+            callback([]);
+        });
+    }
+
+    return {
+        getColumns: function (dbschema, dbclass, dbview, callback) {
+            getColumns(dbschema, dbclass, dbview, callback);
+        },
+        getCartItem: function (dbschema, dbclass, dbview, oid, callback) {
+            getCartItem(dbschema, dbclass, dbview, oid, callback);
+        },
+        getReportTemplates: function (dbschema, dbclass, callback) {
+            getReportTemplates(dbschema, dbclass, callback);
+        }
+	}
+});
+"use strict";
+
+angular.module('app.datacart').controller('downloadReportsCtrl', function ($scope, $rootScope, $http, $stateParams, $modalInstance, APP_CONFIG, dataCartService, fileManager, MetaDataCache) {
+
+    $scope.loading = false;
+    $scope.schema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+
+    var key = $scope.schema + $scope.dbclass + "TotalCount";
+    $scope.totalCount = MetaDataCache.getNamedData(key);
+
+    $scope.selectedTemplate = "0";
+
+    dataCartService.getReportTemplates($stateParams.schema, $stateParams.class, function (data) {
+        $scope.templates = data;
+    });
+
+    $scope.generate = function ()
+    {
+        $scope.loading = true;
+        var MaxSize = 10000
+ 
+        if ($scope.totalCount > MaxSize) {
+            BootstrapDialog.show({
+                title: $rootScope.getWord("Info Dialog"),
+                type: BootstrapDialog.TYPE_WARNING,
+                message: $rootScope.getWord("Too Many Rows"),
+                buttons: [{
+                    label: $rootScope.getWord("Cancel"),
+                    action: function (dialog) {
+                        dialog.close();
+                    }
+                }]
+            });
+        }
+        else {
+            var key = $scope.schema + $scope.dbclass + "Filter";
+            var filter = MetaDataCache.getNamedData(key);
+
+            key = $scope.schema + $scope.dbclass + "View";
+
+            var view = MetaDataCache.getNamedData(key);
+
+            var getFileUrl = APP_CONFIG.apiRootUrl + "/report/" + encodeURIComponent($scope.schema) + "/" + $scope.dbclass + "?template=" + encodeURIComponent($scope.selectedTemplate);
+
+            if (view)
+            {
+                getFileUrl += "&view=" + view;
+            }
+            if (filter)
+            {
+                getFileUrl += "&" + filter;
+            }
+
+            fileManager.performDownload(getFileUrl, function () {
+                $scope.loading = false;
             });
         }
     }
-})
 
+    $scope.closeModal = function () {
+        $modalInstance.dismiss("dismiss");
+    };
+});
 
 
 'use strict';
 
-angular.module('app.auth').factory('User', function ($http, $q, APP_CONFIG, authService) {
-    var dfd = $q.defer();
+angular.module('app.datacart').factory('CartInfo', function () {
 
-    function imageExists(image_url) {
+    var CartModels = {};
 
-        var http = new XMLHttpRequest();
+    function _createCartModel()
+    {
+        var cart = new Object();
+        cart.count = 0;
+        cart.items = [];
+        cart.showDataCart = false;
+        cart.dataViewName = undefined;
 
-        http.open('HEAD', image_url, false);
-        http.send();
-
-        return http.status != 404;
+        return cart;
     }
 
-    var UserModel = {
-        initialized: dfd.promise,
-        userName: undefined,
-        picture: undefined,
-        email: undefined,
-        phoneNumber : undefined,
-        password: undefined,
-        confirmPassword: undefined,
-        firstName: undefined,
-        lastName: undefined,
-        displayName : undefined,
-        division: undefined,
-        address: undefined,
-        imageUrl: undefined,
-        pictureChangeTime: undefined,
-        userImageUrls: undefined,
-        load: function(callback)
-        {
-            $http.get(APP_CONFIG.ebaasRootUrl + '/api/accounts/user/' + authService.authentication.userName).then(function (response) {
-                UserModel.userName = response.data.userName;
-                UserModel.email = response.data.email;
-                UserModel.password = response.data.password;
-                UserModel.firstName = response.data.firstName;
-                UserModel.lastName = response.data.lastName;
-                UserModel.displayName = response.data.displayName;
-                UserModel.phoneNumber = response.data.phoneNumber;
-                UserModel.division = response.data.division;
-                UserModel.address = response.data.address;
-                UserModel.imageUrl = undefined;
-                UserModel.userImageUrls = {};
-
-                UserModel.picture = UserModel.userName + ".png";
-
-                dfd.resolve(UserModel);
-
-                if (callback) {
-                    callback();
-                }
-            });
-        },
-        save : function (callback) {
-            var model = {};
-            model.userName = UserModel.userName;
-            model.email = UserModel.email;
-            model.phoneNumber = UserModel.phoneNumber;
-            model.firstName = UserModel.firstName;
-            model.lastName = UserModel.lastName;
-            model.picture = UserModel.picture;
-           
-            $http.post(APP_CONFIG.ebaasRootUrl + '/api/accounts/update', model).success(function (data) {
-                if (callback) {
-                    callback();
-                }
-            });
-        },
-        image : function()
-        {
-            if (!UserModel.imageUrl) {
-                var imageUrl = APP_CONFIG.avatarsUrl + UserModel.picture;
-                if (!imageExists(imageUrl)) {
-                    UserModel.imageUrl = APP_CONFIG.avatarsUrl + "male.png";
-                }
-                else {
-                    UserModel.imageUrl = imageUrl + '?' + UserModel.pictureChangeTime;
-                }
-            }
-            //console.debug(UserModel.imageUrl);
-            return UserModel.imageUrl;
-        },
-        getUserImage: function (userId) {
-            if (UserModel.userImageUrls) {
-                var imageUrl = UserModel.userImageUrls[userId];
-                if (!imageUrl) {
-                    imageUrl = APP_CONFIG.avatarsUrl + userId + ".png";
-                    if (!imageExists(imageUrl)) {
-                        imageUrl = APP_CONFIG.avatarsUrl + "male.png";
-                        UserModel.userImageUrls[userId] = imageUrl;
-                    }
-                    else {
-                        UserModel.userImageUrls[userId] = imageUrl;
-                    }
-                }
-            }
-            else
-            {
-                return APP_CONFIG.avatarsUrl + "male.png";
-            }
-     
-            return imageUrl;
+    function _getCart(dbschema, dbclass) {
+        var cart = CartModels[dbschema + dbclass];
+        if (!cart) {
+            // first time, create a model for the cart
+            cart = _createCartModel();
+            CartModels[dbschema + dbclass] = cart;
         }
-    };
 
-    return UserModel;
+        return cart;
+    }
+
+    function _addToCart(dbschema, dbclass, item) {
+        var cart = CartModels[dbschema + dbclass];
+        if (!cart)
+        {
+            // first time, create a model for the cart
+            cart = _createCartModel();
+            CartModels[dbschema + dbclass] = cart;
+        }
+
+        var arrayLength = cart.items.length;
+        var exist = false;
+        for (var i = 0; i < arrayLength; i++) {
+            if (cart.items[i].obj_id === item.obj_id) {
+                exist = true;
+                break;
+            }
+        }
+
+        if (!exist) {
+            cart.count++;
+
+            cart.items.push(item);
+        }
+    }
+
+    function _removeFromCart(dbschema, dbclass, oid) {
+        var cart = CartModels[dbschema + dbclass];
+        if (cart) {
+            var found = false;
+            var index;
+            if (cart.items.length > 0) {
+                for (var i = 0; i < cart.items.length; i++) {
+                    if (cart.items[i].obj_id === oid) {
+                        found = true;
+                        index = i;
+                        break;
+                    }
+                }
+
+                if (found) {
+                    cart.count--;
+                    cart.items.splice(index, 1);
+                }
+            }
+        }
+    }
+
+    function _clearCart(dbschema, dbclass) {
+        var cart = CartModels[dbschema + dbclass];
+        if (cart) {
+            cart.count = 0;
+            cart.items = [];
+        }
+    }
+
+    return {
+        getCart : _getCart,
+        addToCart: _addToCart,
+        removeFromCart: _removeFromCart,
+        clearCart: _clearCart
+    }
 });
 
 "use strict";
@@ -7399,1119 +8366,6 @@ angular.module('app.bulletinboard').controller('bulletinViewCtrl', function ($sc
     else
     {
         $scope.post = {};
-    }
-});
-"use strict";	
-
-angular.module('app').controller("ActivitiesCtrl", function ActivitiesCtrl($scope, $log, activityService){
-
-	$scope.activeTab = 'default';
-	$scope.currentActivityItems = [];
-	
-	// Getting different type of activites
-	activityService.get(function(data){
-
-		$scope.activities = data.activities;
-		
-	});
-
-
-	$scope.isActive = function(tab){
-		return $scope.activeTab === tab;
-	};
-
-	$scope.setTab = function(activityType){
-		$scope.activeTab = activityType;
-
-		activityService.getbytype(activityType, function(data) {
-
-			$scope.currentActivityItems = data.data;
-
-		});
-
-	};
-
-});
-"use strict";
-
-// Speed up calls to hasOwnProperty
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-
-function isEmpty(obj) {
-
-    // null and undefined are "empty"
-    if (obj == null) return true;
-
-    // Assume if it has a length property with a non-zero value
-    // that that property is correct.
-    if (obj.length > 0) return false;
-    if (obj.length === 0) return true;
-
-    // Otherwise, does it have any properties of its own?
-    // Note that this doesn't handle
-    // toString and valueOf enumeration bugs in IE < 9
-    for (var key in obj) {
-        if (hasOwnProperty.call(obj, key)) return false;
-    }
-
-    return true;
-}
-
-angular.module('app').directive('activitiesDropdownToggle', function($log) {
-
-	var link = function($scope,$element, attrs){
-		var ajax_dropdown = null;
-
-		$element.on('click', function () {
-			var badge = $(this).find('.badge');
-
-            /*
-			if (badge.hasClass('bg-color-red')) {
-
-				badge.removeClass('bg-color-red').text(0);
-
-			}
-            */
-
-			ajax_dropdown = $(this).next('.ajax-dropdown');
-
-			if (!ajax_dropdown.is(':visible')) {
-
-				ajax_dropdown.fadeIn(150);
-
-				$(this).addClass('active');
-
-			}
-			 else {
-				
-				ajax_dropdown.fadeOut(150);
-				
-				$(this).removeClass('active');
-
-			}
-
-		})
-
-		$(document).mouseup(function (e) {
-		    if (ajax_dropdown && !ajax_dropdown.is(e.target) && (ajax_dropdown.has(e.target).length === 0 || isEmpty(e.target))) {
-				ajax_dropdown.fadeOut(150);
-				$element.removeClass('active');
-			}
-		});
-	}
-	
-	return{
-		restrict:'EA',
-		link:link
-	}
-});
-"use strict";
-
-angular.module('app').factory('activityService', function($http, $log, APP_CONFIG) {
-
-	function getActivities(callback){
-
-		$http.get(APP_CONFIG.apiRootUrl + '/activities/activity.json').success(function(data){
-
-			callback(data);
-				
-		}).error(function(){
-
-			$log.log('Error');
-			callback([]);
-
-		});
-
-	}
-
-	function getActivitiesByType(type, callback){
-
-		$http.get(APP_CONFIG.apiRootUrl + '/activities/activity-' + type + '.json').success(function(data){
-
-			callback(data);
-				
-		}).error(function(){
-
-			$log.log('Error');
-			callback([]);
-
-		});
-
-	}
-	
-	return{
-		get:function(callback){
-			getActivities(callback);
-		},
-		getbytype:function(type,callback){
-			getActivitiesByType(type, callback);
-		}
-	}
-});
-"use strict";
-
-angular.module('app').factory('Project', function($http, APP_CONFIG){
-    return {
-        list: $http.get(APP_CONFIG.apiRootUrl + '/projects.json')
-    }
-});
-"use strict";
-
-angular.module('app').directive('recentProjects', function(Project){
-    return {
-        restrict: "EA",
-        replace: true,
-        templateUrl: "app/dashboard/projects/recent-projects.tpl.html",
-        scope: true,
-        link: function(scope, element){
-
-            Project.list.then(function(response){
-                scope.projects = response.data;
-            });
-            scope.clearProjects = function(){
-                scope.projects = [];
-            }
-        }
-    }
-});
-"use strict";
-
-angular.module('app.datacart').controller('addToDataCartCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, CartInfo, dataCartService) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
-    $scope.oid = $stateParams.oid;
-
-    $scope.addToCart = function () {
-        var exist = false;
-        var cart = CartInfo.getCart($scope.dbschema, $scope.dbclass);
-        var arrayLength = cart.items.length;
-        for (var i = 0; i < arrayLength; i++) {
-            if (cart.items[i].obj_id === $scope.oid) {
-                exist = true;
-                break;
-            }
-        }
-
-        if (!exist)
-        {
-            dataCartService.getCartItem($stateParams.schema, $stateParams.class, cart.dataViewName, $stateParams.oid, function (data) {
-
-                CartInfo.addToCart($scope.dbschema, $scope.dbclass, data);
-            });
-        }
- 
-        $modalInstance.dismiss("dismiss");
-    };
-
-    $scope.closeModal = function () {
-        $modalInstance.dismiss("dismiss");
-    };
-});
-"use strict";
-
-angular.module('app.datacart').controller('dataCartCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, CartInfo, dataCartService, fileManager) {
-
-    $scope.isEmpty = true;
-
-    $scope.selectedTemplate = "0";
-
-    $scope.loading = false;
-
-    var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
-
-    dataCartService.getColumns($stateParams.schema, $stateParams.class, cart.dataViewName, function (data) {
-        
-        $scope.columns = data;
-
-        $scope.rowCollection = cart.items;
-
-        if ($scope.rowCollection.length > 0)
-        {
-            $scope.isEmpty = false;
-        }
-    });
-
-    dataCartService.getReportTemplates($stateParams.schema, $stateParams.class, function (data) {
-        $scope.templates = data;
-    });
-
-    $scope.clearCartItems = function()
-    {
-        CartInfo.clearCart($stateParams.schema, $stateParams.class);
-        $scope.rowCollection = [];
-        $scope.isEmpty = true;
-    }
-
-    $scope.deleteItem = function(oid)
-    {
-        CartInfo.removeFromCart($stateParams.schema, $stateParams.class, oid);
-        var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
-        $scope.rowCollection = cart.items;
-        if (cart.count === 0) {
-            $scope.isEmpty = true;
-        }
-    }
-
-    $scope.compareItems = function()
-    {
-        var objIds = "";
-        var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
-        for (var i = 0; i < cart.items.length; i++)
-        {
-            if (objIds != "")
-            {
-                objIds += ",";
-            }
-
-            objIds += cart.items[i].obj_id;
-        }
-
-        $scope.loading = true;
-        var getFileUrl = APP_CONFIG.apiRootUrl + "/report/" + encodeURIComponent($stateParams.schema) + "/" + $stateParams.class + "?template=" + encodeURIComponent($scope.selectedTemplate) + "&oids=" + objIds;
-
-        fileManager.performDownload(getFileUrl, function () {
-            $scope.loading = false;
-        });
-    }
-
-    $scope.downloadDataPackage = function()
-    {
-        var objIds = "";
-        var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
-        for (var i = 0; i < cart.items.length; i++) {
-            if (objIds != "") {
-                objIds += ",";
-            }
-
-            objIds += cart.items[i].obj_id;
-        }
-
-        $scope.loading = true;
-        var getDataPackageUrl = APP_CONFIG.apiRootUrl + "/export/datapackage/" + encodeURIComponent($stateParams.schema) + "/" + $stateParams.class + "?oids=" + objIds;
-
-        fileManager.performDownload(getDataPackageUrl, function () {
-            $scope.loading = false;
-        });
-    }
-
-    $scope.closeModal = function () {
-        $modalInstance.dismiss("dismiss");
-    };
-});
-"use strict";
-
-angular.module('app.datacart').factory('dataCartService', function ($http, APP_CONFIG) {
-
-    function getColumns(dbschema, dbclass, dbview, callback) {
-        var url;
-        if (dbview) {
-            url = APP_CONFIG.ebaasRootUrl + "/api/metadata/view/" + encodeURIComponent(dbschema) + "/" + dbclass + "?view=" + dbview;
-        }
-        else
-        {
-            url = APP_CONFIG.ebaasRootUrl + "/api/metadata/view/" + encodeURIComponent(dbschema) + "/" + dbclass;
-        }
-
-        $http.get(url).success(function (data) {
-
-            var column;
-            var columns = new Array();
-
-            // data is a JSON Schema for the class
-            var properties = data.properties; // data.properies contains infos of each property of the schema
-
-            var propertyInfo;
-            for (var property in properties) {
-                if (properties.hasOwnProperty(property)) {
-                    propertyInfo = properties[property];
-                    column = new Object();
-                    column.name = property;
-                    column.title = propertyInfo["title"];
-
-                    columns.push(column);
-                }
-            }
-            callback(columns);
-        }).error(function () {
-            callback([]);
-
-        });
-    }
-
-    function getCartItem(dbschema, dbclass, dbview, oid, callback) {
-
-        var url;
-
-        // get data for the items saved in the cart
-        if (dbview) {
-            url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + dbclass + "/" + oid + "?view=" + dbview;
-        }
-        else
-        {
-            url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + dbclass + "/" + oid;
-        }
-        $http.get(url).success(function (data) {
-            callback(data);
-        }).error(function () {
-            callback([]);
-        });
-    }
-
-    function getReportTemplates(dbschema, dbclass, callback) {
-
-        // get data for the items saved in the cart
-        var url = APP_CONFIG.ebaasRootUrl + "/api/report/templates/" + encodeURIComponent(dbschema) + "/" + dbclass;
-
-        $http.get(url).success(function (data) {
-            callback(data);
-        }).error(function () {
-            callback([]);
-        });
-    }
-
-    return {
-        getColumns: function (dbschema, dbclass, dbview, callback) {
-            getColumns(dbschema, dbclass, dbview, callback);
-        },
-        getCartItem: function (dbschema, dbclass, dbview, oid, callback) {
-            getCartItem(dbschema, dbclass, dbview, oid, callback);
-        },
-        getReportTemplates: function (dbschema, dbclass, callback) {
-            getReportTemplates(dbschema, dbclass, callback);
-        }
-	}
-});
-"use strict";
-
-angular.module('app.datacart').controller('downloadReportsCtrl', function ($scope, $rootScope, $http, $stateParams, $modalInstance, APP_CONFIG, dataCartService, fileManager, MetaDataCache) {
-
-    $scope.loading = false;
-    $scope.schema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
-
-    var key = $scope.schema + $scope.dbclass + "TotalCount";
-    $scope.totalCount = MetaDataCache.getNamedData(key);
-
-    $scope.selectedTemplate = "0";
-
-    dataCartService.getReportTemplates($stateParams.schema, $stateParams.class, function (data) {
-        $scope.templates = data;
-    });
-
-    $scope.generate = function ()
-    {
-        $scope.loading = true;
-        var MaxSize = 10000
- 
-        if ($scope.totalCount > MaxSize) {
-            BootstrapDialog.show({
-                title: $rootScope.getWord("Info Dialog"),
-                type: BootstrapDialog.TYPE_WARNING,
-                message: $rootScope.getWord("Too Many Rows"),
-                buttons: [{
-                    label: $rootScope.getWord("Cancel"),
-                    action: function (dialog) {
-                        dialog.close();
-                    }
-                }]
-            });
-        }
-        else {
-            var key = $scope.schema + $scope.dbclass + "Filter";
-            var filter = MetaDataCache.getNamedData(key);
-
-            key = $scope.schema + $scope.dbclass + "View";
-
-            var view = MetaDataCache.getNamedData(key);
-
-            var getFileUrl = APP_CONFIG.apiRootUrl + "/report/" + encodeURIComponent($scope.schema) + "/" + $scope.dbclass + "?template=" + encodeURIComponent($scope.selectedTemplate);
-
-            if (view)
-            {
-                getFileUrl += "&view=" + view;
-            }
-            if (filter)
-            {
-                getFileUrl += "&" + filter;
-            }
-
-            fileManager.performDownload(getFileUrl, function () {
-                $scope.loading = false;
-            });
-        }
-    }
-
-    $scope.closeModal = function () {
-        $modalInstance.dismiss("dismiss");
-    };
-});
-"use strict";
-
-angular.module('app').controller('TodoCtrl', function ($scope, $timeout, Todo) {
-    $scope.newTodo = undefined;
-
-    $scope.states = ['Critical', 'Important', 'Completed'];
-
-    $scope.todos = Todo.getList().$object;
-
-    // $scope.$watch('todos', function(){ }, true)
-
-    $scope.toggleAdd = function () {
-        if (!$scope.newTodo) {
-            $scope.newTodo = {
-                state: 'Important'
-            };
-        } else {
-            $scope.newTodo = undefined;
-        }
-    };
-
-    $scope.createTodo = function () {
-        $scope.todos.push($scope.newTodo);
-        $scope.newTodo = undefined;
-        // $scope.newTodo.$save(function (respoonse) {
-        //     $scope.todos.push(respoonse);
-        //     $scope.newTodo = undefined;
-        // });
-    };
-
-    $scope.deleteTodo = function (todo) {
-        todo.remove().then(function () {
-            $scope.todos.splice($scope.todos.indexOf(todo), 1);
-        });
-
-    };
-
-});
-
-
-'use strict';
-
-angular.module('app.datacart').factory('CartInfo', function () {
-
-    var CartModels = {};
-
-    function _createCartModel()
-    {
-        var cart = new Object();
-        cart.count = 0;
-        cart.items = [];
-        cart.showDataCart = false;
-        cart.dataViewName = undefined;
-
-        return cart;
-    }
-
-    function _getCart(dbschema, dbclass) {
-        var cart = CartModels[dbschema + dbclass];
-        if (!cart) {
-            // first time, create a model for the cart
-            cart = _createCartModel();
-            CartModels[dbschema + dbclass] = cart;
-        }
-
-        return cart;
-    }
-
-    function _addToCart(dbschema, dbclass, item) {
-        var cart = CartModels[dbschema + dbclass];
-        if (!cart)
-        {
-            // first time, create a model for the cart
-            cart = _createCartModel();
-            CartModels[dbschema + dbclass] = cart;
-        }
-
-        var arrayLength = cart.items.length;
-        var exist = false;
-        for (var i = 0; i < arrayLength; i++) {
-            if (cart.items[i].obj_id === item.obj_id) {
-                exist = true;
-                break;
-            }
-        }
-
-        if (!exist) {
-            cart.count++;
-
-            cart.items.push(item);
-        }
-    }
-
-    function _removeFromCart(dbschema, dbclass, oid) {
-        var cart = CartModels[dbschema + dbclass];
-        if (cart) {
-            var found = false;
-            var index;
-            if (cart.items.length > 0) {
-                for (var i = 0; i < cart.items.length; i++) {
-                    if (cart.items[i].obj_id === oid) {
-                        found = true;
-                        index = i;
-                        break;
-                    }
-                }
-
-                if (found) {
-                    cart.count--;
-                    cart.items.splice(index, 1);
-                }
-            }
-        }
-    }
-
-    function _clearCart(dbschema, dbclass) {
-        var cart = CartModels[dbschema + dbclass];
-        if (cart) {
-            cart.count = 0;
-            cart.items = [];
-        }
-    }
-
-    return {
-        getCart : _getCart,
-        addToCart: _addToCart,
-        removeFromCart: _removeFromCart,
-        clearCart: _clearCart
-    }
-});
-
-'use strict';
-
-angular.module('app.datacatalog').controller('DataCatalogLayoutCtrl', function ($http, APP_CONFIG, $scope, $state, $stateParams, propmisedParams, MetaDataCache, CartInfo) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.class = $stateParams.class;
-    var params = propmisedParams.data;
-
-    $scope.treeName = params['treeName'];
-    $scope.view = params['dataView'];
-    $scope.formTemplate = params['formTemplate'];
-    $scope.node = undefined;
-   
-    var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
-    cart.dataViewName = params['dataView'];
-    if (params['dataCart'] && params['dataCart'] === "true")
-    {
-        cart.showDataCart = true;
-    }
- 
-    if (MetaDataCache.getNamedData($scope.treeName)) {
-        $scope.catalogTree = MetaDataCache.getNamedData($scope.treeName);
-
-        $state.go('app.datacatalog.datatable', { schema: $scope.dbschema, class: $scope.class, node: $scope.node, view: $scope.view, formtemplate: $scope.formTemplate });
-    }
-    else {
-        // url to get tree model
-        var url = APP_CONFIG.ebaasRootUrl + "/api/metadata/classificationtree/" + encodeURIComponent($scope.dbschema) + "/" + $scope.treeName;
-
-        $http.get(url).then(function (res) {
-
-            var treeData = res.data;
-
-            $scope.catalogTree = createMenuTree(treeData);
-
-            MetaDataCache.setNamedData($scope.treeName + "treeData", treeData);
-
-            MetaDataCache.setNamedData($scope.treeName, $scope.catalogTree);
-
-            $state.go('app.datacatalog.datatable', { schema: $scope.dbschema, class: $scope.class, node: $scope.node, view: $scope.view, formtemplate: $scope.formTemplate });
-        });
-    }
-
-    $scope.OpenDataTable = function OpenDataTable(nodeName) {
-
-        $state.go('app.datacatalog.datatable', { schema: $scope.dbschema, class: $scope.class, node: nodeName, tree: $scope.treeName, formtemplate: $scope.formTemplate });
-    }
-
-    var createMenuTree = function (treeData) {
-        var node, rootMenuItem, roots = [];
-        node = treeData;
-        
-        var rootMenuItem = {};
-        //rootMenuItem.content = "<span><i class=\"fa fa-lg fa-plus-circle\"></i> " + node.title + "</span>";
-        rootMenuItem.content = "<span class='label label-info'><i class=\"fa fa-lg fa-plus-circle\"></i>&nbsp;&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('catalogTree')).scope().OpenDataTable('" + node.name + "');\">" + node.title + "</a></span>";
-        rootMenuItem.children = [];
-        rootMenuItem.expanded = true;
-        roots.push(rootMenuItem);
-
-        addChildMenuItems(rootMenuItem, treeData.children);
-
-        return roots;
-    };
-
-    var addChildMenuItems = function(parentItem, nodes)
-    {
-        var node, menuItem;
-
-        for (var i = 0; i < nodes.length; i += 1) {
-            node = nodes[i];
-
-            menuItem = {};
-            menuItem.children = [];
-
-            if (node.children.length > 0) {
-                menuItem.content = "<span class='label label-info'><i class=\"fa fa-lg fa-plus-circle\"></i>&nbsp;&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('catalogTree')).scope().OpenDataTable('" + node.name + "');\">" + node.title + "</a></span>";
-            } else {
-                menuItem.content = "<span class='label label-info'><a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('catalogTree')).scope().OpenDataTable('" + node.name + "');\">" + node.title + "</a></span>";
-            }
-
-            parentItem.children.push(menuItem);
-
-            addChildMenuItems(menuItem, node.children);
-        }
-    }
-});
-'use strict';
-
-angular.module('app.datacatalog').controller('DataTableViewCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, MetaDataCache, $interval, CartInfo) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
-    $scope.view = $stateParams.view;
-    $scope.tree = $stateParams.tree;
-    $scope.node = $stateParams.node;
-    $scope.formTemplate = $stateParams.formtemplate;
-
-    var node = FindTreeNode($scope.node);
-
-    if (node) {
-        $scope.caption = node.title;
-        if (node.class)
-        {
-            // the node has a different class, load the data from the specified class
-            $scope.dbclass = node.class;
-        }
-    }
-
-    if ($stateParams.insert && $stateParams.insert === "false") {
-        $scope.add = false;
-    }
-    else {
-        $scope.add = true;
-    }
-
-    if ($stateParams.export && $stateParams.export === "true") {
-        $scope.exportData = true;
-    }
-    else {
-        $scope.exportData = false;
-    }
-
-    if ($stateParams.import && $stateParams.import === "true") {
-        $scope.importData = true;
-    }
-    else {
-        $scope.importData = false;
-    }
-
-    if ($stateParams.reports && $stateParams.reports === "true") {
-        $scope.reports = true;
-    }
-    else {
-        $scope.reports = false;
-    }
-
-    if ($stateParams.attachment && $stateParams.attachment === "false") {
-        $scope.attachment = false;
-    }
-    else {
-        $scope.attachment = true;
-    }
-
-    $scope.hasDataCart = false;
-    var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
-    if (cart.showDataCart)
-        $scope.hasDataCart = true;
-
-    $scope.openModal = function () {
-        $state.go('.modalform', { schema: $scope.dbschema, class: $scope.dbclass, template: $scope.formTemplate }, { location: false, notify: false });
-    };
-
-    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG }));
-
-    $scope.GetCommands = function (rowIndex, data) {
-        var items = new Array();
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/sitemap/commands/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + data.obj_id;
-
-        $http.get(url).success(function (commands) {
-
-            // custom commands
-            $scope.commands = commands;
-            var cmdInfo;
-            var item;
-            for (var cmd in commands) {
-                if (commands.hasOwnProperty(cmd)) {
-                    cmdInfo = commands[cmd];
-                    item = new Object();
-                    item.text = cmdInfo.title;
-                    item.css = "btn btn-primary btn-md btn-nav";
-                    if (cmdInfo.icon) {
-                        item.icon = cmdInfo.icon;
-                    }
-                    else {
-                        item.icon = "fa fa-lg fa-tasks";
-                    }
-
-                    item.onItemClick = function (text) {
-                        gotoState(text, $scope.dbschema, data.type, data.obj_id, !data.allowWrite)
-                    }
-
-                    items.push(item);
-
-                    if (cmdInfo.baseUrl && !APP_CONFIG.hashedBaseUrls[cmdInfo.hash])
-                    {
-                        APP_CONFIG.hashedBaseUrls[cmdInfo.hash] = cmdInfo.baseUrl;
-                    }
-                }
-            }
-
-            // add standard commands
-            if ($scope.attachment) {
-                items.push({
-                    text: $rootScope.getWord('Attachments'),
-                    icon: "fa fa-lg fa-file-archive-o",
-                    css: "btn btn-default btn-md btn-nav",
-                    onItemClick: function () {
-                        $state.go('.attachments', { schema: $scope.dbschema, class: data.type, oid: data.obj_id, readonly: !data.allowWrite }, { location: false, notify: false });
-                    }
-                });
-            }
-
-            if (data.allowWrite && $stateParams.edit !== "false") {
-                items.push({
-                    text: $rootScope.getWord('Edit'),
-                    icon: "fa fa-lg fa-edit",
-                    css: "btn btn-default btn-md btn-nav",
-                    onItemClick: function () {
-                        $state.go('.modalform', { schema: $scope.dbschema, class: data.type, oid: data.obj_id, template: $scope.formTemplate }, { location: false, notify: false });
-                    }
-                });
-            }
-
-            /*
-            if (data.allowCreate && $stateParams.insert !== "false") {
-                items.push({
-                    text: $rootScope.getWord('Add'),
-                    icon: "fa fa-lg fa-plus-square",
-                    css: "btn btn-default btn-md btn-nav",
-                    onItemClick: function () {
-                        $state.go('.modalform', { schema: $scope.dbschema, class: data.type }, { location: false, notify: false });
-                    }
-                });
-            }
-            */
-
-            if (data.allowDelete && $stateParams.delete !== "false") {
-                items.push({
-                    text: $rootScope.getWord('Delete'),
-                    icon: "fa fa-lg fa-times",
-                    css: "btn btn-default btn-md btn-nav",
-                    onItemClick: function () {
-                        $scope.gridInstance.deleteRow(rowIndex);
-                    }
-                });
-            }
-        });
-        return items;
-    }
-
-    var gotoState = function (title, dbschema, dbclass, oid, readonly) {
-        var commands = $scope.commands;
-        var url = undefined;
-        var cmdUrl = undefined;
-        var params = undefined;
-        var cmdInfo;
-        for (var cmd in commands) {
-            if (commands.hasOwnProperty(cmd)) {
-                cmdInfo = commands[cmd];
-                if (cmdInfo.title === title) {
-                    url = cmdInfo.url;
-                    cmdUrl = cmdInfo.url;
-                    params = new Object();
-                    params.schema = dbschema;
-                    params.class = dbclass;
-                    params.oid = oid;
-                    params.readonly = readonly;
-                    params.cmdHash = cmdInfo.hash;
-                    // add command's parameters to the state parameters
-                    if (cmdInfo.parameters) {
-                        for (var key in cmdInfo.parameters) {
-                            if (cmdInfo.parameters.hasOwnProperty(key)) {
-                                params[key] = cmdInfo.parameters[key];
-                            }
-                        }
-                    };
-
-                    break;
-                }
-            }
-        }
-
-        if (url) {
-            try
-            {
-                if (cmdUrl === ".modalform") {
-                    $state.go(url, params, { location: false, notify: false });
-                }
-                else {
-                    $state.go(url, params);
-                }
-            }
-            catch (err)
-            {
-                BootstrapDialog.show({
-                    title: $rootScope.getWord("Info Dialog"),
-                    type: BootstrapDialog.TYPE_INFO,
-                    message: $rootScope.getWord("Invalid Command"),
-                    buttons: [{
-                        label: $rootScope.getWord("Cancel"),
-                        action: function (dialog) {
-                            dialog.close();
-                        }
-                    }]
-                });
-            }
-        }
-    }
-
-    $scope.gridInstance = null;
-    $scope.dataGridSettings = {
-        dataSource: {
-            store: $scope.customStore
-        },
-        columnAutoWidth: true,
-        sorting: {
-            mode: "multiple"
-        },
-        height: $rootScope.isChrome() === true ? '750px' : undefined,
-        searchPanel: {
-            visible: $stateParams.search && $stateParams.search === "true"? true: false,
-            width: 300,
-            placeholder: $rootScope.getWord("Keyword Search")
-        },
-        editing: {
-            allowAdding: false,
-            allowUpdating: false,
-            allowDeleting: false
-        },
-        grouping: {
-            autoExpandAll: false
-        },
-        pager: {
-            visible: true,
-            showPageSizeSelector: true,
-            showInfo: true
-        },
-        filterRow: {
-            visible: true,
-            applyFilter: "auto"
-        },
-        selection: { mode: 'single' },
-        remoteOperations: true,
-        bindingOptions: {
-            columns: 'columns'
-        },
-        headerFilter: {
-            visible: true
-        },
-        rowAlternationEnabled: true,
-        masterDetail: {
-            enabled: true,
-            template: "detail"
-        },
-        onRowClick: function (e) {
-            if (e.rowType === "data") {
-                var isExpanded = $scope.gridInstance.isRowExpanded(e.key);
-                $scope.gridInstance.collapseAll(-1); // collaspsed all
-                if (!isExpanded) {
-                    $scope.gridInstance.expandRow(e.key);
-                }
-            }
-        },
-        onInitialized: function (e) {
-            $scope.gridInstance = e.component;
-        },
-        onRowPrepared: function (e) {
-        }
-    };
-
-    $rootScope.$on('modalClosed', function (event, data) {
-        if ($scope.gridInstance && data === "update")
-            $scope.gridInstance.refresh();
-    });
-
-    $scope.getCartItemCount = function()
-    {
-        var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
-        return cart.count;
-    }
-
-    $scope.openCart = function()
-    {
-        $state.go(".datacart", { schema: $scope.dbschema, class: $scope.dbclass }, { location: false, notify: false });
-    }
-
-    $scope.downloadReports = function () {
-        $state.go(".downloadreports", { schema: $scope.dbschema, class: $scope.dbclass }, { location: false, notify: false });
-    }
-
-    function FindTreeNode(nodeName)
-    {
-        var found = undefined;
-        var treeData = MetaDataCache.getNamedData($scope.tree + "treeData");
-        if (treeData) {
-            found = FindChildNode(nodeName, treeData.children);
-        }
-
-        return found;
-    }
-
-    function FindChildNode(nodeName, nodes) {
-        var found = undefined;
-
-        for (var i = 0; i < nodes.length; i += 1) {
-            node = nodes[i];
-
-            if (node.name === nodeName)
-            {
-                found = node;
-
-                break;
-            }
-            
-            found = FindChildNode(nodeName, node.children);
-            if (found)
-            {
-                break;
-            }
-        }
-
-        return found;
-    }
-});
-'use strict';
-
-angular.module('app.dataImporter').controller('dataImportCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, Upload) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
-    $scope.oid = $stateParams.oid;
-    $scope.relatedclass = $stateParams.relatedclass;
-
-    $scope.selectedScript = undefined;
-    $scope.submitted = false;
-    $scope.loading = false;
-
-    var url;
-    if (!$scope.relatedclass) {
-        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/All";
-    }
-    else
-    {
-        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.relatedclass + "/All";
-    }
-
-    $http.get(url).success(function (data) {
-        $scope.scripts = data.scripts;
-    });
-
-    // upload on file select or drop
-    $scope.uploadFile = function (file) {
-        $scope.loading = true;
-        var uploadUrl;
-
-        if ($scope.selectedScript.name === "Data Package") {
-            uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/import/datapackage/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass;
-        }
-        else {
-            if (!$scope.relatedclass) {
-                uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/import/files/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + encodeURIComponent($scope.selectedScript.name);
-            }
-            else {
-                uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/import/files/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + $scope.oid + "/" + $scope.relatedclass + "/" + encodeURIComponent($scope.selectedScript.name);
-            }
-        }
-
-        if ($scope.selectedScript) {
-            
-            Upload.upload({
-                url: uploadUrl,
-                data: { file: file }
-            }).then(function (resp) {
-                $scope.errorMsg = "";
-                file.result = resp.data;
-                $scope.loading = false;
-                $scope.submitted = true;
-                $scope.selectedScript = undefined;
-                //console.log(resp);
-            }, function (resp) {
-                if (resp.status > 0)
-                    $scope.errorMsg = resp.status + ': ' + resp.data.message;
-                $scope.loading = false;
-            }, function (evt) {
-                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                file.progress = progressPercentage;
-            });
-        }
-    };
-
-    $scope.selectFile = function()
-    {
-        var fileType = undefined
-        if ($scope.file && $scope.file.name) {
-            var extension = $scope.file.name.split('.').pop();
-            if (extension) {
-                switch (extension.toUpperCase()) {
-                    case "XLS":
-                    case "XLSX":
-                        fileType = "Excel";
-                        break;
-                    case "TXT":
-                    case "CSV":
-                    case "DAT":
-
-                        fileType = "Text";
-                        break;
-                    case "PAK":
-
-                        fileType = "DataPackage";
-                        break;
-                    default:
-                        fileType = "Other";
-                        break;
-                }
-
-                var url;
-                if (fileType != "DataPackage") {
-                    if (!$scope.relatedclass) {
-                        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + fileType;
-                    }
-                    else {
-                        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.relatedclass + "/" + fileType;
-                    }
-
-                    $http.get(url).success(function (data) {
-                        $scope.scripts = data.scripts;
-                    });
-                }
-                else
-                {
-                    $scope.selectedScript = { name: "Data Package" };
-                    $scope.scripts = [{ name: "Data Package" }];
-                }
-            }
-        }
-    }
-
-    $scope.closeModal = function ()
-    {
-        if ($scope.submitted)
-            $modalInstance.close("update");
-        else
-            $modalInstance.dismiss("dismiss");
     }
 });
 'use strict';
@@ -10224,6 +10078,148 @@ angular
   .directive('rowSelect', rowSelect)
 'use strict';
 
+angular.module('app.dataImporter').controller('dataImportCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, Upload) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+    $scope.oid = $stateParams.oid;
+    $scope.relatedclass = $stateParams.relatedclass;
+
+    $scope.selectedScript = undefined;
+    $scope.submitted = false;
+    $scope.loading = false;
+
+    var url;
+    if (!$scope.relatedclass) {
+        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/All";
+    }
+    else
+    {
+        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.relatedclass + "/All";
+    }
+
+    $http.get(url).success(function (data) {
+        $scope.scripts = data.scripts;
+    });
+
+    // upload on file select or drop
+    $scope.uploadFile = function (file) {
+        $scope.loading = true;
+        var uploadUrl;
+
+        if ($scope.selectedScript.name === "Data Package") {
+            uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/import/datapackage/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass;
+        }
+        else {
+            if (!$scope.relatedclass) {
+                uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/import/files/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + encodeURIComponent($scope.selectedScript.name);
+            }
+            else {
+                uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/import/files/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + $scope.oid + "/" + $scope.relatedclass + "/" + encodeURIComponent($scope.selectedScript.name);
+            }
+        }
+
+        if ($scope.selectedScript) {
+            
+            Upload.upload({
+                url: uploadUrl,
+                data: { file: file }
+            }).then(function (resp) {
+                $scope.errorMsg = "";
+                file.result = resp.data;
+                $scope.loading = false;
+                $scope.submitted = true;
+                $scope.selectedScript = undefined;
+                //console.log(resp);
+            }, function (resp) {
+                if (resp.status > 0)
+                    $scope.errorMsg = resp.status + ': ' + resp.data.message;
+                $scope.loading = false;
+            }, function (evt) {
+                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                file.progress = progressPercentage;
+            });
+        }
+    };
+
+    $scope.selectFile = function()
+    {
+        var fileType = undefined
+        if ($scope.file && $scope.file.name) {
+            var extension = $scope.file.name.split('.').pop();
+            if (extension) {
+                switch (extension.toUpperCase()) {
+                    case "XLS":
+                    case "XLSX":
+                        fileType = "Excel";
+                        break;
+                    case "TXT":
+                    case "CSV":
+                    case "DAT":
+
+                        fileType = "Text";
+                        break;
+                    case "PAK":
+
+                        fileType = "DataPackage";
+                        break;
+                    default:
+                        fileType = "Other";
+                        break;
+                }
+
+                var url;
+                if (fileType != "DataPackage") {
+                    if (!$scope.relatedclass) {
+                        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + fileType;
+                    }
+                    else {
+                        url = APP_CONFIG.ebaasRootUrl + "/api/import/scripts/" + encodeURIComponent($scope.dbschema) + "/" + $scope.relatedclass + "/" + fileType;
+                    }
+
+                    $http.get(url).success(function (data) {
+                        $scope.scripts = data.scripts;
+                    });
+                }
+                else
+                {
+                    $scope.selectedScript = { name: "Data Package" };
+                    $scope.scripts = [{ name: "Data Package" }];
+                }
+            }
+        }
+    }
+
+    $scope.closeModal = function ()
+    {
+        if ($scope.submitted)
+            $modalInstance.close("update");
+        else
+            $modalInstance.dismiss("dismiss");
+    }
+});
+'use strict';
+
+angular.module('app.filemanager').directive('ebaasFileManager', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/filemanager/views/file-manager.html',
+        replace: true,
+        scope: {},
+        bindToController: {
+            dbschema: '=',
+            dbclass: '=',
+            oid: '=',
+            prefix: '='
+        },
+        controllerAs: 'vm',
+        controller: 'fileManagerCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
+'use strict';
+
 angular.module('app.filemanager').controller('fileManagerCtrl', function ($scope, $rootScope, fileManager, APP_CONFIG, $stateParams) {
 
     /* jshint validthis:true */
@@ -10408,24 +10404,474 @@ angular.module('app.filemanager').controller('fileManagerViewerCtrl', function (
 
 'use strict';
 
-angular.module('app.filemanager').directive('ebaasFileManager', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/filemanager/views/file-manager.html',
-        replace: true,
-        scope: {},
-        bindToController: {
-            dbschema: '=',
-            dbclass: '=',
-            oid: '=',
-            prefix: '='
-        },
-        controllerAs: 'vm',
-        controller: 'fileManagerCtrl',
-        link: function (scope, element, attributes) {
+angular.module('app.formeditor').controller('formEditorCtrl', function ($scope, $rootScope, $state, APP_CONFIG, $stateParams, formEditorService, $templateCache) {
+
+    $scope.dbschema = $stateParams.schema;
+    formEditorService.formInfo.dbclass = undefined;
+    formEditorService.formInfo.classTitle = undefined;
+    formEditorService.formInfo.formName = undefined;
+    $scope.content =  $rootScope.getWord("Form Editor Tip");
+    $scope.saved = false;
+    $scope.previewId = 0;
+
+    $scope.saveModel = function () {
+        if (formEditorService.formInfo.dbclass && formEditorService.formInfo.formName) {
+            formEditorService.saveFormFile($scope.dbschema, formEditorService.formInfo.dbclass, formEditorService.formInfo.formName, $scope.content, function () {
+                BootstrapDialog.show({
+                    title: $rootScope.getWord("Info Dialog"),
+                    type: BootstrapDialog.TYPE_INFO,
+                    message: $rootScope.getWord("Form Saved"),
+                    buttons: [{
+                        label: $rootScope.getWord("Cancel"),
+                        action: function (dialog) {
+                            dialog.close();
+                        }
+                    }]
+                });
+                $scope.saved = true;
+            });
+        }
+        else
+        {
+            BootstrapDialog.show({
+                title: $rootScope.getWord("Info Dialog"),
+                type: BootstrapDialog.TYPE_INFO,
+                message: $rootScope.getWord("Open Form First"),
+                buttons: [{
+                    label: $rootScope.getWord("Cancel"),
+                    action: function (dialog) {
+                        dialog.close();
+                    }
+                }]
+            });
         }
     }
+
+    $scope.previewForm = function () {
+        if (formEditorService.formInfo.dbclass && formEditorService.formInfo.formName) {
+            if ($scope.saved) {
+                // previewId is used to prevent template caching, it has a different id each time
+                $scope.previewId++;
+                $state.go('.preview', { schema: $stateParams.schema, class: formEditorService.formInfo.dbclass, template: formEditorService.formInfo.formName + ".htm", previewid: $scope.previewId });
+            }
+            else
+            {
+                BootstrapDialog.show({
+                    title: $rootScope.getWord("Info Dialog"),
+                    type: BootstrapDialog.TYPE_INFO,
+                    message: $rootScope.getWord("Save Form First"),
+                    buttons: [{
+                        label: $rootScope.getWord("Cancel"),
+                        action: function (dialog) {
+                            dialog.close();
+                        }
+                    }]
+                });
+            }
+        }
+        else
+        {
+            BootstrapDialog.show({
+                title: $rootScope.getWord("Info Dialog"),
+                type: BootstrapDialog.TYPE_INFO,
+                message: $rootScope.getWord("Open Form First"),
+                buttons: [{
+                    label: $rootScope.getWord("Cancel"),
+                    action: function (dialog) {
+                        dialog.close();
+                    }
+                }]
+            });
+        }
+    }
+
+    $scope.loadForm = function()
+    {
+        if (formEditorService.formInfo.dbclass) {
+
+            formEditorService.getFormFile($scope.dbschema, formEditorService.formInfo.dbclass, formEditorService.formInfo.formName, function (data) {
+                $scope.content = data;
+                if (data != "") {
+                    $scope.saved = true; // allow preview an existing form
+                }
+            });
+        }
+        else
+        {
+            $scope.content = "";
+            $scope.saved = false;
+        }
+    }
+
+    $scope.getTitle = function()
+    {
+        var className = formEditorService.formInfo.classTitle;
+        var formName = formEditorService.formInfo.formName;
+        if (!className)
+        {
+            className = "None";
+        }
+        if (!formName)
+        {
+            formName = "None";
+        }
+        return String.format($rootScope.getWord("Form Info"), className, formName);
+    }
+
+    /*
+    $scope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+        var answer = confirm("Are you sure you want to leave this page?")
+        if (!answer) {
+            event.preventDefault();
+        }
+    });
+    */
 });
+
+"use strict";
+
+angular.module('app.formeditor').factory('formEditorService', function ($http, APP_CONFIG) {
+
+    var contextModel = {
+        dbschema: undefined,
+        dbclass: undefined,
+        selectedProperty: undefined
+    };
+
+    var formInfo = {
+        dbclass: undefined,
+        classTitle: undefined,
+        formName: undefined
+    }
+
+    function getClassTreeData(dbschema, callback) {
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/metadata/schematree/" + encodeURIComponent(dbschema);
+
+        $http.get(url).success(function (data) {
+            callback(data);
+        }).error(function () {
+            callback([]);
+
+        });
+    }
+
+    function getRelationshipTreeData(dbschema, dbclass, callback) {
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/metadata/relationtree/" + encodeURIComponent(dbschema) + "/" + dbclass;
+
+        $http.get(url).success(function (data) {
+            callback(data);
+        }).error(function () {
+            callback([]);
+
+        });
+    }
+
+    function getClassProperties(dbschema, dbclass, callback) {
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/metadata/view/" + encodeURIComponent(dbschema) + "/" + dbclass + "?view=full"
+
+        $http.get(url).success(function (data) {
+            //console.debug(JSON.stringify(data));
+            callback(data);
+        }).error(function () {
+            callback([]);
+
+        });
+    }
+
+    function getLeafClasses(dbschema, dbclass, callback) {
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/metadata/leafclasses/" + encodeURIComponent(dbschema) + "/" + dbclass;
+
+        $http.get(url).success(function (data) {
+            callback(data);
+        }).error(function () {
+            callback([]);
+
+        });
+    }
+
+    function getFormFiles(dbschema, dbclass, callback) {
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/form/layouts/" + dbschema + "/" + dbclass;
+
+        $http.get(url).success(function (data) {
+            callback(data);
+        }).error(function () {
+            callback([]);
+
+        });
+    }
+
+    function getFormFile(dbschema, dbclass, formName, callback) {
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/form/layout/" + dbschema + "/" + dbclass + "/" + formName;
+
+        $http.get(url).success(function (data) {
+            callback(data);
+        }).error(function () {
+            callback([]);
+
+        });
+    }
+
+    function saveFormFile(dbschema, dbclass, formName, content, callback) {
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/form/layout/" + dbschema + "/" + dbclass + "/" + formName;
+
+        $http.post(url, JSON.stringify(content)).success(function () {
+            callback();
+        }).error(function () {
+            callback();
+
+        });
+    }
+
+    return {
+        contextModel: function()
+        {
+            return contextModel;
+        },
+        formInfo : function ()
+        {
+            return formInfo;
+        },
+        getFormFiles: function (dbschema, dbclass, callback)
+        {
+            getFormFiles(dbschema, dbclass, callback);
+        },
+        getFormFile: function (dbschema, dbclass, formName, callback) {
+            getFormFile(dbschema, dbclass, formName, callback);
+        },
+        saveFormFile: function (dbschema, dbclass, formName, content, callback) {
+            saveFormFile(dbschema, dbclass, formName, content, callback);
+        },
+        getClassTreeData: function (dbschema, callback) {
+            getClassTreeData(dbschema, callback);
+        },
+        getRelationshipTreeData: function (dbschema, dbclass, callback) {
+            getRelationshipTreeData(dbschema, dbclass, callback);
+        },
+        getLeafClasses: function (dbschema, dbclass, callback) {
+            getLeafClasses(dbschema, dbclass, callback);
+        },
+        getClassProperties: function (dbschema, dbclass, callback) {
+            getClassProperties(dbschema, dbclass, callback);
+        }
+	}
+});
+'use strict';
+
+angular.module('app.formeditor').controller('insertPropertyCtrl', function ($scope, $rootScope, APP_CONFIG, $stateParams, formEditorService) {
+
+    $scope.Initialize = function () {
+        $scope.properties = [];
+        $scope.leafClasses = [];
+        $scope.isReadOnly = false;
+        $scope.includeLabel = true;
+        $scope.selectedClass = undefined;
+
+        formEditorService.getRelationshipTreeData(formEditorService.contextModel.dbschema, formEditorService.contextModel.dbclass, function (data) {
+            var roots = [];
+            roots.push(data);
+            $scope.treedata = roots;
+
+            formEditorService.getClassProperties(formEditorService.contextModel.dbschema, formEditorService.contextModel.dbclass, function (data) {
+                $scope.selectedClass = formEditorService.contextModel.dbclass;
+                $scope.properties = getProperties(data);
+            });
+        });
+    };
+
+    $scope.Initialize();
+
+    $scope.reInitialize = function()
+    {
+        if ($scope.selectedClass &&
+            $scope.selectedClass != formEditorService.contextModel.dbclass)
+        {
+            $scope.Initialize();
+        }
+    }
+
+    $scope.$watch('classes.currentNode', function (newObj, oldObj) {
+        if ($scope.classes && angular.isObject($scope.classes.currentNode)) {
+            formEditorService.getClassProperties(formEditorService.contextModel.dbschema, $scope.classes.currentNode.name, function (data) {
+                $scope.properties = getProperties(data);
+                $scope.selectedClass = $scope.classes.currentNode.name;
+                if (!$scope.classes.currentNode.leaf)
+                {
+                    formEditorService.getLeafClasses(formEditorService.contextModel.dbschema, $scope.classes.currentNode.name, function (data) {
+                        $scope.leafClasses = data;
+                    });
+                }
+                else
+                {
+                    $scope.leafClasses = [];
+                }
+            });
+        }
+    }, false);
+
+    $scope.selectLeafClass = function()
+    {
+        if ($scope.selectedLeafClass) {
+            formEditorService.getClassProperties(formEditorService.contextModel.dbschema, $scope.selectedLeafClass.name, function (data) {
+                $scope.properties = getProperties(data);
+                $scope.selectedClass = $scope.selectedLeafClass.name;
+            });
+        }
+    }
+
+    $scope.selectProperty = function () {
+        $scope.isReadOnly = false;
+        formEditorService.contextModel.selectedProperty = $scope.selectedClassProperty;
+    }
+
+    $scope.getFieldElement = function()
+    {
+        var selectedProperty = formEditorService.contextModel.selectedProperty;
+        if (!selectedProperty)
+        {
+            return undefined;
+        }
+        else
+        {
+            var html = '<div class="form-group">';
+            if ($scope.includeLabel)
+            {
+                html += '<label>' + selectedProperty.label + '</label>';
+            }
+            html += '<input class="form-control" name="' + $scope.selectedClass + '_' + selectedProperty.name + '"';
+            if ($scope.isReadOnly)
+            {
+                html += ' read="true"';
+            }
+            html += '/></div>';
+
+            return html;
+        }
+    }
+
+    var getProperties = function(data)
+    {
+        var column;
+        var columns = [];
+
+        // data is a JSON Schema for the class
+        var properties = data.properties; // data.properies contains infos of each property of the schema
+
+        var propertyInfo;
+        for (var property in properties) {
+            if (properties.hasOwnProperty(property)) {
+                propertyInfo = properties[property];
+                column = {};
+                column.name = property;
+                column.label = propertyInfo["title"];
+                if (!propertyInfo["description"])
+                    column.title = propertyInfo["title"];
+                else
+                    column.title = propertyInfo["title"] + " (" + propertyInfo["description"] + ")";
+                columns.push(column);
+            }
+        }
+
+        return columns;
+    }
+});
+
+'use strict';
+
+angular.module('app.formeditor').controller('openFileCtrl', function ($scope, $rootScope, APP_CONFIG, $stateParams, formEditorService) {
+
+    $scope.dbschema = $stateParams.schema;
+    formEditorService.contextModel.dbschema = $stateParams.schema;
+    formEditorService.formInfo.formName = undefined;
+    formEditorService.formInfo.classTitle = undefined;
+    formEditorService.formInfo.dbclass = undefined;
+    $scope.nodeType = "Folder";
+    $scope.selectedVal = undefined;
+    $scope.editorService = formEditorService;
+
+    $scope.filenames = [];
+
+    formEditorService.getClassTreeData($scope.dbschema, function (data) {
+        $scope.treedata = data;
+    });
+
+    $scope.$watch('classes.currentNode', function (newObj, oldObj) {
+        if ($scope.classes && angular.isObject($scope.classes.currentNode)) {
+            if ($scope.classes.currentNode["type"] &&
+                $scope.classes.currentNode["type"] === "Folder") {
+                $scope.nodeType = "Folder";
+                formEditorService.formInfo.dbclass = undefined;
+                formEditorService.formInfo.classTitle = undefined;
+                $scope.filenames = [];
+                formEditorService.formInfo.formName = undefined;
+            }
+            else {
+                formEditorService.getFormFiles($scope.dbschema, $scope.classes.currentNode.name, function (data) {
+                    formEditorService.formInfo.dbclass = $scope.classes.currentNode.name;
+                    formEditorService.formInfo.classTitle = $scope.classes.currentNode.title;
+                    $scope.nodeType = "Class";
+                    $scope.filenames = data;
+                    formEditorService.contextModel.dbclass = formEditorService.formInfo.dbclass;
+                    if ($scope.filenames && $scope.filenames.length > 0) {
+                        $scope.selectedVal = $scope.filenames[0];
+                        formEditorService.formInfo.formName = $scope.filenames[0];
+                    }
+                    else {
+                        formEditorService.formInfo.formName = undefined;
+                    }
+                });
+            }
+        }
+    }, false);
+
+    $scope.selectFile = function()
+    {
+        formEditorService.formInfo.formName = $scope.selectedVal;
+    }
+});
+
+'use strict';
+
+angular.module('app.smartforms').directive('ckEditor', function (APP_CONFIG, $stateParams, $compile) {
+    return {
+        require: '?ngModel',
+        link: function (scope, elm, attr, ngModel) {
+            CKEDITOR.config.contentsCss = ['plugin/bootstrap/dist/css/bootstrap.min.css'];
+            var ck = CKEDITOR.replace(elm[0], { height: '450px', startupFocus: true });
+            if (!ngModel) return;
+            ck.scope = scope;
+            ck.compile = $compile;
+            ck.on('instanceReady', function () {
+                ck.setData(ngModel.$viewValue);
+            });
+            function updateModel() {
+                scope.$apply(function () {
+                    ngModel.$setViewValue(ck.getData());
+                });
+            };
+            function saveModel() {
+                scope.saveModel();
+
+                return false;
+            }
+            ck.on('change', updateModel);
+            ck.on('key', updateModel);
+            ck.on('dataReady', updateModel);
+            ck.on('save', saveModel);
+
+            ngModel.$render = function (value) {
+                ck.setData(ngModel.$viewValue);
+            };
+        }
+    };
+});
+
 
 "use strict";
 
@@ -11458,440 +11904,6 @@ angular.module('app.fulltextsearch').factory('searchService', function ($http, A
 	    }
 	}
 });
-'use strict';
-
-angular.module('app.formeditor').controller('formEditorCtrl', function ($scope, $rootScope, $state, APP_CONFIG, $stateParams, formEditorService, $templateCache) {
-
-    $scope.dbschema = $stateParams.schema;
-    formEditorService.formInfo.dbclass = undefined;
-    formEditorService.formInfo.classTitle = undefined;
-    formEditorService.formInfo.formName = undefined;
-    $scope.content =  $rootScope.getWord("Form Editor Tip");
-    $scope.saved = false;
-    $scope.previewId = 0;
-
-    $scope.saveModel = function () {
-        if (formEditorService.formInfo.dbclass && formEditorService.formInfo.formName) {
-            formEditorService.saveFormFile($scope.dbschema, formEditorService.formInfo.dbclass, formEditorService.formInfo.formName, $scope.content, function () {
-                BootstrapDialog.show({
-                    title: $rootScope.getWord("Info Dialog"),
-                    type: BootstrapDialog.TYPE_INFO,
-                    message: $rootScope.getWord("Form Saved"),
-                    buttons: [{
-                        label: $rootScope.getWord("Cancel"),
-                        action: function (dialog) {
-                            dialog.close();
-                        }
-                    }]
-                });
-                $scope.saved = true;
-            });
-        }
-        else
-        {
-            BootstrapDialog.show({
-                title: $rootScope.getWord("Info Dialog"),
-                type: BootstrapDialog.TYPE_INFO,
-                message: $rootScope.getWord("Open Form First"),
-                buttons: [{
-                    label: $rootScope.getWord("Cancel"),
-                    action: function (dialog) {
-                        dialog.close();
-                    }
-                }]
-            });
-        }
-    }
-
-    $scope.previewForm = function () {
-        if (formEditorService.formInfo.dbclass && formEditorService.formInfo.formName) {
-            if ($scope.saved) {
-                // previewId is used to prevent template caching, it has a different id each time
-                $scope.previewId++;
-                $state.go('.preview', { schema: $stateParams.schema, class: formEditorService.formInfo.dbclass, template: formEditorService.formInfo.formName + ".htm", previewid: $scope.previewId });
-            }
-            else
-            {
-                BootstrapDialog.show({
-                    title: $rootScope.getWord("Info Dialog"),
-                    type: BootstrapDialog.TYPE_INFO,
-                    message: $rootScope.getWord("Save Form First"),
-                    buttons: [{
-                        label: $rootScope.getWord("Cancel"),
-                        action: function (dialog) {
-                            dialog.close();
-                        }
-                    }]
-                });
-            }
-        }
-        else
-        {
-            BootstrapDialog.show({
-                title: $rootScope.getWord("Info Dialog"),
-                type: BootstrapDialog.TYPE_INFO,
-                message: $rootScope.getWord("Open Form First"),
-                buttons: [{
-                    label: $rootScope.getWord("Cancel"),
-                    action: function (dialog) {
-                        dialog.close();
-                    }
-                }]
-            });
-        }
-    }
-
-    $scope.loadForm = function()
-    {
-        if (formEditorService.formInfo.dbclass) {
-
-            formEditorService.getFormFile($scope.dbschema, formEditorService.formInfo.dbclass, formEditorService.formInfo.formName, function (data) {
-                $scope.content = data;
-                if (data != "") {
-                    $scope.saved = true; // allow preview an existing form
-                }
-            });
-        }
-        else
-        {
-            $scope.content = "";
-            $scope.saved = false;
-        }
-    }
-
-    $scope.getTitle = function()
-    {
-        var className = formEditorService.formInfo.classTitle;
-        var formName = formEditorService.formInfo.formName;
-        if (!className)
-        {
-            className = "None";
-        }
-        if (!formName)
-        {
-            formName = "None";
-        }
-        return String.format($rootScope.getWord("Form Info"), className, formName);
-    }
-
-    /*
-    $scope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-        var answer = confirm("Are you sure you want to leave this page?")
-        if (!answer) {
-            event.preventDefault();
-        }
-    });
-    */
-});
-
-"use strict";
-
-angular.module('app.formeditor').factory('formEditorService', function ($http, APP_CONFIG) {
-
-    var contextModel = {
-        dbschema: undefined,
-        dbclass: undefined,
-        selectedProperty: undefined
-    };
-
-    var formInfo = {
-        dbclass: undefined,
-        classTitle: undefined,
-        formName: undefined
-    }
-
-    function getClassTreeData(dbschema, callback) {
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/metadata/schematree/" + encodeURIComponent(dbschema);
-
-        $http.get(url).success(function (data) {
-            callback(data);
-        }).error(function () {
-            callback([]);
-
-        });
-    }
-
-    function getRelationshipTreeData(dbschema, dbclass, callback) {
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/metadata/relationtree/" + encodeURIComponent(dbschema) + "/" + dbclass;
-
-        $http.get(url).success(function (data) {
-            callback(data);
-        }).error(function () {
-            callback([]);
-
-        });
-    }
-
-    function getClassProperties(dbschema, dbclass, callback) {
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/metadata/view/" + encodeURIComponent(dbschema) + "/" + dbclass + "?view=full"
-
-        $http.get(url).success(function (data) {
-            //console.debug(JSON.stringify(data));
-            callback(data);
-        }).error(function () {
-            callback([]);
-
-        });
-    }
-
-    function getLeafClasses(dbschema, dbclass, callback) {
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/metadata/leafclasses/" + encodeURIComponent(dbschema) + "/" + dbclass;
-
-        $http.get(url).success(function (data) {
-            callback(data);
-        }).error(function () {
-            callback([]);
-
-        });
-    }
-
-    function getFormFiles(dbschema, dbclass, callback) {
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/form/layouts/" + dbschema + "/" + dbclass;
-
-        $http.get(url).success(function (data) {
-            callback(data);
-        }).error(function () {
-            callback([]);
-
-        });
-    }
-
-    function getFormFile(dbschema, dbclass, formName, callback) {
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/form/layout/" + dbschema + "/" + dbclass + "/" + formName;
-
-        $http.get(url).success(function (data) {
-            callback(data);
-        }).error(function () {
-            callback([]);
-
-        });
-    }
-
-    function saveFormFile(dbschema, dbclass, formName, content, callback) {
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/form/layout/" + dbschema + "/" + dbclass + "/" + formName;
-
-        $http.post(url, JSON.stringify(content)).success(function () {
-            callback();
-        }).error(function () {
-            callback();
-
-        });
-    }
-
-    return {
-        contextModel: function()
-        {
-            return contextModel;
-        },
-        formInfo : function ()
-        {
-            return formInfo;
-        },
-        getFormFiles: function (dbschema, dbclass, callback)
-        {
-            getFormFiles(dbschema, dbclass, callback);
-        },
-        getFormFile: function (dbschema, dbclass, formName, callback) {
-            getFormFile(dbschema, dbclass, formName, callback);
-        },
-        saveFormFile: function (dbschema, dbclass, formName, content, callback) {
-            saveFormFile(dbschema, dbclass, formName, content, callback);
-        },
-        getClassTreeData: function (dbschema, callback) {
-            getClassTreeData(dbschema, callback);
-        },
-        getRelationshipTreeData: function (dbschema, dbclass, callback) {
-            getRelationshipTreeData(dbschema, dbclass, callback);
-        },
-        getLeafClasses: function (dbschema, dbclass, callback) {
-            getLeafClasses(dbschema, dbclass, callback);
-        },
-        getClassProperties: function (dbschema, dbclass, callback) {
-            getClassProperties(dbschema, dbclass, callback);
-        }
-	}
-});
-'use strict';
-
-angular.module('app.formeditor').controller('insertPropertyCtrl', function ($scope, $rootScope, APP_CONFIG, $stateParams, formEditorService) {
-
-    $scope.Initialize = function () {
-        $scope.properties = [];
-        $scope.leafClasses = [];
-        $scope.isReadOnly = false;
-        $scope.includeLabel = true;
-        $scope.selectedClass = undefined;
-
-        formEditorService.getRelationshipTreeData(formEditorService.contextModel.dbschema, formEditorService.contextModel.dbclass, function (data) {
-            var roots = [];
-            roots.push(data);
-            $scope.treedata = roots;
-
-            formEditorService.getClassProperties(formEditorService.contextModel.dbschema, formEditorService.contextModel.dbclass, function (data) {
-                $scope.selectedClass = formEditorService.contextModel.dbclass;
-                $scope.properties = getProperties(data);
-            });
-        });
-    };
-
-    $scope.Initialize();
-
-    $scope.reInitialize = function()
-    {
-        if ($scope.selectedClass &&
-            $scope.selectedClass != formEditorService.contextModel.dbclass)
-        {
-            $scope.Initialize();
-        }
-    }
-
-    $scope.$watch('classes.currentNode', function (newObj, oldObj) {
-        if ($scope.classes && angular.isObject($scope.classes.currentNode)) {
-            formEditorService.getClassProperties(formEditorService.contextModel.dbschema, $scope.classes.currentNode.name, function (data) {
-                $scope.properties = getProperties(data);
-                $scope.selectedClass = $scope.classes.currentNode.name;
-                if (!$scope.classes.currentNode.leaf)
-                {
-                    formEditorService.getLeafClasses(formEditorService.contextModel.dbschema, $scope.classes.currentNode.name, function (data) {
-                        $scope.leafClasses = data;
-                    });
-                }
-                else
-                {
-                    $scope.leafClasses = [];
-                }
-            });
-        }
-    }, false);
-
-    $scope.selectLeafClass = function()
-    {
-        if ($scope.selectedLeafClass) {
-            formEditorService.getClassProperties(formEditorService.contextModel.dbschema, $scope.selectedLeafClass.name, function (data) {
-                $scope.properties = getProperties(data);
-                $scope.selectedClass = $scope.selectedLeafClass.name;
-            });
-        }
-    }
-
-    $scope.selectProperty = function () {
-        $scope.isReadOnly = false;
-        formEditorService.contextModel.selectedProperty = $scope.selectedClassProperty;
-    }
-
-    $scope.getFieldElement = function()
-    {
-        var selectedProperty = formEditorService.contextModel.selectedProperty;
-        if (!selectedProperty)
-        {
-            return undefined;
-        }
-        else
-        {
-            var html = '<div class="form-group">';
-            if ($scope.includeLabel)
-            {
-                html += '<label>' + selectedProperty.label + '</label>';
-            }
-            html += '<input class="form-control" name="' + $scope.selectedClass + '_' + selectedProperty.name + '"';
-            if ($scope.isReadOnly)
-            {
-                html += ' read="true"';
-            }
-            html += '/></div>';
-
-            return html;
-        }
-    }
-
-    var getProperties = function(data)
-    {
-        var column;
-        var columns = [];
-
-        // data is a JSON Schema for the class
-        var properties = data.properties; // data.properies contains infos of each property of the schema
-
-        var propertyInfo;
-        for (var property in properties) {
-            if (properties.hasOwnProperty(property)) {
-                propertyInfo = properties[property];
-                column = {};
-                column.name = property;
-                column.label = propertyInfo["title"];
-                if (!propertyInfo["description"])
-                    column.title = propertyInfo["title"];
-                else
-                    column.title = propertyInfo["title"] + " (" + propertyInfo["description"] + ")";
-                columns.push(column);
-            }
-        }
-
-        return columns;
-    }
-});
-
-'use strict';
-
-angular.module('app.formeditor').controller('openFileCtrl', function ($scope, $rootScope, APP_CONFIG, $stateParams, formEditorService) {
-
-    $scope.dbschema = $stateParams.schema;
-    formEditorService.contextModel.dbschema = $stateParams.schema;
-    formEditorService.formInfo.formName = undefined;
-    formEditorService.formInfo.classTitle = undefined;
-    formEditorService.formInfo.dbclass = undefined;
-    $scope.nodeType = "Folder";
-    $scope.selectedVal = undefined;
-    $scope.editorService = formEditorService;
-
-    $scope.filenames = [];
-
-    formEditorService.getClassTreeData($scope.dbschema, function (data) {
-        $scope.treedata = data;
-    });
-
-    $scope.$watch('classes.currentNode', function (newObj, oldObj) {
-        if ($scope.classes && angular.isObject($scope.classes.currentNode)) {
-            if ($scope.classes.currentNode["type"] &&
-                $scope.classes.currentNode["type"] === "Folder") {
-                $scope.nodeType = "Folder";
-                formEditorService.formInfo.dbclass = undefined;
-                formEditorService.formInfo.classTitle = undefined;
-                $scope.filenames = [];
-                formEditorService.formInfo.formName = undefined;
-            }
-            else {
-                formEditorService.getFormFiles($scope.dbschema, $scope.classes.currentNode.name, function (data) {
-                    formEditorService.formInfo.dbclass = $scope.classes.currentNode.name;
-                    formEditorService.formInfo.classTitle = $scope.classes.currentNode.title;
-                    $scope.nodeType = "Class";
-                    $scope.filenames = data;
-                    formEditorService.contextModel.dbclass = formEditorService.formInfo.dbclass;
-                    if ($scope.filenames && $scope.filenames.length > 0) {
-                        $scope.selectedVal = $scope.filenames[0];
-                        formEditorService.formInfo.formName = $scope.filenames[0];
-                    }
-                    else {
-                        formEditorService.formInfo.formName = undefined;
-                    }
-                });
-            }
-        }
-    }, false);
-
-    $scope.selectFile = function()
-    {
-        formEditorService.formInfo.formName = $scope.selectedVal;
-    }
-});
-
 
 
 'use strict';
@@ -11903,42 +11915,6 @@ angular.module('app.fulltextsearch').factory('searchContext', function () {
         };
 
     return SearchContextModel;
-});
-
-'use strict';
-
-angular.module('app.smartforms').directive('ckEditor', function (APP_CONFIG, $stateParams, $compile) {
-    return {
-        require: '?ngModel',
-        link: function (scope, elm, attr, ngModel) {
-            CKEDITOR.config.contentsCss = ['plugin/bootstrap/dist/css/bootstrap.min.css'];
-            var ck = CKEDITOR.replace(elm[0], { height: '450px', startupFocus: true });
-            if (!ngModel) return;
-            ck.scope = scope;
-            ck.compile = $compile;
-            ck.on('instanceReady', function () {
-                ck.setData(ngModel.$viewValue);
-            });
-            function updateModel() {
-                scope.$apply(function () {
-                    ngModel.$setViewValue(ck.getData());
-                });
-            };
-            function saveModel() {
-                scope.saveModel();
-
-                return false;
-            }
-            ck.on('change', updateModel);
-            ck.on('key', updateModel);
-            ck.on('dataReady', updateModel);
-            ck.on('save', saveModel);
-
-            ngModel.$render = function (value) {
-                ck.setData(ngModel.$viewValue);
-            };
-        }
-    };
 });
 
 'use strict';
@@ -12135,311 +12111,6 @@ angular.module('app.galleryview').controller('galleryViewCtrl', function ($scope
 
         $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
     }
-});
-"use strict";
-
-angular.module('app.graphs').controller('FlotCtrl', function ($scope) {
-
-
-    $scope.salesChartData = [
-        [1196463600000, 0],
-        [1196550000000, 0],
-        [1196636400000, 0],
-        [1196722800000, 77],
-        [1196809200000, 3636],
-        [1196895600000, 3575],
-        [1196982000000, 2736],
-        [1197068400000, 1086],
-        [1197154800000, 676],
-        [1197241200000, 1205],
-        [1197327600000, 906],
-        [1197414000000, 710],
-        [1197500400000, 639],
-        [1197586800000, 540],
-        [1197673200000, 435],
-        [1197759600000, 301],
-        [1197846000000, 575],
-        [1197932400000, 481],
-        [1198018800000, 591],
-        [1198105200000, 608],
-        [1198191600000, 459],
-        [1198278000000, 234],
-        [1198364400000, 1352],
-        [1198450800000, 686],
-        [1198537200000, 279],
-        [1198623600000, 449],
-        [1198710000000, 468],
-        [1198796400000, 392],
-        [1198882800000, 282],
-        [1198969200000, 208],
-        [1199055600000, 229],
-        [1199142000000, 177],
-        [1199228400000, 374],
-        [1199314800000, 436],
-        [1199401200000, 404],
-        [1199487600000, 253],
-        [1199574000000, 218],
-        [1199660400000, 476],
-        [1199746800000, 462],
-        [1199833200000, 500],
-        [1199919600000, 700],
-        [1200006000000, 750],
-        [1200092400000, 600],
-        [1200178800000, 500],
-        [1200265200000, 900],
-        [1200351600000, 930],
-        [1200438000000, 1200],
-        [1200524400000, 980],
-        [1200610800000, 950],
-        [1200697200000, 900],
-        [1200783600000, 1000],
-        [1200870000000, 1050],
-        [1200956400000, 1150],
-        [1201042800000, 1100],
-        [1201129200000, 1200],
-        [1201215600000, 1300],
-        [1201302000000, 1700],
-        [1201388400000, 1450],
-        [1201474800000, 1500],
-        [1201561200000, 546],
-        [1201647600000, 614],
-        [1201734000000, 954],
-        [1201820400000, 1700],
-        [1201906800000, 1800],
-        [1201993200000, 1900],
-        [1202079600000, 2000],
-        [1202166000000, 2100],
-        [1202252400000, 2200],
-        [1202338800000, 2300],
-        [1202425200000, 2400],
-        [1202511600000, 2550],
-        [1202598000000, 2600],
-        [1202684400000, 2500],
-        [1202770800000, 2700],
-        [1202857200000, 2750],
-        [1202943600000, 2800],
-        [1203030000000, 3245],
-        [1203116400000, 3345],
-        [1203202800000, 3000],
-        [1203289200000, 3200],
-        [1203375600000, 3300],
-        [1203462000000, 3400],
-        [1203548400000, 3600],
-        [1203634800000, 3700],
-        [1203721200000, 3800],
-        [1203807600000, 4000],
-        [1203894000000, 4500]
-    ]
-        .map(function (item) {
-            return [
-                item[0] + 60 * 60 * 1000,
-                item[1]
-            ]
-        });
-
-    $scope.barChartData = _.range(3).map(function (barNum) {
-        return {
-            data: _.range(12).map(function (i) {
-                return [i, parseInt(Math.random() * 30)]
-            }),
-            bars: {
-                show: true,
-                barWidth: 0.2,
-                order: barNum + 1
-            }
-        }
-    });
-
-    $scope.horizontalBarChartData = _.range(3).map(function (barNum) {
-        return {
-            data: _.range(4).map(function (i) {
-                return [i, parseInt(Math.random() * 30)]
-            }),
-            bars: {
-                horizontal: true,
-                show: true,
-                barWidth: 0.2,
-                order: barNum + 1
-            }
-        }
-    });
-
-    $scope.sinChartData = [
-        {
-            data: _.range(16).map(function (i) {
-                return [i, Math.sin(i)];
-            }),
-            label: "sin(x)"
-        },
-        {
-            data: _.range(16).map(function (i) {
-                return [i, Math.cos(i)];
-            }),
-            label: "cos(x)"
-        }
-    ];
-
-
-    // fill chart
-
-    var males = {
-        '15%' : [[2, 88.0], [3, 93.3], [4, 102.0], [5, 108.5], [6, 115.7], [7, 115.6], [8, 124.6], [9, 130.3], [10, 134.3], [11, 141.4], [12, 146.5], [13, 151.7], [14, 159.9], [15, 165.4], [16, 167.8], [17, 168.7], [18, 169.5], [19, 168.0]],
-        '90%' : [[2, 96.8], [3, 105.2], [4, 113.9], [5, 120.8], [6, 127.0], [7, 133.1], [8, 139.1], [9, 143.9], [10, 151.3], [11, 161.1], [12, 164.8], [13, 173.5], [14, 179.0], [15, 182.0], [16, 186.9], [17, 185.2], [18, 186.3], [19, 186.6]],
-        '25%' : [[2, 89.2], [3, 94.9], [4, 104.4], [5, 111.4], [6, 117.5], [7, 120.2], [8, 127.1], [9, 132.9], [10, 136.8], [11, 144.4], [12, 149.5], [13, 154.1], [14, 163.1], [15, 169.2], [16, 170.4], [17, 171.2], [18, 172.4], [19, 170.8]],
-        '10%' : [[2, 86.9], [3, 92.6], [4, 99.9], [5, 107.0], [6, 114.0], [7, 113.5], [8, 123.6], [9, 129.2], [10, 133.0], [11, 140.6], [12, 145.2], [13, 149.7], [14, 158.4], [15, 163.5], [16, 166.9], [17, 167.5], [18, 167.1], [19, 165.3]],
-        'mean' : [[2, 91.9], [3, 98.5], [4, 107.1], [5, 114.4], [6, 120.6], [7, 124.7], [8, 131.1], [9, 136.8], [10, 142.3], [11, 150.0], [12, 154.7], [13, 161.9], [14, 168.7], [15, 173.6], [16, 175.9], [17, 176.6], [18, 176.8], [19, 176.7]],
-        '75%' : [[2, 94.5], [3, 102.1], [4, 110.8], [5, 117.9], [6, 124.0], [7, 129.3], [8, 134.6], [9, 141.4], [10, 147.0], [11, 156.1], [12, 160.3], [13, 168.3], [14, 174.7], [15, 178.0], [16, 180.2], [17, 181.7], [18, 181.3], [19, 182.5]],
-        '85%' : [[2, 96.2], [3, 103.8], [4, 111.8], [5, 119.6], [6, 125.6], [7, 131.5], [8, 138.0], [9, 143.3], [10, 149.3], [11, 159.8], [12, 162.5], [13, 171.3], [14, 177.5], [15, 180.2], [16, 183.8], [17, 183.4], [18, 183.5], [19, 185.5]],
-        '50%' : [[2, 91.9], [3, 98.2], [4, 106.8], [5, 114.6], [6, 120.8], [7, 125.2], [8, 130.3], [9, 137.1], [10, 141.5], [11, 149.4], [12, 153.9], [13, 162.2], [14, 169.0], [15, 174.8], [16, 176.0], [17, 176.8], [18, 176.4], [19, 177.4]]
-    };
-
-    var females = {
-        '15%' : [[2, 84.8], [3, 93.7], [4, 100.6], [5, 105.8], [6, 113.3], [7, 119.3], [8, 124.3], [9, 131.4], [10, 136.9], [11, 143.8], [12, 149.4], [13, 151.2], [14, 152.3], [15, 155.9], [16, 154.7], [17, 157.0], [18, 156.1], [19, 155.4]],
-        '90%' : [[2, 95.6], [3, 104.1], [4, 111.9], [5, 119.6], [6, 127.6], [7, 133.1], [8, 138.7], [9, 147.1], [10, 152.8], [11, 161.3], [12, 166.6], [13, 167.9], [14, 169.3], [15, 170.1], [16, 172.4], [17, 169.2], [18, 171.1], [19, 172.4]],
-        '25%' : [[2, 87.2], [3, 95.9], [4, 101.9], [5, 107.4], [6, 114.8], [7, 121.4], [8, 126.8], [9, 133.4], [10, 138.6], [11, 146.2], [12, 152.0], [13, 153.8], [14, 155.7], [15, 158.4], [16, 157.0], [17, 158.5], [18, 158.4], [19, 158.1]],
-        '10%' : [[2, 84.0], [3, 91.9], [4, 99.2], [5, 105.2], [6, 112.7], [7, 118.0], [8, 123.3], [9, 130.2], [10, 135.0], [11, 141.1], [12, 148.3], [13, 150.0], [14, 150.7], [15, 154.3], [16, 153.6], [17, 155.6], [18, 154.7], [19, 153.1]],
-        'mean' : [[2, 90.2], [3, 98.3], [4, 105.2], [5, 112.2], [6, 119.0], [7, 125.8], [8, 131.3], [9, 138.6], [10, 144.2], [11, 151.3], [12, 156.7], [13, 158.6], [14, 160.5], [15, 162.1], [16, 162.9], [17, 162.2], [18, 163.0], [19, 163.1]],
-        '75%' : [[2, 93.2], [3, 101.5], [4, 107.9], [5, 116.6], [6, 122.8], [7, 129.3], [8, 135.2], [9, 143.7], [10, 148.7], [11, 156.9], [12, 160.8], [13, 163.0], [14, 165.0], [15, 165.8], [16, 168.7], [17, 166.2], [18, 167.6], [19, 168.0]],
-        '85%' : [[2, 94.5], [3, 102.8], [4, 110.4], [5, 119.0], [6, 125.7], [7, 131.5], [8, 137.9], [9, 146.0], [10, 151.3], [11, 159.9], [12, 164.0], [13, 166.5], [14, 167.5], [15, 168.5], [16, 171.5], [17, 168.0], [18, 169.8], [19, 170.3]],
-        '50%' : [[2, 90.2], [3, 98.1], [4, 105.2], [5, 111.7], [6, 118.2], [7, 125.6], [8, 130.5], [9, 138.3], [10, 143.7], [11, 151.4], [12, 156.7], [13, 157.7], [14, 161.0], [15, 162.0], [16, 162.8], [17, 162.2], [18, 162.8], [19, 163.3]]
-    };
-
-    $scope.fillChartData = [{
-        label : 'female mean',
-        data : females['mean'],
-        lines : {
-            show : true
-        },
-        color : "rgb(255,50,50)"
-    }, {
-        id : 'f15%',
-        data : females['15%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : false
-        },
-        color : "rgb(255,50,50)"
-    }, {
-        id : 'f25%',
-        data : females['25%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : 0.2
-        },
-        color : "rgb(255,50,50)",
-        fillBetween : 'f15%'
-    }, {
-        id : 'f50%',
-        data : females['50%'],
-        lines : {
-            show : true,
-            lineWidth : 0.5,
-            fill : 0.4,
-            shadowSize : 0
-        },
-        color : "rgb(255,50,50)",
-        fillBetween : 'f25%'
-    }, {
-        id : 'f75%',
-        data : females['75%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : 0.4
-        },
-        color : "rgb(255,50,50)",
-        fillBetween : 'f50%'
-    }, {
-        id : 'f85%',
-        data : females['85%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : 0.2
-        },
-        color : "rgb(255,50,50)",
-        fillBetween : 'f75%'
-    }, {
-        label : 'male mean',
-        data : males['mean'],
-        lines : {
-            show : true
-        },
-        color : "rgb(50,50,255)"
-    }, {
-        id : 'm15%',
-        data : males['15%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : false
-        },
-        color : "rgb(50,50,255)"
-    }, {
-        id : 'm25%',
-        data : males['25%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : 0.2
-        },
-        color : "rgb(50,50,255)",
-        fillBetween : 'm15%'
-    }, {
-        id : 'm50%',
-        data : males['50%'],
-        lines : {
-            show : true,
-            lineWidth : 0.5,
-            fill : 0.4,
-            shadowSize : 0
-        },
-        color : "rgb(50,50,255)",
-        fillBetween : 'm25%'
-    }, {
-        id : 'm75%',
-        data : males['75%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : 0.4
-        },
-        color : "rgb(50,50,255)",
-        fillBetween : 'm50%'
-    }, {
-        id : 'm85%',
-        data : males['85%'],
-        lines : {
-            show : true,
-            lineWidth : 0,
-            fill : 0.2
-        },
-        color : "rgb(50,50,255)",
-        fillBetween : 'm75%'
-    }];
-
-
-
-    //
-    $scope.pieChartData = _.range(Math.floor(Math.random() * 10) + 1).map(function(i){
-        return {
-            label : "Series" + (i + 1),
-            data : Math.floor(Math.random() * 100) + 1
-        }
-    });
-
-    var pageviews = [[1, 75], [3, 87], [4, 93], [5, 127], [6, 116], [7, 137], [8, 135], [9, 130], [10, 167], [11, 169], [12, 179], [13, 185], [14, 176], [15, 180], [16, 174], [17, 193], [18, 186], [19, 177], [20, 153], [21, 149], [22, 130], [23, 100], [24, 50]];
-    var visitors = [[1, 65], [3, 50], [4, 73], [5, 100], [6, 95], [7, 103], [8, 111], [9, 97], [10, 125], [11, 100], [12, 95], [13, 141], [14, 126], [15, 131], [16, 146], [17, 158], [18, 160], [19, 151], [20, 125], [21, 110], [22, 100], [23, 85], [24, 37]];
-
-    $scope.siteStatsData = [{
-        data : pageviews,
-        label : "Your pageviews"
-    }, {
-        data : visitors,
-        label : "Site visitors"
-    }];
 });
 "use strict";	
 
@@ -12898,6 +12569,311 @@ angular.module('app.homepage').controller("myTasksController", function Activiti
 });
 "use strict";
 
+angular.module('app.graphs').controller('FlotCtrl', function ($scope) {
+
+
+    $scope.salesChartData = [
+        [1196463600000, 0],
+        [1196550000000, 0],
+        [1196636400000, 0],
+        [1196722800000, 77],
+        [1196809200000, 3636],
+        [1196895600000, 3575],
+        [1196982000000, 2736],
+        [1197068400000, 1086],
+        [1197154800000, 676],
+        [1197241200000, 1205],
+        [1197327600000, 906],
+        [1197414000000, 710],
+        [1197500400000, 639],
+        [1197586800000, 540],
+        [1197673200000, 435],
+        [1197759600000, 301],
+        [1197846000000, 575],
+        [1197932400000, 481],
+        [1198018800000, 591],
+        [1198105200000, 608],
+        [1198191600000, 459],
+        [1198278000000, 234],
+        [1198364400000, 1352],
+        [1198450800000, 686],
+        [1198537200000, 279],
+        [1198623600000, 449],
+        [1198710000000, 468],
+        [1198796400000, 392],
+        [1198882800000, 282],
+        [1198969200000, 208],
+        [1199055600000, 229],
+        [1199142000000, 177],
+        [1199228400000, 374],
+        [1199314800000, 436],
+        [1199401200000, 404],
+        [1199487600000, 253],
+        [1199574000000, 218],
+        [1199660400000, 476],
+        [1199746800000, 462],
+        [1199833200000, 500],
+        [1199919600000, 700],
+        [1200006000000, 750],
+        [1200092400000, 600],
+        [1200178800000, 500],
+        [1200265200000, 900],
+        [1200351600000, 930],
+        [1200438000000, 1200],
+        [1200524400000, 980],
+        [1200610800000, 950],
+        [1200697200000, 900],
+        [1200783600000, 1000],
+        [1200870000000, 1050],
+        [1200956400000, 1150],
+        [1201042800000, 1100],
+        [1201129200000, 1200],
+        [1201215600000, 1300],
+        [1201302000000, 1700],
+        [1201388400000, 1450],
+        [1201474800000, 1500],
+        [1201561200000, 546],
+        [1201647600000, 614],
+        [1201734000000, 954],
+        [1201820400000, 1700],
+        [1201906800000, 1800],
+        [1201993200000, 1900],
+        [1202079600000, 2000],
+        [1202166000000, 2100],
+        [1202252400000, 2200],
+        [1202338800000, 2300],
+        [1202425200000, 2400],
+        [1202511600000, 2550],
+        [1202598000000, 2600],
+        [1202684400000, 2500],
+        [1202770800000, 2700],
+        [1202857200000, 2750],
+        [1202943600000, 2800],
+        [1203030000000, 3245],
+        [1203116400000, 3345],
+        [1203202800000, 3000],
+        [1203289200000, 3200],
+        [1203375600000, 3300],
+        [1203462000000, 3400],
+        [1203548400000, 3600],
+        [1203634800000, 3700],
+        [1203721200000, 3800],
+        [1203807600000, 4000],
+        [1203894000000, 4500]
+    ]
+        .map(function (item) {
+            return [
+                item[0] + 60 * 60 * 1000,
+                item[1]
+            ]
+        });
+
+    $scope.barChartData = _.range(3).map(function (barNum) {
+        return {
+            data: _.range(12).map(function (i) {
+                return [i, parseInt(Math.random() * 30)]
+            }),
+            bars: {
+                show: true,
+                barWidth: 0.2,
+                order: barNum + 1
+            }
+        }
+    });
+
+    $scope.horizontalBarChartData = _.range(3).map(function (barNum) {
+        return {
+            data: _.range(4).map(function (i) {
+                return [i, parseInt(Math.random() * 30)]
+            }),
+            bars: {
+                horizontal: true,
+                show: true,
+                barWidth: 0.2,
+                order: barNum + 1
+            }
+        }
+    });
+
+    $scope.sinChartData = [
+        {
+            data: _.range(16).map(function (i) {
+                return [i, Math.sin(i)];
+            }),
+            label: "sin(x)"
+        },
+        {
+            data: _.range(16).map(function (i) {
+                return [i, Math.cos(i)];
+            }),
+            label: "cos(x)"
+        }
+    ];
+
+
+    // fill chart
+
+    var males = {
+        '15%' : [[2, 88.0], [3, 93.3], [4, 102.0], [5, 108.5], [6, 115.7], [7, 115.6], [8, 124.6], [9, 130.3], [10, 134.3], [11, 141.4], [12, 146.5], [13, 151.7], [14, 159.9], [15, 165.4], [16, 167.8], [17, 168.7], [18, 169.5], [19, 168.0]],
+        '90%' : [[2, 96.8], [3, 105.2], [4, 113.9], [5, 120.8], [6, 127.0], [7, 133.1], [8, 139.1], [9, 143.9], [10, 151.3], [11, 161.1], [12, 164.8], [13, 173.5], [14, 179.0], [15, 182.0], [16, 186.9], [17, 185.2], [18, 186.3], [19, 186.6]],
+        '25%' : [[2, 89.2], [3, 94.9], [4, 104.4], [5, 111.4], [6, 117.5], [7, 120.2], [8, 127.1], [9, 132.9], [10, 136.8], [11, 144.4], [12, 149.5], [13, 154.1], [14, 163.1], [15, 169.2], [16, 170.4], [17, 171.2], [18, 172.4], [19, 170.8]],
+        '10%' : [[2, 86.9], [3, 92.6], [4, 99.9], [5, 107.0], [6, 114.0], [7, 113.5], [8, 123.6], [9, 129.2], [10, 133.0], [11, 140.6], [12, 145.2], [13, 149.7], [14, 158.4], [15, 163.5], [16, 166.9], [17, 167.5], [18, 167.1], [19, 165.3]],
+        'mean' : [[2, 91.9], [3, 98.5], [4, 107.1], [5, 114.4], [6, 120.6], [7, 124.7], [8, 131.1], [9, 136.8], [10, 142.3], [11, 150.0], [12, 154.7], [13, 161.9], [14, 168.7], [15, 173.6], [16, 175.9], [17, 176.6], [18, 176.8], [19, 176.7]],
+        '75%' : [[2, 94.5], [3, 102.1], [4, 110.8], [5, 117.9], [6, 124.0], [7, 129.3], [8, 134.6], [9, 141.4], [10, 147.0], [11, 156.1], [12, 160.3], [13, 168.3], [14, 174.7], [15, 178.0], [16, 180.2], [17, 181.7], [18, 181.3], [19, 182.5]],
+        '85%' : [[2, 96.2], [3, 103.8], [4, 111.8], [5, 119.6], [6, 125.6], [7, 131.5], [8, 138.0], [9, 143.3], [10, 149.3], [11, 159.8], [12, 162.5], [13, 171.3], [14, 177.5], [15, 180.2], [16, 183.8], [17, 183.4], [18, 183.5], [19, 185.5]],
+        '50%' : [[2, 91.9], [3, 98.2], [4, 106.8], [5, 114.6], [6, 120.8], [7, 125.2], [8, 130.3], [9, 137.1], [10, 141.5], [11, 149.4], [12, 153.9], [13, 162.2], [14, 169.0], [15, 174.8], [16, 176.0], [17, 176.8], [18, 176.4], [19, 177.4]]
+    };
+
+    var females = {
+        '15%' : [[2, 84.8], [3, 93.7], [4, 100.6], [5, 105.8], [6, 113.3], [7, 119.3], [8, 124.3], [9, 131.4], [10, 136.9], [11, 143.8], [12, 149.4], [13, 151.2], [14, 152.3], [15, 155.9], [16, 154.7], [17, 157.0], [18, 156.1], [19, 155.4]],
+        '90%' : [[2, 95.6], [3, 104.1], [4, 111.9], [5, 119.6], [6, 127.6], [7, 133.1], [8, 138.7], [9, 147.1], [10, 152.8], [11, 161.3], [12, 166.6], [13, 167.9], [14, 169.3], [15, 170.1], [16, 172.4], [17, 169.2], [18, 171.1], [19, 172.4]],
+        '25%' : [[2, 87.2], [3, 95.9], [4, 101.9], [5, 107.4], [6, 114.8], [7, 121.4], [8, 126.8], [9, 133.4], [10, 138.6], [11, 146.2], [12, 152.0], [13, 153.8], [14, 155.7], [15, 158.4], [16, 157.0], [17, 158.5], [18, 158.4], [19, 158.1]],
+        '10%' : [[2, 84.0], [3, 91.9], [4, 99.2], [5, 105.2], [6, 112.7], [7, 118.0], [8, 123.3], [9, 130.2], [10, 135.0], [11, 141.1], [12, 148.3], [13, 150.0], [14, 150.7], [15, 154.3], [16, 153.6], [17, 155.6], [18, 154.7], [19, 153.1]],
+        'mean' : [[2, 90.2], [3, 98.3], [4, 105.2], [5, 112.2], [6, 119.0], [7, 125.8], [8, 131.3], [9, 138.6], [10, 144.2], [11, 151.3], [12, 156.7], [13, 158.6], [14, 160.5], [15, 162.1], [16, 162.9], [17, 162.2], [18, 163.0], [19, 163.1]],
+        '75%' : [[2, 93.2], [3, 101.5], [4, 107.9], [5, 116.6], [6, 122.8], [7, 129.3], [8, 135.2], [9, 143.7], [10, 148.7], [11, 156.9], [12, 160.8], [13, 163.0], [14, 165.0], [15, 165.8], [16, 168.7], [17, 166.2], [18, 167.6], [19, 168.0]],
+        '85%' : [[2, 94.5], [3, 102.8], [4, 110.4], [5, 119.0], [6, 125.7], [7, 131.5], [8, 137.9], [9, 146.0], [10, 151.3], [11, 159.9], [12, 164.0], [13, 166.5], [14, 167.5], [15, 168.5], [16, 171.5], [17, 168.0], [18, 169.8], [19, 170.3]],
+        '50%' : [[2, 90.2], [3, 98.1], [4, 105.2], [5, 111.7], [6, 118.2], [7, 125.6], [8, 130.5], [9, 138.3], [10, 143.7], [11, 151.4], [12, 156.7], [13, 157.7], [14, 161.0], [15, 162.0], [16, 162.8], [17, 162.2], [18, 162.8], [19, 163.3]]
+    };
+
+    $scope.fillChartData = [{
+        label : 'female mean',
+        data : females['mean'],
+        lines : {
+            show : true
+        },
+        color : "rgb(255,50,50)"
+    }, {
+        id : 'f15%',
+        data : females['15%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : false
+        },
+        color : "rgb(255,50,50)"
+    }, {
+        id : 'f25%',
+        data : females['25%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : 0.2
+        },
+        color : "rgb(255,50,50)",
+        fillBetween : 'f15%'
+    }, {
+        id : 'f50%',
+        data : females['50%'],
+        lines : {
+            show : true,
+            lineWidth : 0.5,
+            fill : 0.4,
+            shadowSize : 0
+        },
+        color : "rgb(255,50,50)",
+        fillBetween : 'f25%'
+    }, {
+        id : 'f75%',
+        data : females['75%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : 0.4
+        },
+        color : "rgb(255,50,50)",
+        fillBetween : 'f50%'
+    }, {
+        id : 'f85%',
+        data : females['85%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : 0.2
+        },
+        color : "rgb(255,50,50)",
+        fillBetween : 'f75%'
+    }, {
+        label : 'male mean',
+        data : males['mean'],
+        lines : {
+            show : true
+        },
+        color : "rgb(50,50,255)"
+    }, {
+        id : 'm15%',
+        data : males['15%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : false
+        },
+        color : "rgb(50,50,255)"
+    }, {
+        id : 'm25%',
+        data : males['25%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : 0.2
+        },
+        color : "rgb(50,50,255)",
+        fillBetween : 'm15%'
+    }, {
+        id : 'm50%',
+        data : males['50%'],
+        lines : {
+            show : true,
+            lineWidth : 0.5,
+            fill : 0.4,
+            shadowSize : 0
+        },
+        color : "rgb(50,50,255)",
+        fillBetween : 'm25%'
+    }, {
+        id : 'm75%',
+        data : males['75%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : 0.4
+        },
+        color : "rgb(50,50,255)",
+        fillBetween : 'm50%'
+    }, {
+        id : 'm85%',
+        data : males['85%'],
+        lines : {
+            show : true,
+            lineWidth : 0,
+            fill : 0.2
+        },
+        color : "rgb(50,50,255)",
+        fillBetween : 'm75%'
+    }];
+
+
+
+    //
+    $scope.pieChartData = _.range(Math.floor(Math.random() * 10) + 1).map(function(i){
+        return {
+            label : "Series" + (i + 1),
+            data : Math.floor(Math.random() * 100) + 1
+        }
+    });
+
+    var pageviews = [[1, 75], [3, 87], [4, 93], [5, 127], [6, 116], [7, 137], [8, 135], [9, 130], [10, 167], [11, 169], [12, 179], [13, 185], [14, 176], [15, 180], [16, 174], [17, 193], [18, 186], [19, 177], [20, 153], [21, 149], [22, 130], [23, 100], [24, 50]];
+    var visitors = [[1, 65], [3, 50], [4, 73], [5, 100], [6, 95], [7, 103], [8, 111], [9, 97], [10, 125], [11, 100], [12, 95], [13, 141], [14, 126], [15, 131], [16, 146], [17, 158], [18, 160], [19, 151], [20, 125], [21, 110], [22, 100], [23, 85], [24, 37]];
+
+    $scope.siteStatsData = [{
+        data : pageviews,
+        label : "Your pageviews"
+    }, {
+        data : visitors,
+        label : "Site visitors"
+    }];
+});
+"use strict";
+
 angular.module("app.hub").factory("hubService", function($http, $q, localStorageService, APP_CONFIG, User) {
 
     var hubServiceFactory = {};
@@ -12974,204 +12950,6 @@ angular.module("app.hub").factory("hubService", function($http, $q, localStorage
     hubServiceFactory.isUserInGroup = _isUserInGroup;
 
     return hubServiceFactory;
-});
-'use strict';
-
-angular.module('app.logs').controller('changeLogCtrl', function ($scope, $rootScope, APP_CONFIG, logManager, $stateParams) {
-
-    var vm = this;
-    vm.title = 'Log Viewer';
-
-    vm.getWord = getWord;
-
-    logManager.params.dbschema = $stateParams.logschema;
-    logManager.params.dbclass = $stateParams.logclass;
-    logManager.params.oid = $stateParams.logoid;
-    logManager.params.property = $stateParams.logproperty;
-
-    activate();
-
-    function activate() {
-        logManager.load(function (logs) {
-            console.log(logs);
-            vm.logs = logs;
-        });
-    }
-
-    function getWord(key) {
-        return $rootScope.getWord(key);
-    }
-});
-
-'use strict';
-
-angular.module('app.logs').controller('changeLogViewerCtrl', function ($scope, $rootScope, APP_CONFIG, $stateParams, $modalInstance) {
-
-    $scope.dbschema = $stateParams.logschema;
-    $scope.dbclass = $stateParams.logclass;
-    $scope.oid = $stateParams.logoid;
-    $scope.property = $stateParams.logproperty;
-
-
-    $scope.closeModal = function () {
-        $modalInstance.dismiss("dismiss");
-    };
-});
-
-'use strict';
-
-angular.module('app.logs').directive('changelog', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/logs/views/change-log.html',
-        replace: true,
-        scope: {},
-        controllerAs: 'vm',
-        controller: 'changeLogCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
-'use strict';
-
-angular.module('app.logs').factory('logManager', function ($q, $http, APP_CONFIG) {
-
-    var service = {
-        logs: [],
-        load: load,
-        status: {
-            uploading: false
-        },
-        params: {
-            dbschema: "",
-            dbclass: "",
-            oid: "",
-            property: ""
-        }
-    };
-
-    return service;
-
-    function load(callback) {
-        service.logs.length = 0;
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/log/" + encodeURIComponent(service.params.dbschema) + "/" + service.params.dbclass + "/" + service.params.oid + "/" + service.params.property;
-
-        $http.get(url).success(function (data) {
-
-            callback(convertLogs(data));
-
-        }).error(function () {
-
-        });
-    }
-
-    function convertLogs(logRecordCollection) {
-
-        var logs = [];
-
-        if (logRecordCollection) {
-
-            for (var i = 0; i < logRecordCollection.length; i++) {
-                var logRecord = logRecordCollection[i];
-
-                var log = {};
-
-                switch (logRecord.actionType)
-                {
-                    case 1:
-                        log.type = "Create";
-                        break;
-
-                    case 2:
-                        log.type = "Modify";
-                        break
-                }
-                
-                log.user = logRecord.userDisplayText;
-                log.time = logRecord.actionTime;
-                log.content = logRecord.actionData;
-
-                logs.push(log);
-            }
-        }
-
-        return logs;
-    }
-});
-"use strict";
-
-angular.module('app').controller("LanguagesCtrl",  function LanguagesCtrl($scope, $rootScope, $log, Language){
-
-
-
-
-    $scope.selectLanguage = function(language){
-        $rootScope.currentLanguage = language;
-        
-        Language.getLang(language.key,function(data){
-
-            $rootScope.lang = data;
-            
-        });
-    }
-
- 
-
-});
-"use strict";
-
-angular.module('app').factory('Language', function($http, APP_CONFIG){
-
-	function getLanguage(key, callback) {
-
-		$http.get(APP_CONFIG.apiRootUrl + '/langs/' + key + '.json').success(function(data){
-
-			callback(data);
-			
-		}).error(function(){
-
-			$log.log('Error');
-			callback([]);
-
-		});
-
-	}
-
-	function getLanguages(callback) {
-
-		$http.get(APP_CONFIG.apiRootUrl + '/languages.json').success(function(data){
-
-			callback(data);
-			
-		}).error(function(){
-
-			$log.log('Error');
-			callback([]);
-
-		});
-
-	}
-
-	return {
-		getLang: function(type, callback) {
-			getLanguage(type, callback);
-		},
-		getLanguages:function(callback){
-			getLanguages(callback);
-		}
-	}
-
-});
-"use strict";
-
-angular.module('app').directive('languageSelector', function(Language){
-    return {
-        restrict: "EA",
-        replace: true,
-        templateUrl: "app/layout/language/language-selector.tpl.html",
-        scope: true
-    }
 });
 "use strict";
 
@@ -13273,6 +13051,266 @@ angular.module('app.layout').controller('layoutCtrl', function ($rootScope, $sco
     }
 });
 
+"use strict";
+
+angular.module('app').controller("LanguagesCtrl",  function LanguagesCtrl($scope, $rootScope, $log, Language){
+
+
+
+
+    $scope.selectLanguage = function(language){
+        $rootScope.currentLanguage = language;
+        
+        Language.getLang(language.key,function(data){
+
+            $rootScope.lang = data;
+            
+        });
+    }
+
+ 
+
+});
+"use strict";
+
+angular.module('app').factory('Language', function($http, APP_CONFIG){
+
+	function getLanguage(key, callback) {
+
+		$http.get(APP_CONFIG.apiRootUrl + '/langs/' + key + '.json').success(function(data){
+
+			callback(data);
+			
+		}).error(function(){
+
+			$log.log('Error');
+			callback([]);
+
+		});
+
+	}
+
+	function getLanguages(callback) {
+
+		$http.get(APP_CONFIG.apiRootUrl + '/languages.json').success(function(data){
+
+			callback(data);
+			
+		}).error(function(){
+
+			$log.log('Error');
+			callback([]);
+
+		});
+
+	}
+
+	return {
+		getLang: function(type, callback) {
+			getLanguage(type, callback);
+		},
+		getLanguages:function(callback){
+			getLanguages(callback);
+		}
+	}
+
+});
+"use strict";
+
+angular.module('app').directive('languageSelector', function(Language){
+    return {
+        restrict: "EA",
+        replace: true,
+        templateUrl: "app/layout/language/language-selector.tpl.html",
+        scope: true
+    }
+});
+"use strict";
+
+angular.module('app').directive('toggleShortcut', function($log,$timeout) {
+
+	var initDomEvents = function($element){
+
+		var shortcut_dropdown = $('#shortcut');
+
+		$element.on('click',function(){
+		
+			if (shortcut_dropdown.is(":visible")) {
+				shortcut_buttons_hide();
+			} else {
+				shortcut_buttons_show();
+			}
+
+		})
+
+		shortcut_dropdown.find('a').click(function(e) {
+			e.preventDefault();
+			window.location = $(this).attr('href');
+			setTimeout(shortcut_buttons_hide, 300);
+		});
+
+		
+
+		// SHORTCUT buttons goes away if mouse is clicked outside of the area
+		$(document).mouseup(function(e) {
+			if (shortcut_dropdown && !shortcut_dropdown.is(e.target) && shortcut_dropdown.has(e.target).length === 0) {
+				shortcut_buttons_hide();
+			}
+		});
+
+		// SHORTCUT ANIMATE HIDE
+		function shortcut_buttons_hide() {
+			shortcut_dropdown.animate({
+				height : "hide"
+			}, 300, "easeOutCirc");
+			$('body').removeClass('shortcut-on');
+
+		}
+
+		// SHORTCUT ANIMATE SHOW
+		function shortcut_buttons_show() {
+			shortcut_dropdown.animate({
+				height : "show"
+			}, 200, "easeOutCirc");
+			$('body').addClass('shortcut-on');
+		}
+	}
+
+	var link = function($scope,$element){
+		$timeout(function(){
+			initDomEvents($element);
+		});
+	}
+
+	return{
+		restrict:'EA',
+		link:link
+	}
+})
+'use strict';
+
+angular.module('app.logs').controller('changeLogCtrl', function ($scope, $rootScope, APP_CONFIG, logManager, $stateParams) {
+
+    var vm = this;
+    vm.title = 'Log Viewer';
+
+    vm.getWord = getWord;
+
+    logManager.params.dbschema = $stateParams.logschema;
+    logManager.params.dbclass = $stateParams.logclass;
+    logManager.params.oid = $stateParams.logoid;
+    logManager.params.property = $stateParams.logproperty;
+
+    activate();
+
+    function activate() {
+        logManager.load(function (logs) {
+            console.log(logs);
+            vm.logs = logs;
+        });
+    }
+
+    function getWord(key) {
+        return $rootScope.getWord(key);
+    }
+});
+
+'use strict';
+
+angular.module('app.logs').controller('changeLogViewerCtrl', function ($scope, $rootScope, APP_CONFIG, $stateParams, $modalInstance) {
+
+    $scope.dbschema = $stateParams.logschema;
+    $scope.dbclass = $stateParams.logclass;
+    $scope.oid = $stateParams.logoid;
+    $scope.property = $stateParams.logproperty;
+
+
+    $scope.closeModal = function () {
+        $modalInstance.dismiss("dismiss");
+    };
+});
+
+'use strict';
+
+angular.module('app.logs').factory('logManager', function ($q, $http, APP_CONFIG) {
+
+    var service = {
+        logs: [],
+        load: load,
+        status: {
+            uploading: false
+        },
+        params: {
+            dbschema: "",
+            dbclass: "",
+            oid: "",
+            property: ""
+        }
+    };
+
+    return service;
+
+    function load(callback) {
+        service.logs.length = 0;
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/log/" + encodeURIComponent(service.params.dbschema) + "/" + service.params.dbclass + "/" + service.params.oid + "/" + service.params.property;
+
+        $http.get(url).success(function (data) {
+
+            callback(convertLogs(data));
+
+        }).error(function () {
+
+        });
+    }
+
+    function convertLogs(logRecordCollection) {
+
+        var logs = [];
+
+        if (logRecordCollection) {
+
+            for (var i = 0; i < logRecordCollection.length; i++) {
+                var logRecord = logRecordCollection[i];
+
+                var log = {};
+
+                switch (logRecord.actionType)
+                {
+                    case 1:
+                        log.type = "Create";
+                        break;
+
+                    case 2:
+                        log.type = "Modify";
+                        break
+                }
+                
+                log.user = logRecord.userDisplayText;
+                log.time = logRecord.actionTime;
+                log.content = logRecord.actionData;
+
+                logs.push(log);
+            }
+        }
+
+        return logs;
+    }
+});
+'use strict';
+
+angular.module('app.logs').directive('changelog', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/logs/views/change-log.html',
+        replace: true,
+        scope: {},
+        controllerAs: 'vm',
+        controller: 'changeLogCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
 'use strict';
 
 angular.module('app.mldashboard').controller('MLDashboardLayoutCtrl', function ($http, APP_CONFIG, $scope, $state, $stateParams, propmisedParams) {
@@ -13467,327 +13505,149 @@ angular.module('app.mldashboard').controller('MLModelDashboardCtrl', function ($
         return labels;
     }
 });
-"use strict";
+'use strict';
 
-angular.module('app').directive('toggleShortcut', function($log,$timeout) {
+angular.module('app.smartforms').directive('buttonSpinner', function ($compile) {
+    return {
+        restrict: 'A',
+        scope: {
+            spinning: '=buttonSpinner',
+            spinningIcon: '@?',
+            buttonPrepend: '@?',
+            buttonAppend: '@?'
+        },
+        transclude: true,
+        template: 
+        "<span ng-if=\"!!buttonPrepend\" ng-hide=\"spinning\"><i class=\"{{ buttonPrepend }}\"></i>&nbsp;</span>" +
+        "<span ng-if=\"!!buttonPrepend\" ng-show=\"spinning\"><i class=\"{{ !!spinningIcon ? spinningIcon : 'fa fa-spinner fa-spin' }}\"></i>&nbsp;</span>" +
+        "<ng-transclude></ng-transclude>" +
+        "<span ng-if=\"!!buttonAppend\" ng-hide=\"spinning\">&nbsp;<i class=\"{{ buttonAppend }}\"></i></span>" +
+        "<span ng-if=\"!buttonPrepend\" ng-show=\"spinning\">&nbsp;<i class=\"{{ !!spinningIcon ? spinningIcon : 'fa fa-spinner fa-spin' }}\"></i></span>"
+    }
+});
+'use strict';
 
-	var initDomEvents = function($element){
+angular.module('app.smartforms').directive('dynamic', function ($compile) {
+    return {
+        restrict: 'A',
+        replace: true,
+        link: function (scope, ele, attrs) {
+            scope.$watch(attrs.dynamic, function (html) {
+                ele.html(html);
+                $compile(ele.contents())(scope);
+            });
+        }
+    };
+});
+'use strict';
 
-		var shortcut_dropdown = $('#shortcut');
+angular.module('app.smartforms').directive('ebaasFormTemplate', function ($templateRequest, $compile, $sce, APP_CONFIG, $stateParams) {
+    return {
+        restrict: "E",
+        scope: true,
+        link: function (scope, element, attrs) {
+            var schema = scope.$eval(attrs.dbschema);
+            var cls = scope.$eval(attrs.dbclass);
+            var oid = scope.$eval(attrs.oid);
+            var template = scope.$eval(attrs.template);
+            var formAttribute = scope.$eval(attrs.formattribute);
+            var previewid = scope.$eval(attrs.previewid);
+            var taskId = undefined;
+            var readOnly = false;
+            if (attrs.readonly)
+            {
+                readOnly = scope.$eval(attrs.readonly);
+            }
 
-		$element.on('click',function(){
-		
-			if (shortcut_dropdown.is(":visible")) {
-				shortcut_buttons_hide();
-			} else {
-				shortcut_buttons_show();
-			}
+            if (attrs.taskid) {
+                taskId = scope.$eval(attrs.taskid);
+            }
 
-		})
-
-		shortcut_dropdown.find('a').click(function(e) {
-			e.preventDefault();
-			window.location = $(this).attr('href');
-			setTimeout(shortcut_buttons_hide, 300);
-		});
-
-		
-
-		// SHORTCUT buttons goes away if mouse is clicked outside of the area
-		$(document).mouseup(function(e) {
-			if (shortcut_dropdown && !shortcut_dropdown.is(e.target) && shortcut_dropdown.has(e.target).length === 0) {
-				shortcut_buttons_hide();
-			}
-		});
-
-		// SHORTCUT ANIMATE HIDE
-		function shortcut_buttons_hide() {
-			shortcut_dropdown.animate({
-				height : "hide"
-			}, 300, "easeOutCirc");
-			$('body').removeClass('shortcut-on');
-
-		}
-
-		// SHORTCUT ANIMATE SHOW
-		function shortcut_buttons_show() {
-			shortcut_dropdown.animate({
-				height : "show"
-			}, 200, "easeOutCirc");
-			$('body').addClass('shortcut-on');
-		}
-	}
-
-	var link = function($scope,$element){
-		$timeout(function(){
-			initDomEvents($element);
-		});
-	}
-
-	return{
-		restrict:'EA',
-		link:link
-	}
-})
-"use strict";
-
-angular.module('app.myspace').controller('finishedTaskFormCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $stateParams, $state, promiseFinishedTaskInfo) {
-
-    if (!promiseFinishedTaskInfo.data) {
-
-        BootstrapDialog.show({
-            title: $rootScope.getWord("Info Dialog"),
-            type: BootstrapDialog.TYPE_INFO,
-            message: $rootScope.getWord("Non-exist task"),
-            buttons: [{
-                label: $rootScope.getWord("Cancel"),
-                action: function (dialog) {
-                    dialog.close();
+            var url = undefined;
+            if (cls) {
+                if (formAttribute && oid)
+                {
+                    // get custom form from an property value
+                    url = APP_CONFIG.ebaasRootUrl + "/api/form/template/" + encodeURIComponent(schema) + "/" + cls + "/" + oid + "?templateSource=property&property=" + formAttribute + "&readOnly=" + readOnly;
                 }
-            }]
-        });
+                else if (template) {
+                    if (oid) {
+                        // get custom form
+                        url = APP_CONFIG.ebaasRootUrl + "/api/form/template/" + encodeURIComponent(schema) + "/" + cls + "/" + oid + "?templateSource=file&template=" + encodeURIComponent(template) + "&readOnly=" + readOnly;
+                    }
+                    else {
+                        url = APP_CONFIG.ebaasRootUrl + "/api/form/template/" + encodeURIComponent(schema) + "/" + cls + "?templateSource=file&template=" + encodeURIComponent(template) + "&readOnly=" + readOnly;
+                    }
+                }
+                else {
+                    if (oid) {
+                        // get a default form
+                        url = APP_CONFIG.ebaasRootUrl + "/api/form/template/" + encodeURIComponent(schema) + "/" + cls + "/" + oid + "?readonly=" + readOnly;
+                    }
+                    else {
+                        url = APP_CONFIG.ebaasRootUrl + "/api/form/template/" + encodeURIComponent(schema) + "/" + cls + "?readOnly=" + readOnly;
+                    }
+                }
 
-        return;
-    }
-    if (promiseFinishedTaskInfo.data.formUrl)
-    {
-        if (promiseFinishedTaskInfo.data.formParams) {
-            // task with custom module, goto the custom module
-            var params = JSON.parse(promiseFinishedTaskInfo.data.formParams);
-            params["schema"] = $stateParams.schema;
-            params["class"] = promiseFinishedTaskInfo.data.bindingClassName;
-            params["oid"] = promiseFinishedTaskInfo.data.bindingInstanceId;
-            params["taskid"] = $stateParams.taskid;
+                if (previewid)
+                {
+                    url += "&previewid=" + previewid;
+                }
 
-            $state.go(promiseFinishedTaskInfo.data.formUrl, params);
+                if (taskId)
+                {
+                    url += "&taskId=" + taskId;
+                }
+            }
+            
+            if (url) {
+                // Load the html through $templateRequest
+                $templateRequest($sce.trustAsResourceUrl(url)).then(function (html) {
+                    // Convert the html to an actual DOM node
+                    
+                    html = html.slice(1, html.length); // remove double quote at start and end
+                    html = html.replace(/\\/g, "");
+
+                    //console.log(html);
+                    var template = angular.element($.trim(html)); // remove spaces
+
+                    // Append it to the directive element
+                    element.append(template);
+                    // And let Angular $compile it
+                    $compile(template)(scope);
+                });
+            }
         }
-    }
-
-    $scope.taskId = $stateParams.taskid;
-
-    $scope.dbschema = $stateParams.schema;
-
-    $scope.dbclass = promiseFinishedTaskInfo.data.bindingClassName;
-
-    $scope.oid = promiseFinishedTaskInfo.data.bindingInstanceId; // id of the instance bound to the task
-
-    $scope.loading = false;
-
-    $scope.showCommands = false;
-
-    $scope.ToolTip = "command";
-
-    if (promiseFinishedTaskInfo.data.formParams) {
-        var params = JSON.parse(promiseFinishedTaskInfo.data.formParams);
-
-        $scope.template = params["template"];
-        $scope.formAttribute = params["formAttribute"];
-        if (params["showCommands"]) {
-            $scope.showCommands = params["showCommands"];
-        }
-    }
-    else {
-        $scope.template = undefined;
-        $scope.formAttribute = undefined;
-    }
-
-    angular.extend(this, $controller('ebaasFormBaseCtrl', { $rootScope: $rootScope, $scope: $scope, $http: $http, APP_CONFIG: APP_CONFIG }));
-
-    $scope.goBack = function()
-    {
-        history.back(1);
     }
 });
 
 'use strict';
 
-angular.module('app.myspace').controller('mySpaceCtrl', function ($scope, $rootScope, $http, $state, $stateParams, APP_CONFIG, User, TasksInfo, myActivityService, blogService, promiseTasks) {
+angular.module('app.smartforms').directive('compile', function ($compile) {
+    return function (scope, element, attrs) {
+        var ensureCompileRunsOnce = scope.$watch(
+          function (scope) {
+              // watch the 'compile' expression for changes
+              return scope.$eval(attrs.compile);
+          },
+          function (value) {
+              // when the 'compile' expression changes
+              // assign it into the current DOM
+              element.html(value);
 
-    $scope.dbschema = $stateParams.schema;
-    $scope.blogClass = "Blog";
+              // compile the new DOM and link it to the current
+              // scope.
+              // NOTE: we only compile .childNodes so that
+              // we don't get into infinite loop compiling ourselves
+              $compile(element.contents())(scope);
 
-    $scope.user = User;
-
-    $scope.itemsByPage = 15;
-
-    $scope.rowCollection = promiseTasks.data;
-
-    $scope.numOfPages = Math.ceil(promiseTasks.data.length / $scope.itemsByPage);
-
-    TasksInfo.tasks = promiseTasks.data;
-    TasksInfo.count = promiseTasks.data.length; // other components are watching task number changes through this service
-    $scope.taskCount = TasksInfo.count;
-
-    myActivityService.getbytype("msgs", function (data) {
-        myActivityService.MessageModel.items = data;
-
-    });
-
-    // Getting my blogs
-    blogService.getMyBlogs("COMMON", $scope.blogClass, User.userName, function (result) {
-        $scope.blogs = result.data;
-
-    });
-
-    $scope.getPosterImage = function(posterId)
-    {
-        return User.getUserImage(posterId);
-    }
-
-    $scope.getMsgItems = function () {
-        return myActivityService.MessageModel.items;
-    }
-
-    $scope.getMsgCount = function () {
-        return myActivityService.MessageModel.items.length;
-    }
-
-    $scope.readMsg = function (msg) {
-        var url = msg.url;
-        var urlparams = msg.urlparams;
-
-        urlparams = urlparams.replace(/msg.dbschema/, "\"" + msg.dbschema + "\""); // replace msg.dbschema
-        urlparams = urlparams.replace(/msg.dbclass/, "\"" + msg.dbclass + "\""); // replace msg.dbclass
-        urlparams = urlparams.replace(/msg.oid/, "\"" + msg.oid + "\""); // replace msg.dbclass
-
-        var params = JSON.parse(urlparams);
-
-        if (url) {
-            $state.go(url, params);
-        }
-    }
-
-    $scope.deleteMsg = function (msg) {
-        var found = false;
-        var index = undefined;
-
-        for (var i = 0; i < myActivityService.MessageModel.items.length; i++) {
-            var activity = myActivityService.MessageModel.items[i];
-            if (activity.objId === msg.objId) {
-                index = i;
-                found = true;
-                break;
-            }
-        }
-
-        if (found) {
-            myActivityService.MessageModel.items.splice(index, 1);
-        }
-
-        myActivityService.remove("msgs", msg.objId, function (data) {
-            myActivityService.MessageModel.count = myActivityService.MessageModel.items.length;
-        });
-    }
-
-    $scope.RefreshTasks = function()
-    {
-        $state.reload();
-    }
-
-    $scope.OpenSetSubstitute = function () {
-        $state.go(".substitute", { schema: $scope.dbschema });
-    }
-
-    $rootScope.$on('modalClosed', function (event, data) {
-        if (data === "update")
-            $scope.RefreshTasks();
-    });
-
-    $scope.finishedTasks = [];
-    $scope.tableState;
-    $scope.pageSize = 15;
-
-    $scope.isLoading = true;
-
-    $scope.callServer = function (tableState) {
-
-        $scope.isLoading = true;
-
-        $scope.tableState = tableState;
-
-        var pagination = tableState.pagination;
-
-        var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
-        var number = pagination.number || $scope.pageSize;  // Number of entries showed per page.
-
-        $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/user/" + encodeURIComponent($scope.dbschema) + "?from=" + start + "&size=" + number).success(function (data) {
-            // then get total count
-            $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/user/" + encodeURIComponent($scope.dbschema) + "/count").success(function (count) {
-                $scope.finishedTasks = data;
-
-                tableState.pagination.numberOfPages = Math.ceil(count / $scope.pageSize);//set the number of pages so the pagination can update
-                
-                $scope.isLoading = false;
-            });
-        })
-    };
-
-    $scope.refreshFinishedTasks = function () {
-        $scope.callServer($scope.tableState);
-    }
-
-    $scope.clearFinishedTasks = function()
-    {
-        $scope.isLoading = true;
-
-        $http.delete(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/" + encodeURIComponent($scope.dbschema)).success(function () {
-
-            $scope.isLoading = false;
-
-            $scope.callServer($scope.tableState);
-        })
-    }
-
-    $scope.hasFinishedTasks = function () {
-        if ($scope.finishedTasks && $scope.finishedTasks.length > 0)
-            return true;
-        else
-            return false;
-    }
-});
-"use strict";
-
-angular.module('app.myspace').controller('uploadPictureCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, User, Upload, $timeout) {
-
-
-    $scope.upload = function (dataUrl, name) {
-
-        var fileName = User.userName + ".png";
-
-        var uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/images/avatars";
-
-        Upload.upload({
-            url: uploadUrl,
-            data: {
-                file: Upload.dataUrltoBlob(dataUrl, fileName)
-            },
-        }).then(function (response) {
-            $timeout(function () {
-                $scope.result = response.data;
-                User.imageUrl = undefined;
-                User.pictureChangeTime = new Date().getTime();
-
-                if (!User.picture) {
-                    User.picture = fileName;
-    
-                    User.save();
-                }
-            });
-        }, function (response) {
-            $scope.loading = false;
-            if (response.status > 0) $scope.errorMsg = response.status
-                + ': ' + response.data;
-        }, function (evt) {
-
-            $scope.progress = parseInt(100.0 * evt.loaded / evt.total);
-        });
-    };
-
-    $scope.closeModal = function () {
-        $modalInstance.dismiss("dismiss");
-
+              // Use Angular's un-watch feature to ensure compilation only happens once.
+              ensureCompileRunsOnce();
+          }
+      );
     };
 });
+
 'use strict';
 
 angular.module('app.smartforms').controller('ebaasFormBaseCtrl', function ($rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, MetaDataCache) {
@@ -14952,170 +14812,1604 @@ angular.module('app.smartreports').controller('downloadReportCtrl', function ($c
     }
 });
 
-'use strict';
+"use strict";
 
-angular.module('app.smartforms').directive('buttonSpinner', function ($compile) {
-    return {
-        restrict: 'A',
-        scope: {
-            spinning: '=buttonSpinner',
-            spinningIcon: '@?',
-            buttonPrepend: '@?',
-            buttonAppend: '@?'
-        },
-        transclude: true,
-        template: 
-        "<span ng-if=\"!!buttonPrepend\" ng-hide=\"spinning\"><i class=\"{{ buttonPrepend }}\"></i>&nbsp;</span>" +
-        "<span ng-if=\"!!buttonPrepend\" ng-show=\"spinning\"><i class=\"{{ !!spinningIcon ? spinningIcon : 'fa fa-spinner fa-spin' }}\"></i>&nbsp;</span>" +
-        "<ng-transclude></ng-transclude>" +
-        "<span ng-if=\"!!buttonAppend\" ng-hide=\"spinning\">&nbsp;<i class=\"{{ buttonAppend }}\"></i></span>" +
-        "<span ng-if=\"!buttonPrepend\" ng-show=\"spinning\">&nbsp;<i class=\"{{ !!spinningIcon ? spinningIcon : 'fa fa-spinner fa-spin' }}\"></i></span>"
+angular.module('app.myspace').controller('finishedTaskFormCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $stateParams, $state, promiseFinishedTaskInfo) {
+
+    if (!promiseFinishedTaskInfo.data) {
+
+        BootstrapDialog.show({
+            title: $rootScope.getWord("Info Dialog"),
+            type: BootstrapDialog.TYPE_INFO,
+            message: $rootScope.getWord("Non-exist task"),
+            buttons: [{
+                label: $rootScope.getWord("Cancel"),
+                action: function (dialog) {
+                    dialog.close();
+                }
+            }]
+        });
+
+        return;
+    }
+    if (promiseFinishedTaskInfo.data.formUrl)
+    {
+        if (promiseFinishedTaskInfo.data.formParams) {
+            // task with custom module, goto the custom module
+            var params = JSON.parse(promiseFinishedTaskInfo.data.formParams);
+            params["schema"] = $stateParams.schema;
+            params["class"] = promiseFinishedTaskInfo.data.bindingClassName;
+            params["oid"] = promiseFinishedTaskInfo.data.bindingInstanceId;
+            params["taskid"] = $stateParams.taskid;
+
+            $state.go(promiseFinishedTaskInfo.data.formUrl, params);
+        }
+    }
+
+    $scope.taskId = $stateParams.taskid;
+
+    $scope.dbschema = $stateParams.schema;
+
+    $scope.dbclass = promiseFinishedTaskInfo.data.bindingClassName;
+
+    $scope.oid = promiseFinishedTaskInfo.data.bindingInstanceId; // id of the instance bound to the task
+
+    $scope.loading = false;
+
+    $scope.showCommands = false;
+
+    $scope.ToolTip = "command";
+
+    if (promiseFinishedTaskInfo.data.formParams) {
+        var params = JSON.parse(promiseFinishedTaskInfo.data.formParams);
+
+        $scope.template = params["template"];
+        $scope.formAttribute = params["formAttribute"];
+        if (params["showCommands"]) {
+            $scope.showCommands = params["showCommands"];
+        }
+    }
+    else {
+        $scope.template = undefined;
+        $scope.formAttribute = undefined;
+    }
+
+    angular.extend(this, $controller('ebaasFormBaseCtrl', { $rootScope: $rootScope, $scope: $scope, $http: $http, APP_CONFIG: APP_CONFIG }));
+
+    $scope.goBack = function()
+    {
+        history.back(1);
     }
 });
+
 'use strict';
 
-angular.module('app.smartforms').directive('dynamic', function ($compile) {
-    return {
-        restrict: 'A',
-        replace: true,
-        link: function (scope, ele, attrs) {
-            scope.$watch(attrs.dynamic, function (html) {
-                ele.html(html);
-                $compile(ele.contents())(scope);
-            });
+angular.module('app.myspace').controller('mySpaceCtrl', function ($scope, $rootScope, $http, $state, $stateParams, APP_CONFIG, User, TasksInfo, myActivityService, blogService, promiseTasks) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.blogClass = "Blog";
+
+    $scope.user = User;
+
+    $scope.itemsByPage = 15;
+
+    $scope.rowCollection = promiseTasks.data;
+
+    $scope.numOfPages = Math.ceil(promiseTasks.data.length / $scope.itemsByPage);
+
+    TasksInfo.tasks = promiseTasks.data;
+    TasksInfo.count = promiseTasks.data.length; // other components are watching task number changes through this service
+    $scope.taskCount = TasksInfo.count;
+
+    myActivityService.getbytype("msgs", function (data) {
+        myActivityService.MessageModel.items = data;
+
+    });
+
+    // Getting my blogs
+    blogService.getMyBlogs("COMMON", $scope.blogClass, User.userName, function (result) {
+        $scope.blogs = result.data;
+
+    });
+
+    $scope.getPosterImage = function(posterId)
+    {
+        return User.getUserImage(posterId);
+    }
+
+    $scope.getMsgItems = function () {
+        return myActivityService.MessageModel.items;
+    }
+
+    $scope.getMsgCount = function () {
+        return myActivityService.MessageModel.items.length;
+    }
+
+    $scope.readMsg = function (msg) {
+        var url = msg.url;
+        var urlparams = msg.urlparams;
+
+        urlparams = urlparams.replace(/msg.dbschema/, "\"" + msg.dbschema + "\""); // replace msg.dbschema
+        urlparams = urlparams.replace(/msg.dbclass/, "\"" + msg.dbclass + "\""); // replace msg.dbclass
+        urlparams = urlparams.replace(/msg.oid/, "\"" + msg.oid + "\""); // replace msg.dbclass
+
+        var params = JSON.parse(urlparams);
+
+        if (url) {
+            $state.go(url, params);
         }
+    }
+
+    $scope.deleteMsg = function (msg) {
+        var found = false;
+        var index = undefined;
+
+        for (var i = 0; i < myActivityService.MessageModel.items.length; i++) {
+            var activity = myActivityService.MessageModel.items[i];
+            if (activity.objId === msg.objId) {
+                index = i;
+                found = true;
+                break;
+            }
+        }
+
+        if (found) {
+            myActivityService.MessageModel.items.splice(index, 1);
+        }
+
+        myActivityService.remove("msgs", msg.objId, function (data) {
+            myActivityService.MessageModel.count = myActivityService.MessageModel.items.length;
+        });
+    }
+
+    $scope.RefreshTasks = function()
+    {
+        $state.reload();
+    }
+
+    $scope.OpenSetSubstitute = function () {
+        $state.go(".substitute", { schema: $scope.dbschema });
+    }
+
+    $rootScope.$on('modalClosed', function (event, data) {
+        if (data === "update")
+            $scope.RefreshTasks();
+    });
+
+    $scope.finishedTasks = [];
+    $scope.tableState;
+    $scope.pageSize = 15;
+
+    $scope.isLoading = true;
+
+    $scope.callServer = function (tableState) {
+
+        $scope.isLoading = true;
+
+        $scope.tableState = tableState;
+
+        var pagination = tableState.pagination;
+
+        var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
+        var number = pagination.number || $scope.pageSize;  // Number of entries showed per page.
+
+        $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/user/" + encodeURIComponent($scope.dbschema) + "?from=" + start + "&size=" + number).success(function (data) {
+            // then get total count
+            $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/user/" + encodeURIComponent($scope.dbschema) + "/count").success(function (count) {
+                $scope.finishedTasks = data;
+
+                tableState.pagination.numberOfPages = Math.ceil(count / $scope.pageSize);//set the number of pages so the pagination can update
+                
+                $scope.isLoading = false;
+            });
+        })
+    };
+
+    $scope.refreshFinishedTasks = function () {
+        $scope.callServer($scope.tableState);
+    }
+
+    $scope.clearFinishedTasks = function()
+    {
+        $scope.isLoading = true;
+
+        $http.delete(APP_CONFIG.ebaasRootUrl + "/api/tasks/finished/" + encodeURIComponent($scope.dbschema)).success(function () {
+
+            $scope.isLoading = false;
+
+            $scope.callServer($scope.tableState);
+        })
+    }
+
+    $scope.hasFinishedTasks = function () {
+        if ($scope.finishedTasks && $scope.finishedTasks.length > 0)
+            return true;
+        else
+            return false;
+    }
+});
+"use strict";
+
+angular.module('app.myspace').controller('uploadPictureCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, User, Upload, $timeout) {
+
+
+    $scope.upload = function (dataUrl, name) {
+
+        var fileName = User.userName + ".png";
+
+        var uploadUrl = APP_CONFIG.ebaasRootUrl + "/api/images/avatars";
+
+        Upload.upload({
+            url: uploadUrl,
+            data: {
+                file: Upload.dataUrltoBlob(dataUrl, fileName)
+            },
+        }).then(function (response) {
+            $timeout(function () {
+                $scope.result = response.data;
+                User.imageUrl = undefined;
+                User.pictureChangeTime = new Date().getTime();
+
+                if (!User.picture) {
+                    User.picture = fileName;
+    
+                    User.save();
+                }
+            });
+        }, function (response) {
+            $scope.loading = false;
+            if (response.status > 0) $scope.errorMsg = response.status
+                + ': ' + response.data;
+        }, function (evt) {
+
+            $scope.progress = parseInt(100.0 * evt.loaded / evt.total);
+        });
+    };
+
+    $scope.closeModal = function () {
+        $modalInstance.dismiss("dismiss");
+
     };
 });
 'use strict';
 
-angular.module('app.smartforms').directive('ebaasFormTemplate', function ($templateRequest, $compile, $sce, APP_CONFIG, $stateParams) {
-    return {
-        restrict: "E",
-        scope: true,
-        link: function (scope, element, attrs) {
-            var schema = scope.$eval(attrs.dbschema);
-            var cls = scope.$eval(attrs.dbclass);
-            var oid = scope.$eval(attrs.oid);
-            var template = scope.$eval(attrs.template);
-            var formAttribute = scope.$eval(attrs.formattribute);
-            var previewid = scope.$eval(attrs.previewid);
-            var taskId = undefined;
-            var readOnly = false;
-            if (attrs.readonly)
+angular.module('app.smarttables').controller('dataGridBaseCtrl', function ($scope, $rootScope, $state, $http, APP_CONFIG, $timeout, MetaDataCache, ngProgressFactory, searchContext) {
+
+    // parameters to be provided by sub controllers
+    $scope.dbschema;
+    $scope.dbclass;
+    $scope.view;
+    $scope.tree;
+    $scope.node;
+    $scope.oid;
+    $scope.filter;
+    $scope.isrelated;
+    $scope.relatedclass;
+    $scope.relatedview;
+    $scope.isfulltextsearch;
+
+    var url;
+    if ($scope.isrelated && $scope.isrelated === true)
+    {
+        // get meta data for a related class
+        if ($scope.relatedview) {
+            url = APP_CONFIG.ebaasRootUrl + "/api/metadata/view/" + encodeURIComponent($scope.dbschema) + "/" + $scope.relatedclass + "?view=" + $scope.relatedview;
+        }
+        else {
+            url = APP_CONFIG.ebaasRootUrl + "/api/metadata/view/" + encodeURIComponent($scope.dbschema) + "/" + $scope.relatedclass;
+        }
+    }
+    else
+    {
+        // get meta data for a master class
+        if ($scope.view) {
+            url = APP_CONFIG.ebaasRootUrl + "/api/metadata/view/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "?view=" + $scope.view;
+        }
+        else {
+            url = APP_CONFIG.ebaasRootUrl + "/api/metadata/view/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass;
+        }
+    }
+
+    //console.debug("meta data url = " + url);
+
+    $http.get(url).success(function (data) {
+
+        var column;
+        var columns = new Array();
+
+        // data is a JSON Schema for the class
+        var properties = data.properties; // data.properies contains infos of each property of the schema
+
+        $scope.selectColumns = "";
+
+        var propertyInfo;
+        for (var property in properties)
+        {
+            if (properties.hasOwnProperty(property))
             {
-                readOnly = scope.$eval(attrs.readonly);
-            }
+                propertyInfo = properties[property];
 
-            if (attrs.taskid) {
-                taskId = scope.$eval(attrs.taskid);
-            }
+                column = new Object();
+                column.dataField = property;
+                column.caption = propertyInfo["title"];
+                column.dataType = convertDataType(propertyInfo);
+                if (column.dataType === "date")
+                    column.calculateFilterExpression = function (filterValue, selectedFilterOperation) {
+                        if (selectedFilterOperation === "=")
+                        {
+                            return [this.dataField, selectedFilterOperation || '=', dateFormat(filterValue)];
+                        }
+                        else
+                            return this.defaultCalculateFilterExpression(filterValue, selectedFilterOperation);
+                    };
 
-            var url = undefined;
-            if (cls) {
-                if (formAttribute && oid)
+                if ($scope.selectColumns === "")
                 {
-                    // get custom form from an property value
-                    url = APP_CONFIG.ebaasRootUrl + "/api/form/template/" + encodeURIComponent(schema) + "/" + cls + "/" + oid + "?templateSource=property&property=" + formAttribute + "&readOnly=" + readOnly;
+                    $scope.selectColumns = column.dataField + " AS [" + column.caption + "]";
                 }
-                else if (template) {
-                    if (oid) {
-                        // get custom form
-                        url = APP_CONFIG.ebaasRootUrl + "/api/form/template/" + encodeURIComponent(schema) + "/" + cls + "/" + oid + "?templateSource=file&template=" + encodeURIComponent(template) + "&readOnly=" + readOnly;
-                    }
-                    else {
-                        url = APP_CONFIG.ebaasRootUrl + "/api/form/template/" + encodeURIComponent(schema) + "/" + cls + "?templateSource=file&template=" + encodeURIComponent(template) + "&readOnly=" + readOnly;
-                    }
+                else
+                {
+                    $scope.selectColumns += ", " + column.dataField + " AS [" + column.caption + "]";
+                }
+
+                if (propertyInfo["readonly"] === true)
+                {
+                    column.allowFiltering = false;
+                    column.allowSorting = false;
+                }
+  
+                if (propertyInfo["hidden"] === true)
+                {
+                    column.visible = false;
+                }
+
+                if (propertyInfo["type"] === "object") {
+
+                    column.allowSearch = true;
                 }
                 else {
-                    if (oid) {
-                        // get a default form
-                        url = APP_CONFIG.ebaasRootUrl + "/api/form/template/" + encodeURIComponent(schema) + "/" + cls + "/" + oid + "?readonly=" + readOnly;
+                    column.allowSearch = false;
+                }
+
+                if (column.dataType === "number")
+                {
+                    if (propertyInfo["format"] && propertyInfo["format"] === "progress") {
+                        column.cellTemplate = function (container, options) {
+                            $("<div><div class='progress-bar' aria-valuemin='0' aria-valuemax='100' aria-valuenow='" + options.value + "' style='width:" + options.value + "%'>" + options.value + "%</div></div>")
+                              .attr("class", "progress")
+                              .appendTo(container);
+                        }
+                    }
+                }
+
+                if (column.dataType === "string") {
+                    if (propertyInfo["format"] && propertyInfo["format"] === "text") {
+                        // long text, set the column width
+                        column.width = "150";
+                    }
+                }
+
+                if (propertyInfo["format"] == "date")
+                {
+                    column.format = "yyyy-MM-dd";
+                }
+
+                if (propertyInfo["format"] == "datetime") {
+                    column.format = "yyyy-MM-dd HH:mm:ss";
+                }
+
+                if (propertyInfo.enum)
+                {
+                    if (propertyInfo.enum.length > 0)
+                    {
+                        // remove the first item which is for "unknown", wo don't need this filter value
+                        propertyInfo.enum.splice(0, 1);
+                    }
+                    column.lookup = { dataSource: propertyInfo.enum };
+
+                    if (propertyInfo["format"] && propertyInfo["format"] === "icon") {
+                        column.cellTemplate = function (container, options) {
+                            var src = "styles/custom/icons/" + options.value;
+                            container.addClass("img-container");
+                            $("<img />")
+                                .attr("src", src)
+                                .appendTo(container);
+                        }
+                    }
+                }
+                else if (propertyInfo["format"] && propertyInfo["format"] === "image")
+                {
+                    var thumbWidth = propertyInfo["minLength"];
+                    var thumHeight = propertyInfo["maxLength"];
+                    column.cellTemplate = function (container, options) {
+                        var src = "styles/img/empty.jpg";
+                        if (options.value)
+                        {
+                            src = "styles/custom/images/" + options.value;
+                        }
+                            
+                        container.addClass("img-container");
+                        $("<img />")
+                            .attr("src", src)
+                            .attr("width", thumbWidth)
+                            .attr("height", thumHeight)
+                            .appendTo(container);
+                    }
+
+                    column.allowFiltering = false;
+                    column.allowSorting = false;
+                }
+                else if (column.dataType === "string") {
+                    //column.width = "150";
+                }
+
+                columns.push(column);
+            }
+        }
+
+        // Append a command column
+        if ($scope.inlineCmds) {
+            column = new Object();
+            column.dataField = "obj_id";
+            column.caption = "#";
+            column.cellTemplate = "cellTemplate";
+            columns.push(column);
+        }
+
+        $scope.columns = columns;
+        if (!$scope.caption) {
+            $scope.caption = data.title;
+        }
+    });
+
+    function dateFormat(filterValue) {
+        var dateString = new Date(filterValue).toLocaleDateString("en-US");
+
+        return dateString;
+    }
+
+    function convertDataType(propertyInfo)
+    {
+        var dtype = "string";
+        var dataFromat = undefined;
+        var dataType = "string";
+
+        if (propertyInfo["type"])
+        {
+            dtype = propertyInfo["type"];
+        }
+
+        if (propertyInfo["format"])
+        {
+            dataFromat = propertyInfo["format"];
+        }
+
+        switch (dtype)
+        {
+            case "integer":
+                dataType = "number";
+                break;
+
+            case "string":
+
+                if (dataFromat === "date") {
+                    dataType = "date";
+                }
+                else if (dataFromat === "datetime")
+                {
+                    dataType = "date";
+                }
+                break;
+        }
+
+        return dataType;
+    }
+
+    function appendExpr(filterExpr, op, binaryExpr)
+    {
+        if (filterExpr) {
+            var filter = JSON.parse(filterExpr);
+
+            if (filterExpr[0] instanceof Array) {
+                // filterExp is array of multipe binary exp
+                filter.push(op, binaryExpr);
+
+                return JSON.stringify(filter);
+            }
+            else {
+                // filterExpr is a single binary expr
+                var array = [];
+
+                array.push(filter, op, binaryExpr);
+
+                return JSON.stringify(array);
+            }
+        }
+        else
+        {
+            return JSON.stringify(binaryExpr);
+        }
+    }
+
+    var dbImpl = {
+        key: 'obj_id',
+        load: function (loadOptions) {
+            if (!$scope.isfulltextsearch)
+                return loadFromDB(loadOptions);
+            else
+                return loadFromSearchEngine(loadOptions);
+        },
+        totalCount: function (loadOptions) {
+            if (!$scope.isfulltextsearch)
+                return getCountFromDB(loadOptions);
+            else
+                return getCountFromSearchEngine(loadOptions);
+        },
+        remove: function (key) {
+            var def = $.Deferred();
+
+            var url;
+
+            if ($scope.isrelated && $scope.isrelated === true) {
+                url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.relatedclass + "/" + key;
+            }
+            else {
+                url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + key;
+            }
+
+            $http.delete(url).success(function (result) {
+                def.resolve(result);
+            })
+            .error(function (err) {
+                def.reject(err["message"] + ":" + err["exceptionMessage"]);
+            });
+
+            return def.promise();
+        }
+
+    };
+
+    $scope.customStore = new DevExpress.data.CustomStore(dbImpl);
+
+    var asyncLoop = function (o) {
+        var i = -1;
+
+        var loop = function () {
+            i++;
+            if (i == o.length) {
+                o.callback();
+                return;
+            }
+
+            o.functionToLoop(loop, i);
+        }
+
+        loop(); // init
+    }
+
+    $scope.progressbar = ngProgressFactory.createInstance();
+
+    $scope.export = function () {
+        if ($scope.totalCount < 1000 ||
+            confirm(String.format($rootScope.getWord("Export All"), $scope.totalCount))) {
+            var items = new Array();
+
+            $scope.progressbar.start();
+            asyncLoop({
+                length: Math.ceil($scope.totalCount / $scope.pageSize),
+                functionToLoop: function (loop, i) {
+                    var url = $scope.url;
+
+                    var startIndex = url.indexOf("from=");
+                    var endIndex = url.indexOf("&size=");
+                    var rest = url.substring(endIndex);
+                    if (startIndex != -1) {
+                        url = url.substring(0, startIndex);
+                        url += "from=" + i * $scope.pageSize;
+                        url += rest;
                     }
                     else {
-                        url = APP_CONFIG.ebaasRootUrl + "/api/form/template/" + encodeURIComponent(schema) + "/" + cls + "?readOnly=" + readOnly;
+                        var pos = url.indexOf("?");
+                        if (pos != -1) {
+                            url += "&";
+                        }
+                        else {
+                            url += "?";
+                        }
+                        url += "from=" + i * $scope.pageSize + "&size=" + $scope.pageSize;
                     }
-                }
 
-                if (previewid)
-                {
-                    url += "&previewid=" + previewid;
-                }
+                    $http.get(url).success(function (data) {
+                        if (items.length === 0) {
+                            items = data;
+                        }
+                        else {
+                            items = items.concat(data);
+                        }
 
-                if (taskId)
-                {
-                    url += "&taskId=" + taskId;
+                        loop();
+                    }).error(function () {
+
+                        $scope.progressbar.reset();
+                    });
+                },
+                callback: function () {
+                    var sql = 'SELECT ' + $scope.selectColumns + ' INTO XLSX("data.xlsx",{headers:true}) FROM ?';
+ 
+                    alasql(sql, [items]);
+
+                    $timeout($scope.progressbar.complete(), 1000);
+                }
+            })
+        }
+    };
+
+    $scope.import = function () {
+        if ($scope.isrelated && $scope.isrelated === true) {
+            $state.go(".importdata", { schema: $scope.dbschema, class: $scope.dbclass, oid: $scope.oid, relatedclass: $scope.relatedclass }, { location: false, notify: false });
+        }
+        else {
+            $state.go(".importdata", { schema: $scope.dbschema, class: $scope.dbclass }, { location: false, notify: false });
+        }
+    }
+
+    function loadFromDB(loadOptions)
+    {
+        var url;
+        var params = "";
+
+        if ($scope.isrelated && $scope.isrelated === true) {
+            if ($scope.oid) {
+                if ($scope.relatedview) {
+                    // get data for a related class using a view
+                    url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + $scope.oid + "/" + $scope.relatedclass;
+                    params = "view=" + $scope.relatedview;
+                }
+                else {
+                    // get data for a related class using default view
+                    url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + $scope.oid + "/" + $scope.relatedclass;
                 }
             }
-            
-            if (url) {
-                // Load the html through $templateRequest
-                $templateRequest($sce.trustAsResourceUrl(url)).then(function (html) {
-                    // Convert the html to an actual DOM node
-                    
-                    html = html.slice(1, html.length); // remove double quote at start and end
-                    html = html.replace(/\\/g, "");
+        }
+        else {
+            // get data for a master class
+            url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass;
+        }
 
-                    //console.log(html);
-                    var template = angular.element($.trim(html)); // remove spaces
+        if (url) {
 
-                    // Append it to the directive element
-                    element.append(template);
-                    // And let Angular $compile it
-                    $compile(template)(scope);
-                });
+            if ($scope.tree &&
+                $scope.node) {
+                // search for a tree node
+                params = "tree=" + $scope.tree + "&node=" + $scope.node;
             }
+            else if ($scope.view) {
+                // search for a view
+                params = "view=" + $scope.view;
+            }
+
+            $scope.pageSize = 20;
+            if (loadOptions.skip) {
+                var range = "from=" + loadOptions.skip + "&size=" + loadOptions.take;
+                $scope.pageSize = loadOptions.take;
+                if (params === "") {
+                    params = range;
+                }
+                else {
+                    params += "&" + range;
+                }
+            }
+
+            if (loadOptions.sort != null) {
+                var sortExpr = "sortfield=" + loadOptions.sort[0].selector + "&sortreverse=" + loadOptions.sort[0].desc;
+                if (params === "") {
+                    params = sortExpr;
+                }
+                else {
+                    params += "&" + sortExpr;
+                }
+            }
+
+            // keyword search text
+            var searchText = $('#gridContainer').dxDataGrid('instance')._options.searchPanel.text;
+
+            var filter = undefined;
+            if (loadOptions.filter) {
+                var expr = JSON.stringify(loadOptions.filter);
+
+                //Date.prototype.toJSON = function () { return moment(this).format(); };
+
+                /*
+                if (searchText)
+                {
+                    expr = appendExpr(expr, "and", ['keywords', 'contains', searchText]);
+                }*/
+
+                expr = encodeURIComponent(expr);
+
+                filter = "filter=" + expr;
+            }
+            else if ($scope.filter) {
+                var expr = $scope.filter;
+                if (searchText) {
+                    expr = appendExpr(expr, "and", ['keywords', 'contains', searchText]);
+                }
+
+                expr = encodeURIComponent(expr);
+
+                filter = "filter=" + expr;
+            }
+            else if (searchText) {
+                filter = "filter=['keywords', 'contains','" + encodeURIComponent(searchText) + "']";
+            }
+
+            if (filter) {
+                if (params === "") {
+                    params = filter;
+                }
+                else {
+                    params += "&" + filter;
+                }
+            }
+
+            if (params) {
+                url += "?" + params;
+            }
+
+            var def = $.Deferred();
+
+            $scope.url = url;
+
+            $http.get(url).success(function (result) {
+                def.resolve(result);
+
+            }).error(function (err) {
+                def.reject(err);
+            });
+
+            return def.promise();
+        }
+    }
+
+    function getCountFromDB(loadOptions)
+    {
+        var def = $.Deferred();
+
+        var url;
+
+        if ($scope.isrelated && $scope.isrelated === true) {
+            if ($scope.oid) {
+                if ($scope.relatedview) {
+                    // get total count for a related class using a view
+                    url = APP_CONFIG.ebaasRootUrl + "/api/count/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + $scope.oid + "/" + $scope.relatedclass + "?view=" + $scope.relatedview;
+                }
+                else {
+                    // get total count for a related class using default view
+                    url = APP_CONFIG.ebaasRootUrl + "/api/count/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + $scope.oid + "/" + $scope.relatedclass
+                }
+            }
+        }
+        else {
+            // get total count for master class
+            if ($scope.tree && $scope.node) {
+                url = APP_CONFIG.ebaasRootUrl + "/api/count/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "?tree=" + $scope.tree + "&node=" + $scope.node;
+            }
+            else if ($scope.view) {
+                url = APP_CONFIG.ebaasRootUrl + "/api/count/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "?view=" + $scope.view;
+            }
+            else {
+                url = APP_CONFIG.ebaasRootUrl + "/api/count/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass;
+            }
+        }
+
+        // keyword search text
+        var searchText = $('#gridContainer').dxDataGrid('instance')._options.searchPanel.text;
+
+        var filter = undefined;
+        if (loadOptions.filter) {
+            var expr = JSON.stringify(loadOptions.filter)
+
+            /*
+            if (searchText) {
+                expr = appendExpr(expr, "and", ['keywords', 'contains', searchText]);
+            }*/
+
+            expr = encodeURIComponent(expr);
+
+            filter = "filter=" + expr;
+        }
+        else if ($scope.filter) {
+            var expr = $scope.filter;
+            if (searchText) {
+                expr = appendExpr(expr, "and", ['keywords', 'contains', searchText]);
+            }
+
+            expr = encodeURIComponent(expr);
+
+            filter = "filter=" + expr;
+        }
+        else if (searchText) {
+            filter = "filter=['keywords', 'contains','" + encodeURIComponent(searchText) + "']";
+        }
+
+        if (filter) {
+            var pos = url.indexOf("?");
+            if (pos != -1) {
+                url += "&";
+            }
+            else {
+                url += "?";
+            }
+            url += filter;
+        }
+
+        if (url) {
+            $http.get(url).success(function (result) {
+
+                $scope.totalCount = result;
+
+                // keep the count, view and filter in the cache, the report generation needs them
+                var key = $scope.dbschema + $scope.dbclass + "TotalCount";
+                MetaDataCache.setNamedData(key, result);
+
+                key = $scope.dbschema + $scope.dbclass + "View";
+                MetaDataCache.setNamedData(key, $scope.view);
+
+                key = $scope.dbschema + $scope.dbclass + "Filter";
+                MetaDataCache.setNamedData(key, filter);
+
+                def.resolve(result);
+            })
+               .error(function (err) {
+                   def.reject(err);
+               });
+
+            return def.promise();
+        }
+        else {
+            return 0;
+        }
+    }
+
+    function loadFromSearchEngine(loadOptions) {
+        var url;
+        var params = "";
+
+        // get data for a master class
+        url = APP_CONFIG.ebaasRootUrl + "/api/search/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass;
+
+        if (url) {
+
+            if ($scope.tree &&
+                $scope.node) {
+                // search for a tree node
+                params = "tree=" + $scope.tree + "&node=" + $scope.node;
+            }
+            else if ($scope.view) {
+                // search for a view
+                params = "view=" + $scope.view;
+            }
+
+            $scope.pageSize = 20;
+            if (loadOptions.skip) {
+                var range = "from=" + loadOptions.skip + "&size=" + loadOptions.take;
+                $scope.pageSize = loadOptions.take;
+                if (params === "") {
+                    params = range;
+                }
+                else {
+                    params += "&" + range;
+                }
+            }
+
+            if (loadOptions.sort != null) {
+                var sortExpr = "sortfield=" + loadOptions.sort[0].selector + "&sortreverse=" + loadOptions.sort[0].desc;
+                if (params === "") {
+                    params = sortExpr;
+                }
+                else {
+                    params += "&" + sortExpr;
+                }
+            }
+
+            // full text search text
+            var searchText = searchContext.typedText;
+
+            var filter = undefined;
+          
+            if (searchText) {
+                filter = "searchtext=" + encodeURIComponent(searchText);
+            }
+
+            if (filter) {
+                if (params === "") {
+                    params = filter;
+                }
+                else {
+                    params += "&" + filter;
+                }
+            }
+
+            if (params) {
+                url += "?" + params;
+            }
+
+            var def = $.Deferred();
+
+            $scope.url = url;
+
+            $http.get(url).success(function (result) {
+                def.resolve(result);
+
+            }).error(function (err) {
+                def.reject(err);
+            });
+
+            return def.promise();
+        }
+    }
+
+    function getCountFromSearchEngine(loadOptions) {
+        var def = $.Deferred();
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/search/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/count";
+
+        // keyword search text
+        var searchText = searchContext.searchText;
+
+        var filter = undefined;
+       
+        if (searchText) {
+            filter = "filter=['keywords', 'contains','" + encodeURIComponent(searchText) + "']";
+        }
+
+        if (filter) {
+            var pos = url.indexOf("?");
+            if (pos != -1) {
+                url += "&";
+            }
+            else {
+                url += "?";
+            }
+            url += filter;
+        }
+
+        if (url) {
+            $http.get(url).success(function (result) {
+
+                $scope.totalCount = result;
+
+                // keep the count, view and filter in the cache, the report generation needs them
+                var key = $scope.dbschema + $scope.dbclass + "TotalCount";
+                MetaDataCache.setNamedData(key, result);
+
+                key = $scope.dbschema + $scope.dbclass + "View";
+                MetaDataCache.setNamedData(key, $scope.view);
+
+                key = $scope.dbschema + $scope.dbclass + "Filter";
+                MetaDataCache.setNamedData(key, filter);
+
+                def.resolve(result);
+            })
+               .error(function (err) {
+                   def.reject(err);
+               });
+
+            return def.promise();
+        }
+        else {
+            return 0;
         }
     }
 });
-
 'use strict';
 
-angular.module('app.smartforms').directive('compile', function ($compile) {
-    return function (scope, element, attrs) {
-        var ensureCompileRunsOnce = scope.$watch(
-          function (scope) {
-              // watch the 'compile' expression for changes
-              return scope.$eval(attrs.compile);
-          },
-          function (value) {
-              // when the 'compile' expression changes
-              // assign it into the current DOM
-              element.html(value);
+angular.module('app.smarttables').controller('dataGridCtrl', function ($scope, $controller, $rootScope, $http, APP_CONFIG, $stateParams, $state, propmisedParams, hubService) {
+   
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+    $scope.oid = $stateParams.oid;
 
-              // compile the new DOM and link it to the current
-              // scope.
-              // NOTE: we only compile .childNodes so that
-              // we don't get into infinite loop compiling ourselves
-              $compile(element.contents())(scope);
+    var params = propmisedParams.data;
 
-              // Use Angular's un-watch feature to ensure compilation only happens once.
-              ensureCompileRunsOnce();
-          }
-      );
+    if (params) {
+        $scope.view = params['dataView'];
+        $scope.formTemplate = params['formTemplate'];
+    }
+    else
+    {
+        $scope.view = undefined;
+        $scope.formTemplate = undefined;
+    }
+
+    if ($stateParams.insert && $stateParams.insert === "false") {
+        $scope.add = false;
+    }
+    else {
+        $scope.add = true;
+    }
+
+    if ($stateParams.attachment && $stateParams.attachment === "false") {
+        $scope.attachment = false;
+    }
+    else {
+        $scope.attachment = true;
+    }
+ 
+    if ($stateParams.export && $stateParams.export === "true")
+    {
+        $scope.exportData = true;
+    }
+    else
+    {
+        $scope.exportData = false;
+    }
+
+    if ($stateParams.import && $stateParams.import === "true") {
+        $scope.importData = true;
+    }
+    else {
+        $scope.importData = false;
+    }
+
+    if ($stateParams.reports && $stateParams.reports === "true") {
+        $scope.reports = true;
+    }
+    else {
+        $scope.reports = false;
+    }
+
+    if ($stateParams.track && $stateParams.track === "true") {
+        $scope.track = true;
+    }
+    else {
+        $scope.track = false;
+    }
+
+    if ($stateParams.search && $stateParams.search === "fulltext")
+    {
+        $scope.isfulltextsearch = true;
+    }
+    else
+    {
+        $scope.isfulltextsearch = false;
+    }
+
+    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG}));
+
+    $scope.openModal = function() {
+        $state.go('.modalform', { schema: $scope.dbschema, class: $scope.dbclass, template: $scope.formTemplate }, { location: false, notify: false });
     };
-});
 
+    $scope.GetCommands = function (rowIndex, data)
+    {
+        var items = new Array();
 
+        var url = APP_CONFIG.ebaasRootUrl + "/api/sitemap/commands/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + data.obj_id;
 
-'use strict';
+        $http.get(url).success(function (commands) {
 
-angular.module('app.stations').factory('TestStations', function () {
+            // custom commands
+            $scope.commands = commands;
+            var cmdInfo;
+            var item;
+            for (var cmd in commands) {
+                if (commands.hasOwnProperty(cmd)) {
+                    cmdInfo = commands[cmd];
+                    item = new Object();
+                    item.text = cmdInfo.title;
+                    item.css = "btn btn-primary btn-md btn-nav";
+                    item.track = false;
+                    if (cmdInfo.icon) {
+                        item.icon = cmdInfo.icon;
+                    }
+                    else
+                    {
+                        item.icon = "fa fa-lg fa-tasks";
+                    }
 
-    var TestStationsModel = {
-        params: undefined,
-        stations: undefined,
-        error: "",
-        init: function()
+                    item.onItemClick = function (text) {
+                        gotoState(text, $scope.dbschema, data.type, data.obj_id, !data.allowWrite)
+                    }
+
+                    items.push(item);
+
+                    if (cmdInfo.baseUrl && !APP_CONFIG.hashedBaseUrls[cmdInfo.hash]) {
+                        APP_CONFIG.hashedBaseUrls[cmdInfo.hash] = cmdInfo.baseUrl;
+                    }
+                }
+            }
+
+            // add standard commands
+            if (data.allowWrite && $stateParams.edit !== "false") {
+                items.push({
+                    text: $rootScope.getWord('Edit'),
+                    icon: "fa fa-lg fa-edit",
+                    css: "btn btn-default btn-md",
+                    track : false,
+                    onItemClick: function () {
+                        $state.go('.modalform', { schema: $scope.dbschema, class: data.type, oid: data.obj_id, template: $scope.formTemplate, duplicate: "true" }, { location: false, notify: false });
+                    }
+                });
+            }
+
+            /*
+            if (data.allowCreate && $stateParams.insert !== "false") {
+                items.push({
+                    text: $rootScope.getWord('Add'),
+                    icon: "fa fa-lg fa-plus-square",
+                    css: "btn btn-default btn-md btn-nav",
+                    track : false,
+                    onItemClick: function () {
+                        $state.go('.modalform', { schema: $scope.dbschema, class: data.type }, { location: false, notify: false });
+                    }
+                });
+            }
+            */
+
+            if (data.allowDelete && $stateParams.delete !== "false") {
+                items.push({
+                    text: $rootScope.getWord('Delete'),
+                    icon: "fa fa-lg fa-times",
+                    css: "btn btn-default btn-md",
+                    track: false,
+                    onItemClick: function () {
+                        $scope.gridInstance.deleteRow(rowIndex);
+                    }
+                });
+            }
+
+            if ($scope.attachment) {
+                items.push({
+                    text: $rootScope.getWord('Attachments'),
+                    icon: "fa fa-lg fa-file-archive-o",
+                    css: "btn btn-default btn-md",
+                    track: false,
+                    onItemClick: function () {
+                        $state.go('.attachments', { schema: $scope.dbschema, class: data.type, oid: data.obj_id, readonly: !data.allowWrite}, { location: false, notify: false });
+                    }
+                });
+            }
+
+            if ($scope.track) {
+                var groupName = $scope.dbschema + "-" + data.type + "-" + data.obj_id;
+                var isTracking = false;
+                hubService.isUserInGroup(groupName, function (status) {
+                    isTracking = status;
+
+                    items.push({
+                        text: $rootScope.getWord('Track Status'),
+                        icon: "fa fa-lg fa-file-archive-o",
+                        css: "btn btn-default btn-md",
+                        track: true,
+                        trackStatus: isTracking,
+                        onItemClick: function () {
+
+                            if (isTracking) {
+                                hubService.removeFromGroup(groupName); // hubService removes the current user from the group
+                            }
+                            else {
+                                hubService.addToGroup(groupName); // hubService adds the current user to the group
+                            }
+                        }
+                    });
+                });
+            }
+        });
+        return items;
+    }
+
+    var gotoState = function (title, dbschema, dbclass, oid, readonly)
+    {
+        var commands = $scope.commands;
+        var url = undefined;
+        var cmdUrl = undefined;
+        var params = undefined;
+        var cmdInfo;
+        for (var cmd in commands) {
+            if (commands.hasOwnProperty(cmd)) {
+                cmdInfo = commands[cmd];
+                if (cmdInfo.title === title) {
+                    url = cmdInfo.url;
+                    cmdUrl = cmdInfo.url;
+                    params = new Object();
+                    params.schema = dbschema;
+                    params.class = dbclass;
+                    params.oid = oid;
+                    params.readonly = readonly;
+                    params.cmdHash = cmdInfo.hash;
+   
+                    // add command's parameters to the state parameters
+                    if (cmdInfo.parameters) {
+                        for (var key in cmdInfo.parameters) {
+                            if (cmdInfo.parameters.hasOwnProperty(key)) {
+                                params[key] = cmdInfo.parameters[key];
+                            }
+                        }
+                    };
+
+                    break;
+                }
+            }
+        }
+
+        if (url) {
+
+            if (cmdUrl === ".modalform") {
+                $state.go(url, params, { location: false, notify: false });
+            }
+            else {
+                $state.go(url, params);
+            }
+        }
+    }
+
+    $scope.gridInstance = null;
+    $scope.dataGridSettings = {
+        dataSource : {
+            store: $scope.customStore
+        },
+        columnAutoWidth: true,
+        height: $rootScope.isChrome() === true ? '750px' : undefined,
+        sorting: {
+            mode: "multiple"
+        },
+        searchPanel: {
+            visible: $stateParams.search && $stateParams.search === "true"? true: false,
+            width: 300,
+            placeholder: $rootScope.getWord("Keyword Search")
+        },
+        editing: {
+            allowAdding: false,
+            allowUpdating: false,
+            allowDeleting: false
+        },
+        grouping: {
+            autoExpandAll: false
+        },
+        pager: {
+            visible: true,
+            showPageSizeSelector: false,
+            showInfo: true
+        },
+        filterRow: {
+            visible: $scope.isfulltextsearch ? false : true,
+            applyFilter: "auto"
+        },
+        selection: { mode: 'single' },
+        remoteOperations: true,
+        bindingOptions: {
+            columns: 'columns',
+            'scrolling.showScrollbar': 'never'
+        },
+        headerFilter: {
+            visible: true
+        },
+        rowAlternationEnabled: true,
+        masterDetail: {
+            enabled: true,
+            template: "detail"
+        },
+        onRowClick: function(e)
         {
-            this.params = undefined;
-            this.stations = undefined;
-            this.error = "";
+            if (e.rowType === "data") {
+                var isExpanded = $scope.gridInstance.isRowExpanded(e.key);
+                $scope.gridInstance.collapseAll(-1); // collaspsed all
+                if (!isExpanded)
+                    {
+                    $scope.gridInstance.expandRow(e.key);
+                    }
+            }
+        },
+        onInitialized: function (e) {
+            $scope.gridInstance = e.component;
         }
     };
 
-    return TestStationsModel;
-});
+    $rootScope.$on('modalClosed', function (event, data) {
+        if ($scope.gridInstance && data === "update")
+            $scope.gridInstance.refresh();
+    });
 
+    $scope.downloadReports = function () {
+        $state.go(".downloadreports", { schema: $scope.dbschema, class: $scope.dbclass }, { location: false, notify: false });
+    }
+});
+'use strict';
+
+angular.module('app.smarttables').controller('relatedDataGridCtrl', function ($scope, $controller, $rootScope, $http, APP_CONFIG, $stateParams, $state, promiseParentClassInfo) {
+   
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+    $scope.oid = $stateParams.oid;
+    $scope.isrelated = true;
+    $scope.relatedclass = $stateParams.relatedclass;
+
+    if ($stateParams.exportrelated && $stateParams.exportrelated === "true") {
+        $scope.exportData = true;
+    }
+    else {
+        $scope.exportData = false;
+    }
+
+    if ($stateParams.importrelated && $stateParams.importrelated === "true") {
+        $scope.importData = true;
+    }
+    else {
+        $scope.importData = false;
+    }
+
+    if ($stateParams.insertrelated && $stateParams.insertrelated === "false") {
+        $scope.add = false;
+    }
+    else {
+        $scope.add = true;
+    }
+
+    if ($stateParams.editrelated && $stateParams.editrelated === "false") {
+        $scope.edit = false;
+    }
+    else {
+        $scope.edit = true;
+    }
+
+    if ($stateParams.attachmentrelated && $stateParams.attachmentrelated === "false") {
+        $scope.attachment = false;
+    }
+    else {
+        $scope.attachment = true;
+    }
+
+    if ($stateParams.deleterelated && $stateParams.deleterelated === "false") {
+        $scope.delete = false;
+    }
+    else {
+        $scope.delete = true;
+    }
+
+    $scope.parentClassInfo = promiseParentClassInfo.data;
+
+    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG}));
+
+    $scope.openModal = function () {
+        $state.go('.relatedform', { schema: $scope.dbschema, rclass: $scope.relatedclass}, { location: false, notify: false });
+    };
+
+    $scope.GetCommands = function (rowIndex, data)
+    {
+        var items = [];
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/sitemap/commands/" + encodeURIComponent($scope.dbschema) + "/" + $scope.relatedclass + "/" + data.obj_id;
+
+        $http.get(url).success(function (commands) {
+
+            // custom commands
+            $scope.commands = commands;
+            var cmdInfo;
+            var item;
+            for (var cmd in commands) {
+                if (commands.hasOwnProperty(cmd)) {
+                    cmdInfo = commands[cmd];
+                    item = new Object();
+                    item.text = cmdInfo.title;
+                    item.css = "btn btn-primary btn-md btn-nav";
+                    item.track = false;
+                    if (cmdInfo.icon) {
+                        item.icon = cmdInfo.icon;
+                    }
+                    else {
+                        item.icon = "fa fa-lg fa-tasks";
+                    }
+
+                    item.onItemClick = function (text) {
+                        gotoState(text, $scope.dbschema, data.type, data.obj_id, !data.allowWrite)
+                    }
+
+                    items.push(item);
+
+                    if (cmdInfo.baseUrl && !APP_CONFIG.hashedBaseUrls[cmdInfo.hash]) {
+                        APP_CONFIG.hashedBaseUrls[cmdInfo.hash] = cmdInfo.baseUrl;
+                    }
+                }
+            }
+
+            // add standard commands
+            if (data.allowWrite && $scope.edit) {
+                items.push({
+                    text: $rootScope.getWord('Edit'),
+                    icon: "fa fa-lg fa-edit",
+                    css: "btn btn-default btn-md btn-nav",
+                    onItemClick: function () {
+                        $state.go('.relatedform', { schema: $scope.dbschema, rclass: data.type, roid: data.obj_id }, { location: false, notify: false });
+                    }
+                });
+            }
+
+            if (data.allowDelete && $scope.delete) {
+                items.push({
+                    text: $rootScope.getWord('Delete'),
+                    icon: "fa fa-lg fa-times",
+                    css: "btn btn-default btn-md btn-nav",
+                    onItemClick: function () {
+                        $scope.gridInstance.deleteRow(rowIndex);
+                    }
+                });
+            }
+
+            if ($scope.attachment) {
+                items.push({
+                    text: $rootScope.getWord('Attachments'),
+                    icon: "fa fa-lg fa-file-archive-o",
+                    css: "btn btn-default btn-md btn-nav",
+                    onItemClick: function () {
+                        $state.go('.attachments', { schema: $scope.dbschema, class: data.type, oid: data.obj_id, readonly: !data.allowWrite }, { location: false, notify: false });
+                    }
+                });
+            }
+        });
+        
+        return items;
+    }
+
+    var gotoState = function (title, dbschema, dbclass, oid, readonly)
+    {
+        var commands = $scope.commands;
+        var url = undefined;
+        var cmdUrl = undefined;
+        var params = undefined;
+        var cmdInfo;
+        for (var cmd in commands) {
+            if (commands.hasOwnProperty(cmd)) {
+                cmdInfo = commands[cmd];
+                if (cmdInfo.title === title) {
+                    url = cmdInfo.url;
+                    cmdUrl = cmdInfo.url;
+                    params = new Object();
+                    params.schema = dbschema;
+                    params.class = dbclass;
+                    params.oid = oid;
+                    params.readonly = readonly;
+                    params.cmdHash = cmdInfo.hash;
+
+                    // add command's parameters to the state parameters
+                    if (cmdInfo.parameters) {
+                        for (var key in cmdInfo.parameters) {
+                            if (cmdInfo.parameters.hasOwnProperty(key)) {
+                                params[key] = cmdInfo.parameters[key];
+                            }
+                        }
+                    };
+
+                    break;
+                }
+            }
+        }
+
+        if (url) {
+
+            if (cmdUrl === ".modalform" || cmdUrl === ".report") {
+                $state.go(url, params, { location: false, notify: false });
+            }
+            else {
+                $state.go(url, params);
+            }
+        }
+    }
+
+    $scope.gridInstance = null;
+    $scope.dataGridSettings = {
+        dataSource: {
+            store: $scope.customStore
+        },
+        columnAutoWidth: true,
+        height: $rootScope.isChrome() === true ? '750px' : undefined,
+        sorting: {
+            mode: "multiple"
+        },
+        searchPanel: {
+            visible: false,
+            highlightSearchText: false
+        },
+        editing: {
+            allowAdding: false,
+            allowUpdating: false,
+            allowDeleting: false
+        },
+        grouping: {
+            autoExpandAll: false
+        },
+        pager: {
+            visible: true,
+            showPageSizeSelector: false,
+            showInfo: true
+        },
+        filterRow: {
+            visible: true,
+            applyFilter: "auto"
+        },
+        selection: { mode: 'single' },
+        remoteOperations: true,
+        bindingOptions: {
+            columns: 'columns'
+        },
+        headerFilter: {
+            visible: true
+        },
+        rowAlternationEnabled: true,
+        masterDetail: {
+            enabled: true,
+            template: "detail"
+        },
+        onRowClick: function (e) {
+            if (e.rowType === "data") {
+                var isExpanded = $scope.gridInstance.isRowExpanded(e.key);
+                $scope.gridInstance.collapseAll(-1); // collaspsed all
+                if (!isExpanded) {
+                    $scope.gridInstance.expandRow(e.key);
+                }
+            }
+        },
+        onInitialized: function (e) {
+            $scope.gridInstance = e.component;
+        }
+    };
+
+    $scope.parentClassTitle = function () {
+        // return class title
+        return $scope.parentClassInfo.title;
+    }
+
+    $scope.goBack = function () {
+        history.back(1);
+    }
+
+    $rootScope.$on('modalClosed', function (event, data) {
+        if ($scope.gridInstance && data === "update")
+            $scope.gridInstance.refresh();
+    });
+});
+"use strict";
+
+angular.module("app.smarttables").factory("MetaDataCache", function () {
+
+    var cache = new Object();
+
+    function _getClassView(dbschema, dbclass, view) {
+        var data = undefined;
+        var key = dbschema + "_" + dbclass + "_" + view;
+        if (cache[key])
+        {
+            data = cache[key];
+        }
+
+        return data;
+    }
+
+    function _setClassView(dbschema, dbclass, view, data) {
+        var key = dbschema + "_" + dbclass + "_" + view;
+        cache[key] = data;
+    }
+
+    function _getNamedData(dataName) {
+        var data = undefined;
+        if (cache[dataName]) {
+            data = cache[dataName];
+        }
+
+        return data;
+    }
+
+    function _setNamedData(dataName, data) {
+        cache[dataName] = data;
+    }
+
+    return {
+        getClassView: _getClassView,
+        setClassView: _setClassView,
+        getNamedData : _getNamedData,
+        setNamedData : _setNamedData
+    };
+});
 'use strict';
 
 angular.module('app.stations').controller('StationDashboardCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, TestStations, promisedSettings, $interval) {
@@ -15930,1359 +17224,251 @@ angular.module('app.stations').controller('StationsLayoutCtrl', function ($http,
 });
 'use strict';
 
-angular.module('app.smarttables').controller('dataGridBaseCtrl', function ($scope, $rootScope, $state, $http, APP_CONFIG, $timeout, MetaDataCache, ngProgressFactory, searchContext) {
-
-    // parameters to be provided by sub controllers
-    $scope.dbschema;
-    $scope.dbclass;
-    $scope.view;
-    $scope.tree;
-    $scope.node;
-    $scope.oid;
-    $scope.filter;
-    $scope.isrelated;
-    $scope.relatedclass;
-    $scope.relatedview;
-    $scope.isfulltextsearch;
-
-    var url;
-    if ($scope.isrelated && $scope.isrelated === true)
-    {
-        // get meta data for a related class
-        if ($scope.relatedview) {
-            url = APP_CONFIG.ebaasRootUrl + "/api/metadata/view/" + encodeURIComponent($scope.dbschema) + "/" + $scope.relatedclass + "?view=" + $scope.relatedview;
-        }
-        else {
-            url = APP_CONFIG.ebaasRootUrl + "/api/metadata/view/" + encodeURIComponent($scope.dbschema) + "/" + $scope.relatedclass;
-        }
-    }
-    else
-    {
-        // get meta data for a master class
-        if ($scope.view) {
-            url = APP_CONFIG.ebaasRootUrl + "/api/metadata/view/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "?view=" + $scope.view;
-        }
-        else {
-            url = APP_CONFIG.ebaasRootUrl + "/api/metadata/view/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass;
-        }
-    }
-
-    //console.debug("meta data url = " + url);
-
-    $http.get(url).success(function (data) {
-
-        var column;
-        var columns = new Array();
-
-        // data is a JSON Schema for the class
-        var properties = data.properties; // data.properies contains infos of each property of the schema
-
-        $scope.selectColumns = "";
-
-        var propertyInfo;
-        for (var property in properties)
-        {
-            if (properties.hasOwnProperty(property))
+angular.module('app.tables').controller('JqGridCtrl', function ($scope) {
+    $scope.gridData = {
+        data: [
             {
-                propertyInfo = properties[property];
-
-                column = new Object();
-                column.dataField = property;
-                column.caption = propertyInfo["title"];
-                column.dataType = convertDataType(propertyInfo);
-                if (column.dataType === "date")
-                    column.calculateFilterExpression = function (filterValue, selectedFilterOperation) {
-                        if (selectedFilterOperation === "=")
-                        {
-                            return [this.dataField, selectedFilterOperation || '=', dateFormat(filterValue)];
-                        }
-                        else
-                            return this.defaultCalculateFilterExpression(filterValue, selectedFilterOperation);
-                    };
-
-                if ($scope.selectColumns === "")
-                {
-                    $scope.selectColumns = column.dataField + " AS [" + column.caption + "]";
-                }
-                else
-                {
-                    $scope.selectColumns += ", " + column.dataField + " AS [" + column.caption + "]";
-                }
-
-                if (propertyInfo["readonly"] === true)
-                {
-                    column.allowFiltering = false;
-                    column.allowSorting = false;
-                }
-  
-                if (propertyInfo["hidden"] === true)
-                {
-                    column.visible = false;
-                }
-
-                if (propertyInfo["type"] === "object") {
-
-                    column.allowSearch = true;
-                }
-                else {
-                    column.allowSearch = false;
-                }
-
-                if (column.dataType === "number")
-                {
-                    if (propertyInfo["format"] && propertyInfo["format"] === "progress") {
-                        column.cellTemplate = function (container, options) {
-                            $("<div><div class='progress-bar' aria-valuemin='0' aria-valuemax='100' aria-valuenow='" + options.value + "' style='width:" + options.value + "%'>" + options.value + "%</div></div>")
-                              .attr("class", "progress")
-                              .appendTo(container);
-                        }
-                    }
-                }
-
-                if (column.dataType === "string") {
-                    if (propertyInfo["format"] && propertyInfo["format"] === "text") {
-                        // long text, set the column width
-                        column.width = "150";
-                    }
-                }
-
-                if (propertyInfo["format"] == "date")
-                {
-                    column.format = "yyyy-MM-dd";
-                }
-
-                if (propertyInfo["format"] == "datetime") {
-                    column.format = "yyyy-MM-dd HH:mm:ss";
-                }
-
-                if (propertyInfo.enum)
-                {
-                    if (propertyInfo.enum.length > 0)
-                    {
-                        // remove the first item which is for "unknown", wo don't need this filter value
-                        propertyInfo.enum.splice(0, 1);
-                    }
-                    column.lookup = { dataSource: propertyInfo.enum };
-
-                    if (propertyInfo["format"] && propertyInfo["format"] === "icon") {
-                        column.cellTemplate = function (container, options) {
-                            var src = "styles/custom/icons/" + options.value;
-                            container.addClass("img-container");
-                            $("<img />")
-                                .attr("src", src)
-                                .appendTo(container);
-                        }
-                    }
-                }
-                else if (propertyInfo["format"] && propertyInfo["format"] === "image")
-                {
-                    var thumbWidth = propertyInfo["minLength"];
-                    var thumHeight = propertyInfo["maxLength"];
-                    column.cellTemplate = function (container, options) {
-                        var src = "styles/img/empty.jpg";
-                        if (options.value)
-                        {
-                            src = "styles/custom/images/" + options.value;
-                        }
-                            
-                        container.addClass("img-container");
-                        $("<img />")
-                            .attr("src", src)
-                            .attr("width", thumbWidth)
-                            .attr("height", thumHeight)
-                            .appendTo(container);
-                    }
-
-                    column.allowFiltering = false;
-                    column.allowSorting = false;
-                }
-                else if (column.dataType === "string") {
-                    //column.width = "150";
-                }
-
-                columns.push(column);
+                id: "1",
+                date: "2007-10-01",
+                name: "test",
+                note: "note",
+                amount: "200.00",
+                tax: "10.00",
+                total: "210.00"
+            },
+            {
+                id: "2",
+                date: "2007-10-02",
+                name: "test2",
+                note: "note2",
+                amount: "300.00",
+                tax: "20.00",
+                total: "320.00"
+            },
+            {
+                id: "3",
+                date: "2007-09-01",
+                name: "test3",
+                note: "note3",
+                amount: "400.00",
+                tax: "30.00",
+                total: "430.00"
+            },
+            {
+                id: "4",
+                date: "2007-10-04",
+                name: "test",
+                note: "note",
+                amount: "200.00",
+                tax: "10.00",
+                total: "210.00"
+            },
+            {
+                id: "5",
+                date: "2007-10-05",
+                name: "test2",
+                note: "note2",
+                amount: "300.00",
+                tax: "20.00",
+                total: "320.00"
+            },
+            {
+                id: "6",
+                date: "2007-09-06",
+                name: "test3",
+                note: "note3",
+                amount: "400.00",
+                tax: "30.00",
+                total: "430.00"
+            },
+            {
+                id: "7",
+                date: "2007-10-04",
+                name: "test",
+                note: "note",
+                amount: "200.00",
+                tax: "10.00",
+                total: "210.00"
+            },
+            {
+                id: "8",
+                date: "2007-10-03",
+                name: "test2",
+                note: "note2",
+                amount: "300.00",
+                tax: "20.00",
+                total: "320.00"
+            },
+            {
+                id: "9",
+                date: "2007-09-01",
+                name: "test3",
+                note: "note3",
+                amount: "400.00",
+                tax: "30.00",
+                total: "430.00"
+            },
+            {
+                id: "10",
+                date: "2007-10-01",
+                name: "test",
+                note: "note",
+                amount: "200.00",
+                tax: "10.00",
+                total: "210.00"
+            },
+            {
+                id: "11",
+                date: "2007-10-02",
+                name: "test2",
+                note: "note2",
+                amount: "300.00",
+                tax: "20.00",
+                total: "320.00"
+            },
+            {
+                id: "12",
+                date: "2007-09-01",
+                name: "test3",
+                note: "note3",
+                amount: "400.00",
+                tax: "30.00",
+                total: "430.00"
+            },
+            {
+                id: "13",
+                date: "2007-10-04",
+                name: "test",
+                note: "note",
+                amount: "200.00",
+                tax: "10.00",
+                total: "210.00"
+            },
+            {
+                id: "14",
+                date: "2007-10-05",
+                name: "test2",
+                note: "note2",
+                amount: "300.00",
+                tax: "20.00",
+                total: "320.00"
+            },
+            {
+                id: "15",
+                date: "2007-09-06",
+                name: "test3",
+                note: "note3",
+                amount: "400.00",
+                tax: "30.00",
+                total: "430.00"
+            },
+            {
+                id: "16",
+                date: "2007-10-04",
+                name: "test",
+                note: "note",
+                amount: "200.00",
+                tax: "10.00",
+                total: "210.00"
+            },
+            {
+                id: "17",
+                date: "2007-10-03",
+                name: "test2",
+                note: "note2",
+                amount: "300.00",
+                tax: "20.00",
+                total: "320.00"
+            },
+            {
+                id: "18",
+                date: "2007-09-01",
+                name: "test3",
+                note: "note3",
+                amount: "400.00",
+                tax: "30.00",
+                total: "430.00"
             }
-        }
-
-        // Append a command column
-        if ($scope.inlineCmds) {
-            column = new Object();
-            column.dataField = "obj_id";
-            column.caption = "#";
-            column.cellTemplate = "cellTemplate";
-            columns.push(column);
-        }
-
-        $scope.columns = columns;
-        if (!$scope.caption) {
-            $scope.caption = data.title;
-        }
-    });
-
-    function dateFormat(filterValue) {
-        var dateString = new Date(filterValue).toLocaleDateString("en-US");
-
-        return dateString;
+        ],
+        colNames: ['Actions', 'Inv No', 'Date', 'Client', 'Amount', 'Tax', 'Total', 'Notes'],
+        colModel: [
+            {
+                name: 'act',
+                index: 'act',
+                sortable: false
+            },
+            {
+                name: 'id',
+                index: 'id'
+            },
+            {
+                name: 'date',
+                index: 'date',
+                editable: true
+            },
+            {
+                name: 'name',
+                index: 'name',
+                editable: true
+            },
+            {
+                name: 'amount',
+                index: 'amount',
+                align: "right",
+                editable: true
+            },
+            {
+                name: 'tax',
+                index: 'tax',
+                align: "right",
+                editable: true
+            },
+            {
+                name: 'total',
+                index: 'total',
+                align: "right",
+                editable: true
+            },
+            {
+                name: 'note',
+                index: 'note',
+                sortable: false,
+                editable: true
+            }
+        ]
     }
 
-    function convertDataType(propertyInfo)
-    {
-        var dtype = "string";
-        var dataFromat = undefined;
-        var dataType = "string";
 
-        if (propertyInfo["type"])
-        {
-            dtype = propertyInfo["type"];
-        }
-
-        if (propertyInfo["format"])
-        {
-            dataFromat = propertyInfo["format"];
-        }
-
-        switch (dtype)
-        {
-            case "integer":
-                dataType = "number";
-                break;
-
-            case "string":
-
-                if (dataFromat === "date") {
-                    dataType = "date";
-                }
-                else if (dataFromat === "datetime")
-                {
-                    dataType = "date";
-                }
-                break;
-        }
-
-        return dataType;
-    }
-
-    function appendExpr(filterExpr, op, binaryExpr)
-    {
-        if (filterExpr) {
-            var filter = JSON.parse(filterExpr);
-
-            if (filterExpr[0] instanceof Array) {
-                // filterExp is array of multipe binary exp
-                filter.push(op, binaryExpr);
-
-                return JSON.stringify(filter);
-            }
-            else {
-                // filterExpr is a single binary expr
-                var array = [];
-
-                array.push(filter, op, binaryExpr);
-
-                return JSON.stringify(array);
-            }
-        }
-        else
-        {
-            return JSON.stringify(binaryExpr);
-        }
-    }
-
-    var dbImpl = {
-        key: 'obj_id',
-        load: function (loadOptions) {
-            if (!$scope.isfulltextsearch)
-                return loadFromDB(loadOptions);
-            else
-                return loadFromSearchEngine(loadOptions);
-        },
-        totalCount: function (loadOptions) {
-            if (!$scope.isfulltextsearch)
-                return getCountFromDB(loadOptions);
-            else
-                return getCountFromSearchEngine(loadOptions);
-        },
-        remove: function (key) {
-            var def = $.Deferred();
-
-            var url;
-
-            if ($scope.isrelated && $scope.isrelated === true) {
-                url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.relatedclass + "/" + key;
-            }
-            else {
-                url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + key;
-            }
-
-            $http.delete(url).success(function (result) {
-                def.resolve(result);
-            })
-            .error(function (err) {
-                def.reject(err["message"] + ":" + err["exceptionMessage"]);
-            });
-
-            return def.promise();
-        }
-
+    $scope.getSelection = function(){
+        alert(jQuery('table').jqGrid('getGridParam', 'selarrrow'));
     };
 
-    $scope.customStore = new DevExpress.data.CustomStore(dbImpl);
+    $scope.selectRow = function(row){
+       jQuery('table').jqGrid('setSelection', row);
 
-    var asyncLoop = function (o) {
-        var i = -1;
-
-        var loop = function () {
-            i++;
-            if (i == o.length) {
-                o.callback();
-                return;
-            }
-
-            o.functionToLoop(loop, i);
-        }
-
-        loop(); // init
-    }
-
-    $scope.progressbar = ngProgressFactory.createInstance();
-
-    $scope.export = function () {
-        if ($scope.totalCount < 1000 ||
-            confirm(String.format($rootScope.getWord("Export All"), $scope.totalCount))) {
-            var items = new Array();
-
-            $scope.progressbar.start();
-            asyncLoop({
-                length: Math.ceil($scope.totalCount / $scope.pageSize),
-                functionToLoop: function (loop, i) {
-                    var url = $scope.url;
-
-                    var startIndex = url.indexOf("from=");
-                    var endIndex = url.indexOf("&size=");
-                    var rest = url.substring(endIndex);
-                    if (startIndex != -1) {
-                        url = url.substring(0, startIndex);
-                        url += "from=" + i * $scope.pageSize;
-                        url += rest;
-                    }
-                    else {
-                        var pos = url.indexOf("?");
-                        if (pos != -1) {
-                            url += "&";
-                        }
-                        else {
-                            url += "?";
-                        }
-                        url += "from=" + i * $scope.pageSize + "&size=" + $scope.pageSize;
-                    }
-
-                    $http.get(url).success(function (data) {
-                        if (items.length === 0) {
-                            items = data;
-                        }
-                        else {
-                            items = items.concat(data);
-                        }
-
-                        loop();
-                    }).error(function () {
-
-                        $scope.progressbar.reset();
-                    });
-                },
-                callback: function () {
-                    var sql = 'SELECT ' + $scope.selectColumns + ' INTO XLSX("data.xlsx",{headers:true}) FROM ?';
- 
-                    alasql(sql, [items]);
-
-                    $timeout($scope.progressbar.complete(), 1000);
-                }
-            })
-        }
-    };
-
-    $scope.import = function () {
-        if ($scope.isrelated && $scope.isrelated === true) {
-            $state.go(".importdata", { schema: $scope.dbschema, class: $scope.dbclass, oid: $scope.oid, relatedclass: $scope.relatedclass }, { location: false, notify: false });
-        }
-        else {
-            $state.go(".importdata", { schema: $scope.dbschema, class: $scope.dbclass }, { location: false, notify: false });
-        }
-    }
-
-    function loadFromDB(loadOptions)
-    {
-        var url;
-        var params = "";
-
-        if ($scope.isrelated && $scope.isrelated === true) {
-            if ($scope.oid) {
-                if ($scope.relatedview) {
-                    // get data for a related class using a view
-                    url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + $scope.oid + "/" + $scope.relatedclass;
-                    params = "view=" + $scope.relatedview;
-                }
-                else {
-                    // get data for a related class using default view
-                    url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + $scope.oid + "/" + $scope.relatedclass;
-                }
-            }
-        }
-        else {
-            // get data for a master class
-            url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass;
-        }
-
-        if (url) {
-
-            if ($scope.tree &&
-                $scope.node) {
-                // search for a tree node
-                params = "tree=" + $scope.tree + "&node=" + $scope.node;
-            }
-            else if ($scope.view) {
-                // search for a view
-                params = "view=" + $scope.view;
-            }
-
-            $scope.pageSize = 20;
-            if (loadOptions.skip) {
-                var range = "from=" + loadOptions.skip + "&size=" + loadOptions.take;
-                $scope.pageSize = loadOptions.take;
-                if (params === "") {
-                    params = range;
-                }
-                else {
-                    params += "&" + range;
-                }
-            }
-
-            if (loadOptions.sort != null) {
-                var sortExpr = "sortfield=" + loadOptions.sort[0].selector + "&sortreverse=" + loadOptions.sort[0].desc;
-                if (params === "") {
-                    params = sortExpr;
-                }
-                else {
-                    params += "&" + sortExpr;
-                }
-            }
-
-            // keyword search text
-            var searchText = $('#gridContainer').dxDataGrid('instance')._options.searchPanel.text;
-
-            var filter = undefined;
-            if (loadOptions.filter) {
-                var expr = JSON.stringify(loadOptions.filter);
-
-                //Date.prototype.toJSON = function () { return moment(this).format(); };
-
-                /*
-                if (searchText)
-                {
-                    expr = appendExpr(expr, "and", ['keywords', 'contains', searchText]);
-                }*/
-
-                expr = encodeURIComponent(expr);
-
-                filter = "filter=" + expr;
-            }
-            else if ($scope.filter) {
-                var expr = $scope.filter;
-                if (searchText) {
-                    expr = appendExpr(expr, "and", ['keywords', 'contains', searchText]);
-                }
-
-                expr = encodeURIComponent(expr);
-
-                filter = "filter=" + expr;
-            }
-            else if (searchText) {
-                filter = "filter=['keywords', 'contains','" + encodeURIComponent(searchText) + "']";
-            }
-
-            if (filter) {
-                if (params === "") {
-                    params = filter;
-                }
-                else {
-                    params += "&" + filter;
-                }
-            }
-
-            if (params) {
-                url += "?" + params;
-            }
-
-            var def = $.Deferred();
-
-            $scope.url = url;
-
-            $http.get(url).success(function (result) {
-                def.resolve(result);
-
-            }).error(function (err) {
-                def.reject(err);
-            });
-
-            return def.promise();
-        }
-    }
-
-    function getCountFromDB(loadOptions)
-    {
-        var def = $.Deferred();
-
-        var url;
-
-        if ($scope.isrelated && $scope.isrelated === true) {
-            if ($scope.oid) {
-                if ($scope.relatedview) {
-                    // get total count for a related class using a view
-                    url = APP_CONFIG.ebaasRootUrl + "/api/count/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + $scope.oid + "/" + $scope.relatedclass + "?view=" + $scope.relatedview;
-                }
-                else {
-                    // get total count for a related class using default view
-                    url = APP_CONFIG.ebaasRootUrl + "/api/count/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + $scope.oid + "/" + $scope.relatedclass
-                }
-            }
-        }
-        else {
-            // get total count for master class
-            if ($scope.tree && $scope.node) {
-                url = APP_CONFIG.ebaasRootUrl + "/api/count/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "?tree=" + $scope.tree + "&node=" + $scope.node;
-            }
-            else if ($scope.view) {
-                url = APP_CONFIG.ebaasRootUrl + "/api/count/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "?view=" + $scope.view;
-            }
-            else {
-                url = APP_CONFIG.ebaasRootUrl + "/api/count/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass;
-            }
-        }
-
-        // keyword search text
-        var searchText = $('#gridContainer').dxDataGrid('instance')._options.searchPanel.text;
-
-        var filter = undefined;
-        if (loadOptions.filter) {
-            var expr = JSON.stringify(loadOptions.filter)
-
-            /*
-            if (searchText) {
-                expr = appendExpr(expr, "and", ['keywords', 'contains', searchText]);
-            }*/
-
-            expr = encodeURIComponent(expr);
-
-            filter = "filter=" + expr;
-        }
-        else if ($scope.filter) {
-            var expr = $scope.filter;
-            if (searchText) {
-                expr = appendExpr(expr, "and", ['keywords', 'contains', searchText]);
-            }
-
-            expr = encodeURIComponent(expr);
-
-            filter = "filter=" + expr;
-        }
-        else if (searchText) {
-            filter = "filter=['keywords', 'contains','" + encodeURIComponent(searchText) + "']";
-        }
-
-        if (filter) {
-            var pos = url.indexOf("?");
-            if (pos != -1) {
-                url += "&";
-            }
-            else {
-                url += "?";
-            }
-            url += filter;
-        }
-
-        if (url) {
-            $http.get(url).success(function (result) {
-
-                $scope.totalCount = result;
-
-                // keep the count, view and filter in the cache, the report generation needs them
-                var key = $scope.dbschema + $scope.dbclass + "TotalCount";
-                MetaDataCache.setNamedData(key, result);
-
-                key = $scope.dbschema + $scope.dbclass + "View";
-                MetaDataCache.setNamedData(key, $scope.view);
-
-                key = $scope.dbschema + $scope.dbclass + "Filter";
-                MetaDataCache.setNamedData(key, filter);
-
-                def.resolve(result);
-            })
-               .error(function (err) {
-                   def.reject(err);
-               });
-
-            return def.promise();
-        }
-        else {
-            return 0;
-        }
-    }
-
-    function loadFromSearchEngine(loadOptions) {
-        var url;
-        var params = "";
-
-        // get data for a master class
-        url = APP_CONFIG.ebaasRootUrl + "/api/search/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass;
-
-        if (url) {
-
-            if ($scope.tree &&
-                $scope.node) {
-                // search for a tree node
-                params = "tree=" + $scope.tree + "&node=" + $scope.node;
-            }
-            else if ($scope.view) {
-                // search for a view
-                params = "view=" + $scope.view;
-            }
-
-            $scope.pageSize = 20;
-            if (loadOptions.skip) {
-                var range = "from=" + loadOptions.skip + "&size=" + loadOptions.take;
-                $scope.pageSize = loadOptions.take;
-                if (params === "") {
-                    params = range;
-                }
-                else {
-                    params += "&" + range;
-                }
-            }
-
-            if (loadOptions.sort != null) {
-                var sortExpr = "sortfield=" + loadOptions.sort[0].selector + "&sortreverse=" + loadOptions.sort[0].desc;
-                if (params === "") {
-                    params = sortExpr;
-                }
-                else {
-                    params += "&" + sortExpr;
-                }
-            }
-
-            // full text search text
-            var searchText = searchContext.searchText;
-
-            var filter = undefined;
-          
-            if (searchText) {
-                filter = "filter=['keywords', 'contains','" + encodeURIComponent(searchText) + "']";
-            }
-
-            if (filter) {
-                if (params === "") {
-                    params = filter;
-                }
-                else {
-                    params += "&" + filter;
-                }
-            }
-
-            if (params) {
-                url += "?" + params;
-            }
-
-            var def = $.Deferred();
-
-            $scope.url = url;
-
-            $http.get(url).success(function (result) {
-                def.resolve(result);
-
-            }).error(function (err) {
-                def.reject(err);
-            });
-
-            return def.promise();
-        }
-    }
-
-    function getCountFromSearchEngine(loadOptions) {
-        var def = $.Deferred();
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/search/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/count";
-
-        // keyword search text
-        var searchText = searchContext.searchText;
-
-        var filter = undefined;
-       
-        if (searchText) {
-            filter = "filter=['keywords', 'contains','" + encodeURIComponent(searchText) + "']";
-        }
-
-        if (filter) {
-            var pos = url.indexOf("?");
-            if (pos != -1) {
-                url += "&";
-            }
-            else {
-                url += "?";
-            }
-            url += filter;
-        }
-
-        if (url) {
-            $http.get(url).success(function (result) {
-
-                $scope.totalCount = result;
-
-                // keep the count, view and filter in the cache, the report generation needs them
-                var key = $scope.dbschema + $scope.dbclass + "TotalCount";
-                MetaDataCache.setNamedData(key, result);
-
-                key = $scope.dbschema + $scope.dbclass + "View";
-                MetaDataCache.setNamedData(key, $scope.view);
-
-                key = $scope.dbschema + $scope.dbclass + "Filter";
-                MetaDataCache.setNamedData(key, filter);
-
-                def.resolve(result);
-            })
-               .error(function (err) {
-                   def.reject(err);
-               });
-
-            return def.promise();
-        }
-        else {
-            return 0;
-        }
     }
 });
+
+
 'use strict';
 
-angular.module('app.smarttables').controller('dataGridCtrl', function ($scope, $controller, $rootScope, $http, APP_CONFIG, $stateParams, $state, CartInfo, propmisedParams, hubService) {
-   
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
-    $scope.oid = $stateParams.oid;
+angular.module('app.stations').factory('TestStations', function () {
 
-    var params = propmisedParams.data;
-
-    if (params) {
-        $scope.view = params['dataView'];
-        $scope.formTemplate = params['formTemplate'];
-    }
-    else
-    {
-        $scope.view = undefined;
-        $scope.formTemplate = undefined;
-    }
-
-    if ($stateParams.insert && $stateParams.insert === "false") {
-        $scope.add = false;
-    }
-    else {
-        $scope.add = true;
-    }
-
-    if ($stateParams.attachment && $stateParams.attachment === "false") {
-        $scope.attachment = false;
-    }
-    else {
-        $scope.attachment = true;
-    }
- 
-    if ($stateParams.export && $stateParams.export === "true")
-    {
-        $scope.exportData = true;
-    }
-    else
-    {
-        $scope.exportData = false;
-    }
-
-    if ($stateParams.import && $stateParams.import === "true") {
-        $scope.importData = true;
-    }
-    else {
-        $scope.importData = false;
-    }
-
-    if ($stateParams.reports && $stateParams.reports === "true") {
-        $scope.reports = true;
-    }
-    else {
-        $scope.reports = false;
-    }
-
-    if ($stateParams.cart && $stateParams.cart === "true") {
-        $scope.hasDataCart = true;
-    }
-    else {
-        $scope.hasDataCart = false;
-    }
-
-    if ($stateParams.track && $stateParams.track === "true") {
-        $scope.track = true;
-    }
-    else {
-        $scope.track = false;
-    }
-
-    if ($stateParams.search && $stateParams.search === "fulltext")
-    {
-        $scope.isfulltextsearch = true;
-    }
-    else
-    {
-        $scope.isfulltextsearch = false;
-    }
-
-    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG}));
-
-    $scope.openModal = function() {
-        $state.go('.modalform', { schema: $scope.dbschema, class: $scope.dbclass, template: $scope.formTemplate }, { location: false, notify: false });
-    };
-
-    $scope.GetCommands = function (rowIndex, data)
-    {
-        var items = new Array();
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/sitemap/commands/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + data.obj_id;
-
-        $http.get(url).success(function (commands) {
-
-            // custom commands
-            $scope.commands = commands;
-            var cmdInfo;
-            var item;
-            for (var cmd in commands) {
-                if (commands.hasOwnProperty(cmd)) {
-                    cmdInfo = commands[cmd];
-                    item = new Object();
-                    item.text = cmdInfo.title;
-                    item.css = "btn btn-primary btn-md btn-nav";
-                    item.track = false;
-                    if (cmdInfo.icon) {
-                        item.icon = cmdInfo.icon;
-                    }
-                    else
-                    {
-                        item.icon = "fa fa-lg fa-tasks";
-                    }
-
-                    item.onItemClick = function (text) {
-                        gotoState(text, $scope.dbschema, data.type, data.obj_id, !data.allowWrite)
-                    }
-
-                    items.push(item);
-
-                    if (cmdInfo.baseUrl && !APP_CONFIG.hashedBaseUrls[cmdInfo.hash]) {
-                        APP_CONFIG.hashedBaseUrls[cmdInfo.hash] = cmdInfo.baseUrl;
-                    }
-                }
-            }
-
-            // add standard commands
-            if (data.allowWrite && $stateParams.edit !== "false") {
-                items.push({
-                    text: $rootScope.getWord('Edit'),
-                    icon: "fa fa-lg fa-edit",
-                    css: "btn btn-default btn-md",
-                    track : false,
-                    onItemClick: function () {
-                        $state.go('.modalform', { schema: $scope.dbschema, class: data.type, oid: data.obj_id, template: $scope.formTemplate, duplicate: "true" }, { location: false, notify: false });
-                    }
-                });
-            }
-
-            /*
-            if (data.allowCreate && $stateParams.insert !== "false") {
-                items.push({
-                    text: $rootScope.getWord('Add'),
-                    icon: "fa fa-lg fa-plus-square",
-                    css: "btn btn-default btn-md btn-nav",
-                    track : false,
-                    onItemClick: function () {
-                        $state.go('.modalform', { schema: $scope.dbschema, class: data.type }, { location: false, notify: false });
-                    }
-                });
-            }
-            */
-
-            if (data.allowDelete && $stateParams.delete !== "false") {
-                items.push({
-                    text: $rootScope.getWord('Delete'),
-                    icon: "fa fa-lg fa-times",
-                    css: "btn btn-default btn-md",
-                    track: false,
-                    onItemClick: function () {
-                        $scope.gridInstance.deleteRow(rowIndex);
-                    }
-                });
-            }
-
-            if ($scope.attachment) {
-                items.push({
-                    text: $rootScope.getWord('Attachments'),
-                    icon: "fa fa-lg fa-file-archive-o",
-                    css: "btn btn-default btn-md",
-                    track: false,
-                    onItemClick: function () {
-                        $state.go('.attachments', { schema: $scope.dbschema, class: data.type, oid: data.obj_id, readonly: !data.allowWrite}, { location: false, notify: false });
-                    }
-                });
-            }
-
-            if ($scope.track) {
-                var groupName = $scope.dbschema + "-" + data.type + "-" + data.obj_id;
-                var isTracking = false;
-                hubService.isUserInGroup(groupName, function (status) {
-                    isTracking = status;
-
-                    items.push({
-                        text: $rootScope.getWord('Track Status'),
-                        icon: "fa fa-lg fa-file-archive-o",
-                        css: "btn btn-default btn-md",
-                        track: true,
-                        trackStatus: isTracking,
-                        onItemClick: function () {
-
-                            if (isTracking) {
-                                hubService.removeFromGroup(groupName); // hubService removes the current user from the group
-                            }
-                            else {
-                                hubService.addToGroup(groupName); // hubService adds the current user to the group
-                            }
-                        }
-                    });
-                });
-            }
-        });
-        return items;
-    }
-
-    var gotoState = function (title, dbschema, dbclass, oid, readonly)
-    {
-        var commands = $scope.commands;
-        var url = undefined;
-        var cmdUrl = undefined;
-        var params = undefined;
-        var cmdInfo;
-        for (var cmd in commands) {
-            if (commands.hasOwnProperty(cmd)) {
-                cmdInfo = commands[cmd];
-                if (cmdInfo.title === title) {
-                    url = cmdInfo.url;
-                    cmdUrl = cmdInfo.url;
-                    params = new Object();
-                    params.schema = dbschema;
-                    params.class = dbclass;
-                    params.oid = oid;
-                    params.readonly = readonly;
-                    params.cmdHash = cmdInfo.hash;
-   
-                    // add command's parameters to the state parameters
-                    if (cmdInfo.parameters) {
-                        for (var key in cmdInfo.parameters) {
-                            if (cmdInfo.parameters.hasOwnProperty(key)) {
-                                params[key] = cmdInfo.parameters[key];
-                            }
-                        }
-                    };
-
-                    break;
-                }
-            }
-        }
-
-        if (url) {
-
-            if (cmdUrl === ".modalform") {
-                $state.go(url, params, { location: false, notify: false });
-            }
-            else {
-                $state.go(url, params);
-            }
-        }
-    }
-
-    $scope.gridInstance = null;
-    $scope.dataGridSettings = {
-        dataSource : {
-            store: $scope.customStore
-        },
-        columnAutoWidth: true,
-        height: $rootScope.isChrome() === true ? '750px' : undefined,
-        sorting: {
-            mode: "multiple"
-        },
-        searchPanel: {
-            visible: $stateParams.search && $stateParams.search === "true"? true: false,
-            width: 300,
-            placeholder: $rootScope.getWord("Keyword Search")
-        },
-        editing: {
-            allowAdding: false,
-            allowUpdating: false,
-            allowDeleting: false
-        },
-        grouping: {
-            autoExpandAll: false
-        },
-        pager: {
-            visible: true,
-            showPageSizeSelector: false,
-            showInfo: true
-        },
-        filterRow: {
-            visible: $scope.isfulltextsearch ? false : true,
-            applyFilter: "auto"
-        },
-        selection: { mode: 'single' },
-        remoteOperations: true,
-        bindingOptions: {
-            columns: 'columns',
-            'scrolling.showScrollbar': 'never'
-        },
-        headerFilter: {
-            visible: true
-        },
-        rowAlternationEnabled: true,
-        masterDetail: {
-            enabled: true,
-            template: "detail"
-        },
-        onRowClick: function(e)
+    var TestStationsModel = {
+        params: undefined,
+        stations: undefined,
+        error: "",
+        init: function()
         {
-            if (e.rowType === "data") {
-                var isExpanded = $scope.gridInstance.isRowExpanded(e.key);
-                $scope.gridInstance.collapseAll(-1); // collaspsed all
-                if (!isExpanded)
-                    {
-                    $scope.gridInstance.expandRow(e.key);
-                    }
-            }
-        },
-        onInitialized: function (e) {
-            $scope.gridInstance = e.component;
+            this.params = undefined;
+            this.stations = undefined;
+            this.error = "";
         }
     };
 
-    $rootScope.$on('modalClosed', function (event, data) {
-        if ($scope.gridInstance && data === "update")
-            $scope.gridInstance.refresh();
-    });
-
-    $scope.getCartItemCount = function () {
-        var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
-        return cart.count;
-    }
-
-    $scope.openCart = function () {
-        $state.go(".datacart", { schema: $scope.dbschema, class: $scope.dbclass }, { location: false, notify: false });
-    }
-
-    $scope.downloadReports = function () {
-        $state.go(".downloadreports", { schema: $scope.dbschema, class: $scope.dbclass }, { location: false, notify: false });
-    }
+    return TestStationsModel;
 });
-'use strict';
 
-angular.module('app.smarttables').controller('relatedDataGridCtrl', function ($scope, $controller, $rootScope, $http, APP_CONFIG, $stateParams, $state, promiseParentClassInfo) {
-   
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
-    $scope.oid = $stateParams.oid;
-    $scope.isrelated = true;
-    $scope.relatedclass = $stateParams.relatedclass;
-
-    if ($stateParams.exportrelated && $stateParams.exportrelated === "true") {
-        $scope.exportData = true;
-    }
-    else {
-        $scope.exportData = false;
-    }
-
-    if ($stateParams.importrelated && $stateParams.importrelated === "true") {
-        $scope.importData = true;
-    }
-    else {
-        $scope.importData = false;
-    }
-
-    if ($stateParams.insertrelated && $stateParams.insertrelated === "false") {
-        $scope.add = false;
-    }
-    else {
-        $scope.add = true;
-    }
-
-    if ($stateParams.editrelated && $stateParams.editrelated === "false") {
-        $scope.edit = false;
-    }
-    else {
-        $scope.edit = true;
-    }
-
-    if ($stateParams.attachmentrelated && $stateParams.attachmentrelated === "false") {
-        $scope.attachment = false;
-    }
-    else {
-        $scope.attachment = true;
-    }
-
-    if ($stateParams.deleterelated && $stateParams.deleterelated === "false") {
-        $scope.delete = false;
-    }
-    else {
-        $scope.delete = true;
-    }
-
-    $scope.parentClassInfo = promiseParentClassInfo.data;
-
-    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG}));
-
-    $scope.openModal = function () {
-        $state.go('.relatedform', { schema: $scope.dbschema, rclass: $scope.relatedclass}, { location: false, notify: false });
-    };
-
-    $scope.GetCommands = function (rowIndex, data)
-    {
-        var items = [];
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/sitemap/commands/" + encodeURIComponent($scope.dbschema) + "/" + $scope.relatedclass + "/" + data.obj_id;
-
-        $http.get(url).success(function (commands) {
-
-            // custom commands
-            $scope.commands = commands;
-            var cmdInfo;
-            var item;
-            for (var cmd in commands) {
-                if (commands.hasOwnProperty(cmd)) {
-                    cmdInfo = commands[cmd];
-                    item = new Object();
-                    item.text = cmdInfo.title;
-                    item.css = "btn btn-primary btn-md btn-nav";
-                    item.track = false;
-                    if (cmdInfo.icon) {
-                        item.icon = cmdInfo.icon;
-                    }
-                    else {
-                        item.icon = "fa fa-lg fa-tasks";
-                    }
-
-                    item.onItemClick = function (text) {
-                        gotoState(text, $scope.dbschema, data.type, data.obj_id, !data.allowWrite)
-                    }
-
-                    items.push(item);
-
-                    if (cmdInfo.baseUrl && !APP_CONFIG.hashedBaseUrls[cmdInfo.hash]) {
-                        APP_CONFIG.hashedBaseUrls[cmdInfo.hash] = cmdInfo.baseUrl;
-                    }
-                }
-            }
-
-            // add standard commands
-            if (data.allowWrite && $scope.edit) {
-                items.push({
-                    text: $rootScope.getWord('Edit'),
-                    icon: "fa fa-lg fa-edit",
-                    css: "btn btn-default btn-md btn-nav",
-                    onItemClick: function () {
-                        $state.go('.relatedform', { schema: $scope.dbschema, rclass: data.type, roid: data.obj_id }, { location: false, notify: false });
-                    }
-                });
-            }
-
-            if (data.allowDelete && $scope.delete) {
-                items.push({
-                    text: $rootScope.getWord('Delete'),
-                    icon: "fa fa-lg fa-times",
-                    css: "btn btn-default btn-md btn-nav",
-                    onItemClick: function () {
-                        $scope.gridInstance.deleteRow(rowIndex);
-                    }
-                });
-            }
-
-            if ($scope.attachment) {
-                items.push({
-                    text: $rootScope.getWord('Attachments'),
-                    icon: "fa fa-lg fa-file-archive-o",
-                    css: "btn btn-default btn-md btn-nav",
-                    onItemClick: function () {
-                        $state.go('.attachments', { schema: $scope.dbschema, class: data.type, oid: data.obj_id, readonly: !data.allowWrite }, { location: false, notify: false });
-                    }
-                });
-            }
-        });
-        
-        return items;
-    }
-
-    var gotoState = function (title, dbschema, dbclass, oid, readonly)
-    {
-        var commands = $scope.commands;
-        var url = undefined;
-        var cmdUrl = undefined;
-        var params = undefined;
-        var cmdInfo;
-        for (var cmd in commands) {
-            if (commands.hasOwnProperty(cmd)) {
-                cmdInfo = commands[cmd];
-                if (cmdInfo.title === title) {
-                    url = cmdInfo.url;
-                    cmdUrl = cmdInfo.url;
-                    params = new Object();
-                    params.schema = dbschema;
-                    params.class = dbclass;
-                    params.oid = oid;
-                    params.readonly = readonly;
-                    params.cmdHash = cmdInfo.hash;
-
-                    // add command's parameters to the state parameters
-                    if (cmdInfo.parameters) {
-                        for (var key in cmdInfo.parameters) {
-                            if (cmdInfo.parameters.hasOwnProperty(key)) {
-                                params[key] = cmdInfo.parameters[key];
-                            }
-                        }
-                    };
-
-                    break;
-                }
-            }
-        }
-
-        if (url) {
-
-            if (cmdUrl === ".modalform" || cmdUrl === ".report") {
-                $state.go(url, params, { location: false, notify: false });
-            }
-            else {
-                $state.go(url, params);
-            }
-        }
-    }
-
-    $scope.gridInstance = null;
-    $scope.dataGridSettings = {
-        dataSource: {
-            store: $scope.customStore
-        },
-        columnAutoWidth: true,
-        height: $rootScope.isChrome() === true ? '750px' : undefined,
-        sorting: {
-            mode: "multiple"
-        },
-        searchPanel: {
-            visible: false,
-            highlightSearchText: false
-        },
-        editing: {
-            allowAdding: false,
-            allowUpdating: false,
-            allowDeleting: false
-        },
-        grouping: {
-            autoExpandAll: false
-        },
-        pager: {
-            visible: true,
-            showPageSizeSelector: false,
-            showInfo: true
-        },
-        filterRow: {
-            visible: true,
-            applyFilter: "auto"
-        },
-        selection: { mode: 'single' },
-        remoteOperations: true,
-        bindingOptions: {
-            columns: 'columns'
-        },
-        headerFilter: {
-            visible: true
-        },
-        rowAlternationEnabled: true,
-        masterDetail: {
-            enabled: true,
-            template: "detail"
-        },
-        onRowClick: function (e) {
-            if (e.rowType === "data") {
-                var isExpanded = $scope.gridInstance.isRowExpanded(e.key);
-                $scope.gridInstance.collapseAll(-1); // collaspsed all
-                if (!isExpanded) {
-                    $scope.gridInstance.expandRow(e.key);
-                }
-            }
-        },
-        onInitialized: function (e) {
-            $scope.gridInstance = e.component;
-        }
-    };
-
-    $scope.parentClassTitle = function () {
-        // return class title
-        return $scope.parentClassInfo.title;
-    }
-
-    $scope.goBack = function () {
-        history.back(1);
-    }
-
-    $rootScope.$on('modalClosed', function (event, data) {
-        if ($scope.gridInstance && data === "update")
-            $scope.gridInstance.refresh();
-    });
-});
-"use strict";
-
-angular.module("app.smarttables").factory("MetaDataCache", function () {
-
-    var cache = new Object();
-
-    function _getClassView(dbschema, dbclass, view) {
-        var data = undefined;
-        var key = dbschema + "_" + dbclass + "_" + view;
-        if (cache[key])
-        {
-            data = cache[key];
-        }
-
-        return data;
-    }
-
-    function _setClassView(dbschema, dbclass, view, data) {
-        var key = dbschema + "_" + dbclass + "_" + view;
-        cache[key] = data;
-    }
-
-    function _getNamedData(dataName) {
-        var data = undefined;
-        if (cache[dataName]) {
-            data = cache[dataName];
-        }
-
-        return data;
-    }
-
-    function _setNamedData(dataName, data) {
-        cache[dataName] = data;
-    }
-
-    return {
-        getClassView: _getClassView,
-        setClassView: _setClassView,
-        getNamedData : _getNamedData,
-        setNamedData : _setNamedData
-    };
-});
 'use strict';
 
 angular.module('app.taskforum').controller('PostViewCtrl', function ($scope, $http, $state, $stateParams, APP_CONFIG, User, $modalInstance, myActivityService) {
@@ -17527,6 +17713,22 @@ angular.module('app.taskforum').controller('PostViewCtrl', function ($scope, $ht
         $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
     }
 });
+'use strict';
+
+angular.module('app.taskkanban').directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if (event.which === 13) {
+                scope.$apply(function () {
+                    scope.$eval(attrs.ngEnter, { 'event': event });
+                });
+
+                event.preventDefault();
+            }
+        });
+    };
+});
+
 /// <reference path='./DlhSoft.Kanban.Angular.Components.ts'/>
 var KanbanBoard = DlhSoft.Controls.KanbanBoard;
 
@@ -18008,464 +18210,6 @@ angular.module('app.taskkanban').factory('KanbanService', function ($http, APP_C
 		}
 	}
 });
-'use strict';
-
-angular.module('app.taskkanban').directive('ngEnter', function () {
-    return function (scope, element, attrs) {
-        element.bind("keydown keypress", function (event) {
-            if (event.which === 13) {
-                scope.$apply(function () {
-                    scope.$eval(attrs.ngEnter, { 'event': event });
-                });
-
-                event.preventDefault();
-            }
-        });
-    };
-});
-
-'use strict';
-
-angular.module('app.tables').controller('JqGridCtrl', function ($scope) {
-    $scope.gridData = {
-        data: [
-            {
-                id: "1",
-                date: "2007-10-01",
-                name: "test",
-                note: "note",
-                amount: "200.00",
-                tax: "10.00",
-                total: "210.00"
-            },
-            {
-                id: "2",
-                date: "2007-10-02",
-                name: "test2",
-                note: "note2",
-                amount: "300.00",
-                tax: "20.00",
-                total: "320.00"
-            },
-            {
-                id: "3",
-                date: "2007-09-01",
-                name: "test3",
-                note: "note3",
-                amount: "400.00",
-                tax: "30.00",
-                total: "430.00"
-            },
-            {
-                id: "4",
-                date: "2007-10-04",
-                name: "test",
-                note: "note",
-                amount: "200.00",
-                tax: "10.00",
-                total: "210.00"
-            },
-            {
-                id: "5",
-                date: "2007-10-05",
-                name: "test2",
-                note: "note2",
-                amount: "300.00",
-                tax: "20.00",
-                total: "320.00"
-            },
-            {
-                id: "6",
-                date: "2007-09-06",
-                name: "test3",
-                note: "note3",
-                amount: "400.00",
-                tax: "30.00",
-                total: "430.00"
-            },
-            {
-                id: "7",
-                date: "2007-10-04",
-                name: "test",
-                note: "note",
-                amount: "200.00",
-                tax: "10.00",
-                total: "210.00"
-            },
-            {
-                id: "8",
-                date: "2007-10-03",
-                name: "test2",
-                note: "note2",
-                amount: "300.00",
-                tax: "20.00",
-                total: "320.00"
-            },
-            {
-                id: "9",
-                date: "2007-09-01",
-                name: "test3",
-                note: "note3",
-                amount: "400.00",
-                tax: "30.00",
-                total: "430.00"
-            },
-            {
-                id: "10",
-                date: "2007-10-01",
-                name: "test",
-                note: "note",
-                amount: "200.00",
-                tax: "10.00",
-                total: "210.00"
-            },
-            {
-                id: "11",
-                date: "2007-10-02",
-                name: "test2",
-                note: "note2",
-                amount: "300.00",
-                tax: "20.00",
-                total: "320.00"
-            },
-            {
-                id: "12",
-                date: "2007-09-01",
-                name: "test3",
-                note: "note3",
-                amount: "400.00",
-                tax: "30.00",
-                total: "430.00"
-            },
-            {
-                id: "13",
-                date: "2007-10-04",
-                name: "test",
-                note: "note",
-                amount: "200.00",
-                tax: "10.00",
-                total: "210.00"
-            },
-            {
-                id: "14",
-                date: "2007-10-05",
-                name: "test2",
-                note: "note2",
-                amount: "300.00",
-                tax: "20.00",
-                total: "320.00"
-            },
-            {
-                id: "15",
-                date: "2007-09-06",
-                name: "test3",
-                note: "note3",
-                amount: "400.00",
-                tax: "30.00",
-                total: "430.00"
-            },
-            {
-                id: "16",
-                date: "2007-10-04",
-                name: "test",
-                note: "note",
-                amount: "200.00",
-                tax: "10.00",
-                total: "210.00"
-            },
-            {
-                id: "17",
-                date: "2007-10-03",
-                name: "test2",
-                note: "note2",
-                amount: "300.00",
-                tax: "20.00",
-                total: "320.00"
-            },
-            {
-                id: "18",
-                date: "2007-09-01",
-                name: "test3",
-                note: "note3",
-                amount: "400.00",
-                tax: "30.00",
-                total: "430.00"
-            }
-        ],
-        colNames: ['Actions', 'Inv No', 'Date', 'Client', 'Amount', 'Tax', 'Total', 'Notes'],
-        colModel: [
-            {
-                name: 'act',
-                index: 'act',
-                sortable: false
-            },
-            {
-                name: 'id',
-                index: 'id'
-            },
-            {
-                name: 'date',
-                index: 'date',
-                editable: true
-            },
-            {
-                name: 'name',
-                index: 'name',
-                editable: true
-            },
-            {
-                name: 'amount',
-                index: 'amount',
-                align: "right",
-                editable: true
-            },
-            {
-                name: 'tax',
-                index: 'tax',
-                align: "right",
-                editable: true
-            },
-            {
-                name: 'total',
-                index: 'total',
-                align: "right",
-                editable: true
-            },
-            {
-                name: 'note',
-                index: 'note',
-                sortable: false,
-                editable: true
-            }
-        ]
-    }
-
-
-    $scope.getSelection = function(){
-        alert(jQuery('table').jqGrid('getGridParam', 'selarrrow'));
-    };
-
-    $scope.selectRow = function(row){
-       jQuery('table').jqGrid('setSelection', row);
-
-    }
-});
-'use strict';
-
-angular.module('app.tasktrack').controller('TaskListCtrl', function ($scope, $state, $rootScope, $stateParams, taskTrackService, hubService) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.taskclass = $stateParams.class;
-    $scope.pickoid = $stateParams.pickoid;
-    $scope.template = "IssueForm.htm";
-
-    $scope.displayed = [];
-
-    $scope.isLoading = true;
-
-    $scope.tableState;
-
-    $scope.callServer = function callServer(tableState) {
-
-        $scope.isLoading = true;
-
-        $scope.tableState = tableState;
-
-        if (!$scope.pickoid) {
-            var pagination = tableState.pagination;
-
-            var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
-            var number = pagination.number || 10;  // Number of entries showed per page.
-
-            taskTrackService.getTaskResult($scope.dbschema, $scope.taskclass, start, number, tableState, function (result) {
-                $scope.displayed = result.data;
-         
-                tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
-                $scope.isLoading = false;
-            });
-        }
-        else
-        {
-            taskTrackService.getOneTask($scope.dbschema, $scope.taskclass, $scope.pickoid, function (result) {
-                $scope.displayed = result.data;
-                tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
-                $scope.isLoading = false;
-            });
-         }
-    };
-
-    $scope.searchIssues = function () {
-
-    }
-
-    $scope.switchTrackStatus = function (row) {
-        var groupName = $scope.dbschema + "-" + row.type + "-" + row.obj_id;
-
-        if (row.TrackStatus)
-        {
-            hubService.addToGroup(groupName); // hubService adds the current user to the group
-        }
-        else
-        {
-            hubService.removeFromGroup(groupName); // hubService removes the current user from the group
-        }
-    }
-
-    $rootScope.$on('modalClosed', function (event, data) {
-        if (data === "update") {
-            $scope.callServer($scope.tableState);
-        }
-    });
-});
-"use strict";
-
-angular.module('app.tasktrack').factory('taskTrackService', function ($http, APP_CONFIG, hubService) {
-
-    function getTaskResult(dbschema, taskclass, start, pageSize, params, callback) {
-	    
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + taskclass + "?view=full&from=" + start + "&size=" + pageSize;
-	
-        var filters = params.search.predicateObject;
-        var count = 0;
-        var expre = [];
-        if (filters)
-        {
-            var filter;
-            for (var property in filters) {
-                if (filters.hasOwnProperty(property)) {
-                    filter = [];
-                    filter.push(property);
-                    if (property === "Subject") {
-                        filter.push("contains");
-                    }
-                    else {
-                        filter.push("=");
-                    }
-                    filter.push(filters[property]);
-                }
-
-                count++;
-
-                if (count === 1) {
-                    expre.push(filter);
-                }
-                else
-                {
-                    expre.push("and");
-                    expre.push(filter);
-                }
-            }
-
-            if (count > 0) {
-                if (count === 1) {
-                    url += "&filter=" + JSON.stringify(expre[0]); // single filter
-                }
-                else {
-                    url += "&filter=" + JSON.stringify(expre); // compound filter
-                }
-            }
-        }
-
-        var sortField = params.sort.predicate;
-        var sortReverse = params.sort.reverse;
-        if (sortField)
-        {
-            url += "&sortfield=" + sortField + "&sortreverse=" + sortReverse;
-        }
-
-        hubService.getUserGroups(function (groups) {
-
-            $http.get(url).success(function (data) {
-                var result = new Object();
-                addTrackStatus(dbschema, data, groups);
-                result.data = data;
-
-                url = APP_CONFIG.ebaasRootUrl + "/api/count/" + encodeURIComponent(dbschema) + "/" + taskclass;
-                if (count > 0) {
-                    if (count === 1) {
-                        url += "?filter=" + JSON.stringify(expre[0]); // single filter
-                    }
-                    else {
-                        url += "?filter=" + JSON.stringify(expre); // compound filter
-                    }
-                }
-                $http.get(url).success(function (data) {
-                    var numberOfPages = Math.ceil(data / pageSize);
-                    result.numberOfPages = numberOfPages;
-                    callback(result);
-                }).error(function () {
-                    callback(undefined);
-
-                });
-            }).error(function () {
-                callback(undefined);
-            });
-        });
-    }
-
-    function getOneTask(dbschema, taskclass, oid, callback) {
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + taskclass + "/" + oid
-
-        hubService.getUserGroups(function (groups) {
-
-            $http.get(url).success(function (data) {
-                var array = [];
-                array.push(data);
-                var result = new Object();
-                addTrackStatus(dbschema, array, groups);
-                result.data = array;
-                result.numberOfPages = 1;
-                callback(result);
-
-            }).error(function () {
-                callback(undefined);
-            });
-        });
-    }
-
-    function addTrackStatus(dbschema, data, userGroups)
-    {
-        if (data && data.length > 0)
-        {
-            for (var i = 0; i < data.length; i++)
-            {
-                data[i].TrackStatus = false;
-                var groupName = dbschema + "-" + data[i].type + "-" + data[i].obj_id;
-                for (var j = 0; j < userGroups.length; j++)
-                {
-                    if (userGroups[j] === groupName)
-                    {
-                        data[i].TrackStatus = true;
-                        break;
-                    }
-                }
-            }
-        }
-    }
-	
-	return {
-	    getTaskResult: function (dbschema, taskclass, start, pagesize, tableState, callback) {
-	        getTaskResult(dbschema, taskclass, start, pagesize, tableState, callback);
-	    },
-	    getOneTask: function (dbschema, taskclass, oid, callback) {
-	        getOneTask(dbschema, taskclass, oid, callback);
-	    }
-	}
-});
-angular.module('app.tasks').directive('convertToNumber', function () {
-    return {
-        require: 'ngModel',
-        link: function (scope, element, attrs, ngModel) {
-            ngModel.$parsers.push(function (val) {
-                return val != null ? parseInt(val, 10) : null;
-            });
-            ngModel.$formatters.push(function (val) {
-                return val != null ? '' + val : null;
-            });
-        }
-    };
-});
 "use strict";
 
 angular.module('app.tasks').controller('reassignTaskCtrl', function ($scope, $http, $stateParams, $modalInstance, APP_CONFIG, User) {
@@ -18765,6 +18509,19 @@ angular.module('app.tasks').controller('taskSubstituteCtrl', function ($scope, $
         $modalInstance.dismiss("dismiss");
     };
 });
+angular.module('app.tasks').directive('convertToNumber', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, element, attrs, ngModel) {
+            ngModel.$parsers.push(function (val) {
+                return val != null ? parseInt(val, 10) : null;
+            });
+            ngModel.$formatters.push(function (val) {
+                return val != null ? '' + val : null;
+            });
+        }
+    };
+});
 
 
 'use strict';
@@ -18782,203 +18539,206 @@ angular.module('app.tasks').factory('TasksInfo', function () {
 
 'use strict';
 
-angular.module('app.taskviewer')
-    .factory('ContextMenuService', function () {
-        return {
-            element: null,
-            menuElement: null
-        };
-    })
-    .directive('contextMenu', [
-        '$document',
-        'ContextMenuService',
-        function ($document, ContextMenuService) {
-            return {
-                restrict: 'A',
-                scope: {
-                    'callback': '&contextMenu',
-                    'disabled': '&contextMenuDisabled',
-                    'closeCallback': '&contextMenuClose',
-                    'marginBottom': '@contextMenuMarginBottom'
-                },
-                link: function ($scope, $element, $attrs) {
-                    var opened = false;
+angular.module('app.tasktrack').controller('TaskListCtrl', function ($scope, $state, $rootScope, $stateParams, taskTrackService, hubService) {
 
-                    function open(event, menuElement) {
-                        menuElement.addClass('open');
+    $scope.dbschema = $stateParams.schema;
+    $scope.taskclass = $stateParams.class;
+    $scope.pickoid = $stateParams.pickoid;
+    $scope.template = "IssueForm.htm";
 
-                        var doc = $document[0].documentElement;
-                        var docLeft = (window.pageXOffset || doc.scrollLeft) -
-                            (doc.clientLeft || 0),
-                            docTop = (window.pageYOffset || doc.scrollTop) -
-                                (doc.clientTop || 0),
-                            elementWidth = menuElement[0].scrollWidth,
-                            elementHeight = menuElement[0].scrollHeight;
-                        var pageX;
-                        var pageY;
-                        // browser compatibility fix for the click location
-                        if (event.pageX || event.pageY) {
-                            // use pageX and pageY when available (modern browsers)
-                            pageX = event.pageX;
-                            pageY = event.pageY;
-                        } else {
-                            // calculate pageX and pageY when they do not exist
-                            // (IE8 and generated events in later versions of IE)
-                            var docBody = $document[0].body;
-                            pageX = event.clientX + docBody.scrollLeft + doc.scrollLeft;
-                            pageY = event.clientY + docBody.scrollTop + doc.scrollTop;
-                        }
-                        var docWidth = doc.clientWidth + docLeft,
-                            docHeight = doc.clientHeight + docTop,
-                            totalWidth = elementWidth + pageX,
-                            totalHeight = elementHeight + pageY,
-                            left = Math.max(pageX - docLeft, 0),
-                            top = Math.max(pageY - docTop, 0);
+    $scope.displayed = [];
 
-                        if (totalWidth > docWidth) {
-                            left = left - (totalWidth - docWidth);
-                        }
+    $scope.isLoading = true;
 
-                        if (totalHeight > docHeight) {
-                            var marginBottom = $scope.marginBottom || 0;
-                            top = top - (totalHeight - docHeight) - marginBottom;
-                        }
+    $scope.tableState;
 
-                        menuElement.css('top', top + 'px');
-                        menuElement.css('left', left + 'px');
-                        opened = true;
-                    }
+    $scope.callServer = function callServer(tableState) {
 
-                    function close(menuElement) {
-                        menuElement.removeClass('open');
+        $scope.isLoading = true;
 
-                        if (opened) {
-                            $scope.closeCallback();
-                        }
+        $scope.tableState = tableState;
 
-                        opened = false;
-                    }
+        if (!$scope.pickoid) {
+            var pagination = tableState.pagination;
 
-                    $element.bind('contextmenu', function (event) {
-                        if (!$scope.disabled()) {
-                            if (ContextMenuService.menuElement !== null) {
-                                close(ContextMenuService.menuElement);
-                            }
-                            ContextMenuService.menuElement = angular.element(
-                                document.getElementById($attrs.target)
-                            );
-                            ContextMenuService.element = event.target;
+            var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
+            var number = pagination.number || 10;  // Number of entries showed per page.
 
-                            event.preventDefault();
-                            event.stopPropagation();
-                            $scope.$apply(function () {
-                                $scope.callback({ $event: event });
-                            });
-                            $scope.$apply(function () {
-                                open(event, ContextMenuService.menuElement);
-                            });
-                        }
-                    });
-
-                    function handleKeyUpEvent(event) {
-                        if (opened && event.keyCode === 27) {
-                            $scope.$apply(function () {
-                                close(ContextMenuService.menuElement);
-                            });
-                        }
-                    }
-
-                    function handleClickEvent(event) {
-                        if (opened &&
-                            (event.button !== 2 ||
-                                event.target !== ContextMenuService.element)) {
-                            $scope.$apply(function () {
-                                close(ContextMenuService.menuElement);
-                            });
-                        }
-                    }
-
-                    $document.bind('keyup', handleKeyUpEvent);
-                    // Firefox treats a right-click as a click and a contextmenu event
-                    // while other browsers just treat it as a contextmenu event
-                    $document.bind('click', handleClickEvent);
-                    $document.bind('contextmenu', handleClickEvent);
-
-                    $scope.$on('$destroy', function () {
-                        $document.unbind('keyup', handleKeyUpEvent);
-                        $document.unbind('click', handleClickEvent);
-                        $document.unbind('contextmenu', handleClickEvent);
-                    });
-                }
-            };
+            taskTrackService.getTaskResult($scope.dbschema, $scope.taskclass, start, number, tableState, function (result) {
+                $scope.displayed = result.data;
+         
+                tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
+                $scope.isLoading = false;
+            });
         }
-    ]);
+        else
+        {
+            taskTrackService.getOneTask($scope.dbschema, $scope.taskclass, $scope.pickoid, function (result) {
+                $scope.displayed = result.data;
+                tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
+                $scope.isLoading = false;
+            });
+         }
+    };
 
-'use strict';
+    $scope.searchIssues = function () {
 
-angular.module('app.taskviewer').directive('taskTreeviewContent', function ($compile) {
-    return {
-        restrict: 'E',
-        link: function (scope, element) {
-            var $content = $(scope.item.content);
+    }
 
-            function handleExpanded(){
-                $content.find('>i')
-                    .toggleClass('fa-plus-circle', !scope.item.expanded)
-                    .toggleClass('fa-minus-circle', !!scope.item.expanded)
+    $scope.switchTrackStatus = function (row) {
+        var groupName = $scope.dbschema + "-" + row.type + "-" + row.obj_id;
 
-            }
-
-
-            if (scope.item.children && scope.item.children.length) {
-                $content.on('click', function(){
-                    scope.$apply(function(){
-                        scope.item.expanded = !scope.item.expanded;
-                        handleExpanded();
-                    });
-
-
-                });
-                handleExpanded();
-            }
-
-            element.replaceWith($content);
-
-
+        if (row.TrackStatus)
+        {
+            hubService.addToGroup(groupName); // hubService adds the current user to the group
+        }
+        else
+        {
+            hubService.removeFromGroup(groupName); // hubService removes the current user from the group
         }
     }
-});
 
-angular.module('app.taskviewer').directive('taskTreeview', function ($compile, $sce) {
-    return {
-        restrict: 'A',
-        scope: {
-            'items': '='
-        },
-        template: '<li ng-class="{parent_li: item.children.length}" ng-repeat="item in items" role="treeitem">' +
-            '<div context-menu data-target="menu-{{ item.index }}">' +
-            '<task-treeview-content></task-treeview-content>' +
-            '</div>' +
-            '<ul ng-if="item.children.length" task-treeview ng-show="item.expanded"  items="item.children" role="group" class="smart-treeview-group" ></ul>' +
-            '</li>',
-        compile: function (element) {
-            // Break the recursion loop by removing the contents
-            var contents = element.contents().remove();
-            var compiledContents;
-            return {
-                post: function (scope, element) {
-                    // Compile the contents
-                    if (!compiledContents) {
-                        compiledContents = $compile(contents);
-                    }
-                    // Re-add the compiled contents to the element
-                    compiledContents(scope, function (clone) {
-                        element.append(clone);
-                    });
-                }
-            };
+    $rootScope.$on('modalClosed', function (event, data) {
+        if (data === "update") {
+            $scope.callServer($scope.tableState);
         }
-    };
+    });
+});
+"use strict";
+
+angular.module('app.tasktrack').factory('taskTrackService', function ($http, APP_CONFIG, hubService) {
+
+    function getTaskResult(dbschema, taskclass, start, pageSize, params, callback) {
+	    
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + taskclass + "?view=full&from=" + start + "&size=" + pageSize;
+	
+        var filters = params.search.predicateObject;
+        var count = 0;
+        var expre = [];
+        if (filters)
+        {
+            var filter;
+            for (var property in filters) {
+                if (filters.hasOwnProperty(property)) {
+                    filter = [];
+                    filter.push(property);
+                    if (property === "Subject") {
+                        filter.push("contains");
+                    }
+                    else {
+                        filter.push("=");
+                    }
+                    filter.push(filters[property]);
+                }
+
+                count++;
+
+                if (count === 1) {
+                    expre.push(filter);
+                }
+                else
+                {
+                    expre.push("and");
+                    expre.push(filter);
+                }
+            }
+
+            if (count > 0) {
+                if (count === 1) {
+                    url += "&filter=" + JSON.stringify(expre[0]); // single filter
+                }
+                else {
+                    url += "&filter=" + JSON.stringify(expre); // compound filter
+                }
+            }
+        }
+
+        var sortField = params.sort.predicate;
+        var sortReverse = params.sort.reverse;
+        if (sortField)
+        {
+            url += "&sortfield=" + sortField + "&sortreverse=" + sortReverse;
+        }
+
+        hubService.getUserGroups(function (groups) {
+
+            $http.get(url).success(function (data) {
+                var result = new Object();
+                addTrackStatus(dbschema, data, groups);
+                result.data = data;
+
+                url = APP_CONFIG.ebaasRootUrl + "/api/count/" + encodeURIComponent(dbschema) + "/" + taskclass;
+                if (count > 0) {
+                    if (count === 1) {
+                        url += "?filter=" + JSON.stringify(expre[0]); // single filter
+                    }
+                    else {
+                        url += "?filter=" + JSON.stringify(expre); // compound filter
+                    }
+                }
+                $http.get(url).success(function (data) {
+                    var numberOfPages = Math.ceil(data / pageSize);
+                    result.numberOfPages = numberOfPages;
+                    callback(result);
+                }).error(function () {
+                    callback(undefined);
+
+                });
+            }).error(function () {
+                callback(undefined);
+            });
+        });
+    }
+
+    function getOneTask(dbschema, taskclass, oid, callback) {
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + taskclass + "/" + oid
+
+        hubService.getUserGroups(function (groups) {
+
+            $http.get(url).success(function (data) {
+                var array = [];
+                array.push(data);
+                var result = new Object();
+                addTrackStatus(dbschema, array, groups);
+                result.data = array;
+                result.numberOfPages = 1;
+                callback(result);
+
+            }).error(function () {
+                callback(undefined);
+            });
+        });
+    }
+
+    function addTrackStatus(dbschema, data, userGroups)
+    {
+        if (data && data.length > 0)
+        {
+            for (var i = 0; i < data.length; i++)
+            {
+                data[i].TrackStatus = false;
+                var groupName = dbschema + "-" + data[i].type + "-" + data[i].obj_id;
+                for (var j = 0; j < userGroups.length; j++)
+                {
+                    if (userGroups[j] === groupName)
+                    {
+                        data[i].TrackStatus = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+	
+	return {
+	    getTaskResult: function (dbschema, taskclass, start, pagesize, tableState, callback) {
+	        getTaskResult(dbschema, taskclass, start, pagesize, tableState, callback);
+	    },
+	    getOneTask: function (dbschema, taskclass, oid, callback) {
+	        getOneTask(dbschema, taskclass, oid, callback);
+	    }
+	}
 });
 'use strict';
 
@@ -19413,6 +19173,1317 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($r
         }
     });
 });
+'use strict';
+
+angular.module('app.taskviewer')
+    .factory('ContextMenuService', function () {
+        return {
+            element: null,
+            menuElement: null
+        };
+    })
+    .directive('contextMenu', [
+        '$document',
+        'ContextMenuService',
+        function ($document, ContextMenuService) {
+            return {
+                restrict: 'A',
+                scope: {
+                    'callback': '&contextMenu',
+                    'disabled': '&contextMenuDisabled',
+                    'closeCallback': '&contextMenuClose',
+                    'marginBottom': '@contextMenuMarginBottom'
+                },
+                link: function ($scope, $element, $attrs) {
+                    var opened = false;
+
+                    function open(event, menuElement) {
+                        menuElement.addClass('open');
+
+                        var doc = $document[0].documentElement;
+                        var docLeft = (window.pageXOffset || doc.scrollLeft) -
+                            (doc.clientLeft || 0),
+                            docTop = (window.pageYOffset || doc.scrollTop) -
+                                (doc.clientTop || 0),
+                            elementWidth = menuElement[0].scrollWidth,
+                            elementHeight = menuElement[0].scrollHeight;
+                        var pageX;
+                        var pageY;
+                        // browser compatibility fix for the click location
+                        if (event.pageX || event.pageY) {
+                            // use pageX and pageY when available (modern browsers)
+                            pageX = event.pageX;
+                            pageY = event.pageY;
+                        } else {
+                            // calculate pageX and pageY when they do not exist
+                            // (IE8 and generated events in later versions of IE)
+                            var docBody = $document[0].body;
+                            pageX = event.clientX + docBody.scrollLeft + doc.scrollLeft;
+                            pageY = event.clientY + docBody.scrollTop + doc.scrollTop;
+                        }
+                        var docWidth = doc.clientWidth + docLeft,
+                            docHeight = doc.clientHeight + docTop,
+                            totalWidth = elementWidth + pageX,
+                            totalHeight = elementHeight + pageY,
+                            left = Math.max(pageX - docLeft, 0),
+                            top = Math.max(pageY - docTop, 0);
+
+                        if (totalWidth > docWidth) {
+                            left = left - (totalWidth - docWidth);
+                        }
+
+                        if (totalHeight > docHeight) {
+                            var marginBottom = $scope.marginBottom || 0;
+                            top = top - (totalHeight - docHeight) - marginBottom;
+                        }
+
+                        menuElement.css('top', top + 'px');
+                        menuElement.css('left', left + 'px');
+                        opened = true;
+                    }
+
+                    function close(menuElement) {
+                        menuElement.removeClass('open');
+
+                        if (opened) {
+                            $scope.closeCallback();
+                        }
+
+                        opened = false;
+                    }
+
+                    $element.bind('contextmenu', function (event) {
+                        if (!$scope.disabled()) {
+                            if (ContextMenuService.menuElement !== null) {
+                                close(ContextMenuService.menuElement);
+                            }
+                            ContextMenuService.menuElement = angular.element(
+                                document.getElementById($attrs.target)
+                            );
+                            ContextMenuService.element = event.target;
+
+                            event.preventDefault();
+                            event.stopPropagation();
+                            $scope.$apply(function () {
+                                $scope.callback({ $event: event });
+                            });
+                            $scope.$apply(function () {
+                                open(event, ContextMenuService.menuElement);
+                            });
+                        }
+                    });
+
+                    function handleKeyUpEvent(event) {
+                        if (opened && event.keyCode === 27) {
+                            $scope.$apply(function () {
+                                close(ContextMenuService.menuElement);
+                            });
+                        }
+                    }
+
+                    function handleClickEvent(event) {
+                        if (opened &&
+                            (event.button !== 2 ||
+                                event.target !== ContextMenuService.element)) {
+                            $scope.$apply(function () {
+                                close(ContextMenuService.menuElement);
+                            });
+                        }
+                    }
+
+                    $document.bind('keyup', handleKeyUpEvent);
+                    // Firefox treats a right-click as a click and a contextmenu event
+                    // while other browsers just treat it as a contextmenu event
+                    $document.bind('click', handleClickEvent);
+                    $document.bind('contextmenu', handleClickEvent);
+
+                    $scope.$on('$destroy', function () {
+                        $document.unbind('keyup', handleKeyUpEvent);
+                        $document.unbind('click', handleClickEvent);
+                        $document.unbind('contextmenu', handleClickEvent);
+                    });
+                }
+            };
+        }
+    ]);
+
+'use strict';
+
+angular.module('app.taskviewer').directive('taskTreeviewContent', function ($compile) {
+    return {
+        restrict: 'E',
+        link: function (scope, element) {
+            var $content = $(scope.item.content);
+
+            function handleExpanded(){
+                $content.find('>i')
+                    .toggleClass('fa-plus-circle', !scope.item.expanded)
+                    .toggleClass('fa-minus-circle', !!scope.item.expanded)
+
+            }
+
+
+            if (scope.item.children && scope.item.children.length) {
+                $content.on('click', function(){
+                    scope.$apply(function(){
+                        scope.item.expanded = !scope.item.expanded;
+                        handleExpanded();
+                    });
+
+
+                });
+                handleExpanded();
+            }
+
+            element.replaceWith($content);
+
+
+        }
+    }
+});
+
+angular.module('app.taskviewer').directive('taskTreeview', function ($compile, $sce) {
+    return {
+        restrict: 'A',
+        scope: {
+            'items': '='
+        },
+        template: '<li ng-class="{parent_li: item.children.length}" ng-repeat="item in items" role="treeitem">' +
+            '<div context-menu data-target="menu-{{ item.index }}">' +
+            '<task-treeview-content></task-treeview-content>' +
+            '</div>' +
+            '<ul ng-if="item.children.length" task-treeview ng-show="item.expanded"  items="item.children" role="group" class="smart-treeview-group" ></ul>' +
+            '</li>',
+        compile: function (element) {
+            // Break the recursion loop by removing the contents
+            var contents = element.contents().remove();
+            var compiledContents;
+            return {
+                post: function (scope, element) {
+                    // Compile the contents
+                    if (!compiledContents) {
+                        compiledContents = $compile(contents);
+                    }
+                    // Re-add the compiled contents to the element
+                    compiledContents(scope, function (clone) {
+                        element.append(clone);
+                    });
+                }
+            };
+        }
+    };
+});
+'use strict';
+
+angular.module('app.userdirectory').controller('assignRolesCtrl', function ($scope, $controller, $rootScope, $http, APP_CONFIG, $stateParams, $modalInstance) {
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = "Role";
+    $scope.masterclass = $stateParams.class;
+    $scope.masterid = $stateParams.oid;
+    $scope.roletype = $stateParams.roletype;
+
+    if ($stateParams.dataview)
+    {
+        $scope.view = $stateParams.dataview;
+    }
+    else
+    {
+        $scope.view = undefined;
+    }
+
+    $scope.filter = "['RType', '=', '" + $scope.roletype + "']";
+
+    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG }));
+
+    $scope.gridInstance = null;
+    $scope.existingKeys = null;
+    $scope.currentKeys = null;
+    $scope.isUpdated = false;
+    $scope.loading = false;
+    $scope.dataGridSettings = {
+        dataSource: {
+            store: $scope.customStore
+        },
+        columnAutoWidth: true,
+        sorting: {
+            mode: "multiple"
+        },
+        editing: {
+            allowAdding: false,
+            allowUpdating: false,
+            allowDeleting: false
+        },
+        grouping: {
+            autoExpandAll: false
+        },
+        pager: {
+            visible: true,
+            showPageSizeSelector: true,
+            showInfo: true
+        },
+        filterRow: {
+            visible: true,
+            applyFilter: "auto"
+        },
+        searchPanel: { visible: false },
+        selection: { mode: 'multiple' },
+        remoteOperations: true,
+        bindingOptions: {
+            columns: 'columns'
+        },
+        headerFilter: {
+            visible: true
+        },
+        rowAlternationEnabled: true,
+        onInitialized: function (e) {
+            $scope.gridInstance = e.component;
+        },
+        onContentReady: function (e) {
+            selectGridRows();
+        },
+        onSelectionChanged: function (e) {
+            changeSelections(e.currentSelectedRowKeys, e.currentDeselectedRowKeys);
+        }
+    };
+
+    var asyncLoop = function(o)
+    {
+        var i = -1;
+
+        var loop = function() {
+            i++;
+            if (i == o.length)
+            {
+                o.callback();
+                return;
+            }
+
+            o.functionToLoop(loop, i);
+        }
+
+        loop(); // init
+    }
+
+    var selectGridRows = function()
+    {
+        if ($scope.currentKeys) {
+            var keys = $scope.currentKeys;
+            var indexes = [];
+            for (var i = 0; i < keys.length; i++) {
+                var index = $scope.gridInstance.getRowIndexByKey(keys[i]);
+
+                if (index >= 0)
+                    indexes.push(index);
+            }
+
+            $scope.gridInstance.selectRowsByIndexes(indexes, true);
+        }
+        else {
+            if ($scope.masterid) {
+                $http.get(APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($stateParams.schema) + "/" + $scope.masterclass + "/" + $scope.masterid + "/" + $scope.dbclass)
+                    .success(function (data) {
+                        var keys = new Array();
+                        if (data) {
+                            for (var i = 0; i < data.length; i++) {
+                                keys.push(data[i].obj_id);
+                            }
+
+                            if (keys.length > 0) {
+                                // set the existing selections of rows
+                                $scope.gridInstance.selectRows(keys, false);
+                            }
+                        }
+
+                        $scope.existingKeys = keys; // keep the existing keys
+                        // initialize the current keys
+                        $scope.currentKeys = [];
+                        for (var i = 0; i < keys.length; i++) {
+                            $scope.currentKeys.push(keys[i]);
+                        }
+                    });
+            }
+        }
+    }
+
+    // keep the current keys in sync with grid row selections
+    var changeSelections = function (selectedKeys, deselectedKeys) {
+        var addedKeys = new Array();
+        var removedKeys = new Array();
+        var found;
+
+        // find the newly selected keys
+        if (selectedKeys && $scope.currentKeys) {
+            for (var i = 0; i < selectedKeys.length; i++) {
+                found = false;
+
+                var index = $scope.gridInstance.getRowIndexByKey(selectedKeys[i]);
+                if (index > -1) {
+                    for (var j = 0; j < $scope.currentKeys.length; j++) {
+                        if (selectedKeys[i] === $scope.currentKeys[j]) {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!found) {
+                    addedKeys.push(selectedKeys[i]);
+                }
+            }
+        }
+
+        if (deselectedKeys && $scope.currentKeys) {
+            // find the unselected keys
+            for (var i = 0; i < $scope.currentKeys.length; i++) {
+                found = false;
+
+                for (var j = 0; j < deselectedKeys.length; j++) {
+                    var index = $scope.gridInstance.getRowIndexByKey(deselectedKeys[j]);
+                    if (index > -1) {
+                        if ($scope.currentKeys[i] === deselectedKeys[j]) {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (found) {
+                    removedKeys.push($scope.currentKeys[i]);
+                }
+            }
+        }
+
+        for (var i = 0; i < addedKeys.length; i++) {
+            $scope.currentKeys.push(addedKeys[i]);
+        }
+
+        for (var i = 0; i < removedKeys.length; i++) {
+            var index = $scope.currentKeys.indexOf(removedKeys[i]);
+            if (index > -1)
+                $scope.currentKeys.splice(index, 1);
+        }
+
+        //console.log("after current keys = " + $scope.currentKeys);
+    }
+
+    $scope.saveSelection = function () {
+        var addedKeys = new Array();
+        var removedKeys = new Array();
+        var found;
+
+        // find the added selections
+        for (var i = 0; i < $scope.currentKeys.length; i++) {
+            found = false;
+
+            for (var j = 0; j < $scope.existingKeys.length; j++) {
+                if ($scope.currentKeys[i] === $scope.existingKeys[j]) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                addedKeys.push($scope.currentKeys[i]);
+            }
+        }
+
+        // find the removed selections
+        for (var i = 0; i < $scope.existingKeys.length; i++) {
+            found = false;
+
+            for (var j = 0; j < $scope.currentKeys.length; j++) {
+                if ($scope.existingKeys[i] === $scope.currentKeys[j]) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                removedKeys.push($scope.existingKeys[i]);
+            }
+        }
+
+        if (addedKeys.length > 0) {
+            $scope.loading = true;
+
+            // add relationhsips to the db
+            asyncLoop({
+                length: addedKeys.length,
+                functionToLoop: function (loop, i) {
+                    if ($scope.masterid) {
+                        $http.post(APP_CONFIG.ebaasRootUrl + "/api/relationship/" + encodeURIComponent($stateParams.schema) + "/" + $scope.masterclass + "/" + $scope.masterid + "/" + $scope.dbclass + "/" + encodeURIComponent(addedKeys[i]))
+                             .success(function (data) {
+                                 loop();
+                             });
+                    }
+                },
+                callback: function () {
+                    $scope.loading = false;
+                    $scope.isUpdated = true;
+                }
+            })
+        }
+
+        if (removedKeys.length > 0) {
+            $scope.loading = true;
+            // delete relationhsips from the db
+            asyncLoop({
+                length: removedKeys.length,
+                functionToLoop: function (loop, i) {
+                    $http.delete(APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($stateParams.schema) + "/" + $scope.masterclass + "/" + $scope.masterid + "/" + $scope.dbclass + "/" + encodeURIComponent(removedKeys[i]))
+                         .success(function (data) {
+                             loop();
+                         });
+                },
+                callback: function () {
+                    $scope.existingKeys = [];
+                    for (var i = 0; i < $scope.currentKeys.length; i++)
+                        $scope.existingKeys.push($scope.currentKeys[i]);
+                    $scope.loading = false;
+                    $scope.isUpdated = true;
+                }
+            })
+        }
+
+    };
+
+    $scope.goBack = function () {
+        if ($scope.isUpdated) {
+            $modalInstance.close({ "modal": "viewManyToMany"});
+        }
+        else {
+            $modalInstance.dismiss("dismiss");
+        }
+    };
+});
+
+'use strict';
+
+angular.module('app.userdirectory').controller('RoleListViewCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, TestStations, $interval, userService) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.baseclass;
+    $scope.roletype = $stateParams.roletype;
+
+    $scope.filter = "['RType', '=', '" + $scope.roletype + "']";
+
+    if ($stateParams.insert && $stateParams.insert === "false") {
+        $scope.add = false;
+    }
+    else {
+        $scope.add = true;
+    }
+
+    if ($stateParams.export && $stateParams.export === "true") {
+        $scope.exportData = true;
+    }
+    else {
+        $scope.exportData = false;
+    }
+
+    if ($stateParams.import && $stateParams.import === "true") {
+        $scope.importData = true;
+    }
+    else {
+        $scope.importData = false;
+    }
+
+    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG }));
+
+    $scope.openModal = function () {
+        $state.go('.modalform', { schema: $scope.dbschema, class: $scope.dbclass }, { location: false, notify: false });
+    };
+
+    $scope.GetCommands = function (rowIndex, data) {
+        var items = new Array();
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/sitemap/commands/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass;
+
+        $http.get(url).success(function (commands) {
+
+            // custom commands
+            $scope.commands = commands;
+            var cmdInfo;
+            var item;
+            for (var cmd in commands) {
+                if (commands.hasOwnProperty(cmd)) {
+                    cmdInfo = commands[cmd];
+                    item = new Object();
+                    item.text = cmdInfo.title;
+                    item.css = "btn btn-primary btn-md btn-nav";
+                    if (cmdInfo.icon) {
+                        item.icon = cmdInfo.icon;
+                    }
+                    else {
+                        item.icon = "fa fa-lg fa-tasks";
+                    }
+
+                    item.onItemClick = function (text) {
+                        gotoState(text, $scope.dbschema, data.type, data.obj_id)
+                    }
+
+                    items.push(item);
+
+                    if (cmdInfo.baseUrl && !APP_CONFIG.hashedBaseUrls[cmdInfo.hash]) {
+                        APP_CONFIG.hashedBaseUrls[cmdInfo.hash] = cmdInfo.baseUrl;
+                    }
+                }
+            }
+
+            if (data.allowWrite && $stateParams.edit !== "false") {
+                items.push({
+                    text: $rootScope.getWord('Edit'),
+                    icon: "fa fa-lg fa-edit",
+                    css: "btn btn-default btn-md btn-nav",
+                    onItemClick: function () {
+                        $state.go('.modalform', { schema: $scope.dbschema, class: data.type, oid: data.obj_id }, { location: false, notify: false });
+                    }
+                });
+            }
+
+            if (data.allowDelete && $stateParams.delete !== "false") {
+                items.push({
+                    text: $rootScope.getWord('Delete'),
+                    icon: "fa fa-lg fa-times",
+                    css: "btn btn-default btn-md btn-nav",
+                    onItemClick: function () {
+                        $scope.gridInstance.deleteRow(rowIndex);
+                    }
+                });
+            }
+        });
+        return items;
+    }
+
+    var gotoState = function (title, dbschema, dbclass, oid) {
+        var commands = $scope.commands;
+        var url = undefined;
+        var cmdUrl = undefined;
+        var params = undefined;
+        var cmdInfo;
+        for (var cmd in commands) {
+            if (commands.hasOwnProperty(cmd)) {
+                cmdInfo = commands[cmd];
+                if (cmdInfo.title === title) {
+                    url = cmdInfo.url;
+                    cmdUrl = cmdInfo.url;
+                    params = new Object();
+                    params.schema = dbschema;
+                    params.class = dbclass;
+                    params.oid = oid;
+                    params.cmdHash = cmdInfo.hash;
+
+                    // add command's parameters to the state parameters
+                    if (cmdInfo.parameters) {
+                        for (var key in cmdInfo.parameters) {
+                            if (cmdInfo.parameters.hasOwnProperty(key)) {
+                                params[key] = cmdInfo.parameters[key];
+                            }
+                        }
+                    };
+
+                    break;
+                }
+            }
+        }
+
+        if (url) {
+            try
+            {
+                if (cmdUrl === ".modalform") {
+                    $state.go(url, params, { location: false, notify: false });
+                }
+                else {
+                    $state.go(url, params);
+                }
+            }
+            catch (err)
+            {
+                BootstrapDialog.show({
+                    title: $rootScope.getWord("Info Dialog"),
+                    type: BootstrapDialog.TYPE_INFO,
+                    message: $rootScope.getWord("Invalid Command"),
+                    buttons: [{
+                        label: $rootScope.getWord("Cancel"),
+                        action: function (dialog) {
+                            dialog.close();
+                        }
+                    }]
+                });
+            }
+        }
+    }
+
+    $scope.gridInstance = null;
+    $scope.dataGridSettings = {
+        dataSource: {
+            store: $scope.customStore
+        },
+        columnAutoWidth: true,
+        height: $rootScope.isChrome() === true ? '750px' : undefined,
+        sorting: {
+            mode: "multiple"
+        },
+        searchPanel: {
+            visible: $stateParams.search && $stateParams.search === "true"? true: false,
+            width: 300,
+            placeholder: $rootScope.getWord("Keyword Search")
+        },
+        editing: {
+            allowAdding: false,
+            allowUpdating: false,
+            allowDeleting: false
+        },
+        grouping: {
+            autoExpandAll: false
+        },
+        pager: {
+            visible: true,
+            showPageSizeSelector: true,
+            showInfo: true
+        },
+        filterRow: {
+            visible: true,
+            applyFilter: "auto"
+        },
+        selection: { mode: 'single' },
+        remoteOperations: true,
+        bindingOptions: {
+            columns: 'columns'
+        },
+        headerFilter: {
+            visible: true
+        },
+        rowAlternationEnabled: true,
+        masterDetail: {
+            enabled: true,
+            template: "detail"
+        },
+        onRowClick: function (e) {
+            if (e.rowType === "data") {
+                var isExpanded = $scope.gridInstance.isRowExpanded(e.key);
+                $scope.gridInstance.collapseAll(-1); // collaspsed all
+                if (!isExpanded) {
+                    $scope.gridInstance.expandRow(e.key);
+                }
+            }
+        },
+        onInitialized: function (e) {
+            $scope.gridInstance = e.component;
+        },
+        onRowPrepared: function (e) {
+        }
+    };
+
+    $rootScope.$on('modalClosed', function (event, data) {
+        if ($scope.gridInstance && data === "update")
+            $scope.gridInstance.refresh();
+    });
+});
+'use strict';
+
+angular.module('app.userdirectory').controller('UserDirectoryLayoutCtrl', function ($http, APP_CONFIG, $scope, $rootScope, $state, $stateParams, userService, propmisedParams) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.userclass = $stateParams.class;
+    $scope.roleclass = "Role";
+
+    // Getting unit tree
+    $scope.unitObjId = $stateParams.unitObjId;
+
+    var params = propmisedParams.data;
+
+    $scope.view = params['dataView'];
+    $scope.formTemplate = params['formTemplate'];
+
+    userService.getUnitTree($stateParams.schema, $scope.roleclass, $scope.unitObjId, function (data) {
+        $scope.unitTree = data;
+    });
+
+    // Getting function list
+    userService.getFunctions($stateParams.schema, $scope.roleclass, function (data) {
+        // add "Every One" as the first function
+        var role = {};
+        role.Text = $rootScope.getWord("Everyone");
+        role.obj_id = undefined;
+        if (data)
+        {
+            data.unshift(role);
+        }
+        else
+        {
+            data = [];
+            data.push(role);
+        }
+ 
+        $scope.functions = data;
+    });
+
+    $state.go('app.userdirectory.usertable', { schema: $scope.dbschema, baseclass: $scope.roleclass, baseoid: undefined, relatedclass: $scope.userclass, view: $scope.view, formtemplate: $scope.formTemplate });
+
+    $scope.functionObjId = undefined;
+    
+    $scope.getFunctionUsers = function (functionObjId) {
+        $scope.functionObjId = functionObjId;
+        $state.go('app.userdirectory.usertable', { schema: $scope.dbschema, baseclass: $scope.roleclass, baseoid: functionObjId, relatedclass: $scope.userclass, view: $scope.view, formtemplate: $scope.formTemplate });
+    }
+
+    $scope.getUnitUsers = function (unitObjId) {
+        $scope.unitObjId = unitObjId;
+        $state.go('app.userdirectory.usertable', { schema: $scope.dbschema, baseclass: $scope.roleclass, baseoid: unitObjId, relatedclass: $scope.userclass, view: $scope.view, formtemplate: $scope.formTemplate });
+    }
+
+    $scope.openFunctions = function () {
+        $state.go('app.userdirectory.roletable', { schema: $scope.dbschema, baseclass: $scope.roleclass, roletype: "Function" });
+    }
+
+    $scope.openUnits = function () {
+        $state.go('app.userdirectory.roletable', { schema: $scope.dbschema, baseclass: $scope.roleclass, roletype: "Unit" });
+    }
+
+    $scope.refresh = function () {
+        $state.reload();
+    }
+});
+'use strict';
+
+angular.module('app.userdirectory').controller('UserListCtrl', function ($scope, $rootScope, $state, $stateParams, APP_CONFIG, userService, promisedUsers) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.userclass = $stateParams.class;
+    $scope.roleclass = "Role";
+
+    $scope.getWord = function(key)
+    {
+        return key;
+    }
+
+    $scope.tableOptions = {
+        "data": userService.convertUsers(promisedUsers.data),
+        //            "bDestroy": true,
+        "iDisplayLength": 20,
+        "columns": [
+            {
+                "class": 'details-control',
+                "orderable": false,
+                "data": null,
+                "defaultContent": ''
+            },
+            { "data": "FullName" },
+            { "data": "ID" },
+            { "data": "PhoneNumber" },
+            { "data": "Email" }
+        ],
+        "order": [[1, 'asc']]
+    }
+
+    // Getting unit tree
+    $scope.unitObjId = $stateParams.unitObjId;
+
+    userService.getUnitTree($stateParams.schema, $scope.roleclass, $scope.unitObjId, function (data) {
+        $scope.unitTree = data;
+
+    });
+
+    // Getting function list
+    userService.getFunctions($stateParams.schema, $scope.roleclass, function (data) {
+       
+        $scope.functions = data;
+
+    });
+
+    $scope.functionObjId = $stateParams.functionObjId;
+    $scope.getFunctionUsers = function (functionObjId) {
+        var params = new Object();
+
+        params.functionObjId = functionObjId;
+        params.unitObjId = undefined;
+        $scope.functionObjId = functionObjId;
+        $scope.unitObjId = undefined;
+
+        $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
+    }
+
+    $scope.getUnitUsers = function(unitObjId)
+    {
+        var params = new Object();
+
+        params.unitObjId = unitObjId;
+        params.functionObjId = undefined;
+        $scope.unitObjId = unitObjId;
+        $scope.functionObjId = undefined;
+
+        $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
+    }
+});
+'use strict';
+
+angular.module('app.userdirectory').controller('UserListViewCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, TestStations, $interval, userService) {
+
+    $scope.dbschema = $stateParams.schema;
+    $scope.userclass = $stateParams.relatedclass;
+    
+    $scope.formTemplate = $stateParams.formtemplate;
+
+    if ($stateParams.baseoid) {
+        $scope.dbclass = $stateParams.baseclass;
+        $scope.relatedclass = $stateParams.relatedclass;
+        $scope.relatedview = $stateParams.view;
+        $scope.oid = $stateParams.baseoid;
+        
+        $scope.isrelated = true;
+    }
+    else
+    {
+        // get all users
+        $scope.dbclass = $stateParams.relatedclass;
+        $scope.view = $stateParams.view;
+    }
+
+    if ($stateParams.insert && $stateParams.insert === "false") {
+        $scope.add = false;
+    }
+    else {
+        $scope.add = true;
+    }
+
+    if ($stateParams.export && $stateParams.export === "true") {
+        $scope.exportData = true;
+    }
+    else {
+        $scope.exportData = false;
+    }
+
+    if ($stateParams.import && $stateParams.import === "true") {
+        $scope.importData = true;
+    }
+    else {
+        $scope.importData = false;
+    }
+
+    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG }));
+
+    $scope.openModal = function () {
+        $state.go('.modalform', { schema: $scope.dbschema, class: $scope.userclass, template: $scope.formTemplate }, { location: false, notify: false });
+    };
+
+    $scope.GetCommands = function (rowIndex, data) {
+        var items = new Array();
+
+        var url = APP_CONFIG.ebaasRootUrl + "/api/sitemap/commands/" + encodeURIComponent($scope.dbschema) + "/" + $scope.userclass;
+
+        $http.get(url).success(function (commands) {
+
+            // custom commands
+            $scope.commands = commands;
+            var cmdInfo;
+            var item;
+            for (var cmd in commands) {
+                if (commands.hasOwnProperty(cmd)) {
+                    cmdInfo = commands[cmd];
+                    item = new Object();
+                    item.text = cmdInfo.title;
+                    item.css = "btn btn-primary btn-md btn-nav";
+                    if (cmdInfo.icon) {
+                        item.icon = cmdInfo.icon;
+                    }
+                    else {
+                        item.icon = "fa fa-lg fa-tasks";
+                    }
+
+                    item.onItemClick = function (text) {
+                        gotoState(text, $scope.dbschema, data.type, data.obj_id)
+                    }
+
+                    items.push(item);
+
+                    if (cmdInfo.baseUrl && !APP_CONFIG.hashedBaseUrls[cmdInfo.hash]) {
+                        APP_CONFIG.hashedBaseUrls[cmdInfo.hash] = cmdInfo.baseUrl;
+                    }
+                }
+            }
+
+            if (data.allowWrite && $stateParams.edit !== "false") {
+                items.push({
+                    text: $rootScope.getWord('Edit'),
+                    icon: "fa fa-lg fa-edit",
+                    css: "btn btn-default btn-md btn-nav",
+                    onItemClick: function () {
+                        $state.go('.modalform', { schema: $scope.dbschema, class: data.type, oid: data.obj_id, template: $scope.formTemplate }, { location: false, notify: false });
+                    }
+                });
+            }
+
+            if (data.allowDelete && $stateParams.delete !== "false") {
+                items.push({
+                    text: $rootScope.getWord('Delete'),
+                    icon: "fa fa-lg fa-times",
+                    css: "btn btn-default btn-md btn-nav",
+                    onItemClick: function () {
+                        $scope.gridInstance.deleteRow(rowIndex);
+                    }
+                });
+            }
+        });
+        return items;
+    }
+
+    var gotoState = function (title, dbschema, dbclass, oid) {
+        var commands = $scope.commands;
+        var url = undefined;
+        var cmdUrl = undefined;
+        var params = undefined;
+        var cmdInfo;
+        for (var cmd in commands) {
+            if (commands.hasOwnProperty(cmd)) {
+                cmdInfo = commands[cmd];
+                if (cmdInfo.title === title) {
+                    url = cmdInfo.url;
+                    cmdUrl = cmdInfo.url;
+                    params = new Object();
+                    params.schema = dbschema;
+                    params.class = dbclass;
+                    params.oid = oid;
+                    params.cmdHash = cmdInfo.hash;
+
+                    // add command's parameters to the state parameters
+                    if (cmdInfo.parameters) {
+                        for (var key in cmdInfo.parameters) {
+                            if (cmdInfo.parameters.hasOwnProperty(key)) {
+                                params[key] = cmdInfo.parameters[key];
+                            }
+                        }
+                    };
+
+                    break;
+                }
+            }
+        }
+
+        if (url) {
+            try
+            {
+                if (cmdUrl === ".modalform") {
+                    $state.go(url, params, { location: false, notify: false });
+                }
+                else {
+                    $state.go(url, params);
+                }
+            }
+            catch (err)
+            {
+                BootstrapDialog.show({
+                    title: $rootScope.getWord("Info Dialog"),
+                    type: BootstrapDialog.TYPE_INFO,
+                    message: $rootScope.getWord("Invalid Command"),
+                    buttons: [{
+                        label: $rootScope.getWord("Cancel"),
+                        action: function (dialog) {
+                            dialog.close();
+                        }
+                    }]
+                });
+            }
+        }
+    }
+
+    $scope.gridInstance = null;
+    $scope.dataGridSettings = {
+        dataSource: {
+            store: $scope.customStore
+        },
+        columnAutoWidth: true,
+        height: $rootScope.isChrome() === true ? '750px' : undefined,
+        sorting: {
+            mode: "multiple"
+        },
+        searchPanel: {
+            visible: $stateParams.search && $stateParams.search === "true"? true: false,
+            width: 300,
+            placeholder: $rootScope.getWord("Keyword Search")
+        },
+        editing: {
+            allowAdding: false,
+            allowUpdating: false,
+            allowDeleting: false
+        },
+        grouping: {
+            autoExpandAll: false
+        },
+        pager: {
+            visible: true,
+            showPageSizeSelector: true,
+            showInfo: true
+        },
+        filterRow: {
+            visible: true,
+            applyFilter: "auto"
+        },
+        selection: { mode: 'single' },
+        remoteOperations: true,
+        bindingOptions: {
+            columns: 'columns'
+        },
+        headerFilter: {
+            visible: true
+        },
+        rowAlternationEnabled: true,
+        masterDetail: {
+            enabled: true,
+            template: "detail"
+        },
+        onRowClick: function (e) {
+            if (e.rowType === "data") {
+                var isExpanded = $scope.gridInstance.isRowExpanded(e.key);
+                $scope.gridInstance.collapseAll(-1); // collaspsed all
+                if (!isExpanded) {
+                    $scope.gridInstance.expandRow(e.key);
+                }
+            }
+        },
+        onInitialized: function (e) {
+            $scope.gridInstance = e.component;
+        },
+        onRowPrepared: function (e) {
+        }
+    };
+
+    $rootScope.$on('modalClosed', function (event, data) {
+        if ($scope.gridInstance && data === "update")
+            $scope.gridInstance.refresh();
+    });
+});
+"use strict";
+
+angular.module('app.userdirectory').factory('userService', function ($http, APP_CONFIG) {
+
+    var convertUsers = function (userCollection) {
+
+        var id = "ID";
+        var firstName = "FirstName";
+        var lastName = "LastName";
+        var phoneNumber = "PhoneNumber";
+        var email = "Email";
+        var picture = "Picture";
+        var division = "Department";
+        var address = "Location";
+        var displayText = "DisplayText";
+
+        var users = new Array();
+
+        if (userCollection) {
+
+            for (var i = 0; i < userCollection.length; i++) {
+                var user = userCollection[i];
+
+                var userItem = new Object();
+
+                userItem.obj_id = user["obj_id"];
+                userItem.ID = user[id];
+                if (user[displayText]) {
+                    userItem.FullName = user[displayText];
+                }
+                else
+                {
+                    userItem.FullName = user[lastName] + user[firstName];
+                }
+                userItem.PhoneNumber = user[phoneNumber];
+                userItem.Email = user[email];
+                userItem.Division = user[division];
+                userItem.Address = user[address];
+                if (user[picture]) {
+                    userItem.Picture = APP_CONFIG.avatarsUrl + userItem.ID + ".png";
+                }
+                else
+                {
+                    userItem.Picture = APP_CONFIG.avatarsUrl + "male.png";
+                }
+
+                users.push(userItem);
+            }
+        }
+
+        return users;
+    }
+
+    var createUnitTree = function (nodes, currentNodeObjId) {
+        var map = {}, node, menuItem, parentItem, roots = [], menuItems = [];
+        for (var i = 0; i < nodes.length; i += 1) {
+            node = nodes[i];
+            
+            menuItem = new Object();
+            menuItem.name = node.Name;
+            menuItem.text = node.Text;
+            menuItem.children = new Array();
+            map[menuItem.name] = i; // use map to look-up the parents
+            menuItems.push(menuItem);
+        }
+
+        for (var i = 0; i < nodes.length; i += 1) {
+            node = nodes[i];
+            menuItem = menuItems[i];
+
+            if (node.parentRole != "") {
+                parentItem = menuItems[map[node.parentRole]];
+                parentItem.children.push(menuItem);
+                menuItem.parentItem = parentItem;
+            } else {
+                //menuItem.expanded = true;
+                menuItem.parentItem = undefined;
+                roots.push(menuItem);
+            }
+        }
+
+        for (var i = 0; i < nodes.length; i += 1) {
+            node = nodes[i];
+            menuItem = menuItems[i];
+
+            if (menuItem.children.length > 0) {
+                menuItem.content = "<span><i class=\"fa fa-lg fa-plus-circle\"></i> " + node.Text + "</span>";
+                //menuItem.content = "<span class='label label-info'><i class=\"fa fa-lg fa-plus-circle\"></i>&nbsp;&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('unitTreeContainer')).scope().getUnitUsers(" + node.obj_id + ");\">" + node.Text + "</a></span>";
+            } else {
+                if (currentNodeObjId && currentNodeObjId === node.obj_id)
+                {
+                    menuItem.content = "<span class='label label-warning'><a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('unitTreeContainer')).scope().getUnitUsers(" + node.obj_id + ");\">" + node.Text + "</a></span>";
+
+                    var thisItem = menuItem;
+                    while (thisItem.parentItem) {
+                        thisItem = thisItem.parentItem;
+                        thisItem.expanded = true;
+                    }
+                }
+                else
+                {
+                    menuItem.content = "<span class='label label-info'><a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('unitTreeContainer')).scope().getUnitUsers(" + node.obj_id + ");\">" + node.Text + "</a></span>";
+                }
+            }
+        }
+
+        return roots;
+    };
+
+    function getAllUsers(dbschema, userclass, pageIndex, callback) {
+	    
+	    var pageSize = 20;
+	    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + userclass + "?view=full&size=" + pageSize;
+	    if (pageIndex) {
+	        var from = pageIndex * pageSize;
+	        url += "&from=" + from;
+	    }
+
+        $http.get(url).success(function (data) {
+	        callback(convertUsers(data));
+				
+		}).error(function(){
+		    callback([]);
+
+		});
+    }
+
+    function getUnitTree(dbschema, roleclass, currentNodeId, callback) {
+
+        var pageSize = 200;
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + roleclass + "?view=full&size=" + pageSize + "&filter=['RType', '=', 'Unit']";
+
+        $http.get(url).success(function (data) {
+            callback(createUnitTree(data, currentNodeId));
+
+        }).error(function () {
+            callback(undefined);
+
+        });
+    }
+
+    function getFunctions(dbschema, roleclass, callback) {
+
+        var pageSize = 200;
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + roleclass + "?view=full&size=" + pageSize + "&filter=['RType', '=', 'Function']";
+
+        $http.get(url).success(function (data) {
+            callback(data);
+
+        }).error(function () {
+            callback(undefined);
+
+        });
+    }
+	
+	return {
+	    getAllUsers: function (dbschema, userclass, pageIndex, callback) {
+	        getAllUsers(dbschema, userclass, pageIndex, callback);
+	    },
+	    convertUsers: function (userCollection) {
+	        return convertUsers(userCollection);
+	    },
+	    getUnitTree: function (dbschema, roleclass, currentNodeId, callback) {
+	        return getUnitTree(dbschema, roleclass, currentNodeId, callback);
+	    },
+	    getFunctions: function (dbschema, roleclass, callback) {
+	        return getFunctions(dbschema, roleclass, callback);
+	    }
+	}
+});
+"use strict";
+
+angular.module('app.user').controller('ChangePasswordController', function ($http, $scope, $rootScope, User, APP_CONFIG) {
+        $scope.savedSuccessfully = false;
+        $scope.message = "";
+
+        $scope.registration = {
+            userName: User.userName,
+            password: "",
+            newPassword: "",
+            confirmNewPassword: ""
+        };
+
+        $scope.save = function () {
+ 
+            if ($scope.registration.newPassword != $scope.registration.confirmNewPassword)
+            {
+                $scope.savedSuccessfully = false;
+                $scope.message = $rootScope.getWord("ConfirmPasswordIncorrect");
+            }
+            else if ($scope.registration.newPassword.length < 3)
+            {
+                $scope.savedSuccessfully = false;
+                $scope.message = $rootScope.getWord("NewPasswordInvalid");
+            }
+            else
+            {
+                var model = {};
+                model.oldPassword = $scope.registration.password;
+                model.newPassword = $scope.registration.newPassword;
+                model.confirmPassword = $scope.registration.confirmNewPassword;
+                $http.post(APP_CONFIG.ebaasRootUrl + '/api/accounts/ChangePassword', model).success(function (data) {
+                    $scope.message = $rootScope.getWord("PasswordUpdated");
+                    $scope.savedSuccessfully = true;
+                })
+                .error(function (err) {
+                    console.log(err);
+                    $scope.message = err.message;
+                    $scope.savedSuccessfully = false;
+                });
+            }
+        };
+
+    });
+"use strict";
+
+angular.module('app.user').controller('EditProfileController', function ($http, $scope, $rootScope, User, APP_CONFIG) {
+        $scope.savedSuccessfully = false;
+        $scope.message = "";
+
+        $scope.profile = User;
+
+        $scope.save = function () {
+
+            User.save(function () {
+                $scope.message = $rootScope.getWord("ProfileUpdated");
+                $scope.savedSuccessfully = true;
+            })
+        }
+
+    });
 "use strict";
 
 angular.module('app.ui').controller('GeneralElementsCtrl', function ($scope) {
@@ -20234,292 +21305,7 @@ angular.module('app.ui').directive('smartTreeview', function ($compile, $sce) {
 });
 "use strict";
 
-angular.module('app.user').controller('ChangePasswordController', function ($http, $scope, $rootScope, User, APP_CONFIG) {
-        $scope.savedSuccessfully = false;
-        $scope.message = "";
-
-        $scope.registration = {
-            userName: User.userName,
-            password: "",
-            newPassword: "",
-            confirmNewPassword: ""
-        };
-
-        $scope.save = function () {
- 
-            if ($scope.registration.newPassword != $scope.registration.confirmNewPassword)
-            {
-                $scope.savedSuccessfully = false;
-                $scope.message = $rootScope.getWord("ConfirmPasswordIncorrect");
-            }
-            else if ($scope.registration.newPassword.length < 3)
-            {
-                $scope.savedSuccessfully = false;
-                $scope.message = $rootScope.getWord("NewPasswordInvalid");
-            }
-            else
-            {
-                var model = {};
-                model.oldPassword = $scope.registration.password;
-                model.newPassword = $scope.registration.newPassword;
-                model.confirmPassword = $scope.registration.confirmNewPassword;
-                $http.post(APP_CONFIG.ebaasRootUrl + '/api/accounts/ChangePassword', model).success(function (data) {
-                    $scope.message = $rootScope.getWord("PasswordUpdated");
-                    $scope.savedSuccessfully = true;
-                })
-                .error(function (err) {
-                    console.log(err);
-                    $scope.message = err.message;
-                    $scope.savedSuccessfully = false;
-                });
-            }
-        };
-
-    });
-"use strict";
-
-angular.module('app.user').controller('EditProfileController', function ($http, $scope, $rootScope, User, APP_CONFIG) {
-        $scope.savedSuccessfully = false;
-        $scope.message = "";
-
-        $scope.profile = User;
-
-        $scope.save = function () {
-
-            User.save(function () {
-                $scope.message = $rootScope.getWord("ProfileUpdated");
-                $scope.savedSuccessfully = true;
-            })
-        }
-
-    });
-
-
-'use strict';
-
-angular.module('app.wizards').factory('RequestInfo', function () {
-
-    var RequestModel = {
-        params: undefined,
-        instance: undefined,
-        metadata: undefined,
-        sampleGridInstance: undefined,
-        itemGridInstance: undefined,
-        selectedItemIds: undefined,
-        selectedItemOwners: undefined,
-        selectdSampleKey : undefined,
-        sampleItemMap : undefined,
-        error: "",
-        init: function()
-        {
-            this.params = undefined;
-            this.instance = undefined;
-            this.metadata = undefined;
-            this.sampleGridInstance = undefined;
-            this.itemGridInstance = undefined;
-            this.selectdSampleKey = undefined;
-            this.selectedItemIds = undefined;
-            this.selectedItemOwners = undefined;
-            this.sampleItemsMap = new Object();
-            this.error = "";
-        },
-        requestId: function()
-        {
-            if (this.instance)
-            {
-                return this.instance.obj_id;
-            }
-            else
-            {
-                return undefined;
-            }
-        },
-        requestPk: function()
-        {
-            if (this.instance) {
-                return this.instance.obj_pk;
-            }
-            else {
-                return undefined;
-            }
-        },
-        getPropertyValue : function(property)
-        {
-            if (this.instance && this.metadata)
-            {
-                var propertyValue = this.instance[property];
-
-                if (propertyValue) {
-                    if (this.metadata.properties[property].enum) {
-                        if (propertyValue > 0) {
-                            // convert property value from index to enum name
-                            propertyValue = this.metadata.properties[property].enum[propertyValue];
-                        }
-                        else
-                        {
-                            // 0 is for unknown, convert it to empty string
-                            propertyValue = "";
-                        }
-                    }
-                }
-
-                return propertyValue
-            }
-            else
-            {
-                return undefined;
-            }
-        }
-    };
-
-    return RequestModel;
-});
-
-'use strict';
-
-angular.module('app.wizards').directive('ebaasFormWizard', function () {
-    return {
-        restrict: 'A',
-        scope: {
-            ebaasWizard : '=',
-            ebaasWizardCallback: '&',
-            ebaasWizardStepEntered: '&',
-            ebaasWizardStepChanged: '&'
-        },
-        link: function (scope, element, attributes) {
-
-            var wizard = element.wizard();
-
-            scope.ebaasWizard = wizard;
-
-            var $form = element.find('form');
-
-            wizard.on('actionclicked.fu.wizard', function (e, data) {
-                if (typeof scope.ebaasWizardStepChanged() === 'function') {
-                    scope.ebaasWizardStepChanged()(e, data)
-                }
-            });
-
-            wizard.on('changed.fu.wizard', function (e, data) {
-                if (typeof scope.ebaasWizardStepEntered() === 'function') {
-                    scope.ebaasWizardStepEntered()(e, data)
-                }
-            });
-
-            wizard.on('finished.fu.wizard', function (e, data) {
-                var formData = {};
-                _.each($form.serializeArray(), function(field){
-                    formData[field.name] = field.value
-                });
-                if(typeof scope.ebaasWizardCallback() === 'function'){
-                    scope.ebaasWizardCallback()(formData)
-                }
-            });
-        }
-    }
-});
-'use strict';
-
-angular.module('app.wizards').directive('previewSubmitStep', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/wizards/views/preview-submit-step.html',
-        replace: true,
-        scope: {},
-        bindToController: {
-            dbschema: '=',
-            dbclass: '=',
-            template: '=',
-            taskId: '=',
-            control: '=',
-            callbackMethod: '&stepCallback'
-        },
-        controllerAs: 'ctrl',
-        controller: 'previewSubmitStepCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
-'use strict';
-
-angular.module('app.wizards').directive('requestInfoStep', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/wizards/views/request-info-step.html',
-        replace: true,
-        scope: {},
-        bindToController: {
-            dbschema: '=',
-            dbclass: '=',
-            template: '=',
-            control: '=',
-            callbackMethod: '&stepCallback'
-        },
-        controllerAs: 'ctrl',
-        controller: 'requestInfoStepCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
-'use strict';
-
-angular.module('app.wizards').directive('requestItems', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/wizards/views/request-items.html',
-        replace: true,
-        scope: {},
-        bindToController: {
-            dbschema: '=',
-            dbclass: '='
-        },
-        controllerAs: 'ctrl',
-        controller: 'requestItemsCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
-'use strict';
-
-angular.module('app.wizards').directive('requestSamples', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/wizards/views/request-samples.html',
-        replace: true,
-        scope: {},
-        bindToController: {
-            dbschema: '=',
-            dbclass: '='
-        },
-        controllerAs: 'ctrl',
-        controller: 'requestSamplesCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
-'use strict';
-
-angular.module('app.wizards').directive('sampleItemStep', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/wizards/views/sample-item-step.html',
-        replace: true,
-        scope: {},
-        bindToController: {
-            dbschema: '=',
-            dbclass: '=',
-            control: '=',
-            callbackMethod: '&stepCallback'
-        },
-        controllerAs: 'ctrl',
-        controller: 'sampleItemStepCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
-"use strict";
-
-angular.module('app.wizards').controller('createRequestCtrl', function ($scope, $state, $http, $stateParams, $modalInstance, APP_CONFIG, CartInfo, dataCartService) {
+angular.module('app.wizards').controller('createRequestCtrl', function ($scope, $state, $http, $stateParams, $modalInstance, APP_CONFIG) {
 
     $scope.dbschema = $stateParams.schema;
     $scope.dbclass = $stateParams.class;
@@ -21879,1054 +22665,228 @@ angular.module('app.wizards').controller('sampleTreeModalCtrl', function ($rootS
 
 'use strict';
 
-angular.module('app.userdirectory').controller('assignRolesCtrl', function ($scope, $controller, $rootScope, $http, APP_CONFIG, $stateParams, $modalInstance) {
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = "Role";
-    $scope.masterclass = $stateParams.class;
-    $scope.masterid = $stateParams.oid;
-    $scope.roletype = $stateParams.roletype;
-
-    if ($stateParams.dataview)
-    {
-        $scope.view = $stateParams.dataview;
-    }
-    else
-    {
-        $scope.view = undefined;
-    }
-
-    $scope.filter = "['RType', '=', '" + $scope.roletype + "']";
-
-    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG }));
-
-    $scope.gridInstance = null;
-    $scope.existingKeys = null;
-    $scope.currentKeys = null;
-    $scope.isUpdated = false;
-    $scope.loading = false;
-    $scope.dataGridSettings = {
-        dataSource: {
-            store: $scope.customStore
+angular.module('app.wizards').directive('ebaasFormWizard', function () {
+    return {
+        restrict: 'A',
+        scope: {
+            ebaasWizard : '=',
+            ebaasWizardCallback: '&',
+            ebaasWizardStepEntered: '&',
+            ebaasWizardStepChanged: '&'
         },
-        columnAutoWidth: true,
-        sorting: {
-            mode: "multiple"
-        },
-        editing: {
-            allowAdding: false,
-            allowUpdating: false,
-            allowDeleting: false
-        },
-        grouping: {
-            autoExpandAll: false
-        },
-        pager: {
-            visible: true,
-            showPageSizeSelector: true,
-            showInfo: true
-        },
-        filterRow: {
-            visible: true,
-            applyFilter: "auto"
-        },
-        searchPanel: { visible: false },
-        selection: { mode: 'multiple' },
-        remoteOperations: true,
-        bindingOptions: {
-            columns: 'columns'
-        },
-        headerFilter: {
-            visible: true
-        },
-        rowAlternationEnabled: true,
-        onInitialized: function (e) {
-            $scope.gridInstance = e.component;
-        },
-        onContentReady: function (e) {
-            selectGridRows();
-        },
-        onSelectionChanged: function (e) {
-            changeSelections(e.currentSelectedRowKeys, e.currentDeselectedRowKeys);
-        }
-    };
+        link: function (scope, element, attributes) {
 
-    var asyncLoop = function(o)
-    {
-        var i = -1;
+            var wizard = element.wizard();
 
-        var loop = function() {
-            i++;
-            if (i == o.length)
-            {
-                o.callback();
-                return;
-            }
+            scope.ebaasWizard = wizard;
 
-            o.functionToLoop(loop, i);
-        }
+            var $form = element.find('form');
 
-        loop(); // init
-    }
-
-    var selectGridRows = function()
-    {
-        if ($scope.currentKeys) {
-            var keys = $scope.currentKeys;
-            var indexes = [];
-            for (var i = 0; i < keys.length; i++) {
-                var index = $scope.gridInstance.getRowIndexByKey(keys[i]);
-
-                if (index >= 0)
-                    indexes.push(index);
-            }
-
-            $scope.gridInstance.selectRowsByIndexes(indexes, true);
-        }
-        else {
-            if ($scope.masterid) {
-                $http.get(APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($stateParams.schema) + "/" + $scope.masterclass + "/" + $scope.masterid + "/" + $scope.dbclass)
-                    .success(function (data) {
-                        var keys = new Array();
-                        if (data) {
-                            for (var i = 0; i < data.length; i++) {
-                                keys.push(data[i].obj_id);
-                            }
-
-                            if (keys.length > 0) {
-                                // set the existing selections of rows
-                                $scope.gridInstance.selectRows(keys, false);
-                            }
-                        }
-
-                        $scope.existingKeys = keys; // keep the existing keys
-                        // initialize the current keys
-                        $scope.currentKeys = [];
-                        for (var i = 0; i < keys.length; i++) {
-                            $scope.currentKeys.push(keys[i]);
-                        }
-                    });
-            }
-        }
-    }
-
-    // keep the current keys in sync with grid row selections
-    var changeSelections = function (selectedKeys, deselectedKeys) {
-        var addedKeys = new Array();
-        var removedKeys = new Array();
-        var found;
-
-        // find the newly selected keys
-        if (selectedKeys && $scope.currentKeys) {
-            for (var i = 0; i < selectedKeys.length; i++) {
-                found = false;
-
-                var index = $scope.gridInstance.getRowIndexByKey(selectedKeys[i]);
-                if (index > -1) {
-                    for (var j = 0; j < $scope.currentKeys.length; j++) {
-                        if (selectedKeys[i] === $scope.currentKeys[j]) {
-                            found = true;
-                            break;
-                        }
-                    }
+            wizard.on('actionclicked.fu.wizard', function (e, data) {
+                if (typeof scope.ebaasWizardStepChanged() === 'function') {
+                    scope.ebaasWizardStepChanged()(e, data)
                 }
+            });
 
-                if (!found) {
-                    addedKeys.push(selectedKeys[i]);
+            wizard.on('changed.fu.wizard', function (e, data) {
+                if (typeof scope.ebaasWizardStepEntered() === 'function') {
+                    scope.ebaasWizardStepEntered()(e, data)
                 }
-            }
-        }
+            });
 
-        if (deselectedKeys && $scope.currentKeys) {
-            // find the unselected keys
-            for (var i = 0; i < $scope.currentKeys.length; i++) {
-                found = false;
-
-                for (var j = 0; j < deselectedKeys.length; j++) {
-                    var index = $scope.gridInstance.getRowIndexByKey(deselectedKeys[j]);
-                    if (index > -1) {
-                        if ($scope.currentKeys[i] === deselectedKeys[j]) {
-                            found = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (found) {
-                    removedKeys.push($scope.currentKeys[i]);
-                }
-            }
-        }
-
-        for (var i = 0; i < addedKeys.length; i++) {
-            $scope.currentKeys.push(addedKeys[i]);
-        }
-
-        for (var i = 0; i < removedKeys.length; i++) {
-            var index = $scope.currentKeys.indexOf(removedKeys[i]);
-            if (index > -1)
-                $scope.currentKeys.splice(index, 1);
-        }
-
-        //console.log("after current keys = " + $scope.currentKeys);
-    }
-
-    $scope.saveSelection = function () {
-        var addedKeys = new Array();
-        var removedKeys = new Array();
-        var found;
-
-        // find the added selections
-        for (var i = 0; i < $scope.currentKeys.length; i++) {
-            found = false;
-
-            for (var j = 0; j < $scope.existingKeys.length; j++) {
-                if ($scope.currentKeys[i] === $scope.existingKeys[j]) {
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found) {
-                addedKeys.push($scope.currentKeys[i]);
-            }
-        }
-
-        // find the removed selections
-        for (var i = 0; i < $scope.existingKeys.length; i++) {
-            found = false;
-
-            for (var j = 0; j < $scope.currentKeys.length; j++) {
-                if ($scope.existingKeys[i] === $scope.currentKeys[j]) {
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found) {
-                removedKeys.push($scope.existingKeys[i]);
-            }
-        }
-
-        if (addedKeys.length > 0) {
-            $scope.loading = true;
-
-            // add relationhsips to the db
-            asyncLoop({
-                length: addedKeys.length,
-                functionToLoop: function (loop, i) {
-                    if ($scope.masterid) {
-                        $http.post(APP_CONFIG.ebaasRootUrl + "/api/relationship/" + encodeURIComponent($stateParams.schema) + "/" + $scope.masterclass + "/" + $scope.masterid + "/" + $scope.dbclass + "/" + encodeURIComponent(addedKeys[i]))
-                             .success(function (data) {
-                                 loop();
-                             });
-                    }
-                },
-                callback: function () {
-                    $scope.loading = false;
-                    $scope.isUpdated = true;
-                }
-            })
-        }
-
-        if (removedKeys.length > 0) {
-            $scope.loading = true;
-            // delete relationhsips from the db
-            asyncLoop({
-                length: removedKeys.length,
-                functionToLoop: function (loop, i) {
-                    $http.delete(APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($stateParams.schema) + "/" + $scope.masterclass + "/" + $scope.masterid + "/" + $scope.dbclass + "/" + encodeURIComponent(removedKeys[i]))
-                         .success(function (data) {
-                             loop();
-                         });
-                },
-                callback: function () {
-                    $scope.existingKeys = [];
-                    for (var i = 0; i < $scope.currentKeys.length; i++)
-                        $scope.existingKeys.push($scope.currentKeys[i]);
-                    $scope.loading = false;
-                    $scope.isUpdated = true;
-                }
-            })
-        }
-
-    };
-
-    $scope.goBack = function () {
-        if ($scope.isUpdated) {
-            $modalInstance.close({ "modal": "viewManyToMany"});
-        }
-        else {
-            $modalInstance.dismiss("dismiss");
-        }
-    };
-});
-
-'use strict';
-
-angular.module('app.userdirectory').controller('RoleListViewCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, TestStations, $interval, userService) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.baseclass;
-    $scope.roletype = $stateParams.roletype;
-
-    $scope.filter = "['RType', '=', '" + $scope.roletype + "']";
-
-    if ($stateParams.insert && $stateParams.insert === "false") {
-        $scope.add = false;
-    }
-    else {
-        $scope.add = true;
-    }
-
-    if ($stateParams.export && $stateParams.export === "true") {
-        $scope.exportData = true;
-    }
-    else {
-        $scope.exportData = false;
-    }
-
-    if ($stateParams.import && $stateParams.import === "true") {
-        $scope.importData = true;
-    }
-    else {
-        $scope.importData = false;
-    }
-
-    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG }));
-
-    $scope.openModal = function () {
-        $state.go('.modalform', { schema: $scope.dbschema, class: $scope.dbclass }, { location: false, notify: false });
-    };
-
-    $scope.GetCommands = function (rowIndex, data) {
-        var items = new Array();
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/sitemap/commands/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass;
-
-        $http.get(url).success(function (commands) {
-
-            // custom commands
-            $scope.commands = commands;
-            var cmdInfo;
-            var item;
-            for (var cmd in commands) {
-                if (commands.hasOwnProperty(cmd)) {
-                    cmdInfo = commands[cmd];
-                    item = new Object();
-                    item.text = cmdInfo.title;
-                    item.css = "btn btn-primary btn-md btn-nav";
-                    if (cmdInfo.icon) {
-                        item.icon = cmdInfo.icon;
-                    }
-                    else {
-                        item.icon = "fa fa-lg fa-tasks";
-                    }
-
-                    item.onItemClick = function (text) {
-                        gotoState(text, $scope.dbschema, data.type, data.obj_id)
-                    }
-
-                    items.push(item);
-
-                    if (cmdInfo.baseUrl && !APP_CONFIG.hashedBaseUrls[cmdInfo.hash]) {
-                        APP_CONFIG.hashedBaseUrls[cmdInfo.hash] = cmdInfo.baseUrl;
-                    }
-                }
-            }
-
-            if (data.allowWrite && $stateParams.edit !== "false") {
-                items.push({
-                    text: $rootScope.getWord('Edit'),
-                    icon: "fa fa-lg fa-edit",
-                    css: "btn btn-default btn-md btn-nav",
-                    onItemClick: function () {
-                        $state.go('.modalform', { schema: $scope.dbschema, class: data.type, oid: data.obj_id }, { location: false, notify: false });
-                    }
+            wizard.on('finished.fu.wizard', function (e, data) {
+                var formData = {};
+                _.each($form.serializeArray(), function(field){
+                    formData[field.name] = field.value
                 });
-            }
-
-            if (data.allowDelete && $stateParams.delete !== "false") {
-                items.push({
-                    text: $rootScope.getWord('Delete'),
-                    icon: "fa fa-lg fa-times",
-                    css: "btn btn-default btn-md btn-nav",
-                    onItemClick: function () {
-                        $scope.gridInstance.deleteRow(rowIndex);
-                    }
-                });
-            }
-        });
-        return items;
-    }
-
-    var gotoState = function (title, dbschema, dbclass, oid) {
-        var commands = $scope.commands;
-        var url = undefined;
-        var cmdUrl = undefined;
-        var params = undefined;
-        var cmdInfo;
-        for (var cmd in commands) {
-            if (commands.hasOwnProperty(cmd)) {
-                cmdInfo = commands[cmd];
-                if (cmdInfo.title === title) {
-                    url = cmdInfo.url;
-                    cmdUrl = cmdInfo.url;
-                    params = new Object();
-                    params.schema = dbschema;
-                    params.class = dbclass;
-                    params.oid = oid;
-                    params.cmdHash = cmdInfo.hash;
-
-                    // add command's parameters to the state parameters
-                    if (cmdInfo.parameters) {
-                        for (var key in cmdInfo.parameters) {
-                            if (cmdInfo.parameters.hasOwnProperty(key)) {
-                                params[key] = cmdInfo.parameters[key];
-                            }
-                        }
-                    };
-
-                    break;
+                if(typeof scope.ebaasWizardCallback() === 'function'){
+                    scope.ebaasWizardCallback()(formData)
                 }
-            }
-        }
-
-        if (url) {
-            try
-            {
-                if (cmdUrl === ".modalform") {
-                    $state.go(url, params, { location: false, notify: false });
-                }
-                else {
-                    $state.go(url, params);
-                }
-            }
-            catch (err)
-            {
-                BootstrapDialog.show({
-                    title: $rootScope.getWord("Info Dialog"),
-                    type: BootstrapDialog.TYPE_INFO,
-                    message: $rootScope.getWord("Invalid Command"),
-                    buttons: [{
-                        label: $rootScope.getWord("Cancel"),
-                        action: function (dialog) {
-                            dialog.close();
-                        }
-                    }]
-                });
-            }
+            });
         }
     }
-
-    $scope.gridInstance = null;
-    $scope.dataGridSettings = {
-        dataSource: {
-            store: $scope.customStore
-        },
-        columnAutoWidth: true,
-        height: $rootScope.isChrome() === true ? '750px' : undefined,
-        sorting: {
-            mode: "multiple"
-        },
-        searchPanel: {
-            visible: $stateParams.search && $stateParams.search === "true"? true: false,
-            width: 300,
-            placeholder: $rootScope.getWord("Keyword Search")
-        },
-        editing: {
-            allowAdding: false,
-            allowUpdating: false,
-            allowDeleting: false
-        },
-        grouping: {
-            autoExpandAll: false
-        },
-        pager: {
-            visible: true,
-            showPageSizeSelector: true,
-            showInfo: true
-        },
-        filterRow: {
-            visible: true,
-            applyFilter: "auto"
-        },
-        selection: { mode: 'single' },
-        remoteOperations: true,
-        bindingOptions: {
-            columns: 'columns'
-        },
-        headerFilter: {
-            visible: true
-        },
-        rowAlternationEnabled: true,
-        masterDetail: {
-            enabled: true,
-            template: "detail"
-        },
-        onRowClick: function (e) {
-            if (e.rowType === "data") {
-                var isExpanded = $scope.gridInstance.isRowExpanded(e.key);
-                $scope.gridInstance.collapseAll(-1); // collaspsed all
-                if (!isExpanded) {
-                    $scope.gridInstance.expandRow(e.key);
-                }
-            }
-        },
-        onInitialized: function (e) {
-            $scope.gridInstance = e.component;
-        },
-        onRowPrepared: function (e) {
-        }
-    };
-
-    $rootScope.$on('modalClosed', function (event, data) {
-        if ($scope.gridInstance && data === "update")
-            $scope.gridInstance.refresh();
-    });
 });
 'use strict';
 
-angular.module('app.userdirectory').controller('UserDirectoryLayoutCtrl', function ($http, APP_CONFIG, $scope, $rootScope, $state, $stateParams, userService, propmisedParams) {
+angular.module('app.wizards').directive('previewSubmitStep', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/wizards/views/preview-submit-step.html',
+        replace: true,
+        scope: {},
+        bindToController: {
+            dbschema: '=',
+            dbclass: '=',
+            template: '=',
+            taskId: '=',
+            control: '=',
+            callbackMethod: '&stepCallback'
+        },
+        controllerAs: 'ctrl',
+        controller: 'previewSubmitStepCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
+'use strict';
 
-    $scope.dbschema = $stateParams.schema;
-    $scope.userclass = $stateParams.class;
-    $scope.roleclass = "Role";
+angular.module('app.wizards').directive('requestInfoStep', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/wizards/views/request-info-step.html',
+        replace: true,
+        scope: {},
+        bindToController: {
+            dbschema: '=',
+            dbclass: '=',
+            template: '=',
+            control: '=',
+            callbackMethod: '&stepCallback'
+        },
+        controllerAs: 'ctrl',
+        controller: 'requestInfoStepCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
+'use strict';
 
-    // Getting unit tree
-    $scope.unitObjId = $stateParams.unitObjId;
+angular.module('app.wizards').directive('requestItems', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/wizards/views/request-items.html',
+        replace: true,
+        scope: {},
+        bindToController: {
+            dbschema: '=',
+            dbclass: '='
+        },
+        controllerAs: 'ctrl',
+        controller: 'requestItemsCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
+'use strict';
 
-    var params = propmisedParams.data;
+angular.module('app.wizards').directive('requestSamples', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/wizards/views/request-samples.html',
+        replace: true,
+        scope: {},
+        bindToController: {
+            dbschema: '=',
+            dbclass: '='
+        },
+        controllerAs: 'ctrl',
+        controller: 'requestSamplesCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
+'use strict';
 
-    $scope.view = params['dataView'];
-    $scope.formTemplate = params['formTemplate'];
+angular.module('app.wizards').directive('sampleItemStep', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/wizards/views/sample-item-step.html',
+        replace: true,
+        scope: {},
+        bindToController: {
+            dbschema: '=',
+            dbclass: '=',
+            control: '=',
+            callbackMethod: '&stepCallback'
+        },
+        controllerAs: 'ctrl',
+        controller: 'sampleItemStepCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
 
-    userService.getUnitTree($stateParams.schema, $scope.roleclass, $scope.unitObjId, function (data) {
-        $scope.unitTree = data;
-    });
 
-    // Getting function list
-    userService.getFunctions($stateParams.schema, $scope.roleclass, function (data) {
-        // add "Every One" as the first function
-        var role = {};
-        role.Text = $rootScope.getWord("Everyone");
-        role.obj_id = undefined;
-        if (data)
+'use strict';
+
+angular.module('app.wizards').factory('RequestInfo', function () {
+
+    var RequestModel = {
+        params: undefined,
+        instance: undefined,
+        metadata: undefined,
+        sampleGridInstance: undefined,
+        itemGridInstance: undefined,
+        selectedItemIds: undefined,
+        selectedItemOwners: undefined,
+        selectdSampleKey : undefined,
+        sampleItemMap : undefined,
+        error: "",
+        init: function()
         {
-            data.unshift(role);
-        }
-        else
+            this.params = undefined;
+            this.instance = undefined;
+            this.metadata = undefined;
+            this.sampleGridInstance = undefined;
+            this.itemGridInstance = undefined;
+            this.selectdSampleKey = undefined;
+            this.selectedItemIds = undefined;
+            this.selectedItemOwners = undefined;
+            this.sampleItemsMap = new Object();
+            this.error = "";
+        },
+        requestId: function()
         {
-            data = [];
-            data.push(role);
-        }
- 
-        $scope.functions = data;
-    });
-
-    $state.go('app.userdirectory.usertable', { schema: $scope.dbschema, baseclass: $scope.roleclass, baseoid: undefined, relatedclass: $scope.userclass, view: $scope.view, formtemplate: $scope.formTemplate });
-
-    $scope.functionObjId = undefined;
-    
-    $scope.getFunctionUsers = function (functionObjId) {
-        $scope.functionObjId = functionObjId;
-        $state.go('app.userdirectory.usertable', { schema: $scope.dbschema, baseclass: $scope.roleclass, baseoid: functionObjId, relatedclass: $scope.userclass, view: $scope.view, formtemplate: $scope.formTemplate });
-    }
-
-    $scope.getUnitUsers = function (unitObjId) {
-        $scope.unitObjId = unitObjId;
-        $state.go('app.userdirectory.usertable', { schema: $scope.dbschema, baseclass: $scope.roleclass, baseoid: unitObjId, relatedclass: $scope.userclass, view: $scope.view, formtemplate: $scope.formTemplate });
-    }
-
-    $scope.openFunctions = function () {
-        $state.go('app.userdirectory.roletable', { schema: $scope.dbschema, baseclass: $scope.roleclass, roletype: "Function" });
-    }
-
-    $scope.openUnits = function () {
-        $state.go('app.userdirectory.roletable', { schema: $scope.dbschema, baseclass: $scope.roleclass, roletype: "Unit" });
-    }
-
-    $scope.refresh = function () {
-        $state.reload();
-    }
-});
-'use strict';
-
-angular.module('app.userdirectory').controller('UserListCtrl', function ($scope, $rootScope, $state, $stateParams, APP_CONFIG, userService, promisedUsers) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.userclass = $stateParams.class;
-    $scope.roleclass = "Role";
-
-    $scope.getWord = function(key)
-    {
-        return key;
-    }
-
-    $scope.tableOptions = {
-        "data": userService.convertUsers(promisedUsers.data),
-        //            "bDestroy": true,
-        "iDisplayLength": 20,
-        "columns": [
+            if (this.instance)
             {
-                "class": 'details-control',
-                "orderable": false,
-                "data": null,
-                "defaultContent": ''
-            },
-            { "data": "FullName" },
-            { "data": "ID" },
-            { "data": "PhoneNumber" },
-            { "data": "Email" }
-        ],
-        "order": [[1, 'asc']]
-    }
-
-    // Getting unit tree
-    $scope.unitObjId = $stateParams.unitObjId;
-
-    userService.getUnitTree($stateParams.schema, $scope.roleclass, $scope.unitObjId, function (data) {
-        $scope.unitTree = data;
-
-    });
-
-    // Getting function list
-    userService.getFunctions($stateParams.schema, $scope.roleclass, function (data) {
-       
-        $scope.functions = data;
-
-    });
-
-    $scope.functionObjId = $stateParams.functionObjId;
-    $scope.getFunctionUsers = function (functionObjId) {
-        var params = new Object();
-
-        params.functionObjId = functionObjId;
-        params.unitObjId = undefined;
-        $scope.functionObjId = functionObjId;
-        $scope.unitObjId = undefined;
-
-        $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
-    }
-
-    $scope.getUnitUsers = function(unitObjId)
-    {
-        var params = new Object();
-
-        params.unitObjId = unitObjId;
-        params.functionObjId = undefined;
-        $scope.unitObjId = unitObjId;
-        $scope.functionObjId = undefined;
-
-        $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
-    }
-});
-'use strict';
-
-angular.module('app.userdirectory').controller('UserListViewCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, TestStations, $interval, userService) {
-
-    $scope.dbschema = $stateParams.schema;
-    $scope.userclass = $stateParams.relatedclass;
-    
-    $scope.formTemplate = $stateParams.formtemplate;
-
-    if ($stateParams.baseoid) {
-        $scope.dbclass = $stateParams.baseclass;
-        $scope.relatedclass = $stateParams.relatedclass;
-        $scope.relatedview = $stateParams.view;
-        $scope.oid = $stateParams.baseoid;
-        
-        $scope.isrelated = true;
-    }
-    else
-    {
-        // get all users
-        $scope.dbclass = $stateParams.relatedclass;
-        $scope.view = $stateParams.view;
-    }
-
-    if ($stateParams.insert && $stateParams.insert === "false") {
-        $scope.add = false;
-    }
-    else {
-        $scope.add = true;
-    }
-
-    if ($stateParams.export && $stateParams.export === "true") {
-        $scope.exportData = true;
-    }
-    else {
-        $scope.exportData = false;
-    }
-
-    if ($stateParams.import && $stateParams.import === "true") {
-        $scope.importData = true;
-    }
-    else {
-        $scope.importData = false;
-    }
-
-    angular.extend(this, $controller('dataGridBaseCtrl', { $scope: $scope, $rootScope: $rootScope, $http: $http, APP_CONFIG: APP_CONFIG }));
-
-    $scope.openModal = function () {
-        $state.go('.modalform', { schema: $scope.dbschema, class: $scope.userclass, template: $scope.formTemplate }, { location: false, notify: false });
-    };
-
-    $scope.GetCommands = function (rowIndex, data) {
-        var items = new Array();
-
-        var url = APP_CONFIG.ebaasRootUrl + "/api/sitemap/commands/" + encodeURIComponent($scope.dbschema) + "/" + $scope.userclass;
-
-        $http.get(url).success(function (commands) {
-
-            // custom commands
-            $scope.commands = commands;
-            var cmdInfo;
-            var item;
-            for (var cmd in commands) {
-                if (commands.hasOwnProperty(cmd)) {
-                    cmdInfo = commands[cmd];
-                    item = new Object();
-                    item.text = cmdInfo.title;
-                    item.css = "btn btn-primary btn-md btn-nav";
-                    if (cmdInfo.icon) {
-                        item.icon = cmdInfo.icon;
-                    }
-                    else {
-                        item.icon = "fa fa-lg fa-tasks";
-                    }
-
-                    item.onItemClick = function (text) {
-                        gotoState(text, $scope.dbschema, data.type, data.obj_id)
-                    }
-
-                    items.push(item);
-
-                    if (cmdInfo.baseUrl && !APP_CONFIG.hashedBaseUrls[cmdInfo.hash]) {
-                        APP_CONFIG.hashedBaseUrls[cmdInfo.hash] = cmdInfo.baseUrl;
-                    }
-                }
+                return this.instance.obj_id;
             }
-
-            if (data.allowWrite && $stateParams.edit !== "false") {
-                items.push({
-                    text: $rootScope.getWord('Edit'),
-                    icon: "fa fa-lg fa-edit",
-                    css: "btn btn-default btn-md btn-nav",
-                    onItemClick: function () {
-                        $state.go('.modalform', { schema: $scope.dbschema, class: data.type, oid: data.obj_id, template: $scope.formTemplate }, { location: false, notify: false });
-                    }
-                });
+            else
+            {
+                return undefined;
             }
-
-            if (data.allowDelete && $stateParams.delete !== "false") {
-                items.push({
-                    text: $rootScope.getWord('Delete'),
-                    icon: "fa fa-lg fa-times",
-                    css: "btn btn-default btn-md btn-nav",
-                    onItemClick: function () {
-                        $scope.gridInstance.deleteRow(rowIndex);
-                    }
-                });
+        },
+        requestPk: function()
+        {
+            if (this.instance) {
+                return this.instance.obj_pk;
             }
-        });
-        return items;
-    }
+            else {
+                return undefined;
+            }
+        },
+        getPropertyValue : function(property)
+        {
+            if (this.instance && this.metadata)
+            {
+                var propertyValue = this.instance[property];
 
-    var gotoState = function (title, dbschema, dbclass, oid) {
-        var commands = $scope.commands;
-        var url = undefined;
-        var cmdUrl = undefined;
-        var params = undefined;
-        var cmdInfo;
-        for (var cmd in commands) {
-            if (commands.hasOwnProperty(cmd)) {
-                cmdInfo = commands[cmd];
-                if (cmdInfo.title === title) {
-                    url = cmdInfo.url;
-                    cmdUrl = cmdInfo.url;
-                    params = new Object();
-                    params.schema = dbschema;
-                    params.class = dbclass;
-                    params.oid = oid;
-                    params.cmdHash = cmdInfo.hash;
-
-                    // add command's parameters to the state parameters
-                    if (cmdInfo.parameters) {
-                        for (var key in cmdInfo.parameters) {
-                            if (cmdInfo.parameters.hasOwnProperty(key)) {
-                                params[key] = cmdInfo.parameters[key];
-                            }
+                if (propertyValue) {
+                    if (this.metadata.properties[property].enum) {
+                        if (propertyValue > 0) {
+                            // convert property value from index to enum name
+                            propertyValue = this.metadata.properties[property].enum[propertyValue];
                         }
-                    };
-
-                    break;
-                }
-            }
-        }
-
-        if (url) {
-            try
-            {
-                if (cmdUrl === ".modalform") {
-                    $state.go(url, params, { location: false, notify: false });
-                }
-                else {
-                    $state.go(url, params);
-                }
-            }
-            catch (err)
-            {
-                BootstrapDialog.show({
-                    title: $rootScope.getWord("Info Dialog"),
-                    type: BootstrapDialog.TYPE_INFO,
-                    message: $rootScope.getWord("Invalid Command"),
-                    buttons: [{
-                        label: $rootScope.getWord("Cancel"),
-                        action: function (dialog) {
-                            dialog.close();
+                        else
+                        {
+                            // 0 is for unknown, convert it to empty string
+                            propertyValue = "";
                         }
-                    }]
-                });
-            }
-        }
-    }
-
-    $scope.gridInstance = null;
-    $scope.dataGridSettings = {
-        dataSource: {
-            store: $scope.customStore
-        },
-        columnAutoWidth: true,
-        height: $rootScope.isChrome() === true ? '750px' : undefined,
-        sorting: {
-            mode: "multiple"
-        },
-        searchPanel: {
-            visible: $stateParams.search && $stateParams.search === "true"? true: false,
-            width: 300,
-            placeholder: $rootScope.getWord("Keyword Search")
-        },
-        editing: {
-            allowAdding: false,
-            allowUpdating: false,
-            allowDeleting: false
-        },
-        grouping: {
-            autoExpandAll: false
-        },
-        pager: {
-            visible: true,
-            showPageSizeSelector: true,
-            showInfo: true
-        },
-        filterRow: {
-            visible: true,
-            applyFilter: "auto"
-        },
-        selection: { mode: 'single' },
-        remoteOperations: true,
-        bindingOptions: {
-            columns: 'columns'
-        },
-        headerFilter: {
-            visible: true
-        },
-        rowAlternationEnabled: true,
-        masterDetail: {
-            enabled: true,
-            template: "detail"
-        },
-        onRowClick: function (e) {
-            if (e.rowType === "data") {
-                var isExpanded = $scope.gridInstance.isRowExpanded(e.key);
-                $scope.gridInstance.collapseAll(-1); // collaspsed all
-                if (!isExpanded) {
-                    $scope.gridInstance.expandRow(e.key);
-                }
-            }
-        },
-        onInitialized: function (e) {
-            $scope.gridInstance = e.component;
-        },
-        onRowPrepared: function (e) {
-        }
-    };
-
-    $rootScope.$on('modalClosed', function (event, data) {
-        if ($scope.gridInstance && data === "update")
-            $scope.gridInstance.refresh();
-    });
-});
-"use strict";
-
-angular.module('app.userdirectory').factory('userService', function ($http, APP_CONFIG) {
-
-    var convertUsers = function (userCollection) {
-
-        var id = "ID";
-        var firstName = "FirstName";
-        var lastName = "LastName";
-        var phoneNumber = "PhoneNumber";
-        var email = "Email";
-        var picture = "Picture";
-        var division = "Department";
-        var address = "Location";
-        var displayText = "DisplayText";
-
-        var users = new Array();
-
-        if (userCollection) {
-
-            for (var i = 0; i < userCollection.length; i++) {
-                var user = userCollection[i];
-
-                var userItem = new Object();
-
-                userItem.obj_id = user["obj_id"];
-                userItem.ID = user[id];
-                if (user[displayText]) {
-                    userItem.FullName = user[displayText];
-                }
-                else
-                {
-                    userItem.FullName = user[lastName] + user[firstName];
-                }
-                userItem.PhoneNumber = user[phoneNumber];
-                userItem.Email = user[email];
-                userItem.Division = user[division];
-                userItem.Address = user[address];
-                if (user[picture]) {
-                    userItem.Picture = APP_CONFIG.avatarsUrl + userItem.ID + ".png";
-                }
-                else
-                {
-                    userItem.Picture = APP_CONFIG.avatarsUrl + "male.png";
-                }
-
-                users.push(userItem);
-            }
-        }
-
-        return users;
-    }
-
-    var createUnitTree = function (nodes, currentNodeObjId) {
-        var map = {}, node, menuItem, parentItem, roots = [], menuItems = [];
-        for (var i = 0; i < nodes.length; i += 1) {
-            node = nodes[i];
-            
-            menuItem = new Object();
-            menuItem.name = node.Name;
-            menuItem.text = node.Text;
-            menuItem.children = new Array();
-            map[menuItem.name] = i; // use map to look-up the parents
-            menuItems.push(menuItem);
-        }
-
-        for (var i = 0; i < nodes.length; i += 1) {
-            node = nodes[i];
-            menuItem = menuItems[i];
-
-            if (node.parentRole != "") {
-                parentItem = menuItems[map[node.parentRole]];
-                parentItem.children.push(menuItem);
-                menuItem.parentItem = parentItem;
-            } else {
-                //menuItem.expanded = true;
-                menuItem.parentItem = undefined;
-                roots.push(menuItem);
-            }
-        }
-
-        for (var i = 0; i < nodes.length; i += 1) {
-            node = nodes[i];
-            menuItem = menuItems[i];
-
-            if (menuItem.children.length > 0) {
-                menuItem.content = "<span><i class=\"fa fa-lg fa-plus-circle\"></i> " + node.Text + "</span>";
-                //menuItem.content = "<span class='label label-info'><i class=\"fa fa-lg fa-plus-circle\"></i>&nbsp;&nbsp;<a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('unitTreeContainer')).scope().getUnitUsers(" + node.obj_id + ");\">" + node.Text + "</a></span>";
-            } else {
-                if (currentNodeObjId && currentNodeObjId === node.obj_id)
-                {
-                    menuItem.content = "<span class='label label-warning'><a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('unitTreeContainer')).scope().getUnitUsers(" + node.obj_id + ");\">" + node.Text + "</a></span>";
-
-                    var thisItem = menuItem;
-                    while (thisItem.parentItem) {
-                        thisItem = thisItem.parentItem;
-                        thisItem.expanded = true;
                     }
                 }
-                else
-                {
-                    menuItem.content = "<span class='label label-info'><a class=\"station-a\" href=\"javascript:angular.element(document.getElementById('unitTreeContainer')).scope().getUnitUsers(" + node.obj_id + ");\">" + node.Text + "</a></span>";
-                }
+
+                return propertyValue
+            }
+            else
+            {
+                return undefined;
             }
         }
-
-        return roots;
     };
 
-    function getAllUsers(dbschema, userclass, pageIndex, callback) {
-	    
-	    var pageSize = 20;
-	    var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + userclass + "?view=full&size=" + pageSize;
-	    if (pageIndex) {
-	        var from = pageIndex * pageSize;
-	        url += "&from=" + from;
-	    }
-
-        $http.get(url).success(function (data) {
-	        callback(convertUsers(data));
-				
-		}).error(function(){
-		    callback([]);
-
-		});
-    }
-
-    function getUnitTree(dbschema, roleclass, currentNodeId, callback) {
-
-        var pageSize = 200;
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + roleclass + "?view=full&size=" + pageSize + "&filter=['RType', '=', 'Unit']";
-
-        $http.get(url).success(function (data) {
-            callback(createUnitTree(data, currentNodeId));
-
-        }).error(function () {
-            callback(undefined);
-
-        });
-    }
-
-    function getFunctions(dbschema, roleclass, callback) {
-
-        var pageSize = 200;
-        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent(dbschema) + "/" + roleclass + "?view=full&size=" + pageSize + "&filter=['RType', '=', 'Function']";
-
-        $http.get(url).success(function (data) {
-            callback(data);
-
-        }).error(function () {
-            callback(undefined);
-
-        });
-    }
-	
-	return {
-	    getAllUsers: function (dbschema, userclass, pageIndex, callback) {
-	        getAllUsers(dbschema, userclass, pageIndex, callback);
-	    },
-	    convertUsers: function (userCollection) {
-	        return convertUsers(userCollection);
-	    },
-	    getUnitTree: function (dbschema, roleclass, currentNodeId, callback) {
-	        return getUnitTree(dbschema, roleclass, currentNodeId, callback);
-	    },
-	    getFunctions: function (dbschema, roleclass, callback) {
-	        return getFunctions(dbschema, roleclass, callback);
-	    }
-	}
+    return RequestModel;
 });
+
 "use strict";
 
 angular.module('app.auth').directive('facebookSignin', function ($rootScope, ezfb) {
@@ -22967,81 +22927,6 @@ angular.module('app.auth').directive('googleSignin', function ($rootScope, Googl
     };
 });
 
-"use strict";
-
-angular.module('app').factory('Todo', function (Restangular, APP_CONFIG) {
-
-
-    Restangular.extendModel(APP_CONFIG.apiRootUrl + '/todos.json', function(todo) {
-        todo.toggle = function(){
-            if (!todo.completedAt) {
-                todo.state = 'Completed';
-                todo.completedAt = JSON.stringify(new Date());
-            } else {
-                todo.state = 'Critical';
-                todo.completedAt = null;
-            }
-            // return this.$update();
-        };
-
-        todo.setState = function(state){
-            todo.state = state;
-            if (state == 'Completed') {
-                todo.completedAt = JSON.stringify(new Date());
-            } else {
-                todo.completedAt = null;
-            }
-            // return this.$update();
-        };
-
-        return todo;
-      });
-
-    return Restangular.all(APP_CONFIG.apiRootUrl + '/todos.json')
-});
-"use strict";
-
- angular.module('app').directive('todoList', function ($timeout, Todo) {
-
-    return {
-        restrict: 'E',
-        replace: true,
-        templateUrl: 'app/dashboard/todo/directives/todo-list.tpl.html',
-        scope: {
-            todos: '='
-        },
-        link: function (scope, element, attributes) {
-            scope.title = attributes.title
-            scope.icon = attributes.icon
-            scope.state = attributes.state
-            scope.filter = {
-                state: scope.state
-            }
-
-            element.find('.todo').sortable({
-                handle: '.handle',
-                connectWith: ".todo",
-                receive: function (event, ui) {
-
-                    console.log(ui.item.scope().todo,scope.state)
-                    var todo = ui.item.scope().todo;
-                    var state = scope.state
-                    // // console.log(ui.item, todo, state)
-                    // // console.log(state, todo)
-                    if (todo && state) {
-                        todo.setState(state);
-                         // ui.sender.sortable("cancel");
-                        // scope.$apply();
-                    } else {
-                        console.log('Wat', todo, state);
-                    }
-                    
-                }
-            }).disableSelection();
-
-        }
-    }
-});
 (function() {
         
    'use strict';
@@ -23709,6 +23594,81 @@ angular.module('app.chat').factory('ChatApi', function ($q, $rootScope, User, $h
 
     return ChatSrv;
 
+});
+"use strict";
+
+ angular.module('app').directive('todoList', function ($timeout, Todo) {
+
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: 'app/dashboard/todo/directives/todo-list.tpl.html',
+        scope: {
+            todos: '='
+        },
+        link: function (scope, element, attributes) {
+            scope.title = attributes.title
+            scope.icon = attributes.icon
+            scope.state = attributes.state
+            scope.filter = {
+                state: scope.state
+            }
+
+            element.find('.todo').sortable({
+                handle: '.handle',
+                connectWith: ".todo",
+                receive: function (event, ui) {
+
+                    console.log(ui.item.scope().todo,scope.state)
+                    var todo = ui.item.scope().todo;
+                    var state = scope.state
+                    // // console.log(ui.item, todo, state)
+                    // // console.log(state, todo)
+                    if (todo && state) {
+                        todo.setState(state);
+                         // ui.sender.sortable("cancel");
+                        // scope.$apply();
+                    } else {
+                        console.log('Wat', todo, state);
+                    }
+                    
+                }
+            }).disableSelection();
+
+        }
+    }
+});
+"use strict";
+
+angular.module('app').factory('Todo', function (Restangular, APP_CONFIG) {
+
+
+    Restangular.extendModel(APP_CONFIG.apiRootUrl + '/todos.json', function(todo) {
+        todo.toggle = function(){
+            if (!todo.completedAt) {
+                todo.state = 'Completed';
+                todo.completedAt = JSON.stringify(new Date());
+            } else {
+                todo.state = 'Critical';
+                todo.completedAt = null;
+            }
+            // return this.$update();
+        };
+
+        todo.setState = function(state){
+            todo.state = state;
+            if (state == 'Completed') {
+                todo.completedAt = JSON.stringify(new Date());
+            } else {
+                todo.completedAt = null;
+            }
+            // return this.$update();
+        };
+
+        return todo;
+      });
+
+    return Restangular.all(APP_CONFIG.apiRootUrl + '/todos.json')
 });
 'use strict';
 
@@ -26167,274 +26127,6 @@ angular.module('app.homepage').directive('demoRadarChart', function ($http, APP_
 });
 'use strict';
 
-angular.module('app.tables').directive('jqGrid', function ($compile) {
-    var jqGridCounter = 0;
-
-    return {
-        replace: true,
-        restrict: 'E',
-        scope: {
-            gridData: '='
-        },
-        template: '<div>' +
-            '<table></table>' +
-            '<div class="jqgrid-pagination"></div>' +
-            '</div>',
-        controller: function($scope, $element){
-            $scope.editRow  = function(row){
-                $element.find('table').editRow(row);
-            };
-            $scope.saveRow  = function(row){
-                $element.find('table').saveRow(row);
-            };
-            $scope.restoreRow  = function(row){
-                $element.find('table').restoreRow(row);
-            };
-        },
-        link: function (scope, element) {
-            var gridNumber = jqGridCounter++;
-            var wrapperId = 'jqgrid-' + gridNumber;
-            element.attr('id', wrapperId);
-
-            var tableId = 'jqgrid-table-' + gridNumber;
-            var table = element.find('table');
-            table.attr('id', tableId);
-
-            var pagerId = 'jqgrid-pager-' + gridNumber;
-            element.find('.jqgrid-pagination').attr('id', pagerId);
-
-
-            table.jqGrid({
-                data : scope.gridData.data,
-                datatype : "local",
-                height : 'auto',
-                colNames : scope.gridData.colNames || [],
-                colModel : scope.gridData.colModel || [],
-                rowNum : 10,
-                rowList : [10, 20, 30],
-                pager : '#' + pagerId,
-                sortname : 'id',
-                toolbarfilter : true,
-                viewrecords : true,
-                sortorder : "asc",
-                gridComplete : function() {
-                    var ids = table.jqGrid('getDataIDs');
-                    for (var i = 0; i < ids.length; i++) {
-                        var cl = ids[i];
-                        var be = "<button class='btn btn-xs btn-default' tooltip='Edit Row' tooltip-append-to-body='true' ng-click='editRow("+ cl +")'><i class='fa fa-pencil'></i></button>";
-
-                        var se = "<button class='btn btn-xs btn-default' tooltip='Save Row' tooltip-append-to-body='true' ng-click='saveRow("+ cl +")'><i class='fa fa-save'></i></button>";
-
-                        var ca = "<button class='btn btn-xs btn-default' tooltip='Cancel' tooltip-append-to-body='true' ng-click='restoreRow("+ cl +")'><i class='fa fa-times'></i></button>";
-
-                        table.jqGrid('setRowData', ids[i], {
-                            act : be + se + ca
-                        });
-                    }
-                },
-                editurl : "dummy.html",
-                caption : "SmartAdmin jQgrid Skin",
-                multiselect : true,
-                autowidth : true
-
-            });
-            table.jqGrid('navGrid', '#' + pagerId, {
-                edit : false,
-                add : false,
-                del : true
-            });
-            table.jqGrid('inlineNav', '#' + pagerId);
-
-
-            element.find(".ui-jqgrid").removeClass("ui-widget ui-widget-content");
-            element.find(".ui-jqgrid-view").children().removeClass("ui-widget-header ui-state-default");
-            element.find(".ui-jqgrid-labels, .ui-search-toolbar").children().removeClass("ui-state-default ui-th-column ui-th-ltr");
-            element.find(".ui-jqgrid-pager").removeClass("ui-state-default");
-            element.find(".ui-jqgrid").removeClass("ui-widget-content");
-
-            // add classes
-            element.find(".ui-jqgrid-htable").addClass("table table-bordered table-hover");
-            element.find(".ui-jqgrid-btable").addClass("table table-bordered table-striped");
-
-            element.find(".ui-pg-div").removeClass().addClass("btn btn-sm btn-primary");
-            element.find(".ui-icon.ui-icon-plus").removeClass().addClass("fa fa-plus");
-            element.find(".ui-icon.ui-icon-pencil").removeClass().addClass("fa fa-pencil");
-            element.find(".ui-icon.ui-icon-trash").removeClass().addClass("fa fa-trash-o");
-            element.find(".ui-icon.ui-icon-search").removeClass().addClass("fa fa-search");
-            element.find(".ui-icon.ui-icon-refresh").removeClass().addClass("fa fa-refresh");
-            element.find(".ui-icon.ui-icon-disk").removeClass().addClass("fa fa-save").parent(".btn-primary").removeClass("btn-primary").addClass("btn-success");
-            element.find(".ui-icon.ui-icon-cancel").removeClass().addClass("fa fa-times").parent(".btn-primary").removeClass("btn-primary").addClass("btn-danger");
-
-            element.find(".ui-icon.ui-icon-seek-prev").wrap("<div class='btn btn-sm btn-default'></div>");
-            element.find(".ui-icon.ui-icon-seek-prev").removeClass().addClass("fa fa-backward");
-
-            element.find(".ui-icon.ui-icon-seek-first").wrap("<div class='btn btn-sm btn-default'></div>");
-            element.find(".ui-icon.ui-icon-seek-first").removeClass().addClass("fa fa-fast-backward");
-
-            element.find(".ui-icon.ui-icon-seek-next").wrap("<div class='btn btn-sm btn-default'></div>");
-            element.find(".ui-icon.ui-icon-seek-next").removeClass().addClass("fa fa-forward");
-
-            element.find(".ui-icon.ui-icon-seek-end").wrap("<div class='btn btn-sm btn-default'></div>");
-            element.find(".ui-icon.ui-icon-seek-end").removeClass().addClass("fa fa-fast-forward");
-
-            $(window).on('resize.jqGrid', function() {
-               table.jqGrid('setGridWidth', $("#content").width());
-            });
-
-
-            $compile(element.contents())(scope);
-        }
-    }
-});
-"use strict";
-
-angular.module('SmartAdmin.Layout').directive('fullScreen', function(){
-    return {
-        restrict: 'A',
-        link: function(scope, element){
-            var $body = $('body');
-            var toggleFullSceen = function(e){
-                if (!$body.hasClass("full-screen")) {
-                    $body.addClass("full-screen");
-                    if (document.documentElement.requestFullscreen) {
-                        document.documentElement.requestFullscreen();
-                    } else if (document.documentElement.mozRequestFullScreen) {
-                        document.documentElement.mozRequestFullScreen();
-                    } else if (document.documentElement.webkitRequestFullscreen) {
-                        document.documentElement.webkitRequestFullscreen();
-                    } else if (document.documentElement.msRequestFullscreen) {
-                        document.documentElement.msRequestFullscreen();
-                    }
-                } else {
-                    $body.removeClass("full-screen");
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
-                    } else if (document.mozCancelFullScreen) {
-                        document.mozCancelFullScreen();
-                    } else if (document.webkitExitFullscreen) {
-                        document.webkitExitFullscreen();
-                    }
-                }
-            };
-
-            element.on('click', toggleFullSceen);
-
-        }
-    }
-});
-"use strict";
-
-angular.module('SmartAdmin.Layout').directive('minifyMenu', function(){
-    return {
-        restrict: 'A',
-        link: function(scope, element){
-                var $body = $('body');
-            var minifyMenu = function() {
-                if (!$body.hasClass("menu-on-top")) {
-                    $body.toggleClass("minified");
-                    $body.removeClass("hidden-menu");
-                    $('html').removeClass("hidden-menu-mobile-lock");
-                }
-            };
-
-            element.on('click', minifyMenu);
-        }
-    }
-})
-'use strict';
-
-angular.module('SmartAdmin.Layout').directive('reloadState', function ($rootScope) {
-    return {
-        restrict: 'A',
-        compile: function (tElement, tAttributes) {
-            tElement.removeAttr('reload-state data-reload-state');
-            tElement.on('click', function (e) {
-                $rootScope.$state.transitionTo($rootScope.$state.current, $rootScope.$stateParams, {
-                    reload: true,
-                    inherit: false,
-                    notify: true
-                });
-                e.preventDefault();
-            })
-        }
-    }
-});
-
-"use strict";
-
-angular.module('SmartAdmin.Layout').directive('resetWidgets', function($state){
-
-    return {
-        restrict: 'A',
-        link: function(scope, element){
-            element.on('click', function(){
-                $.SmartMessageBox({
-                    title : "<i class='fa fa-refresh' style='color:green'></i> Clear Local Storage",
-                    content : "Would you like to RESET all your saved widgets and clear LocalStorage?1",
-                    buttons : '[No][Yes]'
-                }, function(ButtonPressed) {
-                    if (ButtonPressed == "Yes" && localStorage) {
-                        localStorage.clear();
-                        location.reload()
-                    }
-                });
-
-            });
-        }
-    }
-
-});
-
-'use strict';
-
-angular.module('SmartAdmin.Layout').directive('searchMobile', function () {
-    return {
-        restrict: 'A',
-        compile: function (element, attributes) {
-            element.removeAttr('search-mobile data-search-mobile');
-
-            element.on('click', function (e) {
-                $('body').addClass('search-mobile');
-                e.preventDefault();
-            });
-
-            $('#cancel-search-js').on('click', function (e) {
-                $('body').removeClass('search-mobile');
-                e.preventDefault();
-            });
-        }
-    }
-});
-"use strict";
-
-angular.module('SmartAdmin.Layout').directive('toggleMenu', function(){
-    return {
-        restrict: 'A',
-        link: function(scope, element){
-            var $body = $('body');
-
-            var toggleMenu = function(){
-                if (!$body.hasClass("menu-on-top")){
-                    $('html').toggleClass("hidden-menu-mobile-lock");
-                    $body.toggleClass("hidden-menu");
-                    $body.removeClass("minified");
-                } else if ( $body.hasClass("menu-on-top") && $body.hasClass("mobile-view-activated") ) {
-                    $('html').toggleClass("hidden-menu-mobile-lock");
-                    $body.toggleClass("hidden-menu");
-                    $body.removeClass("minified");
-                }
-            };
-
-            element.on('click', toggleMenu);
-
-            scope.$on('requestToggleMenu', function(){
-                toggleMenu();
-            });
-        }
-    }
-});
-'use strict';
-
 angular.module('app.tables').directive('datatableBasic', function ($compile) {
     return {
         restrict: 'A',
@@ -26715,6 +26407,274 @@ angular.module('app.tables').directive('datatableTableTools', function () {
                 drawCallback: function (oSettings) {
                     responsiveHelper.respond();
                 }
+            });
+        }
+    }
+});
+'use strict';
+
+angular.module('app.tables').directive('jqGrid', function ($compile) {
+    var jqGridCounter = 0;
+
+    return {
+        replace: true,
+        restrict: 'E',
+        scope: {
+            gridData: '='
+        },
+        template: '<div>' +
+            '<table></table>' +
+            '<div class="jqgrid-pagination"></div>' +
+            '</div>',
+        controller: function($scope, $element){
+            $scope.editRow  = function(row){
+                $element.find('table').editRow(row);
+            };
+            $scope.saveRow  = function(row){
+                $element.find('table').saveRow(row);
+            };
+            $scope.restoreRow  = function(row){
+                $element.find('table').restoreRow(row);
+            };
+        },
+        link: function (scope, element) {
+            var gridNumber = jqGridCounter++;
+            var wrapperId = 'jqgrid-' + gridNumber;
+            element.attr('id', wrapperId);
+
+            var tableId = 'jqgrid-table-' + gridNumber;
+            var table = element.find('table');
+            table.attr('id', tableId);
+
+            var pagerId = 'jqgrid-pager-' + gridNumber;
+            element.find('.jqgrid-pagination').attr('id', pagerId);
+
+
+            table.jqGrid({
+                data : scope.gridData.data,
+                datatype : "local",
+                height : 'auto',
+                colNames : scope.gridData.colNames || [],
+                colModel : scope.gridData.colModel || [],
+                rowNum : 10,
+                rowList : [10, 20, 30],
+                pager : '#' + pagerId,
+                sortname : 'id',
+                toolbarfilter : true,
+                viewrecords : true,
+                sortorder : "asc",
+                gridComplete : function() {
+                    var ids = table.jqGrid('getDataIDs');
+                    for (var i = 0; i < ids.length; i++) {
+                        var cl = ids[i];
+                        var be = "<button class='btn btn-xs btn-default' tooltip='Edit Row' tooltip-append-to-body='true' ng-click='editRow("+ cl +")'><i class='fa fa-pencil'></i></button>";
+
+                        var se = "<button class='btn btn-xs btn-default' tooltip='Save Row' tooltip-append-to-body='true' ng-click='saveRow("+ cl +")'><i class='fa fa-save'></i></button>";
+
+                        var ca = "<button class='btn btn-xs btn-default' tooltip='Cancel' tooltip-append-to-body='true' ng-click='restoreRow("+ cl +")'><i class='fa fa-times'></i></button>";
+
+                        table.jqGrid('setRowData', ids[i], {
+                            act : be + se + ca
+                        });
+                    }
+                },
+                editurl : "dummy.html",
+                caption : "SmartAdmin jQgrid Skin",
+                multiselect : true,
+                autowidth : true
+
+            });
+            table.jqGrid('navGrid', '#' + pagerId, {
+                edit : false,
+                add : false,
+                del : true
+            });
+            table.jqGrid('inlineNav', '#' + pagerId);
+
+
+            element.find(".ui-jqgrid").removeClass("ui-widget ui-widget-content");
+            element.find(".ui-jqgrid-view").children().removeClass("ui-widget-header ui-state-default");
+            element.find(".ui-jqgrid-labels, .ui-search-toolbar").children().removeClass("ui-state-default ui-th-column ui-th-ltr");
+            element.find(".ui-jqgrid-pager").removeClass("ui-state-default");
+            element.find(".ui-jqgrid").removeClass("ui-widget-content");
+
+            // add classes
+            element.find(".ui-jqgrid-htable").addClass("table table-bordered table-hover");
+            element.find(".ui-jqgrid-btable").addClass("table table-bordered table-striped");
+
+            element.find(".ui-pg-div").removeClass().addClass("btn btn-sm btn-primary");
+            element.find(".ui-icon.ui-icon-plus").removeClass().addClass("fa fa-plus");
+            element.find(".ui-icon.ui-icon-pencil").removeClass().addClass("fa fa-pencil");
+            element.find(".ui-icon.ui-icon-trash").removeClass().addClass("fa fa-trash-o");
+            element.find(".ui-icon.ui-icon-search").removeClass().addClass("fa fa-search");
+            element.find(".ui-icon.ui-icon-refresh").removeClass().addClass("fa fa-refresh");
+            element.find(".ui-icon.ui-icon-disk").removeClass().addClass("fa fa-save").parent(".btn-primary").removeClass("btn-primary").addClass("btn-success");
+            element.find(".ui-icon.ui-icon-cancel").removeClass().addClass("fa fa-times").parent(".btn-primary").removeClass("btn-primary").addClass("btn-danger");
+
+            element.find(".ui-icon.ui-icon-seek-prev").wrap("<div class='btn btn-sm btn-default'></div>");
+            element.find(".ui-icon.ui-icon-seek-prev").removeClass().addClass("fa fa-backward");
+
+            element.find(".ui-icon.ui-icon-seek-first").wrap("<div class='btn btn-sm btn-default'></div>");
+            element.find(".ui-icon.ui-icon-seek-first").removeClass().addClass("fa fa-fast-backward");
+
+            element.find(".ui-icon.ui-icon-seek-next").wrap("<div class='btn btn-sm btn-default'></div>");
+            element.find(".ui-icon.ui-icon-seek-next").removeClass().addClass("fa fa-forward");
+
+            element.find(".ui-icon.ui-icon-seek-end").wrap("<div class='btn btn-sm btn-default'></div>");
+            element.find(".ui-icon.ui-icon-seek-end").removeClass().addClass("fa fa-fast-forward");
+
+            $(window).on('resize.jqGrid', function() {
+               table.jqGrid('setGridWidth', $("#content").width());
+            });
+
+
+            $compile(element.contents())(scope);
+        }
+    }
+});
+"use strict";
+
+angular.module('SmartAdmin.Layout').directive('fullScreen', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element){
+            var $body = $('body');
+            var toggleFullSceen = function(e){
+                if (!$body.hasClass("full-screen")) {
+                    $body.addClass("full-screen");
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen();
+                    } else if (document.documentElement.mozRequestFullScreen) {
+                        document.documentElement.mozRequestFullScreen();
+                    } else if (document.documentElement.webkitRequestFullscreen) {
+                        document.documentElement.webkitRequestFullscreen();
+                    } else if (document.documentElement.msRequestFullscreen) {
+                        document.documentElement.msRequestFullscreen();
+                    }
+                } else {
+                    $body.removeClass("full-screen");
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.mozCancelFullScreen) {
+                        document.mozCancelFullScreen();
+                    } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    }
+                }
+            };
+
+            element.on('click', toggleFullSceen);
+
+        }
+    }
+});
+"use strict";
+
+angular.module('SmartAdmin.Layout').directive('minifyMenu', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element){
+                var $body = $('body');
+            var minifyMenu = function() {
+                if (!$body.hasClass("menu-on-top")) {
+                    $body.toggleClass("minified");
+                    $body.removeClass("hidden-menu");
+                    $('html').removeClass("hidden-menu-mobile-lock");
+                }
+            };
+
+            element.on('click', minifyMenu);
+        }
+    }
+})
+'use strict';
+
+angular.module('SmartAdmin.Layout').directive('reloadState', function ($rootScope) {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttributes) {
+            tElement.removeAttr('reload-state data-reload-state');
+            tElement.on('click', function (e) {
+                $rootScope.$state.transitionTo($rootScope.$state.current, $rootScope.$stateParams, {
+                    reload: true,
+                    inherit: false,
+                    notify: true
+                });
+                e.preventDefault();
+            })
+        }
+    }
+});
+
+"use strict";
+
+angular.module('SmartAdmin.Layout').directive('resetWidgets', function($state){
+
+    return {
+        restrict: 'A',
+        link: function(scope, element){
+            element.on('click', function(){
+                $.SmartMessageBox({
+                    title : "<i class='fa fa-refresh' style='color:green'></i> Clear Local Storage",
+                    content : "Would you like to RESET all your saved widgets and clear LocalStorage?1",
+                    buttons : '[No][Yes]'
+                }, function(ButtonPressed) {
+                    if (ButtonPressed == "Yes" && localStorage) {
+                        localStorage.clear();
+                        location.reload()
+                    }
+                });
+
+            });
+        }
+    }
+
+});
+
+'use strict';
+
+angular.module('SmartAdmin.Layout').directive('searchMobile', function () {
+    return {
+        restrict: 'A',
+        compile: function (element, attributes) {
+            element.removeAttr('search-mobile data-search-mobile');
+
+            element.on('click', function (e) {
+                $('body').addClass('search-mobile');
+                e.preventDefault();
+            });
+
+            $('#cancel-search-js').on('click', function (e) {
+                $('body').removeClass('search-mobile');
+                e.preventDefault();
+            });
+        }
+    }
+});
+"use strict";
+
+angular.module('SmartAdmin.Layout').directive('toggleMenu', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element){
+            var $body = $('body');
+
+            var toggleMenu = function(){
+                if (!$body.hasClass("menu-on-top")){
+                    $('html').toggleClass("hidden-menu-mobile-lock");
+                    $body.toggleClass("hidden-menu");
+                    $body.removeClass("minified");
+                } else if ( $body.hasClass("menu-on-top") && $body.hasClass("mobile-view-activated") ) {
+                    $('html').toggleClass("hidden-menu-mobile-lock");
+                    $body.toggleClass("hidden-menu");
+                    $body.removeClass("minified");
+                }
+            };
+
+            element.on('click', toggleMenu);
+
+            scope.$on('requestToggleMenu', function(){
+                toggleMenu();
             });
         }
     }
@@ -27981,933 +27941,6 @@ angular.module('SmartAdmin.Layout').factory('SmartCss', function ($rootScope, $t
 
 
 
-'use strict';
-
-angular.module('SmartAdmin.Layout').directive('demoStates', function ($rootScope) {
-    return {
-        restrict: 'EA',
-        replace: true,
-        templateUrl: 'app/_common/layout/directives/demo/demo-states.tpl.html',
-        scope: true,
-        link: function (scope, element, attributes) {
-            element.parent().css({
-                position: 'relative'
-            });
-
-            element.on('click', '#demo-setting', function () {
-                element.toggleClass('activate')
-            })
-        },
-        controller: function ($scope) {
-            var $root = $('body');
-
-            $scope.$watch('fixedHeader', function (fixedHeader) {
-                localStorage.setItem('sm-fixed-header', fixedHeader);
-                $root.toggleClass('fixed-header', fixedHeader);
-                if (fixedHeader == false) {
-                    $scope.fixedRibbon = false;
-                    $scope.fixedNavigation = false;
-                }
-            });
-
-
-            $scope.$watch('fixedNavigation', function (fixedNavigation) {
-                localStorage.setItem('sm-fixed-navigation', fixedNavigation);
-                $root.toggleClass('fixed-navigation', fixedNavigation);
-                if (fixedNavigation) {
-                    $scope.insideContainer = false;
-                    $scope.fixedHeader = true;
-                } else {
-                    $scope.fixedRibbon = false;
-                }
-            });
-
-
-            $scope.$watch('fixedRibbon', function (fixedRibbon) {
-                localStorage.setItem('sm-fixed-ribbon', fixedRibbon);
-                $root.toggleClass('fixed-ribbon', fixedRibbon);
-                if (fixedRibbon) {
-                    $scope.fixedHeader = true;
-                    $scope.fixedNavigation = true;
-                    $scope.insideContainer = false;
-                }
-            });
-
-            $scope.$watch('fixedPageFooter', function (fixedPageFooter) {
-                localStorage.setItem('sm-fixed-page-footer', fixedPageFooter);
-                $root.toggleClass('fixed-page-footer', fixedPageFooter);
-            });
-
-            $scope.$watch('insideContainer', function (insideContainer) {
-                localStorage.setItem('sm-inside-container', insideContainer);
-                $root.toggleClass('container', insideContainer);
-                if (insideContainer) {
-                    $scope.fixedRibbon = false;
-                    $scope.fixedNavigation = false;
-                }
-            });
-
-            $scope.$watch('rtl', function (rtl) {
-                localStorage.setItem('sm-rtl', rtl);
-                $root.toggleClass('smart-rtl', rtl);
-            });
-
-            $scope.$watch('menuOnTop', function (menuOnTop) {
-                $rootScope.$broadcast('$smartLayoutMenuOnTop', menuOnTop);
-                localStorage.setItem('sm-menu-on-top', menuOnTop);
-                $root.toggleClass('menu-on-top', menuOnTop);
-
-                if(menuOnTop)$root.removeClass('minified');
-            });
-
-            $scope.$watch('colorblindFriendly', function (colorblindFriendly) {
-                localStorage.setItem('sm-colorblind-friendly', colorblindFriendly);
-                $root.toggleClass('colorblind-friendly', colorblindFriendly);
-            });
-
-
-            $scope.fixedHeader = localStorage.getItem('sm-fixed-header') == 'true';
-            $scope.fixedNavigation = localStorage.getItem('sm-fixed-navigation') == 'true';
-            $scope.fixedRibbon = localStorage.getItem('sm-fixed-ribbon') == 'true';
-            $scope.fixedPageFooter = localStorage.getItem('sm-fixed-page-footer') == 'true';
-            $scope.insideContainer = localStorage.getItem('sm-inside-container') == 'true';
-            $scope.rtl = localStorage.getItem('sm-rtl') == 'true';
-            $scope.menuOnTop = localStorage.getItem('sm-menu-on-top') == 'true' || $root.hasClass('menu-on-top');
-            $scope.colorblindFriendly = localStorage.getItem('sm-colorblind-friendly') == 'true';
-
-
-            $scope.skins = appConfig.skins;
-
-            $scope.smartSkin = localStorage.getItem('sm-skin') || appConfig.smartSkin;
-
-
-            $scope.setSkin = function (skin) {
-                $scope.smartSkin = skin.name;
-                $root.removeClass(_.pluck($scope.skins, 'name').join(' '));
-                $root.addClass(skin.name);
-                localStorage.setItem('sm-skin', skin.name);
-                $("#logo img").attr('src', skin.logo);
-            };
-
-
-            if($scope.smartSkin != "smart-style-0"){
-                $scope.setSkin(_.find($scope.skins, {name: $scope.smartSkin}))
-            }
-
-
-            $scope.factoryReset = function () {
-                $.SmartMessageBox({
-                    title: "<i class='fa fa-refresh' style='color:green'></i> Clear Local Storage",
-                    content: "Would you like to RESET all your saved widgets and clear LocalStorage?1",
-                    buttons: '[No][Yes]'
-                }, function (ButtonPressed) {
-                    if (ButtonPressed == "Yes" && localStorage) {
-                        localStorage.clear();
-                        location.reload()
-                    }
-                });
-            }
-        }
-    }
-});
-"use strict";
-
-(function ($) {
-
-    $.fn.smartCollapseToggle = function () {
-
-        return this.each(function () {
-
-            var $body = $('body');
-            var $this = $(this);
-
-            // only if not  'menu-on-top'
-            if ($body.hasClass('menu-on-top')) {
-
-
-            } else {
-
-                $body.hasClass('mobile-view-activated')
-
-                // toggle open
-                $this.toggleClass('open');
-
-                // for minified menu collapse only second level
-                if ($body.hasClass('minified')) {
-                    if ($this.closest('nav ul ul').length) {
-                        $this.find('>a .collapse-sign .fa').toggleClass('fa-minus-square-o fa-plus-square-o');
-                        $this.find('ul:first').slideToggle(appConfig.menu_speed || 200);
-                    }
-                } else {
-                    // toggle expand item
-                    $this.find('>a .collapse-sign .fa').toggleClass('fa-minus-square-o fa-plus-square-o');
-                    $this.find('ul:first').slideToggle(appConfig.menu_speed || 200);
-                }
-            }
-        });
-    };
-})(jQuery);
-
-angular.module('SmartAdmin.Layout').directive('smartMenu', function ($state, $rootScope) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attrs) {
-            var $body = $('body');
-
-            var $collapsible = element.find('li[data-menu-collapse]');
-
-            var bindEvents = function(){
-                $collapsible.each(function (idx, li) {
-                    var $li = $(li);
-                    $li
-                        .on('click', '>a', function (e) {
-
-                            // collapse all open siblings
-                            $li.siblings('.open').smartCollapseToggle();
-
-                            // toggle element
-                            $li.smartCollapseToggle();
-
-                            // add active marker to collapsed element if it has active childs
-                            if (!$li.hasClass('open') && $li.find('li.active').length > 0) {
-                                $li.addClass('active')
-                            }
-
-                            e.preventDefault();
-                        })
-                        .find('>a').append('<b class="collapse-sign"><em class="fa fa-plus-square-o"></em></b>');
-
-                    // initialization toggle
-                    if ($li.find('li.active').length) {
-                        $li.smartCollapseToggle();
-                        $li.find('li.active').parents('li').addClass('active');
-                    }
-                });
-            }
-            bindEvents();
-
-
-            // click on route link
-            element.on('click', 'a[data-ui-sref]', function (e) {
-                // collapse all siblings to element parents and remove active markers
-                $(this)
-                    .parents('li').addClass('active')
-                    .each(function () {
-                        $(this).siblings('li.open').smartCollapseToggle();
-                        $(this).siblings('li').removeClass('active')
-                    });
-
-                if ($body.hasClass('mobile-view-activated')) {
-                    $rootScope.$broadcast('requestToggleMenu');
-                }
-            });
-
-
-            scope.$on('$smartLayoutMenuOnTop', function (event, menuOnTop) {
-                if (menuOnTop) {
-                    $collapsible.filter('.open').smartCollapseToggle();
-                }
-            });
-        }
-    }
-});
-(function(){
-    "use strict";
-
-    angular.module('SmartAdmin.Layout').directive('smartMenuItems', function ($http, $rootScope, $compile, APP_CONFIG) {
-    return {
-        restrict: 'A',
-        compile: function (element, attrs) {
-            
-
-            function createItem(item, parent, level){
-                var li = $('<li />' ,{'ui-sref-active': "active"})
-                var a = $('<a />');
-                var i = $('<i />');
-
-                li.append(a);
-
-                if (item.sref) {
-                    a.attr('ui-sref', item.sref);
-                    // add this option to reload state when clicked
-
-                    a.attr("ui-sref-opts", "{reload: true}");
-                }
-                if(item.href)
-                    a.attr('href', item.href);
-                if(item.icon){
-                    i.attr('class', item.icon);
-                    a.append(i);
-                }
-                if(item.title){
-                    a.attr('title', item.title);
-                    if(level == 1){ 
-                        a.append(' <span class="menu-item-parent">' + item.title + '</span>');
-                    } else {
-                        a.append(' ' + item.title);
-
-                    }
-
-                    // add a badge to the app.tasks.list item
-                    if (item.sref) {
-                        var myTaskSref = "app.myspace";
-                        if (item.sref.substring(0, myTaskSref.length) === myTaskSref) {
-                            a.append('<span class="badge pull-right inbox-badge">{{getTotalCount()}}</span>');
-                        }
-                    }
-                }
-
-                if(item.items){
-                    var ul = $('<ul />');
-                    li.append(ul);
-                    li.attr('data-menu-collapse', '');
-                    _.forEach(item.items, function(child) {
-                        createItem(child, ul, level+1);
-                    })
-                } 
-
-                parent.append(li); 
-            }
-
-            $http.get(APP_CONFIG.ebaasRootUrl + attrs.smartMenuItems).then(function (res) {
-
-                var ul = $('<ul />', {
-                    'smart-menu': ''
-                })
-                _.forEach(res.data.items, function (item) {
-                    if (item.visible) {
-                        createItem(item, ul, 1);
-                    }
-                })
-                
-                var $scope = $rootScope.$new();
-                var html = $('<div>').append(ul).html(); 
-                var linkingFunction = $compile(html);
-                
-                var _element = linkingFunction($scope);
-
-                element.replaceWith(_element);                
-            })
-        }
-    }
-});
-})();
-/**
- * Jarvis Widget Directive
- *
- *    colorbutton="false"
- *    editbutton="false"
-      togglebutton="false"
-       deletebutton="false"
-        fullscreenbutton="false"
-        custombutton="false"
-        collapsed="true"
-          sortable="false"
- *
- *
- */
-"use strict";
-
-angular.module('SmartAdmin.Layout').directive('jarvisWidget', function($rootScope){
-    return {
-        restrict: "A",
-        compile: function(element, attributes){
-            if(element.data('widget-color'))
-                element.addClass('jarviswidget-color-' + element.data('widget-color'));
-
-
-            element.find('.widget-body').prepend('<div class="jarviswidget-editbox"><input class="form-control" type="text"></div>');
-
-            element.addClass('jarviswidget jarviswidget-sortable');
-            $rootScope.$emit('jarvisWidgetAdded', element )
-
-        }
-    }
-});
- "use strict";
- 
- angular.module('SmartAdmin.Layout').directive('widgetGrid', function ($rootScope, $compile, $q, $state, $timeout) {
-
-    var jarvisWidgetsDefaults = {
-        grid: 'article',
-        widgets: '.jarviswidget',
-        localStorage: true,
-        deleteSettingsKey: '#deletesettingskey-options',
-        settingsKeyLabel: 'Reset settings?',
-        deletePositionKey: '#deletepositionkey-options',
-        positionKeyLabel: 'Reset position?',
-        sortable: true,
-        buttonsHidden: false,
-        // toggle button
-        toggleButton: true,
-        toggleClass: 'fa fa-minus | fa fa-plus',
-        toggleSpeed: 200,
-        onToggle: function () {
-        },
-        // delete btn
-        deleteButton: true,
-        deleteMsg: 'Warning: This action cannot be undone!',
-        deleteClass: 'fa fa-times',
-        deleteSpeed: 200,
-        onDelete: function () {
-        },
-        // edit btn
-        editButton: true,
-        editPlaceholder: '.jarviswidget-editbox',
-        editClass: 'fa fa-cog | fa fa-save',
-        editSpeed: 200,
-        onEdit: function () {
-        },
-        // color button
-        colorButton: true,
-        // full screen
-        fullscreenButton: true,
-        fullscreenClass: 'fa fa-expand | fa fa-compress',
-        fullscreenDiff: 3,
-        onFullscreen: function () {
-        },
-        // custom btn
-        customButton: false,
-        customClass: 'folder-10 | next-10',
-        customStart: function () {
-            alert('Hello you, this is a custom button...');
-        },
-        customEnd: function () {
-            alert('bye, till next time...');
-        },
-        // order
-        buttonOrder: '%refresh% %custom% %edit% %toggle% %fullscreen% %delete%',
-        opacity: 1.0,
-        dragHandle: '> header',
-        placeholderClass: 'jarviswidget-placeholder',
-        indicator: true,
-        indicatorTime: 600,
-        ajax: true,
-        timestampPlaceholder: '.jarviswidget-timestamp',
-        timestampFormat: 'Last update: %m%/%d%/%y% %h%:%i%:%s%',
-        refreshButton: true,
-        refreshButtonClass: 'fa fa-refresh',
-        labelError: 'Sorry but there was a error:',
-        labelUpdated: 'Last Update:',
-        labelRefresh: 'Refresh',
-        labelDelete: 'Delete widget:',
-        afterLoad: function () {
-        },
-        rtl: false, // best not to toggle this!
-        onChange: function () {
-
-        },
-        onSave: function () {
-
-        },
-        ajaxnav: true
-
-    }
-
-    var dispatchedWidgetIds = [];
-    var setupWaiting = false;
-
-    var debug = 1;
-
-    var setupWidgets = function (element, widgetIds) {
-
-        if (!setupWaiting) {
-
-            if(_.intersection(widgetIds, dispatchedWidgetIds).length != widgetIds.length){
-
-                dispatchedWidgetIds = _.union(widgetIds, dispatchedWidgetIds);
-
-//                    console.log('setupWidgets', debug++);
-
-                element.data('jarvisWidgets') && element.data('jarvisWidgets').destroy();
-                element.jarvisWidgets(jarvisWidgetsDefaults);
-                initDropdowns(widgetIds);
-            }
-
-        } else {
-            if (!setupWaiting) {
-                setupWaiting = true;
-                $timeout(function () {
-                    setupWaiting = false;
-                    setupWidgets(element, widgetIds)
-                }, 200);
-            }
-        }
-
-    };
-
-    var destroyWidgets = function(element, widgetIds){
-        element.data('jarvisWidgets') && element.data('jarvisWidgets').destroy();
-        dispatchedWidgetIds = _.xor(dispatchedWidgetIds, widgetIds);
-    };
-
-    var initDropdowns = function (widgetIds) {
-        angular.forEach(widgetIds, function (wid) {
-            $('#' + wid + ' [data-toggle="dropdown"]').each(function () {
-                var $parent = $(this).parent();
-                // $(this).removeAttr('data-toggle');
-                if (!$parent.attr('dropdown')) {
-                    $(this).removeAttr('href');
-                    $parent.attr('dropdown', '');
-                    var compiled = $compile($parent)($parent.scope())
-                    $parent.replaceWith(compiled);
-                }
-            })
-        });
-    };
-
-    var jarvisWidgetAddedOff,
-        $viewContentLoadedOff,
-        $stateChangeStartOff;
-
-    return {
-        restrict: 'A',
-        compile: function(element){
-
-            element.removeAttr('widget-grid data-widget-grid');
-
-            var widgetIds = [];
-
-            $viewContentLoadedOff = $rootScope.$on('$viewContentLoaded', function (event, data) {
-                $timeout(function () {
-                    setupWidgets(element, widgetIds)
-                }, 100);
-            });
-
-
-            $stateChangeStartOff = $rootScope.$on('$stateChangeStart',
-                function(event, toState, toParams, fromState, fromParams){
-                    jarvisWidgetAddedOff();
-                    $viewContentLoadedOff();
-                    $stateChangeStartOff();
-                    destroyWidgets(element, widgetIds)
-                });
-
-            jarvisWidgetAddedOff = $rootScope.$on('jarvisWidgetAdded', function (event, widget) {
-                if (widgetIds.indexOf(widget.attr('id')) == -1) {
-                    widgetIds.push(widget.attr('id'));
-                    $timeout(function () {
-                        setupWidgets(element, widgetIds)
-                    }, 100);
-                }
-//                    console.log('jarvisWidgetAdded', widget.attr('id'));
-            });
-
-        }
-    }
-});
-
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartCheckoutForm', function (formsCommon, lazyScript) {
-    return {
-        restrict: 'A',
-        link: function (scope, form) {
-           lazyScript.register('jquery-validation').then(function(){
-
-               scope.countries = formsCommon.countries;
-
-               form.validate(angular.extend({
-                    // Rules for form validation
-                    rules : {
-                        fname : {
-                            required : true
-                        },
-                        lname : {
-                            required : true
-                        },
-                        email : {
-                            required : true,
-                            email : true
-                        },
-                        phone : {
-                            required : true
-                        },
-                        country : {
-                            required : true
-                        },
-                        city : {
-                            required : true
-                        },
-                        code : {
-                            required : true,
-                            digits : true
-                        },
-                        address : {
-                            required : true
-                        },
-                        name : {
-                            required : true
-                        },
-                        card : {
-                            required : true,
-                            creditcard : true
-                        },
-                        cvv : {
-                            required : true,
-                            digits : true
-                        },
-                        month : {
-                            required : true
-                        },
-                        year : {
-                            required : true,
-                            digits : true
-                        }
-                    },
-
-                    // Messages for form validation
-                    messages : {
-                        fname : {
-                            required : 'Please enter your first name'
-                        },
-                        lname : {
-                            required : 'Please enter your last name'
-                        },
-                        email : {
-                            required : 'Please enter your email address',
-                            email : 'Please enter a VALID email address'
-                        },
-                        phone : {
-                            required : 'Please enter your phone number'
-                        },
-                        country : {
-                            required : 'Please select your country'
-                        },
-                        city : {
-                            required : 'Please enter your city'
-                        },
-                        code : {
-                            required : 'Please enter code',
-                            digits : 'Digits only please'
-                        },
-                        address : {
-                            required : 'Please enter your full address'
-                        },
-                        name : {
-                            required : 'Please enter name on your card'
-                        },
-                        card : {
-                            required : 'Please enter your card number'
-                        },
-                        cvv : {
-                            required : 'Enter CVV2',
-                            digits : 'Digits only'
-                        },
-                        month : {
-                            required : 'Select month'
-                        },
-                        year : {
-                            required : 'Enter year',
-                            digits : 'Digits only please'
-                        }
-                    }
-                }, formsCommon.validateOptions));
-            });
-        }
-    }
-});
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartCommentForm', function (formsCommon, lazyScript) {
-    return {
-        restrict: 'A',
-        link: function (scope, form) {
-            lazyScript.register('jquery-validation').then(function(){
-                form.validate(angular.extend({
-                    // Rules for form validation
-                    rules : {
-                        name : {
-                            required : true
-                        },
-                        email : {
-                            required : true,
-                            email : true
-                        },
-                        url : {
-                            url : true
-                        },
-                        comment : {
-                            required : true
-                        }
-                    },
-
-                    // Messages for form validation
-                    messages : {
-                        name : {
-                            required : 'Enter your name',
-                        },
-                        email : {
-                            required : 'Enter your email address',
-                            email : 'Enter a VALID email'
-                        },
-                        url : {
-                            email : 'Enter a VALID url'
-                        },
-                        comment : {
-                            required : 'Please enter your comment'
-                        }
-                    },
-
-                    // Ajax form submition
-                    submitHandler : function() {
-                        form.ajaxSubmit({
-                            success : function() {
-                                form.addClass('submited');
-                            }
-                        });
-                    }
-
-                }, formsCommon.validateOptions));
-            });
-
-        }
-    }
-});
-
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartContactsForm', function (formsCommon, lazyScript) {
-    return {
-        restrict: 'A',
-        link: function (scope, form) {
-            lazyScript.register('jquery-validation').then(function(){
-                form.validate(angular.extend({
-                    // Rules for form validation
-                    rules : {
-                        name : {
-                            required : true
-                        },
-                        email : {
-                            required : true,
-                            email : true
-                        },
-                        message : {
-                            required : true,
-                            minlength : 10
-                        }
-                    },
-
-                    // Messages for form validation
-                    messages : {
-                        name : {
-                            required : 'Please enter your name'
-                        },
-                        email : {
-                            required : 'Please enter your email address',
-                            email : 'Please enter a VALID email address'
-                        },
-                        message : {
-                            required : 'Please enter your message'
-                        }
-                    },
-
-                    // Ajax form submition
-                    submitHandler : function() {
-                        form.ajaxSubmit({
-                            success : function() {
-                                form.addClass('submited');
-                            }
-                        });
-                    }
-                }, formsCommon.validateOptions));
-            });
-        }
-    }
-});
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartOrderForm', function (formsCommon, lazyScript) {
-    return {
-        restrict: 'E',
-        link: function (scope, form) {
-            lazyScript.register('jquery-validation').then(function(){
-                form.validate(angular.extend({
-                    // Rules for form validation
-                    rules : {
-                        name : {
-                            required : true
-                        },
-                        email : {
-                            required : true,
-                            email : true
-                        },
-                        phone : {
-                            required : true
-                        },
-                        interested : {
-                            required : true
-                        },
-                        budget : {
-                            required : true
-                        }
-                    },
-
-                    // Messages for form validation
-                    messages : {
-                        name : {
-                            required : 'Please enter your name'
-                        },
-                        email : {
-                            required : 'Please enter your email address',
-                            email : 'Please enter a VALID email address'
-                        },
-                        phone : {
-                            required : 'Please enter your phone number'
-                        },
-                        interested : {
-                            required : 'Please select interested service'
-                        },
-                        budget : {
-                            required : 'Please select your budget'
-                        }
-                    },
-
-                }, formsCommon.validateOptions));
-            });
-
-        }
-    }
-});
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartRegistrationForm', function (formsCommon, lazyScript) {
-    return {
-        restrict: 'A',
-        link: function (scope, form, attributes) {
-            lazyScript.register('jquery-validation').then(function(){
-                form.validate(angular.extend({
-
-                    // Rules for form validation
-                    rules: {
-                        username: {
-                            required: true
-                        },
-                        email: {
-                            required: true,
-                            email: true
-                        },
-                        password: {
-                            required: true,
-                            minlength: 3,
-                            maxlength: 20
-                        },
-                        passwordConfirm: {
-                            required: true,
-                            minlength: 3,
-                            maxlength: 20,
-                            equalTo: '#password'
-                        },
-                        firstname: {
-                            required: true
-                        },
-                        lastname: {
-                            required: true
-                        },
-                        gender: {
-                            required: true
-                        },
-                        terms: {
-                            required: true
-                        }
-                    },
-
-                    // Messages for form validation
-                    messages: {
-                        login: {
-                            required: 'Please enter your login'
-                        },
-                        email: {
-                            required: 'Please enter your email address',
-                            email: 'Please enter a VALID email address'
-                        },
-                        password: {
-                            required: 'Please enter your password'
-                        },
-                        passwordConfirm: {
-                            required: 'Please enter your password one more time',
-                            equalTo: 'Please enter the same password as above'
-                        },
-                        firstname: {
-                            required: 'Please select your first name'
-                        },
-                        lastname: {
-                            required: 'Please select your last name'
-                        },
-                        gender: {
-                            required: 'Please select your gender'
-                        },
-                        terms: {
-                            required: 'You must agree with Terms and Conditions'
-                        }
-                    }
-
-                }, formsCommon.validateOptions));
-            });
-        }
-    }
-});
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartReviewForm', function (formsCommon, lazyScript) {
-    return {
-        restrict: 'E',
-        link: function (scope, form) {
-            lazyScript.register('jquery-validation').then(function(){
-
-                form.validate(angular.extend({
-                    // Rules for form validation
-                    rules : {
-                        name : {
-                            required : true
-                        },
-                        email : {
-                            required : true,
-                            email : true
-                        },
-                        review : {
-                            required : true,
-                            minlength : 20
-                        },
-                        quality : {
-                            required : true
-                        },
-                        reliability : {
-                            required : true
-                        },
-                        overall : {
-                            required : true
-                        }
-                    },
-
-                    // Messages for form validation
-                    messages : {
-                        name : {
-                            required : 'Please enter your name'
-                        },
-                        email : {
-                            required : 'Please enter your email address',
-                            email : '<i class="fa fa-warning"></i><strong>Please enter a VALID email addres</strong>'
-                        },
-                        review : {
-                            required : 'Please enter your review'
-                        },
-                        quality : {
-                            required : 'Please rate quality of the product'
-                        },
-                        reliability : {
-                            required : 'Please rate reliability of the product'
-                        },
-                        overall : {
-                            required : 'Please rate the product'
-                        }
-                    }
-
-                }, formsCommon.validateOptions));
-            });
-        }
-    }
-});
 "use strict";
 
 
@@ -29438,6 +28471,417 @@ angular.module('SmartAdmin.Forms').directive('smartSummernoteEditor', function (
 });
 'use strict';
 
+angular.module('SmartAdmin.Forms').directive('smartCheckoutForm', function (formsCommon, lazyScript) {
+    return {
+        restrict: 'A',
+        link: function (scope, form) {
+           lazyScript.register('jquery-validation').then(function(){
+
+               scope.countries = formsCommon.countries;
+
+               form.validate(angular.extend({
+                    // Rules for form validation
+                    rules : {
+                        fname : {
+                            required : true
+                        },
+                        lname : {
+                            required : true
+                        },
+                        email : {
+                            required : true,
+                            email : true
+                        },
+                        phone : {
+                            required : true
+                        },
+                        country : {
+                            required : true
+                        },
+                        city : {
+                            required : true
+                        },
+                        code : {
+                            required : true,
+                            digits : true
+                        },
+                        address : {
+                            required : true
+                        },
+                        name : {
+                            required : true
+                        },
+                        card : {
+                            required : true,
+                            creditcard : true
+                        },
+                        cvv : {
+                            required : true,
+                            digits : true
+                        },
+                        month : {
+                            required : true
+                        },
+                        year : {
+                            required : true,
+                            digits : true
+                        }
+                    },
+
+                    // Messages for form validation
+                    messages : {
+                        fname : {
+                            required : 'Please enter your first name'
+                        },
+                        lname : {
+                            required : 'Please enter your last name'
+                        },
+                        email : {
+                            required : 'Please enter your email address',
+                            email : 'Please enter a VALID email address'
+                        },
+                        phone : {
+                            required : 'Please enter your phone number'
+                        },
+                        country : {
+                            required : 'Please select your country'
+                        },
+                        city : {
+                            required : 'Please enter your city'
+                        },
+                        code : {
+                            required : 'Please enter code',
+                            digits : 'Digits only please'
+                        },
+                        address : {
+                            required : 'Please enter your full address'
+                        },
+                        name : {
+                            required : 'Please enter name on your card'
+                        },
+                        card : {
+                            required : 'Please enter your card number'
+                        },
+                        cvv : {
+                            required : 'Enter CVV2',
+                            digits : 'Digits only'
+                        },
+                        month : {
+                            required : 'Select month'
+                        },
+                        year : {
+                            required : 'Enter year',
+                            digits : 'Digits only please'
+                        }
+                    }
+                }, formsCommon.validateOptions));
+            });
+        }
+    }
+});
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartCommentForm', function (formsCommon, lazyScript) {
+    return {
+        restrict: 'A',
+        link: function (scope, form) {
+            lazyScript.register('jquery-validation').then(function(){
+                form.validate(angular.extend({
+                    // Rules for form validation
+                    rules : {
+                        name : {
+                            required : true
+                        },
+                        email : {
+                            required : true,
+                            email : true
+                        },
+                        url : {
+                            url : true
+                        },
+                        comment : {
+                            required : true
+                        }
+                    },
+
+                    // Messages for form validation
+                    messages : {
+                        name : {
+                            required : 'Enter your name',
+                        },
+                        email : {
+                            required : 'Enter your email address',
+                            email : 'Enter a VALID email'
+                        },
+                        url : {
+                            email : 'Enter a VALID url'
+                        },
+                        comment : {
+                            required : 'Please enter your comment'
+                        }
+                    },
+
+                    // Ajax form submition
+                    submitHandler : function() {
+                        form.ajaxSubmit({
+                            success : function() {
+                                form.addClass('submited');
+                            }
+                        });
+                    }
+
+                }, formsCommon.validateOptions));
+            });
+
+        }
+    }
+});
+
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartContactsForm', function (formsCommon, lazyScript) {
+    return {
+        restrict: 'A',
+        link: function (scope, form) {
+            lazyScript.register('jquery-validation').then(function(){
+                form.validate(angular.extend({
+                    // Rules for form validation
+                    rules : {
+                        name : {
+                            required : true
+                        },
+                        email : {
+                            required : true,
+                            email : true
+                        },
+                        message : {
+                            required : true,
+                            minlength : 10
+                        }
+                    },
+
+                    // Messages for form validation
+                    messages : {
+                        name : {
+                            required : 'Please enter your name'
+                        },
+                        email : {
+                            required : 'Please enter your email address',
+                            email : 'Please enter a VALID email address'
+                        },
+                        message : {
+                            required : 'Please enter your message'
+                        }
+                    },
+
+                    // Ajax form submition
+                    submitHandler : function() {
+                        form.ajaxSubmit({
+                            success : function() {
+                                form.addClass('submited');
+                            }
+                        });
+                    }
+                }, formsCommon.validateOptions));
+            });
+        }
+    }
+});
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartOrderForm', function (formsCommon, lazyScript) {
+    return {
+        restrict: 'E',
+        link: function (scope, form) {
+            lazyScript.register('jquery-validation').then(function(){
+                form.validate(angular.extend({
+                    // Rules for form validation
+                    rules : {
+                        name : {
+                            required : true
+                        },
+                        email : {
+                            required : true,
+                            email : true
+                        },
+                        phone : {
+                            required : true
+                        },
+                        interested : {
+                            required : true
+                        },
+                        budget : {
+                            required : true
+                        }
+                    },
+
+                    // Messages for form validation
+                    messages : {
+                        name : {
+                            required : 'Please enter your name'
+                        },
+                        email : {
+                            required : 'Please enter your email address',
+                            email : 'Please enter a VALID email address'
+                        },
+                        phone : {
+                            required : 'Please enter your phone number'
+                        },
+                        interested : {
+                            required : 'Please select interested service'
+                        },
+                        budget : {
+                            required : 'Please select your budget'
+                        }
+                    },
+
+                }, formsCommon.validateOptions));
+            });
+
+        }
+    }
+});
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartRegistrationForm', function (formsCommon, lazyScript) {
+    return {
+        restrict: 'A',
+        link: function (scope, form, attributes) {
+            lazyScript.register('jquery-validation').then(function(){
+                form.validate(angular.extend({
+
+                    // Rules for form validation
+                    rules: {
+                        username: {
+                            required: true
+                        },
+                        email: {
+                            required: true,
+                            email: true
+                        },
+                        password: {
+                            required: true,
+                            minlength: 3,
+                            maxlength: 20
+                        },
+                        passwordConfirm: {
+                            required: true,
+                            minlength: 3,
+                            maxlength: 20,
+                            equalTo: '#password'
+                        },
+                        firstname: {
+                            required: true
+                        },
+                        lastname: {
+                            required: true
+                        },
+                        gender: {
+                            required: true
+                        },
+                        terms: {
+                            required: true
+                        }
+                    },
+
+                    // Messages for form validation
+                    messages: {
+                        login: {
+                            required: 'Please enter your login'
+                        },
+                        email: {
+                            required: 'Please enter your email address',
+                            email: 'Please enter a VALID email address'
+                        },
+                        password: {
+                            required: 'Please enter your password'
+                        },
+                        passwordConfirm: {
+                            required: 'Please enter your password one more time',
+                            equalTo: 'Please enter the same password as above'
+                        },
+                        firstname: {
+                            required: 'Please select your first name'
+                        },
+                        lastname: {
+                            required: 'Please select your last name'
+                        },
+                        gender: {
+                            required: 'Please select your gender'
+                        },
+                        terms: {
+                            required: 'You must agree with Terms and Conditions'
+                        }
+                    }
+
+                }, formsCommon.validateOptions));
+            });
+        }
+    }
+});
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartReviewForm', function (formsCommon, lazyScript) {
+    return {
+        restrict: 'E',
+        link: function (scope, form) {
+            lazyScript.register('jquery-validation').then(function(){
+
+                form.validate(angular.extend({
+                    // Rules for form validation
+                    rules : {
+                        name : {
+                            required : true
+                        },
+                        email : {
+                            required : true,
+                            email : true
+                        },
+                        review : {
+                            required : true,
+                            minlength : 20
+                        },
+                        quality : {
+                            required : true
+                        },
+                        reliability : {
+                            required : true
+                        },
+                        overall : {
+                            required : true
+                        }
+                    },
+
+                    // Messages for form validation
+                    messages : {
+                        name : {
+                            required : 'Please enter your name'
+                        },
+                        email : {
+                            required : 'Please enter your email address',
+                            email : '<i class="fa fa-warning"></i><strong>Please enter a VALID email addres</strong>'
+                        },
+                        review : {
+                            required : 'Please enter your review'
+                        },
+                        quality : {
+                            required : 'Please rate quality of the product'
+                        },
+                        reliability : {
+                            required : 'Please rate reliability of the product'
+                        },
+                        overall : {
+                            required : 'Please rate the product'
+                        }
+                    }
+
+                }, formsCommon.validateOptions));
+            });
+        }
+    }
+});
+'use strict';
+
 angular.module('SmartAdmin.Forms').directive('smartJcrop', function ($q) {
     return {
         restrict: 'A',
@@ -29626,6 +29070,74 @@ angular.module('SmartAdmin.Forms').directive('smartJcrop', function ($q) {
         }
     }
 });
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartValidateForm', function (formsCommon) {
+    return {
+        restrict: 'A',
+        link: function (scope, form, attributes) {
+
+            var validateOptions = {
+                rules: {},
+                messages: {},
+                highlight: function (element) {
+                    $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+                },
+                unhighlight: function (element) {
+                    $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+                },
+                errorElement: 'span',
+                errorClass: 'help-block',
+                errorPlacement: function (error, element) {
+                    if (element.parent('.input-group').length) {
+                        error.insertAfter(element.parent());
+                    } else {
+                        error.insertAfter(element);
+                    }
+                }
+            };
+            form.find('[data-smart-validate-input], [smart-validate-input]').each(function () {
+                var $input = $(this), fieldName = $input.attr('name');
+
+                validateOptions.rules[fieldName] = {};
+
+                if ($input.data('required') != undefined) {
+                    validateOptions.rules[fieldName].required = true;
+                }
+                if ($input.data('email') != undefined) {
+                    validateOptions.rules[fieldName].email = true;
+                }
+
+                if ($input.data('maxlength') != undefined) {
+                    validateOptions.rules[fieldName].maxlength = $input.data('maxlength');
+                }
+
+                if ($input.data('minlength') != undefined) {
+                    validateOptions.rules[fieldName].minlength = $input.data('minlength');
+                }
+
+                if($input.data('message')){
+                    validateOptions.messages[fieldName] = $input.data('message');
+                } else {
+                    angular.forEach($input.data(), function(value, key){
+                        if(key.search(/message/)== 0){
+                            if(!validateOptions.messages[fieldName])
+                                validateOptions.messages[fieldName] = {};
+
+                            var messageKey = key.toLowerCase().replace(/^message/,'')
+                            validateOptions.messages[fieldName][messageKey] = value;
+                        }
+                    });
+                }
+            });
+
+
+            form.validate(validateOptions);
+
+        }
+    }
+});
+
 'use strict';
 
 angular.module('SmartAdmin.Forms').directive('smartClockpicker', function () {
@@ -30031,74 +29543,6 @@ angular.module('SmartAdmin.Forms').directive('smartDropzone', function () {
 
 'use strict';
 
-angular.module('SmartAdmin.Forms').directive('smartValidateForm', function (formsCommon) {
-    return {
-        restrict: 'A',
-        link: function (scope, form, attributes) {
-
-            var validateOptions = {
-                rules: {},
-                messages: {},
-                highlight: function (element) {
-                    $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-                },
-                unhighlight: function (element) {
-                    $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
-                },
-                errorElement: 'span',
-                errorClass: 'help-block',
-                errorPlacement: function (error, element) {
-                    if (element.parent('.input-group').length) {
-                        error.insertAfter(element.parent());
-                    } else {
-                        error.insertAfter(element);
-                    }
-                }
-            };
-            form.find('[data-smart-validate-input], [smart-validate-input]').each(function () {
-                var $input = $(this), fieldName = $input.attr('name');
-
-                validateOptions.rules[fieldName] = {};
-
-                if ($input.data('required') != undefined) {
-                    validateOptions.rules[fieldName].required = true;
-                }
-                if ($input.data('email') != undefined) {
-                    validateOptions.rules[fieldName].email = true;
-                }
-
-                if ($input.data('maxlength') != undefined) {
-                    validateOptions.rules[fieldName].maxlength = $input.data('maxlength');
-                }
-
-                if ($input.data('minlength') != undefined) {
-                    validateOptions.rules[fieldName].minlength = $input.data('minlength');
-                }
-
-                if($input.data('message')){
-                    validateOptions.messages[fieldName] = $input.data('message');
-                } else {
-                    angular.forEach($input.data(), function(value, key){
-                        if(key.search(/message/)== 0){
-                            if(!validateOptions.messages[fieldName])
-                                validateOptions.messages[fieldName] = {};
-
-                            var messageKey = key.toLowerCase().replace(/^message/,'')
-                            validateOptions.messages[fieldName][messageKey] = value;
-                        }
-                    });
-                }
-            });
-
-
-            form.validate(validateOptions);
-
-        }
-    }
-});
-
-'use strict';
-
 angular.module('SmartAdmin.Forms').directive('smartFueluxWizard', function () {
     return {
         restrict: 'A',
@@ -30219,6 +29663,521 @@ angular.module('SmartAdmin.Forms').directive('smartWizard', function () {
 
 
             setStep(currentStep);
+
+        }
+    }
+});
+"use strict";
+
+(function ($) {
+
+    $.fn.smartCollapseToggle = function () {
+
+        return this.each(function () {
+
+            var $body = $('body');
+            var $this = $(this);
+
+            // only if not  'menu-on-top'
+            if ($body.hasClass('menu-on-top')) {
+
+
+            } else {
+
+                $body.hasClass('mobile-view-activated')
+
+                // toggle open
+                $this.toggleClass('open');
+
+                // for minified menu collapse only second level
+                if ($body.hasClass('minified')) {
+                    if ($this.closest('nav ul ul').length) {
+                        $this.find('>a .collapse-sign .fa').toggleClass('fa-minus-square-o fa-plus-square-o');
+                        $this.find('ul:first').slideToggle(appConfig.menu_speed || 200);
+                    }
+                } else {
+                    // toggle expand item
+                    $this.find('>a .collapse-sign .fa').toggleClass('fa-minus-square-o fa-plus-square-o');
+                    $this.find('ul:first').slideToggle(appConfig.menu_speed || 200);
+                }
+            }
+        });
+    };
+})(jQuery);
+
+angular.module('SmartAdmin.Layout').directive('smartMenu', function ($state, $rootScope) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var $body = $('body');
+
+            var $collapsible = element.find('li[data-menu-collapse]');
+
+            var bindEvents = function(){
+                $collapsible.each(function (idx, li) {
+                    var $li = $(li);
+                    $li
+                        .on('click', '>a', function (e) {
+
+                            // collapse all open siblings
+                            $li.siblings('.open').smartCollapseToggle();
+
+                            // toggle element
+                            $li.smartCollapseToggle();
+
+                            // add active marker to collapsed element if it has active childs
+                            if (!$li.hasClass('open') && $li.find('li.active').length > 0) {
+                                $li.addClass('active')
+                            }
+
+                            e.preventDefault();
+                        })
+                        .find('>a').append('<b class="collapse-sign"><em class="fa fa-plus-square-o"></em></b>');
+
+                    // initialization toggle
+                    if ($li.find('li.active').length) {
+                        $li.smartCollapseToggle();
+                        $li.find('li.active').parents('li').addClass('active');
+                    }
+                });
+            }
+            bindEvents();
+
+
+            // click on route link
+            element.on('click', 'a[data-ui-sref]', function (e) {
+                // collapse all siblings to element parents and remove active markers
+                $(this)
+                    .parents('li').addClass('active')
+                    .each(function () {
+                        $(this).siblings('li.open').smartCollapseToggle();
+                        $(this).siblings('li').removeClass('active')
+                    });
+
+                if ($body.hasClass('mobile-view-activated')) {
+                    $rootScope.$broadcast('requestToggleMenu');
+                }
+            });
+
+
+            scope.$on('$smartLayoutMenuOnTop', function (event, menuOnTop) {
+                if (menuOnTop) {
+                    $collapsible.filter('.open').smartCollapseToggle();
+                }
+            });
+        }
+    }
+});
+(function(){
+    "use strict";
+
+    angular.module('SmartAdmin.Layout').directive('smartMenuItems', function ($http, $rootScope, $compile, APP_CONFIG) {
+    return {
+        restrict: 'A',
+        compile: function (element, attrs) {
+            
+
+            function createItem(item, parent, level){
+                var li = $('<li />' ,{'ui-sref-active': "active"})
+                var a = $('<a />');
+                var i = $('<i />');
+
+                li.append(a);
+
+                if (item.sref) {
+                    a.attr('ui-sref', item.sref);
+                    // add this option to reload state when clicked
+
+                    a.attr("ui-sref-opts", "{reload: true}");
+                }
+                if(item.href)
+                    a.attr('href', item.href);
+                if(item.icon){
+                    i.attr('class', item.icon);
+                    a.append(i);
+                }
+                if(item.title){
+                    a.attr('title', item.title);
+                    if(level == 1){ 
+                        a.append(' <span class="menu-item-parent">' + item.title + '</span>');
+                    } else {
+                        a.append(' ' + item.title);
+
+                    }
+
+                    // add a badge to the app.tasks.list item
+                    if (item.sref) {
+                        var myTaskSref = "app.myspace";
+                        if (item.sref.substring(0, myTaskSref.length) === myTaskSref) {
+                            a.append('<span class="badge pull-right inbox-badge">{{getTotalCount()}}</span>');
+                        }
+                    }
+                }
+
+                if(item.items){
+                    var ul = $('<ul />');
+                    li.append(ul);
+                    li.attr('data-menu-collapse', '');
+                    _.forEach(item.items, function(child) {
+                        createItem(child, ul, level+1);
+                    })
+                } 
+
+                parent.append(li); 
+            }
+
+            $http.get(APP_CONFIG.ebaasRootUrl + attrs.smartMenuItems).then(function (res) {
+
+                var ul = $('<ul />', {
+                    'smart-menu': ''
+                })
+                _.forEach(res.data.items, function (item) {
+                    if (item.visible) {
+                        createItem(item, ul, 1);
+                    }
+                })
+                
+                var $scope = $rootScope.$new();
+                var html = $('<div>').append(ul).html(); 
+                var linkingFunction = $compile(html);
+                
+                var _element = linkingFunction($scope);
+
+                element.replaceWith(_element);                
+            })
+        }
+    }
+});
+})();
+'use strict';
+
+angular.module('SmartAdmin.Layout').directive('demoStates', function ($rootScope) {
+    return {
+        restrict: 'EA',
+        replace: true,
+        templateUrl: 'app/_common/layout/directives/demo/demo-states.tpl.html',
+        scope: true,
+        link: function (scope, element, attributes) {
+            element.parent().css({
+                position: 'relative'
+            });
+
+            element.on('click', '#demo-setting', function () {
+                element.toggleClass('activate')
+            })
+        },
+        controller: function ($scope) {
+            var $root = $('body');
+
+            $scope.$watch('fixedHeader', function (fixedHeader) {
+                localStorage.setItem('sm-fixed-header', fixedHeader);
+                $root.toggleClass('fixed-header', fixedHeader);
+                if (fixedHeader == false) {
+                    $scope.fixedRibbon = false;
+                    $scope.fixedNavigation = false;
+                }
+            });
+
+
+            $scope.$watch('fixedNavigation', function (fixedNavigation) {
+                localStorage.setItem('sm-fixed-navigation', fixedNavigation);
+                $root.toggleClass('fixed-navigation', fixedNavigation);
+                if (fixedNavigation) {
+                    $scope.insideContainer = false;
+                    $scope.fixedHeader = true;
+                } else {
+                    $scope.fixedRibbon = false;
+                }
+            });
+
+
+            $scope.$watch('fixedRibbon', function (fixedRibbon) {
+                localStorage.setItem('sm-fixed-ribbon', fixedRibbon);
+                $root.toggleClass('fixed-ribbon', fixedRibbon);
+                if (fixedRibbon) {
+                    $scope.fixedHeader = true;
+                    $scope.fixedNavigation = true;
+                    $scope.insideContainer = false;
+                }
+            });
+
+            $scope.$watch('fixedPageFooter', function (fixedPageFooter) {
+                localStorage.setItem('sm-fixed-page-footer', fixedPageFooter);
+                $root.toggleClass('fixed-page-footer', fixedPageFooter);
+            });
+
+            $scope.$watch('insideContainer', function (insideContainer) {
+                localStorage.setItem('sm-inside-container', insideContainer);
+                $root.toggleClass('container', insideContainer);
+                if (insideContainer) {
+                    $scope.fixedRibbon = false;
+                    $scope.fixedNavigation = false;
+                }
+            });
+
+            $scope.$watch('rtl', function (rtl) {
+                localStorage.setItem('sm-rtl', rtl);
+                $root.toggleClass('smart-rtl', rtl);
+            });
+
+            $scope.$watch('menuOnTop', function (menuOnTop) {
+                $rootScope.$broadcast('$smartLayoutMenuOnTop', menuOnTop);
+                localStorage.setItem('sm-menu-on-top', menuOnTop);
+                $root.toggleClass('menu-on-top', menuOnTop);
+
+                if(menuOnTop)$root.removeClass('minified');
+            });
+
+            $scope.$watch('colorblindFriendly', function (colorblindFriendly) {
+                localStorage.setItem('sm-colorblind-friendly', colorblindFriendly);
+                $root.toggleClass('colorblind-friendly', colorblindFriendly);
+            });
+
+
+            $scope.fixedHeader = localStorage.getItem('sm-fixed-header') == 'true';
+            $scope.fixedNavigation = localStorage.getItem('sm-fixed-navigation') == 'true';
+            $scope.fixedRibbon = localStorage.getItem('sm-fixed-ribbon') == 'true';
+            $scope.fixedPageFooter = localStorage.getItem('sm-fixed-page-footer') == 'true';
+            $scope.insideContainer = localStorage.getItem('sm-inside-container') == 'true';
+            $scope.rtl = localStorage.getItem('sm-rtl') == 'true';
+            $scope.menuOnTop = localStorage.getItem('sm-menu-on-top') == 'true' || $root.hasClass('menu-on-top');
+            $scope.colorblindFriendly = localStorage.getItem('sm-colorblind-friendly') == 'true';
+
+
+            $scope.skins = appConfig.skins;
+
+            $scope.smartSkin = localStorage.getItem('sm-skin') || appConfig.smartSkin;
+
+
+            $scope.setSkin = function (skin) {
+                $scope.smartSkin = skin.name;
+                $root.removeClass(_.pluck($scope.skins, 'name').join(' '));
+                $root.addClass(skin.name);
+                localStorage.setItem('sm-skin', skin.name);
+                $("#logo img").attr('src', skin.logo);
+            };
+
+
+            if($scope.smartSkin != "smart-style-0"){
+                $scope.setSkin(_.find($scope.skins, {name: $scope.smartSkin}))
+            }
+
+
+            $scope.factoryReset = function () {
+                $.SmartMessageBox({
+                    title: "<i class='fa fa-refresh' style='color:green'></i> Clear Local Storage",
+                    content: "Would you like to RESET all your saved widgets and clear LocalStorage?1",
+                    buttons: '[No][Yes]'
+                }, function (ButtonPressed) {
+                    if (ButtonPressed == "Yes" && localStorage) {
+                        localStorage.clear();
+                        location.reload()
+                    }
+                });
+            }
+        }
+    }
+});
+/**
+ * Jarvis Widget Directive
+ *
+ *    colorbutton="false"
+ *    editbutton="false"
+      togglebutton="false"
+       deletebutton="false"
+        fullscreenbutton="false"
+        custombutton="false"
+        collapsed="true"
+          sortable="false"
+ *
+ *
+ */
+"use strict";
+
+angular.module('SmartAdmin.Layout').directive('jarvisWidget', function($rootScope){
+    return {
+        restrict: "A",
+        compile: function(element, attributes){
+            if(element.data('widget-color'))
+                element.addClass('jarviswidget-color-' + element.data('widget-color'));
+
+
+            element.find('.widget-body').prepend('<div class="jarviswidget-editbox"><input class="form-control" type="text"></div>');
+
+            element.addClass('jarviswidget jarviswidget-sortable');
+            $rootScope.$emit('jarvisWidgetAdded', element )
+
+        }
+    }
+});
+ "use strict";
+ 
+ angular.module('SmartAdmin.Layout').directive('widgetGrid', function ($rootScope, $compile, $q, $state, $timeout) {
+
+    var jarvisWidgetsDefaults = {
+        grid: 'article',
+        widgets: '.jarviswidget',
+        localStorage: true,
+        deleteSettingsKey: '#deletesettingskey-options',
+        settingsKeyLabel: 'Reset settings?',
+        deletePositionKey: '#deletepositionkey-options',
+        positionKeyLabel: 'Reset position?',
+        sortable: true,
+        buttonsHidden: false,
+        // toggle button
+        toggleButton: true,
+        toggleClass: 'fa fa-minus | fa fa-plus',
+        toggleSpeed: 200,
+        onToggle: function () {
+        },
+        // delete btn
+        deleteButton: true,
+        deleteMsg: 'Warning: This action cannot be undone!',
+        deleteClass: 'fa fa-times',
+        deleteSpeed: 200,
+        onDelete: function () {
+        },
+        // edit btn
+        editButton: true,
+        editPlaceholder: '.jarviswidget-editbox',
+        editClass: 'fa fa-cog | fa fa-save',
+        editSpeed: 200,
+        onEdit: function () {
+        },
+        // color button
+        colorButton: true,
+        // full screen
+        fullscreenButton: true,
+        fullscreenClass: 'fa fa-expand | fa fa-compress',
+        fullscreenDiff: 3,
+        onFullscreen: function () {
+        },
+        // custom btn
+        customButton: false,
+        customClass: 'folder-10 | next-10',
+        customStart: function () {
+            alert('Hello you, this is a custom button...');
+        },
+        customEnd: function () {
+            alert('bye, till next time...');
+        },
+        // order
+        buttonOrder: '%refresh% %custom% %edit% %toggle% %fullscreen% %delete%',
+        opacity: 1.0,
+        dragHandle: '> header',
+        placeholderClass: 'jarviswidget-placeholder',
+        indicator: true,
+        indicatorTime: 600,
+        ajax: true,
+        timestampPlaceholder: '.jarviswidget-timestamp',
+        timestampFormat: 'Last update: %m%/%d%/%y% %h%:%i%:%s%',
+        refreshButton: true,
+        refreshButtonClass: 'fa fa-refresh',
+        labelError: 'Sorry but there was a error:',
+        labelUpdated: 'Last Update:',
+        labelRefresh: 'Refresh',
+        labelDelete: 'Delete widget:',
+        afterLoad: function () {
+        },
+        rtl: false, // best not to toggle this!
+        onChange: function () {
+
+        },
+        onSave: function () {
+
+        },
+        ajaxnav: true
+
+    }
+
+    var dispatchedWidgetIds = [];
+    var setupWaiting = false;
+
+    var debug = 1;
+
+    var setupWidgets = function (element, widgetIds) {
+
+        if (!setupWaiting) {
+
+            if(_.intersection(widgetIds, dispatchedWidgetIds).length != widgetIds.length){
+
+                dispatchedWidgetIds = _.union(widgetIds, dispatchedWidgetIds);
+
+//                    console.log('setupWidgets', debug++);
+
+                element.data('jarvisWidgets') && element.data('jarvisWidgets').destroy();
+                element.jarvisWidgets(jarvisWidgetsDefaults);
+                initDropdowns(widgetIds);
+            }
+
+        } else {
+            if (!setupWaiting) {
+                setupWaiting = true;
+                $timeout(function () {
+                    setupWaiting = false;
+                    setupWidgets(element, widgetIds)
+                }, 200);
+            }
+        }
+
+    };
+
+    var destroyWidgets = function(element, widgetIds){
+        element.data('jarvisWidgets') && element.data('jarvisWidgets').destroy();
+        dispatchedWidgetIds = _.xor(dispatchedWidgetIds, widgetIds);
+    };
+
+    var initDropdowns = function (widgetIds) {
+        angular.forEach(widgetIds, function (wid) {
+            $('#' + wid + ' [data-toggle="dropdown"]').each(function () {
+                var $parent = $(this).parent();
+                // $(this).removeAttr('data-toggle');
+                if (!$parent.attr('dropdown')) {
+                    $(this).removeAttr('href');
+                    $parent.attr('dropdown', '');
+                    var compiled = $compile($parent)($parent.scope())
+                    $parent.replaceWith(compiled);
+                }
+            })
+        });
+    };
+
+    var jarvisWidgetAddedOff,
+        $viewContentLoadedOff,
+        $stateChangeStartOff;
+
+    return {
+        restrict: 'A',
+        compile: function(element){
+
+            element.removeAttr('widget-grid data-widget-grid');
+
+            var widgetIds = [];
+
+            $viewContentLoadedOff = $rootScope.$on('$viewContentLoaded', function (event, data) {
+                $timeout(function () {
+                    setupWidgets(element, widgetIds)
+                }, 100);
+            });
+
+
+            $stateChangeStartOff = $rootScope.$on('$stateChangeStart',
+                function(event, toState, toParams, fromState, fromParams){
+                    jarvisWidgetAddedOff();
+                    $viewContentLoadedOff();
+                    $stateChangeStartOff();
+                    destroyWidgets(element, widgetIds)
+                });
+
+            jarvisWidgetAddedOff = $rootScope.$on('jarvisWidgetAdded', function (event, widget) {
+                if (widgetIds.indexOf(widget.attr('id')) == -1) {
+                    widgetIds.push(widget.attr('id'));
+                    $timeout(function () {
+                        setupWidgets(element, widgetIds)
+                    }, 100);
+                }
+//                    console.log('jarvisWidgetAdded', widget.attr('id'));
+            });
 
         }
     }

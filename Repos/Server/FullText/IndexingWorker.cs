@@ -53,7 +53,7 @@ namespace Newtera.Server.FullText
 
             AsyncCallback callback = new AsyncCallback(RunEventCallback);
 
-            runEventDelegate.BeginInvoke(callback, null);
+            runEventDelegate.BeginInvoke(callback, CancellationToken.None);
         }
 
         private delegate void RunIndexAsyncDelegate();
@@ -64,7 +64,7 @@ namespace Newtera.Server.FullText
         private void RunEventAsync()
         {
             if (_runner != null)
-                _runner.Execute(_context);
+                _runner.Execute(_context, CancellationToken.None);
         }
 
         private void RunEventCallback(IAsyncResult ar)

@@ -50,7 +50,7 @@ namespace Newtera.ElasticSearchIndexer
         /// <summary>
         /// Execute the runner
         /// </summary>
-        public async Task Execute(IndexingContext context)
+        public async Task Execute(IndexingContext context, CancellationToken cancellationToken)
         {
             CMUserManager userMgr = new CMUserManager();
             IPrincipal superUser = userMgr.SuperUser;

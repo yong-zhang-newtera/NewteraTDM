@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-angular.module('app.wizards').controller('createRequestCtrl', function ($scope, $state, $http, $stateParams, $modalInstance, APP_CONFIG, CartInfo, dataCartService) {
+angular.module('app.wizards').controller('createRequestCtrl', function ($scope, $state, $http, $stateParams, $modalInstance, APP_CONFIG) {
 
     $scope.dbschema = $stateParams.schema;
     $scope.dbclass = $stateParams.class;

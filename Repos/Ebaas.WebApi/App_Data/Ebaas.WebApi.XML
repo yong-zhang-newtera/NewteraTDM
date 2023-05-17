@@ -265,11 +265,12 @@
             Build full-text index for a given class.
             </summary>
         </member>
-        <member name="M:Ebaas.WebApi.Controllers.AppDataServiceController.BuildFullTextIndex(System.String)">
+        <member name="M:Ebaas.WebApi.Controllers.AppDataServiceController.BuildFullTextIndex(System.String,System.Threading.CancellationToken)">
             <summary>
             Build full-text index for a given class.
             </summary>
             <param name="className">The given class name.</param>
+            <param name="cancellationToken">Cancellation token</param>
         </member>
         <member name="M:Ebaas.WebApi.Controllers.AppDataServiceController.ExecuteUpdateQueries">
             <summary>

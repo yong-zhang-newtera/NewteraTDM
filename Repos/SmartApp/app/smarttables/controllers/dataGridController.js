@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-angular.module('app.smarttables').controller('dataGridCtrl', function ($scope, $controller, $rootScope, $http, APP_CONFIG, $stateParams, $state, CartInfo, propmisedParams, hubService) {
+angular.module('app.smarttables').controller('dataGridCtrl', function ($scope, $controller, $rootScope, $http, APP_CONFIG, $stateParams, $state, propmisedParams, hubService) {
    
     $scope.dbschema = $stateParams.schema;
     $scope.dbclass = $stateParams.class;
@@ -53,13 +53,6 @@ angular.module('app.smarttables').controller('dataGridCtrl', function ($scope, $
     }
     else {
         $scope.reports = false;
-    }
-
-    if ($stateParams.cart && $stateParams.cart === "true") {
-        $scope.hasDataCart = true;
-    }
-    else {
-        $scope.hasDataCart = false;
     }
 
     if ($stateParams.track && $stateParams.track === "true") {
@@ -313,15 +306,6 @@ angular.module('app.smarttables').controller('dataGridCtrl', function ($scope, $
         if ($scope.gridInstance && data === "update")
             $scope.gridInstance.refresh();
     });
-
-    $scope.getCartItemCount = function () {
-        var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
-        return cart.count;
-    }
-
-    $scope.openCart = function () {
-        $state.go(".datacart", { schema: $scope.dbschema, class: $scope.dbclass }, { location: false, notify: false });
-    }
 
     $scope.downloadReports = function () {
         $state.go(".downloadreports", { schema: $scope.dbschema, class: $scope.dbclass }, { location: false, notify: false });

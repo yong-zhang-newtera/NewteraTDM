@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-angular.module('app.datacatalog').controller('DataCatalogLayoutCtrl', function ($http, APP_CONFIG, $scope, $state, $stateParams, propmisedParams, MetaDataCache, CartInfo) {
+angular.module('app.datacatalog').controller('DataCatalogLayoutCtrl', function ($http, APP_CONFIG, $scope, $state, $stateParams, propmisedParams, MetaDataCache) {
 
     $scope.dbschema = $stateParams.schema;
     $scope.class = $stateParams.class;
@@ -10,13 +10,6 @@ angular.module('app.datacatalog').controller('DataCatalogLayoutCtrl', function (
     $scope.view = params['dataView'];
     $scope.formTemplate = params['formTemplate'];
     $scope.node = undefined;
-   
-    var cart = CartInfo.getCart($stateParams.schema, $stateParams.class);
-    cart.dataViewName = params['dataView'];
-    if (params['dataCart'] && params['dataCart'] === "true")
-    {
-        cart.showDataCart = true;
-    }
  
     if (MetaDataCache.getNamedData($scope.treeName)) {
         $scope.catalogTree = MetaDataCache.getNamedData($scope.treeName);

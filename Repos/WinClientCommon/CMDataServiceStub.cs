@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
+using System.Threading;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-
-using Newtera.Common.Core;
-using Newtera.Common.MetaData;
-using Newtera.Common.MetaData.Schema;
-using Newtera.Common.MetaData.Principal;
 
 namespace Newtera.WinClientCommon
 {
@@ -103,9 +92,9 @@ namespace Newtera.WinClientCommon
             }
         }
 
-        public void BuildFullTextIndex(string connectionStr, string className)
+        public void BuildFullTextIndex(string connectionStr, string className, CancellationToken cancellationToken)
         {
-            PostAPICall("api/appDataService/BuildFullTextIndex/" + className + "?connectionStr=" + connectionStr, null, null);
+            PostAPICall("api/appDataService/BuildFullTextIndex/" + className + "?connectionStr=" + connectionStr, null, null, cancellationToken);
         }
 
         public string ExecuteUpdateQueries(string connectionStr, string[] queries)

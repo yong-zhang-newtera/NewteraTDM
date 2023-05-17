@@ -167,16 +167,6 @@ angular.module("app.datacatalog").config(function ($stateProvider, modalStatePro
             size: 'sm'
         });
 
-        modalStateProvider.state('app.datacatalog.datatable.datacart', {
-            url: '^/catalogdatacart/:schema/:class',
-            templateUrl: "app/datacart/views/data-cart.html",
-            controller: 'dataCartCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'lg'
-        });
-
         modalStateProvider.state('app.datacatalog.datatable.downloadreports', {
             url: '^/catalogdownloadreports/:schema/:class',
             templateUrl: "app/datacart/views/download-reports.html",
@@ -185,16 +175,6 @@ angular.module("app.datacatalog").config(function ($stateProvider, modalStatePro
             keyboard: false,
             animation: false,
             size: 'md'
-        });
-
-        modalStateProvider.state('app.datacatalog.datatable.addtocart', {
-            url: '^/catalogaddtocart/:schema/:class/:oid',
-            templateUrl: "app/datacart/views/add-to-data-cart.html",
-            controller: 'addToDataCartCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'sm'
         });
 
         modalStateProvider.state('app.datacatalog.datatable.filemanager', {

@@ -328,7 +328,6 @@ angular.module('app', [
     "app.filemanager",
     'app.formeditor',
     "app.smartreports",
-    "app.datacart",
     "app.bulletinboard",
     "app.hub",
     "app.dataImporter",
@@ -550,6 +549,7 @@ angular.module('app', [
     }
 
     $rootScope.getSuggestions = function (typedText) {
+        searchContext.typedText = typedText;
         if (typedText && typedText.length > 1) {
             // get suggestions for the type text in search text box
             var url = APP_CONFIG.ebaasRootUrl + "/api/search/raw/" + encodeURIComponent($rootScope.fullText.schema) + "/" + encodeURIComponent($rootScope.fullText.class) + "?searchtext=" + encodeURIComponent(typedText) + "&size=15";
@@ -583,7 +583,7 @@ angular.module('app', [
 
     $rootScope.onSuggestionSelect = function ($item, $model, $label) {
         if ($item.fullText.title === "all") {
-            $state.go('app.smarttables.datagrid', { schema: $rootScope.fullText.schema, class: $rootScope.fullText.class, search: 'fulltext' });
+            $state.go("app.smarttables.fulltextdatagrid", { schema: $rootScope.fullText.schema, class: $rootScope.fullText.class, track: true, attachment: false, search: 'fulltext' });
         }
         else {
             var params = new Object();
@@ -604,7 +604,7 @@ angular.module('app', [
     }
 
     $rootScope.fullTextSearch = function () {
-        $state.go('app.fulltextsearch.result', {}, { reload: true });
+        $state.go("app.smarttables.fulltextdatagrid", { schema: $rootScope.fullText.schema, class: $rootScope.fullText.class, track: true, attachment: false, search: 'fulltext'});
     }
 
     $rootScope.formatLabel = function (model) {

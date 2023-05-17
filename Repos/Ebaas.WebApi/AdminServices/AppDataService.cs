@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Web;
+using System.Threading;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -16,17 +16,14 @@ using System.Web.Http.Description;
 using System.Threading.Tasks;
 
 using Newtera.Data;
-using Newtera.Server.DB;
 using Newtera.Server.Engine.Cache;
 using Newtera.Server.Logging;
 using Newtera.Common.Core;
-using Newtera.Common.MetaData;
 using Newtera.Common.MetaData.Schema;
 using Newtera.Common.MetaData.DataView;
 using Newtera.Common.MetaData.Logging;
 using Newtera.Common.MetaData.XMLSchemaView;
 using Newtera.Server.FullText;
-using Newtera.Common.MetaData.Principal;
 using Ebaas.WebApi.Infrastructure;
 using Newtera.ElasticSearchIndexer;
 
@@ -552,10 +549,11 @@ namespace Ebaas.WebApi.Controllers
         /// Build full-text index for a given class.
         /// </summary>
         /// <param name="className">The given class name.</param>
+        /// <param name="cancellationToken">Cancellation token</param>
         [HttpPost]
         [AdminAuthorizeAttribute]
         [Route("BuildFullTextIndex/{className}")]
-        public async Task<HttpResponseMessage> BuildFullTextIndex(string className)
+        public async Task<HttpResponseMessage> BuildFullTextIndex(string className, CancellationToken cancellationToken)
         {
             try
             {
@@ -574,7 +572,7 @@ namespace Ebaas.WebApi.Controllers
                         BatchDocumentsRunner runner = new BatchDocumentsRunner();
 
                         // create document indexes for the instances in the class
-                        await runner.Execute(context);
+                        await runner.Execute(context, cancellationToken);
                     }
                 }
 
