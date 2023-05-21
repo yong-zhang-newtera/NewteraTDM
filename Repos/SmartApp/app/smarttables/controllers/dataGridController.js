@@ -48,13 +48,6 @@ angular.module('app.smarttables').controller('dataGridCtrl', function ($scope, $
         $scope.importData = false;
     }
 
-    if ($stateParams.reports && $stateParams.reports === "true") {
-        $scope.reports = true;
-    }
-    else {
-        $scope.reports = false;
-    }
-
     if ($stateParams.track && $stateParams.track === "true") {
         $scope.track = true;
     }

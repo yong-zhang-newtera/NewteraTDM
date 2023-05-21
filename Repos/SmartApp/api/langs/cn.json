@@ -307,6 +307,7 @@
   "Not In Service": "故障",
   "Test Task Messages": "试验任务沟通信息",
   "Track Status": "关注状态",
+  "Cancel Track": "取消关注",
   "Prev Page": "上一页",
   "Next Page": "下一页",
   "Machine Learning Dashboard": "深度学习模型看板",
@@ -392,5 +393,6 @@
   "Confirm Delete Test Item": "该操作不可复原，您确定要删除试验项目信息吗？",
   "Confirm Delete Test Data Packet": "该操作不可复原，您确定要删除试验数据包吗？",
   "Frequent Queries": "常用查询",
-  "Show All Matches": "显示所有的匹配"
+  "Show All Matches": "显示所有的匹配",
+  "Item Group": "类别"
 }

@@ -6170,9 +6170,9 @@ var DlhSoft;
                                 return maxState;
                             };
                             if (!this.groupWidth)
-                                this.groupWidth = '15%';
+                                this.groupWidth = '8%';
                             if (!this.stateWidth)
-                                this.stateWidth = ((!this.hideGroups ? 85 : 100) / this.states.length) + '%';
+                                this.stateWidth = ((!this.hideGroups ? 92 : 100) / this.states.length) + '%';
                             if (!this.itemHeight)
                                 this.itemHeight = 56;
                             if (!this.groupHeight)

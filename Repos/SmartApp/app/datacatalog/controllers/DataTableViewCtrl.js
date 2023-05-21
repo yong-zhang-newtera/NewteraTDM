@@ -41,13 +41,6 @@ angular.module('app.datacatalog').controller('DataTableViewCtrl', function ($con
         $scope.importData = false;
     }
 
-    if ($stateParams.reports && $stateParams.reports === "true") {
-        $scope.reports = true;
-    }
-    else {
-        $scope.reports = false;
-    }
-
     if ($stateParams.attachment && $stateParams.attachment === "false") {
         $scope.attachment = false;
     }

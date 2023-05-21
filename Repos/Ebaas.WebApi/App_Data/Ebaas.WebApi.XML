@@ -1939,24 +1939,10 @@
             The Kanban service allows you to build a Kanban user interface component.
             </summary>
         </member>
-        <member name="M:Ebaas.WebApi.Controllers.KanbanController.GetData(System.String,System.String)">
+        <member name="M:Ebaas.WebApi.Controllers.KanbanController.GetKanbanDataModel(System.String,System.String)">
             <summary>
-            Gets the kanban data for a specified kanban for the requesting user
+            Gets data for a kanban for given requesting user
             </summary>
-            <param name="schemaName">A database schema name such as DEMO</param>
-            <param name="kanbanName">The name of a kanban</param>
-        </member>
-        <member name="M:Ebaas.WebApi.Controllers.KanbanController.GetKanbanItems(Newtera.Common.MetaData.DataView.InstanceView,System.String,System.Collections.Generic.List{Ebaas.WebApi.Models.KanbanStateModel},Newtera.Common.MetaData.DataView.InstanceView,System.Xml.XmlDocument)">
-            <summary>
-            Gets kanban items of a given group and kanban name
-            </summary>
-        </member>
-        <member name="M:Ebaas.WebApi.Controllers.KanbanController.GetKanbanInstance(System.String)">
-            <summary>
-            Get a kanban InstanceView object
-            </summary>
-            <param name="kanbanName">Name of the kanban</param>
-            <returns>An InstanceView object</returns>
         </member>
         <member name="T:Ebaas.WebApi.Controllers.MessageController">
             <summary>

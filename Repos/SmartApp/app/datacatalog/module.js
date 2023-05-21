@@ -6,7 +6,7 @@ angular.module("app.datacatalog").config(function ($stateProvider, modalStatePro
 
     $stateProvider
         .state('app.datacatalog', {
-            url: '/datacatalog/:schema/:class/:edit/:delete/:insert/:search/:export/:import/:reports/:attachment/:hash',
+            url: '/datacatalog/:schema/:class/:edit/:delete/:insert/:search/:export/:import/:attachment/:hash',
             data: {
                 title: 'data viewer'
             },
@@ -165,16 +165,6 @@ angular.module("app.datacatalog").config(function ($stateProvider, modalStatePro
             keyboard: false,
             animation: false,
             size: 'sm'
-        });
-
-        modalStateProvider.state('app.datacatalog.datatable.downloadreports', {
-            url: '^/catalogdownloadreports/:schema/:class',
-            templateUrl: "app/datacart/views/download-reports.html",
-            controller: 'downloadReportsCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'md'
         });
 
         modalStateProvider.state('app.datacatalog.datatable.filemanager', {
