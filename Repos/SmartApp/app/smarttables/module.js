@@ -57,7 +57,7 @@ angular.module("app.smarttables")
                 }
             })
             .state('app.smarttables.datagrid', {
-                url: '/datagrid/:schema/:class/:edit/:delete/:insert/:track/:export/:import/:reports/:attachment/:hash',
+                url: '/datagrid/:schema/:class/:edit/:delete/:insert/:track/:export/:import/:attachment/:hash',
                 data: {
                     title: 'Smart Data Grid',
                     animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
@@ -97,7 +97,7 @@ angular.module("app.smarttables")
                 }
             })
             .state('app.smarttables.fulltextdatagrid', {
-                url: '/fulltextdatagrid/:schema/:class/:edit/:delete/:insert/:track/:export/:import/:search/:reports/:attachment/:hash',
+                url: '/fulltextdatagrid/:schema/:class/:edit/:delete/:insert/:track/:export/:import/:search/:attachment/:hash',
                 data: {
                     title: 'Smart Data Grid',
                     animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
@@ -609,16 +609,6 @@ angular.module("app.smarttables")
             keyboard: false,
             animation: false,
             size: 'sm'
-        });
-
-        modalStateProvider.state('app.smarttables.datagrid.downloadreports', {
-            url: '^/datagriddownloadreports/:schema/:class',
-            templateUrl: "app/datacart/views/download-reports.html",
-            controller: 'downloadReportsCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'md'
         });
 
         modalStateProvider.state('app.smarttables.datagrid.related.importdata', {

@@ -3,66 +3,27 @@ var KanbanBoard = DlhSoft.Controls.KanbanBoard;
 
 
 var nextIteration = { groups: [], items: [] };
-angular.module('app.taskkanban').controller('KanbanMainCtrl', function ($http, $scope, $rootScope, APP_CONFIG, $stateParams, $state, kanbanModel, hubService) {
+angular.module('app.taskkanban').controller('KanbanMainCtrl', function ($http, APP_CONFIG, $scope, $stateParams, $state, kanbanModel, propmisedParams, hubService) {
     // Bind data to the user interface.
     $scope.dbschema = $stateParams.schema;
-    $scope.kanban = $stateParams.kanban;
+    $scope.dbclass = $stateParams.class;
 
-    if ($stateParams.keywords)
-    {
-        $scope.keywords = $stateParams.keywords;
-    }
-    else
-    {
-        $scope.keywords = "";
-    }
+    var params = propmisedParams.data;
+    $scope.itemClass = params['itemClass'];
+    $scope.packetClass = params['packetClass'];
+    $scope.taskNodeAttribute = params['taskNodeAttribute'];
+    $scope.itemNodeAttribute = params['itemNodeAttribute'];
+    $scope.packetNodeAttribute = params['packetNodeAttribute'];
+    $scope.taskTemplate = params['taskTemplate'];
+    $scope.itemTemplate = params['itemTemplate'];
+    $scope.packetTemplate = params['packetTemplate'];
 
-    if ($stateParams.pageIndex) {
-        $scope.pageIndex = parseInt($stateParams.pageIndex);
-    }
-    else
-    {
-        $scope.pageIndex = 0;
-    }
-
-    if ($stateParams.objid) {
-        $scope.objid = $stateParams.objid;
-    }
-    else {
-        $scope.objid = "";
-    }
-
-    $scope.kanbanText = kanbanModel.data.text; // display text
-
-    $scope.states = kanbanModel.data.states;
+    $scope.stateAttribute = params['stateAttribute'];
+    $scope.stateMapping = params['stateMapping'];
 
     $scope.groups = kanbanModel.data.groups;
-
-    var pageSize = 5;
-
-    if ($scope.groups.length >= pageSize || $scope.pageIndex > 0)
-    {
-        $scope.ShowPagination = true;
-    }
-    else
-    {
-        $scope.ShowPagination = false;
-    }
-
-    if ($scope.groups.length < pageSize)
-    {
-        $scope.hasNext = false;
-    }
-    else
-    {
-        $scope.hasNext = true;
-    }
-
+    $scope.states = kanbanModel.data.states;
     $scope.items = kanbanModel.data.items;
-
-    $scope.groupCommands = kanbanModel.data.groupCommands;
-
-    $scope.itemCommands = kanbanModel.data.itemCommands;
 
     //console.debug("kanban model = " + JSON.stringify(kanbanModel.data));
 
@@ -70,230 +31,61 @@ angular.module('app.taskkanban').controller('KanbanMainCtrl', function ($http, $
     {
         var params = new Object();
        
-        params.keywords = $scope.keywords;
-        params.pageIndex = pageIndex;
-        params.objid = $scope.objid;
-        $scope.pageIndex = pageIndex;
-
-        $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
-    }
-
-    $scope.prev = function () {
-        var params = new Object();
-
-        params.keywords = $scope.keywords;
-        if ($scope.pageIndex > 0)
-        {
-            var pageIndex = $scope.pageIndex - 1;
-            params.pageIndex = pageIndex;
-            $scope.pageIndex = pageIndex;
-
-            $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
-        }
-    }
-
-    $scope.next = function () {
-        var params = new Object();
-
-        params.filters = $scope.keywords;
-
-        var pageIndex = $scope.pageIndex + 1;
-        params.pageIndex = pageIndex;
-        $scope.pageIndex = pageIndex;
-
         $state.go($state.current, params, { reload: true }); //second parameter is for $stateParams
     }
 
     $scope.trackStatusChanged = function (group)
     {
-        var groupName = $scope.dbschema + "-" + group.className + "-" + group.objId;
+        var groupName = $scope.dbschema + "-" + $scope.dbclass + "-" + group.objId;
         hubService.removeFromGroup(groupName, function () {
             // refresh
             $scope.reload($scope.pageIndex);
         }); // hubService removes the current user from the group
     }
 
-    // Get title of a command
-    $scope.getItemCmdTitle = function (name)
+    $scope.gotoItemDetail = function (itemName)
     {
-        var found = undefined;
-  
-        if ($scope.itemCommands) {
-            for (var i = 0; i < $scope.itemCommands.length; i++) {
-                if ($scope.itemCommands[i].id === name) {
-                    found = $scope.itemCommands[i];
-                    break;
-                }
-            }
-        }
-
-        if (found)
-        {
-            return found.title;
-        }
-        else
-        {
-            return "unknown";
-        }
-    }
-
-    // Get icon of a command
-    $scope.getItemCmdIcon = function (name)
-    {
-        var found = undefined;
-        if ($scope.itemCommands) {
-            for (var i = 0; i < $scope.itemCommands.length; i++) {
-                if ($scope.itemCommands[i].id === name) {
-                    found = $scope.itemCommands[i];
-                    break;
-                }
-            }
-        }
-
-        if (found && found.icon) {
-
-            return found.icon;
-        }
-        else {
-            return "fa fa-fw fa-question-circle";
-        }
-    }
-
-    // On cmd click
-    $scope.onItemCmdClick = function (name, item) {
-        var found = undefined;
-        for (var i = 0; i < $scope.itemCommands.length; i++) {
-            if ($scope.itemCommands[i].id === name) {
-                found = $scope.itemCommands[i];
-                break;
-            }
-        }
-        if (found) {
-            try
-            {
-                gotoState(found, $scope.dbschema, item.className, item.objId, !item.allowWrite);
-            }
-            catch(err)
-            {
-                console.log(err);
-                BootstrapDialog.show({
-                    title: $rootScope.getWord("Info Dialog"),
-                    type: BootstrapDialog.TYPE_INFO,
-                    message: $rootScope.getWord("Invalid Command"),
-                    buttons: [{
-                        label: $rootScope.getWord("Cancel"),
-                        action: function (dialog) {
-                            dialog.close();
-                        }
-                    }]
-                });
+        for (var i = 0; i < $scope.items.length; i++) {
+            var item = $scope.items[i];
+            if (item.name == itemName) {
+                var params = new Object();
+                params.schema = $scope.dbschema;
+                params.class = $scope.dbclass;
+                params.oid = item.objId;
+                params.itemClass = $scope.itemClass;
+                params.packetClass = $scope.packetClass;
+                params.taskNodeAttribute = $scope.taskNodeAttribute;
+                params.itemNodeAttribute = $scope.itemNodeAttribute;
+                params.packetNodeAttribute = $scope.packetNodeAttribute;
+                params.taskTemplate = $scope.taskTemplate;
+                params.itemTemplate = $scope.itemTemplate;
+                params.packetTemplate = $scope.packetTemplate;
+                params.activeTabId = "tasktab";
+                $state.go("app.taskviewer.details", params, { reload: true });
             }
         }
     }
 
-    // Get title of a command
-    $scope.getGroupCmdTitle = function (name) {
-        var found = undefined;
-
-        for (var i = 0; i < $scope.groupCommands.length; i++) {
-            if ($scope.groupCommands[i].id === name) {
-                found = $scope.groupCommands[i];
-                break;
-            }
-        }
-        if (found) {
-            return found.title;
-        }
-        else {
-            return "unknown";
-        }
-    }
-
-    // Get icon of a command
-    $scope.getGroupCmdIcon = function (name) {
-        var found = undefined;
-        for (var i = 0; i < $scope.groupCommands.length; i++) {
-            if ($scope.groupCommands[i].id === name) {
-                found = $scope.groupCommands[i];
-                break;
-            }
-        }
-        if (found && found.icon) {
-
-            return found.icon;
-        }
-        else {
-            return "fa fa-fw fa-question-circle";
-        }
-    }
-
-    // On cmd click
-    $scope.onGroupCmdClick = function (name, group) {
-        var found = undefined;
-        for (var i = 0; i < $scope.groupCommands.length; i++) {
-            if ($scope.groupCommands[i].id === name) {
-                found = $scope.groupCommands[i];
-                break;
-            }
-        }
-        if (found) {
-            try{
-                gotoState(found, $scope.dbschema, group.className, group.objId);
-            }
-            catch (err)
-            {
-                BootstrapDialog.show({
-                    title: $rootScope.getWord("Info Dialog"),
-                    type: BootstrapDialog.TYPE_INFO,
-                    message: $rootScope.getWord("Invalid Command"),
-                    buttons: [{
-                        label: $rootScope.getWord("Cancel"),
-                        action: function (dialog) {
-                            dialog.close();
-                        }
-                    }]
-                });
-            }
-        }
-    }
-
-    var gotoState = function (cmd, dbschema, dbclass, oid, readonly) {
-        var url = cmd.url;
-        var params = new Object();
-        params.schema = dbschema;
-        params.class = dbclass;
-        params.oid = oid;
-        params.readonly = readonly;
-        // add command's parameters to the state parameters
-        if (cmd.parameters) {
-            for (var i = 0; i < cmd.parameters.length; i++) {
-                var parameter = cmd.parameters[i];
-                params[parameter.name] = parameter.value;
-            }
-        };
-
-        if (cmd.url === ".modalform") {
-            $state.go(url, params, { location: false, notify: false });
-        }
-        else
-        {
-            $state.go(url, params);
-        }
-    }
-
-    // Initialize a newly created item before adding it to the user interface.
-    $scope.initializeNewItem = function (item) {
-        item.assignedResource = resource1;
-        //console.log('A new item was created.');
-    };
-    // Allow item deletion by clicking a button in the user interface.
-    $scope.deleteItem = function (item) {
-        items.splice(items.indexOf(item), 1);
-        //console.log('Item ' + item.name + ' was deleted.');
-    };
     // Handle changes.
-    $scope.onItemStateChanged = function (item, state) {
-        //console.log('State of ' + item.name + ' was changed to: ' + state.name);
+    $scope.onItemStateChanged = function (item, boardState) {
+        var url = APP_CONFIG.ebaasRootUrl + "/api/data/" + encodeURIComponent($scope.dbschema) + "/" + encodeURIComponent($scope.dbclass) + "/" + item.objId + "?formformat=false";
+
+        var model = new Object();
+        var actualState = GetActualState(boardState.name);
+        if (!actualState)
+            return;
+
+        model[$scope.stateAttribute] = actualState;
+
+        $scope.loading = true;
+        $http.post(url, model)
+            .success(function (data) {
+                $scope.loading = false;
+            })
+            .error(function (err) {
+                console.debug("error=" + JSON.stringify(err));
+                $scope.loading = false;
+            });
     };
     $scope.onItemGroupChanged = function (item, group) {
         //console.log('Group of ' + item.name + ' was changed to: ' + group.name);
@@ -327,5 +119,27 @@ angular.module('app.taskkanban').controller('KanbanMainCtrl', function ($http, $
             console.log('Item ' + item.name + ' was moved to next iteration.');
         }
     };
+
+    function GetActualState(displayState) {
+        var states = $scope.stateMapping.split(";");
+        var actualState = undefined;
+
+        for (var i = 0; i < states.length; ++i) {
+            var state = states[i];
+            var keyValue = state.split(":");
+            var key = keyValue[0];
+            var value = keyValue[1];
+            if (key === displayState) {
+                var actualStates = value.split(",");
+                if (actualStates.length > 0) {
+                    // use the first state as default
+                    actualState = actualStates[0];
+                    break;
+                }
+            }
+        }
+
+        return actualState;
+    }
 });
 //# sourceMappingURL=app.js.map

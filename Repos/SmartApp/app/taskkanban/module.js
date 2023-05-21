@@ -12,7 +12,7 @@ angular.module("app.taskkanban").config(function ($stateProvider, modalStateProv
             }
         })
         .state('app.taskkanban.kanbanmain', {
-            url: '/taskkanban/kanbanmain/:schema/:kanban/:hash?filter&pageIndex&objid',
+            url: '/taskkanban/kanbanmain/:schema/:class/:hash',
             data: {
                 title: 'Task Kanban',
                 animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
@@ -40,53 +40,19 @@ angular.module("app.taskkanban").config(function ($stateProvider, modalStateProv
                             'summernote'
                         ])
                 },
-                kanbanModel: function ($http, APP_CONFIG, $stateParams) {
-                    var pageSize = 5;
-                    var paramsAdded = false;
-                    var url = APP_CONFIG.ebaasRootUrl + "/api/kanban/data/" + encodeURIComponent($stateParams.schema) + "/" + encodeURIComponent($stateParams.kanban);
+                propmisedParams: function ($http, APP_CONFIG, $stateParams) {
+                    return $http.get(APP_CONFIG.ebaasRootUrl + "/api/sitemap/parameters/" + $stateParams.hash)
+                },
+                kanbanModel: function ($http, APP_CONFIG, $stateParams, propmisedParams) {
+                    var params = propmisedParams.data;
 
-                    if ($stateParams.objid) {
-                        url += "?objId=" + $stateParams.objid;
-                        paramsAdded = true;
-                    }
-                    else if ($stateParams.filter) {
-                        url += "?filter=" + $stateParams.filter;
-                        paramsAdded = true;
-                    }
-
-                    if ($stateParams.pageIndex) {
-                        var from = $stateParams.pageIndex * pageSize;
-                        if (paramsAdded) {
-                            url += "&from=" + from + "&size=" + pageSize;
-                        }
-                        else {
-                            url += "?from=" + from + "&size=" + pageSize;
-                        }
-                    }
-                    else {
-                        var from = 0;
-                        if (paramsAdded) {
-                            url += "&from=" + from + "&size=" + pageSize;
-                        }
-                        else {
-                            url += "?from=" + from + "&size=" + pageSize;
-                        }
-                    }
-
+                    var url = APP_CONFIG.ebaasRootUrl + "/api/kanban/data/" + encodeURIComponent($stateParams.schema) + "/" + encodeURIComponent($stateParams.class);
+                    url += "?group=" + params['group'];
+                    url += "&state=" + params['state'];
+                    url += "&ID=" + params['ID'];
+                    url += "&title=" + params['title'];
+                    url += "&stateMapping=" + encodeURIComponent(params['stateMapping']);
                     return $http.get(url);
-                }
-            }
-        })
-        .state('app.taskkanban.kanbanmain.processdata', {
-            url: '/kanbanmainprocessdata/:schema/:class/:oid/:xmlschema/:formAttribute',
-            data: {
-                title: 'Data Processing',
-                animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
-            },
-            views: {
-                "content@app": {
-                    controller: 'DataViewerCtrl',
-                    templateUrl: "app/dataviewer/views/data-viewer.html"
                 }
             }
         });
@@ -103,32 +69,6 @@ angular.module("app.taskkanban").config(function ($stateProvider, modalStateProv
             url: '^/kanbanmodalform/:schema/:class/:oid/:readonly/:template/:formAttribute',
             templateUrl: "app/smartforms/views/ebaas-form-modal.html",
             controller: 'ebaasFormModalCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'lg',
-            resolve: {
-                scripts: function (lazyScript) {
-                    return lazyScript.register(
-                        [
-                            'flot',
-                            'flot-resize',
-                            'flot-selection',
-                            'flot-fillbetween',
-                            'flot-orderBar',
-                            'flot-pie',
-                            'flot-time',
-                            'flot-tooltip',
-                            'dropzone'
-                        ])
-                }
-            }
-        });
-
-        modalStateProvider.state('app.taskkanban.kanbanmain.dataviewer', {
-            url: '^/kanbandataviewer/:schema/:class/:oid/:xmlschema',
-            templateUrl: "app/dataviewer/views/data-viewer-modal.html",
-            controller: 'DataViewerModalCtrl',
             backdrop: 'static', /*  this prevent user interaction with the background  */
             keyboard: false,
             animation: false,

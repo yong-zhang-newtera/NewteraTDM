@@ -305,6 +305,7 @@
   "Not In Service": "Not In Service",
   "Test Task Messages": "Test Messages",
   "Track Status": "Track Status",
+  "Cancel Track": "Unfollow",
   "Prev Page": "Prev Page",
   "Next Page": "Next Page",
   "Machine Learning Dashboard": "Machine Learning Dashboard",
@@ -390,5 +391,6 @@
   "Confirm Delete Test Item": "Are you sure you want to delete the test item?",
   "Confirm Delete Test Data Packet": "Are you sure you want to delete the test data packet?",
   "Frequent Queries": "Frequent Queries",
-  "Show All Matches": "Show all matches"
+  "Show All Matches": "Show all matches",
+  "Item Group": "Group"
 }

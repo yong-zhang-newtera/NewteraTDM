@@ -302,7 +302,6 @@
     <Content Include="app\taskforum\controllers\PostViewCtrl.js" />
     <Content Include="app\taskforum\module.js" />
     <Content Include="app\taskforum\views\post-view.html" />
-    <Content Include="app\taskkanban\controllers\KanbanService.js" />
     <Content Include="app\taskkanban\controllers\KanbanMainCtrl.js" />
     <Content Include="app\taskkanban\directives\ngEnter.js" />
     <Content Include="app\taskkanban\module.js" />

@@ -11,14 +11,18 @@ namespace Ebaas.WebApi.Models
     /// </summary>
     public class KanbanStateModel
     {
-        // Unique State ID
-        public string id { get; set; }
+        public KanbanStateModel(string id, string stateName)
+        {
+            this.Id = id;
+            this.Name = stateName;
+        }
 
-        // State display name
-        public string name { get; set; }
+        public string Id { get; }
+
+        public string Name { get;}
 
         // Whether to allow adding item to this state
-        public bool areNewItemButtonsHidden { get; set; }
+        public bool AreNewItemButtonsHidden { get; set; }
     }
 
     /// <summary>
@@ -26,28 +30,17 @@ namespace Ebaas.WebApi.Models
     /// </summary>
     public class KanbanGroupModel
     {
-        // Unique Group ID
-        public string id { get; set; }
+        public KanbanGroupModel(string id, string groupName)
+        {
+            this.Id = id;
+            this.Name = groupName;
+            this.Commands = new List<string>();
+        }
 
-        // Group's internal object id
-        public string objId { get; set; }
-
-        // Group display name
-        public string name { get; set; }
-
-        // Progress
-        public int progress { get; set; }
-        //Track
-        public bool track { get; set; }
-
-        // group's db class name
-        public string className { get; set; }
-
-        // Items's write permission
-        public bool allowWrite { get; set; }
-
-        // group commands
-        public List<string> commands { get; set; }
+        public string Id { get; }
+        public string Name { get;}
+        public bool AllowWrite { get; set; }
+        public List<string> Commands { get; set; }
     }
 
     /// <summary>
@@ -55,70 +48,36 @@ namespace Ebaas.WebApi.Models
     /// </summary>
     public class KanbanItemModel
     {
-        // Unique Group ID
-        public string id { get; set; }
+        public KanbanItemModel()
+        {
+            this.Commands = new List<string>();
+        }
 
-        // item's internal object id
-        public string objId { get; set; }
+        public string ObjId { get; set; }
+        public string Title { get; set; }
 
-        // Group display name
-        public string name { get; set; }
-
-        public string groupId { get; set; }
-
-        // State
-        public string stateId { get; set; }
-
-        // Items's db class name
-        public string className { get; set; }
-
+        public string Name { get; set; }
+        public string GroupId { get; set; }
+        public string GroupName { get; set; }
+        public string StateId { get; set; }
+        public string StateName { get; set; }
+        public bool Track { get; set; }
         // Items's write permission
-        public bool allowWrite { get; set; }
-
+        public bool AllowWrite { get; set; }
         // item commands
-        public List<string> commands { get; set; }
+        public List<string> Commands { get; set; }
     }
-
-    public class KanbanCommandModel
-    {
-        // Command id
-        public string id { get; set; }
-
-        // Command title
-        public string title { get; set; }
-
-        // command icon
-        public string icon { get; set; }
-
-        // command url
-        public string url { get; set; }
-
-        // command parameter
-        public List<CommandParameterModel> parameters { get; set; }
-    }
-
-    public class CommandParameterModel
-    {
-        // command parameter name
-        public string name {get; set; }
-
-        // Command parameter value
-        public string value { get; set; }
-    }
-
 
     public class KanbanModel
     {
-        public string text { get; set; }
-
-        public List<KanbanStateModel> states { get; set; }
-
-        public List<KanbanGroupModel> groups { get; set; }
-
-        public List<KanbanItemModel> items { get; set; }
-
-        public List<KanbanCommandModel> groupCommands { get; set; }
-
-        public List<KanbanCommandModel> itemCommands { get; set; }
+        public KanbanModel()
+        {
+            this.Groups = new List<KanbanGroupModel>();
+            this.States = new List<KanbanStateModel>();
+            this.Items = new List<KanbanItemModel>();
+        }
+        public IList<KanbanGroupModel> Groups { get;}
+        public IList<KanbanStateModel> States { get; }
+        public IList<KanbanItemModel> Items { get; }
     }
 }

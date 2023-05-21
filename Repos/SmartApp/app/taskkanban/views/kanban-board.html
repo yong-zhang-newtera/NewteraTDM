@@ -2,8 +2,8 @@
     <table class="dskb-container">
         <thead  ng-if="dskb.groups.length">
             <tr class="dskb-row dskb-states-row">
-                <td class="dskb-cell dskb-header dskb-row-header dskb-column-header dskb-toggle-button-area"><strong>{{getWord('Track')}}</strong></td>
-                <td ng-if="!dskb.hideGroups" class="dskb-cell dskb-header dskb-row-header dskb-column-header dskb-content" ng-style="{ width: dskb.groupWidth }" ><strong>{{getWord('Test Task')}}</strong></td>
+                <td class="dskb-cell dskb-header dskb-row-header dskb-column-header dskb-toggle-button-area"></td>
+                <td ng-if="!dskb.hideGroups" class="dskb-cell dskb-header dskb-row-header dskb-column-header dskb-content" ng-style="{ width: dskb.groupWidth }" ><strong>{{getWord('Item Group')}}</strong></td>
                 <td ng-repeat="state in dskb.states" class="dskb-cell dskb-header dskb-column-header dskb-state-header" ng-style="{ width: state.width ? state.width : dskb.stateWidth }">
                     <ng-include src="state.templateUrl ? state.templateUrl : dskb.stateTemplateUrl"/>
                 </td>
@@ -24,9 +24,6 @@
                     <svg ng-if="group.isCollapsed" class="dskb-toggle-button" width="8" height="8">
                         <polygon points="0,0 6,4 0,8" class="dskb-toggle-button-collapsed"/>
                     </svg>
-                    <div class="padding-5">
-                        <span class='switch'><input type='checkbox' name='trackswitch' class='onoffswitch-checkbox' id='{{group.objId}}' ng-change="trackStatusChanged(group)" ng-model="group.track"><label class='onoffswitch-label' for='{{group.objId}}'><span class='onoffswitch-inner' data-swchon-text='ON' data-swchoff-text='OFF'></span></label></span>
-                    </div>
                 </td>
                 <td ng-if="!dskb.hideGroups" class="dskb-cell dskb-header dskb-row-header dskb-items-container">
                     <div ng-style="{ height: (!group.isCollapsed ? dskb.groupHeight : dskb.collapsedGroupHeight) + 'px' }" class="dskb-content-box" ds:kanban-item-drop-zone can-drop="dskb.canDropGroup(type, index, dskb.groups.indexOf(group))" on-drop="dskb.onGroupDrop(type, index, dskb.groups.indexOf(group))">

@@ -16,7 +16,6 @@
 }
 .dskb-state-header {
     padding: 2px 8px;
-    font-size: smaller;
     vertical-align: bottom;
 }
 .dskb-group-container {
@@ -124,7 +123,6 @@
 }
 .dskb-property {
     height: 20px;
-    font-size: smaller;
     overflow: hidden;
 }
 .dskb-property-secondary {

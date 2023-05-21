@@ -62,7 +62,7 @@ angular.module('app.taskviewer').factory('taskService', function ($http, $q, APP
         node.className = treeNode.ClassName;
         node.childClass = treeNode.ChildClass;
         node.objId = treeNode.ID;
-        node.allowCreate = (treeNode.Children == undefined || treeNode.Children.length == 0) ? false : treeNode.Children[0].AllowCreate;
+        node.allowCreate = (treeNode.Children == undefined || treeNode.Children.length == 0) ? true : treeNode.Children[0].AllowCreate;
         node.allowEdit = treeNode.AllowWrite;
         node.allowDelete = treeNode.AllowDelete;
         nodes.push(node);
@@ -89,7 +89,7 @@ angular.module('app.taskviewer').factory('taskService', function ($http, $q, APP
                 node.className = childTreeNode.ClassName;
                 node.childClass = childTreeNode.ChildClass;
                 node.objId = childTreeNode.ID;
-                node.allowCreate = (childTreeNode.Children == undefined || childTreeNode.Children.length == 0) ? false : childTreeNode.Children[0].AllowCreate;
+                node.allowCreate = (childTreeNode.Children == undefined || childTreeNode.Children.length == 0) ? true : childTreeNode.Children[0].AllowCreate;
                 node.allowEdit = childTreeNode.AllowWrite;
                 node.allowDelete = childTreeNode.AllowDelete;
 
