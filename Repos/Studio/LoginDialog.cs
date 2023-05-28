@@ -168,15 +168,6 @@ namespace Newtera.Studio
 
             try
             {
-                if (CheckClient)
-                {
-                    AdminServiceStub service = new AdminServiceStub();
-
-                    // server throws an exception if the client has not been registered
-                    service.CheckInClient(NewteraNameSpace.DESIGN_STUDIO_NAME,
-                        NewteraNameSpace.ComputerCheckSum);
-                }
-
                 if (userName == _userManager.GetSuperUserName())
                 {
                     if (_userManager.AuthenticateSuperUser(userName, password))

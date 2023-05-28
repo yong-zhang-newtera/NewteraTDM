@@ -1,0 +1,1 @@
+alter table WF_ACTIVITY_INSTANCE add(TypeName VARCHAR(300) null);

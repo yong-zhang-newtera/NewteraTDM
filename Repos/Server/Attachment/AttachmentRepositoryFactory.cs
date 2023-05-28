@@ -77,8 +77,12 @@ namespace Newtera.Server.Attachment
                         {
                             _repository = new AttachmentSQLServerCERepository();
                         }
+						else if (dbType == DatabaseType.MySql)
+						{
+							_repository = new AttachmentMySqlRepository();
+						}
 
-                        break;
+						break;
 					case "FILE":
 						_repository = new AttachmentFileRepository();
 						break;

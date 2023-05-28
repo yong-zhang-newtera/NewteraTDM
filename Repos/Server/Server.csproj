@@ -109,11 +109,17 @@
     <Reference Include="Microsoft.CSharp">
       <HintPath>..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Microsoft.CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="MySqlConnector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=d33d3e53aa5f8c92, processorArchitecture=MSIL">
+      <HintPath>..\Ebaas\packages\MySqlConnector.2.2.6\lib\net461\MySqlConnector.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\Ebaas\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\Ebaas\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.configuration" />
     <Reference Include="System.Data">
@@ -126,10 +132,27 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Program Files\Microsoft SQL Server Compact Edition\v3.5\Desktop\System.Data.SqlServerCe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\Ebaas\packages\System.Diagnostics.DiagnosticSource.6.0.0\lib\net461\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
     <Reference Include="System.DirectoryServices">
       <Name>System.DirectoryServices</Name>
     </Reference>
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\Ebaas\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\Ebaas\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\Ebaas\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\Ebaas\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web">
       <Name>System.Web</Name>
     </Reference>
@@ -183,6 +206,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Attachment\AttachmentSQLServerCERepository.cs" />
+    <Compile Include="Attachment\AttachmentMySqlRepository.cs" />
     <Compile Include="Attachment\AttachmentSQLServerRepository.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -378,6 +402,7 @@
     <Compile Include="DB\MetaData\ModifySimpleAttributeAction.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DB\MetaData\MySqlDDLGenerator.cs" />
     <Compile Include="DB\MetaData\OracleDDLGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -399,6 +424,7 @@
     <Compile Include="DB\OracleClobDAO.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DB\MySqlProvider.cs" />
     <Compile Include="DB\OracleProvider.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -406,6 +432,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DB\SQLServerCEClobDAO.cs" />
+    <Compile Include="DB\MySqlClobDAO.cs" />
     <Compile Include="DB\SQLServerClobDAO.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -928,6 +955,7 @@
     <Compile Include="Engine\Sqlbuilder\SearchVisitor.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Engine\Sqlbuilder\Sql\MySqlSymbolLookup.cs" />
     <Compile Include="Engine\Sqlbuilder\VirtualAttributeValueGeneratorContext.cs" />
     <Compile Include="Engine\Sqlbuilder\ServerExecutionContext.cs" />
     <Compile Include="Engine\Sqlbuilder\SimpleAttributeEntity.cs">
@@ -1319,6 +1347,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>UpdateExecutor.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Engine\Interpreter\Parser\CreateParser.bat" />
     <None Include="Engine\Interpreter\Parser\XQuery.g" />
     <None Include="Engine\Interpreter\Parser\XQuery.g.1.2" />

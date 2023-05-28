@@ -82,16 +82,10 @@
             Gets home directory where Newtera Server is installed.
             </summary>
         </member>
-        <member name="M:Ebaas.WebApi.Controllers.AdminServiceController.GetServerId">
-            <summary>
-            Gets ID of Newtera Server installed.
-            </summary>
-        </member>
         <member name="M:Ebaas.WebApi.Controllers.AdminServiceController.SetupAppSchemas">
             <summary>
             Setup an application schemas.
             </summary>
-            <param name="schemaFileNames">An array of app schema file names</param>
         </member>
         <member name="M:Ebaas.WebApi.Controllers.AdminServiceController.GetServerLogText">
             <summary>
@@ -141,9 +135,9 @@
             <param name="scriptFileName">The script file name</param>
             <param name="cmd">IDbCommand</param>
         </member>
-        <member name="M:Ebaas.WebApi.Controllers.AdminServiceController.GetConnectionStr(System.String)">
+        <member name="M:Ebaas.WebApi.Controllers.AdminServiceController.GetCMConnectionString(System.String)">
             <summary>
-            Get a connection string for the specified schema
+            Get a connection string for the given schema in Newtera domain
             </summary>
             <param name="schemaName">The schema name</param>
             <returns></returns>
@@ -153,14 +147,6 @@
             Get an XmlDocument containing a list of application schema definitions
             </summary>
             <returns>An XmlDocument</returns>
-        </member>
-        <member name="M:Ebaas.WebApi.Controllers.AdminServiceController.GetConnectionString(Newtera.Server.DB.DatabaseType,System.String)">
-            <summary>
-            Get a connection string
-            </summary>
-            <param name="databaseType">Database type</param>
-            <param name="dataSource">The data source</param>
-            <returns></returns>
         </member>
         <member name="T:Ebaas.WebApi.Controllers.LoggingServiceController">
             <summary>
@@ -3867,19 +3853,19 @@
         </member>
         <member name="M:Ebaas.WebApi.Infrastructure.RoleStore`1.#ctor">
             <summary>
-            Default constructor that initializes a new MySQLDatabase
+            Default constructor that initializes a new Sql Database
             instance using the Default Connection string
             </summary>
         </member>
         <member name="M:Ebaas.WebApi.Infrastructure.RoleStore`1.#ctor(Newtera.Common.MetaData.Principal.IUserManager)">
             <summary>
-            Constructor that takes a MySQLDatabase as argument 
+            Constructor that takes a Sql Database as argument 
             </summary>
             <param name="database"></param>
         </member>
         <member name="T:Ebaas.WebApi.Infrastructure.RoleTable">
             <summary>
-            Class that represents the Role table in the MySQL Database
+            Class that represents the Role table in the Sql Database
             </summary>
         </member>
         <member name="M:Ebaas.WebApi.Infrastructure.RoleTable.#ctor(Newtera.Common.MetaData.Principal.IUserManager)">
@@ -4126,7 +4112,7 @@
         </member>
         <member name="T:Ebaas.WebApi.Infrastructure.UserClaimsTable">
             <summary>
-            Class that represents the UserClaims table in the MySQL Database
+            Class that represents the UserClaims table in the Sql Database
             </summary>
         </member>
         <member name="M:Ebaas.WebApi.Infrastructure.UserClaimsTable.FindByUserId(System.String)">
@@ -4161,12 +4147,12 @@
         </member>
         <member name="T:Ebaas.WebApi.Infrastructure.UserLoginsTable">
             <summary>
-            Class that represents the UserLogins table in the MySQL Database
+            Class that represents the UserLogins table in the Sql Database
             </summary>
         </member>
         <member name="M:Ebaas.WebApi.Infrastructure.UserLoginsTable.#ctor(Newtera.Common.MetaData.Principal.IUserManager)">
             <summary>
-            Constructor that takes a MySQLDatabase instance 
+            Constructor that takes a Sql Database instance 
             </summary>
             <param name="database"></param>
         </member>
@@ -4209,7 +4195,7 @@
         </member>
         <member name="T:Ebaas.WebApi.Infrastructure.UserRolesTable">
             <summary>
-            Class that represents the UserRoles table in the MySQL Database
+            Class that represents the UserRoles table in the Sql Database
             </summary>
         </member>
         <member name="M:Ebaas.WebApi.Infrastructure.UserRolesTable.FindByUserId(System.String)">
@@ -4254,7 +4240,7 @@
         </member>
         <member name="M:Ebaas.WebApi.Infrastructure.UserStore`1.#ctor(Newtera.Common.MetaData.Principal.IUserManager)">
             <summary>
-            Constructor that takes a MySQLDatabase as argument 
+            Constructor that takes a SqlDatabase as argument 
             </summary>
             <param name="database"></param>
         </member>

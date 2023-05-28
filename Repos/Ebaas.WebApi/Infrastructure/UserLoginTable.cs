@@ -8,14 +8,14 @@ using Newtera.Server.UsrMgr;
 namespace Ebaas.WebApi.Infrastructure
 {
     /// <summary>
-    /// Class that represents the UserLogins table in the MySQL Database
+    /// Class that represents the UserLogins table in the Sql Database
     /// </summary>
     public class UserLoginsTable
     {
         private IUserManager _customUserManager;
 
         /// <summary>
-        /// Constructor that takes a MySQLDatabase instance 
+        /// Constructor that takes a Sql Database instance 
         /// </summary>
         /// <param name="database"></param>
         public UserLoginsTable(IUserManager customUserManager)

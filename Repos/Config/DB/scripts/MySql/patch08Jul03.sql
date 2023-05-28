@@ -1,0 +1,1 @@
+alter table CM_REGISTERED_CLIENTS add(MACHINE VARCHAR(200) null);

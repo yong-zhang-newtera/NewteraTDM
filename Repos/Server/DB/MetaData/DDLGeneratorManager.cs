@@ -31,10 +31,14 @@ namespace Newtera.Server.DB.MetaData
         // SQL Server CE DDL generator.
         private SQLServerCEDDLGenerator _sqlServerCEDDLGenerator;
 
-        /// <summary>
-        /// Private constructor.  User can not construct a DDLGeneratorManager
-        /// </summary>
-        private DDLGeneratorManager()
+		// MySql DDL generator.
+		private MySqlDDLGenerator _mySqlDDLGenerator;
+
+
+		/// <summary>
+		/// Private constructor.  User can not construct a DDLGeneratorManager
+		/// </summary>
+		private DDLGeneratorManager()
 		{
 			_oraclDDLGenerator = null;
 			_sqlServerDDLGenerator = null;
@@ -89,7 +93,15 @@ namespace Newtera.Server.DB.MetaData
 
                     generator = _sqlServerCEDDLGenerator;
                     break;
-            }
+				case DatabaseType.MySql:
+					if (_mySqlDDLGenerator == null)
+					{
+						_mySqlDDLGenerator = new MySqlDDLGenerator();
+					}
+
+					generator = _mySqlDDLGenerator;
+					break;
+			}
 			
 			return generator;
 		}

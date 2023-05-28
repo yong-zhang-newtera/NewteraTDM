@@ -1,0 +1,1 @@
+alter table MM_SCHEMA add(DBA_ROLE VARCHAR(50) null);

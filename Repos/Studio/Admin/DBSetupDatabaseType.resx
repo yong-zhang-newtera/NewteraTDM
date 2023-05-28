@@ -126,10 +126,10 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>32, 64</value>
+    <value>48, 96</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>304, 40</value>
+    <value>536, 60</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
@@ -157,10 +157,10 @@
     <value>NoControl</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>32, 128</value>
+    <value>48, 192</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 23</value>
+    <value>168, 34</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -187,22 +187,25 @@
     <value>Arial, 9pt</value>
   </data>
   <data name="comboBox1.ItemHeight" type="System.Int32, mscorlib">
-    <value>15</value>
+    <value>21</value>
   </data>
   <data name="comboBox1.Items" xml:space="preserve">
-    <value>Oracle</value>
+    <value>MySql</value>
   </data>
   <data name="comboBox1.Items1" xml:space="preserve">
-    <value>SQLServer</value>
+    <value>Oracle</value>
   </data>
   <data name="comboBox1.Items2" xml:space="preserve">
+    <value>SQLServer</value>
+  </data>
+  <data name="comboBox1.Items3" xml:space="preserve">
     <value>SQLServerCe</value>
   </data>
   <data name="comboBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>160, 128</value>
+    <value>240, 192</value>
   </data>
   <data name="comboBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 23</value>
+    <value>216, 29</value>
   </data>
   <data name="comboBox1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -264,7 +267,7 @@
     <value>0, 0</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>362, 48</value>
+    <value>623, 72</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -294,7 +297,7 @@
     <value>0, 0</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>362, 200</value>
+    <value>623, 300</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -321,10 +324,10 @@
     <value>NoControl</value>
   </data>
   <data name="cancelButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>72, 216</value>
+    <value>188, 349</value>
   </data>
   <data name="cancelButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 23</value>
+    <value>98, 34</value>
   </data>
   <data name="cancelButton.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -354,10 +357,10 @@
     <value>NoControl</value>
   </data>
   <data name="backButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>144, 216</value>
+    <value>296, 349</value>
   </data>
   <data name="backButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 23</value>
+    <value>98, 34</value>
   </data>
   <data name="backButton.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -387,10 +390,10 @@
     <value>NoControl</value>
   </data>
   <data name="nextButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>216, 216</value>
+    <value>404, 349</value>
   </data>
   <data name="nextButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 23</value>
+    <value>98, 34</value>
   </data>
   <data name="nextButton.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -423,10 +426,10 @@
     <value>NoControl</value>
   </data>
   <data name="finishButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>288, 216</value>
+    <value>512, 349</value>
   </data>
   <data name="finishButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 23</value>
+    <value>98, 34</value>
   </data>
   <data name="finishButton.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -450,10 +453,10 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleBaseSize" type="System.Drawing.Size, System.Drawing">
-    <value>6, 14</value>
+    <value>9, 21</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>362, 250</value>
+    <value>623, 400</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 9pt</value>

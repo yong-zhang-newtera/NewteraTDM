@@ -95,7 +95,10 @@ namespace Newtera.Server.DB
                     case "SQLSERVERCE":
                         type = DatabaseType.SQLServerCE;
                         break;
-                    case "DB2":
+					case "MYSQL":
+						type = DatabaseType.MySql;
+						break;
+					case "DB2":
 						type = DatabaseType.DB2;
 						break;
 					default:
@@ -125,7 +128,10 @@ namespace Newtera.Server.DB
                 case "SQLSERVERCE":
                     type = DatabaseType.SQLServerCE;
                     break;
-                case "DB2":
+				case "MYSQL":
+					type = DatabaseType.MySql;
+					break;
+				case "DB2":
 					type = DatabaseType.DB2;
 					break;
 				default:
@@ -295,6 +301,7 @@ namespace Newtera.Server.DB
 		SQLServer,
 		Oracle,
         SQLServerCE,
+		MySql,
 		DB2
 	}
 }

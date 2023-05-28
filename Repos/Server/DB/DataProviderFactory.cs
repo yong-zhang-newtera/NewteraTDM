@@ -63,7 +63,10 @@ namespace Newtera.Server.DB
                 case DatabaseType.SQLServerCE:
                     provider = new SQLServerCEProvider(dbConfig.GetConnectionString());
                     break;
-            }
+				case DatabaseType.MySql:
+					provider = new MySqlProvider(dbConfig.GetConnectionString());
+					break;
+			}
 
             return provider;
 		}
@@ -88,7 +91,10 @@ namespace Newtera.Server.DB
                 case DatabaseType.SQLServerCE:
                     provider = new SQLServerCEProvider(connectionString);
                     break;
-            }
+				case DatabaseType.MySql:
+					provider = new MySqlProvider(connectionString);
+					break;
+			}
 
             if (type != DatabaseType.SQLServerCE)
             {

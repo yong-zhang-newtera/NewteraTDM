@@ -397,6 +397,7 @@ namespace Newtera.Server.DB
 
             switch (_dataProvider.DatabaseType)
             {
+                case DatabaseType.MySql:
                 case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     sql = sql.Replace("@datainstanceid", "'" + objId + "'");
@@ -485,6 +486,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                         sql = sql.Replace("@datainstanceid", "'" + dataInstanceId + "'");
                         sql = sql.Replace("@dataclassname", "'" + dataClassName + "'");
@@ -552,6 +554,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                         sql = sql.Replace("@datainstanceid", "'" + dataInstanceId + "'");
                         sql = sql.Replace("@dataclassname", "'" + dataClassName + "'");
@@ -609,6 +612,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@wfinstanceid", "'" + workflowInstanceId + "'");
@@ -687,6 +691,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@instanceid", "'" + workflowInstanceId + "'");
@@ -761,6 +766,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@schemaId", "'" + schemaId + "'");
@@ -846,6 +852,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@oldinstanceid", "'" + oldInstanceId + "'");
@@ -957,6 +964,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@wfinstanceid", "'" + workflowInstanceId + "'");
@@ -1002,6 +1010,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@instanceid", "'" + workflowInstanceId + "'");
@@ -1097,6 +1106,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@WFInstanceID", "'" + workflowInstanceId + "'");
@@ -1158,6 +1168,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@SubscriptionId", "'" + subscriptionId.ToString() + "'");
@@ -1214,6 +1225,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@SubscriptionId", "'" + subscriptionId + "'");
@@ -1258,6 +1270,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@WFInstanceID", "'" + worrkflowInstanceId + "'");
@@ -1350,6 +1363,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@ParentWFInstanceID", "'" + worrkflowInstanceId + "'");
@@ -1408,6 +1422,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@SubscriptionId", "'" + subscriptionId.ToString() + "'");
@@ -1459,6 +1474,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@SubscriptionId", "'" + subscriptionId + "'");
@@ -1505,6 +1521,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@ParentWFInstanceID", "'" + worrkflowInstanceId + "'");
@@ -1655,6 +1672,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@ContextId", "'" + eventContext.EventContextId + "'");
@@ -1769,6 +1787,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@ContextId", "'" + eventContextId + "'");
@@ -1815,6 +1834,7 @@ namespace Newtera.Server.DB
             string sql = CannedSQLManager.GetCannedSQLManager(dataProvider).GetSql("GetProjectRole");
             switch (dataProvider.DatabaseType)
             {
+                case DatabaseType.MySql:
                 case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     sql = sql.Replace("@name", "'" + projectName + "'");
@@ -1878,6 +1898,7 @@ namespace Newtera.Server.DB
 
             switch (dataProvider.DatabaseType)
             {
+                case DatabaseType.MySql:
                 case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     sql = sql.Replace("@name", "'" + projectName + "'");
@@ -1946,6 +1967,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@WorkflowInstanceId", "'" + workflowInstanceId + "'");
@@ -2001,6 +2023,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@WorkflowInstanceId", "'" + workflowInstanceId + "'");
@@ -2059,6 +2082,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@ActivityInstanceId", "'" + activityInstanceId + "'");
@@ -2119,6 +2143,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@ActivityInstanceId", "'" + activityInstanceId + "'");
@@ -2167,6 +2192,7 @@ namespace Newtera.Server.DB
 
             switch (_dataProvider.DatabaseType)
             {
+                case DatabaseType.MySql:
                 case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     sql = sql.Replace("@WorkflowInstanceId", "'" + workflowInstanceId + "'");
@@ -2219,6 +2245,7 @@ namespace Newtera.Server.DB
 
             switch (_dataProvider.DatabaseType)
             {
+                case DatabaseType.MySql:
                 case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     sql = sql.Replace("@WorkflowTypeId", "'" + workflowTypeId + "'");
@@ -2263,6 +2290,7 @@ namespace Newtera.Server.DB
 
             switch (_dataProvider.DatabaseType)
             {
+                case DatabaseType.MySql:
                 case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     sql = sql.Replace("@WorkflowTypeId", "'" + workflowTypeId + "'");
@@ -2351,6 +2379,7 @@ namespace Newtera.Server.DB
 
             switch (_dataProvider.DatabaseType)
             {
+                case DatabaseType.MySql:
                 case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     sql = sql.Replace("@WorkflowTypeId", "'" + workflowTypeId + "'");
@@ -2407,6 +2436,7 @@ namespace Newtera.Server.DB
 
             switch (_dataProvider.DatabaseType)
             {
+                case DatabaseType.MySql:
                 case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     sql = sql.Replace("@WorkflowTypeId", "'" + workflowTypeId + "'");
@@ -2493,6 +2523,7 @@ namespace Newtera.Server.DB
 
             switch (_dataProvider.DatabaseType)
             {
+                case DatabaseType.MySql:
                 case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     sql = sql.Replace("@WorkflowInstanceId", "'" + workflowInstanceId + "'");
@@ -2560,6 +2591,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@WorkflowInstanceId", "'" + workflowInstanceId + "'");
@@ -2605,6 +2637,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@WorkflowInstanceId", "'" + workflowInstanceId + "'");
@@ -2652,6 +2685,7 @@ namespace Newtera.Server.DB
 
             switch (_dataProvider.DatabaseType)
             {
+                case DatabaseType.MySql:
                 case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     sql = sql.Replace("@WorkflowTypeId", "'" + workflowTypeId + "'");
@@ -2715,6 +2749,7 @@ namespace Newtera.Server.DB
 
             switch (_dataProvider.DatabaseType)
             {
+                case DatabaseType.MySql:
                 case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     sql = sql.Replace("@ProjectName", "'" + projectName + "'");
@@ -2776,6 +2811,7 @@ namespace Newtera.Server.DB
 
             switch (dataProvider.DatabaseType)
             {
+                case DatabaseType.MySql:
                 case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     sql = sql.Replace("@name", "'" + projectName + "'");
@@ -2858,6 +2894,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@TaskId", "'" + taskId + "'");
@@ -2959,6 +2996,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@TaskId", "'" + taskInfo.TaskId.ToString() + "'");
@@ -3009,6 +3047,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@TaskId", "'" + taskId + "'");
@@ -3055,6 +3094,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@WFInstanceID", "'" + worrkflowInstanceId + "'");
@@ -3101,6 +3141,7 @@ namespace Newtera.Server.DB
             {
                 switch (_dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@TaskId", "'" + taskId + "'");
@@ -3149,6 +3190,7 @@ namespace Newtera.Server.DB
 
             switch (dataProvider.DatabaseType)
             {
+                case DatabaseType.MySql:
                 case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     sql = sql.Replace("@name", "'" + projectInfo.Name + "'");
@@ -3201,6 +3243,7 @@ namespace Newtera.Server.DB
 
             switch (_dataProvider.DatabaseType)
             {
+                case DatabaseType.MySql:
                 case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     sql = sql.Replace("@WorkflowInstanceId", "'" + trackingWorkflowInstance.WorkflowInstanceId.ToString() + "'");
@@ -3265,6 +3308,7 @@ namespace Newtera.Server.DB
 
             switch (dataProvider.DatabaseType)
             {
+                case DatabaseType.MySql:
                 case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     sql = sql.Replace("@instanceid", "'" + instanceId + "'");
@@ -3322,6 +3366,7 @@ namespace Newtera.Server.DB
             {
                 switch (dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@instanceid", "'" + instanceId + "'");
@@ -3371,6 +3416,7 @@ namespace Newtera.Server.DB
 
             switch (dataProvider.DatabaseType)
             {
+                case DatabaseType.MySql:
                 case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     sql = sql.Replace("@completedscopeid", "'" + scopeId + "'");
@@ -3427,6 +3473,7 @@ namespace Newtera.Server.DB
             {
                 switch (dataProvider.DatabaseType)
                 {
+                    case DatabaseType.MySql:
                     case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@completedscopeid", "'" + scopeId + "'");

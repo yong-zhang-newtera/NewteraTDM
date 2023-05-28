@@ -329,11 +329,10 @@ namespace Newtera.Registry
             var path = System.Web.Hosting.HostingEnvironment.MapPath("~");
             if (path == null)
             {
-                var uriPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
-                path = new Uri(uriPath).LocalPath;
+                path = AppDomain.CurrentDomain.BaseDirectory;
 
-                // remove \bin if exist
-                int pos = path.LastIndexOf(@"\bin");
+				// remove \bin if exist
+				int pos = path.LastIndexOf(@"\bin");
                 if (pos > 0)
                 {
                     path = path.Substring(0, pos);

@@ -44,6 +44,7 @@ namespace Ebaas.WebApi.Controllers
         private const string ORACLE_DIR = @"Oracle\";
         private const string SQLSERVER_DIR = @"SQLServer\";
         private const string SQLSERVERCE_DIR = @"SQLServerCE\";
+        private const string MYSQL_DIR = @"MySql\";
         private const string SCHEMA_NAME = "SCHEMA_NAME";
         private const string SCHEMA_VERSION = "SCHEMA_VERSION";
         private const string SERVER_BASE_URL_KEY = "BaseURL";
@@ -140,7 +141,7 @@ namespace Ebaas.WebApi.Controllers
                 bool status = true;
 
                 DatabaseType type = DatabaseConfig.Instance.GetDatabaseType(databaseType);
-                string connectionString = GetConnectionString(type, dataSourceName);
+                string connectionString = GetDBConnectionString(type, dataSourceName, DatabaseConfig.Instance.TableSpace);
 
                 IDataProvider dataProvider = DataProviderFactory.Instance.Create(type, connectionString);
 
@@ -181,7 +182,7 @@ namespace Ebaas.WebApi.Controllers
             try
             {
                 DatabaseType type = DatabaseConfig.Instance.GetDatabaseType(databaseType);
-                string connectionString = GetConnectionString(type, dataSourceName);
+                string connectionString = GetDBConnectionString(type, dataSourceName);
 
                 IDataProvider dataProvider = DataProviderFactory.Instance.Create(type, connectionString);
 
@@ -228,7 +229,6 @@ namespace Ebaas.WebApi.Controllers
  
                 con = dataProvider.Connection;
                 IDbCommand cmd = con.CreateCommand();
-                IDbDataParameter parameter;
                 sql = CannedSQLManager.GetCannedSQLManager(dataProvider).GetSql("GetTableSpace");
 
                 sql = sql.Replace(":tablespace_name", "'" + DatabaseConfig.Instance.TableSpace.ToUpper() + "'");
@@ -293,9 +293,8 @@ namespace Ebaas.WebApi.Controllers
             string password = apiParams[1];
             string dataFileDir = apiParams[2];
 
-            string connectionString = "Data Source=" + dataSourceName + ";User ID=" + userName + ";Password=" + password;
             DatabaseType type = DatabaseConfig.Instance.GetDatabaseType(databaseType);
-
+            string connectionString = this.GetDBConnectionString(type, dataSourceName, null, userName, password);
             IDataProvider dataProvider = DataProviderFactory.Instance.Create(type, connectionString);
 
             IDbConnection con = null;
@@ -312,7 +311,7 @@ namespace Ebaas.WebApi.Controllers
 
                 cmd.ExecuteNonQuery();
 
-                // Create an user for the specified tablespace
+                // Create a DBA user for the specified tablespace
                 string[] ddls = generator.GetCreateUserDDLs(DatabaseConfig.Instance.DBUserID, DatabaseConfig.Instance.DBUserPassword, DatabaseConfig.Instance.TableSpace);
 
                 foreach (string ddl in ddls)
@@ -355,7 +354,7 @@ namespace Ebaas.WebApi.Controllers
         public HttpResponseMessage UpdateSchema(string databaseType, string dataSourceName)
         {
             DatabaseType type = DatabaseConfig.Instance.GetDatabaseType(databaseType);
-            string connectionString = this.GetConnectionString(type, dataSourceName);
+            string connectionString = this.GetDBConnectionString(type, dataSourceName, DatabaseConfig.Instance.TableSpace);
 
             IDataProvider dataProvider = DataProviderFactory.Instance.Create(type, connectionString);
 
@@ -418,7 +417,7 @@ namespace Ebaas.WebApi.Controllers
 
                 bool updated = false;
                 DatabaseType type = DatabaseConfig.Instance.GetDatabaseType(databaseType);
-                string connectionString = GetConnectionString(type, dataSourceName);
+                string connectionString = GetDBConnectionString(type, dataSourceName, DatabaseConfig.Instance.TableSpace);
 
                 AppConfig config = new AppConfig();
 
@@ -536,39 +535,8 @@ namespace Ebaas.WebApi.Controllers
         }
 
         /// <summary>
-        /// Gets ID of Newtera Server installed.
-        /// </summary>
-        [HttpGet]
-        [Route("GetServerId")]
-        public HttpResponseMessage GetServerId()
-        {
-            try
-            {
-                var resp = new HttpResponseMessage(HttpStatusCode.OK);
-                string checkSum = NewteraNameSpace.ComputerCheckSum;
-                if (!string.IsNullOrEmpty(checkSum))
-                {
-                    resp.Content = new StringContent(checkSum, System.Text.Encoding.UTF8, "text/plain");
-                }
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                // the specified table space does not exists
-                ErrorLog.Instance.WriteLine(ex.Message + " \n" + ex.StackTrace);
-
-                var resp = new HttpResponseMessage(HttpStatusCode.BadRequest);
-
-                resp.Content = new StringContent(ex.Message);
-
-                return resp;
-            }
-        }
-
-        /// <summary>
         /// Setup an application schemas.
         /// </summary>
-        /// <param name="schemaFileNames">An array of app schema file names</param>
         [HttpPost]
         [AdminAuthorizeAttribute]
         [Route("SetupAppSchemas")]
@@ -591,7 +559,7 @@ namespace Ebaas.WebApi.Controllers
 
                 foreach (string schemaName in schemaNames)
                 {
-                    string connectionStr = GetConnectionStr(schemaName);
+                    string connectionStr = GetCMConnectionString(schemaName);
                     if (connectionStr == null)
                     {
                         throw new CMException("Failed to find info for " + schemaName);
@@ -717,7 +685,7 @@ namespace Ebaas.WebApi.Controllers
                             metaData.ApiManager.Write(writer);
                             con.UpdateMetaData(MetaDataType.Apis, builder.ToString());
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
                             // ignore the error so that we can update the next schema
                         }
@@ -916,6 +884,9 @@ namespace Ebaas.WebApi.Controllers
                 case DatabaseType.SQLServerCE:
                     subDir = SQLSERVERCE_DIR;
                     break;
+                case DatabaseType.MySql:
+                    subDir = MYSQL_DIR;
+                    break;
             }
 
             try
@@ -994,6 +965,10 @@ namespace Ebaas.WebApi.Controllers
                         subDir = SQLSERVERCE_DIR;
                         prefix = "@";
                         break;
+                    case DatabaseType.MySql:
+                        subDir = MYSQL_DIR;
+                        prefix = "@";
+                        break;
                 }
 
                 string scriptFilePath = NewteraNameSpace.GetAppHomeDir() + SCRIPT_DIR + subDir + scriptFileName;
@@ -1054,11 +1029,11 @@ namespace Ebaas.WebApi.Controllers
         }
 
         /// <summary>
-        /// Get a connection string for the specified schema
+        /// Get a connection string for the given schema in Newtera domain
         /// </summary>
         /// <param name="schemaName">The schema name</param>
         /// <returns></returns>
-        private string GetConnectionStr(string schemaName)
+        private string GetCMConnectionString(string schemaName)
         {
             if (_doc == null)
             {
@@ -1106,15 +1081,9 @@ namespace Ebaas.WebApi.Controllers
             return doc;
         }
 
-        /// <summary>
-        /// Get a connection string
-        /// </summary>
-        /// <param name="databaseType">Database type</param>
-        /// <param name="dataSource">The data source</param>
-        /// <returns></returns>
-        private string GetConnectionString(DatabaseType databaseType, string dataSource)
+        private string GetDBConnectionString(DatabaseType databaseType, string dataSource, string schema = null, string userId = null, string userPassword = null)
         {
-            string connectionString = "Data Source=" + dataSource + ";User ID=" + DatabaseConfig.Instance.DBUserID + ";Password=" + DatabaseConfig.Instance.DBUserPassword;
+            string connectionString = null;
 
             if (databaseType == DatabaseType.SQLServer)
             {
@@ -1125,6 +1094,19 @@ namespace Ebaas.WebApi.Controllers
                 string dbFileName = NewteraNameSpace.GetAppHomeDir() + @"Database\" + dataSource;
 
                 connectionString = "Data Source=" + dbFileName + ";LCID=1033; Case Sensitive = TRUE";
+            }
+            else if (databaseType == DatabaseType.MySql)
+            {
+                var uid = userId ?? DatabaseConfig.Instance.DBUserID;
+                var pwd = userPassword ?? DatabaseConfig.Instance.DBUserPassword;
+                if (!string.IsNullOrEmpty(schema))
+                {
+                    connectionString = $"Server={dataSource};Database={schema};charset=utf8mb4;uid={uid};pwd={pwd};;Allow User Variables=True";
+                }
+                else
+                {
+                    connectionString = $"Server={dataSource};charset=utf8mb4;uid={uid};pwd={pwd};;Allow User Variables=True";
+                }
             }
 
             return connectionString;
