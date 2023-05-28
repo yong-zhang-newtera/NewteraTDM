@@ -9,7 +9,7 @@ using Newtera.Server.UsrMgr;
 namespace Ebaas.WebApi.Infrastructure
 {
     /// <summary>
-    /// Class that represents the Role table in the MySQL Database
+    /// Class that represents the Role table in the Sql Database
     /// </summary>
     public class RoleTable
     {

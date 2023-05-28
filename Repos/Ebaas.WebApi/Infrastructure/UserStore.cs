@@ -45,7 +45,7 @@ namespace Ebaas.WebApi.Infrastructure
         }
 
         /// <summary>
-        /// Constructor that takes a MySQLDatabase as argument 
+        /// Constructor that takes a SqlDatabase as argument 
         /// </summary>
         /// <param name="database"></param>
         public UserStore(IUserManager customUserManager)

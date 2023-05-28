@@ -582,83 +582,49 @@ namespace Newtera.Studio
                 return;
             }
 
-			// check if the design studio has been registered or not
+			string userName = this.idTextBox.Text;
+			string password = this.pwdTextBox.Text;
 
 			try
 			{
-				
-				AdminServiceStub service = new AdminServiceStub();
-
-                // server throws an exception if the client has not been registered
-                if (_checkinClient)
-                {
-                    service.CheckInClient(NewteraNameSpace.DESIGN_STUDIO_NAME,
-                        NewteraNameSpace.ComputerCheckSum);
-                }
-
-				isRegistered = true;
-			}
-            catch (System.AggregateException)
-            {
-                MessageBox.Show("Unable to connect to the server, try again.", "Server Error",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error);
-                this.DialogResult = DialogResult.None; // dimiss the OK event
-            }
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, "Server Error",
-					MessageBoxButtons.OK,
-					MessageBoxIcon.Error);
-				this.DialogResult = DialogResult.None; // dimiss the OK event
-			}
-
-			if (isRegistered)
-			{
-				string userName = this.idTextBox.Text;
-				string password = this.pwdTextBox.Text;
-
-				try
+				_isAuthenticated = _userManager.Authenticate(userName, password);
+				if (_isAuthenticated)
 				{
-					_isAuthenticated = _userManager.Authenticate(userName, password);
-					if (_isAuthenticated)
-					{
-						// attach a custom principal object to the thread
-						CustomPrincipal.Attach(new WindowClientUserManager(), new WindowClientServerProxy(), userName);
+					// attach a custom principal object to the thread
+					CustomPrincipal.Attach(new WindowClientUserManager(), new WindowClientServerProxy(), userName);
 
-						if (_lockMetaData && IsDBAUser)
-						{
-							// lock the meta data model for update
-                            string msg = _metaDataService.LockMetaData(ConnectionStringBuilder.Instance.Create(SelectedSchema.Name, SelectedSchema.Version, SelectedSchema.ModifiedTime));
+					if (_lockMetaData && IsDBAUser)
+					{
+						// lock the meta data model for update
+                        string msg = _metaDataService.LockMetaData(ConnectionStringBuilder.Instance.Create(SelectedSchema.Name, SelectedSchema.Version, SelectedSchema.ModifiedTime));
 					
-                            if (string.IsNullOrEmpty(msg))
-                            { 
-								_isLockObtained = true;
-							}
-							else
-							{
-								_isLockObtained = false;
-								MessageBox.Show(msg,
-									"Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
-							}
+                        if (string.IsNullOrEmpty(msg))
+                        { 
+							_isLockObtained = true;
 						}
+						else
+						{
+							_isLockObtained = false;
+							MessageBox.Show(msg,
+								"Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+						}
+					}
 
-						this.DialogResult = DialogResult.OK; // close the dialog
-					}
-					else
-					{
-						MessageBox.Show(MessageResourceManager.GetString("DesignStudio.InvalidUserLogin"), "Error Dialog", MessageBoxButtons.OK,
-							MessageBoxIcon.Error);
-					
-						this.DialogResult = DialogResult.None; // dimiss the OK event
-					}
+					this.DialogResult = DialogResult.OK; // close the dialog
 				}
-				catch (Exception ex)
+				else
 				{
-					MessageBox.Show(ex.Message,
-						"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show(MessageResourceManager.GetString("DesignStudio.InvalidUserLogin"), "Error Dialog", MessageBoxButtons.OK,
+						MessageBoxIcon.Error);
+					
 					this.DialogResult = DialogResult.None; // dimiss the OK event
 				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message,
+					"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				this.DialogResult = DialogResult.None; // dimiss the OK event
 			}
 		}
 

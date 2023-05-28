@@ -42,9 +42,10 @@ namespace Newtera.Server.DB
 		public const string OracleCannedSQLFile = "catalog_sqls_oracle.xml";
 		public const string SQLServerCannedSQLFile = "catalog_sqls_sqlserver.xml";
         public const string SQLServerCECannedSQLFile = "catalog_sqls_sqlserverce.xml";
+		public const string MySqlCannedSQLFile = "catalog_sqls_mysql.xml";
 
-        // A table contains SQL strings that are indexed by keys.
-        private NameValueCollection _sqlTable;
+		// A table contains SQL strings that are indexed by keys.
+		private NameValueCollection _sqlTable;
 		
 		// A hash table conatins CannedSQLManager objects
 		private static Hashtable _cannedSqlManagers;
@@ -331,7 +332,10 @@ namespace Newtera.Server.DB
                 case DatabaseType.SQLServerCE:
                     fileName = CannedSQLManager.SQLServerCECannedSQLFile;
                     break;
-            }
+				case DatabaseType.MySql:
+					fileName = CannedSQLManager.MySqlCannedSQLFile;
+					break;
+			}
 
 			return fileName;
 		}

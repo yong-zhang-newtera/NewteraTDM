@@ -28,6 +28,10 @@ namespace Newtera.Studio
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.ErrorProvider errorProvider;
 		private System.Windows.Forms.TextBox dsNameTextBox;
+        private TextBox rootUserPasswordTextBox;
+        private Label label5;
+        private TextBox rootUserNameTextBox;
+        private Label label4;
         private IContainer components;
 
         public DBSetupDataSourceName()
@@ -162,6 +166,10 @@ namespace Newtera.Studio
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DBSetupDataSourceName));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.rootUserPasswordTextBox = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.rootUserNameTextBox = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.dsNameTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -177,12 +185,36 @@ namespace Newtera.Studio
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.rootUserPasswordTextBox);
+            this.panel1.Controls.Add(this.label5);
+            this.panel1.Controls.Add(this.rootUserNameTextBox);
+            this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.dsNameTextBox);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
+            // 
+            // rootUserPasswordTextBox
+            // 
+            resources.ApplyResources(this.rootUserPasswordTextBox, "rootUserPasswordTextBox");
+            this.rootUserPasswordTextBox.Name = "rootUserPasswordTextBox";
+            // 
+            // label5
+            // 
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.Name = "label5";
+            // 
+            // rootUserNameTextBox
+            // 
+            resources.ApplyResources(this.rootUserNameTextBox, "rootUserNameTextBox");
+            this.rootUserNameTextBox.Name = "rootUserNameTextBox";
+            // 
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
             // 
             // label3
             // 
@@ -292,6 +324,8 @@ namespace Newtera.Studio
                 _dataSourceName = dsNameTextBox.Text;
                 this._buttonTag = WizardButtonTag.Next;
 				this._wizard.DataSource = _dataSourceName;
+                this._wizard.DBAUserID = rootUserNameTextBox.Text;
+                this._wizard.DBAUserPassword = rootUserPasswordTextBox.Text;
 			}
 		}
 

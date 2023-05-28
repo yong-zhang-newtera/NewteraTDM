@@ -7,7 +7,7 @@ using Newtera.Server.UsrMgr;
 namespace Ebaas.WebApi.Infrastructure
 {
     /// <summary>
-    /// Class that represents the UserClaims table in the MySQL Database
+    /// Class that represents the UserClaims table in the Sql Database
     /// </summary>
     public class UserClaimsTable
     {

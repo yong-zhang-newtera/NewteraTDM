@@ -1841,32 +1841,6 @@ namespace Newtera.Studio
 		}
 
 		/// <summary>
-		/// Gets the information indicating whether the server's license is an
-		/// evaluation license.
-		/// </summary>
-		/// <returns>True if it is an evaluation license, false if it is a permenant license.</returns>
-		private bool IsInEvaluation()
-		{
-			bool isEvaluation = true;
-
-			try
-			{
-				AdminServiceStub adminService = new AdminServiceStub();
-
-				isEvaluation = adminService.IsEvaluationLicense();
-
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, "Server Error",
-					MessageBoxButtons.OK,
-					MessageBoxIcon.Error);
-			}
-
-			return isEvaluation;
-		}
-
-		/// <summary>
 		/// The AsyncCallback event handler for RunRestoreJob method.
 		/// </summary>
 		/// <param name="res">The result</param>
@@ -2229,36 +2203,17 @@ namespace Newtera.Studio
 
 		private void changePasswordMenuItem_Click(object sender, System.EventArgs e)
 		{
-			if (!IsInEvaluation())
-			{
-				ChangePasswordDialog dialog = new ChangePasswordDialog();
-				dialog.ShowDialog();
-			}
-			else
-			{
-				MessageBox.Show(MessageResourceManager.GetString("DesignStudio.DisabledFeature"),
-					"Error Dialog", MessageBoxButtons.OK,
-					MessageBoxIcon.Error);
-			}
+			ChangePasswordDialog dialog = new ChangePasswordDialog();
+			dialog.ShowDialog();
 		}
 
 		private void setupDatabaseMenuItem_Click(object sender, System.EventArgs e)
 		{
             AdminServiceStub adminService = new AdminServiceStub();
 
-            bool isStandardLicense = adminService.IsStandardLicense();
-            if (isStandardLicense)
-            {
-                DBSetupWizard wizard = new DBSetupWizard();
+            DBSetupWizard wizard = new DBSetupWizard();
 
-                wizard.Launch();
-            }
-            else
-            {
-                MessageBox.Show(MessageResourceManager.GetString("DesignStudio.AdvancedFeature"),
-                    "Error Dialog", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
+            wizard.Launch();
 		}
 
 		private void setupServerURLMenuItem_Click(object sender, System.EventArgs e)
@@ -2376,22 +2331,13 @@ namespace Newtera.Studio
 
 		private void protectSchemaMenuItem_Click(object sender, System.EventArgs e)
 		{
-			if (!IsInEvaluation())
-			{
-				LoginDialog loginDialog = new LoginDialog();
+			LoginDialog loginDialog = new LoginDialog();
 
-				if (loginDialog.ShowDialog() == DialogResult.OK)
-				{
-					ProtectDatabaseDialog dialog = new ProtectDatabaseDialog();
-
-					dialog.ShowDialog();
-				}
-			}
-			else
+			if (loginDialog.ShowDialog() == DialogResult.OK)
 			{
-				MessageBox.Show(MessageResourceManager.GetString("DesignStudio.DisabledFeature"),
-					"Error Dialog", MessageBoxButtons.OK,
-					MessageBoxIcon.Error);
+				ProtectDatabaseDialog dialog = new ProtectDatabaseDialog();
+
+				dialog.ShowDialog();
 			}
 		}
 
@@ -2409,15 +2355,6 @@ namespace Newtera.Studio
 
 		private void DesignStudio_Load(object sender, System.EventArgs e)
 		{
-			// disable the "Setup Server..." menu item if the Design Studio
-			// is running on the client side
-			string homeDir = NewteraNameSpace.GetAppHomeDir();
-			if (string.IsNullOrEmpty(homeDir))
-			{
-				// only the server installation has HOME_DIR defined,
-				// so it is the client side installation
-				this.setupDatabaseMenuItem.Enabled = false;
-			}
 		}
 
         private void refreshSchemaMenuItem_Click(object sender, EventArgs e)

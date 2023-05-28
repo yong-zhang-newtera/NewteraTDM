@@ -11,15 +11,16 @@ namespace Newtera.Studio
 	using System.Windows.Forms;
 
 	using Newtera.Common.Core;
+    using Newtera.WinClientCommon;
 
-	/// <summary>
-	/// A class that controls the flow of a wizard to set up database tablespace
-	/// and system tables that are required by Newtera Enterprise Catalog Management
-	/// Software.
-	/// </summary>
-	/// <version>  1.0.0 2 Feb 2004 </version>
-	/// <author> Yong Zhang </author>
-	public class DBSetupWizard
+    /// <summary>
+    /// A class that controls the flow of a wizard to set up database tablespace
+    /// and system tables that are required by Newtera Enterprise Catalog Management
+    /// Software.
+    /// </summary>
+    /// <version>  1.0.0 2 Feb 2004 </version>
+    /// <author> Yong Zhang </author>
+    public class DBSetupWizard
 	{
 		private DBSetupWelcom _welcomeDialog;
 		private DBSetupDatabaseType _dbTypeDialog;
@@ -211,6 +212,10 @@ namespace Newtera.Studio
 					{
 						GetTNSName();
 					}
+					else if (_dbTypeDialog.DataBaseType == "MySql")
+					{
+						GetDataSourceName("MySql", "localhost", true);
+					}
 					else if (_dbTypeDialog.DataBaseType == "SQLServer")
 					{
 						GetDataSourceName("SQLServer", "localhost", true);
@@ -316,17 +321,42 @@ namespace Newtera.Studio
 		/// </summary>
 		private void CreateDatabase(string dataBaseType)
 		{
-            if (dataBaseType == "SQLServer")
+			switch (dataBaseType)
             {
-                DBSetupError errorDialog = new DBSetupError();
-                errorDialog.ShowDialog();
-            }
-            else if (dataBaseType == "SQLServerCe")
-            {
-                _dsNameDialog.CreateDatabase();
-                
-                UpdateSchema();
-            }
+				case "MySql":
+					CreateMySqlDatabase();
+
+					UpdateSchema();
+					break;
+
+				case "SQLServer":
+					DBSetupError errorDialog = new DBSetupError();
+					errorDialog.ShowDialog();
+					break;
+
+				case "SQLServerCe":
+					_dsNameDialog.CreateDatabase();
+
+					UpdateSchema();
+					break;
+			}
+		}
+
+		private void CreateMySqlDatabase()
+		{
+			try
+			{
+				var service = new AdminServiceStub();
+				// invoke the admin web service synchronously
+				service.CreateTablespace(this.DatabaseType, this.DataSource,
+					this.DBAUserID, this.DBAUserPassword, string.Empty);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, "Server Error",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error);
+			}
 		}
 
 		/// <summary>

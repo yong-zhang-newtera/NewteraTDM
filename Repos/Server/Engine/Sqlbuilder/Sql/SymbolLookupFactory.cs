@@ -20,7 +20,8 @@ namespace Newtera.Server.Engine.Sqlbuilder.Sql
 		private OracleSymbolLookup _oracleLookup;
 		private SQLServerSymbolLookup _sqlServerLookup;
         private SQLServerCESymbolLookup _sqlServerCELookup;
-        private DB2SymbolLookup _db2Lookup;
+		private MySqlSymbolLookup _mySqlLookup;
+		private DB2SymbolLookup _db2Lookup;
 		
 		/// <summary>
 		/// Singleton's private instance.
@@ -36,7 +37,8 @@ namespace Newtera.Server.Engine.Sqlbuilder.Sql
 			_sqlServerLookup = new SQLServerSymbolLookup();
 			_db2Lookup = new DB2SymbolLookup();
             _sqlServerCELookup = new SQLServerCESymbolLookup();
-        }
+			_mySqlLookup = new MySqlSymbolLookup();
+		}
 
 		/// <summary>
 		/// Gets the SymbolLookupFactory instance.
@@ -66,6 +68,8 @@ namespace Newtera.Server.Engine.Sqlbuilder.Sql
 					return _sqlServerLookup;
                 case DatabaseType.SQLServerCE:
                     return _sqlServerCELookup;
+				case DatabaseType.MySql:
+					return _mySqlLookup;
 				case DatabaseType.DB2:
 					return _db2Lookup;
 				default:

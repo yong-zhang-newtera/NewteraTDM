@@ -392,9 +392,6 @@
     <Compile Include="ProtectDatabaseDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RegisterClientDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="SchemaEditor\AccessControlOptionDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1205,14 +1202,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProtectDatabaseDialog.zh-CN.resx">
       <DependentUpon>ProtectDatabaseDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="RegisterClientDialog.resx">
-      <DependentUpon>RegisterClientDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="RegisterClientDialog.zh-CN.resx">
-      <DependentUpon>RegisterClientDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="SchemaEditor\AccessControlOptionDialog.resx">
       <DependentUpon>AccessControlOptionDialog.cs</DependentUpon>

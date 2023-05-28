@@ -27,7 +27,7 @@ namespace Ebaas.WebApi.Infrastructure
 
 
         /// <summary>
-        /// Default constructor that initializes a new MySQLDatabase
+        /// Default constructor that initializes a new Sql Database
         /// instance using the Default Connection string
         /// </summary>
         public RoleStore()
@@ -36,7 +36,7 @@ namespace Ebaas.WebApi.Infrastructure
         }
 
         /// <summary>
-        /// Constructor that takes a MySQLDatabase as argument 
+        /// Constructor that takes a Sql Database as argument 
         /// </summary>
         /// <param name="database"></param>
         public RoleStore(IUserManager customUserManager)

@@ -108,6 +108,7 @@ namespace Newtera.Server.DB.WorkflowModel
 			{
 				case DatabaseType.Oracle:
 					return ":" + paramName;
+				case DatabaseType.MySql:
 				case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     return "@" + paramName;

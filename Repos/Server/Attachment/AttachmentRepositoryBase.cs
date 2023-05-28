@@ -858,6 +858,7 @@ namespace Newtera.Server.Attachment
 				case DatabaseType.Oracle:
 					param = ":" + name;
 					break;
+				case DatabaseType.MySql:
 				case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
 					param = "@" + name;

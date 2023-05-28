@@ -514,6 +514,7 @@ namespace Newtera.Server.DB
 			string sql = CannedSQLManager.GetCannedSQLManager(dataProvider).GetSql("GetDBARole");
 			switch (dataProvider.DatabaseType)
 			{
+				case DatabaseType.MySql:
 				case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
 					sql = sql.Replace("@name", "'" + schemaInfo.Name + "'");
@@ -576,6 +577,7 @@ namespace Newtera.Server.DB
 			
 			switch (dataProvider.DatabaseType)
 			{
+				case DatabaseType.MySql:
 				case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     sql = sql.Replace("@name", "'" + schemaInfo.Name + "'");
@@ -641,7 +643,8 @@ namespace Newtera.Server.DB
 
             switch (dataProvider.DatabaseType)
             {
-                case DatabaseType.SQLServer:
+				case DatabaseType.MySql:
+				case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     sql = sql.Replace("@name", "'" + schemaInfo.Name + "'");
                     sql = sql.Replace("@version", "'" + schemaInfo.Version + "'");
@@ -650,7 +653,7 @@ namespace Newtera.Server.DB
                     break;
 
                 case DatabaseType.Oracle:
-                    sql = sql.Replace(":name", "'" + schemaInfo.Name + "'");
+					sql = sql.Replace(":name", "'" + schemaInfo.Name + "'");
                     sql = sql.Replace(":version", "'" + schemaInfo.Version + "'");
                     sql = sql.Replace(":modified_time", modifiedDateTime);
 
@@ -693,6 +696,7 @@ namespace Newtera.Server.DB
 			string sql = CannedSQLManager.GetCannedSQLManager(dataProvider).GetSql("GetRegisteredClients");
 			switch (dataProvider.DatabaseType)
 			{
+				case DatabaseType.MySql:
 				case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     sql = sql.Replace("@name", "'" + clientName + "'");
@@ -760,14 +764,15 @@ namespace Newtera.Server.DB
 
             switch (dataProvider.DatabaseType)
             {
-                case DatabaseType.SQLServer:
+				case DatabaseType.MySql:
+				case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     sql = sql.Replace("@name", "'" + clientName + "'");
                     sql = sql.Replace("@id", "'" + clientId + "'");
                     break;
 
                 case DatabaseType.Oracle:
-                    sql = sql.Replace(":name", "'" + clientName + "'");
+					sql = sql.Replace(":name", "'" + clientName + "'");
                     sql = sql.Replace(":id", "'" + clientId + "'");
                     break;
             }
@@ -826,6 +831,7 @@ namespace Newtera.Server.DB
 			{
 				switch (dataProvider.DatabaseType)
 				{
+					case DatabaseType.MySql:
 					case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@name", "'" + clientName + "'");
@@ -883,6 +889,7 @@ namespace Newtera.Server.DB
 
 				switch (dataProvider.DatabaseType)
 				{
+					case DatabaseType.MySql:
 					case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@name", "'" + clientName + "'");
@@ -969,6 +976,7 @@ namespace Newtera.Server.DB
 			{
 				switch (dataProvider.DatabaseType)
 				{
+					case DatabaseType.MySql:
 					case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@lic_key", "'" + licenseKey + "'");
@@ -1089,7 +1097,8 @@ namespace Newtera.Server.DB
             string sql = CannedSQLManager.GetCannedSQLManager(dataProvider).GetSql("GetEventLastCheckedTime");
             switch (dataProvider.DatabaseType)
             {
-                case DatabaseType.SQLServer:
+				case DatabaseType.MySql:
+				case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     sql = sql.Replace("@schemaname", "'" + schemaName + "'");
                     sql = sql.Replace("@version", "'" + schemaVersion + "'");
@@ -1099,7 +1108,7 @@ namespace Newtera.Server.DB
                     break;
 
                 case DatabaseType.Oracle:
-                    sql = sql.Replace(":schemaname", "'" + schemaName + "'");
+					sql = sql.Replace(":schemaname", "'" + schemaName + "'");
                     sql = sql.Replace(":version", "'" + schemaVersion + "'");
                     sql = sql.Replace(":classname", "'" + className + "'");
                     sql = sql.Replace(":eventname", "'" + eventName + "'");
@@ -1171,7 +1180,8 @@ namespace Newtera.Server.DB
             {
                 switch (dataProvider.DatabaseType)
                 {
-                    case DatabaseType.SQLServer:
+					case DatabaseType.MySql:
+					case DatabaseType.SQLServer:
                     case DatabaseType.SQLServerCE:
                         sql = sql.Replace("@schemaname", "'" + schemaName + "'");
                         sql = sql.Replace("@version", "'" + schemaVersion + "'");
@@ -1182,7 +1192,7 @@ namespace Newtera.Server.DB
                         break;
 
                     case DatabaseType.Oracle:
-                        sql = sql.Replace(":schemaname", "'" + schemaName + "'");
+						sql = sql.Replace(":schemaname", "'" + schemaName + "'");
                         sql = sql.Replace(":version", "'" + schemaVersion + "'");
                         sql = sql.Replace(":classname", "'" + className + "'");
                         sql = sql.Replace(":eventname", "'" + eventName + "'");
@@ -1223,7 +1233,8 @@ namespace Newtera.Server.DB
 
             switch (dataProvider.DatabaseType)
             {
-                case DatabaseType.SQLServer:
+				case DatabaseType.MySql:
+				case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     sql = sql.Replace("@name", "'" + schemaInfo.Name + "'");
                     sql = sql.Replace("@version", "'" + schemaInfo.Version + "'");
@@ -1231,7 +1242,7 @@ namespace Newtera.Server.DB
                     break;
 
                 case DatabaseType.Oracle:
-                    sql = sql.Replace(":name", "'" + schemaInfo.Name + "'");
+					sql = sql.Replace(":name", "'" + schemaInfo.Name + "'");
                     sql = sql.Replace(":version", "'" + schemaInfo.Version + "'");
 
                     break;
@@ -1633,9 +1644,10 @@ namespace Newtera.Server.DB
             switch (dataProvider.DatabaseType)
             {
                 case DatabaseType.Oracle:
-                    param = ":" + name;
+					param = ":" + name;
                     break;
-                case DatabaseType.SQLServer:
+				case DatabaseType.MySql:
+				case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     param = "@" + name;
                     break;

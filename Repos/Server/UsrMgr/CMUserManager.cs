@@ -2012,7 +2012,8 @@ namespace Newtera.Server.UsrMgr
 				case DatabaseType.Oracle:
 					param = ":" + name;
 					break;
-				case DatabaseType.SQLServer:
+                case DatabaseType.MySql:
+                case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerCE:
                     param = "@" + name;
 					break;

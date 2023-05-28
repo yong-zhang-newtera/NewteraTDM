@@ -62,6 +62,9 @@ namespace Newtera.Server.DB
                 case DatabaseType.Oracle:
 					clobDAO = new OracleClobDAO(dataProvider);
 					break;
+				case DatabaseType.MySql:
+					clobDAO = new MySqlClobDAO(dataProvider);
+					break;
 				default:
 					throw new DBException("Not supported database type " + dataProvider.DatabaseType);
 			}

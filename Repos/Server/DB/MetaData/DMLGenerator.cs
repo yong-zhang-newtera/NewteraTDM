@@ -242,8 +242,10 @@ namespace Newtera.Server.DB.MetaData
 					return "@" + paramName;
                 case DatabaseType.SQLServerCE:
                     return "@" + paramName;
-                default:
-					return ":" + paramName;
+				case DatabaseType.MySql:
+					return "@" + paramName;
+				default:
+					return "@" + paramName;
 			}
 		}
 	}
