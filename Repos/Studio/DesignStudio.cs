@@ -43,6 +43,8 @@ namespace Newtera.Studio
 		private bool _isDBAUser;
 		private bool _layoutCalled = false;
 		private bool _isLockObtained = false;
+		private AdminServiceStub _service;
+		private string _appHomeDir = null;
 
 		private System.Windows.Forms.MainMenu mainMenu1;
 		private System.Windows.Forms.StatusBar statusBar1;
@@ -152,6 +154,8 @@ namespace Newtera.Studio
 
             // set windows client flag
             GlobalSettings.Instance.IsWindowClient = true;
+
+			_service = new AdminServiceStub();
 		}
 
 		/// <summary>
@@ -965,17 +969,6 @@ namespace Newtera.Studio
                     Thread.CurrentThread.CurrentUICulture = new CultureInfo(language);
                 }
 
-                /*
-                SplashScreen.SetStatus(NewteraNameSpace.RELEASE_VERSION);
-
-                if (Thread.CurrentThread.CurrentUICulture.Name.ToUpper() == "ZH-CN")
-                {
-                    SplashScreen.ShowSplashScreen();
-
-                    System.Threading.Thread.Sleep(3500);
-                }
-                */
-
 				Application.Run(new DesignStudio());
 			}
             catch (System.AggregateException)
@@ -1556,7 +1549,7 @@ namespace Newtera.Studio
 								fileName = saveFileDialog.FileName;
 
 								// pack the data of the selected schema into a zip file
-                                string dataDir = GetToolTempDir() + DesignStudio.DATA_DIR;
+                                string dataDir = Path.Combine(GetToolTempDir(), DesignStudio.DATA_DIR);
 
 								bool backupAttachments = false;
 								if (MessageBox.Show(MessageResourceManager.GetString("DesignStudio.BackupAttachments"),
@@ -1609,9 +1602,7 @@ namespace Newtera.Studio
         /// <returns></returns>
         private string GetToolTempDir()
         {
-            string tempToolDir = NewteraNameSpace.GetAppToolDir();
-
-            tempToolDir += @"temp\";
+            string tempToolDir = Path.Combine(this._appHomeDir, "temp");
 
             if (!Directory.Exists(tempToolDir))
             {
@@ -1810,7 +1801,7 @@ namespace Newtera.Studio
 						fileName = openFileDialog.FileName;
 
 						// pack the data of the selected schema into a zip file
-                        string dataDir = GetToolTempDir() + DesignStudio.DATA_DIR;
+                        string dataDir = Path.Combine(GetToolTempDir(), DesignStudio.DATA_DIR);
 
 						_unpacker = new UnpackData(fileName, dataDir);
 						_unpacker.ConfirmCallback = new MethodInvoker(ConfirmOverrideDatabase);
@@ -2355,6 +2346,16 @@ namespace Newtera.Studio
 
 		private void DesignStudio_Load(object sender, System.EventArgs e)
 		{
+			try
+			{
+				this._appHomeDir = _service.GetAppHomeDir();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, "Server Error",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error);
+			}
 		}
 
         private void refreshSchemaMenuItem_Click(object sender, EventArgs e)

@@ -5,7 +5,6 @@ create table CM_SUPER_USER (
 	NAME varchar(50) not null,
 	PASSWORD varchar(20) not null,
 	ROLE varchar(15)) ENGINE=InnoDB;
--- SQLINES LICENSE FOR EVALUATION USE ONLY
 insert into CM_SUPER_USER values('admin', '5A191710A4AA7099', 'cm_super_user');
 
 create table CM_ROOT  (

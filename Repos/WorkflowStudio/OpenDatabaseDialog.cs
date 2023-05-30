@@ -174,107 +174,76 @@ namespace WorkflowStudio
         /// </summary>
         private void ConnectServer()
         {
-            bool isRegistered = false;
-
             // check if the workflow studio has been registered or not
             // Change the cursor to indicate that we are waiting
             Cursor.Current = Cursors.WaitCursor;
 
+            string userName = this.nameTextBox.Text;
+            string password = this.passwordTextBox.Text;
+
             try
             {
+                Cursor.Current = Cursors.WaitCursor;
 
-                AdminServiceStub service = new AdminServiceStub();
-
-                // server throws an exception if the client has not been registered
-                if (_checkClientLicense)
+                _isAuthenticated = _userManager.Authenticate(userName, password);
+                if (_isAuthenticated)
                 {
-                    service.CheckInClient(NewteraNameSpace.WORKFLOW_STUDIO_NAME,
-                        NewteraNameSpace.ComputerCheckSum);
-                }
+                    // attach a custom principal object to the thread
+                    CustomPrincipal.Attach(new WindowClientUserManager(), new WindowClientServerProxy(), userName);
 
-                isRegistered = true;
+                    ProjectInfo selectedProjectInfo = GetProjectInfo(_selectedProjectName, _selectedProjectVersion);
+
+                    // check to see if the project is the latest version, only the latest version can be modified
+                    _isLatestVersion = _workflowService.IsLatestVersion(ConnectionStringBuilder.Instance.Create(selectedProjectInfo.ModifiedTime), _selectedProjectName, _selectedProjectVersion);
+
+                    if (_isLatestVersion)
+                    {
+                        if (_lockProject)
+                        {
+                            // lock the meta data model for update
+                            try
+                            {
+                                _workflowService.LockProject(_selectedProjectName, _selectedProjectVersion, ConnectionStringBuilder.Instance.Create(selectedProjectInfo.ModifiedTime));
+
+                                _isLockObtained = true;
+                            }
+                            catch (Exception ex)
+                            {
+                                _isLockObtained = false;
+                                MessageBox.Show(ex.Message,
+                                    "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                        }
+                        else
+                        {
+                            _isLockObtained = false;
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show(MessageResourceManager.GetString("WorkflowStudioApp.NotLatestVersion"),
+                            "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+
+                    this.DialogResult = DialogResult.OK; // close the dialog
+                }
+                else
+                {
+                    MessageBox.Show(MessageResourceManager.GetString("WorkflowStudioApp.InvalidUserLogin"), "Error Dialog", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+
+                    this.DialogResult = DialogResult.None; // dimiss the OK event
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Server Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.DialogResult = DialogResult.None; // dimiss the OK event
             }
             finally
             {
                 Cursor.Current = this.Cursor;
-            }
-
-            if (isRegistered)
-            {
-                string userName = this.nameTextBox.Text;
-                string password = this.passwordTextBox.Text;
-
-                try
-                {
-                    Cursor.Current = Cursors.WaitCursor;
-
-                    _isAuthenticated = _userManager.Authenticate(userName, password);
-                    if (_isAuthenticated)
-                    {
-                        // attach a custom principal object to the thread
-                        CustomPrincipal.Attach(new WindowClientUserManager(), new WindowClientServerProxy(), userName);
-
-                        ProjectInfo selectedProjectInfo = GetProjectInfo(_selectedProjectName, _selectedProjectVersion);
-
-                        // check to see if the project is the latest version, only the latest version can be modified
-                        _isLatestVersion = _workflowService.IsLatestVersion(ConnectionStringBuilder.Instance.Create(selectedProjectInfo.ModifiedTime), _selectedProjectName, _selectedProjectVersion);
-
-                        if (_isLatestVersion)
-                        {
-                            if (_lockProject)
-                            {
-                                // lock the meta data model for update
-                                try
-                                {
-                                    _workflowService.LockProject(_selectedProjectName, _selectedProjectVersion, ConnectionStringBuilder.Instance.Create(selectedProjectInfo.ModifiedTime));
-
-                                    _isLockObtained = true;
-                                }
-                                catch (Exception ex)
-                                {
-                                    _isLockObtained = false;
-                                    MessageBox.Show(ex.Message,
-                                        "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                }
-                            }
-                            else
-                            {
-                                _isLockObtained = false;
-                            }
-                        }
-                        else
-                        {
-                            MessageBox.Show(MessageResourceManager.GetString("WorkflowStudioApp.NotLatestVersion"),
-                                "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-
-                        this.DialogResult = DialogResult.OK; // close the dialog
-                    }
-                    else
-                    {
-                        MessageBox.Show(MessageResourceManager.GetString("WorkflowStudioApp.InvalidUserLogin"), "Error Dialog", MessageBoxButtons.OK,
-                            MessageBoxIcon.Error);
-
-                        this.DialogResult = DialogResult.None; // dimiss the OK event
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message,
-                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    this.DialogResult = DialogResult.None; // dimiss the OK event
-                }
-                finally
-                {
-                    Cursor.Current = this.Cursor;
-                }
             }
         }
 

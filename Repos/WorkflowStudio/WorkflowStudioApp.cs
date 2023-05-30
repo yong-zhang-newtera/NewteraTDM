@@ -1266,40 +1266,6 @@ namespace WorkflowStudio
         }
 
         /// <summary>
-        /// Gets the information indicating whether the server's license is an
-        /// evaluation license.
-        /// </summary>
-        /// <returns>True if it is an evaluation license, false if it is a permenant license.</returns>
-        private bool IsInEvaluation()
-        {
-            bool isEvaluation = true;
-
-            try
-            {
-                // Change the cursor to indicate that we are waiting
-                Cursor.Current = Cursors.WaitCursor;
-
-                AdminServiceStub adminService = new AdminServiceStub();
-
-                isEvaluation = adminService.IsEvaluationLicense();
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Server Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
-            finally
-            {
-                // Restore the cursor
-                Cursor.Current = this.Cursor;
-            }
-
-            return isEvaluation;
-        }
-
-        /// <summary>
         /// Set access control policy to the project
         /// </summary>
         private void SetAccessControl()
@@ -1797,22 +1763,13 @@ namespace WorkflowStudio
 
         private void assignProjectAdminMenuItem_Click(object sender, EventArgs e)
         {
-            if (!IsInEvaluation())
-            {
-                AdminLoginDialog loginDialog = new AdminLoginDialog();
+            AdminLoginDialog loginDialog = new AdminLoginDialog();
 
-                if (loginDialog.ShowDialog() == DialogResult.OK)
-                {
-                    ProtectProjectDialog dialog = new ProtectProjectDialog();
-
-                    dialog.ShowDialog();
-                }
-            }
-            else
+            if (loginDialog.ShowDialog() == DialogResult.OK)
             {
-                MessageBox.Show(MessageResourceManager.GetString("WorkflowStudio.DisabledFeature"),
-                    "Error Dialog", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                ProtectProjectDialog dialog = new ProtectProjectDialog();
+
+                dialog.ShowDialog();
             }
         }
 

@@ -132,80 +132,49 @@ namespace WorkflowStudio
         /// </summary>
         private void ConnectServer()
         {
-            bool isRegistered = false;
-
             // check if the workflow studio has been registered or not
             // Change the cursor to indicate that we are waiting
             Cursor.Current = Cursors.WaitCursor;
 
+            string userName = this.nameTextBox.Text;
+            string password = this.passwordTextBox.Text;
+
             try
             {
+                Cursor.Current = Cursors.WaitCursor;
 
-                AdminServiceStub service = new AdminServiceStub();
-
-                // server throws an exception if the client has not been registered
-                if (_checkClientLicense)
+                _isAuthenticated = _userManager.Authenticate(userName, password);
+                if (_isAuthenticated)
                 {
-                    service.CheckInClient(NewteraNameSpace.WORKFLOW_STUDIO_NAME,
-                        NewteraNameSpace.ComputerCheckSum);
-                }
-
-                isRegistered = true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Server Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-                this.DialogResult = DialogResult.None; // dimiss the OK event
-            }
-            finally
-            {
-                Cursor.Current = this.Cursor;
-            }
-
-            if (isRegistered)
-            {
-                string userName = this.nameTextBox.Text;
-                string password = this.passwordTextBox.Text;
-
-                try
-                {
-                    Cursor.Current = Cursors.WaitCursor;
-
-                    _isAuthenticated = _userManager.Authenticate(userName, password);
-                    if (_isAuthenticated)
+                    if (IsDBAUser)
                     {
-                        if (IsDBAUser)
-                        {
-                            this.DialogResult = DialogResult.OK; // close the dialog
-                        }
-                        else
-                        {
-                            MessageBox.Show(MessageResourceManager.GetString("WorkflowStudioApp.DBARequired"), "Error Dialog", MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-
-                            this.DialogResult = DialogResult.None; // dimiss the OK event
-                        }
+                        this.DialogResult = DialogResult.OK; // close the dialog
                     }
                     else
                     {
-                        MessageBox.Show(MessageResourceManager.GetString("WorkflowStudioApp.InvalidUserLogin"), "Error Dialog", MessageBoxButtons.OK,
+                        MessageBox.Show(MessageResourceManager.GetString("WorkflowStudioApp.DBARequired"), "Error Dialog", MessageBoxButtons.OK,
                             MessageBoxIcon.Error);
 
                         this.DialogResult = DialogResult.None; // dimiss the OK event
                     }
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show(ex.Message,
-                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(MessageResourceManager.GetString("WorkflowStudioApp.InvalidUserLogin"), "Error Dialog", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+
                     this.DialogResult = DialogResult.None; // dimiss the OK event
                 }
-                finally
-                {
-                    Cursor.Current = this.Cursor;
-                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.DialogResult = DialogResult.None; // dimiss the OK event
+            }
+            finally
+            {
+                Cursor.Current = this.Cursor;
             }
         }
 
