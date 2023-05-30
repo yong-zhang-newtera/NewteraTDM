@@ -191,7 +191,9 @@ namespace Newtera.Server.Engine.Vdom.Dbimp
 			}
 			catch (Exception ex)
 			{
-                if (ex is System.Data.SqlClient.SqlException || ex is System.Data.OracleClient.OracleException)
+                if (ex is System.Data.SqlClient.SqlException ||
+                    ex is System.Data.OracleClient.OracleException ||
+                    ex is MySqlConnector.MySqlException)
                 {
                     if (!string.IsNullOrEmpty(sql))
                     {

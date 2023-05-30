@@ -62,7 +62,7 @@ namespace Newtera.Studio.PackUnpack
 			_metaDataDir = @".\" + UnpackData.META_DATA_DIR;
 			_classDataDir = @".\" + UnpackData.CLASS_DATA_DIR;
 			_attachmentDir = @".\" + UnpackData.ATTACHEMENTS_DIR;
-            _errorLog = NewteraNameSpace.GetAppHomeDir() +  @"temp\" + UnpackData.ERROR_LOG;
+            _errorLog = Path.Combine(_dataDirPath, UnpackData.ERROR_LOG);
 			_metaData = null;
 			_isCancelled = false;
 			_isOverride = false;

@@ -510,7 +510,7 @@ namespace Newtera.Server.DB.MetaData
 				builder.Append(dbType).Append(" ");
 			}
 
-			if (attribute.IsAutoIncrement && attribute.HasCustomValueGenerator)
+			if (attribute.IsAutoIncrement && !attribute.HasCustomValueGenerator)
 			{
 				// auto increment
 				builder.Append("UNIQUE NOT NULL AUTO_INCREMENT ");

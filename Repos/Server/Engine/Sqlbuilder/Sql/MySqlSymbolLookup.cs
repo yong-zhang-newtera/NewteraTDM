@@ -154,7 +154,7 @@ namespace Newtera.Server.Engine.Sqlbuilder.Sql
 		/// <returns> an Oracle TO_CHAR function representation </returns>
 		public override string GetCharFunc4Date(string dateCol, string fmt)
 		{
-			return "DATE_FORMAT(" + dateCol + ", '%Y%m%d')";
+			return "DATE_FORMAT(" + dateCol + ", '%Y-%m-%d')";
 		}
 
 		/// <summary>
