@@ -809,7 +809,9 @@ namespace Newtera.Common.MetaData.DataView
 					SimpleAttributeElement simpleAttribute = _schemaModelElement as SimpleAttributeElement;
                     VirtualAttributeElement virtualAttribute = _schemaModelElement as VirtualAttributeElement;
 
-					if (simpleAttribute != null && simpleAttribute.Constraint != null)
+					if (simpleAttribute != null &&
+                        simpleAttribute.Constraint != null &&
+                        simpleAttribute.ConstraintUsage == ConstraintUsage.Restriction)
 					{
 						status = true;
 					}
@@ -823,13 +825,40 @@ namespace Newtera.Common.MetaData.DataView
 			}
 		}
 
-		/// <summary>
-		/// Get the constraint associated with the property
-		/// </summary>
-		/// <value>An ConstraintElementBase object, possible types are EnumConstraint,
-		/// RangeContraint, and PatternConstraint. null if the property doesn't have a constraint</value>
-		/// <remarks>This is a InstanceAttributePropertyDescriptor specific method</remarks>		
-		public ConstraintElementBase Constraint
+        /// <summary>
+        /// Gets the information indicating whether the property has provided suggestions
+        /// </summary>
+        /// <value>True if it has provided suggestion, false otherwise</value>
+        /// <remarks>This is a InstanceAttributePropertyDescriptor specific method</remarks>
+        public bool HasSuggection
+        {
+            get
+            {
+                bool status = false;
+
+                if (_schemaModelElement != null)
+                {
+                    SimpleAttributeElement simpleAttribute = _schemaModelElement as SimpleAttributeElement;
+
+                    if (simpleAttribute != null &&
+                        simpleAttribute.Constraint != null &&
+                        simpleAttribute.ConstraintUsage == ConstraintUsage.Suggestion)
+                    {
+                        status = true;
+                    }
+                }
+
+                return status;
+            }
+        }
+
+        /// <summary>
+        /// Get the constraint associated with the property
+        /// </summary>
+        /// <value>An ConstraintElementBase object, possible types are EnumConstraint,
+        /// RangeContraint, and PatternConstraint. null if the property doesn't have a constraint</value>
+        /// <remarks>This is a InstanceAttributePropertyDescriptor specific method</remarks>		
+        public ConstraintElementBase Constraint
 		{
 			get
 			{
@@ -1400,7 +1429,8 @@ namespace Newtera.Common.MetaData.DataView
 						type = typeof(DataTable);
 					}
 					else if (simpleAttribute != null && simpleAttribute.Constraint != null &&
-						simpleAttribute.Constraint is IEnumConstraint)
+						simpleAttribute.Constraint is IEnumConstraint &&
+                        simpleAttribute.ConstraintUsage == ConstraintUsage.Restriction)
 					{
                         // create a dynamic enum type for this attribute
                         type = EnumTypeFactory.Instance.Create(_schemaModelElement);

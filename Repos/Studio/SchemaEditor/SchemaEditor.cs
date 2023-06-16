@@ -4746,6 +4746,7 @@ namespace Newtera.Studio
                         if (simpleAttribute.ColumnName != null &&
                             simpleAttribute.OwnerClass.TableName != null &&
                             newValue is IEnumConstraint &&
+                            simpleAttribute.ConstraintUsage == ConstraintUsage.Restriction &&
                             !IsOwnerClassEmpty(element))
                         {
                             // the change is invalid, change it back to old value

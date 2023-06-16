@@ -321,11 +321,11 @@ namespace Newtera.Common.MetaData.Schema
             }
         }
 
-		/// <summary>
-		/// Accept a visitor of ISchemaModelElementVisitor type to visit itself.
-		/// </summary>
-		/// <param name="visitor">The visitor</param>
-		public override void Accept(ISchemaModelElementVisitor visitor)
+        /// <summary>
+        /// Accept a visitor of ISchemaModelElementVisitor type to visit itself.
+        /// </summary>
+        /// <param name="visitor">The visitor</param>
+        public override void Accept(ISchemaModelElementVisitor visitor)
 		{
 			visitor.VisitListElement(this);
 		}

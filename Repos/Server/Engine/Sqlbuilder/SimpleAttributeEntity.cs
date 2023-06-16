@@ -169,7 +169,8 @@ namespace Newtera.Server.Engine.Sqlbuilder
 			get
 			{
 				if (_attributeElement.Constraint != null &&
-					_attributeElement.Constraint is IEnumConstraint)
+					_attributeElement.Constraint is IEnumConstraint &&
+                    _attributeElement.ConstraintUsage == ConstraintUsage.Restriction)
 				{
 					return true;
 				}

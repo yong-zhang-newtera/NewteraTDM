@@ -1399,7 +1399,6 @@
             <param name="schemaName">A database schema name such as DEMO</param>
             <param name="className">A data class name such as ATestItemInstance</param>
             <param name="oid">the obj_id of a data instance in a class</param>
-            <param name="instance">The post json object</param>
             <param name="method">A name of a cusotm api such as UpdateOrder</param>
         </member>
         <member name="M:Ebaas.WebApi.Controllers.DataController.CreateCustom(System.String,System.String,System.String)">
@@ -1408,7 +1407,6 @@
             </summary>
             <param name="schemaName">A database schema name such as DEMO</param>
             <param name="className">A data class name such as ATestItemInstance</param>
-            <param name="instance">The post json object for the new instance</param>
             <param name="method">A name of a cusotm api such as UpdateOrder</param>
         </member>
         <member name="M:Ebaas.WebApi.Controllers.DataController.Delete(System.String,System.String,System.String)">
@@ -2180,7 +2178,17 @@
             <param name="className">the class name</param>
             <param name="property">the property of a list</param>
             <param name="filterValue">the value that filters the list options</param>
-            <returns>A collection of option objects, each object has a name aand value</returns>
+            <returns>A collection of option objects, each object has a name and value</returns>
+        </member>
+        <member name="M:Ebaas.WebApi.Controllers.FormController.GetFieldSuggestions(System.String,System.String,System.String,System.String)">
+            <summary>
+            Get the suggestions for a form field
+            </summary>
+            <param name="schemaName">the schema name</param>
+            <param name="className">the class name</param>
+            <param name="property">the property of a form field</param>
+            <param name="filterValue">the value that filters the suggestions</param>
+            <returns>A collection of suggested instances</returns>
         </member>
         <member name="M:Ebaas.WebApi.Controllers.FormController.ValidateUsingRules(Newtera.Data.CMConnection,Newtera.Common.MetaData.DataView.DataViewModel,Newtera.Common.MetaData.Rules.RuleCollection,System.String@)">
             <summary>

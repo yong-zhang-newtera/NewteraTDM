@@ -284,9 +284,12 @@ namespace Newtera.Common.MetaData.DataView
                 // copy the value
                 if (resultAttribute is DataSimpleAttribute)
                 {
-                    if (!((DataSimpleAttribute)resultAttribute).IsHistoryEdit)
+					var simpleAttribute = (DataSimpleAttribute)resultAttribute;
+
+					if (!simpleAttribute.IsHistoryEdit &&
+						simpleAttribute.AllowManualUpdate)
                     {
-                        ((DataSimpleAttribute)resultAttribute).AttributeValue = otherInstance.GetAttributeStringValue(resultAttribute.Name);
+						simpleAttribute.AttributeValue = otherInstance.GetAttributeStringValue(resultAttribute.Name);
                     }
                 }
                 else if (resultAttribute is DataVirtualAttribute)
@@ -516,7 +519,8 @@ namespace Newtera.Common.MetaData.DataView
 							}
 						}
 						else if (schemaModelElement.Constraint != null &&
-							schemaModelElement.Constraint is IEnumConstraint)
+							schemaModelElement.Constraint is IEnumConstraint &&
+							schemaModelElement.ConstraintUsage == ConstraintUsage.Restriction)
 						{
 							string val = ((DataSimpleAttribute) instanceAttribute).AttributeValue;
 	
@@ -749,7 +753,8 @@ namespace Newtera.Common.MetaData.DataView
                     case ElementType.SimpleAttribute:
                         SimpleAttributeElement schemaModelElement = (SimpleAttributeElement)instanceAttribute.GetSchemaModelElement();
                         if (schemaModelElement.Constraint != null &&
-                            schemaModelElement.Constraint is IEnumConstraint)
+                            schemaModelElement.Constraint is IEnumConstraint &&
+							schemaModelElement.ConstraintUsage == ConstraintUsage.Restriction)
                         {
                             string val = ((DataSimpleAttribute)instanceAttribute).AttributeValue;
                             if (!string.IsNullOrEmpty(val))
@@ -857,7 +862,8 @@ namespace Newtera.Common.MetaData.DataView
                             }
 						}
 						else if (schemaModelElement.Constraint != null &&
-							schemaModelElement.Constraint is IEnumConstraint)
+							schemaModelElement.Constraint is IEnumConstraint  &&
+							schemaModelElement.ConstraintUsage == ConstraintUsage.Restriction)
 						{
 							// the value is one of Dynamic Generated Enum Type values
 							// convert it to its string representation or empty string
@@ -1097,7 +1103,8 @@ namespace Newtera.Common.MetaData.DataView
                             }
                         }
                         else if (schemaModelElement.Constraint != null &&
-                            schemaModelElement.Constraint is IEnumConstraint)
+                            schemaModelElement.Constraint is IEnumConstraint &&
+							schemaModelElement.ConstraintUsage == ConstraintUsage.Restriction)
                         {
                             if (!string.IsNullOrEmpty(attributeValue) && verifyValue)
                             {

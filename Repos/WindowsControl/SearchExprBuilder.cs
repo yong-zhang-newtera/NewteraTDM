@@ -713,10 +713,9 @@ namespace Newtera.WindowsControl
 				ChooseDateTimePopup dateTimePopup = new ChooseDateTimePopup();
 				popup = dateTimePopup;
 			}
-            //else if (schemaModelElement != null && schemaModelElement.Constraint != null &&
-			//	schemaModelElement.Constraint is IEnumConstraint)
             else if (schemaModelElement != null && schemaModelElement.Constraint != null &&
-			     schemaModelElement.Constraint is EnumElement)
+			     schemaModelElement.Constraint is EnumElement &&
+				 schemaModelElement.ConstraintUsage == ConstraintUsage.Restriction)
 			{
 				Type enumType = EnumTypeFactory.Instance.Create(schemaModelElement);
 
