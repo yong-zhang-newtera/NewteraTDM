@@ -145,7 +145,7 @@
     <value>List Style</value>
   </data>
   <data name="ListStyleDescription" xml:space="preserve">
-    <value>Indicating how the list items are generated.</value>
+    <value>Indicating how the list items are changing.</value>
   </data>
   <data name="DataBindingCategory" xml:space="preserve">
     <value>Data Binding</value>

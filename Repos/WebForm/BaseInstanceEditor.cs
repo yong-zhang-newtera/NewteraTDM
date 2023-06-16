@@ -884,7 +884,7 @@ namespace Newtera.WebForm
                 else if (pPropertyInfo.HasConstraint &&
                     (((IEnumConstraint)pPropertyInfo.Constraint).IsConditionBased || !string.IsNullOrEmpty(pPropertyInfo.CascadedPropertyNames)))
                 {
-                    // Values of the enum constraint are static
+                    // Values of the enum constraint are dynamic
                     vPropertyControl = new CascadingListProperty(this, instanceView, pPropertyInfo, isReadOnly);
                 }
                 else
@@ -892,6 +892,10 @@ namespace Newtera.WebForm
                     // Values of the enum constraint are static
                     vPropertyControl = new EnumProperty(this, instanceView, pPropertyInfo, isReadOnly);
                 }
+            }
+            else if (pPropertyInfo.HasSuggection)
+            {
+                vPropertyControl = new TypeAheadProperty(this, instanceView, pPropertyInfo, isReadOnly);
             }
             else if (pPropertyInfo.IsImage)
             {
@@ -3813,6 +3817,137 @@ namespace Newtera.WebForm
         } // SetListFilterValue
 
     }  // class CascadingListProperty
+
+    //----- CLASS TypeAheadProperty ----------------------------------------------------------------------
+    /// <remarks>
+    /// As users type in the TypeAheadProperty's input field, it uses client-side
+    /// script to make a callback to server to get a list of values as suggestions
+    /// for users to choose from.
+    /// </remarks>
+    public class TypeAheadProperty : BaseTextBoxProperty
+    {
+        private IInstanceEditor _ownerControl;
+
+        public TypeAheadProperty(IInstanceEditor pOwnerControl, InstanceView instanceView,
+            InstanceAttributePropertyDescriptor pPropertyInfo, bool isReadOnly)
+            : base(pOwnerControl, instanceView, pPropertyInfo, isReadOnly)
+        {
+            _ownerControl = pOwnerControl;
+        }
+
+        /// <summary>
+        /// Validate the property value and throw an exception if there is an error
+        /// </summary>
+        public override void Validate()
+        {
+            // do nothing
+            // set the angularjs  model binding
+            if (fPropertyInfo.IsRequired)
+            {
+                object vValue = fPropertyInfo.GetValue();
+
+                if (vValue != null)
+                {
+                    string value = vValue.ToString();
+
+                    if (string.IsNullOrEmpty(value))
+                    {
+                        throw new Exception(fPropertyInfo.DisplayName + " value is required");
+                    }
+                }
+                else
+                {
+                    throw new Exception(fPropertyInfo.DisplayName + " value is required");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Covert ViewModel value to Model value
+        /// </summary>
+        /// <param name="jProperty">ViewModel property</param>
+        public override void UpdateValueInternal(JProperty jProperty, bool isFormFormat)
+        {
+            // don't update when the string is empty if the original value was null.
+            if (jProperty.Value != null)
+                fPropertyInfo.SetValue(null, jProperty.Value.ToString().Trim());
+        }
+
+        /// <summary>
+        /// Covert ViewModel value to Model value
+        /// </summary>
+        /// <param name="jProperty">ViewModel property</param>
+        public override void UpdateValueInternal(XmlElement element, bool isFormFormat)
+        {
+            if (element != null)
+                fPropertyInfo.SetValue(null, element.InnerText);
+        }
+
+        public override JToken GetPropertyViewModel()
+        {
+            string value = "";
+
+            // most controls simply use the value.ToString() to get the data.
+            // Override this method only when that is not the case.
+            object vValue = fPropertyInfo.GetValue();
+
+            if (vValue != null)
+            {
+                value = vValue.ToString();
+            }
+
+            return value;
+        }
+
+        public override HtmlNode CreatePropertyNode()
+        {
+            HtmlNode container = base.CreatePropertyNode();
+            HtmlNode propertyNode;
+            if (IsReadOnly)
+            {
+                propertyNode = CreateReadOnlyControl();
+
+                container.AppendChild(propertyNode);
+            }
+            else
+            {
+                var listElement = fPropertyInfo.Constraint as ListElement;
+                var textField = listElement?.TextField ?? "Text";
+                fTextControl = this.fOwnerEditor.Document.CreateElement("input");
+                fTextControl.SetAttributeValue("class", "form-control");
+                fTextControl.SetAttributeValue("type", "text");
+                fTextControl.SetAttributeValue("autocomplete", "off");
+                fTextControl.SetAttributeValue("maxlength", fPropertyInfo.MaxLength.ToString());
+                fTextControl.SetAttributeValue("typeahead", $"suggestion as suggestion.text for suggestion in getSuggestionsForFormField('{fPropertyInfo.Name}', $viewValue) | limitTo:10");
+                fTextControl.SetAttributeValue("typeahead-on-select", $"onSuggestionSelectForFormField($item, $model, $label, '{textField}')");
+                fTextControl.SetAttributeValue("placeholder", "{{getWord('FindTemplate')}}");
+                container.AppendChild(fTextControl);
+
+                ToolTipToStatus(container);
+
+                // set the angularjs  model binding
+                if (fPropertyInfo.IsRequired)
+                {
+                    if (!fOwnerEditor.IsInlineForm)
+                    {
+                        fTextControl.SetAttributeValue("required", "");
+                    }
+                    else
+                    {
+                        fTextControl.SetAttributeValue("ng-required", "!$last");
+                    }
+                }
+
+                fTextControl.SetAttributeValue("name", PropertyControlName);
+                fTextControl.SetAttributeValue("id", $"{this.fOwnerEditor.EditorId}-{this.fOwnerEditor.EditInstance.DataView.BaseClass.ClassName}-{PropertyControlName}");
+                fTextControl.SetAttributeValue("ng-model", this.fOwnerEditor.ViewModelPath + fPropertyInfo.Name);
+
+                this.CreateValidators(container);
+            }
+
+            return container;
+        }
+    }  // class TypeAheadProperty
 
     //----- CLASS MaskedInputProperty ----------------------------------------------------------------------
     /// <remarks>

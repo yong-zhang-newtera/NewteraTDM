@@ -715,7 +715,7 @@ namespace Ebaas.WebApi.Controllers
         /// <param name="className">the class name</param>
         /// <param name="property">the property of a list</param>
         /// <param name="filterValue">the value that filters the list options</param>
-        /// <returns>A collection of option objects, each object has a name aand value</returns>
+        /// <returns>A collection of option objects, each object has a name and value</returns>
         [HttpGet]
         [NormalAuthorizeAttribute]
         [Route("listoptions/{schemaName}/{className}/{property}/{filterValue}")]
@@ -764,7 +764,6 @@ namespace Ebaas.WebApi.Controllers
 
                                 options.Add(option);
                             }  // for
-
                         }
                     }
                 }
@@ -776,6 +775,75 @@ namespace Ebaas.WebApi.Controllers
                 ErrorLog.Instance.WriteLine(ex.Message + "\n" + ex.StackTrace);
 
                 throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Get the suggestions for a form field
+        /// </summary>
+        /// <param name="schemaName">the schema name</param>
+        /// <param name="className">the class name</param>
+        /// <param name="property">the property of a form field</param>
+        /// <param name="filterValue">the value that filters the suggestions</param>
+        /// <returns>A collection of suggested instances</returns>
+        [HttpGet]
+        [NormalAuthorizeAttribute]
+        [Route("suggestions/{schemaName}/{className}/{property}/{filterValue}")]
+        public async Task<IHttpActionResult> GetFieldSuggestions(string schemaName, string className, string property, string filterValue)
+        {
+            try
+            {
+                List<JObject> suggestions = new List<JObject>();
+                QueryHelper queryHelper = new QueryHelper();
+
+                await Task.Factory.StartNew(() =>
+                {
+                    using (CMConnection con = new CMConnection(queryHelper.GetConnectionString(CONNECTION_STRING, schemaName)))
+                    {
+                        con.Open();
+
+                        DataViewModel dataView = con.MetaDataModel.GetDetailedDataView(className);
+                        InstanceView instanceView = new InstanceView(dataView);
+
+                        InstanceAttributePropertyDescriptor pd = instanceView.GetProperties(null)[property] as InstanceAttributePropertyDescriptor;
+                        if (pd != null)
+                        {
+                            var listConstraint = pd.Constraint as ListElement;
+                            if (listConstraint == null ||
+                                !listConstraint.IsConditionBased ||
+                                string.IsNullOrEmpty(listConstraint.ConditionalQuery))
+                            {
+                                throw new Exception($"Property {property} isn't constrainted by a list constraint or the list constraint isn't condition based.");
+                            }
+
+                            pd.SetListFilterValue(filterValue);
+                            var schemaModelElement = pd.DataViewElement?.GetSchemaModelElement();
+
+                            EnumValueCollection listOptions = listConstraint.GetEnumValues(schemaModelElement); // return the filtered enum values for this session
+
+                            foreach (EnumValue option in listOptions)
+                            {
+                                var suggestion = new JObject();
+                                suggestion.Add("value", option.Value);
+                                suggestion.Add("text", option.DisplayText);
+
+                                suggestions.Add(suggestion);
+                            }  // foreach
+                        }
+                        else
+                        {
+                            throw new Exception($"Unable to find a property descriptor with name {property} in the class {className} of schema {schemaName}.");
+                        }
+                    }
+                });
+
+                return Ok(suggestions);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Instance.WriteLine(ex.Message + "\n" + ex.StackTrace);
+
+                return BadRequest(ex.GetBaseException().Message);
             }
         }
 

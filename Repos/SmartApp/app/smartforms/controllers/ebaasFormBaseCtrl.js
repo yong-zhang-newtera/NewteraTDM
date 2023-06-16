@@ -59,6 +59,26 @@ angular.module('app.smartforms').controller('ebaasFormBaseCtrl', function ($root
         })
     }
 
+    $scope.getSuggestionsForFormField = function (propertyName, typedText) {
+        if (typedText && typedText.length > 1) {
+            // get filtered list of values
+            var url = APP_CONFIG.ebaasRootUrl + "/api/form/suggestions/" + encodeURIComponent($scope.dbschema) + "/" + $scope.dbclass + "/" + propertyName + "/" + encodeURIComponent(typedText);
+            var promise = $http.get(url).then(function (response) {
+                return response.data;
+            });
+
+            return promise;
+        }
+        else {
+            return [];
+        }
+    }
+
+    $scope.onSuggestionSelectForFormField = function ($item, $model, $label, textField) {
+        $scope.model[textField] = $label;
+        $scope.reloadInstance(textField);
+    }
+
     $scope.reloadInstance = function(propertyName)
     {
         // something important changed in the instance, reload it from db

@@ -1437,7 +1437,6 @@ namespace Ebaas.WebApi.Controllers
         /// <param name="schemaName">A database schema name such as DEMO</param>
         /// <param name="className">A data class name such as ATestItemInstance</param>
         /// <param name="oid">the obj_id of a data instance in a class</param>
-        /// <param name="instance">The post json object</param>
         /// <param name="method">A name of a cusotm api such as UpdateOrder</param>
         [HttpPost]
         [AuthorizeByMetaDataAttribute]
@@ -1522,7 +1521,6 @@ namespace Ebaas.WebApi.Controllers
         /// </summary>
         /// <param name="schemaName">A database schema name such as DEMO</param>
         /// <param name="className">A data class name such as ATestItemInstance</param>
-        /// <param name="instance">The post json object for the new instance</param>
         /// <param name="method">A name of a cusotm api such as UpdateOrder</param>
         [HttpPost]
         [AuthorizeByMetaDataAttribute]

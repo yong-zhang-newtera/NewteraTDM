@@ -1150,7 +1150,7 @@ namespace Newtera.Common.MetaData.Schema
         /// </value>
         [
         CategoryAttribute("System"),
-        BrowsableAttribute(false),
+        BrowsableAttribute(true),
         DescriptionAttribute("Indicate the use of the constraint associated with the attribute"),
         DefaultValueAttribute(ConstraintUsage.Restriction)
         ]
