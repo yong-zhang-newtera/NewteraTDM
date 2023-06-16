@@ -50,12 +50,12 @@ namespace Newtera.Common.Config
 			if (customPrincipal != null && customPrincipal.IsServerSide)
 			{
 				// The client is a web app or web service
-				_configFileName = NewteraNameSpace.GetAppHomeDir() + @"\bin\" + WEB_CONFIG;
+				_configFileName = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), WEB_CONFIG);
 			}
 			else
 			{
 				// it is a Window form or console application, get name of executable for the application
-				_configFileName = AppDomain.CurrentDomain.BaseDirectory + ((Assembly.GetEntryAssembly()).GetName()).Name + ".exe.config";
+				_configFileName = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), ((Assembly.GetEntryAssembly()).GetName()).Name + ".exe.config");
 			}
 			
 			if (File.Exists(_configFileName))
@@ -63,6 +63,10 @@ namespace Newtera.Common.Config
 				_doc = new XmlDocument();
 				_doc.Load(_configFileName);
 			}
+			else
+            {
+				throw new Exception($"Unable to find a config file at {_configFileName}");
+            }
 		}
 
 		/// <summary>

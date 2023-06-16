@@ -15,9 +15,7 @@ namespace Newtera.CustomActions
     ////Operating System Infomation
     /// </summary>
     public class SetOperatingSystem
-    {
-        //RegistryInfo ri = new RegistryInfo();
-        
+    {     
         [DllImport("advapi32.dll")]
 
         public static extern bool LookupAccountName(string lpSystemName, string lpAccountName, byte[] sid, ref int cbSid, StringBuilder ReferencedDomainName, ref int cbReferencedDomainName, ref int peUse);

@@ -12,8 +12,6 @@ namespace Newtera.Common.Core
     using System.Web;
 	using System.Configuration;
 
-    using Newtera.Registry;
-
 	/// <summary>
 	/// The NewteraNameSpace class is a centralized place where keywords belong to 
 	/// Newtera name space are defined as constants. Application will refer to the 
@@ -32,6 +30,8 @@ namespace Newtera.Common.Core
 		internal static string COMPUTER_ID = null;
 
         internal static string SERVER_BASE_URL = null;
+
+        private const string HOME_DIR_KEY = "HomeDir";
 
         private const char MACHINE_ID_SEPARATOR = '-';
 
@@ -265,7 +265,8 @@ namespace Newtera.Common.Core
         // AppSettings definitions
         public const string BASE_URL = "BaseURL";
         public const string CURRENT_CULTURE = "CurrentCulture";
-        public const string STATIC_FILES_ROOT = "StaticFilesRoot";
+        public const string STATIC_FILES_ROOT = "SmartApp";
+        public const string TOOL_DIR = "Studio";
         public const string ATTACHMENTS_DIR_KEY = "AttachmentBasePath";
 		public const string ATTACHMENTS_DIR = @"attachments\";
         public const string USER_ICON_DIR = @"styles\custom\icons\";
@@ -304,39 +305,21 @@ namespace Newtera.Common.Core
 		/// <returns>An absulute directory</returns>
 		public static string GetAppHomeDir()
 		{
-            XmlRegistryKey rootKey;
-            XmlRegistry theRegistry = XmlRegistryManager.Instance;
+            string dir = ConfigurationManager.AppSettings[NewteraNameSpace.HOME_DIR_KEY];
 
-            rootKey = theRegistry.RootKey;
-
-            //get the data from a specified item in that key    
-            //Note that if the item "HOME_DIR" does not exist, then create the key
-            XmlRegistryKey homeKey = rootKey.GetSubKey("HOME_DIR", true);
-
-            String dir = (String)homeKey.GetStringValue();
-
-            if (!string.IsNullOrEmpty(dir) && !dir.EndsWith(@"\"))
+            if (!dir.EndsWith(@"\"))
             {
                 dir += @"\";
             }
 
             return dir;
-		}
+        }
 
         public static string GetStaticFilesDir()
         {
-            XmlRegistryKey rootKey;
-            XmlRegistry theRegistry = XmlRegistryManager.Instance;
+            String dir = Path.Combine(GetAppHomeDir(), STATIC_FILES_ROOT);
 
-            rootKey = theRegistry.RootKey;
-
-            //get the data from a specified item in that key    
-            //Note that if the item "HOME_DIR" does not exist, then create the key
-            XmlRegistryKey dirKey = rootKey.GetSubKey(STATIC_FILES_ROOT, true);
-
-            String dir = (String)dirKey.GetStringValue();
-
-            if (!string.IsNullOrEmpty(dir) && !dir.EndsWith(@"\"))
+            if (!dir.EndsWith(@"\"))
             {
                 dir += @"\";
             }
@@ -370,15 +353,13 @@ namespace Newtera.Common.Core
         public static string GetUserImageDir()
         {
             // WinForm client
-            string homeDir = GetAppHomeDir();
-            if (homeDir.EndsWith(@"\"))
+            string imageDir = Path.Combine(GetAppHomeDir(), USER_IMAGES_DIR);
+            if (!imageDir.EndsWith(@"\"))
             {
-                return homeDir + USER_IMAGES_DIR;
+                imageDir += @"\";
             }
-            else
-            {
-                return homeDir + @"\" + USER_IMAGES_DIR;
-            }
+
+            return imageDir;
         }
 
         /// <summary>
@@ -387,102 +368,14 @@ namespace Newtera.Common.Core
         /// <returns>An absulute directory</returns>
         public static string GetAppToolDir()
         {
-            XmlRegistryKey rootKey;
-            XmlRegistry theRegistry = XmlRegistryManager.Instance;
-
-            rootKey = theRegistry.RootKey;
-
-            //get the data from a specified item in that key    
-            //Note that if the item "TOOL_DIR" does not exist, then create the key
-            XmlRegistryKey toolKey = rootKey.GetSubKey("TOOL_DIR", true);
-
-            String dir = toolKey.GetStringValue();
-            if (string.IsNullOrEmpty(dir))
+            string toolDir = Path.Combine(GetAppHomeDir(), TOOL_DIR);
+            if (!toolDir.EndsWith(@"\"))
             {
-                dir = GetToolDirStr();
-                toolKey.SetValue(dir);
+                toolDir += @"\";
             }
 
-            if (!string.IsNullOrEmpty(dir) && !dir.EndsWith(@"\"))
-            {
-                dir += @"\";
-            }
-
-            return dir;
+            return toolDir;
         }
-
-		/// <summary>
-		/// Get an unique checksum for the current computer
-		/// </summary>
-		public static string ComputerCheckSum
-		{
-			get
-			{
-				if (NewteraNameSpace.COMPUTER_ID == null)
-				{
-                    string uniqueMachineId = null;
-
-                    // if the GetSerialNumber failed to get an unqiue number
-                    // use the old way to get the machine id. The problem with the old
-                    // way of getting a machine id is that it may change after the Operating
-                    // system is reinstalled
-                    if (string.IsNullOrEmpty(uniqueMachineId))
-                    {
-                        GetMachineInfo mInfo = new GetMachineInfo();
-
-                        // get the processor id
-                        string cpuId = mInfo.GetCPUId();
-
-                        // Gets hard disk number;
-                        string hardDiskSerial;
-                        try
-                        {
-                            hardDiskSerial = mInfo.GetVolumeSerial("C");
-                        }
-                        catch (Exception)
-                        {
-                            hardDiskSerial = "";
-                        }
-
-                        uniqueMachineId = cpuId + hardDiskSerial;
-                    }
-
-                    if (!string.IsNullOrEmpty(uniqueMachineId))
-                    {
-                        int hash = uniqueMachineId.GetHashCode();
-                        hash = Math.Abs(hash % 100000);
-                        NewteraNameSpace.COMPUTER_ID = hash.ToString();
-                    }
-                    else
-                    {
-                        // get it from the registry
-                        XmlRegistryKey rootKey;
-                        XmlRegistry theRegistry = XmlRegistryManager.Instance;
-
-                        rootKey = theRegistry.RootKey;
-
-                        //get the data from a specified item in that key    
-                        //Note that if the item "MACHINE_ID" does not exist, then create the key
-                        XmlRegistryKey idKey = rootKey.GetSubKey("MACHINE_ID", true);
-                        int hash = 0;
-                        uniqueMachineId = idKey.GetStringValue();
-                        if (string.IsNullOrEmpty(uniqueMachineId))
-                        {
-                            uniqueMachineId = "id" + Guid.NewGuid().ToString(); // generate an unique id
-                            hash = uniqueMachineId.GetHashCode();
-                            hash = Math.Abs(hash % 100000);
-                            uniqueMachineId = hash.ToString();
-
-                            idKey.SetValue(uniqueMachineId); // save it to registry
-                        } 
-
-                        NewteraNameSpace.COMPUTER_ID = uniqueMachineId;
-                    }
-				}
-
-                return NewteraNameSpace.COMPUTER_ID;
-			}
-		}
 
         /// <summary>
         /// Get the directory for storing attachment files
@@ -724,31 +617,6 @@ namespace Newtera.Common.Core
                 {
                     SERVER_BASE_URL = uri;
                 }
-                else
-                {
-                    // check the server config file
-                    string rootDir = NewteraNameSpace.GetAppHomeDir();
-                    string configFile;
-                    if (rootDir.EndsWith(@"\"))
-                    {
-                        configFile = rootDir + @"bin\" + SERVER_CONFIG_FILE;
-                    }
-                    else
-                    {
-                        configFile = rootDir + @"\bin\" + SERVER_CONFIG_FILE;
-                    }
-
-                    if (File.Exists(configFile))
-                    {
-                        Newtera.Common.Config.AppConfig appConfig = new Config.AppConfig(configFile);
-                        uri = appConfig.GetAppSetting(NewteraNameSpace.BASE_URL);
-
-                        if (!string.IsNullOrEmpty(uri))
-                        {
-                            SERVER_BASE_URL = uri;
-                        }
-                    }
-                }
 
                 if (string.IsNullOrEmpty(SERVER_BASE_URL))
                 {
@@ -781,19 +649,6 @@ namespace Newtera.Common.Core
             }
 
             return path;
-        }
-
-        private static string GetToolDirStr()
-        {
-            string dir = GetServerRootDir();
-
-            if (Directory.Exists(@"C:\Newtera\Ebaas\Repos"))
-            {
-                // Hack, it is running under development environment, set a special dir
-                dir = @"C:\Newtera\Ebaas\Repos\Studio";
-            }
-
-            return dir;
         }
     }
 }
