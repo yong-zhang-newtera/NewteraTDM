@@ -73,9 +73,6 @@ namespace Newtera.Util
 				case "Xml":
 					obj = new XmlFormatter();
 					break;
-				case "TecPlot":
-					obj = new TecPlotFormatter();
-					break;
 				case "CSV":
 					obj = new CSVConvertor();
 					break;

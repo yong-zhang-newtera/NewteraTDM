@@ -26,8 +26,7 @@ namespace Newtera.CustomActions
         private const string STATIC_FILE_ROOT = "StaticFilesRoot";
         private const string WEB_APP = "WebApp";
         private const string CONFIG_DIR = "Config";
-        private const string REGISTRY_FILE = "Registry.xml";
-        private const string HOME_DIR_KEY = "HOME_DIR";
+        private const string HOME_DIR_KEY = "HomeDir";
         private const string TOOL_DIR_KEY = "TOOL_DIR";
         private const string WORKING_DIR = @"C:\Program Files\Ebaas\bin";
 
@@ -178,7 +177,7 @@ namespace Newtera.CustomActions
         }
 
 		/// <summary>
-		/// Update EbaasServer.exe.config and Registry.xml
+		/// Update EbaasServer.exe.config
 		/// </summary>
 		private void UpdateConfigs(string installedPath)
 		{
@@ -191,6 +190,8 @@ namespace Newtera.CustomActions
                     XmlDocument doc = new XmlDocument();
                     doc.Load(serverConfig);
 
+                    SetAppSetting(doc, HOME_DIR_KEY, installedPath);
+
                     SetAppSetting(doc, STATIC_FILE_ROOT, GetWebAppPath(installedPath));
 
                     Flush(doc, serverConfig);
@@ -198,24 +199,6 @@ namespace Newtera.CustomActions
                 else
                 {
                     throw new Exception(serverConfig + " does not exist.");
-                }
-
-                string registryConfig = GetRegistryConfig(installedPath);
-
-                if (File.Exists(registryConfig))
-                {
-                    XmlDocument doc = new XmlDocument();
-                    doc.Load(registryConfig);
-
-                    SetSetting(doc, HOME_DIR_KEY, installedPath);
-
-                    SetSetting(doc, TOOL_DIR_KEY, installedPath);
-
-                    Flush(doc, registryConfig);
-                }
-                else
-                {
-                    throw new Exception(registryConfig + " does not exist.");
                 }
             }
             else
@@ -237,18 +220,6 @@ namespace Newtera.CustomActions
             else
             {
                 return installedPath + @"\" + CONFIG_FILE;
-            }
-        }
-
-        private string GetRegistryConfig(string installedPath)
-        {
-            if (installedPath.EndsWith(@"\"))
-            {
-                return installedPath + CONFIG_DIR + @"\" + REGISTRY_FILE;
-            }
-            else
-            {
-                return installedPath + @"\" + CONFIG_DIR + @"\" + REGISTRY_FILE;
             }
         }
 

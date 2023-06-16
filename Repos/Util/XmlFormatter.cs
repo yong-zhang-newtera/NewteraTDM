@@ -8,13 +8,9 @@ namespace Newtera.Util
 {
 	using System;
 	using System.Xml;
-	using System.IO;
 	using System.Data;
-	using System.Text;
 	using System.ComponentModel;
-	using System.Collections;
 
-	using Newtera.Common.Core;
 	using Newtera.Common.MetaData.DataView;
 
 	/// <summary> 
@@ -23,8 +19,6 @@ namespace Newtera.Util
 	/// <version> 1.0.0 20 Jan 2005</version>
 	internal class XmlFormatter : FormatterBase
 	{
-		private const string XML_TEMPLATE_FILE_NAME = "template.xml";
-
 		/// <summary>
 		/// Initiate an instance of XmlFormatter class
 		/// </summary>
@@ -46,44 +40,17 @@ namespace Newtera.Util
 
 			// create an xml document from a template if it exists
 			XmlDocument doc = new XmlDocument();
-		
-			// try to find a template which the same as class name
-			string templatePath = NewteraNameSpace.GetAppHomeDir() + @"\Config\" + instanceView.DataView.BaseClass.Name + ".xml";
-		
-			if (!File.Exists(templatePath))
-			{
-				// use default template
-				templatePath = NewteraNameSpace.GetAppHomeDir() + @"\Config\" + XmlFormatter.XML_TEMPLATE_FILE_NAME;
-			}
+			//Create an XML declaration with default encoding. 
+			XmlDeclaration xmldecl;
+			xmldecl = doc.CreateXmlDeclaration("1.0", null, null);
 
-			if (File.Exists(templatePath))
-			{
-				doc.Load(templatePath);
+			XmlElement root = doc.CreateElement("newtera", instanceView.DataView.BaseClass.Name, "http://www.newtera.com");
+			root.SetAttribute("Name", instanceView.DataView.BaseClass.Caption);
+			doc.AppendChild(root);
 
-				// find the insert location by locating the reference node
-				foreach (XmlNode node in doc.DocumentElement.ChildNodes)
-				{
-					if (node.Name.ToUpper() == "OUTPUT")
-					{
-						refNode = node;
-						break;
-					}
-				}
-			}
-			else
-			{
-				//Create an XML declaration with default encoding. 
-				XmlDeclaration xmldecl;
-				xmldecl = doc.CreateXmlDeclaration("1.0", null, null);
-
-				XmlElement root = doc.CreateElement("newtera", instanceView.DataView.BaseClass.Name, "http://www.newtera.com");
-				root.SetAttribute("Name", instanceView.DataView.BaseClass.Caption);
-				doc.AppendChild(root);
-
-				//Add the declaration node to the document.
-				root = doc.DocumentElement;
-				doc.InsertBefore(xmldecl, root);
-			}
+			//Add the declaration node to the document.
+			root = doc.DocumentElement;
+			doc.InsertBefore(xmldecl, root);
 			
 			PropertyDescriptorCollection properties = instanceView.GetProperties(null);
 

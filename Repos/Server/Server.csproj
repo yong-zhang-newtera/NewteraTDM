@@ -1281,7 +1281,6 @@
     <Compile Include="FullText\IndexEventManager.cs" />
     <Compile Include="FullText\IndexingContext.cs" />
     <Compile Include="FullText\IndexingWorker.cs" />
-    <Compile Include="LeaderElection\LeaderElectionManager.cs" />
     <Compile Include="Logging\LoggingMessage.cs" />
     <Compile Include="Logging\LoggingManager.cs" />
     <Compile Include="Logging\ProcessingQueue.cs" />

@@ -385,10 +385,6 @@
       <Project>{763837d0-56fa-40b7-84a5-5cb2d9448f51}</Project>
       <Name>WorkflowServices</Name>
     </ProjectReference>
-    <ProjectReference Include="..\XmlRegistry\XmlRegistry.csproj">
-      <Project>{883db56b-2e30-435c-9788-ebba9bf3d352}</Project>
-      <Name>XmlRegistry</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Infrastructure\GetAccessibleClassesVisitor.resx">

@@ -1,5 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?><?mso-infoPathSolution solutionVersion="1.0.0.1" productVersion="11.0.6357" name="urn:myform:myclient40" PIVersion="1.0.0.0" ?><?mso-application progid="InfoPath.Document"?><my:myFields xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:my="http://schemas.microsoft.com/office/infopath/2003/myXSD/2005-01-05T03-01-32" xmlns:xd="http://schemas.microsoft.com/office/infopath/2003" xml:lang="zh-cn">
-<output></output>
-<my:txtFilePath>c:\txtfile.txt</my:txtFilePath>
-<my:xmlFilePath>c:\xmlfile.xml</my:xmlFilePath>
-</my:myFields>

@@ -29,7 +29,6 @@ using Assembly = System.Reflection.Assembly;
 
 using Swashbuckle.Application;
 
-using Newtera.Registry;
 using Ebaas.WebApi.Infrastructure;
 using Ebaas.WebApi.Providers;
 using Newtera.Common.Core;
@@ -161,14 +160,7 @@ namespace Ebaas.WebApi
 
         private void ConfigStaticFiles(IAppBuilder app)
         {
-            XmlRegistryKey rootKey;
-            XmlRegistry theRegistry = XmlRegistryManager.Instance;
-
-            rootKey = theRegistry.RootKey;
-
-            XmlRegistryKey staticFilesRootKey = rootKey.GetSubKey(NewteraNameSpace.STATIC_FILES_ROOT, false);
-
-            String rootFolder = (String)staticFilesRootKey.GetStringValue();
+            String rootFolder = NewteraNameSpace.GetStaticFilesDir();
             PhysicalFileSystem fileSystem = new PhysicalFileSystem(rootFolder);
 
             var options = new FileServerOptions();

@@ -127,9 +127,6 @@
     <Compile Include="MarcConverter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TecPlotFormatter.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="TextFormatter.cs">
       <SubType>Code</SubType>
     </Compile>
