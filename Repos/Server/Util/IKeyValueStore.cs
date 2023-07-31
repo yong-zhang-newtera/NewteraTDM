@@ -18,9 +18,7 @@ namespace Newtera.Server.Util
 
         void Remove(string key);
 
-        IList<string> Keys { get; }
-
-        IList<object> Values { get; }
+        IEnumerable<string> GetKeys();
 
         void Clear();
     }

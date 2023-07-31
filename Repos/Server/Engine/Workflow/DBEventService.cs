@@ -99,9 +99,12 @@ namespace Newtera.Server.Engine.Workflow
         {
             DBEventSubscription theSubscription = null;
 
-            foreach (DBEventSubscription subscription in this._subscriptions.Values)
+            var keys = this._subscriptions.GetKeys();
+            foreach (var key in keys)
             {
-                if (subscription.SchemaId == e.SchemaId &&
+                var subscription = this._subscriptions.Get<DBEventSubscription>(key);
+                if (subscription != null &&
+                    subscription.SchemaId == e.SchemaId &&
                     subscription.ClassName == e.ClassName &&
                     subscription.EventName == e.EventName)
                 {
@@ -196,7 +199,8 @@ namespace Newtera.Server.Engine.Workflow
         public void RemoveSubscriptions(Guid workflowInstanceId)
         {
             StringCollection removedSubscriptionIds = new StringCollection();
-            foreach (string key in this._subscriptions.Keys)
+            var keys = this._subscriptions.GetKeys();
+            foreach (string key in keys)
             {
                 DBEventSubscription subscription = this._subscriptions.Get<DBEventSubscription>(key);
                 if (subscription.WorkflowInstanceId == workflowInstanceId)

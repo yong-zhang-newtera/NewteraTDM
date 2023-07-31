@@ -9,11 +9,6 @@ namespace Newtera.Common.Config
 	using System;
 	using System.IO;
 	using System.Xml;
-	using System.Web;
-	using System.Threading;
-	using System.Text;
-	using System.Reflection;
-	using System.Collections.Specialized;
 
 	using Newtera.Common.Core;
 

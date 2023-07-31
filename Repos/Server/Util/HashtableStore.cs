@@ -65,25 +65,11 @@ namespace Newtera.Server.Util
             }
         }
 
-        public IList<string> Keys
+        public IEnumerable<string> GetKeys()
         {
-            get
+            lock (this.internalLock)
             {
-                lock (this.internalLock)
-                {
-                    return this._cache.Keys.ToList<string>();
-                }
-            }
-        }
-
-        public IList<object> Values
-        {
-            get
-            {
-                lock (this.internalLock)
-                {
-                    return this._cache.Values.ToList<object>();
-                }
+                return this._cache.Keys.ToList<string>();
             }
         }
 
