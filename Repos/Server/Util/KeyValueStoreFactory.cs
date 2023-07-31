@@ -10,14 +10,11 @@ namespace Newtera.Server.Util
 {
     public class KeyValueStoreFactory
     {
-        private IMasterServerClient _masterServerClient;
-
         private static KeyValueStoreFactory theInstance = null;
         private static object internalLock = new object();
 
         private KeyValueStoreFactory()
         {
-            _masterServerClient = null;
         }
 
         public static KeyValueStoreFactory TheInstance
@@ -37,33 +34,20 @@ namespace Newtera.Server.Util
             }
         }
 
-        public bool UseRemoteCacheStore
+        public bool UseDistributedCache
         {
             get
             {
-                return false;
-                //return ClusterServerConfig.Instance.MoreThanOneServers;
+                return RedisConfig.Instance.DistributedCacheEnabled;
             }
         }
 
-        public IMasterServerClient MasterServerClient
+        public IKeyValueStore Create(string cacheName)
         {
-            get
-            {
-                return this._masterServerClient;
-            }
-            set
-            {
-                this._masterServerClient = value;
-            }
-        }
-
-        public IKeyValueStore Create(string tableName)
-        {
-            if (UseRemoteCacheStore)
-                return new RemoteCacheStore(MasterServerClient, tableName);
+            if (UseDistributedCache)
+                return new RedisCache(cacheName);
             else
-                return new HashtableStore(tableName);
+                return new HashtableStore(cacheName);
         }
     }
 }

@@ -36,7 +36,6 @@ using Newtera.Server.FullText;
 using Newtera.Server.Timer;
 using Newtera.Server.Engine.Cache;
 using Newtera.ElasticSearchIndexer;
-//using Newtera.MasterServerClient;
 
 namespace Ebaas.WebApi
 {

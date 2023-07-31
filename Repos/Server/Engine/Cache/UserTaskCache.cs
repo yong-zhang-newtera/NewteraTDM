@@ -134,7 +134,8 @@ namespace Newtera.Server.Engine.Cache
                     StringCollection removedKeys = new StringCollection();
 
                     // clear user's task list for all schema
-                    foreach (string key in _userTasks.Keys)
+                    var keys = _userTasks.GetKeys();
+                    foreach (string key in keys)
                     {
                         if (key.EndsWith(user))
                         {
