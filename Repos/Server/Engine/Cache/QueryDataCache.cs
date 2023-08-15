@@ -36,8 +36,6 @@ namespace Newtera.Server.Engine.Cache
 		public const string XACLS = "Xacls";
         public const string TEMP_DIR = @"\temp\";
 
-		private TimeSpan _slidingExpiration = new TimeSpan(0, 30, 0); // 30 min
-
         private IKeyValueStore _objects; // cached objects
 
         private IKeyValueStore _cachedSqls; // cached sqls

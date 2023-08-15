@@ -11,37 +11,31 @@ namespace Newtera.Server.Engine.Cache
 	using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
-	using System.Data;
-    using System.Xml;
-    using System.Workflow.Runtime;
-    using System.Web.UI.WebControls;
-	using System.Security.Principal;
 	using System.Resources;
 	using System.Threading;
 
-	using Newtera.Common.Core;
 	using Newtera.Server.DB;
     using Newtera.Server.DB.WorkflowModel;
 	using Newtera.Common.MetaData.Principal;
     using Newtera.WFModel;
-    using Newtera.Common.MetaData.XaclModel;
     using Newtera.Server.Engine.Workflow;
+    using Newtera.Server.Util;
 
-	/// <summary>
-	/// This is the single cache of workflow model data for the server.
-	/// </summary>
-	/// <version> 	1.0.0	15 Dec 2006 </version>
-	public class WorkflowModelCache
+    /// <summary>
+    /// This is the single cache of workflow model data for the server.
+    /// </summary>
+    /// <version> 	1.0.0	15 Dec 2006 </version>
+    public class WorkflowModelCache
 	{
         private const string TaskSubstituteModelName = "taskSubstituteModelName";
 
 		// Static cache object, all invokers will use this cache object.
 		private static WorkflowModelCache theCache;
 		
-		private Hashtable _table;
-		private Hashtable _locks;
-        private Hashtable _dataTable;
-        private Hashtable _wizardStepTable;
+		private IKeyValueStore _table;
+		private IKeyValueStore _locks;
+        private IKeyValueStore _dataTable;
+        private IKeyValueStore _wizardStepTable;
 		private ResourceManager _resources;
         private ProjectInfoCollection _projectInfos = null;
         private ProjectInfoCollection _latestProjectInfos = null;
@@ -52,10 +46,10 @@ namespace Newtera.Server.Engine.Cache
 		/// </summary>
 		private WorkflowModelCache()
 		{
-			_table = new Hashtable();
-			_locks = new Hashtable();
-            _dataTable = new Hashtable();
-            _wizardStepTable = new Hashtable();
+			_table = KeyValueStoreFactory.TheInstance.Create("WorkflowModelCache.Table");
+			_locks = KeyValueStoreFactory.TheInstance.Create("WorkflowModelCache.Locks");
+            _dataTable = KeyValueStoreFactory.TheInstance.Create("WorkflowModelCache.DataTable");
+            _wizardStepTable = KeyValueStoreFactory.TheInstance.Create("WorkflowModelCache.WizardStepTable");
 			_resources = new ResourceManager(this.GetType());
 		}
 
@@ -178,7 +172,7 @@ namespace Newtera.Server.Engine.Cache
         {
             lock (this)
             {
-                ProjectModel projectModel = (ProjectModel)_table[projectInfo.NameAndVersion];
+                ProjectModel projectModel = _table.Get<ProjectModel>(projectInfo.NameAndVersion);
 
                 if (projectModel == null)
                 {
@@ -196,7 +190,7 @@ namespace Newtera.Server.Engine.Cache
                     projectModel.ModifiedTime = projectInfoFromDb.ModifiedTime; // set the timestamp to the project model
                     projectModel.Version = projectInfoFromDb.Version;
 
-                    _table[projectInfoFromDb.NameAndVersion] = projectModel;
+                    _table.Add(projectInfoFromDb.NameAndVersion, projectModel);
                 }
 
                 return projectModel;
@@ -398,7 +392,7 @@ namespace Newtera.Server.Engine.Cache
                     throw new LockMetaDataException(_resources.GetString("LockFailed"));
                 }
 
-                string lockingUser = (string)_locks[projectInfo.NameAndVersion];
+                string lockingUser = _locks.Get<string>(projectInfo.NameAndVersion);
 				string requestUser = null;
 				CustomPrincipal principal = Thread.CurrentPrincipal as CustomPrincipal;
 				if (principal != null)
@@ -418,7 +412,7 @@ namespace Newtera.Server.Engine.Cache
 				else if (lockingUser == null)
 				{
 					// set the lock
-                    _locks[projectInfo.NameAndVersion] = requestUser;
+                    _locks.Add(projectInfo.NameAndVersion, requestUser);
 				}
 			}
 		}
@@ -451,7 +445,7 @@ namespace Newtera.Server.Engine.Cache
 		{
 			lock (this)
 			{
-                string lockingUser = (string)_locks[projectInfo.NameAndVersion];
+                string lockingUser = _locks.Get<string>(projectInfo.NameAndVersion);
 				string requestUser = null;
 				string[] roles = null;
 				CustomPrincipal principal = Thread.CurrentPrincipal as CustomPrincipal;
@@ -637,7 +631,7 @@ namespace Newtera.Server.Engine.Cache
             if (workflowId != null)
             {
                 // first try to get the data from the cache
-                WorkflowDataCacheEntry entry = (WorkflowDataCacheEntry)_dataTable[workflowId];
+                WorkflowDataCacheEntry entry = _dataTable.Get<WorkflowDataCacheEntry>(workflowId);
 
                 if (entry == null)
                 {
@@ -645,7 +639,7 @@ namespace Newtera.Server.Engine.Cache
                     WorkflowModelAdapter adapter = new WorkflowModelAdapter(dataProvider);
                     adapter.FillWorkflowData(workflowId, entry);
 
-                    _dataTable[workflowId] = entry;
+                    _dataTable.Add(workflowId, entry);
                 }
 
                 switch (dataType)
@@ -782,7 +776,7 @@ namespace Newtera.Server.Engine.Cache
         {
             lock (this)
             {
-                string lockingUser = (string)_locks[TaskSubstituteModelName];
+                string lockingUser = _locks.Get<string>(TaskSubstituteModelName);
                 string requestUser = null;
                 CustomPrincipal principal = Thread.CurrentPrincipal as CustomPrincipal;
                 if (principal != null)
@@ -802,7 +796,7 @@ namespace Newtera.Server.Engine.Cache
                 else if (lockingUser == null)
                 {
                     // set the lock
-                    _locks[TaskSubstituteModelName] = requestUser;
+                    _locks.Add(TaskSubstituteModelName, requestUser);
                 }
             }
         }
@@ -815,7 +809,7 @@ namespace Newtera.Server.Engine.Cache
         {
             lock (this)
             {
-                string lockingUser = (string)_locks[TaskSubstituteModelName];
+                string lockingUser = _locks.Get<string>(TaskSubstituteModelName);
                 string requestUser = null;
                 string[] roles = null;
                 CustomPrincipal principal = Thread.CurrentPrincipal as CustomPrincipal;
@@ -883,7 +877,7 @@ namespace Newtera.Server.Engine.Cache
             projectInfo.Name = projectName;
             projectInfo.Version = projectVersion;
 
-            List<IWizardStep> wizardSteps = (List<IWizardStep>)_wizardStepTable[projectInfo.NameAndVersion];
+            List<IWizardStep> wizardSteps = _wizardStepTable.Get<List<IWizardStep>>(projectInfo.NameAndVersion);
             if (wizardSteps == null)
             {
             }
@@ -1101,7 +1095,7 @@ namespace Newtera.Server.Engine.Cache
 
 			lock (this)
 			{
-                string lockingUser = (string)_locks[modelId];
+                string lockingUser = _locks.Get<string>(modelId);
 				string requestUser = null;
 				string[] roles = null;
 				CustomPrincipal principal = Thread.CurrentPrincipal as CustomPrincipal;
@@ -1139,7 +1133,7 @@ namespace Newtera.Server.Engine.Cache
 					{
 						// the model has not been locked, lock it automatically
 						// set the lock
-                        _locks[modelId] = requestUser;
+                        _locks.Add(modelId, requestUser);
 					}
 				}
 				else

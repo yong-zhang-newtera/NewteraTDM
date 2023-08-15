@@ -9,8 +9,6 @@ namespace Newtera.Server.Engine.Cache
 	using System;
 	using System.IO;
 	using System.Collections;
-	using System.Data;
-	using System.Security.Principal;
 	using System.Resources;
 	using System.Threading;
 
@@ -22,45 +20,59 @@ namespace Newtera.Server.Engine.Cache
 	using Newtera.Common.MetaData.Schema;
 	using Newtera.Common.MetaData.XaclModel;
     using Newtera.Common.MetaData.Events;
-	using Newtera.Common.MetaData.DataView;
     using Newtera.Common.MetaData.Logging;
 	using Newtera.Common.MetaData.FileType;
 	using Newtera.Common.MetaData.Principal;
 	using Newtera.Common.Attachment;
+    using Newtera.Server.Util;
+    using Newtera.Common.Config;
 
-	/// <summary>
-	/// This is the single cache of MetaData info for the server. It keep a copy
-	/// of MetaDataModel object for each schema.
-	/// </summary>
-	/// <version> 	1.0.0	23 Aug 2003 </version>
-	/// <author> 	Yong Zhang </author>
-	public class MetaDataCache
+    /// <summary>
+    /// This is the single cache of MetaData info for the server. It keep a copy
+    /// of MetaDataModel object for each schema.
+    /// </summary>
+    /// <version> 	1.0.0	23 Aug 2003 </version>
+    /// <author> 	Yong Zhang </author>
+    public class MetaDataCache
 	{		
 		// Static cache object, all invokers will use this cache object.
 		private static MetaDataCache theCache;
-		
-		private Hashtable _table;
-		private Hashtable _locks;
+		private const string CHANNEL_NAME = "Newtera.MetaDataNeedReload";
+
+		private Hashtable _metaDataTable;
+		private IKeyValueStore _metaDataLockedBy;
 		private bool _needReloadFileTypeInfo;
 		private FileTypeInfoCollection _fileTypeInfo;
-		private string _licenseKey;
         private SchemaInfo[] _schemaInfos;
 		private ResourceManager _resources;
         private EventCollection _timerEvents;
+		private RedisPubSubBroker _pubSubBroker;
 
 		/// <summary>
 		/// Private constructor.
 		/// </summary>
 		private MetaDataCache()
 		{
-			_table = new Hashtable();
-			_locks = new Hashtable();
+			_metaDataTable = new Hashtable();
+			_metaDataLockedBy = KeyValueStoreFactory.TheInstance.Create("MetaDataCache.LockedBy");
 			_needReloadFileTypeInfo = true;
 			_fileTypeInfo = null;
-			_licenseKey = null;
             _schemaInfos = null;
             _timerEvents = null;
 			_resources = new ResourceManager(this.GetType());
+			if (RedisConfig.Instance.DistributedCacheEnabled)
+			{
+				_pubSubBroker = new RedisPubSubBroker();
+				_pubSubBroker.Subscribe(CHANNEL_NAME).OnMessage(channelMessage =>
+				{
+					var schemaId = (string)channelMessage.Message;
+					MetaDataModel metaData = (MetaDataModel)_metaDataTable[schemaId];
+					if (metaData != null)
+					{
+						metaData.NeedReload = true;
+					}
+				});
+			}
 		}
 
 		/// <summary>
@@ -102,7 +114,7 @@ namespace Newtera.Server.Engine.Cache
 		{
 			lock (this)
 			{
-				MetaDataModel metaData = (MetaDataModel) _table[schemaInfo.NameAndVersion];
+				MetaDataModel metaData = (MetaDataModel) _metaDataTable[schemaInfo.NameAndVersion];
 
 				if (metaData == null)
 				{
@@ -119,13 +131,13 @@ namespace Newtera.Server.Engine.Cache
                     }
 
                     metaData = new MetaDataModel(schemaInfo.Clone());
-					_table[schemaInfo.NameAndVersion] = metaData;
+					_metaDataTable[schemaInfo.NameAndVersion] = metaData;
 				}
-				
+
 				// when metadata info is updated or newly created, the NeedReload flag
 				// is set to true. The reload isn't taken place until GetMetaData is
 				// invoked. And the Timestamp of the meta data model will be reset to the
-                // one stored in the database.
+				// one stored in the database.
 				if (metaData.NeedReload)
 				{
 					MetaDataAdapter adapter = new MetaDataAdapter(dataProvider);
@@ -549,17 +561,6 @@ namespace Newtera.Server.Engine.Cache
                     // continue deleting the schema even there are problems in deleting attachments
                 }
 
-                // delete the pivot layouts associated with the schema
-                try
-                {
-                    DeletePivotLayouts(oldMetaDataModel);
-                }
-                catch (Exception)
-                {
-                    // continue deleting the schema even there are problems in deleting pivot layouts
-                }
-
-
                 // delete the event infos associated with the schema
                 try
                 {
@@ -580,8 +581,8 @@ namespace Newtera.Server.Engine.Cache
 					MetaDataUpdateExecutor executor = new MetaDataUpdateExecutor(result, dataProvider);
 
 					// clear the cache
-					_table.Remove(schemaInfo.NameAndVersion);
-					_locks.Remove(schemaInfo.NameAndVersion);
+					_metaDataTable.Remove(schemaInfo.NameAndVersion);
+					_metaDataLockedBy.Remove(schemaInfo.NameAndVersion);
 
 					// make sure to execute the update as the last step
 					executor.Execute(); // Perform the updates to meta data in database
@@ -661,7 +662,7 @@ namespace Newtera.Server.Engine.Cache
 		{
 			lock (this)
 			{
-				MetaDataModel metaData = (MetaDataModel) _table[schemaInfo.NameAndVersion];
+				MetaDataModel metaData = (MetaDataModel) _metaDataTable[schemaInfo.NameAndVersion];
 
                 if (metaData == null)
                 {
@@ -679,7 +680,7 @@ namespace Newtera.Server.Engine.Cache
                     }
 
                     metaData = new MetaDataModel(schemaInfo.Clone());
-                    _table[schemaInfo.NameAndVersion] = metaData;
+                    _metaDataTable[schemaInfo.NameAndVersion] = metaData;
                 }
                 else
                 {
@@ -694,7 +695,7 @@ namespace Newtera.Server.Engine.Cache
                     }
                 }
 
-				string lockingUser = (string) _locks[schemaInfo.NameAndVersion];
+				string lockingUser = _metaDataLockedBy.Get<string>(schemaInfo.NameAndVersion);
 				string requestUser = null;
 				CustomPrincipal principal = Thread.CurrentPrincipal as CustomPrincipal;
 				if (principal != null)
@@ -714,7 +715,7 @@ namespace Newtera.Server.Engine.Cache
 				else if (lockingUser == null)
 				{
 					// set the lock
-					_locks[schemaInfo.NameAndVersion] = requestUser;
+					_metaDataLockedBy.Add(schemaInfo.NameAndVersion, requestUser);
 				}
 			}
 		}
@@ -730,7 +731,7 @@ namespace Newtera.Server.Engine.Cache
 		{
 			lock (this)
 			{
-				string lockingUser = (string) _locks[schemaInfo.NameAndVersion];
+				string lockingUser = _metaDataLockedBy.Get<string>(schemaInfo.NameAndVersion);
 				string requestUser = null;
 				string[] roles = null;
 				CustomPrincipal principal = Thread.CurrentPrincipal as CustomPrincipal;
@@ -747,7 +748,7 @@ namespace Newtera.Server.Engine.Cache
 						// the meta data is locked
 						if (requestUser == lockingUser)
 						{
-							_locks.Remove(schemaInfo.NameAndVersion); // remove the lock
+							_metaDataLockedBy.Remove(schemaInfo.NameAndVersion); // remove the lock
 						}
 						else if (forceUnlock)
 						{
@@ -769,7 +770,7 @@ namespace Newtera.Server.Engine.Cache
 							if (isSuperUser)
 							{
 								// the lock can be removed by super-user
-								_locks.Remove(schemaInfo.NameAndVersion);
+								_metaDataLockedBy.Remove(schemaInfo.NameAndVersion);
 							}
 							else
 							{
@@ -866,7 +867,7 @@ namespace Newtera.Server.Engine.Cache
 		{
             try
             {
-                MetaDataModel metaDataModel = (MetaDataModel)_table[schemaInfo.NameAndVersion];
+                MetaDataModel metaDataModel = (MetaDataModel)_metaDataTable[schemaInfo.NameAndVersion];
 
                 if (metaDataModel != null)
                 {
@@ -936,6 +937,14 @@ namespace Newtera.Server.Engine.Cache
                         case MetaDataType.Apis:
                             metaDataModel.NeedReloadApis = true;
                             break;
+                    }
+
+					if (metaDataModel.NeedReload &&
+						RedisConfig.Instance.DistributedCacheEnabled)
+                    {
+						//publish a message to the broker to let subscribers know
+						// the metadata is changed
+						this._pubSubBroker.Publish(CHANNEL_NAME, schemaInfo.NameAndVersion);
                     }
                 }
             }
@@ -1054,142 +1063,6 @@ namespace Newtera.Server.Engine.Cache
 		}
 
 		/// <summary>
-		/// Gets a list of identifiers of registered clients.
-		/// </summary>
-		/// <param name="clientName">The client name.</param>
-		/// <returns>A list of client ids.</returns>
-		public string[] GetRegisteredClients(string clientName)
-		{
-			lock (this)
-			{
-                if (_table[clientName] == null)
-				{
-					MetaDataAdapter adapter = new MetaDataAdapter();
-					
-					// cache the registered clients
-					_table[clientName] = adapter.GetRegisteredClients(clientName);
-				}
-
-				return (string[]) _table[clientName];
-			}
-		}
-
-        /// <summary>
-        /// Gets a list of display text of registered clients.
-        /// </summary>
-        /// <param name="clientName">The client name.</param>
-        /// <returns>A list of client display texts.</returns>
-        public string[] GetRegisteredClientTexts(string clientName)
-        {
-            lock (this)
-            {
-                MetaDataAdapter adapter = new MetaDataAdapter();
-
-                if (_table[clientName] == null)
-                {
-                    // cache the registered clients
-                    _table[clientName] = adapter.GetRegisteredClients(clientName);
-                }
-
-                string[] clientIds = (string[])_table[clientName];
-
-                string[] displayTexts = new string[clientIds.Length];
-
-                string machineName;
-                int index = 0;
-                foreach (string clientId in clientIds)
-                {
-                    machineName = adapter.GetRegisteredClientMachine(clientName, clientId);
-                    if (machineName == null)
-                    {
-                        machineName = "Unknown";
-                    }
-
-                    displayTexts[index] = clientId + ":" + machineName;
-                    index++;
-                }
-
-                return displayTexts;
-            }
-        }
-
-		/// <summary>
-		/// Add a registered client.
-		/// </summary>
-		/// <param name="clientName">The client name.</param>
-		/// <param name="clientId">The client id</param>
-        /// <param name="machineName">The name of client machine</param>
-		public void AddRegisteredClient(string clientName, string clientId, string machineName)
-		{
-			bool exists = false;
-			string[] clientIds = this.GetRegisteredClients(clientName);
-
-			for (int i = 0; i < clientIds.Length; i++)
-			{
-				if (clientId == clientIds[i])
-				{
-					exists = true;
-					break;
-				}
-			}
-
-			if (!exists)
-			{
-				lock (this)
-				{
-					MetaDataAdapter adapter = new MetaDataAdapter();
-					adapter.AddRegisteredClient(clientName, clientId, machineName);
-                    _table.Remove(clientName);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Remove a registered client.
-		/// </summary>
-		/// <param name="clientName">The client name.</param>
-		/// <param name="clientId">The client id</param>
-		public void RemoveRegisteredClient(string clientName, string clientId)
-		{
-			lock (this)
-			{
-				MetaDataAdapter adapter = new MetaDataAdapter();
-				adapter.RemoveRegisteredClient(clientName, clientId);
-
-                _table.Remove(clientName);
-			}
-		}
-
-		/// <summary>
-		/// Get the license key
-		/// </summary>
-		/// <returns>license key</returns>
-		public string GetLicenseKey()
-		{
-			if (_licenseKey == null)
-			{
-				MetaDataAdapter adapter = new MetaDataAdapter();
-
-				_licenseKey = adapter.GetLicenseKey();
-			}
-
-			return _licenseKey;
-		}
-
-		/// <summary>
-		/// Set the license key
-		/// </summary>
-		/// <param name="licenseKey">License key</param>
-		public void SetLicenseKey(string licenseKey)
-		{
-			this._licenseKey = null;
-
-			MetaDataAdapter adapter = new MetaDataAdapter();
-
-			adapter.SetLicenseKey(licenseKey);
-		}
-
-		/// <summary>
 		/// Delete the attachment files associated with the schema
 		/// </summary>
 		/// <param name="metaData">The meta data</param>
@@ -1263,17 +1136,6 @@ namespace Newtera.Server.Engine.Cache
 		}
 
         /// <summary>
-		/// Delete the pivot layouts associated with the schema
-		/// </summary>
-		/// <param name="metaData">The meta data</param>
-        private void DeletePivotLayouts(MetaDataModel metaData)
-        {
-            MetaDataAdapter adapter = new MetaDataAdapter();
-
-            adapter.DeletePivotLayouts(metaData.SchemaInfo.Name, metaData.SchemaInfo.Version);
-        }
-
-        /// <summary>
         /// Delete the events associated with the schema
         /// </summary>
         /// <param name="metaData">The meta data</param>
@@ -1336,7 +1198,7 @@ namespace Newtera.Server.Engine.Cache
 
 			lock (this)
 			{
-				string lockingUser = (string) _locks[schemaInfo.NameAndVersion];
+				string lockingUser = _metaDataLockedBy.Get<string>(schemaInfo.NameAndVersion);
 				string requestUser = null;
 				string[] roles = null;
 				CustomPrincipal principal = Thread.CurrentPrincipal as CustomPrincipal;
@@ -1373,7 +1235,7 @@ namespace Newtera.Server.Engine.Cache
 					else
 					{
 						// the meta data model has not been locked, allow update by default
-						//_locks[schemaInfo.NameAndVersion] = requestUser;
+						//_metaDataLockedBy[schemaInfo.NameAndVersion] = requestUser;
 					}
 				}
 				else
