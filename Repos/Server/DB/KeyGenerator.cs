@@ -20,7 +20,7 @@ namespace Newtera.Server.DB
 	/// 
 	/// The table in database is named KEY_GENERATE, the column of the table is
 	/// named KEY_VALUE and is a numeric type by default.  In Oracle 8.1.6,
-	/// the type of the column may be number(38). In MS SQL Server2000,
+	/// the type of the column may be number(38). In MS SQL and Server2000,
 	/// the type of the column may be decimal.
 	/// 
 	/// To support that key is generated from difference tables or/and from

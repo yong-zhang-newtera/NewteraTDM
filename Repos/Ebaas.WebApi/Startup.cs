@@ -144,10 +144,18 @@ namespace Ebaas.WebApi
             Newtera.Common.MetaData.XmlDataSourceListHandler.XmlDataSourceService = new Newtera.Server.Util.XmlDataSourceService();
             TimerManager.Instance.Start();
 
-            if (UserDataCache.Instance.AllUsers == null)
+            try
             {
-                // initialize the user data caceh
-                UserDataCache.Instance.Initialize(); // this take a lot of time
+                if (UserDataCache.Instance.AllUsers == null)
+                {
+  
+                    // initialize the user data caceh
+                    UserDataCache.Instance.Initialize(); // this take a lot of time
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Instance.WriteLine("Failed in initializing UserDataCach with error " + ex.Message + "\n" + ex.StackTrace);
             }
 
             if (Newtera.Common.Config.ElasticsearchConfig.Instance.IsElasticsearchEnabled)

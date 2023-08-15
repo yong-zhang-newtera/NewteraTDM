@@ -7,16 +7,7 @@
 namespace Newtera.Server.Engine.Cache
 {
 	using System;
-	using System.IO;
-	using System.Collections;
-	using System.Web;
-    using System.Text;
-    using System.Data;
-    using System.Threading;
-	using System.Web.Caching;
-
-	using Newtera.Common.Core;
-	using Newtera.Common.MetaData.Schema;
+    using Newtera.Common.Config;
     using Newtera.Common.MetaData.Principal;
     using Newtera.Server.UsrMgr;
     using Newtera.Server.Util;
@@ -26,16 +17,18 @@ namespace Newtera.Server.Engine.Cache
 	/// </summary>
 	/// <version> 	1.0.0	14 Nov 2011 </version>
 	public class UserDataCache
-	{	
+	{
+        private const string USER_ROLE_CHANNEL_NAME = "Newtera.UserRoleNeedReload";
         private IKeyValueStore _cachedUserRoles;
         private IKeyValueStore _cachedUserData;
         private IKeyValueStore _cachedUserInfoByName;
         private IKeyValueStore _cachedUserInfoByKey;
         private IKeyValueStore _cachedRoleData;
         private IKeyValueStore _cachedRoleUsers;
-        private string[] _allUsers;
-        private string[] _allRoles;
+        private string[] _allUsers; // allUsers will be reloaded upon change
+        private string[] _allRoles; // allRoles will be reloaded upon change
         private UserInfoVersion _userInfoVersion;
+        private RedisPubSubBroker _pubSubBroker;
 
         // Static cache object, all invokers will use this cache object.
         private static UserDataCache theCache;
@@ -54,6 +47,25 @@ namespace Newtera.Server.Engine.Cache
             _allUsers = null;
             _allRoles = null;
             _userInfoVersion = UserInfoVersion.Unknown; // default
+            if (RedisConfig.Instance.DistributedCacheEnabled)
+            {
+                _pubSubBroker = new RedisPubSubBroker();
+                _pubSubBroker.Subscribe(USER_ROLE_CHANNEL_NAME).OnMessage(channelMessage =>
+                {
+                    var msgType = (string)channelMessage.Message;
+                    switch (msgType)
+                    {
+                        case "User":
+                            this._allUsers = null;
+                            break;
+
+                        case "Role":
+                            this._allRoles = null;
+
+                            break;
+                    }
+                });
+            }
         }
 
 		/// <summary>
@@ -391,6 +403,12 @@ namespace Newtera.Server.Engine.Cache
             this._cachedUserInfoByName.Clear();
             this._cachedUserInfoByKey.Clear();
             this._allUsers = null;
+            if (RedisConfig.Instance.DistributedCacheEnabled)
+            {
+                //publish a message to the broker to let subscribers know
+                // the users need to reload
+                this._pubSubBroker.Publish(USER_ROLE_CHANNEL_NAME, "User");
+            }
         }
 
         /// <summary>
@@ -400,6 +418,12 @@ namespace Newtera.Server.Engine.Cache
         {
             this._cachedRoleData.Clear();
             this._allRoles = null;
+            if (RedisConfig.Instance.DistributedCacheEnabled)
+            {
+                //publish a message to the broker to let subscribers know
+                // the users need to reload
+                this._pubSubBroker.Publish(USER_ROLE_CHANNEL_NAME, "Role");
+            }
         }
 
 		static UserDataCache()

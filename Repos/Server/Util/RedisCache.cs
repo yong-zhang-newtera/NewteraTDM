@@ -68,10 +68,11 @@ namespace Newtera.Server.Util
             foreach (var ep in _redis.GetEndPoints())
             {
                 var server = _redis.GetServer(ep);
-                var keys = server.Keys(pattern: $"{this._cacheName}-*");
+                var keys = server.Keys(pattern: $"{KeyPrefix()}*");
+                var keyPrefixLength = KeyPrefix().Length;
                 foreach (var key in keys)
                 {
-                    var recordId = key.ToString().Substring(this._cacheName.Length + 1);
+                    var recordId = key.ToString().Substring(keyPrefixLength);
                     if (!cacheKeys.Contains(recordId))
                     {
                         cacheKeys.Add(recordId);
@@ -106,7 +107,12 @@ namespace Newtera.Server.Util
 
         private string BuildKey(string recordId)
         {
-            return $"{this._cacheName}-{recordId}";
+            return $"{KeyPrefix()}{recordId}";
+        }
+
+        private string KeyPrefix()
+        {
+            return $"Newtera-{this._cacheName}-";
         }
     }
 }

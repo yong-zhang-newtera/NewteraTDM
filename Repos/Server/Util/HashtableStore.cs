@@ -33,7 +33,7 @@ namespace Newtera.Server.Util
         {
             lock (this.internalLock)
             {
-                this._cache.Add(key, value);
+                this._cache[key] = value;
             }
         }
 

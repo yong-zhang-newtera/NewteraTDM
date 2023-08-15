@@ -7,20 +7,12 @@
 namespace Newtera.Server.Engine.Cache
 {
 	using System;
-	using System.IO;
 	using System.Collections;
-	using System.Web;
-    using System.Text;
-    using System.Data;
-    using System.Threading;
-	using System.Web.Caching;
     using System.Collections.Specialized;
     using System.Collections.Generic;
 
-	using Newtera.Common.Core;
     using Newtera.Server.Util;
     using Newtera.WFModel;
-    using Newtera.Common.MetaData.Principal;
 
 	/// <summary>
 	/// This is the single cache for user tasks to speed up performance
@@ -30,7 +22,7 @@ namespace Newtera.Server.Engine.Cache
 	{	
         private IKeyValueStore _schemaTasks;
         private IKeyValueStore _userTasks;
-        private Hashtable _userLocks;
+        private IKeyValueStore _userLocks;
 
 		// Static cache object, all invokers will use this cache object.
 		private static UserTaskCache theCache;
@@ -42,7 +34,7 @@ namespace Newtera.Server.Engine.Cache
 		{
             _schemaTasks = KeyValueStoreFactory.TheInstance.Create("UserTaskCache.SchemaTasks");
             _userTasks = KeyValueStoreFactory.TheInstance.Create("UserTaskCache.UserTasks");
-            _userLocks = new Hashtable();
+            _userLocks = KeyValueStoreFactory.TheInstance.Create("UserTaskCache.UserLocks"); ;
 		}
 
 		/// <summary>
@@ -282,7 +274,7 @@ namespace Newtera.Server.Engine.Cache
 
         private UserLock GetUserLock(string userName)
         {
-            UserLock userLock = (UserLock)_userLocks[userName];
+            UserLock userLock = (UserLock)_userLocks.Get<UserLock>(userName);
             if (userLock == null)
             {
                 userLock = new UserLock();

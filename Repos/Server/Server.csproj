@@ -1318,6 +1318,8 @@
     <Compile Include="UsrMgr\ServerSideUserManager.cs" />
     <Compile Include="UsrMgr\SubCMUserManager.cs" />
     <Compile Include="UsrMgr\UserManagerFactory.cs" />
+    <Compile Include="Util\RedisPubSubBroker.cs" />
+    <Compile Include="Util\IPubSubBroker.cs" />
     <Compile Include="Util\KeyValueStoreFactory.cs" />
     <Compile Include="Util\RedisCache.cs" />
     <Compile Include="Util\RedisDatabaseExtensions.cs" />
