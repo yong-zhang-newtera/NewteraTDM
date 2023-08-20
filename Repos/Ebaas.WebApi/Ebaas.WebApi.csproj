@@ -254,6 +254,7 @@
     <Compile Include="Controllers\BlobController.cs" />
     <Compile Include="Controllers\FullTextSearchController.cs" />
     <Compile Include="Controllers\DataController.cs" />
+    <Compile Include="Controllers\HealthController.cs" />
     <Compile Include="Controllers\ImportExportController.cs" />
     <Compile Include="Controllers\ImageController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
@@ -266,6 +267,16 @@
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\TasksController.cs" />
     <Compile Include="Controllers\FormController.cs" />
+    <Compile Include="Health\Base\HealthCheckItemResult.cs" />
+    <Compile Include="Health\Base\HealthCheckResult.cs" />
+    <Compile Include="Health\Base\HealthState.cs" />
+    <Compile Include="Health\Base\IHealthCheckProvider.cs" />
+    <Compile Include="Health\Base\MessageContainer.cs" />
+    <Compile Include="Health\Base\MessageExtensions.cs" />
+    <Compile Include="Health\Checks\DatabaseHealthCheckProvider.cs" />
+    <Compile Include="Health\Checks\CacheHealthCheckProvider.cs" />
+    <Compile Include="Health\Checks\BlobStorageHealthCheckProvider.cs" />
+    <Compile Include="Health\Checks\FullTextSearchHealthCheckProvider.cs" />
     <Compile Include="Hubs\MessageHubMaster.cs" />
     <Compile Include="Hubs\MessageHub.cs" />
     <Compile Include="Infrastructure\ApplicationRole.cs" />
@@ -435,6 +446,7 @@
       <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

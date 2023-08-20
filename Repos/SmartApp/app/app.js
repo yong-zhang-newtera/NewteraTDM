@@ -333,7 +333,8 @@ angular.module('app', [
     "app.dataImporter",
     "app.logs",
     "app.mldashboard",
-    "app.fulltextsearch"
+    "app.fulltextsearch",
+    "app.healthcheck"
 ])
 .config(function ($provide, $httpProvider) {
 

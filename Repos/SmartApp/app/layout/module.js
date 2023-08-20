@@ -26,6 +26,9 @@ angular.module('app.layout', ['ui.router', 'pdf'])
         });
 
     $urlRouterProvider.otherwise(function ($injector, $location) {
+
+        var state = $injector.get('$state');
+
         return "/home/mainmenu";
     });
 
