@@ -61,7 +61,7 @@ angular.module('app.auth', [
             }
         },
         data: {
-            title: 'Login',
+            title: 'Logout',
             htmlId: 'extr-page'
         },
         resolve: {

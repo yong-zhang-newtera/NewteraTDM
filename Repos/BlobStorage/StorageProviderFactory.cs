@@ -73,6 +73,19 @@ namespace Newtera.BlobStorage
             }
         }
 
+        public IStorageProvider Create(BucketConfig bucket)
+        {
+            var storageProvider = CreateStorageProvider(bucket);
+            if (storageProvider != null)
+            {
+                return storageProvider;
+            }
+            else
+            {
+                throw new Exception($"Unable to create a storage provider for {bucket.Name} and {bucket.Type}.");
+            }
+        }
+
         private IStorageProvider CreateStorageProvider(string schemaName, string className)
         {
             var buckets = BlobStorageConfig.Instance.BucketConfigs;
@@ -83,6 +96,13 @@ namespace Newtera.BlobStorage
                 throw new Exception($"Unable to match a bucket config for database {schemaName} and class {className}.");
             }
 
+            var storageProvider = CreateStorageProvider(bucket);
+
+            return storageProvider;
+        }
+
+        private IStorageProvider CreateStorageProvider(BucketConfig bucket)
+        {
             IStorageProvider storageProvider;
 
             switch (bucket.Type)

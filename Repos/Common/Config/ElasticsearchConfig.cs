@@ -24,6 +24,7 @@ namespace Newtera.Common.Config
 		private const string VALUE_NAME = "value";
 		private const string ADD = "add";
         private const string SERVER_URL = "ElasticsearchURL";
+        private const string ENABLED = "Enabled";
         private const string USER = "User";
         private const string PASSWORD = "Password";
         private const string ANALYZER = "analyzer";
@@ -36,6 +37,7 @@ namespace Newtera.Common.Config
         private string _password;
         private string _analyzer;
         private string _searchAnalyzer;
+        private string _enabledValue;
 
         /// <summary>
         /// Singleton's private instance.
@@ -56,6 +58,7 @@ namespace Newtera.Common.Config
             _url = null;
             _analyzer = null;
             _searchAnalyzer = null;
+            _enabledValue = null;
 
             if (File.Exists(_configFileName))
             {
@@ -84,21 +87,20 @@ namespace Newtera.Common.Config
         {
             get
             {
-                bool status = false;
-
-                if (_doc != null)
+                if (_doc != null && _enabledValue == null)
                 {
-                    if (_url == null)
-                    {
-                        _url = GetAppSetting(SERVER_URL);
-                        if (!string.IsNullOrEmpty(_url))
-                            status = true;
-                    }
-                    else
-                        status = true;
+                    _enabledValue = GetAppSetting(ENABLED);
                 }
 
-                return status;
+                if (!string.IsNullOrEmpty(_enabledValue) &&
+                    _enabledValue.ToUpper() == "TRUE")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
 

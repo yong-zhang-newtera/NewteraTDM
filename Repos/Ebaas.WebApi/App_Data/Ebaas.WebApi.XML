@@ -2860,6 +2860,229 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
+        <member name="T:Ebaas.WebApi.Health.HealthCheckItemResult">
+            <summary>
+            Provides health information of a resource.
+            </summary>
+        </member>
+        <member name="M:Ebaas.WebApi.Health.HealthCheckItemResult.#ctor(System.String,System.Int32,System.String,System.String,System.String)">
+            <summary>
+            Creates a new instance of the HealthCheck class.
+            </summary>
+            <param name="resourceName">The name of the resource that this health check belongs to.</param>
+            <param name="sortOrder">The order to sort the results in.</param>
+            <param name="friendlyName">The friendly name for the health check.</param>
+            <param name="description">The description of the health check.</param>
+            <param name="type">The type of the resource.</param>
+        </member>
+        <member name="P:Ebaas.WebApi.Health.HealthCheckItemResult.ResourceName">
+            <summary>
+            Gets the name of the resource.
+            </summary>
+        </member>
+        <member name="P:Ebaas.WebApi.Health.HealthCheckItemResult.FriendlyName">
+            <summary>
+            Gets the friendly name for the health check .
+            </summary>
+        </member>
+        <member name="P:Ebaas.WebApi.Health.HealthCheckItemResult.Description">
+            <summary>
+            Gets or sets the description of the health check .
+            </summary>
+        </member>
+        <member name="P:Ebaas.WebApi.Health.HealthCheckItemResult.ResourceType">
+            <summary>
+            Gets a value that indicates if the type of the current resource.
+            </summary>
+        </member>
+        <member name="P:Ebaas.WebApi.Health.HealthCheckItemResult.HealthState">
+            <summary>
+            Gets a value that indicates if the current resource is considered to be up and healthy, degraded, or unhealthy.
+            </summary>
+        </member>
+        <member name="P:Ebaas.WebApi.Health.HealthCheckItemResult.State">
+            <summary>
+            Gets a value that describes if the current resource is considered to be up and healthy, degraded, or unhealthy.
+            </summary>
+        </member>
+        <member name="P:Ebaas.WebApi.Health.HealthCheckItemResult.Messages">
+            <summary>
+            Gets a collection of additional messages.
+            </summary>
+        </member>
+        <member name="P:Ebaas.WebApi.Health.HealthCheckItemResult.SortOrder">
+            <summary>
+            Defines the order of this provider in the results.
+            </summary>
+        </member>
+        <member name="T:Ebaas.WebApi.Health.HealthCheckResult">
+            <summary>
+            DTO for the health check endpoint to return base data as well as the info from the individual health check providers.
+            </summary>
+        </member>
+        <member name="P:Ebaas.WebApi.Health.HealthCheckResult.HasFailures">
+            <summary>
+            Indicates if at least one of the connected health checks is not considered healthy.
+            </summary>
+        </member>
+        <member name="P:Ebaas.WebApi.Health.HealthCheckResult.MachineName">
+            <summary>
+            Gets or sets the current machine name.
+            </summary>
+        </member>
+        <member name="P:Ebaas.WebApi.Health.HealthCheckResult.TimeTakenInSeconds">
+            <summary>
+            Gets or sets the total time in seconds it took to test all connected health check providers.
+            </summary>
+        </member>
+        <member name="P:Ebaas.WebApi.Health.HealthCheckResult.HealthChecks">
+            <summary>
+            Gets the information of the connected health check providers.
+            </summary>
+        </member>
+        <member name="T:Ebaas.WebApi.Health.HealthState">
+            <summary>
+            Defines the various health states.
+            </summary>
+        </member>
+        <member name="F:Ebaas.WebApi.Health.HealthState.Healthy">
+            <summary>
+            The resource is considered up and healthy.
+            </summary>
+        </member>
+        <member name="F:Ebaas.WebApi.Health.HealthState.Degraded">
+            <summary>
+            The resource is considered to be degraded which means it's still up but not fully functional.
+            </summary>
+        </member>
+        <member name="F:Ebaas.WebApi.Health.HealthState.Unhealthy">
+            <summary>
+            The resource is considered to be unhealthy.
+            </summary>
+        </member>
+        <member name="T:Ebaas.WebApi.Health.IHealthCheckProvider">
+            <summary>
+            Defines the interface for a health check provider.
+            </summary>
+        </member>
+        <member name="M:Ebaas.WebApi.Health.IHealthCheckProvider.GetHealthCheckAsync">
+            <summary>
+            Returns the health heck info.
+            </summary>
+        </member>
+        <member name="P:Ebaas.WebApi.Health.IHealthCheckProvider.SortOrder">
+            <summary>
+            Defines the order of this provider in the results.
+            </summary>
+        </member>
+        <member name="T:Ebaas.WebApi.Health.MessageContainer">
+            <summary>
+            Container class to hold a text message and an additional info object. Used by health check providers to expose additional information.
+            </summary>
+        </member>
+        <member name="M:Ebaas.WebApi.Health.MessageContainer.#ctor(System.String)">
+            <summary>
+            Creates a new instance of the MessageContainer class.
+            </summary>
+            <param name="message">The info message to add.</param>
+        </member>
+        <member name="M:Ebaas.WebApi.Health.MessageContainer.#ctor(System.String,System.Object)">
+            <summary>
+            Creates a new instance of the MessageContainer class.
+            </summary>
+            <param name="message">The info message to add.</param>
+            <param name="additionalInfo">An object with additional info for the health check provider point.</param>
+        </member>
+        <member name="P:Ebaas.WebApi.Health.MessageContainer.Message">
+            <summary>
+            Gets or sets the info message.
+            </summary>
+        </member>
+        <member name="P:Ebaas.WebApi.Health.MessageContainer.AdditionalInfo">
+            <summary>
+            Gets or sets an object with additional info for the health check provider point.
+            </summary>
+        </member>
+        <member name="T:Ebaas.WebApi.Health.MessageExtensions">
+            <summary>
+            Custom methods for List of MessageContainer to expose easier Add methods.
+            </summary>
+        </member>
+        <member name="M:Ebaas.WebApi.Health.MessageExtensions.Add(System.Collections.Generic.List{Ebaas.WebApi.Health.MessageContainer},System.String)">
+            <summary>
+            Adds a new MessageContainer with just a message.
+            </summary>
+            <param name="list">The list to add to.</param>
+            <param name="message">The message to add.</param>
+        </member>
+        <member name="M:Ebaas.WebApi.Health.MessageExtensions.Add(System.Collections.Generic.List{Ebaas.WebApi.Health.MessageContainer},System.String,System.Object)">
+            <summary>
+            Adds a new MessageContainer with a message and an object with additional information.
+            </summary>
+            <param name="list">The list to add to.</param>
+            <param name="message">The message to add.</param>
+            <param name="additionalInfo">An object with additional info for the health check provider point.</param>
+        </member>
+        <member name="T:Ebaas.WebApi.Health.Checks.DatabaseHealthCheckProvider">
+            <summary>
+            Provides health info about the main database.
+            </summary>
+        </member>
+        <member name="M:Ebaas.WebApi.Health.Checks.DatabaseHealthCheckProvider.GetHealthCheckAsync">
+            <summary>
+            Tries to connect to the application's main database.
+            </summary>
+        </member>
+        <member name="P:Ebaas.WebApi.Health.Checks.DatabaseHealthCheckProvider.SortOrder">
+            <summary>
+            Defines the order of this provider in the results.
+            </summary>
+        </member>
+        <member name="T:Ebaas.WebApi.Health.Checks.CacheHealthCheckProvider">
+            <summary>
+            Provides health info about the Cache.
+            </summary>
+        </member>
+        <member name="M:Ebaas.WebApi.Health.Checks.CacheHealthCheckProvider.GetHealthCheckAsync">
+            <summary>
+            Tries to connect to the application's main database.
+            </summary>
+        </member>
+        <member name="P:Ebaas.WebApi.Health.Checks.CacheHealthCheckProvider.SortOrder">
+            <summary>
+            Defines the order of this provider in the results.
+            </summary>
+        </member>
+        <member name="T:Ebaas.WebApi.Health.BlobStorageHealthCheckProvider">
+            <summary>
+            Provides health info about the blob storage.
+            </summary>
+        </member>
+        <member name="M:Ebaas.WebApi.Health.BlobStorageHealthCheckProvider.GetHealthCheckAsync">
+            <summary>
+            Tries to connect to the application's main database.
+            </summary>
+        </member>
+        <member name="P:Ebaas.WebApi.Health.BlobStorageHealthCheckProvider.SortOrder">
+            <summary>
+            Defines the order of this provider in the results.
+            </summary>
+        </member>
+        <member name="T:Ebaas.WebApi.Health.FullTextSearchHealthCheckProvider">
+            <summary>
+            Provides health info about the full text search.
+            </summary>
+        </member>
+        <member name="M:Ebaas.WebApi.Health.FullTextSearchHealthCheckProvider.GetHealthCheckAsync">
+            <summary>
+            Tries to connect to the application's main database.
+            </summary>
+        </member>
+        <member name="P:Ebaas.WebApi.Health.FullTextSearchHealthCheckProvider.SortOrder">
+            <summary>
+            Defines the order of this provider in the results.
+            </summary>
+        </member>
         <member name="T:Ebaas.WebApi.Hubs.MessageHubMaster">
             <summary>
             The single instance of the MessageHub which can be called anywhere in the server

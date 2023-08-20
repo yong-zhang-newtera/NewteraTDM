@@ -146,7 +146,7 @@ angular.module('SmartAdmin.Layout').directive('smartLayout', function ($rootScop
 
             $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
                 //console.log(1, '$stateChangeStart', event, toState, toState.authenticate, toParams, fromState, fromParams);
-
+ 
                 handleHtmlId(toState);
                 detachOnResize();
 

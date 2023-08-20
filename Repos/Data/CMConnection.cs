@@ -10,19 +10,12 @@ namespace Newtera.Data
 	using System.Data;
     using System.Xml;
 	using System.Threading;
-	using System.Resources;
-	using System.Security.Principal;
-	using System.Text.RegularExpressions;
-	using System.Collections;
-	using System.ComponentModel;
 
 	using Newtera.Common.Core;
-	using Newtera.Server.DB;
 	using Newtera.Common.MetaData;
     using Newtera.Common.MetaData.DataView;
 	using Newtera.Server.Engine.Cache;
 	using Newtera.Common.MetaData.Principal;
-	using Newtera.Common.MetaData.XaclModel;
     using Newtera.Server.Engine.Interpreter;
 
 	/// <summary>
