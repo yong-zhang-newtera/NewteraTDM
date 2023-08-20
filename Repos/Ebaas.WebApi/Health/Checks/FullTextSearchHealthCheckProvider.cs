@@ -19,21 +19,25 @@ namespace Ebaas.WebApi.Health
         {
             var elasticSearchEnabled = ElasticsearchConfig.Instance.IsElasticsearchEnabled;
             var results = new List<HealthCheckItemResult>();
-            var result = new HealthCheckItemResult("Full-Text Search", SortOrder, "Checks full-text search", "Checks whether full-text search can be accessed.", elasticSearchEnabled ? "Elastic Search" : "Database");
+            var result = new HealthCheckItemResult("Full-Text Search", SortOrder, "Checks full-text search", "Checks whether full-text search can be accessed.", elasticSearchEnabled ? "Elastic Search" : "Disabled");
             results.Add(result);
 
             try
             {
                 if (elasticSearchEnabled)
                 {
-                    var exist = ElasticSearchWrapper.IsIndexExist("Test", "Test");
+                    var status = ElasticSearchWrapper.Ping();
+                    if (!status)
+                    {
+                        throw new Exception("Elastic Search can not be accessed.");
+                    }
                     result.HealthState = HealthState.Healthy;
                     result.Messages.Add($"Successfully connecting to Elastic Search at {ElasticsearchConfig.Instance.ElasticsearchURL}.");
                 }
                 else
                 {
                     result.HealthState = HealthState.Healthy;
-                    result.Messages.Add($"Using database query to perform full-text search.");
+                    result.Messages.Add($"Full-text search is disabled. To enable full-text search, please setup Elastic Search.");
                 }
             }
             catch (Exception ex)

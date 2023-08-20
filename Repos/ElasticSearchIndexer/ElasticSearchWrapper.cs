@@ -66,6 +66,13 @@ namespace Newtera.ElasticSearchIndexer
             return ElasticSearchWrapper.INDEX_PREFIX + "_" + schemaName.ToLower() + "_" + className.ToLower();
         }
 
+        public static bool Ping()
+        {
+            var client = GetClient();
+            var result = client.Ping();
+            return result.IsValid;
+        }
+
         public static bool IsIndexExist(string schemaName, string className)
         {
             var client = GetClient();
