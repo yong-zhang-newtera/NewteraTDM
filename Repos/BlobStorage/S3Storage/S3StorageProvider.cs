@@ -268,7 +268,14 @@ namespace Newtera.BlobStorage.S3Storage
             }
             catch (AmazonS3Exception asex)
             {
-                throw asex.ToStorageException();
+                if (asex.StatusCode == HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                else
+                {
+                    throw asex.ToStorageException();
+                }
             }
         }
 
