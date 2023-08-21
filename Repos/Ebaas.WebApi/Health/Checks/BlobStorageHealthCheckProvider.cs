@@ -15,7 +15,7 @@ namespace Ebaas.WebApi.Health
         /// <summary>
         /// Tries to connect to the application's main database.
         /// </summary>
-        public Task<List<HealthCheckItemResult>> GetHealthCheckAsync()
+        public async Task<List<HealthCheckItemResult>> GetHealthCheckAsync()
         {
             var results = new List<HealthCheckItemResult>();
             HealthCheckItemResult result = null;
@@ -30,7 +30,7 @@ namespace Ebaas.WebApi.Health
                     result = new HealthCheckItemResult($"Blob Storage:({bucketConfig.Name})", (SortOrder + index++), "Checks Blob Storage", "Checks whether Blob storage can be accessed.", bucketConfig.Type);
                     results.Add(result);
                     var storageProvider = StorageProviderFactory.Instance.Create(bucketConfig);
-                    var status = storageProvider.DoesBlobExistAsync("Test", "Test");
+                    bool exist = await storageProvider.DoesBlobExistAsync("Test", "Test");
 
                     result.HealthState = HealthState.Healthy;
                     result.Messages.Add($"Successfully connecting to a {currentBucket.Type} Blob Storage at {GetStorageLocation(currentBucket)}.");
@@ -47,7 +47,7 @@ namespace Ebaas.WebApi.Health
                 result.Messages.Add($"Error connecting to a {currentBucket.Type} Blob Storage at {GetStorageLocation(currentBucket)} due to {ex.Message} with detail {ex.StackTrace}.");
             }
 
-            return Task.FromResult(results);
+            return results;
         }
 
         /// <summary>
