@@ -1,7 +1,7 @@
 ﻿"use strict";
 
 
-angular.module('app.homepage').controller('mainMenuCtrl', function ($scope, $rootScope, $state, promisedMenuItems, bulletinService) {
+angular.module('app.homepage').controller('mainMenuCtrl', function ($scope, $rootScope, $state, promisedMenuItems) {
 
     $scope.dbschema = undefined;
     $scope.dbclass = undefined;
@@ -73,12 +73,6 @@ angular.module('app.homepage').controller('mainMenuCtrl', function ($scope, $roo
     }
 
     $scope.menuItems = menuItems;
-
-    if ($scope.dbschema) {
-        bulletinService.getPublicPosts($scope.dbschema, $scope.dbclass, function (data) {
-            $scope.slides = data;
-        });
-    }
 
     $scope.options = {
         visible: 5,

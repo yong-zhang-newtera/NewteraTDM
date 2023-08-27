@@ -1,0 +1,60 @@
+﻿<div id="content">
+    <div class="row">
+        <big-breadcrumbs items="[getWord('Home'), getWord('Create Task')]" class="col-xs-12 col-sm-12"></big-breadcrumbs>
+    </div>
+    <!--
+        The ID "widget-grid" will start to initialize all widgets below
+        You do not need to use widgets if you dont want to. Simply remove
+        the <section></section> and you can use wells or panels instead
+        -->
+    <!-- widget grid -->
+    <section id="widget-grid" data-widget-grid>
+        <!-- row -->
+        <div class="row">
+            <!-- NEW WIDGET START -->
+            <article class="col-xs-12 col-sm-12">
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="well" id="widget-title-widget" data-jarvis-widget>
+                    <!-- widget options:
+                        usage: <div data-jarvis-widget id="wid-id-0" data-widget-editbutton="false">
+                        data-widget-colorbutton="false"
+                        data-widget-editbutton="false"
+                        data-widget-togglebutton="false"
+                        data-widget-deletebutton="false"
+                        data-widget-fullscreenbutton="false"
+                        data-widget-custombutton="false"
+                        data-widget-collapsed="true"
+                        data-widget-sortable="false"
+                    -->
+                    <header></header>
+                    <!-- widget div-->
+                    <div>
+                        <!-- widget content -->
+                        <div class="widget-body">
+                            <form name="ebaasform" novalidate ng-submit="onTaskSubmit()">
+                                <div data-ng-hide="message == ''" ng-class="getFormCssClasses(ebaasform)">
+                                    {{message}}
+                                </div>
+                                <ebaas-form-template dbschema="dbschema" dbclass="dbclass" oid="oid" template="template"></ebaas-form-template>
+                                <div data-ng-hide="message == ''" ng-class="getFormCssClasses(ebaasform)">
+                                    {{message}}
+                                </div>
+                                <div class="form-actions">
+                                    <button ng-show="allowSubmit()" type="submit" class="btn btn-primary" button-spinner="loading" ng-disabled="!canSave() || loading">
+                                        {{getWord('Submit')}}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- end widget content -->
+                    </div>
+                    <!-- end widget div -->
+                </div>
+                <!-- end widget -->
+            </article>
+            <!-- WIDGET END -->
+        </div>
+        <!-- end row -->
+    </section>
+    <!-- end widget grid -->
+</div>

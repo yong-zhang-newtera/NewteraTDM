@@ -1,5 +1,5 @@
 ﻿(function (app) {
-    var LoginController = function ($rootScope, $scope, $http, $state, $location, authService, APP_CONFIG, User, TasksInfo, myActivityService, hubService) {
+    var LoginController = function ($rootScope, $scope, $http, $state, $location, authService, APP_CONFIG, User, myActivityService, hubService) {
 
         $scope.loginData = {
             userName: "",
@@ -23,12 +23,6 @@
                         myActivityService.add(type, message);
                     }); // connect to server hub to receive messages
                 }); // load user info
-
-                //get user's task count to display at header
-                $http.get(APP_CONFIG.ebaasRootUrl + "/api/tasks/" + encodeURIComponent(APP_CONFIG.dbschema) + "/count")
-                    .success(function (data) {
-                        TasksInfo.count = data;
-                    });
 
                 //get user's message count to display at header
                 $http.get(APP_CONFIG.ebaasRootUrl + "/api/messages/count")
