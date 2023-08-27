@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-angular.module('app.smartforms').controller('relatedFormModalCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $stateParams, $modalInstance, $state, TasksInfo) {
+angular.module('app.smartforms').controller('relatedFormModalCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $stateParams, $modalInstance, $state) {
  
     $scope.dbschema = $stateParams.schema;
     $scope.dbclass = $stateParams.rclass;
@@ -10,13 +10,8 @@ angular.module('app.smartforms').controller('relatedFormModalCtrl', function ($c
     $scope.masterClass = ($stateParams.masterclass) ? $stateParams.masterclass : $stateParams.class;
     $scope.readonly = false;
 
-    if ($stateParams.oid || $stateParams.masteroid)
+    if ($stateParams.oid || $stateParams.masteroid) {
         $scope.masterOid = ($stateParams.masteroid) ? $stateParams.masteroid : $stateParams.oid;
-    else if (TasksInfo.currentTask) {
-        // when the related form is launched from a WF task form, oid is missing from state params
-        // it can be obtained from the current task info
-        $scope.masterOid = TasksInfo.currentTask.bindingInstanceId;
-        $scope.masterClass = TasksInfo.currentTask.bindingClassName;
     }
             
     if ($stateParams.readonly && $stateParams.readonly === "true")
