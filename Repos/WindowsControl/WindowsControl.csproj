@@ -74,11 +74,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DevExpress 2009.1\DevExpress.Dll\DevExpress.XtraEditors.v9.1.dll</HintPath>
     </Reference>
-    <Reference Include="Gigasoft.ProEssentials, Version=1.0.1923.14327, Culture=neutral, PublicKeyToken=38150f10c0d12be5" />
-    <Reference Include="Newtera.DataGridActiveX, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DataGridActiveX\bin\Debug\Newtera.DataGridActiveX.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Design" />
