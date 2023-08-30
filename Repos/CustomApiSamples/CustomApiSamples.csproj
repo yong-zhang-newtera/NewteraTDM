@@ -73,10 +73,6 @@
       <Project>{8d18c53d-0505-4444-a607-a8e7f80a8dba}</Project>
       <Name>Server</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SkyServiceProxy\SkyServiceStub.csproj">
-      <Project>{ef2db3fa-3d6c-4dac-af4d-ead45ab2d1a9}</Project>
-      <Name>SkyServiceStub</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WebForm\WebForm.csproj">
       <Project>{2f3ef2ed-48d0-45c1-88a6-0195abba46ec}</Project>
       <Name>WebForm</Name>
