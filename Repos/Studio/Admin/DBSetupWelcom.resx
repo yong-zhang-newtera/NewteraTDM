@@ -139,7 +139,7 @@
     <value>3</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
-    <value>Welcom to Server Setup Wizard.  The wizard walks you through the steps of configuring the Ebaas Server. Click Next to continue.</value>
+    <value>Welcom to Server Setup Wizard.  The wizard walks you through the steps of configuring the Newtera Server. Click Next to continue.</value>
   </data>
   <data name="&gt;&gt;label2.Name" xml:space="preserve">
     <value>label2</value>

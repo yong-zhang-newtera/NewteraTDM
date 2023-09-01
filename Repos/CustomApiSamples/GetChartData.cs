@@ -8,7 +8,7 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-using Ebaas.WebApi.Models;
+using Newtera.WebApi.Models;
 using Newtera.Common.Core;
 
 namespace CustomApiSamples

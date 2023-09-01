@@ -14,7 +14,7 @@ using Newtera.Data;
 using Newtera.Common.MetaData;
 using Newtera.Common.MetaData.Schema;
 using Newtera.Common.MetaData.DataView;
-using Ebaas.WebApi.Models;
+using Newtera.WebApi.Models;
 using Newtera.WebForm;
 using Newtera.Common.Core;
 

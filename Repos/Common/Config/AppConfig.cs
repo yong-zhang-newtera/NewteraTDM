@@ -30,7 +30,7 @@ namespace Newtera.Common.Config
 	/// </remarks>
 	public class AppConfig
 	{
-		private const string WEB_CONFIG = "EbaasServer.exe.config";
+		private const string WEB_CONFIG = "NewteraServer.exe.config";
 		private const string APP_SETTINGS = "appSettings";
 		private const string KEY_NAME = "key";
 		private const string VALUE_NAME = "value";

@@ -90,7 +90,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CSMatIO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\Ebaas\packages\CSMatIO.1.0.2\lib\net45\CSMatIO.dll</HintPath>
+      <HintPath>..\Newtera\packages\CSMatIO.1.0.2\lib\net45\CSMatIO.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System">
@@ -103,7 +103,7 @@
       <Name>System.XML</Name>
     </Reference>
     <Reference Include="zlib.net, Version=1.0.3.0, Culture=neutral, PublicKeyToken=47d7877cb3620160">
-      <HintPath>..\Ebaas\packages\zlib.net.1.0.4.0\lib\zlib.net.dll</HintPath>
+      <HintPath>..\Newtera\packages\zlib.net.1.0.4.0\lib\zlib.net.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
