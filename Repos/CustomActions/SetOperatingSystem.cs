@@ -371,7 +371,7 @@ namespace Newtera.CustomActions
 
             ebaaasInstallPath = getInstall.getInstallPath(ebaaasInstallPath);
             //安装路径调试用
-            //ebaaasInstallPath = "C:\\Program Files\\Ebaas\\";
+            //ebaaasInstallPath = "C:\\Program Files\\Newtera\\";
 
             return ebaaasInstallPath;
         }

@@ -277,7 +277,7 @@ namespace Newtera.Common.Core
         public const string ATTACHMENTS_URL = @"~/attachments/";
         public const string USER_FILES_DIR_KEY = "UserFileBasePath";
         public const string USER_FILES_DIR = @"UserFiles";
-        public const string SERVER_CONFIG_FILE = "EbaasServer.exe.config";
+        public const string SERVER_CONFIG_FILE = "NewteraServer.exe.config";
         // Elastic Search URL
         public const string ELASTIC_SEARCH_URL_KEY = "ElasticsearchURL";
 

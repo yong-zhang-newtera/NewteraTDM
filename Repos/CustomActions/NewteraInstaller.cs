@@ -18,7 +18,7 @@ namespace Newtera.CustomActions
 	[RunInstaller(true)]
 	public class NewteraInstaller : System.Configuration.Install.Installer
 	{
-		private const string CONFIG_FILE = "EbaasServer.exe.config";
+		private const string CONFIG_FILE = "NewteraServer.exe.config";
         private const string APP_SETTINGS = "appSettings";
         private const string KEY_NAME = "key";
         private const string VALUE_NAME = "value";
@@ -28,7 +28,7 @@ namespace Newtera.CustomActions
         private const string CONFIG_DIR = "Config";
         private const string HOME_DIR_KEY = "HomeDir";
         private const string TOOL_DIR_KEY = "TOOL_DIR";
-        private const string WORKING_DIR = @"C:\Program Files\Ebaas\bin";
+        private const string WORKING_DIR = @"C:\Program Files\Newtera\bin";
 
         /// <summary>
         /// Required designer variable.
@@ -110,7 +110,7 @@ namespace Newtera.CustomActions
             }
             catch (Exception ex)
             {
-                StreamWriter sw = new StreamWriter(@"C:\Program Files\Ebaas\InstallTrace.txt");
+                StreamWriter sw = new StreamWriter(@"C:\Program Files\Newtera\InstallTrace.txt");
 
                 sw.WriteLine("Installation failed with " + ex.Message + @"\n" + ex.StackTrace);
                 sw.Flush();
@@ -142,7 +142,7 @@ namespace Newtera.CustomActions
 
         private void ModifyFoldersPermissions()
         {
-            string baseDir = @"C:\Program Files\Ebaas";
+            string baseDir = @"C:\Program Files\Newtera";
             DirectoryInfo directoryInfo = new DirectoryInfo(baseDir);
 
             DirectorySecurity directorySecurity = directoryInfo.GetAccessControl();
@@ -163,7 +163,7 @@ namespace Newtera.CustomActions
                     directoryInfo.SetAccessControl(dSecurity);
                     directoryInfo.Refresh();
 
-                    StreamWriter sw = new StreamWriter(@"C:\Program Files\Ebaas\InstallTrace.txt");
+                    StreamWriter sw = new StreamWriter(@"C:\Program Files\Newtera\InstallTrace.txt");
 
                     sw.WriteLine("Set full control to everyone for " + baseDir + "\\" + d.Name);
                     sw.Flush();
@@ -177,7 +177,7 @@ namespace Newtera.CustomActions
         }
 
 		/// <summary>
-		/// Update EbaasServer.exe.config
+		/// Update NewteraServer.exe.config
 		/// </summary>
 		private void UpdateConfigs(string installedPath)
 		{
@@ -203,7 +203,7 @@ namespace Newtera.CustomActions
             }
             else
             {
-                StreamWriter sw = new StreamWriter(@"C:\Program Files\Ebaas\InstallTrace.txt");
+                StreamWriter sw = new StreamWriter(@"C:\Program Files\Newtera\InstallTrace.txt");
 
                 sw.WriteLine("Installed path is empty ");
                 sw.Flush();

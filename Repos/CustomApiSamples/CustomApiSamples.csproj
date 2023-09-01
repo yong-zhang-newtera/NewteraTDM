@@ -33,7 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\Ebaas\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\Newtera\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -65,9 +65,9 @@
       <Project>{c6d2e9e8-756b-4579-93c7-351a948d3c8c}</Project>
       <Name>Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ebaas.WebApi\Ebaas.WebApi.csproj">
+    <ProjectReference Include="..\Newtera.WebApi\Newtera.WebApi.csproj">
       <Project>{39a51f07-4200-4770-a756-1da9af579c7f}</Project>
-      <Name>Ebaas.WebApi</Name>
+      <Name>Newtera.WebApi</Name>
     </ProjectReference>
     <ProjectReference Include="..\Server\Server.csproj">
       <Project>{8d18c53d-0505-4444-a607-a8e7f80a8dba}</Project>

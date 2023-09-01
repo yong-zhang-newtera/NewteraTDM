@@ -21,7 +21,7 @@ angular.module("app.smartforms").config(function ($stateProvider, modalStateProv
         .state('app.smartforms.ebaasform', {
             url: '/form/:schema/:class/:oid/:readonly/:template/:formAttribute',
             data: {
-                title: 'Ebaas Form',
+                title: 'Newtera Form',
                 animation: false /* disable the content loading animation since $viewContentLoaded will not fire when opening modal */
             },
             views: {
