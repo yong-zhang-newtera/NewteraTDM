@@ -74,12 +74,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParserGen", "..\ParserProje
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartApp", "..\SmartApp\SmartApp.csproj", "{843ED736-BA41-4EA5-91D7-249D2C73564A}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "NewteraCNStandardSetup", "..\NewteraStandardSetup\NewteraStandardSetup.vdproj", "{0E3E843E-0F3A-43D6-B1B5-21B51B0BE313}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "NewteraStandardSetup", "..\NewteraStandardSetup\NewteraStandardSetup.vdproj", "{0E3E843E-0F3A-43D6-B1B5-21B51B0BE313}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlobStorage", "..\BlobStorage\BlobStorage.csproj", "{2E835210-D889-4CA7-8C2C-CFB0D6442446}"
 	ProjectSection(ProjectDependencies) = postProject
 		{CF010325-1364-4754-9192-CF7873C35F90} = {CF010325-1364-4754-9192-CF7873C35F90}
 	EndProjectSection
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "NewteraCNStandardSetup", "..\NewteraCNStandardSetup\NewteraCNStandardSetup.vdproj", "{C99B1DDE-AD83-42B6-B049-6C1DB87544F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -518,6 +520,16 @@ Global
 		{2E835210-D889-4CA7-8C2C-CFB0D6442446}.Release|x64.Build.0 = Release|Any CPU
 		{2E835210-D889-4CA7-8C2C-CFB0D6442446}.Release|x86.ActiveCfg = Release|Any CPU
 		{2E835210-D889-4CA7-8C2C-CFB0D6442446}.Release|x86.Build.0 = Release|Any CPU
+		{C99B1DDE-AD83-42B6-B049-6C1DB87544F9}.Debug|Any CPU.ActiveCfg = Debug
+		{C99B1DDE-AD83-42B6-B049-6C1DB87544F9}.Debug|x64.ActiveCfg = Debug
+		{C99B1DDE-AD83-42B6-B049-6C1DB87544F9}.Debug|x64.Build.0 = Debug
+		{C99B1DDE-AD83-42B6-B049-6C1DB87544F9}.Debug|x86.ActiveCfg = Debug
+		{C99B1DDE-AD83-42B6-B049-6C1DB87544F9}.Debug|x86.Build.0 = Debug
+		{C99B1DDE-AD83-42B6-B049-6C1DB87544F9}.Release|Any CPU.ActiveCfg = Release
+		{C99B1DDE-AD83-42B6-B049-6C1DB87544F9}.Release|x64.ActiveCfg = Release
+		{C99B1DDE-AD83-42B6-B049-6C1DB87544F9}.Release|x64.Build.0 = Release
+		{C99B1DDE-AD83-42B6-B049-6C1DB87544F9}.Release|x86.ActiveCfg = Release
+		{C99B1DDE-AD83-42B6-B049-6C1DB87544F9}.Release|x86.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
