@@ -109,11 +109,6 @@ namespace Newtera.Common.Core
         public const string SMART_WORD_NAME = "SW";
         public const string SMART_EXCEL_NAME = "SE";
 
-		/// <summary>
-		/// LICENSE_KEY definition for Web.Config
-		/// </summary>
-		//public const string LICENSE_KEY = @"LicenseKey";
-
 		internal const string TIGHT_REFERENCED = "tightReferenced";
 		internal const string LOOSE_REFERENCED = "looseReferenced";
 		internal const string OWNED = "owned";

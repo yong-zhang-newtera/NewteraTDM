@@ -424,7 +424,6 @@ namespace RestoreTool
         /// <summary>
         /// 检查新节点是更新的节点,以下是要比较的实例
         /// <add assembly="System.DirectoryServices, Version=2.0.0.0, Culture=neutral, PublicKeyToken=B03F5F7F11D50A3A" />
-        /// <add key="LicenseKey" value="43DE-3ED4-EEA3-B02F-162F-A3DB-015D-F8FF-F192-ACAF-1B88-821B-92AD-7F55-0B5C-C2BB" />
         /// <add name="ScriptModule" type="System.Web.Handlers.ScriptModule, System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
         /// <return>return bool</return>
         /// </summary>
