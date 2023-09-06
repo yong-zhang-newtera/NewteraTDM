@@ -40,9 +40,7 @@
     <StartupObject>
     </StartupObject>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' " />
   <ItemGroup>
     <Reference Include="Cntk.Core.Managed-2.7, Version=2.7.0.0, Culture=neutral, PublicKeyToken=21fff2ec8197defe, processorArchitecture=AMD64">
       <HintPath>..\Newtera\packages\CNTK.CPUOnly.2.7.0\lib\netstandard2.0\Cntk.Core.Managed-2.7.dll</HintPath>
