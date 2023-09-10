@@ -172,6 +172,7 @@
     <Content Include="Properties\Resources\Settings.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Properties\DataSources\Newtera.WFModel.TaskInfo.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
