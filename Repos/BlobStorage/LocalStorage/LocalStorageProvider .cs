@@ -1,25 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Newtera.BlobStorage.LocalStorage
 {
     public class LocalStorageProvider : IStorageProvider
     {
         private readonly string _basePath;
-        private readonly JsonSerializerOptions _jsonSerialiserOptions;
 
         public LocalStorageProvider(string basePath)
         {
             _basePath = basePath;
-            _jsonSerialiserOptions = new JsonSerializerOptions
-            {
-                Converters = { new JsonStringEnumConverter() },
-                WriteIndented = true
-            };
         }
 
         public void DeleteBlob(string containerName, string blobName)
@@ -295,7 +290,7 @@ namespace Newtera.BlobStorage.LocalStorage
                 var path = ExtractFullPathAndProtectAgainstPathTraversal(containerName, blobName);
                 var metaPath = CreateMetadataPath(path);
 
-                var json = JsonSerializer.Serialize(properties, _jsonSerialiserOptions);
+                var json = JsonConvert.SerializeObject(properties, Formatting.Indented);
 
                 using (var file = File.Create(metaPath))
                 using (var streamWriter = new StreamWriter(file))
@@ -317,7 +312,7 @@ namespace Newtera.BlobStorage.LocalStorage
                 var path = ExtractFullPathAndProtectAgainstPathTraversal(containerName, blobName);
                 var metaPath = CreateMetadataPath(path);
 
-                var json = JsonSerializer.Serialize(properties, _jsonSerialiserOptions);
+                var json = JsonConvert.SerializeObject(properties, Formatting.Indented); ;
 
                 using (var file = File.Create(metaPath))
                 using (var streamWriter = new StreamWriter(file))
@@ -381,7 +376,7 @@ namespace Newtera.BlobStorage.LocalStorage
             using (var streamReader = new StreamReader(file))
             {
                 var metaContent = streamReader.ReadToEnd();
-                return JsonSerializer.Deserialize<BlobDescriptor>(metaContent, _jsonSerialiserOptions);
+                return JsonConvert.DeserializeObject<BlobDescriptor>(metaContent);
             }
         }
 
@@ -395,7 +390,7 @@ namespace Newtera.BlobStorage.LocalStorage
             using (var streamReader = new StreamReader(file))
             {
                 var metaContent = await streamReader.ReadToEndAsync();
-                return JsonSerializer.Deserialize<BlobDescriptor>(metaContent, _jsonSerialiserOptions);
+                return JsonConvert.DeserializeObject<BlobDescriptor>(metaContent);
             }
         }
     }
