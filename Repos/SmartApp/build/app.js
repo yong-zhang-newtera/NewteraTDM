@@ -598,7 +598,7 @@ angular.module('app', [
     'app.dataviewer',
     "app.userdirectory",
     "app.newtask",
-    "app.filemanager",
+    "app.blobmanager",
     'app.formeditor',
     "app.smartreports",
     "app.hub",
@@ -1220,6 +1220,20 @@ angular.module('app.auth', [
     facebookAppId: ''
 });
 
+"use strict";
+
+angular.module("app.blobmanager", ["ui.router", "ui.bootstrap"]);
+
+angular.module("app.blobmanager").config(function ($stateProvider, modalStateProvider) {
+
+    $stateProvider
+        .state('app.blobmanager', {
+            url: '/blobmanager/:schema/:class/:oid/:prefix/:cmdHash',
+            data: {
+                title: 'blobmanager Viewer'
+            }
+        });
+    });
 'use strict';
 
 angular.module('app.dashboard', [
@@ -1289,31 +1303,6 @@ angular.module("app.dataviewer").config(function ($stateProvider, modalStateProv
                 "content@app": {
                     controller: 'DataViewerCtrl',
                     templateUrl: "app/dataviewer/views/data-viewer.html"
-                }
-            }
-        });
-    });
-"use strict";
-
-angular.module("app.filemanager", ["ui.router", "ui.bootstrap"]);
-
-angular.module("app.filemanager").config(function ($stateProvider, modalStateProvider) {
-
-    $stateProvider
-        .state('app.filemanager', {
-            url: '/filemanager/:schema/:class/:oid/:prefix/:cmdHash',
-            data: {
-                title: 'Filemanager Viewer'
-            },
-            views: {
-                "content@app": {
-                    templateUrl: "app/filemanager/views/file-manager-viewer.html",
-                    controller: "fileManagerViewerCtrl"
-                }
-            },
-            resolve: {
-                scripts: function(lazyScript){
-                    return lazyScript.register('dropzone')
                 }
             }
         });
@@ -1974,26 +1963,6 @@ angular.module("app.smartforms").config(function ($stateProvider, modalStateProv
     });
 "use strict";
 
-angular.module("app.smartreports", ["ui.router", "ui.bootstrap"]);
-
-angular.module("app.smartreports").config(function ($stateProvider) {
-
-    $stateProvider
-        .state('app.smartreports', {
-            url: '/smartreports/:schema/:class/:oid/:xmlschema/:fileType/:cmdHash',
-            data: {
-                title: 'Smart Reports'
-            },
-            views: {
-                "content@app": {
-                    controller: 'downloadReportCtrl',
-                    templateUrl: "app/smartreports/views/download-report.html"
-                }
-            }
-        });
-    });
-"use strict";
-
 angular.module("app.smarttables", ["ngResource", "smart-table", "dx", "ui.router", "ui.bootstrap", "ui.bootstrap.modal", "ngProgress"]);
 
 angular.module("app.smarttables")
@@ -2265,16 +2234,6 @@ angular.module("app.smarttables")
             size: 'lg'
         });
 
-        modalStateProvider.state('app.smarttables.datagrid.attachments', {
-            url: '^/datagridattachments/:schema/:class/:oid/:readonly',
-            templateUrl: "app/attachments/views/attachments-modal.html",
-            controller: 'attachmentsModalCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'lg'
-        });
-
         modalStateProvider.state('app.smarttables.datagrid.modalform.relatedform', {
             url: '^/datagridrelatedform/:rclass/:roid/:rtemplate/:rformAttribute/:readonly',
             templateUrl: "app/smartforms/views/related-form-modal.html",
@@ -2397,16 +2356,6 @@ angular.module("app.smarttables")
             url: '^/datagridrelatedrelatedformviewlog/:logschema/:logclass/:logoid/:logproperty',
             templateUrl: "app/logs/views/change-log-viewer.html",
             controller: 'changeLogViewerCtrl',
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.smarttables.datagrid.related.attachments', {
-            url: '^/relatedachments/:schema/:class/:oid?readonly',
-            templateUrl: "app/attachments/views/attachments-modal.html",
-            controller: 'attachmentsModalCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
             animation: false,
             size: 'lg'
         });
@@ -2543,16 +2492,6 @@ angular.module("app.smarttables")
             size: 'lg'
         });
 
-        modalStateProvider.state('app.smarttables.datagrid.related.modalform.attachments', {
-            url: '^/datagridrelatedformmodalformachments/:schema/:class/:oid?readonly',
-            templateUrl: "app/attachments/views/attachments-modal.html",
-            controller: 'attachmentsModalCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'lg'
-        });
-
         modalStateProvider.state('app.smarttables.datagrid.related.report', {
             url: '^/datagridrelatedreport/:schema/:class/:oid/:template/:templateAttribute/:fileType/:cmdHash',
             templateUrl: "app/smartreports/views/download-report.html",
@@ -2561,6 +2500,26 @@ angular.module("app.smarttables")
             keyboard: false,
             animation: false,
             size: 'sm'
+        });
+    });
+"use strict";
+
+angular.module("app.smartreports", ["ui.router", "ui.bootstrap"]);
+
+angular.module("app.smartreports").config(function ($stateProvider) {
+
+    $stateProvider
+        .state('app.smartreports', {
+            url: '/smartreports/:schema/:class/:oid/:xmlschema/:fileType/:cmdHash',
+            data: {
+                title: 'Smart Reports'
+            },
+            views: {
+                "content@app": {
+                    controller: 'downloadReportCtrl',
+                    templateUrl: "app/smartreports/views/download-report.html"
+                }
+            }
         });
     });
 "use strict";
@@ -2630,6 +2589,81 @@ angular.module("app.stations").config(function ($stateProvider, modalStateProvid
             size: 'lg'
         });
     });
+"use strict";
+
+angular.module("app.taskviewer", ["ui.router", "ui.bootstrap"]);
+
+angular.module("app.taskviewer").config(function ($stateProvider, modalStateProvider) {
+
+    $stateProvider
+        .state('app.taskviewer', {
+            abstract: true,
+            url: '/taskviewer/:schema/:class/:oid/:taskNodeAttribute/:taskTemplate/:itemClass/:itemNodeAttribute/:itemTemplate/:packetClass/:packetNodeAttribute/:packetTemplate/:packetPrefix/:packetPrefixAttribute/:hash',
+            data: {
+                title: 'Task Viewer'
+            },
+            views: {
+                "content@app": {
+                    templateUrl: "app/taskviewer/views/task-viewer-layout.html",
+                    controller: 'TaskViewerLayoutCtrl'
+                },
+                'taskdetails@app.taskviewer': { templateUrl: 'app/taskviewer/views/task-details.html', },
+            }
+        })
+        .state('app.taskviewer.details', {
+            url: '/details/:schema/:class/:oid/:taskNodeAttribute/:taskTemplate/:itemClass/:itemOid/:itemNodeAttribute/:itemTemplate/:packetClass/:packetOid/:packetNodeAttribute/:packetTemplate/:packetPrefix/:packetPrefixAttribute/:activeTabId',
+            views: {
+                "taskform@app.taskviewer": {
+                    controller: 'TaskFormCtrl',
+                    templateUrl: "app/taskviewer/views/task-form.html"
+                },
+                "itemform@app.taskviewer": {
+                    controller: 'ItemFormCtrl',
+                    templateUrl: "app/taskviewer/views/item-form.html"
+                },
+                "packetform@app.taskviewer": {
+                    controller: 'PacketFormCtrl',
+                    templateUrl: "app/taskviewer/views/packet-form.html"
+                }
+            },
+        });
+
+    modalStateProvider.state('app.taskviewer.details.modalform', {
+        url: '^/detailsmodalform/:schema/:class/:readonly/:oid/:template/:formAttribute/:duplicate/:cmd/:sref',
+        templateUrl: "app/smartforms/views/ebaas-form-modal.html",
+        controller: 'ebaasFormModalCtrl',
+        backdrop: 'static', /*  this prevent user interaction with the background  */
+        keyboard: false,
+        animation: false,
+        size: 'lg'
+    });
+
+    modalStateProvider.state('app.taskviewer.details.relatedform', {
+        url: '^/detailsmodalform/:masterclass/:masteroid/:rclass/:roid/:rtemplate/:rformAttribute/:readonly',
+        templateUrl: "app/smartforms/views/related-form-modal.html",
+        controller: 'relatedFormModalCtrl',
+        backdrop: 'static', /*  this prevent user interaction with the background  */
+        keyboard: false,
+        animation: false,
+        size: 'lg'
+    });
+
+    modalStateProvider.state('app.taskviewer.details.relatedform.pickpk', {
+        url: '^/detailrelatedformpickpk/:pkclass/:property/:filter/:callback',
+        templateUrl: "app/smartforms/views/pick-primary-key.html",
+        controller: 'pickPrimaryKeyCtrl',
+        animation: false,
+        size: 'lg'
+    });
+
+    modalStateProvider.state('app.taskviewer.details.relatedform.viewmanytomany', {
+        url: '^/detailrelatedformviewmanytomany/:masterclass/:relatedclass/:masterid',
+        templateUrl: "app/smartforms/views/view-many-to-many.html",
+        controller: 'viewManyToManyCtrl',
+        animation: false,
+        size: 'lg'
+    });
+});
 "use strict";
 
 angular.module("app.taskkanban", ["ui.router", "ui.bootstrap", "DlhSoft.Kanban.Angular.Components"]);
@@ -2815,81 +2849,6 @@ angular.module("app.taskkanban").config(function ($stateProvider, modalStateProv
             size: 'lg'
         });
     });
-"use strict";
-
-angular.module("app.taskviewer", ["ui.router", "ui.bootstrap"]);
-
-angular.module("app.taskviewer").config(function ($stateProvider, modalStateProvider) {
-
-    $stateProvider
-        .state('app.taskviewer', {
-            abstract: true,
-            url: '/taskviewer/:schema/:class/:oid/:taskNodeAttribute/:taskTemplate/:itemClass/:itemNodeAttribute/:itemTemplate/:packetClass/:packetNodeAttribute/:packetTemplate/:packetPrefix/:packetPrefixAttribute/:hash',
-            data: {
-                title: 'Task Viewer'
-            },
-            views: {
-                "content@app": {
-                    templateUrl: "app/taskviewer/views/task-viewer-layout.html",
-                    controller: 'TaskViewerLayoutCtrl'
-                },
-                'taskdetails@app.taskviewer': { templateUrl: 'app/taskviewer/views/task-details.html', },
-            }
-        })
-        .state('app.taskviewer.details', {
-            url: '/details/:schema/:class/:oid/:taskNodeAttribute/:taskTemplate/:itemClass/:itemOid/:itemNodeAttribute/:itemTemplate/:packetClass/:packetOid/:packetNodeAttribute/:packetTemplate/:packetPrefix/:packetPrefixAttribute/:activeTabId',
-            views: {
-                "taskform@app.taskviewer": {
-                    controller: 'TaskFormCtrl',
-                    templateUrl: "app/taskviewer/views/task-form.html"
-                },
-                "itemform@app.taskviewer": {
-                    controller: 'ItemFormCtrl',
-                    templateUrl: "app/taskviewer/views/item-form.html"
-                },
-                "packetform@app.taskviewer": {
-                    controller: 'PacketFormCtrl',
-                    templateUrl: "app/taskviewer/views/packet-form.html"
-                }
-            },
-        });
-
-    modalStateProvider.state('app.taskviewer.details.modalform', {
-        url: '^/detailsmodalform/:schema/:class/:readonly/:oid/:template/:formAttribute/:duplicate/:cmd/:sref',
-        templateUrl: "app/smartforms/views/ebaas-form-modal.html",
-        controller: 'ebaasFormModalCtrl',
-        backdrop: 'static', /*  this prevent user interaction with the background  */
-        keyboard: false,
-        animation: false,
-        size: 'lg'
-    });
-
-    modalStateProvider.state('app.taskviewer.details.relatedform', {
-        url: '^/detailsmodalform/:masterclass/:masteroid/:rclass/:roid/:rtemplate/:rformAttribute/:readonly',
-        templateUrl: "app/smartforms/views/related-form-modal.html",
-        controller: 'relatedFormModalCtrl',
-        backdrop: 'static', /*  this prevent user interaction with the background  */
-        keyboard: false,
-        animation: false,
-        size: 'lg'
-    });
-
-    modalStateProvider.state('app.taskviewer.details.relatedform.pickpk', {
-        url: '^/detailrelatedformpickpk/:pkclass/:property/:filter/:callback',
-        templateUrl: "app/smartforms/views/pick-primary-key.html",
-        controller: 'pickPrimaryKeyCtrl',
-        animation: false,
-        size: 'lg'
-    });
-
-    modalStateProvider.state('app.taskviewer.details.relatedform.viewmanytomany', {
-        url: '^/detailrelatedformviewmanytomany/:masterclass/:relatedclass/:masterid',
-        templateUrl: "app/smartforms/views/view-many-to-many.html",
-        controller: 'viewManyToManyCtrl',
-        animation: false,
-        size: 'lg'
-    });
-});
 'use strict'
 
 angular.module('app.ui', ['ui.router']);
@@ -3932,6 +3891,137 @@ angular.module('app.appViews').controller('ProjectsDemoCtrl', function ($scope, 
 });
 'use strict';
 
+angular.module('app.attachments').controller('attachmentsCtrl', function ($scope, $rootScope, fileManager, APP_CONFIG, $stateParams) {
+
+    /* jshint validthis:true */
+    var vm = this;
+    vm.title = 'File Manager';
+    vm.files = fileManager.files;
+    vm.uploading = false;
+    vm.previewFile;
+    vm.currentFile;
+    vm.remove = fileManager.remove;
+    vm.download = fileManager.download;
+    vm.setPreviewFile = setPreviewFile;
+    vm.setCurrentFile = setCurrentFile;
+    vm.getWord = getWord;
+    vm.readonly = false;
+
+    $scope.showUpload = false;
+
+    fileManager.params.schema = this.dbschema;
+    if (!fileManager.params.schema)
+    {
+        fileManager.params.schema = $stateParams.schema;
+    }
+   
+    fileManager.params.cls = this.dbclass;
+    if (!fileManager.params.cls) {
+        fileManager.params.cls = $stateParams.class;
+    }
+
+    fileManager.params.oid = this.oid;
+
+    if (!fileManager.params.oid && !$stateParams.rclass) {
+        fileManager.params.oid = $stateParams.oid;
+    }
+
+    if (fileManager.params.oid) {
+        if ($stateParams.readonly && $stateParams.readonly === "true") {
+            vm.readonly = true;
+        }
+        else if (this.read && this.read === true)
+        {
+            vm.readonly = true;
+        }
+        else {
+            vm.readonly = false;
+        }
+    }
+    else {
+        vm.readonly = true;
+    }
+
+    fileManager.params.prefix = getTaskAttachmentPrefix(this.dbschema, this.dbclass, this.oid);
+
+    fileManager.params.api = "api/blob";
+
+    fileManager.params.serviceBase = APP_CONFIG.ebaasRootUrl;
+
+    activate();
+
+    function activate() {
+        fileManager.load();
+    }
+
+    function setPreviewFile(file) {
+        console.debug("setPreviewFile");
+        vm.previewFile = file
+    }
+
+    function setCurrentFile(file) {
+        console.debug("setCurrentFile");
+        vm.currentFile = file
+    }
+
+    function remove(file) {
+        fileManager.remove(file).then(function () {
+            setPreviewFile();
+        });
+    }
+
+    function getWord(key)
+    {
+        return $rootScope.getWord(key);
+    }
+
+    function getTaskAttachmentPrefix(schemaName, className, objId) {
+
+        return "Attachments\\" + schemaName + " 1.0\\" + className + "\\" + objId;
+    }
+
+    $scope.uploadFile = function () {
+        $scope.processDropzone();
+    }
+
+    $scope.reset = function () {
+        $scope.resetDropzone();
+    }
+
+    $scope.$on('instanceCreated', function (event, args) {
+        fileManager.params.oid = args.oid;
+        vm.readonly = false;
+    });
+
+    $scope.setShowUpload = function(status)
+    {
+        $scope.showUpload = status;
+    }
+
+    $scope.$on('relatedModalFormClosed', function (event, args) {
+        if (fileManager.params.oid != args.masterOid) {
+            fileManager.params.oid = args.masterOid;
+            fileManager.load();
+        }
+    });
+});
+
+'use strict';
+
+angular.module('app.attachments').controller('attachmentsModalCtrl', function ($scope, $stateParams, $modalInstance) {
+ 
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+    $scope.oid = $stateParams.oid;
+    $scope.readonly = $stateParams.readonly;
+    
+    $scope.closeModal = function () {
+        $modalInstance.dismiss("dismiss");
+    };
+});
+
+'use strict';
+
 angular.module('app.attachments').directive('attachments', function () {
     return {
         restrict: 'E',
@@ -4083,12 +4173,12 @@ angular.module('app.attachments').directive('egFiles', function () {
 });
 'use strict';
 
-angular.module('app.attachments').directive('egUpload', function ($timeout) {
+angular.module('app.attachments').directive('blobUpload', function ($timeout) {
     var directive = {
         link: link,
         restrict: 'A',
         scope: {
-            upload: '&egUpload'
+            upload: '&blobUpload'
         }
     };
     return directive;
@@ -4146,130 +4236,6 @@ angular.module('app.attachments').directive('egFileUploader', function (loadingI
     }
 
 });
-'use strict';
-
-angular.module('app.attachments').controller('attachmentsCtrl', function ($scope, $rootScope, fileManager, APP_CONFIG, $stateParams) {
-
-    /* jshint validthis:true */
-    var vm = this;
-    vm.title = 'File Manager';
-    vm.files = fileManager.files;
-    vm.uploading = false;
-    vm.previewFile;
-    vm.currentFile;
-    vm.remove = fileManager.remove;
-    vm.download = fileManager.download;
-    vm.setPreviewFile = setPreviewFile;
-    vm.setCurrentFile = setCurrentFile;
-    vm.getWord = getWord;
-    vm.readonly = false;
-
-    $scope.showUpload = false;
-
-    fileManager.params.schema = this.dbschema;
-    if (!fileManager.params.schema)
-    {
-        fileManager.params.schema = $stateParams.schema;
-    }
-   
-    fileManager.params.cls = this.dbclass;
-    if (!fileManager.params.cls) {
-        fileManager.params.cls = $stateParams.class;
-    }
-
-    fileManager.params.oid = this.oid;
-
-    if (!fileManager.params.oid && !$stateParams.rclass) {
-        fileManager.params.oid = $stateParams.oid;
-    }
-
-    if (fileManager.params.oid) {
-        if ($stateParams.readonly && $stateParams.readonly === "true") {
-            vm.readonly = true;
-        }
-        else if (this.read && this.read === true)
-        {
-            vm.readonly = true;
-        }
-        else {
-            vm.readonly = false;
-        }
-    }
-    else {
-        vm.readonly = true;
-    }
-
-    fileManager.params.api = "api/attachment"; // Indicating the filemanager is for attachments
-
-    fileManager.params.serviceBase = APP_CONFIG.ebaasRootUrl;
-
-    activate();
-
-    function activate() {
-        fileManager.load();
-    }
-
-    function setPreviewFile(file) {
-        console.debug("setPreviewFile");
-        vm.previewFile = file
-    }
-
-    function setCurrentFile(file) {
-        console.debug("setCurrentFile");
-        vm.currentFile = file
-    }
-
-    function remove(file) {
-        fileManager.remove(file).then(function () {
-            setPreviewFile();
-        });
-    }
-
-    function getWord(key)
-    {
-        return $rootScope.getWord(key);
-    }
-
-    $scope.uploadFile = function () {
-        $scope.processDropzone();
-    }
-
-    $scope.reset = function () {
-        $scope.resetDropzone();
-    }
-
-    $scope.$on('instanceCreated', function (event, args) {
-        fileManager.params.oid = args.oid;
-        vm.readonly = false;
-    });
-
-    $scope.setShowUpload = function(status)
-    {
-        $scope.showUpload = status;
-    }
-
-    $scope.$on('relatedModalFormClosed', function (event, args) {
-        if (fileManager.params.oid != args.masterOid) {
-            fileManager.params.oid = args.masterOid;
-            fileManager.load();
-        }
-    });
-});
-
-'use strict';
-
-angular.module('app.attachments').controller('attachmentsModalCtrl', function ($scope, $stateParams, $modalInstance) {
- 
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
-    $scope.oid = $stateParams.oid;
-    $scope.readonly = $stateParams.readonly;
-    
-    $scope.closeModal = function () {
-        $modalInstance.dismiss("dismiss");
-    };
-});
-
 'use strict';
 
 angular.module('app.attachments').factory('fileManager', function ($q, fileManagerClient, $http, loadingInfo, User) {
@@ -4764,29 +4730,6 @@ angular.module('app.auth').directive('loginInfo', function(User){
     }
 })
 
-"use strict";
-
-angular.module('app.auth').controller('LoginCtrl', function ($scope, $state, GooglePlus, User, ezfb) {
-
-    $scope.$on('event:google-plus-signin-success', function (event, authResult) {
-        if (authResult.status.method == 'PROMPT') {
-            GooglePlus.getUser().then(function (user) {
-                User.userName = user.name;
-                User.picture = user.picture;
-                $state.go('app.dashboard');
-            });
-        }
-    });
-
-    $scope.$on('event:facebook-signin-success', function (event, authResult) {
-        ezfb.api('/me', function (res) {
-            User.userName = res.name;
-            User.picture = 'https://graph.facebook.com/' + res.id + '/picture';
-            $state.go('app.dashboard');
-        });
-    });
-})
-
 
 
 'use strict';
@@ -4899,6 +4842,426 @@ angular.module('app.auth').factory('User', function ($http, $q, APP_CONFIG, auth
     return UserModel;
 });
 
+"use strict";
+
+angular.module('app.auth').controller('LoginCtrl', function ($scope, $state, GooglePlus, User, ezfb) {
+
+    $scope.$on('event:google-plus-signin-success', function (event, authResult) {
+        if (authResult.status.method == 'PROMPT') {
+            GooglePlus.getUser().then(function (user) {
+                User.userName = user.name;
+                User.picture = user.picture;
+                $state.go('app.dashboard');
+            });
+        }
+    });
+
+    $scope.$on('event:facebook-signin-success', function (event, authResult) {
+        ezfb.api('/me', function (res) {
+            User.userName = res.name;
+            User.picture = 'https://graph.facebook.com/' + res.id + '/picture';
+            $state.go('app.dashboard');
+        });
+    });
+})
+
+'use strict';
+
+angular.module('app.blobmanager').controller('blobManagerCtrl', function ($scope, $rootScope, blobManager, APP_CONFIG, $stateParams) {
+
+    /* jshint validthis:true */
+    var vm = this;
+    vm.title = 'Blob Manager';
+    vm.files = blobManager.files;
+    vm.uploading = false;
+    vm.previewFile;
+    vm.remove = blobManager.remove;
+    vm.download = blobManager.download;
+    vm.setPreviewFile = setPreviewFile;
+    vm.getWord = getWord;
+
+    $scope.showUpload = false;
+   
+    if (!$stateParams.readonly)
+    {
+        vm.readonly = false;
+    }
+    else
+    {
+        vm.readonly = $stateParams.readonly;
+    }
+
+    blobManager.params.schema = this.dbschema;
+    if (!blobManager.params.schema)
+    {
+        blobManager.params.schema = $stateParams.schema;
+    }
+   
+    blobManager.params.cls = this.dbclass;
+    if (!blobManager.params.cls) {
+        blobManager.params.cls = $stateParams.class;
+    }
+
+    blobManager.params.oid = this.oid;
+    if (!blobManager.params.oid) {
+        blobManager.params.oid = $stateParams.oid;
+    }
+
+    blobManager.params.prefix = this.prefix;
+    if (!blobManager.params.prefix) {
+        blobManager.params.prefix = $stateParams.prefix;
+    }
+
+    $scope.baseUrl = APP_CONFIG.ebaasRootUrl;
+    if (APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash]) {
+        $scope.baseUrl = APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash];
+    }
+
+    blobManager.params.api = "api/blob"; // Indicating the filemanager is for blob
+
+    blobManager.params.serviceBase = $scope.baseUrl;
+
+    activate();
+
+    function activate() {
+        blobManager.load();
+    }
+
+    function setPreviewFile(file) {
+        vm.previewFile = file
+    }
+
+    function remove(file) {
+        blobManager.remove(file).then(function () {
+            setPreviewFile();
+        });
+    }
+
+    function getWord(key)
+    {
+        return $rootScope.getWord(key);
+    }
+
+    $scope.uploadFile = function () {
+        $scope.processDropzone();
+    }
+
+    $scope.reset = function () {
+        $scope.resetDropzone();
+    }
+
+    $scope.$on('directory.changedNode', function (event, args) {
+        var path = getPath(args.newNode);
+        path = encodeURIComponent(path);
+       
+        blobManager.params.prefix = path;
+        blobManager.load();
+    });
+
+    $scope.setShowUpload = function (status) {
+        $scope.showUpload = status;
+    }
+
+    function getPath(node) {
+        var path = "";
+
+        if (node.parent)
+        {
+            var parentPath = getPath(node.parent);
+            if (parentPath)
+            {
+                path = parentPath + "\\" + node.name;
+            }
+            else
+            {
+                path = node.name;
+            }
+        }
+
+        return path;
+    }
+});
+
+'use strict';
+
+angular.module('app.blobmanager').directive('blobs', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'app/blobmanager/views/blob-manager.html',
+        replace: true,
+        scope: {},
+        bindToController: {
+            dbschema: '=',
+            dbclass: '=',
+            oid: '=',
+            prefix: '='
+        },
+        controllerAs: 'vm',
+        controller: 'blobManagerCtrl',
+        link: function (scope, element, attributes) {
+        }
+    }
+});
+'use strict';
+
+angular.module('app.blobmanager').factory('blobManager', function ($q, fileManagerClient, $http, loadingInfo, User) {
+
+    var service = {
+        files: [],
+        load: load,
+        upload: upload,
+        remove: remove,
+        download: download,
+        performDownload: performDownload,
+        fileExists: fileExists,
+        status: {
+            uploading: false
+        },
+        params: {
+            serviceBase: "",
+            schema: "",
+            cls: "",
+            oid: "",
+            api: "",
+            prefix: ""
+        }
+    };
+
+    return service;
+
+    function load() {
+
+        loadingInfo.setInfo({ busy: true, message: "loading files" })
+
+        service.files.length = 0;
+
+        if (!service.params.oid)
+            return [];
+        else
+            return fileManagerClient.query({api: service.params.api, schema: service.params.schema, cls: service.params.cls, oid: service.params.oid, prefix: service.params.prefix })
+                                .$promise
+                                .then(function (result) {
+                                    result.files
+                                            .forEach(function (file) {
+                                                service.files.push(file);
+                                            });
+
+                                    loadingInfo.setInfo({ message: "files loaded successfully" });
+
+                                    return result.$promise;
+                                },
+                                function (result) {
+                                    if (result.data) {
+                                        loadingInfo.setInfo({ message: "something went wrong: " + result.data.message });
+                                    }
+                                    else
+                                    {
+                                        loadingInfo.setInfo({ message: "something went wrong: "});
+                                    }
+                                    return $q.reject(result);
+                                })
+                                ['finally'](
+                                function () {
+                                    loadingInfo.setInfo({ busy: false });
+                                });
+    }
+
+    function upload(files) {
+        
+        service.status.uploading = true;
+        loadingInfo.setInfo({ busy: true, message: "uploading files" });
+
+        var formData = new FormData();
+
+        angular.forEach(files, function (file) {
+            console.debug("upload file name =" + file.name);
+            formData.append(file.name, file);
+        });
+
+        return fileManagerClient.save({ api: service.params.api, schema: service.params.schema, cls: service.params.cls, oid: service.params.oid, prefix: service.params.prefix }, formData)
+                                    .$promise
+                                    .then(function (result) {
+                                        if (result && result.files) {
+                                            result.files.forEach(function (file) {
+                                                if (!fileExists(file.name)) {
+                                                    service.files.push(file);
+                                                }
+                                            });
+                                        }
+
+                                        loadingInfo.setInfo({ message: "files uploaded successfully" });
+
+                                        return result.$promise;
+                                    },
+                                    function (result) {
+                                        loadingInfo.setInfo({ message: "something went wrong: " + result.data.message });
+                                        return $q.reject(result);
+                                    })
+                                    ['finally'](
+                                    function () {
+                                        loadingInfo.setInfo({ busy: false });
+                                        service.status.uploading = false;
+                                    });
+    }
+
+    function remove(file) {
+        loadingInfo.setInfo({ busy: true, message: "deleting file " + file.name });
+      
+        return fileManagerClient.remove({ api: service.params.api, schema: service.params.schema, cls: service.params.cls, oid: service.params.oid, fileId: file.id, prefix: service.params.prefix })
+                                    .$promise
+                                    .then(function (result) {
+                                        //if the file was deleted successfully remove it from the files array
+                                        var i = service.files.indexOf(file);
+                                        service.files.splice(i, 1);
+
+                                        loadingInfo.setInfo({ message: "files deleted" });
+
+                                        return result.$promise;
+                                    },
+                                    function (result) {
+                                        loadingInfo.setInfo({ message: "something went wrong: " + result.data.message });
+                                        return $q.reject(result);
+                                    })
+                                    ['finally'](
+                                    function () {
+                                        loadingInfo.setInfo({ busy: false });
+                                    });
+    }
+
+    function download(file)
+    {
+        var getFileUrl = service.params.serviceBase + "/" + service.params.api + "/" + service.params.schema + "/" + service.params.cls + "/" + service.params.oid + "/" + file.id;
+        if (service.params.prefix)
+        {
+            getFileUrl += "?prefix=" + encodeURIComponent(service.params.prefix) + "&user=" + encodeURIComponent(User.userName);
+        }
+
+        performDownload(getFileUrl, null);
+    }
+
+    function performDownload(url, callback) {
+    
+        // Use an arraybuffer
+        $http.get(url, { responseType: 'arraybuffer' })
+            .success(function (data, status, headers) {
+
+                var octetStreamMime = 'application/octet-stream';
+                var success = false;
+
+                // Get the headers
+                headers = headers();
+
+                // Get the filename from the x-filename header or default to "download.bin"
+                var filename = headers['x-filename'] || 'download.bin';
+                filename = decodeURIComponent(filename);
+
+                // Determine the content type from the header or default to "application/octet-stream"
+                var contentType = headers['content-type'] || octetStreamMime;
+
+                try {
+                    // Try using msSaveBlob if supported
+                    console.log("Trying saveBlob method ...");
+                    var blob = new Blob([data], { type: contentType });
+                    if (navigator.msSaveBlob)
+                        navigator.msSaveBlob(blob, filename);
+                    else {
+                        // Try using other saveBlob implementations, if available
+                        var saveBlob = navigator.webkitSaveBlob || navigator.mozSaveBlob || navigator.saveBlob;
+                        if (saveBlob === undefined) throw "Not supported";
+                        saveBlob(blob, filename);
+                    }
+                    console.log("saveBlob succeeded");
+                    success = true;
+                } catch (ex) {
+                    console.log("saveBlob method failed with the following exception:");
+                    console.log(ex);
+                }
+
+                if (!success) {
+                    // Get the blob url creator
+                    var urlCreator = window.URL || window.webkitURL || window.mozURL || window.msURL;
+                    if (urlCreator) {
+                        // Try to use a download link
+                        var link = document.createElement('a');
+                        if ('download' in link) {
+                            // Try to simulate a click
+                            try {
+                                // Prepare a blob URL
+                                console.log("Trying download link method with simulated click ...");
+                                var blob = new Blob([data], { type: contentType });
+                                var url = urlCreator.createObjectURL(blob);
+                                link.setAttribute('href', url);
+
+                                // Set the download attribute (Supported in Chrome 14+ / Firefox 20+)
+                                link.setAttribute("download", filename);
+
+                                // Simulate clicking the download link
+                                var event = document.createEvent('MouseEvents');
+                                event.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+                                link.dispatchEvent(event);
+                                console.log("Download link method with simulated click succeeded");
+                                success = true;
+
+                            } catch (ex) {
+                                console.log("Download link method with simulated click failed with the following exception:");
+                                console.log(ex);
+                            }
+                        }
+
+                        if (!success) {
+                            // Fallback to window.location method
+                            try {
+                                // Prepare a blob URL
+                                // Use application/octet-stream when using window.location to force download
+                                console.log("Trying download link method with window.location ...");
+                                var blob = new Blob([data], { type: octetStreamMime });
+                                var url = urlCreator.createObjectURL(blob);
+                                window.location = url;
+                                console.log("Download link method with window.location succeeded");
+                                success = true;
+                            } catch (ex) {
+                                console.log("Download link method with window.location failed with the following exception:");
+                                console.log(ex);
+                            }
+                        }
+
+                    }
+                }
+
+                if (!success) {
+                    // Fallback to window.open method
+                    console.log("No methods worked for saving the arraybuffer, using last resort window.open");
+                    window.open(httpPath, '_blank', '');
+                }
+
+                if (callback)
+                {
+                    callback();
+                }
+            })
+        .error(function (data, status) {
+            console.log("Request failed with status: " + status);
+
+            // Optionally write the error out to scope
+            //$scope.errorDetails = "Request failed with status: " + status;
+
+            if (callback) {
+                callback();
+            }
+        });
+    }
+
+    function fileExists(fileName) {
+        var res = false
+        service.files.forEach(function (file) {
+            if (file.name === fileName) {
+                res = true;
+            }
+        });
+
+        return res;
+    }
+});
 "use strict";	
 
 angular.module('app').controller("ActivitiesCtrl", function ActivitiesCtrl($scope, $log, activityService){
@@ -6942,210 +7305,6 @@ angular
   .directive('rowSelect', rowSelect)
 'use strict';
 
-angular.module('app.filemanager').controller('fileManagerCtrl', function ($scope, $rootScope, fileManager, APP_CONFIG, $stateParams) {
-
-    /* jshint validthis:true */
-    var vm = this;
-    vm.title = 'File Manager';
-    vm.files = fileManager.files;
-    vm.uploading = false;
-    vm.previewFile;
-    vm.remove = fileManager.remove;
-    vm.download = fileManager.download;
-    vm.setPreviewFile = setPreviewFile;
-    vm.getWord = getWord;
-
-    $scope.showUpload = false;
-   
-    if (!$stateParams.readonly)
-    {
-        vm.readonly = false;
-    }
-    else
-    {
-        vm.readonly = $stateParams.readonly;
-    }
-
-    fileManager.params.schema = this.dbschema;
-    if (!fileManager.params.schema)
-    {
-        fileManager.params.schema = $stateParams.schema;
-    }
-   
-    fileManager.params.cls = this.dbclass;
-    if (!fileManager.params.cls) {
-        fileManager.params.cls = $stateParams.class;
-    }
-
-    fileManager.params.oid = this.oid;
-    if (!fileManager.params.oid) {
-        fileManager.params.oid = $stateParams.oid;
-    }
-
-    fileManager.params.prefix = this.prefix;
-    if (!fileManager.params.prefix) {
-        fileManager.params.prefix = $stateParams.prefix;
-    }
-
-    $scope.baseUrl = APP_CONFIG.ebaasRootUrl;
-    if (APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash]) {
-        $scope.baseUrl = APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash];
-    }
-
-    fileManager.params.api = "api/blob"; // Indicating the filemanager is for blob
-
-    fileManager.params.serviceBase = $scope.baseUrl;
-
-    activate();
-
-    function activate() {
-        fileManager.load();
-    }
-
-    function setPreviewFile(file) {
-        vm.previewFile = file
-    }
-
-    function remove(file) {
-        fileManager.remove(file).then(function () {
-            setPreviewFile();
-        });
-    }
-
-    function getWord(key)
-    {
-        return $rootScope.getWord(key);
-    }
-
-    $scope.uploadFile = function () {
-        $scope.processDropzone();
-    }
-
-    $scope.reset = function () {
-        $scope.resetDropzone();
-    }
-
-    $scope.$on('directory.changedNode', function (event, args) {
-        var path = getPath(args.newNode);
-        path = encodeURIComponent(path);
-       
-        fileManager.params.prefix = path;
-        fileManager.load();
-    });
-
-    $scope.setShowUpload = function (status) {
-        $scope.showUpload = status;
-    }
-
-    function getPath(node) {
-        var path = "";
-
-        if (node.parent)
-        {
-            var parentPath = getPath(node.parent);
-            if (parentPath)
-            {
-                path = parentPath + "\\" + node.name;
-            }
-            else
-            {
-                path = node.name;
-            }
-        }
-
-        return path;
-    }
-});
-
-'use strict';
-
-angular.module('app.filemanager').controller('fileManagerViewerCtrl', function ($scope, $rootScope, $http, APP_CONFIG, $stateParams) {
-
-    // url to get a directory tree
-    $scope.baseUrl = APP_CONFIG.ebaasRootUrl;
-    if (APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash]) {
-        $scope.baseUrl = APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash];
-    }
-
-    var url = $scope.baseUrl + "/api/file/directory/" + $stateParams.schema + "/" + $stateParams.class + "/" + $stateParams.oid;
-    $http.get(url).then(function (res) {
-
-        var tree = createDirectoryTree(res.data);
-
-        $scope.directoryTree = tree;
-    });
-
-    var createDirectoryTree = function (rootDir) {
-        var roots = [];
-        
-        var root = {};
-        root.name = rootDir.name;
-        root.title = rootDir.name;
-        root.children = [];
-        root.expanded = true;
-        root.parent = undefined;
-        roots.push(root);
-
-        addSubDirs(root, rootDir.subdirs);
-
-        return roots;
-    };
-
-    var addSubDirs = function (parent, subDirs) {
-        var subDir, node;
-
-        for (var i = 0; i < subDirs.length; i += 1) {
-            subDir = subDirs[i];
-            node = {};
-            node.children = [];
-
-            node.name = subDir.name;
-            node.title = subDir.name;
-            node.children = [];
-            node.expanded = true;
-            node.parent = parent;
-
-            parent.children.push(node);
-
-            addSubDirs(node, subDir.subdirs);
-        }
-    };
-
-    $scope.$watch('directory.currentNode', function (newObj, oldObj) {
-        if ($scope.directory && angular.isObject($scope.directory.currentNode)) {
-
-            $rootScope.$broadcast('directory.changedNode', {newNode : newObj});
-        }
-    }, false);
-
-    $scope.createDir = function()
-    {
-
-    }
-});
-
-'use strict';
-
-angular.module('app.filemanager').directive('ebaasFileManager', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'app/filemanager/views/file-manager.html',
-        replace: true,
-        scope: {},
-        bindToController: {
-            dbschema: '=',
-            dbclass: '=',
-            oid: '=',
-            prefix: '='
-        },
-        controllerAs: 'vm',
-        controller: 'fileManagerCtrl',
-        link: function (scope, element, attributes) {
-        }
-    }
-});
-'use strict';
-
 angular.module('app.formeditor').controller('formEditorCtrl', function ($scope, $rootScope, $state, APP_CONFIG, $stateParams, formEditorService, $templateCache) {
 
     $scope.dbschema = $stateParams.schema;
@@ -7915,19 +8074,22 @@ angular.module('app.forms').controller('ModalDemoCtrl', function($scope, $modalI
         $modalInstance.dismiss('cancel');
     }
 });
+"use strict";	
 
+angular.module('app.healthcheck').controller("HealthCheckCtrl", function ($http, APP_CONFIG, $scope) {
+	var url = APP_CONFIG.ebaasRootUrl + "/api/health";
 
-'use strict';
-
-angular.module('app.fulltextsearch').factory('searchContext', function () {
-
-    var SearchContextModel = {
-            searchText: undefined
-        };
-
-    return SearchContextModel;
+    $scope.loading = true;
+    $http.get(url)
+        .success(function (data) {
+            $scope.results = data;
+            $scope.loading = false;
+        })
+        .error(function (err) {
+            $scope.results = null;
+            $scope.loading = false;
+        });
 });
-
 "use strict";
 
 
@@ -7972,22 +8134,19 @@ angular.module('app.fulltextsearch').factory('searchService', function ($http, A
 	    }
 	}
 });
-"use strict";	
 
-angular.module('app.healthcheck').controller("HealthCheckCtrl", function ($http, APP_CONFIG, $scope) {
-	var url = APP_CONFIG.ebaasRootUrl + "/api/health";
 
-    $scope.loading = true;
-    $http.get(url)
-        .success(function (data) {
-            $scope.results = data;
-            $scope.loading = false;
-        })
-        .error(function (err) {
-            $scope.results = null;
-            $scope.loading = false;
-        });
+'use strict';
+
+angular.module('app.fulltextsearch').factory('searchContext', function () {
+
+    var SearchContextModel = {
+            searchText: undefined
+        };
+
+    return SearchContextModel;
 });
+
 "use strict";	
 
 angular.module('app.homepage').controller("myActivitiesCtrl", function ActivitiesCtrl($scope, $log, $state, APP_CONFIG, User, myActivityService) {
@@ -10381,66 +10540,6 @@ angular.module('app.smartforms').directive('compile', function ($compile) {
 
 'use strict';
 
-angular.module('app.smartreports').controller('downloadReportCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $stateParams, $modalInstance, fileManager) {
- 
-    $scope.dbschema = $stateParams.schema;
-    $scope.dbclass = $stateParams.class;
-    $scope.oid = $stateParams.oid;
-    $scope.template = $stateParams.template;
-    $scope.templateAttribute = $stateParams.templateAttribute;
-
-    $scope.baseUrl = APP_CONFIG.ebaasRootUrl;
-    if (APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash])
-    {
-        $scope.baseUrl = APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash];
-    }
-   
-    $scope.loading = false;
-
-    $scope.closeModal = function () {
-        $modalInstance.dismiss("dismiss");
-    };
-
-    $scope.download = function() {
-
-        var getFileUrl = undefined;
- 
-        if ($scope.templateAttribute)
-        {
-            getFileUrl = $scope.baseUrl + "/api/report/" + $scope.dbschema + "/" + $scope.dbclass + "/" + $scope.oid + "?templateSource=property&property=" + $scope.templateAttribute;
-
-        }
-        else if ($scope.template) {
-            getFileUrl = $scope.baseUrl + "/api/report/" + $scope.dbschema + "/" + $scope.dbclass + "/" + $scope.oid + "?templateSource=file&template=" + encodeURIComponent($scope.template);
-        }
-
-        if (getFileUrl) {
-            $scope.loading = true;
-
-            fileManager.performDownload(getFileUrl, function () {
-                $scope.loading = false;
-            });
-        }
-        else
-        {
-            BootstrapDialog.show({
-                title: $rootScope.getWord("Info Dialog"),
-                type: BootstrapDialog.TYPE_DANGER,
-                message: "template or property parameter not defined",
-                buttons: [{
-                    label: $rootScope.getWord("Cancel"),
-                    action: function (dialog) {
-                        dialog.close();
-                    }
-                }]
-            });
-            
-        }
-    }
-});
-
-'use strict';
-
 angular.module('app.smarttables').controller('dataGridBaseCtrl', function ($scope, $rootScope, $state, $http, APP_CONFIG, $timeout, MetaDataCache, ngProgressFactory, searchContext) {
 
     // parameters to be provided by sub controllers
@@ -11320,18 +11419,6 @@ angular.module('app.smarttables').controller('dataGridCtrl', function ($scope, $
                 });
             }
 
-            if ($scope.attachment) {
-                items.push({
-                    text: $rootScope.getWord('Attachments'),
-                    icon: "fa fa-lg fa-file-archive-o",
-                    css: "btn btn-default btn-md",
-                    track: false,
-                    onItemClick: function () {
-                        $state.go('.attachments', { schema: $scope.dbschema, class: data.type, oid: data.obj_id, readonly: !data.allowWrite}, { location: false, notify: false });
-                    }
-                });
-            }
-
             if ($scope.track) {
                 var groupName = $scope.dbschema + "-" + data.type + "-" + data.obj_id;
                 var isTracking = false;
@@ -11596,17 +11683,6 @@ angular.module('app.smarttables').controller('relatedDataGridCtrl', function ($s
                     }
                 });
             }
-
-            if ($scope.attachment) {
-                items.push({
-                    text: $rootScope.getWord('Attachments'),
-                    icon: "fa fa-lg fa-file-archive-o",
-                    css: "btn btn-default btn-md btn-nav",
-                    onItemClick: function () {
-                        $state.go('.attachments', { schema: $scope.dbschema, class: data.type, oid: data.obj_id, readonly: !data.allowWrite }, { location: false, notify: false });
-                    }
-                });
-            }
         });
         
         return items;
@@ -11771,6 +11847,66 @@ angular.module("app.smarttables").factory("MetaDataCache", function () {
         setNamedData : _setNamedData
     };
 });
+'use strict';
+
+angular.module('app.smartreports').controller('downloadReportCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $stateParams, $modalInstance, fileManager) {
+ 
+    $scope.dbschema = $stateParams.schema;
+    $scope.dbclass = $stateParams.class;
+    $scope.oid = $stateParams.oid;
+    $scope.template = $stateParams.template;
+    $scope.templateAttribute = $stateParams.templateAttribute;
+
+    $scope.baseUrl = APP_CONFIG.ebaasRootUrl;
+    if (APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash])
+    {
+        $scope.baseUrl = APP_CONFIG.hashedBaseUrls[$stateParams.cmdHash];
+    }
+   
+    $scope.loading = false;
+
+    $scope.closeModal = function () {
+        $modalInstance.dismiss("dismiss");
+    };
+
+    $scope.download = function() {
+
+        var getFileUrl = undefined;
+ 
+        if ($scope.templateAttribute)
+        {
+            getFileUrl = $scope.baseUrl + "/api/report/" + $scope.dbschema + "/" + $scope.dbclass + "/" + $scope.oid + "?templateSource=property&property=" + $scope.templateAttribute;
+
+        }
+        else if ($scope.template) {
+            getFileUrl = $scope.baseUrl + "/api/report/" + $scope.dbschema + "/" + $scope.dbclass + "/" + $scope.oid + "?templateSource=file&template=" + encodeURIComponent($scope.template);
+        }
+
+        if (getFileUrl) {
+            $scope.loading = true;
+
+            fileManager.performDownload(getFileUrl, function () {
+                $scope.loading = false;
+            });
+        }
+        else
+        {
+            BootstrapDialog.show({
+                title: $rootScope.getWord("Info Dialog"),
+                type: BootstrapDialog.TYPE_DANGER,
+                message: "template or property parameter not defined",
+                buttons: [{
+                    label: $rootScope.getWord("Cancel"),
+                    action: function (dialog) {
+                        dialog.close();
+                    }
+                }]
+            });
+            
+        }
+    }
+});
+
 'use strict';
 
 angular.module('app.stations').controller('StationDashboardCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, TestStations, promisedSettings, $interval) {
@@ -13107,6 +13243,7 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($r
         if (nodeClass == $scope.itemClass) {
             params.itemOid = nodeOid;
             params.packetOid = null;
+            params.packetPrefix = "";
             params.activeTabId = "itemtab";
             $scope.itemOid = nodeOid;
             $scope.packetOid = null;
@@ -13126,6 +13263,7 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($r
             $scope.itemOid = "";
             $scope.packetOid = "";
             params.activeTabId = "tasktab";
+            params.packetPrefix = "";
             $state.go("app.taskviewer.details", params, { reload: true });
         }
     }
@@ -18665,96 +18803,6 @@ angular.module('SmartAdmin.Forms').directive('smartReviewForm', function (formsC
 });
 'use strict';
 
-angular.module('SmartAdmin.Forms').directive('smartCkEditor', function () {
-    return {
-        restrict: 'A',
-        compile: function ( tElement) {
-            tElement.removeAttr('smart-ck-editor data-smart-ck-editor');
-
-            CKEDITOR.replace( tElement.attr('name'), { height: '380px', startupFocus : true} );
-        }
-    }
-});
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartDestroySummernote', function () {
-    return {
-        restrict: 'A',
-        compile: function (tElement, tAttributes) {
-            tElement.removeAttr('smart-destroy-summernote data-smart-destroy-summernote')
-            tElement.on('click', function() {
-                angular.element(tAttributes.smartDestroySummernote).destroy();
-            })
-        }
-    }
-});
-
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartEditSummernote', function () {
-    return {
-        restrict: 'A',
-        compile: function (tElement, tAttributes) {
-            tElement.removeAttr('smart-edit-summernote data-smart-edit-summernote');
-            tElement.on('click', function(){
-                angular.element(tAttributes.smartEditSummernote).summernote({
-                    focus : true
-                });  
-            });
-        }
-    }
-});
-
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartMarkdownEditor', function () {
-    return {
-        restrict: 'A',
-        compile: function (element, attributes) {
-            element.removeAttr('smart-markdown-editor data-smart-markdown-editor')
-
-            var options = {
-                autofocus:false,
-                savable:true,
-                fullscreen: {
-                    enable: false
-                }
-            };
-
-            if(attributes.height){
-                options.height = parseInt(attributes.height);
-            }
-
-            element.markdown(options);
-        }
-    }
-});
-
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartSummernoteEditor', function (lazyScript) {
-    return {
-        restrict: 'A',
-        compile: function (tElement, tAttributes) {
-            tElement.removeAttr('smart-summernote-editor data-smart-summernote-editor');
-
-            var options = {
-                focus : true,
-                tabsize : 2
-            };
-
-            if(tAttributes.height){
-                options.height = tAttributes.height;
-            }
-
-            lazyScript.register('summernote').then(function(){
-                tElement.summernote(options);
-            });
-        }
-    }
-});
-'use strict';
-
 angular.module('SmartAdmin.Forms').directive('smartJcrop', function ($q) {
     return {
         restrict: 'A',
@@ -18943,24 +18991,6 @@ angular.module('SmartAdmin.Forms').directive('smartJcrop', function ($q) {
         }
     }
 });
-'use strict';
-
-angular.module('SmartAdmin.Forms').directive('smartDropzone', function () {
-    return {
-        restrict: 'A',
-        compile: function (tElement, tAttributes) {
-            tElement.removeAttr('file-dropzone data-file-dropzone');
-
-            tElement.dropzone({
-                addRemoveLinks : true,
-                maxFilesize: 0.5,
-                dictDefaultMessage: '<span class="text-center"><span class="font-lg visible-xs-block visible-sm-block visible-lg-block"><span class="font-lg"><i class="fa fa-caret-right text-danger"></i> Drop files <span class="font-xs">to upload</span></span><span>&nbsp&nbsp<h4 class="display-inline"> (Or Click)</h4></span>',
-                dictResponseError: 'Error uploading file!'
-            });
-        }
-    }
-});
-
 'use strict';
 
 angular.module('SmartAdmin.Forms').directive('smartClockpicker', function () {
@@ -19346,6 +19376,114 @@ angular.module('SmartAdmin.Forms').directive('smartXeditable', function($timeout
 
     }
 });
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartCkEditor', function () {
+    return {
+        restrict: 'A',
+        compile: function ( tElement) {
+            tElement.removeAttr('smart-ck-editor data-smart-ck-editor');
+
+            CKEDITOR.replace( tElement.attr('name'), { height: '380px', startupFocus : true} );
+        }
+    }
+});
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartDestroySummernote', function () {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttributes) {
+            tElement.removeAttr('smart-destroy-summernote data-smart-destroy-summernote')
+            tElement.on('click', function() {
+                angular.element(tAttributes.smartDestroySummernote).destroy();
+            })
+        }
+    }
+});
+
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartEditSummernote', function () {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttributes) {
+            tElement.removeAttr('smart-edit-summernote data-smart-edit-summernote');
+            tElement.on('click', function(){
+                angular.element(tAttributes.smartEditSummernote).summernote({
+                    focus : true
+                });  
+            });
+        }
+    }
+});
+
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartMarkdownEditor', function () {
+    return {
+        restrict: 'A',
+        compile: function (element, attributes) {
+            element.removeAttr('smart-markdown-editor data-smart-markdown-editor')
+
+            var options = {
+                autofocus:false,
+                savable:true,
+                fullscreen: {
+                    enable: false
+                }
+            };
+
+            if(attributes.height){
+                options.height = parseInt(attributes.height);
+            }
+
+            element.markdown(options);
+        }
+    }
+});
+
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartSummernoteEditor', function (lazyScript) {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttributes) {
+            tElement.removeAttr('smart-summernote-editor data-smart-summernote-editor');
+
+            var options = {
+                focus : true,
+                tabsize : 2
+            };
+
+            if(tAttributes.height){
+                options.height = tAttributes.height;
+            }
+
+            lazyScript.register('summernote').then(function(){
+                tElement.summernote(options);
+            });
+        }
+    }
+});
+'use strict';
+
+angular.module('SmartAdmin.Forms').directive('smartDropzone', function () {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttributes) {
+            tElement.removeAttr('file-dropzone data-file-dropzone');
+
+            tElement.dropzone({
+                addRemoveLinks : true,
+                maxFilesize: 0.5,
+                dictDefaultMessage: '<span class="text-center"><span class="font-lg visible-xs-block visible-sm-block visible-lg-block"><span class="font-lg"><i class="fa fa-caret-right text-danger"></i> Drop files <span class="font-xs">to upload</span></span><span>&nbsp&nbsp<h4 class="display-inline"> (Or Click)</h4></span>',
+                dictResponseError: 'Error uploading file!'
+            });
+        }
+    }
+});
+
 'use strict';
 
 angular.module('SmartAdmin.Forms').directive('smartFueluxWizard', function () {

@@ -2,8 +2,8 @@
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <StartAction>Program</StartAction>
-    <StartProgram>C:\Work\Ebaas\Repos\EbaasServer\bin\Debug\EbaasServer.exe</StartProgram>
-    <StartWorkingDirectory>C:\Work\Ebaas\Repos\EbaasServer\bin\Debug\</StartWorkingDirectory>
+    <StartProgram>C:\Work\Ebaas\Repos\NewteraServer\bin\Debug\NewteraServer.exe</StartProgram>
+    <StartWorkingDirectory>C:\Work\Ebaas\Repos\NewteraServer\bin\Debug\</StartWorkingDirectory>
   </PropertyGroup>
   <PropertyGroup>
     <ProjectView>ShowAllFiles</ProjectView>

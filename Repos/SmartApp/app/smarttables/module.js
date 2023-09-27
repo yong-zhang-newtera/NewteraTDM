@@ -271,16 +271,6 @@ angular.module("app.smarttables")
             size: 'lg'
         });
 
-        modalStateProvider.state('app.smarttables.datagrid.attachments', {
-            url: '^/datagridattachments/:schema/:class/:oid/:readonly',
-            templateUrl: "app/attachments/views/attachments-modal.html",
-            controller: 'attachmentsModalCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
-            animation: false,
-            size: 'lg'
-        });
-
         modalStateProvider.state('app.smarttables.datagrid.modalform.relatedform', {
             url: '^/datagridrelatedform/:rclass/:roid/:rtemplate/:rformAttribute/:readonly',
             templateUrl: "app/smartforms/views/related-form-modal.html",
@@ -403,16 +393,6 @@ angular.module("app.smarttables")
             url: '^/datagridrelatedrelatedformviewlog/:logschema/:logclass/:logoid/:logproperty',
             templateUrl: "app/logs/views/change-log-viewer.html",
             controller: 'changeLogViewerCtrl',
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.smarttables.datagrid.related.attachments', {
-            url: '^/relatedachments/:schema/:class/:oid?readonly',
-            templateUrl: "app/attachments/views/attachments-modal.html",
-            controller: 'attachmentsModalCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
             animation: false,
             size: 'lg'
         });
@@ -545,16 +525,6 @@ angular.module("app.smarttables")
             url: '^/datagridrelatedformmodalformviewlog/:logschema/:logclass/:logoid/:logproperty',
             templateUrl: "app/logs/views/change-log-viewer.html",
             controller: 'changeLogViewerCtrl',
-            animation: false,
-            size: 'lg'
-        });
-
-        modalStateProvider.state('app.smarttables.datagrid.related.modalform.attachments', {
-            url: '^/datagridrelatedformmodalformachments/:schema/:class/:oid?readonly',
-            templateUrl: "app/attachments/views/attachments-modal.html",
-            controller: 'attachmentsModalCtrl',
-            backdrop: 'static', /*  this prevent user interaction with the background  */
-            keyboard: false,
             animation: false,
             size: 'lg'
         });

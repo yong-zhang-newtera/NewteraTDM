@@ -169,7 +169,6 @@ namespace Newtera.WebApi.Infrastructure
         {
             FileViewModel fileView = null;
 
-
             CMCommand cmd = connection.CreateCommand();
 
             AttachmentInfo info = cmd.GetAttachmentInfo(attachmentType, fileId);

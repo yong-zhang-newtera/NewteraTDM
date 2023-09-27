@@ -154,7 +154,7 @@ namespace Newtera.WebApi.Controllers
         /// <param name="schemaName">A database schema name such as DEMO</param>
         /// <param name="className">A data class name such as ATestItemInstance</param>
         /// <param name="oid">The obj_id of an data instance such as 377382882</param>
-        /// <param name="blobName">The name of a blob to download</param>
+        /// <param name="blobName">The name of a blob to deleted</param>
         [HttpDelete]
         [NormalAuthorizeAttribute]
         [Route("api/blob/{schemaName}/{className}/{oid:long}/{blobName}")]

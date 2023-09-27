@@ -30,7 +30,7 @@ namespace Newtera.WebApi.Infrastructure
         {
         }
 
-        public string GetContainerName(string schemaName, string className, string oid, string prefix, string prefixProperty)
+        public string GetContainerName(string schemaName, string className, string oid, string prefix, string prefixProperty=null)
         {
             string containerName = prefix;
             if (string.IsNullOrEmpty(containerName))

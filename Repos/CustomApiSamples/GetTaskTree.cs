@@ -32,7 +32,9 @@ namespace CustomApiSamples
             TaskTreeNode root = new TaskTreeNode();
 
             string taskNodeAttribute = context?.Parameters?["taskNodeAttribute"];
+            string taskPrefixAttribute = context?.Parameters?["taskPrefixAttribute"];
             string itemNodeAttribute = context?.Parameters?["itemNodeAttribute"];
+            string itemPrefixAttribute = context?.Parameters?["itemPrefixAttribute"];
             string packetNodeAttribute = context?.Parameters?["packetNodeAttribute"];
             string packetPrefixAttribute = context?.Parameters?["packetPrefixAttribute"];
             string itemClass = context?.Parameters?["itemClass"];

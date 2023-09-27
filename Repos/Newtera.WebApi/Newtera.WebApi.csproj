@@ -258,7 +258,6 @@
     <Compile Include="Controllers\ImportExportController.cs" />
     <Compile Include="Controllers\ImageController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
-    <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\SiteMapController.cs" />
     <Compile Include="Controllers\MetaDataController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
@@ -285,7 +284,6 @@
     <Compile Include="Infrastructure\CustomPasswordHasher.cs" />
     <Compile Include="Infrastructure\CriteriaOperator.cs" />
     <Compile Include="Infrastructure\AdminAuthorizeAttribute.cs" />
-    <Compile Include="Infrastructure\AttachmentManager.cs" />
     <Compile Include="Infrastructure\AttachmentMultipartFormDataStreamProvider.cs" />
     <Compile Include="Infrastructure\GetAccessibleClassesVisitor.cs" />
     <Compile Include="Infrastructure\BlobStorageUtil.cs" />
@@ -310,8 +308,6 @@
     <Compile Include="Infrastructure\FileManagerBase.cs" />
     <Compile Include="Infrastructure\FileMultipartFormDataStreamProvider.cs" />
     <Compile Include="Infrastructure\FileTypeInfoManager.cs" />
-    <Compile Include="Infrastructure\IFileManager.cs" />
-    <Compile Include="Infrastructure\LocalFileManager.cs" />
     <Compile Include="Infrastructure\NormalAuthorizeAttribute.cs" />
     <Compile Include="Infrastructure\RolesFromClaims.cs" />
     <Compile Include="Infrastructure\RoleStore.cs" />

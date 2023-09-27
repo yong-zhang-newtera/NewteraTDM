@@ -71,6 +71,7 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($r
         if (nodeClass == $scope.itemClass) {
             params.itemOid = nodeOid;
             params.packetOid = null;
+            params.packetPrefix = "";
             params.activeTabId = "itemtab";
             $scope.itemOid = nodeOid;
             $scope.packetOid = null;
@@ -90,6 +91,7 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($r
             $scope.itemOid = "";
             $scope.packetOid = "";
             params.activeTabId = "tasktab";
+            params.packetPrefix = "";
             $state.go("app.taskviewer.details", params, { reload: true });
         }
     }
