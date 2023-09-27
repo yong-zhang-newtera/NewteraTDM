@@ -90,16 +90,8 @@
     <Content Include="app\AuthInterceptorService.js" />
     <Content Include="app\blobManager\controllers\blobManagerCtrl.js" />
     <Content Include="app\blobManager\directives\blobs.js" />
-    <Content Include="app\blobManager\directives\dropzone.js" />
-    <Content Include="app\blobManager\directives\egAppStatus.js" />
-    <Content Include="app\blobManager\directives\egFiles.js" />
-    <Content Include="app\blobManager\directives\egUpload.js" />
-    <Content Include="app\blobManager\directives\fileDropzone.js" />
-    <Content Include="app\blobManager\directives\fileUploader.js" />
     <Content Include="app\blobManager\module.js" />
     <Content Include="app\blobManager\services\blobManager.js" />
-    <Content Include="app\blobManager\services\blobManagerClient.js" />
-    <Content Include="app\blobManager\services\loadingInfo.js" />
     <Content Include="app\blobManager\views\blob-manager.html" />
     <Content Include="app\dataImporter\controllers\dataImportCtrl.js" />
     <Content Include="app\dataImporter\module.js" />
