@@ -334,7 +334,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="treeView.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 9pt</value>
+    <value>SimSun, 9pt</value>
   </data>
   <data name="treeView.ImageIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -347,7 +347,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAABa
-        FQAAAk1TRnQBSQFMAgEBDwEAASQBAAEMAQABEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        FQAAAk1TRnQBSQFMAgEBDwEAARwBAAEcAQABEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAAUADAAEBAQABCAYAARAYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
@@ -451,7 +451,7 @@
     <value>0</value>
   </data>
   <data name="treeView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 553</value>
+    <value>320, 553</value>
   </data>
   <data name="treeView.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -472,10 +472,10 @@
     <value>NoControl</value>
   </data>
   <data name="splitter1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>200, 0</value>
+    <value>320, 0</value>
   </data>
   <data name="splitter1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>3, 553</value>
+    <value>5, 553</value>
   </data>
   <data name="splitter1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -496,67 +496,67 @@
     <value>444, 53</value>
   </metadata>
   <data name="dgNewToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 22</value>
+    <value>231, 32</value>
   </data>
   <data name="dgNewToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;New...</value>
   </data>
   <data name="dgDuplicateInstanceToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 22</value>
+    <value>231, 32</value>
   </data>
   <data name="dgDuplicateInstanceToolStripMenuItem.Text" xml:space="preserve">
     <value>D&amp;uplicate...</value>
   </data>
   <data name="dgDeleteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 22</value>
+    <value>231, 32</value>
   </data>
   <data name="dgDeleteToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Delete</value>
   </data>
   <data name="dgDeleteAllToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 22</value>
+    <value>231, 32</value>
   </data>
   <data name="dgDeleteAllToolStripMenuItem.Text" xml:space="preserve">
     <value>Delete &amp;All</value>
   </data>
   <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 6</value>
+    <value>228, 6</value>
   </data>
   <data name="dgDefaultViewToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 22</value>
+    <value>231, 32</value>
   </data>
   <data name="dgDefaultViewToolStripMenuItem.Text" xml:space="preserve">
     <value>Default View</value>
   </data>
   <data name="dgDetailedViewToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 22</value>
+    <value>231, 32</value>
   </data>
   <data name="dgDetailedViewToolStripMenuItem.Text" xml:space="preserve">
     <value>Detailed View</value>
   </data>
   <data name="toolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 6</value>
+    <value>228, 6</value>
   </data>
   <data name="dgShowAllInstancesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 22</value>
+    <value>231, 32</value>
   </data>
   <data name="dgShowAllInstancesToolStripMenuItem.Text" xml:space="preserve">
     <value>Show All Instances</value>
   </data>
   <data name="dgExportDataToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 22</value>
+    <value>231, 32</value>
   </data>
   <data name="dgExportDataToolStripMenuItem.Text" xml:space="preserve">
     <value>Export Data...</value>
   </data>
   <data name="exportXMLToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 22</value>
+    <value>231, 32</value>
   </data>
   <data name="exportXMLToolStripMenuItem.Text" xml:space="preserve">
     <value>Export XML...</value>
   </data>
   <data name="dataGridContextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 214</value>
+    <value>232, 304</value>
   </data>
   <data name="&gt;&gt;dataGridContextMenuStrip.Name" xml:space="preserve">
     <value>dataGridContextMenuStrip</value>
@@ -570,8 +570,11 @@
   <data name="resultDataControl1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
+  <data name="resultDataControl1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
+  </data>
   <data name="resultDataControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>589, 264</value>
+    <value>467, 386</value>
   </data>
   <data name="resultDataControl1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -592,10 +595,10 @@
     <value>Top</value>
   </data>
   <data name="resultPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>203, 0</value>
+    <value>325, 0</value>
   </data>
   <data name="resultPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>589, 264</value>
+    <value>467, 386</value>
   </data>
   <data name="resultPanel.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -619,10 +622,10 @@
     <value>NoControl</value>
   </data>
   <data name="splitter2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>203, 264</value>
+    <value>325, 386</value>
   </data>
   <data name="splitter2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>589, 3</value>
+    <value>467, 4</value>
   </data>
   <data name="splitter2.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -652,7 +655,7 @@
     <value>0, 0</value>
   </data>
   <data name="instanceViewGrid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>581, 259</value>
+    <value>459, 136</value>
   </data>
   <data name="instanceViewGrid.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -673,7 +676,7 @@
     <value>4, 23</value>
   </data>
   <data name="instanceViewTabPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>581, 259</value>
+    <value>459, 136</value>
   </data>
   <data name="instanceViewTabPage.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -693,216 +696,6 @@
   <data name="&gt;&gt;instanceViewTabPage.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="deleteAttachmentButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="deleteAttachmentButton.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="deleteAttachmentButton.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 9pt</value>
-  </data>
-  <data name="deleteAttachmentButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="deleteAttachmentButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>312, 224</value>
-  </data>
-  <data name="deleteAttachmentButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="deleteAttachmentButton.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="deleteAttachmentButton.Text" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>350, 54</value>
-  </metadata>
-  <data name="deleteAttachmentButton.ToolTip" xml:space="preserve">
-    <value>Delete the selected attachment from the instance</value>
-  </data>
-  <data name="&gt;&gt;deleteAttachmentButton.Name" xml:space="preserve">
-    <value>deleteAttachmentButton</value>
-  </data>
-  <data name="&gt;&gt;deleteAttachmentButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;deleteAttachmentButton.Parent" xml:space="preserve">
-    <value>attachmentTabPage</value>
-  </data>
-  <data name="&gt;&gt;deleteAttachmentButton.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="addAttachmentButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="addAttachmentButton.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="addAttachmentButton.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 9pt</value>
-  </data>
-  <data name="addAttachmentButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="addAttachmentButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>216, 224</value>
-  </data>
-  <data name="addAttachmentButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="addAttachmentButton.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="addAttachmentButton.Text" xml:space="preserve">
-    <value>Add...</value>
-  </data>
-  <data name="addAttachmentButton.ToolTip" xml:space="preserve">
-    <value>Add an attachment to the instance</value>
-  </data>
-  <data name="&gt;&gt;addAttachmentButton.Name" xml:space="preserve">
-    <value>addAttachmentButton</value>
-  </data>
-  <data name="&gt;&gt;addAttachmentButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;addAttachmentButton.Parent" xml:space="preserve">
-    <value>attachmentTabPage</value>
-  </data>
-  <data name="&gt;&gt;addAttachmentButton.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="downloadButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="downloadButton.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="downloadButton.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 9pt</value>
-  </data>
-  <data name="downloadButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="downloadButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>104, 224</value>
-  </data>
-  <data name="downloadButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>88, 23</value>
-  </data>
-  <data name="downloadButton.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="downloadButton.Text" xml:space="preserve">
-    <value>Download...</value>
-  </data>
-  <data name="downloadButton.ToolTip" xml:space="preserve">
-    <value>Download the selected attachment file</value>
-  </data>
-  <data name="&gt;&gt;downloadButton.Name" xml:space="preserve">
-    <value>downloadButton</value>
-  </data>
-  <data name="&gt;&gt;downloadButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;downloadButton.Parent" xml:space="preserve">
-    <value>attachmentTabPage</value>
-  </data>
-  <data name="&gt;&gt;downloadButton.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="attachmentListView.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="columnHeader1.Text" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="columnHeader1.Width" type="System.Int32, mscorlib">
-    <value>180</value>
-  </data>
-  <data name="columnHeader2.Text" xml:space="preserve">
-    <value>Size</value>
-  </data>
-  <data name="columnHeader2.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
-    <value>Right</value>
-  </data>
-  <data name="columnHeader2.Width" type="System.Int32, mscorlib">
-    <value>80</value>
-  </data>
-  <data name="columnHeader3.Text" xml:space="preserve">
-    <value>Type</value>
-  </data>
-  <data name="columnHeader3.Width" type="System.Int32, mscorlib">
-    <value>150</value>
-  </data>
-  <data name="columnHeader4.Text" xml:space="preserve">
-    <value>Create Time</value>
-  </data>
-  <data name="columnHeader4.Width" type="System.Int32, mscorlib">
-    <value>160</value>
-  </data>
-  <data name="attachmentListView.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 9pt</value>
-  </data>
-  <metadata name="fileTypeLargeImageList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 54</value>
-  </metadata>
-  <data name="fileTypeLargeImageList.ImageSize" type="System.Drawing.Size, System.Drawing">
-    <value>16, 16</value>
-  </data>
-  <data name="attachmentListView.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 8</value>
-  </data>
-  <data name="attachmentListView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>568, 208</value>
-  </data>
-  <metadata name="fileTypeSmallImageList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>184, 54</value>
-  </metadata>
-  <data name="fileTypeSmallImageList.ImageSize" type="System.Drawing.Size, System.Drawing">
-    <value>16, 16</value>
-  </data>
-  <data name="attachmentListView.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;attachmentListView.Name" xml:space="preserve">
-    <value>attachmentListView</value>
-  </data>
-  <data name="&gt;&gt;attachmentListView.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;attachmentListView.Parent" xml:space="preserve">
-    <value>attachmentTabPage</value>
-  </data>
-  <data name="&gt;&gt;attachmentListView.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="attachmentTabPage.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 23</value>
-  </data>
-  <data name="attachmentTabPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>581, 259</value>
-  </data>
-  <data name="attachmentTabPage.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="attachmentTabPage.Text" xml:space="preserve">
-    <value>Attachments</value>
-  </data>
-  <data name="&gt;&gt;attachmentTabPage.Name" xml:space="preserve">
-    <value>attachmentTabPage</value>
-  </data>
-  <data name="&gt;&gt;attachmentTabPage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;attachmentTabPage.Parent" xml:space="preserve">
-    <value>resultTabControl</value>
-  </data>
-  <data name="&gt;&gt;attachmentTabPage.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="resultTabControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -913,10 +706,10 @@
     <value>54, 19</value>
   </data>
   <data name="resultTabControl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>203, 267</value>
+    <value>325, 390</value>
   </data>
   <data name="resultTabControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>589, 286</value>
+    <value>467, 163</value>
   </data>
   <data name="resultTabControl.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -933,15 +726,66 @@
   <data name="&gt;&gt;resultTabControl.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <metadata name="fileTypeLargeImageList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 54</value>
+  </metadata>
+  <data name="fileTypeLargeImageList.ImageSize" type="System.Drawing.Size, System.Drawing">
+    <value>16, 16</value>
+  </data>
+  <metadata name="fileTypeSmallImageList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>184, 54</value>
+  </metadata>
+  <data name="fileTypeSmallImageList.ImageSize" type="System.Drawing.Size, System.Drawing">
+    <value>16, 16</value>
+  </data>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>350, 54</value>
+  </metadata>
+  <data name="columnHeader1.DisplayIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="columnHeader1.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="columnHeader1.Width" type="System.Int32, mscorlib">
+    <value>180</value>
+  </data>
+  <data name="columnHeader2.DisplayIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="columnHeader2.Text" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="columnHeader2.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="columnHeader2.Width" type="System.Int32, mscorlib">
+    <value>80</value>
+  </data>
+  <data name="columnHeader3.DisplayIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="columnHeader3.Text" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="columnHeader3.Width" type="System.Int32, mscorlib">
+    <value>150</value>
+  </data>
+  <data name="columnHeader4.DisplayIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="columnHeader4.Text" xml:space="preserve">
+    <value>Create Time</value>
+  </data>
+  <data name="columnHeader4.Width" type="System.Int32, mscorlib">
+    <value>160</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>154</value>
   </metadata>
-  <data name="$this.AutoScaleBaseSize" type="System.Drawing.Size, System.Drawing">
-    <value>5, 13</value>
-  </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>792, 553</value>
   </data>
@@ -1335,6 +1179,24 @@
   <data name="&gt;&gt;exportXMLToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;fileTypeLargeImageList.Name" xml:space="preserve">
+    <value>fileTypeLargeImageList</value>
+  </data>
+  <data name="&gt;&gt;fileTypeLargeImageList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;fileTypeSmallImageList.Name" xml:space="preserve">
+    <value>fileTypeSmallImageList</value>
+  </data>
+  <data name="&gt;&gt;fileTypeSmallImageList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolTip1.Name" xml:space="preserve">
+    <value>toolTip1</value>
+  </data>
+  <data name="&gt;&gt;toolTip1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;columnHeader1.Name" xml:space="preserve">
     <value>columnHeader1</value>
   </data>
@@ -1358,24 +1220,6 @@
   </data>
   <data name="&gt;&gt;columnHeader4.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;fileTypeLargeImageList.Name" xml:space="preserve">
-    <value>fileTypeLargeImageList</value>
-  </data>
-  <data name="&gt;&gt;fileTypeLargeImageList.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;fileTypeSmallImageList.Name" xml:space="preserve">
-    <value>fileTypeSmallImageList</value>
-  </data>
-  <data name="&gt;&gt;fileTypeSmallImageList.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolTip1.Name" xml:space="preserve">
-    <value>toolTip1</value>
-  </data>
-  <data name="&gt;&gt;toolTip1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>DataViewer</value>

@@ -315,7 +315,7 @@ angular.module('app', [
     'app.dataviewer',
     "app.userdirectory",
     "app.newtask",
-    "app.filemanager",
+    "app.blobmanager",
     'app.formeditor',
     "app.smartreports",
     "app.hub",

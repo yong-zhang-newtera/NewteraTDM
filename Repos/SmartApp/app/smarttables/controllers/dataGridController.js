@@ -148,18 +148,6 @@ angular.module('app.smarttables').controller('dataGridCtrl', function ($scope, $
                 });
             }
 
-            if ($scope.attachment) {
-                items.push({
-                    text: $rootScope.getWord('Attachments'),
-                    icon: "fa fa-lg fa-file-archive-o",
-                    css: "btn btn-default btn-md",
-                    track: false,
-                    onItemClick: function () {
-                        $state.go('.attachments', { schema: $scope.dbschema, class: data.type, oid: data.obj_id, readonly: !data.allowWrite}, { location: false, notify: false });
-                    }
-                });
-            }
-
             if ($scope.track) {
                 var groupName = $scope.dbschema + "-" + data.type + "-" + data.obj_id;
                 var isTracking = false;

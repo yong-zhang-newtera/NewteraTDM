@@ -72,7 +72,6 @@ namespace Newtera.Studio
 		private System.Windows.Forms.TabControl resultTabControl;
 		private System.Windows.Forms.TabPage instanceViewTabPage;
 		private System.Windows.Forms.PropertyGrid instanceViewGrid;
-		private System.Windows.Forms.TabPage attachmentTabPage;
 		private System.Windows.Forms.MenuItem menuItem6;
 		private System.Windows.Forms.MenuItem newInstanceMenuItem;
 		private System.Windows.Forms.MenuItem saveInstanceMenuItem;
@@ -91,19 +90,11 @@ namespace Newtera.Studio
 		private System.Windows.Forms.MenuItem deleteDataViewMenuItem;
 		private System.Windows.Forms.MenuItem saveDataViewMenuItem;
 		private System.Windows.Forms.MenuItem runXQueryMenuItem;
-		private System.Windows.Forms.ListView attachmentListView;
-		private System.Windows.Forms.ColumnHeader columnHeader1;
-		private System.Windows.Forms.ColumnHeader columnHeader2;
-		private System.Windows.Forms.ColumnHeader columnHeader3;
-		private System.Windows.Forms.Button addAttachmentButton;
-		private System.Windows.Forms.Button deleteAttachmentButton;
-		private System.Windows.Forms.ColumnHeader columnHeader4;
 		private System.Windows.Forms.ImageList fileTypeSmallImageList;
         private System.Windows.Forms.ImageList fileTypeLargeImageList;
 		private System.Windows.Forms.MenuItem menuItem9;
 		private System.Windows.Forms.MenuItem menuItem10;
         private System.Windows.Forms.MenuItem deleteAllMenuItem;
-		private System.Windows.Forms.Button downloadButton;
 		private System.Windows.Forms.MenuItem menuItem12;
 		private System.Windows.Forms.MenuItem tvBuildFullTextIndexMenuItem;
 		private System.Windows.Forms.MenuItem buildFullTextIndexMenuItem;
@@ -133,7 +124,11 @@ namespace Newtera.Studio
         private MenuItem menuItem13;
         private MenuItem tvLoggingMenuItem;
         private ToolStripMenuItem exportXMLToolStripMenuItem;
-		private System.ComponentModel.IContainer components;
+        private ColumnHeader columnHeader1;
+        private ColumnHeader columnHeader2;
+        private ColumnHeader columnHeader3;
+        private ColumnHeader columnHeader4;
+        private System.ComponentModel.IContainer components;
 
 		public DataViewer()
 		{
@@ -369,23 +364,17 @@ namespace Newtera.Studio
             this.resultTabControl = new System.Windows.Forms.TabControl();
             this.instanceViewTabPage = new System.Windows.Forms.TabPage();
             this.instanceViewGrid = new System.Windows.Forms.PropertyGrid();
-            this.attachmentTabPage = new System.Windows.Forms.TabPage();
-            this.deleteAttachmentButton = new System.Windows.Forms.Button();
-            this.addAttachmentButton = new System.Windows.Forms.Button();
-            this.downloadButton = new System.Windows.Forms.Button();
-            this.attachmentListView = new System.Windows.Forms.ListView();
+            this.fileTypeLargeImageList = new System.Windows.Forms.ImageList(this.components);
+            this.fileTypeSmallImageList = new System.Windows.Forms.ImageList(this.components);
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.fileTypeLargeImageList = new System.Windows.Forms.ImageList(this.components);
-            this.fileTypeSmallImageList = new System.Windows.Forms.ImageList(this.components);
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.resultPanel.SuspendLayout();
             this.dataGridContextMenuStrip.SuspendLayout();
             this.resultTabControl.SuspendLayout();
             this.instanceViewTabPage.SuspendLayout();
-            this.attachmentTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -786,6 +775,7 @@ namespace Newtera.Studio
             // 
             // dataGridContextMenuStrip
             // 
+            this.dataGridContextMenuStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.dataGridContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.dgNewToolStripMenuItem,
             this.dgDuplicateInstanceToolStripMenuItem,
@@ -877,7 +867,6 @@ namespace Newtera.Studio
             // resultTabControl
             // 
             this.resultTabControl.Controls.Add(this.instanceViewTabPage);
-            this.resultTabControl.Controls.Add(this.attachmentTabPage);
             resources.ApplyResources(this.resultTabControl, "resultTabControl");
             this.resultTabControl.Name = "resultTabControl";
             this.resultTabControl.SelectedIndex = 0;
@@ -897,53 +886,17 @@ namespace Newtera.Studio
             this.instanceViewGrid.Name = "instanceViewGrid";
             this.instanceViewGrid.ToolbarVisible = false;
             // 
-            // attachmentTabPage
+            // fileTypeLargeImageList
             // 
-            this.attachmentTabPage.Controls.Add(this.deleteAttachmentButton);
-            this.attachmentTabPage.Controls.Add(this.addAttachmentButton);
-            this.attachmentTabPage.Controls.Add(this.downloadButton);
-            this.attachmentTabPage.Controls.Add(this.attachmentListView);
-            resources.ApplyResources(this.attachmentTabPage, "attachmentTabPage");
-            this.attachmentTabPage.Name = "attachmentTabPage";
-            this.attachmentTabPage.UseVisualStyleBackColor = true;
+            this.fileTypeLargeImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            resources.ApplyResources(this.fileTypeLargeImageList, "fileTypeLargeImageList");
+            this.fileTypeLargeImageList.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // deleteAttachmentButton
+            // fileTypeSmallImageList
             // 
-            resources.ApplyResources(this.deleteAttachmentButton, "deleteAttachmentButton");
-            this.deleteAttachmentButton.Name = "deleteAttachmentButton";
-            this.toolTip1.SetToolTip(this.deleteAttachmentButton, resources.GetString("deleteAttachmentButton.ToolTip"));
-            this.deleteAttachmentButton.Click += new System.EventHandler(this.deleteAttachmentButton_Click);
-            // 
-            // addAttachmentButton
-            // 
-            resources.ApplyResources(this.addAttachmentButton, "addAttachmentButton");
-            this.addAttachmentButton.Name = "addAttachmentButton";
-            this.toolTip1.SetToolTip(this.addAttachmentButton, resources.GetString("addAttachmentButton.ToolTip"));
-            this.addAttachmentButton.Click += new System.EventHandler(this.addAttachmentButton_Click);
-            // 
-            // downloadButton
-            // 
-            resources.ApplyResources(this.downloadButton, "downloadButton");
-            this.downloadButton.Name = "downloadButton";
-            this.toolTip1.SetToolTip(this.downloadButton, resources.GetString("downloadButton.ToolTip"));
-            this.downloadButton.Click += new System.EventHandler(this.dowloadButton_Click);
-            // 
-            // attachmentListView
-            // 
-            resources.ApplyResources(this.attachmentListView, "attachmentListView");
-            this.attachmentListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3,
-            this.columnHeader4});
-            this.attachmentListView.FullRowSelect = true;
-            this.attachmentListView.HideSelection = false;
-            this.attachmentListView.LargeImageList = this.fileTypeLargeImageList;
-            this.attachmentListView.MultiSelect = false;
-            this.attachmentListView.Name = "attachmentListView";
-            this.attachmentListView.SmallImageList = this.fileTypeSmallImageList;
-            this.attachmentListView.UseCompatibleStateImageBehavior = false;
-            this.attachmentListView.View = System.Windows.Forms.View.Details;
+            this.fileTypeSmallImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            resources.ApplyResources(this.fileTypeSmallImageList, "fileTypeSmallImageList");
+            this.fileTypeSmallImageList.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // columnHeader1
             // 
@@ -961,20 +914,9 @@ namespace Newtera.Studio
             // 
             resources.ApplyResources(this.columnHeader4, "columnHeader4");
             // 
-            // fileTypeLargeImageList
-            // 
-            this.fileTypeLargeImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            resources.ApplyResources(this.fileTypeLargeImageList, "fileTypeLargeImageList");
-            this.fileTypeLargeImageList.TransparentColor = System.Drawing.Color.Transparent;
-            // 
-            // fileTypeSmallImageList
-            // 
-            this.fileTypeSmallImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            resources.ApplyResources(this.fileTypeSmallImageList, "fileTypeSmallImageList");
-            this.fileTypeSmallImageList.TransparentColor = System.Drawing.Color.Transparent;
-            // 
             // DataViewer
             // 
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             resources.ApplyResources(this, "$this");
             this.Controls.Add(this.resultTabControl);
             this.Controls.Add(this.splitter2);
@@ -991,7 +933,6 @@ namespace Newtera.Studio
             this.dataGridContextMenuStrip.ResumeLayout(false);
             this.resultTabControl.ResumeLayout(false);
             this.instanceViewTabPage.ResumeLayout(false);
-            this.attachmentTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
 
 		}
@@ -1530,12 +1471,6 @@ namespace Newtera.Studio
 		private void ShowQueryResult(DataSet dataSet)
 		{
             this.resultDataControl1.ShowQueryResult(dataSet);
-
-            if (this.resultDataControl1.CurrentSlide != null &&
-                this.resultDataControl1.CurrentSlide.IsEmptyResult)
-            {
-                this.addAttachmentButton.Enabled = false;
-            }
 		}
 
 		private void ExecuteQuery()
@@ -1600,13 +1535,6 @@ namespace Newtera.Studio
 						else
 						{
 							this.instanceViewGrid.Refresh();
-						}
-
-						break;
-					case ResultViewType.AttachmentView:
-						if (IsUpdateAttachmentViewNeeded())
-						{
-							ShowAttachmentView();
 						}
 
 						break;
@@ -1738,110 +1666,6 @@ namespace Newtera.Studio
 				ShowInstanceDataDelegate showInstanceData = new ShowInstanceDataDelegate(ShowInstanceData);
 
 				this.BeginInvoke(showInstanceData, new object[] {dataSet});
-			}
-		}
-
-		/// <summary>
-		/// Display the attachement data of an instance of the selected row in 
-		/// the attachment view
-		/// </summary>
-		private void ShowAttachmentView()
-		{
-			// the attachment'e permission follows that of instances.
-            SetAttachmentEditButtonStates(this.resultDataControl1.CurrentSlide.RowView.InstanceData);
-
-            int anum = this.resultDataControl1.CurrentSlide.SelectedRowANUM;
-            string objId = this.resultDataControl1.CurrentSlide.SelectedRowObjId;
-            this.resultDataControl1.CurrentSlide.AttachmentViewObjId = objId;
-			if (anum > 0)
-			{
-                // Show the status
-                ((DesignStudio)this.MdiParent).ShowWorkingStatus(Newtera.WindowsControl.MessageResourceManager.GetString("DataViewer.GettingAttachment"));
-
-                string connectionString = ConnectionStringBuilder.Instance.Create(_metaData.SchemaInfo);
-                int count = _attachmentService.GetAttachmentInfosCount(connectionString, objId);
-                AttachmentInfoCollection allAttachmentInfos = new AttachmentInfoCollection();
-                int startRow = 0;
-                int pageSize = 50;
-                while (startRow < count)
-                {
-                    // invoke the web service synchronously
-                    string xml = _attachmentService.GetAttachmentInfos(connectionString, objId, startRow, pageSize);
-
-                    // convert xml to AttachmentInfoCollection
-                    StringReader reader = new StringReader(xml);
-                    AttachmentInfoCollection infos = new AttachmentInfoCollection();
-                    infos.Read(reader);
-
-                    foreach (AttachmentInfo attachmentInfo in infos)
-                    {
-                        allAttachmentInfos.Add(attachmentInfo);
-                    }
-
-                    startRow += pageSize;
-                }
-
-                ShowAttachmentInfos(allAttachmentInfos);
-			}
-			else
-			{
-				this.attachmentListView.Items.Clear();
-				this.downloadButton.Enabled = false;
-				this.deleteAttachmentButton.Enabled = false;
-			}
-		}
-
-		private delegate void ShowAttachmentInfosDelegate(AttachmentInfoCollection infos);
-
-		/// <summary>
-		/// Display the attachment infos
-		/// </summary>
-		/// <param name="infos">A collection of attachment infos</param>
-		private void ShowAttachmentInfos(AttachmentInfoCollection infos)
-		{
-			if (this.InvokeRequired == false)
-			{
-				// it is the UI thread, continue
-
-				this.attachmentListView.Items.Clear();
-
-				AttachmentListViewItem item;
-				
-				FileTypeInfo fileTypeInfo;
-				int index = 0;
-				foreach (AttachmentInfo info in infos)
-				{
-					fileTypeInfo = FileTypeInfoManager.Instance.GetFileTypeInfoByType(info.Type);
-
-					item = new AttachmentListViewItem(info);
-					item.ImageIndex = fileTypeInfo.ImageIndex;
-					item.SubItems.Add(GetSizeInKB(info.Size));
-					item.SubItems.Add(fileTypeInfo.Description);
-					item.SubItems.Add(info.CreateTime.ToString());
-
-					if (index == 0)
-					{
-						// select the first item
-						item.Selected = true;
-					}
-
-					this.attachmentListView.Items.Add(item);
-					index++;
-				}
-
-				// disable download and delete buttons if the attachment list is empty
-				if (index == 0)
-				{
-					this.downloadButton.Enabled = false;
-					this.deleteAttachmentButton.Enabled = false;
-				}
-			}
-			else
-			{
-				// It is a Worker thread, pass the control to UI thread
-				ShowAttachmentInfosDelegate showAttachmentInfo = new ShowAttachmentInfosDelegate(ShowAttachmentInfos);
-
-				this.BeginInvoke(showAttachmentInfo, new object[] {infos});
 			}
 		}
 
@@ -3201,41 +3025,6 @@ namespace Newtera.Studio
 		}
 
 		/// <summary>
-		/// Enable/disable the buttons for adding/deleting attachments of an instance
-		/// according to its permissions
-		/// </summary>
-		/// <param name="instanceData">The instance data</param>
-		private void SetAttachmentEditButtonStates(InstanceData instanceData)
-		{
-			if (instanceData.HasPermission(XaclActionType.Upload))
-			{
-				this.addAttachmentButton.Enabled = true;
-			}
-			else
-			{
-				this.addAttachmentButton.Enabled = false;
-			}
-
-			if (instanceData.HasPermission(XaclActionType.Delete))
-			{
-				this.deleteAttachmentButton.Enabled = true;
-			}
-			else
-			{
-				this.deleteAttachmentButton.Enabled = false;
-			}
-
-			if (instanceData.HasPermission(XaclActionType.Download))
-			{
-				this.downloadButton.Enabled = true;
-			}
-			else
-			{
-				this.downloadButton.Enabled = false;
-			}
-		}
-
-		/// <summary>
 		/// set the button state of build full-text index to true if the class
 		/// contains the full-text enabled attributes, false otherwise.
 		/// </summary>
@@ -3674,62 +3463,6 @@ namespace Newtera.Studio
 			dialog.DataService = _dataService;
 			dialog.Show();
 		}
-
-		private void addAttachmentButton_Click(object sender, System.EventArgs e)
-		{
-			AddAttachmentDialog dialog = new AddAttachmentDialog();
-			
-			dialog.SchemaInfo = this._metaData.SchemaInfo;
-            dialog.InstanceId = this.resultDataControl1.CurrentSlide.SelectedRowObjId;
-            dialog.ClassName = this.resultDataControl1.CurrentSlide.SelectedRowClassType;
-			dialog.AttachmentItems = this.attachmentListView.Items;
-
-			if (dialog.ShowDialog() == DialogResult.OK)
-			{
-				// increase the attachment number by one to the cached result
-				// so that we don't have to fetch the result from server
-                this.resultDataControl1.CurrentSlide.RowView.InstanceData.IncreamentANUM();
-
-				_isAttachmentChanged = true;
-
-				this.resultDataControl1.ShowDataSlide(); // refresh the result window
-			}
-		}
-
-		private void deleteAttachmentButton_Click(object sender, System.EventArgs e)
-		{
-			if (this.attachmentListView.SelectedItems.Count == 1)
-			{
-				AttachmentListViewItem item = (AttachmentListViewItem) this.attachmentListView.SelectedItems[0];
-
-				DeleteAttachment(item.AttachmentInfo);
-			}
-		}
-
-		private void dowloadButton_Click(object sender, System.EventArgs e)
-		{
-			if (this.attachmentListView.SelectedItems.Count == 1)
-			{
-				AttachmentListViewItem item = (AttachmentListViewItem) this.attachmentListView.SelectedItems[0];
-
-				SaveFileDialog saveFileDialog = new SaveFileDialog();
-	 
-				FileTypeInfo fileTypeInfo = FileTypeInfoManager.Instance.GetFileTypeInfoByType(item.AttachmentInfo.Type);
-				saveFileDialog.InitialDirectory = "c:\\" ;
-				saveFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*" ;
-				saveFileDialog.FilterIndex = 2 ;
-				saveFileDialog.RestoreDirectory = false ;
-				saveFileDialog.FileName = item.AttachmentInfo.Name;
-	 
-				if (saveFileDialog.ShowDialog() == DialogResult.OK)
-				{
-					_attachmentFileName = saveFileDialog.FileName;
-
-					GetAttachment(item.AttachmentInfo);
-				}
-			}
-		}
-
 		private void DataViewer_Activated(object sender, System.EventArgs e)
 		{
 			// Refresh the display in case the meta data has been changed
