@@ -37,7 +37,6 @@ SmartApp/Service References
 SmartApp/Properties
 Debug/
 temp/
-attachments/
 **/timeseries.csv
 **/log.txt
 
