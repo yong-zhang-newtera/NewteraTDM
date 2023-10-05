@@ -415,7 +415,7 @@ angular.module('app.smarttables').controller('dataGridBaseCtrl', function ($scop
                 params = "view=" + $scope.view;
             }
 
-            $scope.pageSize = 20;
+            $scope.pageSize = 15;
             if (loadOptions.skip) {
                 var range = "from=" + loadOptions.skip + "&size=" + loadOptions.take;
                 $scope.pageSize = loadOptions.take;
@@ -617,7 +617,7 @@ angular.module('app.smarttables').controller('dataGridBaseCtrl', function ($scop
                 params = "view=" + $scope.view;
             }
 
-            $scope.pageSize = 20;
+            $scope.pageSize = 15;
             if (loadOptions.skip) {
                 var range = "from=" + loadOptions.skip + "&size=" + loadOptions.take;
                 $scope.pageSize = loadOptions.take;

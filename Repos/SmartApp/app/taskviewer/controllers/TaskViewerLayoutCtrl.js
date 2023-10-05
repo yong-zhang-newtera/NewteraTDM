@@ -37,21 +37,25 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($r
     parameters.packetTemplate = $stateParams.packetTemplate;
     parameters.packetPrefixAttribute = $stateParams.packetPrefixAttribute;
 
-    var treeName = $stateParams.schema + $stateParams.class + $stateParams.oid;
-    if (MetaDataCache.getNamedData(treeName)) {
-        $scope.taskDataTree = MetaDataCache.getNamedData(treeName);
-        $scope.nodes = MetaDataCache.getNamedData(treeName + "-nodes");
+    var taskTreeName = "Task_Tree_" + $scope.dbschema + $scope.dbclass + $scope.oid;
+    var flatternTreeName = "Flattern_Task_Tree_" + $scope.dbschema + $scope.dbclass + $scope.oid;
+
+    if (MetaDataCache.getNamedData(taskTreeName)) {
+        $scope.taskDataTree = MetaDataCache.getNamedData(taskTreeName);
+        $scope.nodes = MetaDataCache.getNamedData(flatternTreeName);
+
+        $state.go("app.taskviewer.details", parameters);
     }
     else {
         taskService.getTaskTree(parameters, function (taskTree, flatternNodes) {
             $scope.taskDataTree = taskTree;
             $scope.nodes = flatternNodes;
-            MetaDataCache.setNamedData(treeName, taskTree);
-            MetaDataCache.setNamedData(treeName + "-nodes", $scope.nodes);
+            MetaDataCache.setNamedData(taskTreeName, taskTree);
+            MetaDataCache.setNamedData(flatternTreeName, $scope.nodes);
+
+            $state.go("app.taskviewer.details", parameters);
         });
     }
-
-    $state.go("app.taskviewer.details", parameters);
 
     $scope.GoToTaskInfoView = function GoToTaskInfoView(nodeClass, nodeOid, nodePrefix) {
         var params = new Object();
@@ -96,11 +100,12 @@ angular.module('app.taskviewer').controller('TaskViewerLayoutCtrl', function ($r
         }
     }
 
-    $scope.Refresh = function (reloadTree) {
+    $scope.Refresh = function () {
         if ($rootScope.RefreshTaskTree) {
-            var treeName = $stateParams.schema + $stateParams.class + $stateParams.oid;
-            MetaDataCache.setNamedData(treeName, null);
-            MetaDataCache.setNamedData(treeName + "-nodes", null);
+            var treePrefix = "Task_Tree_" + $scope.dbschema + $scope.dbclass;
+            var flatternTreePrefix = "Flattern_Task_Tree_" + $scope.dbschema + $scope.dbclass;
+            MetaDataCache.clearNamedData(treePrefix);
+            MetaDataCache.clearNamedData(flatternTreePrefix);
             $rootScope.RefreshTaskTree = false;
         }
 

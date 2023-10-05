@@ -1,0 +1,16 @@
+<SubscriberManager>
+  <SubscriberGroupCollection>
+    <SubscriberGroup Name="Equipments" class="Equipments">
+      <SubscriberCollection>
+        <Subscriber Name="CalibrationDueEventSubscriber" class="Equipments" eventName="CalibrationDueEvent" subject="Equipment with num {Number} is due for calibration in 7 days" desc="Equipment with num {Number} is due for calibration in 7 days" url="app.smartforms.ebaasform" params="{&quot;schema&quot;: msg.dbschema, &quot;class&quot;: msg.dbclass, &quot;oid&quot;:msg.oid, &quot;template&quot;: &quot;EquipmentForm.htm&quot;}" roles="LabA;Manager" sendMessage="true">Instance.SetValue("IsNotified", "是");</Subscriber>
+      </SubscriberCollection>
+    </SubscriberGroup>
+    <SubscriberGroup Name="LabATestOrders" class="LabATestOrders">
+      <SubscriberCollection>
+        <Subscriber Name="OrderApprovedEventSubscriber" class="LabATestOrders" eventName="OrderApprovedEvent" subject="试验任务已审批通过" desc="编号为{任务编号}的试验任务已审批通过" url="app.taskkanban.kanbanmain" params="{&quot;schema&quot;: msg.dbschema, &quot;objid&quot;: msg.oid, &quot;kanban&quot;:&quot;LabATestOrderKanban&quot;}" userAttribute="SubmitBy" senderAttribute="ApprovedBy" sendMessage="true" />
+        <Subscriber Name="OrderDisapprovedEventSubscriber" class="LabATestOrders" eventName="OrderDisprovedEvent" subject="试验任务审批未通过" desc="编号为{任务编号}的试验任务审批未通过" url="app.taskkanban.kanbanmain" params="{&quot;schema&quot;: msg.dbschema, &quot;objid&quot;: msg.oid, &quot;kanban&quot;:&quot;LabATestOrderKanban&quot;}" userAttribute="SubmitBy" senderAttribute="ApprovedBy" sendMessage="true" />
+        <Subscriber Name="OrderCompleteEventSubscriber" class="LabATestOrders" eventName="TestCompletedEvent" subject="试验任务完成" desc="编号为{任务编号}的试验任务完成" url="app.taskkanban.kanbanmain" params="{&quot;schema&quot;: msg.dbschema, &quot;objid&quot;: msg.oid, &quot;kanban&quot;:&quot;LabATestOrderKanban&quot;}" sendMessage="true" />
+      </SubscriberCollection>
+    </SubscriberGroup>
+  </SubscriberGroupCollection>
+</SubscriberManager>

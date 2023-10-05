@@ -1,0 +1,25 @@
+<RuleManager>
+  <RuleSets>
+    <RuleSet class="Issues">
+      <Rules>
+        <RuleDef class="Issues">
+          <Filter order="0">
+            <And Name="and" order="0">
+              <Equals Name="=" order="0">
+                <SimpleAttribute Name="Staus" Caption="当前状态" order="0" OwnerAlias="issues" />
+                <Parameter Name="Staus" order="0" OwnerAlias="issues" Value="等待" Type="String" />
+              </Equals>
+              <IsNull Name="is null" order="0">
+                <SimpleAttribute Name="Owner" Caption="处理人" order="0" OwnerAlias="issues" />
+              </IsNull>
+            </And>
+          </Filter>
+          <Filter order="0">
+            <Error Name="error" order="0" msg="处理人不能为空" />
+          </Filter>
+          <Filter order="0" />
+        </RuleDef>
+      </Rules>
+    </RuleSet>
+  </RuleSets>
+</RuleManager>

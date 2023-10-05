@@ -1,0 +1,23 @@
+<LoggingPolicy>
+  <setting propagation="Downward" conflict="Ontp" read="Off" write="Off" create="Off" delete="Off" upload="Off" download="Off" import="Off" export="Off" />
+  <definitions>
+    <definition>
+      <object href="/metadata/schema/TestOrders/LabATestOrders" />
+      <rules>
+        <rule>
+          <subject roles="Everyone" />
+          <actions>
+            <action type="Read" status="Off" />
+            <action type="Write" status="Off" />
+            <action type="Create" status="Off" />
+            <action type="Delete" status="Off" />
+            <action type="Upload" status="Off" />
+            <action type="Download" status="Off" />
+            <action type="Import" status="Off" />
+            <action type="Export" status="On" />
+          </actions>
+        </rule>
+      </rules>
+    </definition>
+  </definitions>
+</LoggingPolicy>

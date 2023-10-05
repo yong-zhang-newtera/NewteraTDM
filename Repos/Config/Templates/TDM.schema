@@ -1,0 +1,1062 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:psd="http://www.newtera.com" targetNamespace="http://www.newtera.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element psd:version="1.0" psd:modifiedTime="2023-10-01T15:50:15" psd:id="17" psd:order="0" name="TDM">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" maxOccurs="1" name="TestItemsList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="TestItems" type="TestItems" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="LabATestItemsList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="LabATestItems" type="LabATestItems" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="LabATestItemInstancesList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="LabATestItemInstances" type="LabATestItemInstances" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="LabATestItemTemplatesList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="LabATestItemTemplates" type="LabATestItemTemplates" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="SequnceNumberList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="SequnceNumber" type="SequnceNumber" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="TestBedsList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="TestBeds" type="TestBeds" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="LabATestBedsList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="LabATestBeds" type="LabATestBeds" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="SamplesList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="Samples" type="Samples" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="LabASamplesList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="LabASamples" type="LabASamples" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="TestOrdersList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="TestOrders" type="TestOrders" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="LabATestOrdersList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="LabATestOrders" type="LabATestOrders" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="TestRecordsList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="TestRecords" type="TestRecords" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="LabATestRecordsList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="LabATestRecords" type="LabATestRecords" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="ItemToSampleList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="ItemToSample" type="ItemToSample" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="EquipmentsList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="Equipments" type="Equipments" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="LabAEquipmentsList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="LabAEquipments" type="LabAEquipments" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="ItemToEquipmentList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="ItemToEquipment" type="ItemToEquipment" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="TestMethodList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="TestMethod" type="TestMethod" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="LabATestMethodsList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="LabATestMethods" type="LabATestMethods" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="EngineTestMethodsList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="EngineTestMethods" type="EngineTestMethods" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:all>
+    </xs:complexType>
+    <xs:key name="TestItemsPK">
+      <xs:selector xpath="TestItemsList/TestItems" />
+      <xs:field xpath="ItemID" />
+    </xs:key>
+    <xs:keyref name="toTestOrderTestItemsTestOrdersFK" refer="TestOrdersPK">
+      <xs:selector xpath="TestItemsList/TestItems" />
+      <xs:field xpath="toTestOrder/OrderID" />
+    </xs:keyref>
+    <xs:keyref name="toTestMethodTestItemsTestMethodFK" refer="TestMethodPK">
+      <xs:selector xpath="TestItemsList/TestItems" />
+      <xs:field xpath="toTestMethod/MethodID" />
+    </xs:keyref>
+    <xs:key name="SequnceNumberPK">
+      <xs:selector xpath="SequnceNumberList/SequnceNumber" />
+      <xs:field xpath="SerialNumKey" />
+    </xs:key>
+    <xs:key name="TestBedsPK">
+      <xs:selector xpath="TestBedsList/TestBeds" />
+      <xs:field xpath="TestBedID" />
+    </xs:key>
+    <xs:key name="SamplesPK">
+      <xs:selector xpath="SamplesList/Samples" />
+      <xs:field xpath="SampleID" />
+    </xs:key>
+    <xs:keyref name="toTestOrderSamplesTestOrdersFK" refer="TestOrdersPK">
+      <xs:selector xpath="SamplesList/Samples" />
+      <xs:field xpath="toTestOrder/OrderID" />
+    </xs:keyref>
+    <xs:key name="TestOrdersPK">
+      <xs:selector xpath="TestOrdersList/TestOrders" />
+      <xs:field xpath="OrderID" />
+    </xs:key>
+    <xs:key name="TestRecordsPK">
+      <xs:selector xpath="TestRecordsList/TestRecords" />
+      <xs:field xpath="RecordID" />
+    </xs:key>
+    <xs:keyref name="toTestItemTestRecordsTestItemsFK" refer="TestItemsPK">
+      <xs:selector xpath="TestRecordsList/TestRecords" />
+      <xs:field xpath="toTestItem/ItemID" />
+    </xs:keyref>
+    <xs:keyref name="toTestSampleItemToSampleSamplesFK" refer="SamplesPK">
+      <xs:selector xpath="ItemToSampleList/ItemToSample" />
+      <xs:field xpath="toTestSample/SampleID" />
+    </xs:keyref>
+    <xs:keyref name="toTestItemItemToSampleTestItemsFK" refer="TestItemsPK">
+      <xs:selector xpath="ItemToSampleList/ItemToSample" />
+      <xs:field xpath="toTestItem/ItemID" />
+    </xs:keyref>
+    <xs:key name="EquipmentsPK">
+      <xs:selector xpath="EquipmentsList/Equipments" />
+      <xs:field xpath="EquipmentID" />
+    </xs:key>
+    <xs:keyref name="toTestBedEquipmentsTestBedsFK" refer="TestBedsPK">
+      <xs:selector xpath="EquipmentsList/Equipments" />
+      <xs:field xpath="toTestBed/TestBedID" />
+    </xs:keyref>
+    <xs:keyref name="toEquipmentItemToEquipmentEquipmentsFK" refer="EquipmentsPK">
+      <xs:selector xpath="ItemToEquipmentList/ItemToEquipment" />
+      <xs:field xpath="toEquipment/EquipmentID" />
+    </xs:keyref>
+    <xs:keyref name="toTestItemItemToEquipmentTestItemsFK" refer="TestItemsPK">
+      <xs:selector xpath="ItemToEquipmentList/ItemToEquipment" />
+      <xs:field xpath="toTestItem/ItemID" />
+    </xs:keyref>
+    <xs:key name="TestMethodPK">
+      <xs:selector xpath="TestMethodList/TestMethod" />
+      <xs:field xpath="MethodID" />
+    </xs:key>
+  </xs:element>
+  <xs:simpleType psd:displayMode="Text" psd:displayName="试验项目流程状态" psd:order="5" name="TestItemStates">
+    <xs:restriction xmlns:q1="http://www.w3.org/2003/XMLSchema" base="q1:string">
+      <xs:enumeration id="已生成" value="1" />
+      <xs:enumeration id="试验中" value="2" />
+      <xs:enumeration id="试验结束" value="3" />
+      <xs:enumeration id="等待样品" value="4" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:displayMode="Text" psd:displayName="试验任务流程状态" psd:order="8" name="LabAOrderStates">
+    <xs:restriction xmlns:q2="http://www.w3.org/2003/XMLSchema" base="q2:string">
+      <xs:enumeration id="提交中" value="1" />
+      <xs:enumeration id="已提交" value="2" />
+      <xs:enumeration id="审批中" value="3" />
+      <xs:enumeration id="试验中" value="5" />
+      <xs:enumeration id="结束" value="6" />
+      <xs:enumeration id="接收样品" value="7" />
+      <xs:enumeration id="修改任务" value="9" />
+      <xs:enumeration id="取消" value="10" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:displayMode="Text" psd:displayName="试验任务周期要求" psd:order="9" name="TestOrderPriority">
+    <xs:restriction xmlns:q3="http://www.w3.org/2003/XMLSchema" base="q3:string">
+      <xs:enumeration id="紧急" value="1" />
+      <xs:enumeration id="高" value="2" />
+      <xs:enumeration id="正常" value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:displayMode="Text" psd:displayName="试验台架地点" psd:order="10" name="TestBedLocation">
+    <xs:restriction xmlns:q4="http://www.w3.org/2003/XMLSchema" base="q4:string">
+      <xs:enumeration id="地点A" value="1" />
+      <xs:enumeration id="地点B" value="2" />
+      <xs:enumeration id="地点C" value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:displayMode="Text" psd:displayName="试验台架状态" psd:order="11" name="TestBedStatus">
+    <xs:restriction xmlns:q5="http://www.w3.org/2003/XMLSchema" base="q5:string">
+      <xs:enumeration id="闲置" value="1" />
+      <xs:enumeration id="占用" value="2" />
+      <xs:enumeration id="维护中" value="3" />
+      <xs:enumeration id="故障" value="4" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:displayMode="Text" psd:displayName="预约优先级" psd:order="12" name="AppointmentPriority">
+    <xs:restriction xmlns:q6="http://www.w3.org/2003/XMLSchema" base="q6:string">
+      <xs:enumeration id="低" value="1" />
+      <xs:enumeration id="中" value="2" />
+      <xs:enumeration id="高" value="3" />
+      <xs:enumeration id="紧急" value="4" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:displayMode="Text" psd:displayName="设备维护类型" psd:order="15" name="EquipmentMaintenanceType">
+    <xs:restriction xmlns:q7="http://www.w3.org/2003/XMLSchema" base="q7:string">
+      <xs:enumeration id="每月" value="1" />
+      <xs:enumeration id="每季度" value="2" />
+      <xs:enumeration id="每年" value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:displayMode="Text" psd:displayName="试验设备类型" psd:order="16" name="EquipmentTypes">
+    <xs:restriction xmlns:q8="http://www.w3.org/2003/XMLSchema" base="q8:string">
+      <xs:enumeration id="类型1" value="1" />
+      <xs:enumeration id="类型2" value="2" />
+      <xs:enumeration id="类型3" value="3" />
+      <xs:enumeration id="类型4" value="4" />
+      <xs:enumeration id="类型5" value="5" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:displayMode="Image" psd:displayName="试验设备检定状态" psd:order="17" name="CalibrationStatus">
+    <xs:restriction xmlns:q9="http://www.w3.org/2003/XMLSchema" base="q9:string">
+      <xs:enumeration id="正常" value="1">
+        <xs:annotation>
+          <xs:appinfo>green.bmp</xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration id="即将到期" value="2">
+        <xs:annotation>
+          <xs:appinfo>yellow.bmp</xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration id="已到期" value="3">
+        <xs:annotation>
+          <xs:appinfo>red.bmp</xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:displayMode="Text" psd:displayName="数据包类型" psd:order="18" name="dataPacketType">
+    <xs:restriction xmlns:q10="http://www.w3.org/2003/XMLSchema" base="q10:string">
+      <xs:enumeration id="原始数据" value="RowData" />
+      <xs:enumeration id="过程数据" value="ProcessData" />
+      <xs:enumeration id="结果数据" value="ProcessedData" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:listHandler="Newtera.Common.MetaData.XmlDataSourceListHandler,Newtera.Common" psd:nonConditionalQuery="document(&quot;db://UserInfo.xml&quot;)//Role[RType=&quot;Unit&quot; and @parentRole=&gt;Role/Name = &quot;Lab Center&quot;]" psd:textField="Text" psd:valueField="Name" psd:displayName="所属实验室" psd:order="0" name="Labs">
+    <xs:restriction xmlns:q11="http://www.w3.org/2003/XMLSchema" base="q11:string">
+      <xs:enumeration value="DynamicValues" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:listHandler="Newtera.Common.MetaData.XmlDataSourceListHandler,Newtera.Common" psd:conditionalQuery="document(&quot;db://UserInfo.xml&quot;)//Role[RType=&quot;Unit&quot; and Text = &quot;?&quot;]/@subRoles=&gt;Role" psd:nonConditionalQuery="document(&quot;db://UserInfo.xml&quot;)//Role[RType=&quot;Unit&quot; ]" psd:textField="Text" psd:valueField="Name" psd:listStyle="Conditional" psd:displayName="所属检测组" psd:order="1" name="Groups">
+    <xs:restriction xmlns:q12="http://www.w3.org/2003/XMLSchema" base="q12:string">
+      <xs:enumeration value="DynamicValues" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:listHandler="Newtera.Common.MetaData.XmlDataSourceListHandler,Newtera.Common" psd:conditionalQuery="for $u in document(&quot;db://UserInfo.xml&quot;)//Role[RType=&quot;Unit&quot; and Text=&quot;?&quot;]/@users=&gt;UserRole/@user=&gt;User return $u" psd:nonConditionalQuery="document(&quot;db://UserInfo.xml&quot;)//User" psd:textField="DisplayText" psd:valueField="ID" psd:listStyle="Conditional" psd:displayName="检测组负责人" psd:order="2" name="GroupHeads">
+    <xs:restriction xmlns:q13="http://www.w3.org/2003/XMLSchema" base="q13:string">
+      <xs:enumeration value="DynamicValues" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:listHandler="Newtera.Common.MetaData.XmlDataSourceListHandler,Newtera.Common" psd:conditionalQuery="for $u in document(&quot;db://UserInfo.xml&quot;)//Role[RType=&quot;Unit&quot; and Text=&quot;?&quot;]/@users=&gt;UserRole/@user=&gt;User return $u" psd:nonConditionalQuery="document(&quot;db://UserInfo.xml&quot;)//User" psd:textField="DisplayText" psd:valueField="ID" psd:listStyle="Conditional" psd:displayName="试验员" psd:order="3" name="Testers">
+    <xs:restriction xmlns:q14="http://www.w3.org/2003/XMLSchema" base="q14:string">
+      <xs:enumeration value="DynamicValues" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:listHandler="Newtera.Common.MetaData.XmlDataSourceListHandler,Newtera.Common" psd:conditionalQuery="for $u in document(&quot;db://UserInfo.xml&quot;)//Role[RType=&quot;Unit&quot; and Text=&quot;?&quot;]/@users=&gt;UserRole/@user=&gt;User return $u" psd:nonConditionalQuery="document(&quot;db://UserInfo.xml&quot;)//User" psd:textField="DisplayText" psd:valueField="ID" psd:listStyle="Conditional" psd:displayName="检验员" psd:order="4" name="VerifiedBy">
+    <xs:restriction xmlns:q15="http://www.w3.org/2003/XMLSchema" base="q15:string">
+      <xs:enumeration value="DynamicValues" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:listHandler="Newtera.Common.MetaData.FormTemplateListHandler,Newtera.Common" psd:parameter="LabATestItems" psd:displayName="产品试验项目表单模板" psd:order="6" name="LabATestItemForms">
+    <xs:restriction xmlns:q16="http://www.w3.org/2003/XMLSchema" base="q16:string">
+      <xs:enumeration value="DynamicValues" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:listHandler="Newtera.Common.MetaData.FormTemplateListHandler,Newtera.Common" psd:parameter="LabATestItems" psd:displayName="产品试验项目数据表单模板" psd:order="7" name="LabATestItemDataForm">
+    <xs:restriction xmlns:q17="http://www.w3.org/2003/XMLSchema" base="q17:string">
+      <xs:enumeration value="DynamicValues" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:listHandler="Newtera.Common.MetaData.XmlDataSourceListHandler,Newtera.Common" psd:nonConditionalQuery="document(&quot;db://UserInfo.xml&quot;)//Role[RType=&quot;Unit&quot; and @parentRole=&gt;Role/Name = &quot;Lab Center&quot;]" psd:textField="Text" psd:valueField="Name" psd:displayName="预约部门" psd:order="13" name="AppointmentParty">
+    <xs:restriction xmlns:q18="http://www.w3.org/2003/XMLSchema" base="q18:string">
+      <xs:enumeration value="DynamicValues" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:listHandler="Newtera.Common.MetaData.UsersListHandler,Newtera.Common" psd:displayName="预约人" psd:order="14" name="AppointmentBy">
+    <xs:restriction xmlns:q19="http://www.w3.org/2003/XMLSchema" base="q19:string">
+      <xs:enumeration value="DynamicValues" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType psd:listHandler="Newtera.Common.MetaData.XmlDataSourceListHandler,Newtera.Common" psd:conditionalQuery="document(&quot;db://TDM.xml&quot;)//LabATestItemTemplates[ItemName like &quot;?&quot;]" psd:textField="ItemName" psd:valueField="TestItemObjID" psd:listStyle="Conditional" psd:displayName="试验项目模版" psd:order="19" name="TestItemTemplateList">
+    <xs:restriction xmlns:q20="http://www.w3.org/2003/XMLSchema" base="q20:string">
+      <xs:enumeration value="DynamicValues" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType psd:category="测试项目数据类" psd:tableName="T_TESTITEMS_382_17" psd:id="382" psd:displayName="测试项目" psd:order="0" name="TestItems">
+    <xs:sequence>
+      <xs:element psd:autoIncrement="true" psd:key="true" psd:colName="C_ITEMID_2652" psd:id="2652" psd:displayName="项目序号" psd:order="0" minOccurs="0" name="ItemID" xmlns:q21="http://www.w3.org/2003/XMLSchema" type="q21:integer" />
+      <xs:element psd:manualUpdate="false" psd:colName="C_ITEMNUMBER_2918" psd:id="2918" psd:displayName="项目编号" psd:order="1" minOccurs="0" name="ItemNumber" xmlns:q22="http://www.w3.org/2003/XMLSchema" type="q22:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:forfullText="true" psd:constraintUsage="Suggestion" psd:colName="C_ITEMNAME_2653" psd:invokeCallback="true" psd:id="2653" psd:displayName="项目名称" psd:order="2" minOccurs="1" name="ItemName" type="TestItemTemplateList" />
+      <xs:element psd:forfullText="true" psd:multiLine="true" psd:usage="None" psd:colName="C_ITEMDESC_2654" psd:id="2654" psd:displayName="项目描述" psd:order="3" minOccurs="0" name="ItemDesc" xmlns:q23="http://www.w3.org/2003/XMLSchema" type="q23:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="1000" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:forfullText="true" psd:multiLine="true" psd:usage="None" psd:colName="C_SPECS_2655" psd:id="2655" psd:displayName="项目要求" psd:order="4" minOccurs="0" name="Specs" xmlns:q24="http://www.w3.org/2003/XMLSchema" type="q24:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="500" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:forfullText="true" psd:cascadeAttribute="GroupHead;Group" psd:colName="C_LAB_2656" psd:id="2656" psd:displayName="所属实验室" psd:order="5" minOccurs="1" name="Lab" type="Labs">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:forfullText="true" psd:cascadeAttribute="VerifiedBy;TestBy;GroupHead" psd:colName="C_GROUP_2657" psd:id="2657" psd:displayName="所属检测组" psd:order="6" minOccurs="1" name="Group" type="Groups">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_GROUPHEAD_2658" psd:id="2658" psd:displayName="检测组负责人" psd:order="7" minOccurs="0" name="GroupHead" type="GroupHeads">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_STARTTIME_2659" psd:id="2659" psd:displayName="开始时间" psd:order="8" minOccurs="0" name="StartTime" xmlns:q25="http://www.w3.org/2003/XMLSchema" type="q25:dateTime" />
+      <xs:element psd:colName="C_ENDTIME_2660" psd:id="2660" psd:displayName="结束时间" psd:order="9" minOccurs="0" name="EndTime" xmlns:q26="http://www.w3.org/2003/XMLSchema" type="q26:dateTime" />
+      <xs:element psd:forfullText="true" psd:colName="C_TESTBY_2661" psd:id="2661" psd:displayName="实验员" psd:order="10" minOccurs="0" name="TestBy" type="Testers">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="None" psd:colName="C_VERIFIEDBY_2662" psd:id="2662" psd:displayName="校验员" psd:order="11" minOccurs="0" name="VerifiedBy" type="VerifiedBy">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:forfullText="true" psd:multiLine="true" psd:usage="None" psd:colName="C_COMMENT_2663" psd:id="2663" psd:displayName="结论" psd:order="12" minOccurs="0" name="Comment" xmlns:q27="http://www.w3.org/2003/XMLSchema" type="q27:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="500" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="None" psd:colName="C_VERIFIEDTIME_2664" psd:id="2664" psd:displayName="校验时间" psd:order="13" minOccurs="0" name="VerifiedTime" xmlns:q28="http://www.w3.org/2003/XMLSchema" type="q28:dateTime" />
+      <xs:element psd:richText="true" psd:multiLine="true" psd:usage="None" psd:colName="C_PROCEDURES_2665" psd:id="2665" psd:displayName="试验步骤" psd:order="14" minOccurs="0" name="Procedures" xmlns:q29="http://www.w3.org/2003/XMLSchema" type="q29:text" />
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q30="http://www.w3.org/2003/XMLSchema" type="q30:ID" />
+    <xs:attribute psd:refClass="TestOrders" psd:refAttr="toTestItems" psd:ownership="looseReferenced" psd:joinManager="false" psd:ownedRelationship="false" psd:refType="manyToOne" psd:index="true" psd:colName="FC_TESTO_2875" psd:creator="Newtera.WebForm.RelationshipGridViewControl,Newtera.WebForm" psd:id="2875" psd:displayName="到试验任务" psd:description="" psd:order="15" name="toTestOrder" xmlns:q31="http://www.w3.org/2003/XMLSchema" type="q31:IDREF" />
+    <xs:attribute psd:refClass="TestMethod" psd:refAttr="toTestItem" psd:ownership="looseReferenced" psd:joinManager="false" psd:ownedRelationship="false" psd:refType="manyToOne" psd:index="true" psd:forfullText="true" psd:colName="FC_TESTM_2876" psd:invokeCallback="true" psd:id="2876" psd:displayName="到试验方法" psd:description="" psd:order="16" name="toTestMethod" xmlns:q32="http://www.w3.org/2003/XMLSchema" type="q32:IDREF" />
+    <xs:attribute psd:refClass="ItemToSample" psd:refAttr="toTestItem" psd:ownership="looseReferenced" psd:joinManager="true" psd:ownedRelationship="false" psd:refType="oneToMany" psd:forfullText="true" psd:colName="FC_ITEMT_2877" psd:id="2877" psd:displayName="到试验样品" psd:description="" psd:order="17" name="toTestSamples" xmlns:q33="http://www.w3.org/2003/XMLSchema" type="q33:IDREFS" />
+    <xs:attribute psd:refClass="ItemToEquipment" psd:refAttr="toTestItem" psd:usage="Result" psd:ownership="owned" psd:joinManager="true" psd:ownedRelationship="false" psd:refType="oneToMany" psd:colName="FC_ITEMT_2878" psd:id="2878" psd:displayName="到试验设备" psd:description="" psd:order="18" name="toTestEquipments" xmlns:q34="http://www.w3.org/2003/XMLSchema" type="q34:IDREFS" />
+    <xs:attribute psd:refClass="TestRecords" psd:refAttr="toTestItem" psd:ownership="owned" psd:joinManager="true" psd:ownedRelationship="false" psd:refType="oneToMany" psd:colName="FC_TESTR_2879" psd:id="2879" psd:displayName="到试验数据记录" psd:description="" psd:order="19" name="toTestDataRecords" xmlns:q35="http://www.w3.org/2003/XMLSchema" type="q35:IDREFS" />
+  </xs:complexType>
+  <xs:complexType psd:tableName="T_LABATESTITEMS_383_17" psd:id="383" psd:displayName="产品测试项目" psd:order="20" name="LabATestItems">
+    <xs:complexContent mixed="false">
+      <xs:extension base="TestItems">
+        <xs:sequence>
+          <xs:element psd:colName="C_PROCESSSTATE_2671" psd:id="2671" psd:displayName="流程状态" psd:order="0" minOccurs="0" name="ProcessState" type="TestItemStates">
+            <xs:simpleType>
+              <xs:restriction>
+                <xs:minLength value="0" />
+                <xs:maxLength value="100" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType psd:tableName="T_LABATESTITEMINSTANCES_384_17" psd:sortAttribute="obj_id" psd:sortDirection="Descending" psd:initialize=" this.Instance.SetValue(&quot;ProcessState&quot;,&quot;已生成&quot;);" psd:beforeInsert="string str = &quot;&quot;;&#xA;SequenceNumberGenerator generator = SequenceNumberGeneratorFactory.Instance.Create(&quot;SequnceNumber&quot;,&quot;SerialNumKey&quot;, &quot;LabATestItemID&quot;, &quot;SerialValue&quot;);&#xA; int serialNo = generator.NextNumber();&#xA;str = &quot;Item&quot; + &quot;-&quot; + String.Format(&quot;{0:yyyyMMdd}&quot;, DateTime.Today) + &quot;-&quot; + String.Format(&quot;{0:0000}&quot;,serialNo);&#xA;this.Instance.SetValue(&quot;ItemNumber&quot;, str);&#xA;" psd:callBack="if (this.Property == &quot;toTestMethod&quot;)&#xA;{&#xA;    string testMethodId = this.Instance.GetString(&quot;toTestMethod&quot;);&#xA;    if (!string.IsNullOrEmpty(testMethodId))&#xA;    {&#xA;        IDataInstanceGetter instanceGetter = DataInstanceGetterFactory.Instance.Create();&#xA;        IInstanceWrapper methodInstance = instanceGetter.GetInstance(CurrentConnectionString, &quot;TestMethod&quot;, &quot;MethodID&quot;, testMethodId);&#xA;        if (methodInstance != null)&#xA;        {&#xA;            this.Instance.SetValue(&quot;toTestMethod&quot;, methodInstance);&#xA;            this.Instance.SetValue(&quot;Procedures&quot;, methodInstance.GetString(&quot;Procedures&quot;));&#xA;        }&#xA;    }&#xA;}&#xA;else if (this.Property == &quot;ItemName&quot;)&#xA;{&#xA;    string itemName = this.Instance.GetString(&quot;ItemName&quot;);&#xA;    IDataInstanceGetter instanceGetter = DataInstanceGetterFactory.Instance.Create();&#xA;    IInstanceWrapper itemTemplate = instanceGetter.GetInstance(CurrentConnectionString, &quot;LabATestItemTemplates&quot;, &quot;ItemName&quot;, itemName);&#xA;    if (itemTemplate != null)&#xA;    {&#xA;        this.Instance.Copy(itemTemplate);&#xA;    }&#xA;}&#xA;&#xA;" psd:id="384" psd:displayName="产品测试项目台账" psd:description="Test" psd:order="1" name="LabATestItemInstances">
+    <xs:complexContent mixed="false">
+      <xs:extension base="LabATestItems">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType psd:tableName="T_LABATESTITEMTEMPLATES_385_17" psd:id="385" psd:displayName="产品测试项目模板" psd:order="2" name="LabATestItemTemplates">
+    <xs:complexContent mixed="false">
+      <xs:extension base="LabATestItems">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType psd:category="其它数据类" psd:tableName="T_SEQUNCENUMBER_389_17" psd:id="389" psd:displayName="流水号" psd:order="0" name="SequnceNumber">
+    <xs:sequence>
+      <xs:element psd:key="true" psd:colName="C_SERIALNUMKEY_2676" psd:id="2676" psd:displayName="流水号主键" psd:order="0" minOccurs="0" name="SerialNumKey" xmlns:q36="http://www.w3.org/2003/XMLSchema" type="q36:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_SERIALVALUE_2677" psd:id="2677" psd:displayName="流水号值" psd:order="1" minOccurs="0" name="SerialValue" xmlns:q37="http://www.w3.org/2003/XMLSchema" type="q37:integer" />
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q38="http://www.w3.org/2003/XMLSchema" type="q38:ID" />
+  </xs:complexType>
+  <xs:complexType psd:category="试验资源数据类" psd:tableName="T_TESTBEDS_393_17" psd:id="393" psd:displayName="试验台架" psd:order="0" name="TestBeds">
+    <xs:sequence>
+      <xs:element psd:autoIncrement="true" psd:key="true" psd:colName="C_TESTBEDID_2695" psd:id="2695" psd:displayName="台架序号" psd:order="0" minOccurs="0" name="TestBedID" xmlns:q39="http://www.w3.org/2003/XMLSchema" type="q39:integer" />
+      <xs:element psd:colName="C_NAME_2696" psd:id="2696" psd:displayName="台架名称" psd:order="1" minOccurs="1" name="Name" xmlns:q40="http://www.w3.org/2003/XMLSchema" type="q40:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_TESTBEDNUMBER_2697" psd:id="2697" psd:displayName="台架编号" psd:order="2" minOccurs="0" name="TestBedNumber" xmlns:q41="http://www.w3.org/2003/XMLSchema" type="q41:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:multiLine="true" psd:colName="C_DESCRIPTION_2698" psd:id="2698" psd:displayName="台架说明" psd:order="3" minOccurs="0" name="Description" xmlns:q42="http://www.w3.org/2003/XMLSchema" type="q42:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="None" psd:colName="C_KEYWORDS_2699" psd:id="2699" psd:displayName="关键字" psd:order="4" minOccurs="0" name="keywords" xmlns:q43="http://www.w3.org/2003/XMLSchema" type="q43:text" />
+      <xs:element psd:colName="C_LOCATION_2700" psd:id="2700" psd:displayName="所在地点" psd:order="5" minOccurs="0" name="Location" type="TestBedLocation">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_STATUS_2701" psd:id="2701" psd:displayName="当前状态" psd:order="6" minOccurs="0" name="Status" type="TestBedStatus" />
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q44="http://www.w3.org/2003/XMLSchema" type="q44:ID" />
+    <xs:attribute psd:refClass="Equipments" psd:refAttr="toTestBed" psd:ownership="looseReferenced" psd:joinManager="true" psd:ownedRelationship="false" psd:refType="oneToMany" psd:colName="FC_EQUIP_2883" psd:id="2883" psd:displayName="到试验设备" psd:description="" psd:order="7" name="toEquipments" xmlns:q45="http://www.w3.org/2003/XMLSchema" type="q45:IDREFS" />
+  </xs:complexType>
+  <xs:complexType psd:tableName="T_LABATESTBEDS_394_17" psd:id="394" psd:displayName="产品实验室试验台架" psd:order="8" name="LabATestBeds">
+    <xs:complexContent mixed="false">
+      <xs:extension base="TestBeds">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType psd:category="试验样品数据类" psd:tableName="T_SAMPLES_407_17" psd:id="407" psd:displayName="样品" psd:order="0" name="Samples">
+    <xs:sequence>
+      <xs:element psd:autoIncrement="true" psd:key="true" psd:colName="C_SAMPLEID_2744" psd:id="2744" psd:displayName="样品序号" psd:order="0" minOccurs="0" name="SampleID" xmlns:q46="http://www.w3.org/2003/XMLSchema" type="q46:integer" />
+      <xs:element psd:forfullText="true" psd:colName="C_SAMPLENUMBER_2745" psd:id="2745" psd:displayName="样品编号" psd:order="1" minOccurs="0" name="SampleNumber" xmlns:q47="http://www.w3.org/2003/XMLSchema" type="q47:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:forfullText="true" psd:colName="C_NAME_2746" psd:id="2746" psd:displayName="样品名称" psd:order="2" minOccurs="1" name="Name" xmlns:q48="http://www.w3.org/2003/XMLSchema" type="q48:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_QUANTITY_2747" psd:id="2747" psd:displayName="样品数量" psd:order="3" minOccurs="0" name="Quantity" xmlns:q49="http://www.w3.org/2003/XMLSchema" type="q49:integer" />
+      <xs:element psd:colName="C_BATCHNUMBER_2748" psd:id="2748" psd:displayName="样品批号" psd:order="4" minOccurs="0" name="BatchNumber" xmlns:q50="http://www.w3.org/2003/XMLSchema" type="q50:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_RECEIVEDDATE_2749" psd:id="2749" psd:displayName="收样日期" psd:order="5" minOccurs="0" name="ReceivedDate" xmlns:q51="http://www.w3.org/2003/XMLSchema" type="q51:date" />
+      <xs:element psd:forfullText="true" psd:multiLine="true" psd:usage="None" psd:colName="C_DESCRIPTION_2750" psd:id="2750" psd:displayName="样品描述" psd:order="6" minOccurs="0" name="Description" xmlns:q52="http://www.w3.org/2003/XMLSchema" type="q52:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="None" psd:colName="C_FORMNAME_2751" psd:id="2751" psd:displayName="样品表单" psd:order="7" minOccurs="0" name="FormName" xmlns:q53="http://www.w3.org/2003/XMLSchema" type="q53:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:classtype="F_112144003" psd:usage="None" psd:isHtml="true" psd:displayName="查看样品详情" psd:order="8" name="ViewSampleInfo" xmlns:q54="http://www.w3.org/2003/XMLSchema" type="q54:string">
+        <xs:annotation>
+          <xs:appinfo>namespace Newtera.Formula {
+    using System;
+    using System.Xml;
+    using System.Collections;
+    using Newtera.Common.Wrapper;
+    using Newtera.Common.MetaData.Schema;
+    using Newtera.Common.MetaData.Schema.Generator;
+    
+    
+    public class F_112144003 : FormulaBase {
+        
+        public override string Eval(IInstanceWrapper instance, ExecutionContext context) {
+              string url = ".relatedform({rclass:'" + instance.OwnerClassName + "', roid:'" + instance.ObjId + "', rformAttribute: 'FormName'})";
+        return "&lt;a ui-sref=\"" + url + "\"&gt;&lt;i class=\"fa fa-fw fa-table\"&gt;&lt;/i&gt;&lt;/a&gt;";
+        }
+    }
+}
+</xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element psd:usage="None" psd:height="400" psd:width="600" psd:tHeight="16" psd:tWidth="16" psd:colName="C_SAMPLEPICTURE_2873" psd:id="2873" psd:displayName="样品图片" psd:order="9" name="SamplePicture" />
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q55="http://www.w3.org/2003/XMLSchema" type="q55:ID" />
+    <xs:attribute psd:refClass="TestOrders" psd:refAttr="toSamples" psd:ownership="looseReferenced" psd:joinManager="false" psd:ownedRelationship="false" psd:refType="manyToOne" psd:index="true" psd:colName="FC_TESTO_2898" psd:creator="Newtera.WebForm.RelationshipGridViewControl,Newtera.WebForm" psd:id="2898" psd:displayName="到试验任务" psd:description="" psd:order="10" name="toTestOrder" xmlns:q56="http://www.w3.org/2003/XMLSchema" type="q56:IDREF" />
+    <xs:attribute psd:refClass="ItemToSample" psd:refAttr="toTestSample" psd:ownership="owned" psd:joinManager="true" psd:ownedRelationship="false" psd:refType="oneToMany" psd:colName="FC_ITEMT_2899" psd:id="2899" psd:displayName="到试验项目" psd:description="" psd:order="11" name="toTestItems" xmlns:q57="http://www.w3.org/2003/XMLSchema" type="q57:IDREFS" />
+  </xs:complexType>
+  <xs:complexType psd:tableName="T_LABASAMPLES_408_17" psd:beforeInsert="&#xA;" psd:id="408" psd:displayName="产品实验室样品" psd:order="12" name="LabASamples">
+    <xs:complexContent mixed="false">
+      <xs:extension base="Samples">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType psd:category="试验任务数据类" psd:tableName="T_TESTORDERS_399_17" psd:id="399" psd:displayName="试验任务" psd:order="0" name="TestOrders">
+    <xs:sequence>
+      <xs:element psd:autoIncrement="true" psd:key="true" psd:usage="None" psd:colName="C_ORDERID_2708" psd:id="2708" psd:displayName="任务序号" psd:order="0" minOccurs="0" name="OrderID" xmlns:q58="http://www.w3.org/2003/XMLSchema" type="q58:integer" />
+      <xs:element psd:manualUpdate="false" psd:forfullText="true" psd:colName="C_ORDERNUMBER_2709" psd:id="2709" psd:displayName="任务编号" psd:order="1" minOccurs="0" name="OrderNumber" xmlns:q59="http://www.w3.org/2003/XMLSchema" type="q59:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:forfullText="true" psd:colName="C_SUBMITBY_2710" psd:id="2710" psd:displayName="申请人" psd:order="2" minOccurs="1" name="SubmitBy" xmlns:q60="http://www.w3.org/2003/XMLSchema" type="q60:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_SUBMITDATE_2711" psd:id="2711" psd:displayName="申请日期" psd:order="3" minOccurs="1" name="SubmitDate" xmlns:q61="http://www.w3.org/2003/XMLSchema" type="q61:date" />
+      <xs:element psd:colName="C_TELEPHONE_2712" psd:id="2712" psd:displayName="申请人电话" psd:order="4" minOccurs="0" name="Telephone" xmlns:q62="http://www.w3.org/2003/XMLSchema" type="q62:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="None" psd:colName="C_EMAIL_2713" psd:id="2713" psd:displayName="申请人邮箱" psd:order="5" minOccurs="0" name="Email" xmlns:q63="http://www.w3.org/2003/XMLSchema" type="q63:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:forfullText="true" psd:usage="None" psd:colName="C_DIVISION_2714" psd:id="2714" psd:displayName="申请部门" psd:order="6" minOccurs="0" name="Division" xmlns:q64="http://www.w3.org/2003/XMLSchema" type="q64:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:forfullText="true" psd:colName="C_TITLE_2919" psd:id="2919" psd:displayName="任务主题" psd:order="7" minOccurs="1" name="Title" xmlns:q65="http://www.w3.org/2003/XMLSchema" type="q65:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="200" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:forfullText="true" psd:multiLine="true" psd:colName="C_DESCRIPTION_2715" psd:id="2715" psd:displayName="试验目的" psd:order="8" minOccurs="1" name="Description" xmlns:q66="http://www.w3.org/2003/XMLSchema" type="q66:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="500" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:forfullText="true" psd:multiLine="true" psd:colName="C_TESTREQUIREMENT_2923" psd:id="2923" psd:displayName="试验要求" psd:order="9" minOccurs="0" name="TestRequirement" xmlns:q67="http://www.w3.org/2003/XMLSchema" type="q67:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="None" psd:colName="C_APPROVEDBY_2717" psd:id="2717" psd:displayName="审批人" psd:order="10" minOccurs="0" name="ApprovedBy" xmlns:q68="http://www.w3.org/2003/XMLSchema" type="q68:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="None" psd:colName="C_APPROVEDDATE_2718" psd:id="2718" psd:displayName="审批日期" psd:order="11" minOccurs="0" name="ApprovedDate" xmlns:q69="http://www.w3.org/2003/XMLSchema" type="q69:date" />
+      <xs:element psd:colName="C_TESTSAMPLENAME_2921" psd:id="2921" psd:displayName="试验产品名称" psd:order="13" minOccurs="1" name="TestSampleName" xmlns:q70="http://www.w3.org/2003/XMLSchema" type="q70:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_TESTSAMPLENUMBER_2922" psd:id="2922" psd:displayName="试验产品编号" psd:order="14" minOccurs="0" name="TestSampleNumber" xmlns:q71="http://www.w3.org/2003/XMLSchema" type="q71:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:progressBar="true" psd:colName="C_PROGRESS_2720" psd:id="2720" psd:displayName="进度" psd:order="15" minOccurs="0" name="Progress" xmlns:q72="http://www.w3.org/2003/XMLSchema" type="q72:integer" />
+      <xs:element psd:colName="C_PRIORITY_2721" psd:id="2721" psd:displayName="试验周期要求" psd:order="16" minOccurs="0" name="Priority" type="TestOrderPriority">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="None" psd:colName="C_EXPECTEDDATE_2722" psd:id="2722" psd:displayName="期待完成日期" psd:order="17" minOccurs="0" name="ExpectedDate" xmlns:q73="http://www.w3.org/2003/XMLSchema" type="q73:date" />
+      <xs:element psd:classtype="F_406225050" psd:usage="None" psd:displayName="任务执行人" psd:order="12" name="TaskOwner" xmlns:q74="http://www.w3.org/2003/XMLSchema" type="q74:string">
+        <xs:annotation>
+          <xs:appinfo>namespace Newtera.Formula {
+    using System;
+    using System.Xml;
+    using System.Collections;
+    using Newtera.Common.Wrapper;
+    using Newtera.Common.MetaData.Schema;
+    using Newtera.Common.MetaData.Schema.Generator;
+    
+    
+    public class F_406225050 : FormulaBase {
+        
+        public override string Eval(IInstanceWrapper instance, ExecutionContext context) {
+            return context.GetWorkflowTaskOwners(instance.ObjId);
+        }
+    }
+}
+</xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q75="http://www.w3.org/2003/XMLSchema" type="q75:ID" />
+    <xs:attribute psd:refClass="TestItems" psd:refAttr="toTestOrder" psd:ownership="owned" psd:joinManager="true" psd:ownedRelationship="false" psd:refType="oneToMany" psd:forfullText="true" psd:colName="FC_TESTI_2888" psd:id="2888" psd:displayName="到试验项目" psd:description="" psd:order="18" name="toTestItems" xmlns:q76="http://www.w3.org/2003/XMLSchema" type="q76:IDREFS" />
+    <xs:attribute psd:refClass="Samples" psd:refAttr="toTestOrder" psd:ownership="owned" psd:joinManager="true" psd:ownedRelationship="false" psd:refType="oneToMany" psd:forfullText="true" psd:colName="FC_SAMPL_2889" psd:id="2889" psd:displayName="到样品" psd:description="" psd:order="19" name="toSamples" xmlns:q77="http://www.w3.org/2003/XMLSchema" type="q77:IDREFS" />
+  </xs:complexType>
+  <xs:complexType psd:tableName="T_LABATESTORDERS_400_17" psd:sortAttribute="obj_id" psd:sortDirection="Descending" psd:initialize="this.Instance.SetValue(&quot;OrderState&quot;, &quot;提交中&quot;);&#xA;this.Instance.SetValue(&quot;SubmitDate&quot;, CurrentDate); &#xA;this.Instance.SetValue(&quot;SubmitBy&quot;, CurrentUser); &#xA;this.Instance.SetValue(&quot;Priority&quot;, &quot;正常&quot;);&#xA;               &#xA;IDataInstanceGetter instanceGetter = DataInstanceGetterFactory.Instance.Create();&#xA;IInstanceWrapper userInstance = instanceGetter.GetInstance(&quot;SCHEMA_NAME=UserInfo;SCHEMA_VERSION=1.0&quot;, &quot;User&quot;, &quot;ID&quot;, CurrentLoginID);&#xA;if (userInstance != null)&#xA;{&#xA;    this.Instance.SetValue(&quot;Telephone&quot;, userInstance.GetString(&quot;Telephone&quot;));&#xA;    this.Instance.SetValue(&quot;Email&quot;,userInstance.GetString(&quot;Email&quot;));&#xA;}&#xA;" psd:beforeUpdate="&#xA;" psd:beforeInsert="string str = &quot;&quot;;&#xA;SequenceNumberGenerator generator = SequenceNumberGeneratorFactory.Instance.Create(&quot;SequnceNumber&quot;,&quot;SerialNumKey&quot;, &quot;LabATestOrderNumber&quot;, &quot;SerialValue&quot;);&#xA; int serialNo = generator.NextNumber();&#xA;str = &quot;Task&quot; + &quot;-&quot; + String.Format(&quot;{0:yyyyMMdd}&quot;, DateTime.Today) + &quot;-&quot; + String.Format(&quot;{0:0000}&quot;,serialNo);&#xA;this.Instance.SetValue(&quot;OrderNumber&quot;, str);&#xA;" psd:id="400" psd:displayName="产品试验任务" psd:order="20" name="LabATestOrders">
+    <xs:complexContent mixed="false">
+      <xs:extension base="TestOrders">
+        <xs:sequence>
+          <xs:element psd:forfullText="true" psd:colName="C_ORDERSTATE_2724" psd:id="2724" psd:displayName="任务流程状态" psd:order="0" minOccurs="0" name="OrderState" type="LabAOrderStates">
+            <xs:simpleType>
+              <xs:restriction>
+                <xs:minLength value="0" />
+                <xs:maxLength value="100" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType psd:category="试验数据类" psd:tableName="T_TESTRECORDS_420_17" psd:id="420" psd:displayName="试验项目数据包" psd:order="0" name="TestRecords">
+    <xs:sequence>
+      <xs:element psd:autoIncrement="true" psd:key="true" psd:usage="None" psd:colName="C_RECORDID_2811" psd:id="2811" psd:displayName="记录序号" psd:order="0" minOccurs="0" name="RecordID" xmlns:q78="http://www.w3.org/2003/XMLSchema" type="q78:integer" />
+      <xs:element psd:manualUpdate="false" psd:colName="C_PACKETNUMBER_2916" psd:id="2916" psd:displayName="数据包编号" psd:order="1" minOccurs="0" name="PacketNumber" xmlns:q79="http://www.w3.org/2003/XMLSchema" type="q79:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_PACKETNAME_2917" psd:id="2917" psd:displayName="数据包名称" psd:order="2" minOccurs="0" name="PacketName" xmlns:q80="http://www.w3.org/2003/XMLSchema" type="q80:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="150" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:manualUpdate="false" psd:colName="C_RECORDDATE_2812" psd:id="2812" psd:displayName="记录日期" psd:order="3" minOccurs="0" name="RecordDate" xmlns:q81="http://www.w3.org/2003/XMLSchema" type="q81:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:manualUpdate="false" psd:usage="None" psd:colName="C_RECORDTIME_2813" psd:id="2813" psd:displayName="记录时间" psd:order="4" minOccurs="0" name="RecordTime" xmlns:q82="http://www.w3.org/2003/XMLSchema" type="q82:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:manualUpdate="false" psd:colName="C_RECORDBY_2814" psd:id="2814" psd:displayName="记录人" psd:order="5" minOccurs="0" name="RecordBy" xmlns:q83="http://www.w3.org/2003/XMLSchema" type="q83:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_DATATYPE_2920" psd:id="2920" psd:displayName="数据包类型" psd:order="6" minOccurs="0" name="DataType" type="dataPacketType">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q84="http://www.w3.org/2003/XMLSchema" type="q84:ID" />
+    <xs:attribute psd:refClass="TestItems" psd:refAttr="toTestDataRecords" psd:ownership="looseReferenced" psd:joinManager="false" psd:ownedRelationship="false" psd:refType="manyToOne" psd:index="true" psd:colName="FC_TESTI_2907" psd:creator="Newtera.WebForm.RelationshipGridViewControl,Newtera.WebForm" psd:id="2907" psd:displayName="到试验项目" psd:description="" psd:order="7" name="toTestItem" xmlns:q85="http://www.w3.org/2003/XMLSchema" type="q85:IDREF" />
+  </xs:complexType>
+  <xs:complexType psd:tableName="T_LABATESTRECORDS_421_17" psd:beforeInsert="this.Instance.SetValue(&quot;RecordDate&quot;, CurrentDate);&#xA;this.Instance.SetValue(&quot;RecordTime&quot;, CurrentTime);&#xA;this.Instance.SetValue(&quot;RecordBy&quot;, CurrentUser);&#xA;&#xA;string str = &quot;&quot;;&#xA;SequenceNumberGenerator generator = SequenceNumberGeneratorFactory.Instance.Create(&quot;SequnceNumber&quot;,&quot;SerialNumKey&quot;, &quot;LabADataPacketNumber&quot;, &quot;SerialValue&quot;);&#xA; int serialNo = generator.NextNumber();&#xA;str = &quot;Packet&quot; + &quot;-&quot; + String.Format(&quot;{0:yyyyMMdd}&quot;, DateTime.Today) + &quot;-&quot; + String.Format(&quot;{0:0000}&quot;,serialNo);&#xA;this.Instance.SetValue(&quot;PacketNumber&quot;, str);&#xA;" psd:id="421" psd:displayName="产品试验项目数据包" psd:order="8" name="LabATestRecords">
+    <xs:complexContent mixed="false">
+      <xs:extension base="TestRecords">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType psd:category="测试项目数据类" psd:tableName="T_ITEMTOSAMPLE_398_17" psd:junction="true" psd:dataview="TestItemSampleView" psd:id="398" psd:displayName="项目到样品" psd:order="1" name="ItemToSample">
+    <xs:sequence>
+      <xs:element psd:colName="C_USEDQTY_2707" psd:id="2707" psd:displayName="使用数量" psd:order="0" minOccurs="0" name="UsedQty" xmlns:q86="http://www.w3.org/2003/XMLSchema" type="q86:integer" />
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q87="http://www.w3.org/2003/XMLSchema" type="q87:ID" />
+    <xs:attribute psd:refClass="Samples" psd:refAttr="toTestItems" psd:ownership="looseReferenced" psd:joinManager="false" psd:ownedRelationship="false" psd:refType="manyToOne" psd:index="true" psd:colName="FC_SAMPL_2886" psd:id="2886" psd:displayName="到样品" psd:description="" psd:order="0" name="toTestSample" xmlns:q88="http://www.w3.org/2003/XMLSchema" type="q88:IDREF" />
+    <xs:attribute psd:refClass="TestItems" psd:refAttr="toTestSamples" psd:ownership="looseReferenced" psd:joinManager="false" psd:ownedRelationship="false" psd:refType="manyToOne" psd:index="true" psd:colName="FC_TESTI_2887" psd:creator="Newtera.WebForm.RelationshipGridViewControl,Newtera.WebForm" psd:id="2887" psd:displayName="到项目" psd:description="" psd:order="1" name="toTestItem" xmlns:q89="http://www.w3.org/2003/XMLSchema" type="q89:IDREF" />
+  </xs:complexType>
+  <xs:complexType psd:category="试验资源数据类" psd:tableName="T_EQUIPMENTS_418_17" psd:id="418" psd:displayName="试验设备" psd:order="1" name="Equipments">
+    <xs:sequence>
+      <xs:element psd:autoIncrement="true" psd:key="true" psd:usage="None" psd:colName="C_EQUIPMENTID_2802" psd:id="2802" psd:displayName="设备序号" psd:order="0" minOccurs="0" name="EquipmentID" xmlns:q90="http://www.w3.org/2003/XMLSchema" type="q90:integer" />
+      <xs:element psd:forfullText="true" psd:colName="C_NAME_2803" psd:id="2803" psd:displayName="设备名称" psd:order="1" minOccurs="1" name="Name" xmlns:q91="http://www.w3.org/2003/XMLSchema" type="q91:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_NUMBER_2804" psd:id="2804" psd:displayName="设备编号" psd:order="3" minOccurs="1" name="Number" xmlns:q92="http://www.w3.org/2003/XMLSchema" type="q92:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_EQUIPMENTTYPE_2805" psd:id="2805" psd:displayName="设备类型" psd:order="4" minOccurs="0" name="EquipmentType" type="EquipmentTypes">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_MANUFACTURER_2806" psd:id="2806" psd:displayName="制造商" psd:order="6" minOccurs="0" name="Manufacturer" xmlns:q93="http://www.w3.org/2003/XMLSchema" type="q93:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="None" psd:colName="C_CALIBRATEINTERVAL_2807" psd:id="2807" psd:displayName="设备检定周期（月）" psd:order="7" minOccurs="0" name="calibrateInterval" xmlns:q94="http://www.w3.org/2003/XMLSchema" type="q94:integer" />
+      <xs:element psd:colName="C_LASTCALIBRATEDATE_2808" psd:id="2808" psd:displayName="上次检定日期" psd:order="8" minOccurs="0" name="LastCalibrateDate" xmlns:q95="http://www.w3.org/2003/XMLSchema" type="q95:date" />
+      <xs:element psd:forfullText="true" psd:multiLine="true" psd:usage="None" psd:colName="C_DESCRIPTION_2809" psd:id="2809" psd:displayName="设备描述" psd:order="10" minOccurs="0" name="Description" xmlns:q96="http://www.w3.org/2003/XMLSchema" type="q96:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="500" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:usage="None" psd:colName="C_ISNOTIFIED_2810" psd:id="2810" psd:displayName="是否已通知" psd:order="11" minOccurs="0" name="IsNotified" xmlns:q97="http://www.w3.org/2003/XMLSchema" type="q97:boolean" />
+      <xs:element psd:classtype="F_214092526" psd:displayName="检定状态" psd:order="5" name="CalibrateStatus" type="CalibrationStatus">
+        <xs:annotation>
+          <xs:appinfo>namespace Newtera.Formula {
+    using System;
+    using System.Xml;
+    using System.Collections;
+    using Newtera.Common.Wrapper;
+    using Newtera.Common.MetaData.Schema;
+    using Newtera.Common.MetaData.Schema.Generator;
+    
+    
+    public class F_214092526 : FormulaBase {
+        
+        public override string Eval(IInstanceWrapper instance, ExecutionContext context) {
+           string val = "正常";
+           try {
+                  int interval =Convert.ToInt32(instance.GetString("calibrateInterval"));
+                 int diffDays = 0;
+                string str = (string)instance.GetValue("LastCalibrateDate");
+               if (str != null){
+                   DateTime lastValibratteDate = DateTime.Parse(str);
+                  DateTime dueDay  = lastValibratteDate .AddMonths(interval);
+                  diffDays = (dueDay - DateTime.Now ).Days;
+                  if(DateTime.Now &gt; dueDay){
+                      return "已到期";
+                  }else if (diffDays &lt; 5){
+                     return "即将到期";
+                }
+             }
+       }catch (Exception ex){
+           throw ex;
+       }
+       return val;
+
+       }
+    }
+}
+</xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element psd:classtype="F_922884851" psd:displayName="下次检定日期" psd:order="9" name="NextCalibrateDate" xmlns:q98="http://www.w3.org/2003/XMLSchema" type="q98:string">
+        <xs:annotation>
+          <xs:appinfo>namespace Newtera.Formula {
+    using System;
+    using System.Xml;
+    using System.Collections;
+    using Newtera.Common.Wrapper;
+    using Newtera.Common.MetaData.Schema;
+    using Newtera.Common.MetaData.Schema.Generator;
+    
+    
+    public class F_922884851 : FormulaBase {
+        
+        public override string Eval(IInstanceWrapper instance, ExecutionContext context) {
+            try
+           {
+                 int interval =Convert.ToInt32(instance.GetString("calibrateInterval"));
+                string str = (string)instance.GetValue("LastCalibrateDate");
+                if (str != null){
+                    DateTime lastValibratteDate = DateTime.Parse(str);
+                    return lastValibratteDate.AddMonths(interval).ToString("s");
+               }
+              else
+              {
+                  return DateTime.Now.ToString("s");
+              }
+           }
+           catch (Exception)
+          {
+                return DateTime.Now.ToString("s");
+           }
+       }
+    }
+}
+</xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element psd:classtype="F_1394581742" psd:usage="None" psd:isHtml="true" psd:displayName="设备详情" psd:order="12" name="viewDetail" xmlns:q99="http://www.w3.org/2003/XMLSchema" type="q99:string">
+        <xs:annotation>
+          <xs:appinfo>namespace Newtera.Formula {
+    using System;
+    using System.Xml;
+    using System.Collections;
+    using Newtera.Common.Wrapper;
+    using Newtera.Common.MetaData.Schema;
+    using Newtera.Common.MetaData.Schema.Generator;
+    
+    
+    public class F_1394581742 : FormulaBase {
+        
+        public override string Eval(IInstanceWrapper instance, ExecutionContext context) {
+                string url = ".relatedform({rclass:'" + instance.OwnerClassName + "', roid:'" + instance.ObjId + "'})";
+        return "&lt;a ui-sref=\"" + url + "\"&gt;&lt;i class=\"fa fa-fw fa-table\"&gt;&lt;/i&gt;&lt;/a&gt;";
+
+        }
+    }
+}
+</xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element psd:height="400" psd:width="600" psd:tHeight="100" psd:tWidth="140" psd:colName="C_EQUIPEMNTPICTURE_2874" psd:id="2874" psd:displayName="设备图片" psd:order="2" name="EquipemntPicture" />
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q100="http://www.w3.org/2003/XMLSchema" type="q100:ID" />
+    <xs:attribute psd:refClass="ItemToEquipment" psd:refAttr="toEquipment" psd:ownership="looseReferenced" psd:joinManager="true" psd:ownedRelationship="false" psd:refType="oneToMany" psd:colName="FC_ITEMT_2904" psd:id="2904" psd:displayName="到试验项目" psd:description="" psd:order="13" name="toItems" xmlns:q101="http://www.w3.org/2003/XMLSchema" type="q101:IDREFS" />
+    <xs:attribute psd:refClass="TestBeds" psd:refAttr="toEquipments" psd:ownership="looseReferenced" psd:joinManager="false" psd:ownedRelationship="false" psd:refType="manyToOne" psd:index="true" psd:colName="FC_TESTB_2905" psd:creator="Newtera.WebForm.RelationshipGridViewControl,Newtera.WebForm" psd:id="2905" psd:displayName="到试验台架" psd:description="" psd:order="14" name="toTestBed" xmlns:q102="http://www.w3.org/2003/XMLSchema" type="q102:IDREF" />
+  </xs:complexType>
+  <xs:complexType psd:tableName="T_LABAEQUIPMENTS_419_17" psd:dataview="TestBedEquipmentView" psd:id="419" psd:displayName="产品试验室设备" psd:order="15" name="LabAEquipments">
+    <xs:complexContent mixed="false">
+      <xs:extension base="Equipments">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType psd:category="测试项目数据类" psd:tableName="T_ITEMTOEQUIPMENT_406_17" psd:junction="true" psd:dataview="TestItemEquipmentView" psd:id="406" psd:displayName="项目到设备" psd:order="2" name="ItemToEquipment">
+    <xs:sequence />
+    <xs:attribute name="obj_id" xmlns:q103="http://www.w3.org/2003/XMLSchema" type="q103:ID" />
+    <xs:attribute psd:refClass="Equipments" psd:refAttr="toItems" psd:ownership="looseReferenced" psd:joinManager="false" psd:ownedRelationship="false" psd:refType="manyToOne" psd:index="true" psd:colName="FC_EQUIP_2896" psd:id="2896" psd:displayName="到设备" psd:description="" psd:order="0" name="toEquipment" xmlns:q104="http://www.w3.org/2003/XMLSchema" type="q104:IDREF" />
+    <xs:attribute psd:refClass="TestItems" psd:refAttr="toTestEquipments" psd:ownership="looseReferenced" psd:joinManager="false" psd:ownedRelationship="false" psd:refType="manyToOne" psd:index="true" psd:colName="FC_TESTI_2897" psd:creator="Newtera.WebForm.RelationshipViewOnlyGridViewControl,Newtera.WebForm" psd:id="2897" psd:displayName="到项目" psd:description="" psd:order="0" name="toTestItem" xmlns:q105="http://www.w3.org/2003/XMLSchema" type="q105:IDREF" />
+  </xs:complexType>
+  <xs:complexType psd:category="测试项目数据类" psd:tableName="T_TESTMETHOD_414_17" psd:id="414" psd:displayName="试验方法" psd:order="3" name="TestMethod">
+    <xs:sequence>
+      <xs:element psd:autoIncrement="true" psd:key="true" psd:colName="C_METHODID_2758" psd:id="2758" psd:displayName="方法序号" psd:order="0" minOccurs="0" name="MethodID" xmlns:q106="http://www.w3.org/2003/XMLSchema" type="q106:integer" />
+      <xs:element psd:forfullText="true" psd:colName="C_NAME_2759" psd:id="2759" psd:displayName="方法名称" psd:order="1" minOccurs="0" name="Name" xmlns:q107="http://www.w3.org/2003/XMLSchema" type="q107:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:inlineEdit="true" psd:forfullText="true" psd:colName="C_METHODNUMBER_2760" psd:id="2760" psd:displayName="方法编号" psd:order="2" minOccurs="0" name="MethodNumber" xmlns:q108="http://www.w3.org/2003/XMLSchema" type="q108:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_VERSION_2761" psd:id="2761" psd:displayName="版本" psd:order="3" minOccurs="0" name="Version" xmlns:q109="http://www.w3.org/2003/XMLSchema" type="q109:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:colName="C_PUBLISHEDDATE_2762" psd:id="2762" psd:displayName="发布日期" psd:order="4" minOccurs="0" name="PublishedDate" xmlns:q110="http://www.w3.org/2003/XMLSchema" type="q110:date" />
+      <xs:element psd:forfullText="true" psd:multiLine="true" psd:colName="C_DESCRIPTION_2763" psd:id="2763" psd:displayName="方法描述" psd:order="5" minOccurs="0" name="Description" xmlns:q111="http://www.w3.org/2003/XMLSchema" type="q111:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="500" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element psd:richText="true" psd:multiLine="true" psd:usage="None" psd:colName="C_PROCEDURES_2764" psd:id="2764" psd:displayName="试验步骤" psd:order="6" minOccurs="0" name="Procedures" xmlns:q112="http://www.w3.org/2003/XMLSchema" type="q112:text" />
+      <xs:element psd:colName="C_TESTITEMNAME_2765" psd:id="2765" psd:displayName="所属试验项目" psd:order="8" minOccurs="0" name="testItemName" xmlns:q113="http://www.w3.org/2003/XMLSchema" type="q113:string">
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:minLength value="0" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="obj_id" xmlns:q114="http://www.w3.org/2003/XMLSchema" type="q114:ID" />
+    <xs:attribute psd:refClass="TestItems" psd:refAttr="toTestMethod" psd:ownership="looseReferenced" psd:joinManager="true" psd:ownedRelationship="false" psd:refType="oneToMany" psd:colName="FC_TESTI_2902" psd:id="2902" psd:displayName="到试验项目" psd:description="" psd:order="7" name="toTestItem" xmlns:q115="http://www.w3.org/2003/XMLSchema" type="q115:IDREFS" />
+  </xs:complexType>
+  <xs:complexType psd:tableName="T_LABATESTMETHODS_415_17" psd:id="415" psd:displayName="产品试验方法" psd:order="9" name="LabATestMethods">
+    <xs:complexContent mixed="false">
+      <xs:extension base="TestMethod">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType psd:tableName="T_ENGINETESTMETHODS_416_17" psd:id="416" psd:displayName="发动机试验方法" psd:order="10" name="EngineTestMethods">
+    <xs:complexContent mixed="false">
+      <xs:extension base="TestMethod">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
