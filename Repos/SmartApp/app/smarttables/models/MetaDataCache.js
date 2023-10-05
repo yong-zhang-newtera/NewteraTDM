@@ -33,10 +33,21 @@ angular.module("app.smarttables").factory("MetaDataCache", function () {
         cache[dataName] = data;
     }
 
+    function _clearNamedData(dataNamePrefix) {
+        for (var key in cache) {
+            if (cache.hasOwnProperty(key)) {
+                if (key.startsWith(dataNamePrefix)) {
+                    cache[key] = null;
+                }
+            }
+        }
+    }
+
     return {
         getClassView: _getClassView,
         setClassView: _setClassView,
         getNamedData : _getNamedData,
-        setNamedData : _setNamedData
+        setNamedData: _setNamedData,
+        clearNamedData: _clearNamedData
     };
 });

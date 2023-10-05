@@ -1,0 +1,178 @@
+<Taxonomies>
+  <Taxonomy Name="LabATestItemTree" Caption="产品实验室试验项目分类" order="0" BaseClassName="LabATestItemInstances">
+    <TaxonNodes>
+      <TaxonNode Name="LabATestItemTree1" Caption="产品检测组3" order="0" enabled="true">
+        <ReferencedClasses />
+        <Filter order="0">
+          <Equals Name="=" order="0">
+            <SimpleAttribute Name="Group" Caption="所属检测组" order="0" OwnerAlias="labatestiteminstances" />
+            <Parameter Name="Group" order="0" OwnerAlias="labatestiteminstances" Value="产品检测组3" Type="String" />
+          </Equals>
+        </Filter>
+        <TaxonNodes>
+          <TaxonNode Name="LabATestItemTree11" Caption="试验项目-5" order="0" enabled="true">
+            <ReferencedClasses />
+            <Filter order="0">
+              <Equals Name="=" order="0">
+                <SimpleAttribute Name="ItemName" Caption="项目名称" order="0" OwnerAlias="labatestiteminstances" />
+                <Parameter Name="ItemName" order="0" OwnerAlias="labatestiteminstances" Value="试验项目-5" Type="String" />
+              </Equals>
+            </Filter>
+            <TaxonNodes />
+            <AutoClassifyDef Name="AutoDef" order="0">
+              <AutoClassifyLevels />
+            </AutoClassifyDef>
+          </TaxonNode>
+          <TaxonNode Name="LabATestItemTree12" Caption="试验项目-6" order="0" enabled="true">
+            <ReferencedClasses />
+            <Filter order="0">
+              <Equals Name="=" order="0">
+                <SimpleAttribute Name="ItemName" Caption="项目名称" order="0" OwnerAlias="labatestiteminstances" />
+                <Parameter Name="ItemName" order="0" OwnerAlias="labatestiteminstances" Value="试验项目-6" Type="String" />
+              </Equals>
+            </Filter>
+            <TaxonNodes />
+            <AutoClassifyDef Name="AutoDef" order="0">
+              <AutoClassifyLevels />
+            </AutoClassifyDef>
+          </TaxonNode>
+        </TaxonNodes>
+        <AutoClassifyDef Name="AutoDef" order="0">
+          <AutoClassifyLevels />
+        </AutoClassifyDef>
+      </TaxonNode>
+      <TaxonNode Name="LabATestItemTree2" Caption="产品检测组1" order="0" enabled="true">
+        <ReferencedClasses />
+        <Filter order="0">
+          <Equals Name="=" order="0">
+            <SimpleAttribute Name="Group" Caption="所属检测组" order="0" OwnerAlias="labatestiteminstances" />
+            <Parameter Name="Group" order="0" OwnerAlias="labatestiteminstances" Value="产品检测组1" Type="String" />
+          </Equals>
+        </Filter>
+        <TaxonNodes>
+          <TaxonNode Name="LabATestItemTree21" Caption="试验项目-1" order="0" enabled="true">
+            <ReferencedClasses />
+            <Filter order="0">
+              <Equals Name="=" order="0">
+                <SimpleAttribute Name="ItemName" Caption="项目名称" order="0" OwnerAlias="labatestiteminstances" />
+                <Parameter Name="ItemName" order="0" OwnerAlias="labatestiteminstances" Value="试验项目-1" Type="String" />
+              </Equals>
+            </Filter>
+            <TaxonNodes />
+            <AutoClassifyDef Name="AutoDef" order="0">
+              <AutoClassifyLevels />
+            </AutoClassifyDef>
+          </TaxonNode>
+          <TaxonNode Name="LabATestItemTree22" Caption="试验项目-2" order="0" enabled="true">
+            <ReferencedClasses />
+            <Filter order="0">
+              <Equals Name="=" order="0">
+                <SimpleAttribute Name="ItemName" Caption="项目名称" order="0" OwnerAlias="labatestiteminstances" />
+                <Parameter Name="ItemName" order="0" OwnerAlias="labatestiteminstances" Value="试验项目-2" Type="String" />
+              </Equals>
+            </Filter>
+            <TaxonNodes />
+            <AutoClassifyDef Name="AutoDef" order="0">
+              <AutoClassifyLevels />
+            </AutoClassifyDef>
+          </TaxonNode>
+        </TaxonNodes>
+        <AutoClassifyDef Name="AutoDef" order="0">
+          <AutoClassifyLevels />
+        </AutoClassifyDef>
+      </TaxonNode>
+      <TaxonNode Name="LabATestItemTree3" Caption="产品检测组2" order="0" enabled="true">
+        <ReferencedClasses />
+        <Filter order="0">
+          <Equals Name="=" order="0">
+            <SimpleAttribute Name="Group" Caption="所属检测组" order="0" OwnerAlias="labatestiteminstances" />
+            <Parameter Name="Group" order="0" OwnerAlias="labatestiteminstances" Value="产品检测组2" Type="String" />
+          </Equals>
+        </Filter>
+        <TaxonNodes>
+          <TaxonNode Name="LabATestItemTree31" Caption="试验项目-3" order="0" enabled="true">
+            <ReferencedClasses />
+            <Filter order="0">
+              <Equals Name="=" order="0">
+                <SimpleAttribute Name="ItemName" Caption="项目名称" order="0" OwnerAlias="labatestiteminstances" />
+                <Parameter Name="ItemName" order="0" OwnerAlias="labatestiteminstances" Value="试验项目-3" Type="String" />
+              </Equals>
+            </Filter>
+            <TaxonNodes />
+            <AutoClassifyDef Name="AutoDef" order="0">
+              <AutoClassifyLevels />
+            </AutoClassifyDef>
+          </TaxonNode>
+        </TaxonNodes>
+        <AutoClassifyDef Name="AutoDef" order="0">
+          <AutoClassifyLevels />
+        </AutoClassifyDef>
+      </TaxonNode>
+    </TaxonNodes>
+    <AutoClassifyDef Name="AutoDef" order="0">
+      <AutoClassifyLevels>
+        <AutoClassifyLevel Name="第1层" order="0" classify="Group" owner="labatestiteminstances" />
+        <AutoClassifyLevel Name="第2层" order="0" classify="ItemName" owner="labatestiteminstances" />
+      </AutoClassifyLevels>
+    </AutoClassifyDef>
+  </Taxonomy>
+  <Taxonomy Name="FavoritFilters" Caption="常用任务查询" order="1" BaseClassName="LabATestOrders">
+    <TaxonNodes>
+      <TaxonNode Name="AllTasks" Caption="所有任务" order="0" enabled="true">
+        <ReferencedClasses />
+        <Filter order="0" />
+        <TaxonNodes />
+        <AutoClassifyDef Name="AutoDef" order="0">
+          <AutoClassifyLevels />
+        </AutoClassifyDef>
+      </TaxonNode>
+      <TaxonNode Name="MyTasks" Caption="我的未完成任务" order="1" enabled="true">
+        <ReferencedClasses>
+          <Class Name="TestItems_toTestItems" Caption="试验项目" order="0" ClassName="TestItems" Type="Referenced" ParentClass="labatestorders" ParentRelationship="toTestItems" />
+          <Class Name="Samples_toSamples" Caption="样品" order="0" ClassName="Samples" Type="Referenced" ParentClass="labatestorders" ParentRelationship="toSamples" />
+        </ReferencedClasses>
+        <Filter order="0">
+          <And Name="and" order="0">
+            <Equals Name="=" order="0">
+              <SimpleAttribute Name="SubmitBy" Caption="申请人" order="0" OwnerAlias="labatestorders" />
+              <Parameter Name="SubmitBy" order="0" OwnerAlias="labatestorders" Value="currentUser()" Type="String" />
+            </Equals>
+            <NotEquals Name="!=" order="0">
+              <SimpleAttribute Name="OrderState" Caption="任务流程状态" order="0" OwnerAlias="labatestorders" />
+              <Parameter Name="OrderState" order="0" OwnerAlias="labatestorders" Value="结束" Type="String" />
+            </NotEquals>
+          </And>
+        </Filter>
+        <TaxonNodes />
+        <AutoClassifyDef Name="AutoDef" order="0">
+          <AutoClassifyLevels />
+        </AutoClassifyDef>
+      </TaxonNode>
+      <TaxonNode Name="MyCompletedTasks" Caption="我的已完成任务" order="2" enabled="true">
+        <ReferencedClasses>
+          <Class Name="TestItems_toTestItems" Caption="试验项目" order="0" ClassName="TestItems" Type="Referenced" ParentClass="labatestorders" ParentRelationship="toTestItems" />
+          <Class Name="Samples_toSamples" Caption="样品" order="0" ClassName="Samples" Type="Referenced" ParentClass="labatestorders" ParentRelationship="toSamples" />
+        </ReferencedClasses>
+        <Filter order="0">
+          <And Name="and" order="0">
+            <Equals Name="=" order="0">
+              <SimpleAttribute Name="SubmitBy" Caption="申请人" order="0" OwnerAlias="labatestorders" />
+              <Parameter Name="SubmitBy" order="0" OwnerAlias="labatestorders" Value="currentUser()" Type="String" />
+            </Equals>
+            <Equals Name="=" order="0">
+              <SimpleAttribute Name="OrderState" Caption="任务流程状态" order="0" OwnerAlias="labatestorders" />
+              <Parameter Name="OrderState" order="0" OwnerAlias="labatestorders" Value="结束" Type="String" />
+            </Equals>
+          </And>
+        </Filter>
+        <TaxonNodes />
+        <AutoClassifyDef Name="AutoDef" order="0">
+          <AutoClassifyLevels />
+        </AutoClassifyDef>
+      </TaxonNode>
+    </TaxonNodes>
+    <AutoClassifyDef Name="AutoDef" order="0">
+      <AutoClassifyLevels />
+    </AutoClassifyDef>
+  </Taxonomy>
+</Taxonomies>

@@ -1,0 +1,90 @@
+<Policy>
+  <setting propagation="Downward" conflict="Dtp" read="Deny" write="Deny" create="Deny" delete="Deny" upload="Deny" download="Deny" />
+  <xacls>
+    <xacl>
+      <object href="/metadata" />
+      <rules>
+        <rule>
+          <subject roles="Everyone" />
+          <actions>
+            <action type="Read" permission="Grant" />
+            <action type="Write" permission="Grant" />
+            <action type="Create" permission="Grant" />
+            <action type="Delete" permission="Grant" />
+            <action type="Upload" permission="Grant" />
+            <action type="Download" permission="Grant" />
+          </actions>
+          <condition />
+        </rule>
+      </rules>
+    </xacl>
+    <xacl>
+      <object href="/metadata/schema/TestOrders" />
+      <rules>
+        <rule override="true">
+          <subject roles="Everyone" />
+          <actions>
+            <action type="Read" permission="Grant" />
+            <action type="Write" permission="Grant" />
+            <action type="Create" permission="Grant" />
+            <action type="Delete" permission="Deny" />
+            <action type="Upload" permission="Grant" />
+            <action type="Download" permission="Grant" />
+          </actions>
+          <condition />
+        </rule>
+      </rules>
+    </xacl>
+    <xacl>
+      <object href="/metadata/schema/TestOrders/LabATestOrders" />
+      <rules>
+        <rule>
+          <subject roles="Everyone" />
+          <actions>
+            <action type="Read" permission="Grant" />
+            <action type="Write" permission="Grant" />
+            <action type="Create" permission="Grant" />
+            <action type="Delete" permission="Grant" />
+            <action type="Upload" permission="Grant" />
+            <action type="Download" permission="Grant" />
+          </actions>
+          <condition>$this/SubmitBy = currentUser()</condition>
+        </rule>
+      </rules>
+    </xacl>
+    <xacl>
+      <object href="/metadata/schema/TestItems/LabATestItems/LabATestItemInstances" />
+      <rules>
+        <rule>
+          <subject roles="Customer" />
+          <actions>
+            <action type="Read" permission="Grant" />
+            <action type="Write" permission="Deny" />
+            <action type="Create" permission="Deny" />
+            <action type="Delete" permission="Deny" />
+            <action type="Upload" permission="Deny" />
+            <action type="Download" permission="Deny" />
+          </actions>
+          <condition />
+        </rule>
+      </rules>
+    </xacl>
+    <xacl>
+      <object href="/metadata/schema/TestRecords/LabATestRecords" />
+      <rules>
+        <rule>
+          <subject roles="Customer" />
+          <actions>
+            <action type="Read" permission="Grant" />
+            <action type="Write" permission="Deny" />
+            <action type="Create" permission="Deny" />
+            <action type="Delete" permission="Deny" />
+            <action type="Upload" permission="Deny" />
+            <action type="Download" permission="Deny" />
+          </actions>
+          <condition />
+        </rule>
+      </rules>
+    </xacl>
+  </xacls>
+</Policy>

@@ -257,7 +257,6 @@
     <Compile Include="Controllers\HealthController.cs" />
     <Compile Include="Controllers\ImportExportController.cs" />
     <Compile Include="Controllers\ImageController.cs" />
-    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\SiteMapController.cs" />
     <Compile Include="Controllers\MetaDataController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
@@ -295,9 +294,6 @@
     <Compile Include="Infrastructure\ImageManager.cs" />
     <Compile Include="Infrastructure\HubAuthorizeAttribute.cs" />
     <Compile Include="Infrastructure\FullTextSearchHelper.cs" />
-    <Compile Include="Infrastructure\ReportTemplateManager.cs" />
-    <Compile Include="Infrastructure\ReportGeneratorBase.cs" />
-    <Compile Include="Infrastructure\ReportGenerator.cs" />
     <Compile Include="Infrastructure\QueryHelper.cs" />
     <Compile Include="Infrastructure\ApplicationUser.cs" />
     <Compile Include="Infrastructure\ApplicationUserManager.cs" />

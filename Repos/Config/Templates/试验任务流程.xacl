@@ -1,4 +1,0 @@
-<Policy>
-  <setting propagation="Downward" conflict="Dtp" read="Deny" write="Deny" create="Deny" delete="Deny" upload="Deny" download="Deny" />
-  <xacls />
-</Policy>

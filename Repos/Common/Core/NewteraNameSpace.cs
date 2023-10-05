@@ -302,7 +302,7 @@ namespace Newtera.Common.Core
 		{
             string dir = ConfigurationManager.AppSettings[NewteraNameSpace.HOME_DIR_KEY];
 
-            if (!dir.EndsWith(@"\"))
+            if (dir != null && !dir.EndsWith(@"\"))
             {
                 dir += @"\";
             }

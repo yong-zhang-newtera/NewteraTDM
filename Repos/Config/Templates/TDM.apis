@@ -1,0 +1,12 @@
+<ApiManager>
+  <ApiGroupCollection>
+    <ApiGroup Name="LabAEquipments" class="LabAEquipments">
+      <ApiCollection />
+    </ApiGroup>
+    <ApiGroup Name="LabATestOrders" class="LabATestOrders">
+      <ApiCollection>
+        <Api Name="GetTaskTree" class="LabATestOrders" desc="Get a tree representing a task with related test items and data packets" optype="GetOne" authorized="true" externalHandler="CustomApiSamples.GetTaskTree,CustomApiSamples" />
+      </ApiCollection>
+    </ApiGroup>
+  </ApiGroupCollection>
+</ApiManager>

@@ -1,0 +1,361 @@
+<MappingManager order="0">
+  <MappingPackageCollection>
+    <MappingPackage Name="西门子效率总成数据导入脚本" order="0" Converter="Newtera.Conveters.DelimitedTextFileConverter, Newtera.Conveters" SourceType="Text" paging="true" BlockSize="1000">
+      <TextFormat order="0" rowDelim="&#xD;&#xA;" colDelim="," startDataRow="17" />
+      <ClassMappingCollection>
+        <ClassMapping order="0" Source="西门子.csv" Destination="TestItem1">
+          <AttributeMappingCollection>
+            <AttributeMapping order="0" Source="Column_0" Destination="Param1">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Column_7" Destination="Param2">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Column_8" Destination="Param3">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Column_9" Destination="param4">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Column_10" Destination="param5">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Column_0" Destination="Gear">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+          </AttributeMappingCollection>
+          <DefaultValueCollection />
+          <SelectRowScript order="0" Enabled="true" Class="SelectSrcRow_3" Language="CSharp">//------------------------------------------------------------------------------
+// &lt;auto-generated&gt;
+//     此代码由工具生成。
+//     运行时版本:4.0.30319.42000
+//
+//     对此文件的更改可能会导致不正确的行为，并且如果
+//     重新生成代码，这些更改将会丢失。
+// &lt;/auto-generated&gt;
+//------------------------------------------------------------------------------
+
+namespace Newtera.Transformers {
+    using System;
+    using System.Collections.Specialized;
+    using Newtera.Common.Core;
+    using Newtera.Common.MetaData.Mappings.Transform;
+    
+    
+    public class SelectSrcRow_3 : TableRowSelector {
+
+       private string currentGear = "0";
+       private int currentGearRowCount = 0;
+        
+        public override bool IsRowSelected(System.Data.DataTable srcTable, int rowIndex) {
+
+            if (srcTable.Columns.Count != 18)
+            {
+                  return false;
+            }
+
+            string rowGear = srcTable.Rows[rowIndex][0].ToString();
+
+     if (rowGear == currentGear) {
+
+        if (currentGearRowCount &lt; 5) {
+
+            currentGearRowCount++;
+
+           return true;
+
+       }
+
+       else {
+
+           return false;
+
+      }
+
+  }
+
+  else {              
+
+      currentGear = rowGear;
+
+      currentGearRowCount = 1;
+
+      return true;
+
+  }
+        }
+    }
+}
+</SelectRowScript>
+          <IdentifyRowScript order="0" Language="CSharp" />
+        </ClassMapping>
+      </ClassMappingCollection>
+    </MappingPackage>
+    <MappingPackage Name="Horiba总成传动效率抽取脚本" order="0" Converter="Newtera.Conveters.DelimitedTextFileConverter, Newtera.Conveters" SourceType="Text" paging="true" BlockSize="1000">
+      <TextFormat order="0" rowDelim="&#xD;&#xA;" colDelim="," startDataRow="9" />
+      <ClassMappingCollection>
+        <ClassMapping order="0" Source="1.csv" Destination="TestItem1">
+          <AttributeMappingCollection>
+            <AttributeMapping order="0" Source="Column_4" Destination="Param1">
+              <TransformScript order="0" Enabled="true" Class="Transformer_4" Language="CSharp">//------------------------------------------------------------------------------
+// &lt;auto-generated&gt;
+//     此代码由工具生成。
+//     运行时版本:4.0.30319.42000
+//
+//     对此文件的更改可能会导致不正确的行为，并且如果
+//     重新生成代码，这些更改将会丢失。
+// &lt;/auto-generated&gt;
+//------------------------------------------------------------------------------
+
+namespace Newtera.Transformers {
+    using System;
+    using System.Collections.Specialized;
+    using Newtera.Common.Core;
+    using Newtera.Common.MetaData.Mappings.Transform;
+    
+    
+    public class Transformer_4 : OneToOneTransformer {
+        
+        public override string OneToOneTransform(string src) {
+            int pos = this.SourceName.IndexOf(".");
+           
+            return this.SourceName.Substring(0, pos);
+        }
+    }
+}
+</TransformScript>
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Column_10" Destination="Param2">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Column_13" Destination="Param3">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Column_11" Destination="param4">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Column_14" Destination="param5">
+              <TransformScript order="0" Enabled="true" Class="Transformer_9" Language="CSharp">//------------------------------------------------------------------------------
+// &lt;auto-generated&gt;
+//     此代码由工具生成。
+//     运行时版本:4.0.30319.42000
+//
+//     对此文件的更改可能会导致不正确的行为，并且如果
+//     重新生成代码，这些更改将会丢失。
+// &lt;/auto-generated&gt;
+//------------------------------------------------------------------------------
+
+namespace Newtera.Transformers {
+    using System;
+    using System.Collections.Specialized;
+    using Newtera.Common.Core;
+    using Newtera.Common.MetaData.Mappings.Transform;
+    
+    
+    public class Transformer_9 : OneToOneTransformer {
+        
+        public override string OneToOneTransform(string src) {
+            return src.Substring(1);
+        }
+    }
+}
+</TransformScript>
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Column_4" Destination="Gear">
+              <TransformScript order="0" Enabled="true" Class="Transformer_8" Language="CSharp">//------------------------------------------------------------------------------
+// &lt;auto-generated&gt;
+//     此代码由工具生成。
+//     运行时版本:4.0.30319.42000
+//
+//     对此文件的更改可能会导致不正确的行为，并且如果
+//     重新生成代码，这些更改将会丢失。
+// &lt;/auto-generated&gt;
+//------------------------------------------------------------------------------
+
+namespace Newtera.Transformers {
+    using System;
+    using System.Collections.Specialized;
+    using Newtera.Common.Core;
+    using Newtera.Common.MetaData.Mappings.Transform;
+    
+    
+    public class Transformer_8 : OneToOneTransformer {
+        
+        public override string OneToOneTransform(string src) {
+            int pos = this.SourceName.IndexOf(".");
+            return this.SourceName.Substring(0, pos);
+        }
+    }
+}
+</TransformScript>
+            </AttributeMapping>
+          </AttributeMappingCollection>
+          <DefaultValueCollection />
+          <SelectRowScript order="0" Enabled="true" Class="SelectSrcRow_7" Language="CSharp">//------------------------------------------------------------------------------
+// &lt;auto-generated&gt;
+//     此代码由工具生成。
+//     运行时版本:4.0.30319.42000
+//
+//     对此文件的更改可能会导致不正确的行为，并且如果
+//     重新生成代码，这些更改将会丢失。
+// &lt;/auto-generated&gt;
+//------------------------------------------------------------------------------
+
+namespace Newtera.Transformers {
+    using System;
+    using System.Collections.Specialized;
+    using Newtera.Common.Core;
+    using Newtera.Common.MetaData.Mappings.Transform;
+    
+    
+    public class SelectSrcRow_7 : TableRowSelector {
+        
+       private string currentGear = "0";
+      private int currentGearRowCount = 0;
+
+        public override bool IsRowSelected(System.Data.DataTable srcTable, int rowIndex) {
+            if (srcTable.Columns.Count != 31)
+                 return false;
+            string rowGear = srcTable.Rows[rowIndex][0].ToString();
+     if (rowGear == currentGear) {
+        if (currentGearRowCount &lt; 5) {
+            currentGearRowCount++;
+           return true;
+       }
+       else {
+           return false;
+      }
+  }
+  else {              
+      currentGear = rowGear;
+      currentGearRowCount = 1;
+ return true;
+  }
+        }
+    }
+}
+</SelectRowScript>
+          <IdentifyRowScript order="0" Language="CSharp" />
+        </ClassMapping>
+      </ClassMappingCollection>
+    </MappingPackage>
+    <MappingPackage Name="Horiba Data Import Script" order="0" Converter="Newtera.Conveters.DelimitedTextFileConverter, Newtera.Conveters" SourceType="Text" BlockSize="1000">
+      <TextFormat order="0" rowDelim="&#xD;&#xA;" colDelim="," startDataRow="9" />
+      <ClassMappingCollection>
+        <ClassMapping order="0" Source="12.csv" Destination="TestItem1">
+          <AttributeMappingCollection>
+            <AttributeMapping order="0" Source="Column_10" Destination="Param2">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Column_11" Destination="param4">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Column_13" Destination="Param3">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Column_14" Destination="param5">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <ManyToOneMapping order="0" X="101" Y="51">
+              <TransformScript order="0" Enabled="true" Class="Transformer_10" Language="CSharp">//------------------------------------------------------------------------------
+// &lt;auto-generated&gt;
+//     此代码由工具生成。
+//     运行时版本:4.0.30319.42000
+//
+//     对此文件的更改可能会导致不正确的行为，并且如果
+//     重新生成代码，这些更改将会丢失。
+// &lt;/auto-generated&gt;
+//------------------------------------------------------------------------------
+
+namespace Newtera.Transformers {
+    using System;
+    using System.Collections.Specialized;
+    using Newtera.Common.Core;
+    using Newtera.Common.MetaData.Mappings.Transform;
+    
+    
+    public class Transformer_10 : ManyToOneTransformer {
+        
+        public override string ManyToOneTransform(NameValueCollection srcValues) {
+            return srcValues[0] + " " + srcValues[1];
+        }
+    }
+}
+</TransformScript>
+              <AttributeMappingCollection>
+                <InputOutputAttribute Name="Column_0" order="0" />
+                <InputOutputAttribute Name="Column_1" order="0" />
+              </AttributeMappingCollection>
+              <AttributeMappingCollection>
+                <InputOutputAttribute Name="AcquisitionTime" order="0" SetterType="SimpleAttributeSetter" />
+              </AttributeMappingCollection>
+            </ManyToOneMapping>
+          </AttributeMappingCollection>
+          <DefaultValueCollection />
+          <SelectRowScript order="0" Language="CSharp" />
+          <IdentifyRowScript order="0" Language="CSharp" />
+        </ClassMapping>
+      </ClassMappingCollection>
+    </MappingPackage>
+    <MappingPackage Name="Battery Cycle Life Data Script" order="0" Converter="Newtera.Conveters.BatteryCycleLifeMatFileConverter, Newtera.Conveters" SourceType="Other" paging="true" BlockSize="1000">
+      <TextFormat order="0" rowDelim="&#xD;&#xA;" colDelim="	" startDataRow="1" />
+      <ClassMappingCollection>
+        <ClassMapping order="0" Source="B0005" Destination="BatteryCycleLife">
+          <AttributeMappingCollection>
+            <AttributeMapping order="0" Source="Cycle" Destination="Cycle">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Capacity" Destination="Capacity">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Voltage_measured" Destination="VoltageMeasured">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Current_measured" Destination="CurrentMeasured">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Temperature_measured" Destination="TemperatureMeasured">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Time" Destination="TimeMeasured">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="SampleId" Destination="SampleId">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+          </AttributeMappingCollection>
+          <DefaultValueCollection />
+          <SelectRowScript order="0" Language="CSharp" />
+          <IdentifyRowScript order="0" Language="CSharp" />
+        </ClassMapping>
+      </ClassMappingCollection>
+    </MappingPackage>
+    <MappingPackage Name="Engine External Characteristic Data Import Script" order="0" Converter="Newtera.Conveters.DelimitedTextFileConverter, Newtera.Conveters" SourceType="Text" BlockSize="1000">
+      <TextFormat order="0" rowDelim="&#xD;&#xA;" colDelim="," startDataRow="9" />
+      <ClassMappingCollection>
+        <ClassMapping order="0" Source="发动机外特性试验数据.csv" Destination="externalCharecterTest">
+          <AttributeMappingCollection>
+            <AttributeMapping order="0" Source="Column_0" Destination="RecordDate">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Column_1" Destination="RecordTime">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Column_10" Destination="Speed">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Column_9" Destination="Angle">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+            <AttributeMapping order="0" Source="Column_13" Destination="Accelerate">
+              <TransformScript order="0" Language="CSharp" />
+            </AttributeMapping>
+          </AttributeMappingCollection>
+          <DefaultValueCollection />
+          <SelectRowScript order="0" Language="CSharp" />
+          <IdentifyRowScript order="0" Language="CSharp" />
+        </ClassMapping>
+      </ClassMappingCollection>
+    </MappingPackage>
+  </MappingPackageCollection>
+</MappingManager>

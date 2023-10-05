@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app.taskviewer').controller('ItemFormCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, taskService, $document, $window) {
+angular.module('app.taskviewer').controller('ItemFormCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $state, $stateParams, taskService, $document) {
 
     // override the dbclass and oid with test item class and test item oid
     $scope.dbschema = $stateParams.schema;

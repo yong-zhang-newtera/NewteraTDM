@@ -1,0 +1,76 @@
+<EventManager>
+  <EventGroupCollection>
+    <EventGroup Name="LabATestOrders" class="LabATestOrders">
+      <EventCollection>
+        <EventDef Name="OrderSubmittedEvent" class="LabATestOrders" optype="Update" AttributesUpdated="OrderState">
+          <Equals Name="=" order="0">
+            <SimpleAttribute Name="OrderState" Caption="任务流程状态" order="0" OwnerAlias="labatestorders" />
+            <Parameter Name="OrderState" order="0" OwnerAlias="labatestorders" Value="审批中" Type="String" />
+          </Equals>
+        </EventDef>
+        <EventDef Name="OrderApprovedEvent" class="LabATestOrders" optype="Update" AttributesUpdated="OrderState">
+          <Equals Name="=" order="0">
+            <SimpleAttribute Name="OrderState" Caption="任务流程状态" order="0" OwnerAlias="labatestorders" />
+            <Parameter Name="OrderState" order="0" OwnerAlias="labatestorders" Value="试验中" Type="String" />
+          </Equals>
+        </EventDef>
+        <EventDef Name="OrderDisprovedEvent" class="LabATestOrders" optype="Update" AttributesUpdated="OrderState">
+          <Equals Name="=" order="0">
+            <SimpleAttribute Name="OrderState" Caption="任务流程状态" order="0" OwnerAlias="labatestorders" />
+            <Parameter Name="OrderState" order="0" OwnerAlias="labatestorders" Value="修改任务" Type="String" />
+          </Equals>
+        </EventDef>
+        <EventDef Name="OrderModifiedEvent" class="LabATestOrders" optype="Update" AttributesUpdated="OrderState">
+          <Equals Name="=" order="0">
+            <SimpleAttribute Name="OrderState" Caption="任务流程状态" order="0" OwnerAlias="labatestorders" />
+            <Parameter Name="OrderState" order="0" OwnerAlias="labatestorders" Value="提交中" Type="String" />
+          </Equals>
+        </EventDef>
+        <EventDef Name="OrderCancelledEvent" class="LabATestOrders" optype="Update" AttributesUpdated="OrderState">
+          <Equals Name="=" order="0">
+            <SimpleAttribute Name="OrderState" Caption="任务流程状态" order="0" OwnerAlias="labatestorders" />
+            <Parameter Name="OrderState" order="0" OwnerAlias="labatestorders" Value="取消" Type="String" />
+          </Equals>
+        </EventDef>
+        <EventDef Name="TestCompletedEvent" class="LabATestOrders" optype="Update" AttributesUpdated="OrderState">
+          <Equals Name="=" order="0">
+            <SimpleAttribute Name="OrderState" Caption="任务流程状态" order="0" OwnerAlias="labatestorders" />
+            <Parameter Name="OrderState" order="0" OwnerAlias="labatestorders" Value="结束" Type="String" />
+          </Equals>
+        </EventDef>
+      </EventCollection>
+    </EventGroup>
+    <EventGroup Name="LabATestItemInstances" class="LabATestItemInstances">
+      <EventCollection>
+        <EventDef Name="TestItemCompleteEvent" class="LabATestItemInstances" optype="Update" AttributesUpdated="ProcessState">
+          <Equals Name="=" order="0">
+            <SimpleAttribute Name="ProcessState" Caption="ProcessState" order="0" OwnerAlias="labatestiteminstances" />
+            <Parameter Name="ProcessState" order="0" OwnerAlias="labatestiteminstances" Value="试验结束" Type="String" />
+          </Equals>
+        </EventDef>
+        <EventDef Name="SampleCollectedEvent" class="LabATestItemInstances" optype="Update" AttributesUpdated="ProcessState">
+          <Equals Name="=" order="0">
+            <SimpleAttribute Name="ProcessState" Caption="流程状态" order="0" OwnerAlias="labatestiteminstances" />
+            <Parameter Name="ProcessState" order="0" OwnerAlias="labatestiteminstances" Value="试验中" Type="String" />
+          </Equals>
+        </EventDef>
+        <EventDef Name="TestCancelledEvent" class="LabATestItemInstances" optype="Update" AttributesUpdated="ProcessState">
+          <Equals Name="=" order="0">
+            <SimpleAttribute Name="ProcessState" Caption="流程状态" order="0" OwnerAlias="labatestiteminstances" />
+            <Parameter Name="ProcessState" order="0" OwnerAlias="labatestiteminstances" Value="试验结束" Type="String" />
+          </Equals>
+        </EventDef>
+      </EventCollection>
+    </EventGroup>
+    <EventGroup Name="Equipments" class="Equipments">
+      <EventCollection>
+        <EventDef Name="CalibrationDueEvent" class="Equipments" optype="Timer" interval="EveryWeek" timerCondition="aheadDays($this/NextCalibrateDate) &lt; 7">
+          <Equals Name="=" order="0">
+            <SimpleAttribute Name="IsNotified" Caption="Is Notified" order="0" OwnerAlias="equipments" />
+            <Parameter Name="IsNotified" order="0" OwnerAlias="equipments" Value="否" Type="Boolean" />
+          </Equals>
+        </EventDef>
+      </EventCollection>
+    </EventGroup>
+  </EventGroupCollection>
+</EventManager>

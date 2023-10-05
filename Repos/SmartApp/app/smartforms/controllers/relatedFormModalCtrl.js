@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-angular.module('app.smartforms').controller('relatedFormModalCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $stateParams, $modalInstance, $state) {
+angular.module('app.smartforms').controller('relatedFormModalCtrl', function ($controller, $rootScope, $scope, $http, APP_CONFIG, $stateParams, $modalInstance) {
  
     $scope.dbschema = $stateParams.schema;
     $scope.dbclass = $stateParams.rclass;

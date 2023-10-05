@@ -1,0 +1,156 @@
+<DataViews>
+  <View Name="TestItemTemplateView" Caption="试验项目模板视图" order="0">
+    <Class Name="LabATestItemTemplates" Caption="LabATestItemTemplates" order="0" ClassName="LabATestItemTemplates" Type="Base" />
+    <ReferencedClasses />
+    <Filter order="0" />
+    <ResultAttributes>
+      <SimpleAttribute Name="ItemName" Caption="项目名称" order="0" OwnerAlias="labatestitemtemplates" />
+      <SimpleAttribute Name="Lab" Caption="所属实验室" order="0" OwnerAlias="labatestitemtemplates" />
+      <SimpleAttribute Name="Group" Caption="所属检测组" order="0" OwnerAlias="labatestitemtemplates" />
+      <SimpleAttribute Name="GroupHead" Caption="检测组负责人" order="0" OwnerAlias="labatestitemtemplates" />
+      <SimpleAttribute Name="ProcessState" Caption="流程状态" order="0" OwnerAlias="labatestitemtemplates" />
+    </ResultAttributes>
+    <SortBy order="0">
+      <ResultAttributes />
+    </SortBy>
+  </View>
+  <View Name="TestItemSampleView" Caption="试验项目样品列表视图" order="1">
+    <Class Name="ItemToSample" Caption="Item To Sample" order="0" ClassName="ItemToSample" Type="Base" />
+    <ReferencedClasses>
+      <Class Name="Samples_toTestSample" Caption="样品" order="0" ClassName="Samples" Type="Referenced" ParentClass="itemtosample" ParentRelationship="toTestSample" />
+    </ReferencedClasses>
+    <Filter order="0" />
+    <ResultAttributes>
+      <SimpleAttribute Name="Name" Caption="样品名称" order="0" OwnerAlias="samples_totestsample" />
+      <SimpleAttribute Name="SampleNumber" Caption="样品编号" order="0" OwnerAlias="samples_totestsample" />
+      <SimpleAttribute Name="Quantity" Caption="样品数量" order="0" OwnerAlias="samples_totestsample" />
+      <SimpleAttribute Name="ReceivedDate" Caption="收样日期" order="0" OwnerAlias="samples_totestsample" />
+      <VirtualAttribute Name="ViewSampleInfo" Caption="查看样品详情" order="0" OwnerAlias="samples_totestsample" />
+    </ResultAttributes>
+    <SortBy order="0">
+      <ResultAttributes />
+    </SortBy>
+  </View>
+  <View Name="TestItemEquipmentView" Caption="试验项目设备列表视图" order="2">
+    <Class Name="ItemToEquipment" Caption="Item To Equipment" order="0" ClassName="ItemToEquipment" Type="Base" />
+    <ReferencedClasses>
+      <Class Name="Equipments_toEquipment" Caption="试验设备" order="0" ClassName="Equipments" Type="Referenced" ParentClass="itemtoequipment" ParentRelationship="toEquipment" />
+    </ReferencedClasses>
+    <Filter order="0" />
+    <ResultAttributes>
+      <SimpleAttribute Name="Name" Caption="设备名称" order="0" OwnerAlias="equipments_toequipment" />
+      <SimpleAttribute Name="Number" Caption="设备编号" order="0" OwnerAlias="equipments_toequipment" />
+      <SimpleAttribute Name="LastCalibrateDate" Caption="上次检定日期" order="0" OwnerAlias="equipments_toequipment" />
+      <VirtualAttribute Name="NextCalibrateDate" Caption="下次检定日期" order="0" OwnerAlias="equipments_toequipment" />
+      <VirtualAttribute Name="CalibrateStatus" Caption="检定状态" order="0" OwnerAlias="equipments_toequipment" />
+      <VirtualAttribute Name="viewDetail" Caption="详情" order="0" OwnerAlias="equipments_toequipment" />
+    </ResultAttributes>
+    <SortBy order="0">
+      <ResultAttributes />
+    </SortBy>
+  </View>
+  <View Name="TestBedEquipmentView" Caption="试验台架设备列表视图" order="3">
+    <Class Name="LabAEquipments" Caption="LabA Equipments" order="0" ClassName="LabAEquipments" Type="Base" />
+    <ReferencedClasses />
+    <Filter order="0" />
+    <ResultAttributes>
+      <SimpleAttribute Name="Name" Caption="设备名称" order="0" OwnerAlias="labaequipments" />
+      <SimpleAttribute Name="Number" Caption="设备编号" order="0" OwnerAlias="labaequipments" />
+      <SimpleAttribute Name="EquipmentType" Caption="设备类型" order="0" OwnerAlias="labaequipments" />
+      <SimpleAttribute Name="LastCalibrateDate" Caption="上次检定日期" order="0" OwnerAlias="labaequipments" />
+      <VirtualAttribute Name="CalibrateStatus" Caption="检定状态" order="0" OwnerAlias="labaequipments" />
+      <VirtualAttribute Name="NextCalibrateDate" Caption="下次检定日期" order="0" OwnerAlias="labaequipments" />
+    </ResultAttributes>
+    <SortBy order="0">
+      <ResultAttributes />
+    </SortBy>
+  </View>
+  <View Name="TestItemCatalogView" Caption="试验项目台账记录" order="4">
+    <Class Name="LabATestItemInstances" Caption="LabA Test Item Instances" order="0" ClassName="LabATestItemInstances" Type="Base" />
+    <ReferencedClasses />
+    <Filter order="0" />
+    <ResultAttributes>
+      <SimpleAttribute Name="ItemName" Caption="项目名称" order="0" OwnerAlias="labatestiteminstances" />
+      <SimpleAttribute Name="Lab" Caption="所属实验室" order="0" OwnerAlias="labatestiteminstances" />
+      <SimpleAttribute Name="Group" Caption="所属检测组" order="0" OwnerAlias="labatestiteminstances" />
+      <SimpleAttribute Name="StartTime" Caption="开始时间" order="0" OwnerAlias="labatestiteminstances" />
+      <SimpleAttribute Name="EndTime" Caption="结束时间" order="0" OwnerAlias="labatestiteminstances" />
+    </ResultAttributes>
+    <SortBy order="0">
+      <ResultAttributes>
+        <SortAttribute Name="ItemID" Caption="项目序号" order="0" Direction="Descending" OwnerAlias="labatestiteminstances" />
+      </ResultAttributes>
+    </SortBy>
+  </View>
+  <View Name="TestOrderKanbanView" Caption="试验任务看板视图" order="5">
+    <Class Name="LabATestOrders" Caption="产品试验任务" order="0" ClassName="LabATestOrders" Type="Base" />
+    <ReferencedClasses>
+      <Class Name="TestItems_toTestItems" Caption="产品试验项目台账" order="0" ClassName="LabATestItemInstances" Type="Referenced" ParentClass="labatestorders" ParentRelationship="toTestItems" />
+    </ReferencedClasses>
+    <Filter order="0" />
+    <ResultAttributes>
+      <SimpleAttribute Name="OrderID" Caption="任务序号" order="0" OwnerAlias="labatestorders" />
+      <SimpleAttribute Name="OrderNumber" Caption="任务编号" order="0" OwnerAlias="labatestorders" />
+      <SimpleAttribute Name="SubmitBy" Caption="申请人" order="0" OwnerAlias="labatestorders" />
+      <SimpleAttribute Name="Progress" Caption="进度" order="0" OwnerAlias="labatestorders" />
+      <SimpleAttribute Name="OrderState" Caption="任务流程状态" order="0" OwnerAlias="labatestorders" />
+      <SimpleAttribute Name="ItemID" Caption="项目序号" order="0" OwnerAlias="testitems_totestitems" />
+      <SimpleAttribute Name="ItemName" Caption="项目名称" order="0" OwnerAlias="testitems_totestitems" />
+      <SimpleAttribute Name="ProcessState" Caption="流程状态" order="0" OwnerAlias="testitems_totestitems" />
+    </ResultAttributes>
+    <SortBy order="0">
+      <ResultAttributes>
+        <SortAttribute Name="OrderID" Caption="任务序号" order="0" Direction="Descending" OwnerAlias="labatestorders" />
+      </ResultAttributes>
+    </SortBy>
+  </View>
+  <View Name="TaskDataPackets" Caption="任务数据包" order="6">
+    <Class Name="LabATestRecords" Caption="产品试验项目数据包" order="0" ClassName="LabATestRecords" Type="Base" />
+    <ReferencedClasses>
+      <Class Name="TestItems_toTestItem" Caption="试验项目" order="0" ClassName="TestItems" Type="Referenced" ParentClass="labatestrecords" ParentRelationship="toTestItem" />
+      <Class Name="TestOrders_toTestOrder" Caption="试验任务" order="0" ClassName="TestOrders" Type="Referenced" ParentClass="testitems_totestitem" ParentRelationship="toTestOrder" />
+    </ReferencedClasses>
+    <Filter order="0" />
+    <ResultAttributes>
+      <SimpleAttribute Name="PacketNumber" Caption="数据包编号" order="0" OwnerAlias="labatestrecords" />
+      <SimpleAttribute Name="PacketName" Caption="数据包名称" order="0" OwnerAlias="labatestrecords" />
+      <SimpleAttribute Name="OrderNumber" Caption="所属任务编号" order="0" OwnerAlias="testorders_totestorder" />
+      <SimpleAttribute Name="ItemName" Caption="所属试验项目" order="0" OwnerAlias="testitems_totestitem" />
+      <SimpleAttribute Name="Lab" Caption="所属实验室" order="0" OwnerAlias="testitems_totestitem" />
+      <SimpleAttribute Name="RecordDate" Caption="创建日期" order="0" OwnerAlias="labatestrecords" />
+    </ResultAttributes>
+    <SortBy order="0">
+      <ResultAttributes />
+    </SortBy>
+  </View>
+  <View Name="MyTestTasks" Caption="我进行中的试验任务" order="7">
+    <Class Name="LabATestOrders" Caption="产品试验任务" order="0" ClassName="LabATestOrders" Type="Base" />
+    <ReferencedClasses />
+    <Filter order="0">
+      <And Name="and" order="0">
+        <Equals Name="=" order="0">
+          <SimpleAttribute Name="SubmitBy" Caption="申请人" order="0" OwnerAlias="labatestorders" />
+          <Parameter Name="SubmitBy" order="0" OwnerAlias="labatestorders" Value="currentUser()" Type="String" />
+        </Equals>
+        <NotEquals Name="!=" order="0">
+          <SimpleAttribute Name="OrderState" Caption="任务流程状态" order="0" OwnerAlias="labatestorders" />
+          <Parameter Name="OrderState" order="0" OwnerAlias="labatestorders" Value="结束" Type="String" />
+        </NotEquals>
+      </And>
+    </Filter>
+    <ResultAttributes>
+      <SimpleAttribute Name="OrderNumber" Caption="任务编号" order="0" OwnerAlias="labatestorders" />
+      <SimpleAttribute Name="OrderState" Caption="任务流程状态" order="0" OwnerAlias="labatestorders" />
+      <SimpleAttribute Name="SubmitBy" Caption="申请人" order="0" OwnerAlias="labatestorders" />
+      <SimpleAttribute Name="SubmitDate" Caption="申请日期" order="0" OwnerAlias="labatestorders" />
+      <SimpleAttribute Name="Email" Caption="申请人邮箱" order="0" OwnerAlias="labatestorders" />
+      <SimpleAttribute Name="Division" Caption="申请部门" order="0" OwnerAlias="labatestorders" />
+      <SimpleAttribute Name="Description" Caption="试验目的" order="0" OwnerAlias="labatestorders" />
+      <SimpleAttribute Name="Progress" Caption="进度" order="0" OwnerAlias="labatestorders" />
+      <SimpleAttribute Name="ApprovedBy" Caption="审批人" order="0" OwnerAlias="labatestorders" />
+    </ResultAttributes>
+    <SortBy order="0">
+      <ResultAttributes />
+    </SortBy>
+  </View>
+</DataViews>
