@@ -1167,7 +1167,7 @@
             <param name="oid">The obj_id of an data instance such as 377382882</param>
             <param name="blobName">The name of a blob to deleted</param>
         </member>
-        <member name="M:Newtera.WebApi.Controllers.BlobController.GetBlob(System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:Newtera.WebApi.Controllers.BlobController.GetBlob(System.String,System.String,System.String,System.String)">
             <summary>
             Download a blob
             </summary>

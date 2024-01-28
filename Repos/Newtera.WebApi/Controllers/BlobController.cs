@@ -194,7 +194,7 @@ namespace Newtera.WebApi.Controllers
         [Route("api/blob/{schemaName}/{className}/{oid:long}/{blobName}")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(void), Description = "File downloaded")]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = typeof(string), Description = "An error occured, see error message in data.message")]
-        public async Task<HttpResponseMessage> GetBlob(string schemaName, string className, string oid, string blobName, string dirPath = null)
+        public async Task<HttpResponseMessage> GetBlob(string schemaName, string className, string oid, string blobName)
         {
             NameValueCollection parameters = Request.RequestUri.ParseQueryString();
             string containerName = GetContainerName(parameters, schemaName, className, oid);
