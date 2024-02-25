@@ -1,15 +1,5 @@
-﻿<div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <form name="ebaasform" novalidate">
-            <ebaas-form-template dbschema="dbschema" dbclass="dbclass" oid="oid" template="template" readonly="true"></ebaas-form-template>
-        </form>
+﻿<div style="margin-left: 10px; margin-right: 10px; ">
+    <div class="row">
+        <blobs dbschema="dbschema" dbclass="dbclass" oid="oid" prefix="prefix"></blobs>
     </div>
-</div>
-<div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <div class="form-group"><label>数据包目录</label><input class="form-control" name="PacketFolderPath" readonly="readonly" data-ng-model="prefix" /></div>
-    </div>
-</div>
-<div class="row">
-    <blobs dbschema="dbschema" dbclass="dbclass" oid="oid" prefix="prefix"></blobs>
 </div>

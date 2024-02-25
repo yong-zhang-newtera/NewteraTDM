@@ -9,6 +9,7 @@ using Amazon.Runtime;
 using Amazon.Runtime.CredentialManagement;
 using Amazon.S3;
 using Amazon.S3.Model;
+using Newtera.Common.Config;
 
 namespace Newtera.BlobStorage.S3Storage
 {
@@ -41,6 +42,8 @@ namespace Newtera.BlobStorage.S3Storage
 
             _s3Client = new AmazonS3Client(ReadAwsCredentials(options), S3Config);
         }
+
+        public BucketConfig BucketConfig { get; set; }
 
         private AWSCredentials ReadAwsCredentials(S3ProviderOptions options)
         {

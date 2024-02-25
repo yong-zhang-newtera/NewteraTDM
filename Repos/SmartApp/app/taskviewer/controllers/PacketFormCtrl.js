@@ -17,8 +17,6 @@ angular.module('app.taskviewer').controller('PacketFormCtrl', function ($control
         }
     }
 
-    angular.extend(this, $controller('ebaasFormBaseCtrl', { $rootScope: $rootScope, $scope: $scope, $http: $http, APP_CONFIG: APP_CONFIG }));
-
     $scope.editForm = function () {
         $scope.$broadcast('editParentNodeEvent', {
             parentClass: $scope.dbclass,

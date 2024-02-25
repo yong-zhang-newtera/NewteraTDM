@@ -4,12 +4,14 @@ angular.module('app.blobmanager').factory('blobManager', function ($q, fileManag
 
     var service = {
         files: [],
+        bucketName: "",
         load: load,
         upload: upload,
         remove: remove,
         download: download,
         performDownload: performDownload,
         fileExists: fileExists,
+        getBucketInfo: getBucketInfo,
         status: {
             uploading: false
         },
@@ -59,7 +61,15 @@ angular.module('app.blobmanager').factory('blobManager', function ($q, fileManag
                                 ['finally'](
                                 function () {
                                     loadingInfo.setInfo({ busy: false });
-                                });
+                                    });
+    }
+
+    function getBucketInfo() {
+        var url = service.params.serviceBase + "/" + service.params.api + "/buckets/" + service.params.schema + "/" + service.params.cls;
+        return $http.get(url)
+            .then(function (response) {
+                service.bucketName = response.data.name;
+            });
     }
 
     function upload(files) {
