@@ -19,7 +19,8 @@ namespace Newtera.BlobStorage
 	/// <version> 1.0.0 11 Apr 2023 </version>
 	public class StorageProviderFactory
     {
-        private IDictionary<string, IStorageProvider> _mappings;
+        private IDictionary<string, IStorageProvider> _keyToProviderMappings;
+        private IDictionary<string, IStorageProvider> _bucketToProviderMappings;
 
         /// <summary>
         /// Singleton's private instance.
@@ -36,7 +37,8 @@ namespace Newtera.BlobStorage
         /// </summary>
         private StorageProviderFactory()
         {
-            this._mappings = new Dictionary<string, IStorageProvider>();
+            this._keyToProviderMappings = new Dictionary<string, IStorageProvider>();
+            this._bucketToProviderMappings = new Dictionary<string, IStorageProvider>();
         }
 
         /// <summary>
@@ -56,12 +58,12 @@ namespace Newtera.BlobStorage
             lock (this)
             {
                 var key = schemaName + className;
-                if (!this._mappings.ContainsKey(key))
+                if (!this._keyToProviderMappings.ContainsKey(key))
                 {
                     var storageProvider = CreateStorageProvider(schemaName, className);
                     if (storageProvider != null)
                     {
-                        this._mappings[key] = storageProvider;
+                        this._keyToProviderMappings[key] = storageProvider;
                     }
                     else
                     {
@@ -69,21 +71,26 @@ namespace Newtera.BlobStorage
                     }
                 }
 
-                return this._mappings[key];
+                return this._keyToProviderMappings[key];
             }
         }
 
         public IStorageProvider Create(BucketConfig bucket)
         {
-            var storageProvider = CreateStorageProvider(bucket);
-            if (storageProvider != null)
+            if (!this._bucketToProviderMappings.ContainsKey(bucket.Name))
             {
-                return storageProvider;
+                var storageProvider = CreateStorageProvider(bucket);
+                if (storageProvider != null)
+                {
+                    this._bucketToProviderMappings[bucket.Name] = storageProvider;
+                }
+                else
+                {
+                    throw new Exception($"Unable to create a storage provider for {bucket.Name}.");
+                }
             }
-            else
-            {
-                throw new Exception($"Unable to create a storage provider for {bucket.Name} and {bucket.Type}.");
-            }
+
+            return this._bucketToProviderMappings[bucket.Name];
         }
 
         private IStorageProvider CreateStorageProvider(string schemaName, string className)
@@ -109,6 +116,7 @@ namespace Newtera.BlobStorage
             {
                 case "Local":
                     storageProvider = new LocalStorageProvider(bucket.Path);
+                    storageProvider.BucketConfig = bucket;
 
                     break;
 
@@ -120,6 +128,7 @@ namespace Newtera.BlobStorage
                     options.SecretKey = bucket.SecretKey;
 
                     storageProvider = new S3StorageProvider(options);
+                    storageProvider.BucketConfig = bucket;
 
                     break;
 

@@ -12,6 +12,8 @@ angular.module('app.blobmanager').controller('blobManagerCtrl', function ($scope
     vm.download = blobManager.download;
     vm.setPreviewFile = setPreviewFile;
     vm.getWord = getWord;
+    vm.prefix = this.prefix;
+    vm.bucketName = blobManager.bucketName;
 
     $scope.showUpload = false;
    
@@ -58,6 +60,7 @@ angular.module('app.blobmanager').controller('blobManagerCtrl', function ($scope
 
     function activate() {
         blobManager.load();
+        blobManager.getBucketInfo();
     }
 
     function setPreviewFile(file) {

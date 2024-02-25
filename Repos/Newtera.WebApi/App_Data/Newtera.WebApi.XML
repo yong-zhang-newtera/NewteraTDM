@@ -1145,8 +1145,6 @@
             <param name="schemaName">A database schema name such as DEMO</param>
             <param name="className">A data class name such as ATestItemInstance</param>
             <param name="oid">The obj_id of an data instance such as 377382882</param>
-            <param name="from">Return attachment infos from the row index such as 0. Default to 0.</param>
-            <param name="size">Return attachment infos with a page size such as 20. Default to 20.</param>
             <remarks>Files associated with a data instance are stored in a specified directory by application</remarks>
         </member>
         <member name="M:Newtera.WebApi.Controllers.BlobController.PostBlob(System.String,System.String,System.String)">
@@ -1167,7 +1165,7 @@
             <param name="oid">The obj_id of an data instance such as 377382882</param>
             <param name="blobName">The name of a blob to deleted</param>
         </member>
-        <member name="M:Newtera.WebApi.Controllers.BlobController.GetBlob(System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:Newtera.WebApi.Controllers.BlobController.GetBlob(System.String,System.String,System.String,System.String)">
             <summary>
             Download a blob
             </summary>
@@ -1175,6 +1173,59 @@
             <param name="className">A data class name such as ATestItemInstance</param>
             <param name="oid">The obj_id of an data instance such as 377382882</param>
             <param name="blobName">The name of a blob to download</param>
+        </member>
+        <member name="M:Newtera.WebApi.Controllers.BlobController.GetBucketInfo(System.String,System.String)">
+            <summary>
+            Get info of the bucket configured for the schema and class
+            </summary>
+            <param name="schemaName">A database schema name such as DEMO</param>
+            <param name="className">A data class name such as ATestItemInstance</param>
+        </member>
+        <member name="M:Newtera.WebApi.Controllers.BlobController.DoesBucketExist(System.String)">
+            <summary>
+            Check if a bucket exists
+            </summary>
+            <param name="bucketName">A bucket name</param>
+        </member>
+        <member name="M:Newtera.WebApi.Controllers.BlobController.GetBlobObjects(System.String)">
+            <summary>
+            Get file objectsin a bucket with a prefix 
+            </summary>
+            <param name="bucketName">A bucket name</param>
+            <remarks>File objects</remarks>
+        </member>
+        <member name="M:Newtera.WebApi.Controllers.BlobController.PutSingleBlobObject(System.String,System.String)">
+            <summary>
+            Upload an object
+            </summary>
+            <param name="bucketName">A bucket name</param>
+            <param name="objectName">An object name</param>
+        </member>
+        <member name="M:Newtera.WebApi.Controllers.BlobController.PostMultiPartBlobObject(System.String,System.String)">
+            <summary>
+            Upload an object
+            </summary>
+            <param name="bucketName">A bucket name</param>
+            <param name="objectName">An object name</param>
+        </member>
+        <member name="M:Newtera.WebApi.Controllers.BlobController.GetBlobObjectDescriptor(System.String,System.String)">
+            <summary>
+            Get descriptor of an object
+            </summary>
+            <param name="bucketName">A bucket name</param>
+            <param name="objectName">An object name</param>
+        </member>
+        <member name="M:Newtera.WebApi.Controllers.BlobController.GetBlobObject(System.String,System.String)">
+            <summary>
+            Get an object
+            </summary>
+            <param name="bucketName">A bucket name</param>
+            <param name="objectName">An object name</param>
+        </member>
+        <member name="M:Newtera.WebApi.Controllers.BlobController.DeleteBlobObject(System.String,System.String)">
+            <summary>
+            Delete a blob associated with a data instance
+            </summary>
         </member>
         <member name="T:Newtera.WebApi.Controllers.FullTextSearchController">
             <summary>

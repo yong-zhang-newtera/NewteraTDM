@@ -6,16 +6,16 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Threading;
+using System.Linq;
 
 using Swashbuckle.Swagger.Annotations;
 
 using Newtera.Common.Core;
 using Newtera.BlobStorage;
-using Newtera.Common.MetaData.Principal;
-
 using Newtera.WebApi.Models;
 using Newtera.WebApi.Infrastructure;
+using Newtera.Common.Config;
+using Newtonsoft.Json;
 
 namespace Newtera.WebApi.Controllers
 {
@@ -41,8 +41,6 @@ namespace Newtera.WebApi.Controllers
         /// <param name="schemaName">A database schema name such as DEMO</param>
         /// <param name="className">A data class name such as ATestItemInstance</param>
         /// <param name="oid">The obj_id of an data instance such as 377382882</param>
-        /// <param name="from">Return attachment infos from the row index such as 0. Default to 0.</param>
-        /// <param name="size">Return attachment infos with a page size such as 20. Default to 20.</param>
         /// <remarks>Files associated with a data instance are stored in a specified directory by application</remarks>
         [HttpGet]
         [NormalAuthorizeAttribute]
@@ -194,7 +192,7 @@ namespace Newtera.WebApi.Controllers
         [Route("api/blob/{schemaName}/{className}/{oid:long}/{blobName}")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(void), Description = "File downloaded")]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = typeof(string), Description = "An error occured, see error message in data.message")]
-        public async Task<HttpResponseMessage> GetBlob(string schemaName, string className, string oid, string blobName, string dirPath = null)
+        public async Task<HttpResponseMessage> GetBlob(string schemaName, string className, string oid, string blobName)
         {
             NameValueCollection parameters = Request.RequestUri.ParseQueryString();
             string containerName = GetContainerName(parameters, schemaName, className, oid);
@@ -204,6 +202,303 @@ namespace Newtera.WebApi.Controllers
             
             BlobStorageUtil util = new BlobStorageUtil();
             return await util.CreateHttpResponse(blobName, stream);
+        }
+
+        /// <summary>
+        /// Get info of the bucket configured for the schema and class
+        /// </summary>
+        /// <param name="schemaName">A database schema name such as DEMO</param>
+        /// <param name="className">A data class name such as ATestItemInstance</param>
+        [HttpGet]
+        [NormalAuthorizeAttribute]
+        [Route("api/blob/buckets/{schemaName}/{className}")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<FileViewModel>), Description = "A collection of attachment infos")]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = typeof(string), Description = "An error occured, see error message in data.message")]
+        public async Task<IHttpActionResult> GetBucketInfo(string schemaName, string className)
+        {
+            try
+            {
+                IStorageProvider storageProvider = StorageProviderFactory.Instance.Create(schemaName, className);
+                var bucketModel = new BucketModel
+                {
+                    Name = storageProvider.BucketConfig?.Name,
+                    Type = storageProvider.BucketConfig?.Type,
+                    ServiceUrl = storageProvider.BucketConfig?.ServiceUrl,
+                    Path = storageProvider.BucketConfig?.Path,
+                    ForDBClass = storageProvider.BucketConfig?.ForDBClass,
+                    ForDBSchema = storageProvider.BucketConfig?.ForDBSchema
+                };
+                return Ok(bucketModel);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Instance.WriteLine(ex.GetBaseException().Message + "\n" + ex.GetBaseException().StackTrace);
+
+                return BadRequest(ex.GetBaseException().Message);
+            }
+        }
+
+        /// <summary>
+        /// Check if a bucket exists
+        /// </summary>
+        /// <param name="bucketName">A bucket name</param>
+        [HttpGet]
+        [Route("api/blob/buckets/{bucketName}")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool), Description = "Boolean value")]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = typeof(string), Description = "An error occured, see error message in data.message")]
+        public async Task<IHttpActionResult> DoesBucketExist(string bucketName)
+        {
+            try
+            {
+                var bucket = GetBucketConfig(bucketName);
+                return bucket != null ? Ok(true) : Ok(false);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Instance.WriteLine(ex.GetBaseException().Message + "\n" + ex.GetBaseException().StackTrace);
+
+                return BadRequest(ex.GetBaseException().Message);
+            }
+        }
+        /// <summary>
+        /// Get file objectsin a bucket with a prefix 
+        /// </summary>
+        /// <param name="bucketName">A bucket name</param>
+        /// <remarks>File objects</remarks>
+        [HttpGet]
+        [Route("api/blob/objects/{bucketName}")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<FileViewModel>), Description = "A collection of blob objects")]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = typeof(string), Description = "An error occured, see error message in data.message")]
+        public async Task<IHttpActionResult> GetBlobObjects(string bucketName)
+        {
+            try
+            {
+                var bucket = GetBucketConfig(bucketName);
+                if (bucket == null)
+                {
+                    return NotFound();
+                }
+
+                NameValueCollection parameters = Request.RequestUri.ParseQueryString();
+
+                string prefix = GetParamValue(parameters, PREFIX, null);
+
+                IStorageProvider storageProvider = StorageProviderFactory.Instance.Create(bucket);
+
+                var results = await storageProvider.ListBlobsAsync(prefix);
+
+                BlobStorageUtil util = new BlobStorageUtil();
+                var fileViewModels = util.ConvertToFileViewModels(results);
+                return Ok(new { files = fileViewModels });
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Instance.WriteLine(ex.GetBaseException().Message + "\n" + ex.GetBaseException().StackTrace);
+
+                return BadRequest(ex.GetBaseException().Message);
+            }
+        }
+
+        /// <summary>
+        /// Upload an object
+        /// </summary>
+        /// <param name="bucketName">A bucket name</param>
+        /// <param name="objectName">An object name</param>
+        [HttpPut]
+        [Route("api/blob/objects/{bucketName}/{objectName}")]
+        [SwaggerResponse(HttpStatusCode.OK)]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = typeof(string), Description = "An error occured, see error message in data.message")]
+        public async Task<IHttpActionResult> PutSingleBlobObject(string bucketName, string objectName)
+        {
+            var bucket = GetBucketConfig(bucketName);
+            if (bucket == null)
+            {
+                return NotFound();
+            }
+
+            if (Request.Content.Headers.ContentType.MediaType != "application/octet-stream")
+            {
+                return BadRequest(@"Unsupported media type {Request.Content.Headers.ContentType.MediaType}");
+            }
+
+            NameValueCollection parameters = Request.RequestUri.ParseQueryString();
+            string prefix = GetParamValue(parameters, PREFIX, null);
+            string userName = GetParamValue(parameters, "user", null);
+            IStorageProvider storageProvider = StorageProviderFactory.Instance.Create(bucket);
+
+            try
+            {
+                var filename = objectName;
+                filename = filename.Trim(new char[] { '"' }).Replace("&", "and");
+                var blobProperties = new BlobProperties()
+                {
+                    Metadata = new Dictionary<string, string>() { { "creator", userName ?? "Unknown" } }
+                };
+                var stream = await Request.Content.ReadAsStreamAsync();
+                await storageProvider.SaveBlobStreamAsync(prefix,
+                     filename,
+                     stream,
+                     blobProperties,
+                     true);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Instance.WriteLine(ex.GetBaseException().Message + "\n" + ex.GetBaseException().StackTrace);
+
+                return BadRequest(ex.GetBaseException().Message);
+            }
+        }
+
+        /// <summary>
+        /// Upload an object
+        /// </summary>
+        /// <param name="bucketName">A bucket name</param>
+        /// <param name="objectName">An object name</param>
+        [HttpPost]
+        [Route("api/blob/objects/{bucketName}/{objectName}")]
+        [SwaggerResponse(HttpStatusCode.OK)]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = typeof(string), Description = "An error occured, see error message in data.message")]
+        public async Task<IHttpActionResult> PostMultiPartBlobObject(string bucketName, string objectName)
+        {
+            var bucket = GetBucketConfig(bucketName);
+            if (bucket == null)
+            {
+                return NotFound();
+            }
+
+            if (Request.Content.Headers.ContentType.MediaType != "application/octet-stream")
+            {
+                return BadRequest(@"Unsupported media type {Request.Content.Headers.ContentType.MediaType}");
+            }
+
+            NameValueCollection parameters = Request.RequestUri.ParseQueryString();
+            string prefix = GetParamValue(parameters, PREFIX, null);
+            string userName = GetParamValue(parameters, "user", null);
+            IStorageProvider storageProvider = StorageProviderFactory.Instance.Create(bucket);
+
+            try
+            {
+                var filename = objectName;
+                filename = filename.Trim(new char[] { '"' }).Replace("&", "and");
+                var blobProperties = new BlobProperties()
+                {
+                    Metadata = new Dictionary<string, string>() { { "creator", userName ?? "Unknown" } }
+                };
+                var stream = await Request.Content.ReadAsStreamAsync();
+                await storageProvider.SaveBlobStreamAsync(prefix,
+                     filename,
+                     stream,
+                     blobProperties,
+                     true);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Instance.WriteLine(ex.GetBaseException().Message + "\n" + ex.GetBaseException().StackTrace);
+
+                return BadRequest(ex.GetBaseException().Message);
+            }
+        }
+
+        /// <summary>
+        /// Get descriptor of an object
+        /// </summary>
+        /// <param name="bucketName">A bucket name</param>
+        /// <param name="objectName">An object name</param>
+        [HttpHead]
+        [Route("api/blob/objects/{bucketName}/{objectName}")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(void), Description = "object")]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = typeof(string), Description = "An error occured, see error message in data.message")]
+        public async Task<HttpResponseMessage> GetBlobObjectDescriptor(string bucketName, string objectName)
+        {
+            var bucket = GetBucketConfig(bucketName);
+            if (bucket == null)
+            {
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
+            }
+
+            NameValueCollection parameters = Request.RequestUri.ParseQueryString();
+            string prefix = GetParamValue(parameters, PREFIX, null);
+            IStorageProvider storageProvider = StorageProviderFactory.Instance.Create(bucket);
+
+            var descriptor = await storageProvider.GetBlobDescriptorAsync(prefix, objectName);
+
+            HttpResponseMessage response = new HttpResponseMessage();
+            response.StatusCode = System.Net.HttpStatusCode.OK;
+            response.Headers.Add("ContentType", descriptor.ContentType);
+            response.Headers.Add("Length", descriptor.Length.ToString());
+            response.Headers.Add("Name", descriptor.Name);
+            response.Headers.Add("Url", descriptor.Url);
+            if (descriptor.Metadata != null)
+            {
+                response.Headers.Add("Metadata", JsonConvert.SerializeObject(descriptor.Metadata));
+            }
+
+            return response;
+        }
+
+        /// <summary>
+        /// Get an object
+        /// </summary>
+        /// <param name="bucketName">A bucket name</param>
+        /// <param name="objectName">An object name</param>
+        [HttpGet]
+        [Route("api/blob/objects/{bucketName}/{objectName}")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(void), Description = "object")]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = typeof(string), Description = "An error occured, see error message in data.message")]
+        public async Task<HttpResponseMessage> GetBlobObject(string bucketName, string objectName)
+        {
+            var bucket = GetBucketConfig(bucketName);
+            if (bucket == null)
+            {
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
+            }
+
+            NameValueCollection parameters = Request.RequestUri.ParseQueryString();
+            string prefix = GetParamValue(parameters, PREFIX, null);
+            IStorageProvider storageProvider = StorageProviderFactory.Instance.Create(bucket);
+
+            var stream = await storageProvider.GetBlobStreamAsync(prefix, objectName);
+
+            BlobStorageUtil util = new BlobStorageUtil();
+            return await util.CreateHttpResponse(objectName, stream);
+        }
+
+        /// <summary>
+        /// Delete a blob associated with a data instance
+        /// </summary>
+        [HttpDelete]
+        [Route("api/blob/objects/{bucketName}/{objectName}")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(string), Description = "File deleted")]
+        [SwaggerResponse(HttpStatusCode.NotFound, Type = typeof(void), Description = "File not found")]
+        [SwaggerResponse(HttpStatusCode.BadRequest, Type = typeof(string), Description = "An error occured, see error message in data.message")]
+        public async Task<IHttpActionResult> DeleteBlobObject(string bucketName, string objectName)
+        {
+            try
+            {
+                var bucket = GetBucketConfig(bucketName);
+                if (bucket == null)
+                {
+                    return NotFound();
+                }
+
+                NameValueCollection parameters = Request.RequestUri.ParseQueryString();
+                string prefix = GetParamValue(parameters, PREFIX, null);
+                IStorageProvider storageProvider = StorageProviderFactory.Instance.Create(bucket);
+
+                await storageProvider.DeleteBlobAsync(prefix, objectName);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Instance.WriteLine(ex.GetBaseException().Message + "\n" + ex.GetBaseException().StackTrace);
+
+                return BadRequest(ex.GetBaseException().Message);
+            }
         }
 
         private string GetContainerName(NameValueCollection parameters, string schemaName, string className, string oid)
@@ -233,6 +528,12 @@ namespace Newtera.WebApi.Controllers
             }
 
             return val;
+        }
+
+        private BucketConfig GetBucketConfig(string bucketName)
+        {
+            var buckets = BlobStorageConfig.Instance.BucketConfigs;
+            return buckets.Where(x => string.Equals(x.Name, bucketName, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
         }
     }
 }

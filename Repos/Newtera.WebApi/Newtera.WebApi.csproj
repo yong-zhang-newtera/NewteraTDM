@@ -327,6 +327,7 @@
     <Compile Include="Models\RoleBindingModels.cs" />
     <Compile Include="Models\KanbanModel.cs" />
     <Compile Include="Models\MessageModel.cs" />
+    <Compile Include="Models\BucketModel.cs" />
     <Compile Include="Models\TaskModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\CustomJwtFormat.cs" />

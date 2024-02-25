@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtera.Common.Config;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ namespace Newtera.BlobStorage
 {
     public interface IStorageProvider
     {
+        BucketConfig BucketConfig { get; set; }
         Task SaveBlobStreamAsync(string containerName, string blobName, Stream source, BlobProperties properties = null, bool closeStream = true, long? length = null);
         Task<Stream> GetBlobStreamAsync(string containerName, string blobName);
         Task<BlobDescriptor> GetBlobDescriptorAsync(string containerName, string blobName);

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-
+using Newtera.Common.Config;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -16,6 +16,8 @@ namespace Newtera.BlobStorage.LocalStorage
         {
             _basePath = basePath;
         }
+
+        public BucketConfig BucketConfig { get; set; }
 
         public void DeleteBlob(string containerName, string blobName)
         {

@@ -385,5 +385,8 @@
   "Show All Matches": "Show all matches",
   "Item Group": "Group",
   "FindTemplate": "Type keywords to find data to replicate",
-  "Create Task": "Create Task"
+  "Create Task": "Create Task",
+  "Properties": "Properties",
+  "BucketName": "Data Bucket",
+  "PacketPath": "Packet Path"
 }

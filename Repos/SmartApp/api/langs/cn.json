@@ -387,5 +387,8 @@
   "Show All Matches": "显示所有的匹配",
   "Item Group": "类别",
   "FindTemplate": "输入关键字查询可复制的模版",
-  "Create Task": "创建任务"
+  "Create Task": "创建任务",
+  "Properties": "属性",
+  "BucketName": "数据桶",
+  "PacketPath": "数据包目录"
 }
