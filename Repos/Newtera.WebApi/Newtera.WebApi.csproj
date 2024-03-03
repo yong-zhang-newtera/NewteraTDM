@@ -294,6 +294,7 @@
     <Compile Include="Infrastructure\ImageManager.cs" />
     <Compile Include="Infrastructure\HubAuthorizeAttribute.cs" />
     <Compile Include="Infrastructure\FullTextSearchHelper.cs" />
+    <Compile Include="Infrastructure\AuthorizeByCredentialAttribute.cs" />
     <Compile Include="Infrastructure\QueryHelper.cs" />
     <Compile Include="Infrastructure\ApplicationUser.cs" />
     <Compile Include="Infrastructure\ApplicationUserManager.cs" />
