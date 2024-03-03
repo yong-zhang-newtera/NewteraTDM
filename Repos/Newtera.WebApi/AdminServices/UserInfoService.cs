@@ -13,7 +13,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Web.Http.Description;
 
-using Newtera.Data;
 using Newtera.Common.Core;
 using Newtera.Common.MetaData.Principal;
 using Newtera.Server.UsrMgr;

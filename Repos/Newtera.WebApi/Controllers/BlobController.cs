@@ -16,6 +16,11 @@ using Newtera.WebApi.Models;
 using Newtera.WebApi.Infrastructure;
 using Newtera.Common.Config;
 using Newtonsoft.Json;
+using Newtera.Common.MetaData.XaclModel;
+using Newtera.Server.DB;
+using Newtera.Common.MetaData;
+using Newtera.Server.Engine.Cache;
+using Newtera.Common.MetaData.Schema;
 
 namespace Newtera.WebApi.Controllers
 {
@@ -242,23 +247,17 @@ namespace Newtera.WebApi.Controllers
         /// Check if a bucket exists
         /// </summary>
         /// <param name="bucketName">A bucket name</param>
-        [HttpGet]
+        [HttpHead]
+        [AuthorizeByCredentialAttribute]
         [Route("api/blob/buckets/{bucketName}")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool), Description = "Boolean value")]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = typeof(string), Description = "An error occured, see error message in data.message")]
-        public async Task<IHttpActionResult> DoesBucketExist(string bucketName)
+        public async Task<HttpResponseMessage> DoesBucketExist(string bucketName)
         {
-            try
-            {
-                var bucket = GetBucketConfig(bucketName);
-                return bucket != null ? Ok(true) : Ok(false);
-            }
-            catch (Exception ex)
-            {
-                ErrorLog.Instance.WriteLine(ex.GetBaseException().Message + "\n" + ex.GetBaseException().StackTrace);
-
-                return BadRequest(ex.GetBaseException().Message);
-            }
+            var bucket = GetBucketConfig(bucketName);
+            HttpResponseMessage response = new HttpResponseMessage();
+            response.StatusCode = bucket != null ? System.Net.HttpStatusCode.OK : System.Net.HttpStatusCode.NotFound;
+            return response;
         }
         /// <summary>
         /// Get file objectsin a bucket with a prefix 
@@ -266,6 +265,7 @@ namespace Newtera.WebApi.Controllers
         /// <param name="bucketName">A bucket name</param>
         /// <remarks>File objects</remarks>
         [HttpGet]
+        [AuthorizeByCredentialAttribute]
         [Route("api/blob/objects/{bucketName}")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<FileViewModel>), Description = "A collection of blob objects")]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = typeof(string), Description = "An error occured, see error message in data.message")]
@@ -277,6 +277,11 @@ namespace Newtera.WebApi.Controllers
                 if (bucket == null)
                 {
                     return NotFound();
+                }
+
+                if (!HasPermission(bucket.ForDBSchema, bucket.ForDBClass, XaclActionType.Read))
+                {
+                    return Unauthorized();
                 }
 
                 NameValueCollection parameters = Request.RequestUri.ParseQueryString();
@@ -305,6 +310,7 @@ namespace Newtera.WebApi.Controllers
         /// <param name="bucketName">A bucket name</param>
         /// <param name="objectName">An object name</param>
         [HttpPut]
+        [AuthorizeByCredentialAttribute]
         [Route("api/blob/objects/{bucketName}/{objectName}")]
         [SwaggerResponse(HttpStatusCode.OK)]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = typeof(string), Description = "An error occured, see error message in data.message")]
@@ -316,56 +322,9 @@ namespace Newtera.WebApi.Controllers
                 return NotFound();
             }
 
-            if (Request.Content.Headers.ContentType.MediaType != "application/octet-stream")
+            if (!HasPermission(bucket.ForDBSchema, bucket.ForDBClass, XaclActionType.Upload))
             {
-                return BadRequest(@"Unsupported media type {Request.Content.Headers.ContentType.MediaType}");
-            }
-
-            NameValueCollection parameters = Request.RequestUri.ParseQueryString();
-            string prefix = GetParamValue(parameters, PREFIX, null);
-            string userName = GetParamValue(parameters, "user", null);
-            IStorageProvider storageProvider = StorageProviderFactory.Instance.Create(bucket);
-
-            try
-            {
-                var filename = objectName;
-                filename = filename.Trim(new char[] { '"' }).Replace("&", "and");
-                var blobProperties = new BlobProperties()
-                {
-                    Metadata = new Dictionary<string, string>() { { "creator", userName ?? "Unknown" } }
-                };
-                var stream = await Request.Content.ReadAsStreamAsync();
-                await storageProvider.SaveBlobStreamAsync(prefix,
-                     filename,
-                     stream,
-                     blobProperties,
-                     true);
-
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                ErrorLog.Instance.WriteLine(ex.GetBaseException().Message + "\n" + ex.GetBaseException().StackTrace);
-
-                return BadRequest(ex.GetBaseException().Message);
-            }
-        }
-
-        /// <summary>
-        /// Upload an object
-        /// </summary>
-        /// <param name="bucketName">A bucket name</param>
-        /// <param name="objectName">An object name</param>
-        [HttpPost]
-        [Route("api/blob/objects/{bucketName}/{objectName}")]
-        [SwaggerResponse(HttpStatusCode.OK)]
-        [SwaggerResponse(HttpStatusCode.BadRequest, Type = typeof(string), Description = "An error occured, see error message in data.message")]
-        public async Task<IHttpActionResult> PostMultiPartBlobObject(string bucketName, string objectName)
-        {
-            var bucket = GetBucketConfig(bucketName);
-            if (bucket == null)
-            {
-                return NotFound();
+                return Unauthorized();
             }
 
             if (Request.Content.Headers.ContentType.MediaType != "application/octet-stream")
@@ -409,6 +368,7 @@ namespace Newtera.WebApi.Controllers
         /// <param name="bucketName">A bucket name</param>
         /// <param name="objectName">An object name</param>
         [HttpHead]
+        [AuthorizeByCredentialAttribute]
         [Route("api/blob/objects/{bucketName}/{objectName}")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(void), Description = "object")]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = typeof(string), Description = "An error occured, see error message in data.message")]
@@ -418,6 +378,11 @@ namespace Newtera.WebApi.Controllers
             if (bucket == null)
             {
                 return new HttpResponseMessage(HttpStatusCode.NotFound);
+            }
+
+            if (!HasPermission(bucket.ForDBSchema, bucket.ForDBClass, XaclActionType.Read))
+            {
+                return new HttpResponseMessage(HttpStatusCode.Unauthorized);
             }
 
             NameValueCollection parameters = Request.RequestUri.ParseQueryString();
@@ -446,6 +411,7 @@ namespace Newtera.WebApi.Controllers
         /// <param name="bucketName">A bucket name</param>
         /// <param name="objectName">An object name</param>
         [HttpGet]
+        [AuthorizeByCredentialAttribute]
         [Route("api/blob/objects/{bucketName}/{objectName}")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(void), Description = "object")]
         [SwaggerResponse(HttpStatusCode.BadRequest, Type = typeof(string), Description = "An error occured, see error message in data.message")]
@@ -455,6 +421,11 @@ namespace Newtera.WebApi.Controllers
             if (bucket == null)
             {
                 return new HttpResponseMessage(HttpStatusCode.NotFound);
+            }
+
+            if (!HasPermission(bucket.ForDBSchema, bucket.ForDBClass, XaclActionType.Download))
+            {
+                return new HttpResponseMessage(HttpStatusCode.Unauthorized);
             }
 
             NameValueCollection parameters = Request.RequestUri.ParseQueryString();
@@ -471,6 +442,7 @@ namespace Newtera.WebApi.Controllers
         /// Delete a blob associated with a data instance
         /// </summary>
         [HttpDelete]
+        [AuthorizeByCredentialAttribute]
         [Route("api/blob/objects/{bucketName}/{objectName}")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(string), Description = "File deleted")]
         [SwaggerResponse(HttpStatusCode.NotFound, Type = typeof(void), Description = "File not found")]
@@ -483,6 +455,11 @@ namespace Newtera.WebApi.Controllers
                 if (bucket == null)
                 {
                     return NotFound();
+                }
+
+                if (!HasPermission(bucket.ForDBSchema, bucket.ForDBClass, XaclActionType.Delete))
+                {
+                    return Unauthorized();
                 }
 
                 NameValueCollection parameters = Request.RequestUri.ParseQueryString();
@@ -534,6 +511,32 @@ namespace Newtera.WebApi.Controllers
         {
             var buckets = BlobStorageConfig.Instance.BucketConfigs;
             return buckets.Where(x => string.Equals(x.Name, bucketName, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+        }
+
+        private bool HasPermission(string schemaName, string className, XaclActionType action)
+        {
+            bool hasPermission = false;
+
+            IDataProvider dataProvider = DataProviderFactory.Instance.Create();
+            SchemaInfo schemaInfo = new SchemaInfo
+            {
+                Name = schemaName,
+                Version = "1.0"
+            };
+ 
+            MetaDataModel metaData = MetaDataCache.Instance.GetMetaData(schemaInfo, dataProvider);
+            var classElement = metaData.SchemaModel.FindClass(className);
+            if (PermissionChecker.Instance.HasPermission(metaData.XaclPolicy, classElement, XaclActionType.Read))
+            {
+                hasPermission = true;
+            }
+
+            return hasPermission;
+        }
+
+        private IXaclObject GetClassElement(string className)
+        {
+            return null;
         }
     }
 }

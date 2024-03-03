@@ -1201,13 +1201,6 @@
             <param name="bucketName">A bucket name</param>
             <param name="objectName">An object name</param>
         </member>
-        <member name="M:Newtera.WebApi.Controllers.BlobController.PostMultiPartBlobObject(System.String,System.String)">
-            <summary>
-            Upload an object
-            </summary>
-            <param name="bucketName">A bucket name</param>
-            <param name="objectName">An object name</param>
-        </member>
         <member name="M:Newtera.WebApi.Controllers.BlobController.GetBlobObjectDescriptor(System.String,System.String)">
             <summary>
             Get descriptor of an object
